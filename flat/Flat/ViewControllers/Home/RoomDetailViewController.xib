@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RoomDetailViewController" customModule="Flat" customModuleProvider="target">
             <connections>
+                <outlet property="bottomView" destination="vgk-6k-ckt" id="orb-Ij-mi3"/>
                 <outlet property="durationLabel" destination="4Jp-yX-b2v" id="HMp-Zv-giy"/>
                 <outlet property="endDateLabel" destination="cjf-FP-q8N" id="4XQ-pb-jBz"/>
                 <outlet property="endTimeLabel" destination="9EO-3S-Gx4" id="Uxe-QG-CrO"/>

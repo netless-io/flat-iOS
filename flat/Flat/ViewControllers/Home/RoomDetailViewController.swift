@@ -10,11 +10,109 @@
 import UIKit
 
 class RoomDetailViewController: UIViewController {
+    enum RoomOperation {
+        case modify
+        case remove
+        case cancel
+        
+        var isDestructive: Bool {
+            if self == .cancel { return true }
+            return false
+        }
+        
+        var title: String {
+            switch self {
+            case .cancel:
+                return NSLocalizedString("Cancel Room", comment: "")
+            case .remove:
+                return NSLocalizedString("Remove From List", comment: "")
+            case .modify:
+                return NSLocalizedString("Modify Room", comment: "")
+            }
+        }
+        
+        var alertVerbose: String {
+            switch self {
+            case .modify:
+                return ""
+            case .remove:
+                return NSLocalizedString("Remove Room Verbose", comment: "")
+            case .cancel:
+                return NSLocalizedString("Cancel Room Verbose", comment: "")
+            }
+        }
+        
+        func actionFor(viewController: RoomDetailViewController) {
+            switch self {
+            case .modify:
+                // TODO: Modify Room 
+                return
+            case .remove, .cancel:
+                let hud = viewController.showActivityIndicator()
+                let api = RoomCancelRequest(roomUUID: viewController.info.roomUUID)
+                ApiProvider.shared.request(fromApi: api) { result in
+                    switch result {
+                    case .success:
+                        NotificationCenter.default.post(name: .init(rawValue: homeShouldUpdateListNotification), object: nil)
+                        hud.stopAnimating()
+                        if let split = viewController.splitViewController {
+                            split.showDetailViewController(EmptySplitSecondaryViewController(), sender: nil)
+                        } else {
+                            viewController.navigationController?.popViewController(animated: true)
+                        }
+                    case .failure(let error):
+                        hud.stopAnimating()
+                        viewController.toast(error.localizedDescription)
+                    }
+                }
+            }
+        }
+        
+        static func actionsWith(isTeacher: Bool, roomStatus: RoomStartStatus) -> [RoomOperation] {
+            switch roomStatus {
+            case .Idle:
+                if isTeacher {
+                    return [.modify, .cancel]
+                } else {
+                    return [.remove]
+                }
+            case .Started, .Paused:
+                if isTeacher {
+                    return []
+                } else {
+                    return [.remove]
+                }
+            default:
+                return []
+            }
+        }
+    }
+    
     let info: RoomListInfo
     var detailInfo: RoomInfo?
+    var availableOperations: [RoomOperation] = []
+    
+    let deviceStatusStore: UserDevicePreferredStatusStore
+    
+    var cameraOn: Bool {
+        didSet {
+            cameraButton.isSelected = cameraOn
+        }
+    }
+    
+    var micOn: Bool {
+        didSet {
+            micButton.isSelected = micOn
+        }
+    }
     
     init(info: RoomListInfo) {
         self.info = info
+        deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
+        let mic = deviceStatusStore.getDevicePreferredStatus(.mic)
+        let camera = deviceStatusStore.getDevicePreferredStatus(.camera)
+        self.cameraOn = camera
+        self.micOn = mic
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -27,6 +125,7 @@ class RoomDetailViewController: UIViewController {
         super.viewWillAppear(animated)
         loadData { _ in
             self.updateViewWithCurrentStatus()
+            self.updateAvailableActions()
         }
     }
     
@@ -34,6 +133,16 @@ class RoomDetailViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         updateViewWithCurrentStatus()
+        updateAvailableActions()
+    }
+    
+    // MARK: - Action
+    @objc func onClickCamera(_ sender: UIButton) {
+        cameraOn = !cameraOn
+    }
+    
+    @objc func onClickMic(_ sender: UIButton) {
+        micOn = !micOn
     }
     
     // MARK: - Private
@@ -49,6 +158,33 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
+    func updateAvailableActions() {
+        let isTeacher = info.ownerUUID == AuthStore.shared.user?.userUUID
+        availableOperations = RoomOperation.actionsWith(isTeacher: isTeacher, roomStatus: info.roomStatus)
+        if availableOperations.isEmpty {
+            navigationItem.rightBarButtonItem = nil
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "more"), style: .plain, target: self, action: #selector(onClickEdit(_:)))
+        }
+    }
+
+    @objc func onClickEdit(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: nil,
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
+        for action in availableOperations {
+            alertController.addAction(.init(title: action.title, style: action.isDestructive ? .destructive : .default, handler: { _ in
+                if !action.alertVerbose.isEmpty {
+                    self.showCheckAlert(title: action.title, message: action.alertVerbose) {
+                        action.actionFor(viewController: self)
+                    }
+                }
+            }))
+        }
+        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        popoverViewController(viewController: alertController, fromItem: sender)
+    }
+    
     func setupViews() {
         navigationItem.title = NSLocalizedString("Room Detail", comment: "")
         var j = 0
@@ -60,6 +196,18 @@ class RoomDetailViewController: UIViewController {
                 make.height.equalTo(1 / UIScreen.main.scale)
             }
             j += 1
+        }
+        
+        bottomView.addSubview(cameraButton)
+        bottomView.addSubview(micButton)
+        
+        cameraButton.snp.makeConstraints { make in
+            make.left.top.equalToSuperview()
+        }
+        
+        micButton.snp.makeConstraints { make in
+            make.left.equalTo(cameraButton.snp.right).offset(12)
+            make.top.equalToSuperview()
         }
     }
     
@@ -118,9 +266,11 @@ class RoomDetailViewController: UIViewController {
             return
         }
         
-        let vc = InviteViewController(roomInfo: detailInfo,
-                             roomUUID: info.roomUUID,
-                             userName: AuthStore.shared.user?.name ?? "")
+        let vc = InviteViewController(roomTitle: detailInfo.title,
+                                      roomTime: detailInfo.beginTime,
+                                      roomNumber: info.inviteCode,
+                                      roomUUID: info.roomUUID,
+                                      userName: AuthStore.shared.user?.name ?? "")
         popoverViewController(viewController: vc, fromSource: sender)
     }
     
@@ -144,8 +294,13 @@ class RoomDetailViewController: UIViewController {
             self.stopActivityIndicator()
             switch result {
             case .success(let playInfo):
-                // TODO: Update camara and mic
-                let vc = ClassRoomViewController(roomPlayInfo: playInfo, roomInfo: detailInfo, cameraOn: false, micOn: false)
+                let micOn = self.micOn
+                let cameraOn = self.cameraOn
+                let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo,
+                                                                     detailInfo: detailInfo,
+                                                                     deviceStatus: .init(mic: micOn, camera: cameraOn))
+                self.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: micOn)
+                self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: cameraOn)
                 vc.modalPresentationStyle = .fullScreen
                 if let split = self.splitViewController {
                     split.present(vc, animated: true, completion: nil)
@@ -167,4 +322,34 @@ class RoomDetailViewController: UIViewController {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var startDateLabel: UILabel!
     @IBOutlet weak var startTimeLabel: UILabel!
+    @IBOutlet weak var bottomView: UIView!
+    
+    // MARK: - Lazy
+    lazy var cameraButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        let circleImg = UIImage.circleImage()
+        btn.setImage(circleImg, for: .normal)
+        btn.setImage(.filledCircleImage(radius: circleImg.size.width / 2), for: .selected)
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.subText, for: .normal)
+        btn.setTitle("  " + NSLocalizedString("Open Camera", comment: ""), for: .normal)
+        btn.contentEdgeInsets = .init(top: 8, left: 0, bottom: 8, right: 0)
+        btn.addTarget(self, action: #selector(onClickCamera(_:)), for: .touchUpInside)
+        btn.isSelected = cameraOn
+        return btn
+    }()
+    
+    lazy var micButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        let circleImg = UIImage.circleImage()
+        btn.setImage(circleImg, for: .normal)
+        btn.setImage(.filledCircleImage(radius: circleImg.size.width / 2), for: .selected)
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.subText, for: .normal)
+        btn.setTitle("  " + NSLocalizedString("Open Mic", comment: ""), for: .normal)
+        btn.contentEdgeInsets = .init(top: 8, left: 0, bottom: 8, right: 0)
+        btn.addTarget(self, action: #selector(onClickMic(_:)), for: .touchUpInside)
+        btn.isSelected = micOn
+        return btn
+    }()
 }

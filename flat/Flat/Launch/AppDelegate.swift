@@ -18,9 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var launch: LaunchCoordinator?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let new: User = .init(name: "xys_github", avatar: .init(string: "https://avatars.githubusercontent.com/u/67670791?v=4")!, userUUID: "9dec6d84-ca9a-4333-9cf6-a19734768e3a", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6IjlkZWM2ZDg0LWNhOWEtNDMzMy05Y2Y2LWExOTczNDc2OGUzYSIsImxvZ2luU291cmNlIjoiR2l0aHViIiwiaWF0IjoxNjM1MzkxNjgxLCJleHAiOjE2Mzc4OTcyODEsImlzcyI6ImZsYXQtc2VydmVyIn0.4ynjtc5GqjRsqVcmA-WkTv7FK9ArwiVSqhhLyU7xMm0")
-        AuthStore.shared.processNewUser(new)
-        
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true

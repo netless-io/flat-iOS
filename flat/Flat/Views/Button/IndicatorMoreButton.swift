@@ -9,7 +9,7 @@
 
 import UIKit
 
-class IndicateMoreButton: UIButton {
+class IndicatorMoreButton: UIButton {
     var indicatorInset: UIEdgeInsets = .zero {
         didSet {
             indicatorView.snp.remakeConstraints { make in

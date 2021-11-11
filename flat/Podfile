@@ -1,14 +1,20 @@
 target 'Flat' do
   use_frameworks!
   
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'NSObject+Rx'
+  
+  pod 'DifferenceKit'
   pod 'SwiftTrace'
-  pod 'WechatOpenSDK'
   pod 'Kingfisher'
   pod 'Hero'
   pod 'SnapKit'
   pod 'EmptyDataSet-Swift'
   pod 'IQKeyboardManagerSwift'
+  
   pod 'Whiteboard'
+  pod 'WechatOpenSDK'
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
   

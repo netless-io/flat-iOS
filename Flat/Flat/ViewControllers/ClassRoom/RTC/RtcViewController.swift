@@ -93,8 +93,8 @@ class RtcViewController: UIViewController {
         setupViews()
         // TODO: Update with permission
         agoraKit.enableVideo()
-        let gesture = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
-        view.addGestureRecognizer(gesture)
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+        view.addGestureRecognizer(panGesture)
     }
     
     override func viewDidLayoutSubviews() {
@@ -119,7 +119,7 @@ class RtcViewController: UIViewController {
         }
         collectionView.reloadSections([0])
     }
-
+    
     // MARK: - Action
     var panStartIndexPath: IndexPath?
     @objc func onPan(_ pan: UIPanGestureRecognizer) {
@@ -200,19 +200,23 @@ class RtcViewController: UIViewController {
     
     func updateUsersRtcStatus() {
         for user in users {
-            if let status = user.status {
-                if user.rtcUID == rtcUid {
-                    // Self
-                    agoraKit.enableLocalAudio(status.mic)
-                    agoraKit.enableLocalVideo(status.camera)
-                    agoraKit.muteLocalAudioStream(!status.mic)
-                    agoraKit.muteLocalVideoStream(!status.camera)
-                } else {
-                    agoraKit.setRemoteVideoStream(user.rtcUID, type: .low)
-                    // Others
-                    agoraKit.muteRemoteVideoStream(user.rtcUID, mute: !status.camera)
-                    agoraKit.muteRemoteAudioStream(user.rtcUID, mute: !status.mic)
-                }
+            let status = user.status
+            if user.rtcUID == rtcUid {
+                // Self
+                agoraKit.enableLocalAudio(status.mic)
+                agoraKit.enableLocalVideo(status.camera)
+                agoraKit.muteLocalAudioStream(!status.mic)
+                agoraKit.muteLocalVideoStream(!status.camera)
+//                if status.camera {
+//                    videoStreamingUID.insert(rtcUid)
+//                } else {
+//                    videoStreamingUID.remove(rtcUid)
+//                }
+            } else {
+                agoraKit.setRemoteVideoStream(user.rtcUID, type: .low)
+                // Others
+                agoraKit.muteRemoteVideoStream(user.rtcUID, mute: !status.camera)
+                agoraKit.muteRemoteAudioStream(user.rtcUID, mute: !status.mic)
             }
         }
     }
@@ -240,8 +244,8 @@ class RtcViewController: UIViewController {
         cell.update(avatar: user.avatarURL)
         cell.nameLabel.text = user.name
         cell.nameLabel.isHidden = true
-        cell.silenceImageView.isHidden = user.status?.mic ?? false
-        if user.status?.camera == true {
+        cell.silenceImageView.isHidden = user.status.mic
+        if user.status.camera {
             showAvatar(false)
         } else {
             showAvatar(true)
@@ -252,7 +256,8 @@ class RtcViewController: UIViewController {
         if previewViewController.presentingViewController == nil || previewViewController.isBeingDismissed {
             applyVideoCanvasTo(view: cell.videoContainerView,
                                uid: user.rtcUID,
-                               camera: user.status?.camera ?? false)
+                               camera: user.status.camera)
+//                               camera: user.status.camera && videoStreamingUID.contains(user.rtcUID))
         }
     }
     
@@ -262,7 +267,6 @@ class RtcViewController: UIViewController {
         } else {
             return users[indexPath.row]
         }
-        return nil
     }
     // MARK: - Lazy
     lazy var layout: UICollectionViewFlowLayout = {
@@ -277,6 +281,12 @@ class RtcViewController: UIViewController {
         canvas.renderMode = .hidden
         return canvas
     }()
+//
+//    lazy var videoStreamingUID: Set<UInt> = [] {
+//        didSet {
+//            collectionView.reloadData()
+//        }
+//    }
     
     lazy var remoteCanvas: [UInt: AgoraRtcVideoCanvas] = [:]
     
@@ -334,7 +344,7 @@ extension RtcViewController: UICollectionViewDelegate, UICollectionViewDataSourc
         cell.nameLabel.isHidden = true
         
         cell.heroID = id
-        if user.status?.camera == true {
+        if user.status.camera {
             previewViewController.contentView.isHidden = false
             previewViewController.avatarContainer.isHidden = true
             
@@ -345,7 +355,7 @@ extension RtcViewController: UICollectionViewDelegate, UICollectionViewDataSourc
                 let canvas = createOrFetchFromCacheCanvs(for: user.rtcUID)
                 canvas.view = previewViewController.contentView
                 // 将订阅的一路视频流设为大流，其它路视频流均设置为小流。
-                agoraKit.setRemoteVideoStream(rtcUid, type: .high)
+                agoraKit.setRemoteVideoStream(user.rtcUID, type: .high)
                 agoraKit.setupRemoteVideo(canvas)
             }
             previewViewController.contentView.heroID = id
@@ -377,8 +387,8 @@ extension RtcViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             cell.nameLabel.isHidden = !cell.nameLabel.isHidden
             
             guard let user = userAt(indexPath),
-                  let status = user.status,
                   user.rtcUID == rtcUid else { return }
+            let status = user.status
             cellMenuView.show(fromSouce: cell,
                               direction: .bottom,
                               inset: .init(top: -10, left: -10, bottom: -10, right: -10))
@@ -420,4 +430,16 @@ extension RtcViewController: AgoraRtcEngineDelegate {
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
     }
+    
+//    func rtcEngine(_ engine: AgoraRtcEngineKit, remoteVideoStateChangedOfUid uid: UInt, state: AgoraVideoRemoteState, reason: AgoraVideoRemoteStateReason, elapsed: Int) {
+//        switch state {
+//        case .stopped:
+//            videoStreamingUID.remove(uid)
+//        case .starting:
+//            videoStreamingUID.insert(uid)
+//        default:
+//            return
+//        }
+//        print("rtc remote changed \(uid), now \(videoStreamingUID)")
+//    }
 }

@@ -8,24 +8,66 @@
 
 
 import Foundation
+import DifferenceKit
 
-struct RoomUser {
+struct RoomUser: Hashable, Differentiable {
+    let rtmUUID: String
+    let rtcUID: UInt
+    let name: String
+    let avatarURL: URL?
+    var status: RoomUserStatus
+    
     init(rtmUUID: String,
          rtcUID: UInt,
          name: String,
          avatarURL: URL?,
-         status: RoomUserStatus?) {
+         status: RoomUserStatus = .default) {
         self.rtmUUID = rtmUUID
         self.rtcUID = rtcUID
         self.name = name
         self.avatarURL = avatarURL
         self.status = status
     }
+}
+
+struct RoomUserStatus: Hashable {
+    var isSpeak: Bool
+    var isRaisingHand: Bool
+    var camera: Bool
+    var mic: Bool
     
-    let rtmUUID: String
-    let rtcUID: UInt
-    let name: String
-    let avatarURL: URL?
+    static let `default` = RoomUserStatus(isSpeak: false, isRaisingHand: false, camera: false, mic: false)
     
-    var status: RoomUserStatus?
+    init(isSpeak: Bool, isRaisingHand: Bool, camera: Bool, mic: Bool) {
+        self.isSpeak = isSpeak
+        self.isRaisingHand = isRaisingHand
+        self.camera = camera
+        self.mic = mic
+    }
+    
+    // Some string like 'SRCM'
+    init(string: String) {
+        isSpeak = string.contains("S")
+        isRaisingHand = string.contains("R")
+        camera = string.contains("C")
+        mic = string.contains("M")
+    }
+    
+    func toString() -> String {
+        var r = ""
+        if isSpeak {
+            r.append("S")
+        }
+        if isRaisingHand {
+            r.append("R")
+        }
+        if
+            camera {
+            r.append("C")
+        }
+        if mic {
+            r.append("M")
+        }
+        return r
+    }
 }

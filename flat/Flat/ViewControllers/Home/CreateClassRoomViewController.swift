@@ -11,19 +11,34 @@ import UIKit
 
 class CreateClassRoomViewController: UIViewController {
     var availableTypes: [ClassRoomType] = [.bigClass, .smallClass, .oneToOne]
+    
+    let deviceStatusStore: UserDevicePreferredStatusStore
+    
     lazy var currentRoomType = availableTypes.first! {
         didSet {
             guard currentRoomType != oldValue else { return }
             updateSelected()
         }
     }
-    var camaraOn = false {
+    
+    var cameraOn: Bool {
         didSet {
-            cameraButton.isSelected = camaraOn
+            cameraButton.isSelected = cameraOn
         }
     }
     
     // MARK: - LifeCycle
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
+        let camera = deviceStatusStore.getDevicePreferredStatus(.camera)
+        self.cameraOn = camera
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -131,7 +146,7 @@ class CreateClassRoomViewController: UIViewController {
     }
     
     @objc func onClickCamera(_ sender: UIButton) {
-        camaraOn = !sender.isSelected
+        cameraOn = !cameraOn
     }
     
     @objc func onCreate(_ sender: UIButton) {
@@ -164,14 +179,18 @@ class CreateClassRoomViewController: UIViewController {
         }
     }
     
-    func joinRoom(withUUID UUID: String, completion: ((Result<ClassRoomViewController, Error>)->Void)?) {
+    func joinRoom(withUUID UUID: String, completion: ((Result<ClassRoomViewController1, Error>)->Void)?) {
         RoomPlayInfo.fetchByJoinWith(uuid: UUID) { playInfoResult in
             switch playInfoResult {
             case .success(let playInfo):
                 RoomInfo.fetchInfoBy(uuid: UUID) { result in
                     switch result {
                     case .success(let roomInfo):
-                        let vc = ClassRoomViewController(roomPlayInfo: playInfo, roomInfo: roomInfo, cameraOn: self.camaraOn, micOn: false)
+                        let cameraOn = self.cameraOn
+                        let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo,
+                                                                             detailInfo: roomInfo,
+                                                                             deviceStatus: .init(mic: true, camera: cameraOn))
+                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: cameraOn)
                         completion?(.success(vc))
                     case .failure(let error):
                         completion?(.failure(error))
@@ -208,6 +227,7 @@ class CreateClassRoomViewController: UIViewController {
         btn.setTitle("  " + NSLocalizedString("Open Camera", comment: ""), for: .normal)
         btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
         btn.addTarget(self, action: #selector(onClickCamera(_:)), for: .touchUpInside)
+        btn.isSelected = cameraOn
         return btn
     }()
     

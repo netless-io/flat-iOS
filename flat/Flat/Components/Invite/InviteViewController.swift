@@ -10,14 +10,20 @@
 import UIKit
 
 class InviteViewController: PopOverDismissDetectableViewController {
-    var roomInfo: RoomInfo
+    let roomTitle: String
+    let roomTime: Date
+    let roomNumber: String
     let roomUUID: String
     let userName: String
     
-    init(roomInfo: RoomInfo,
+    init(roomTitle: String,
+         roomTime: Date,
+         roomNumber: String,
          roomUUID: String,
          userName: String) {
-        self.roomInfo = roomInfo
+        self.roomTitle = roomTitle
+        self.roomTime = roomTime
+        self.roomNumber = roomNumber
         self.roomUUID = roomUUID
         self.userName = userName
         super.init(nibName: nil, bundle: nil)
@@ -34,9 +40,9 @@ class InviteViewController: PopOverDismissDetectableViewController {
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         invitorNameLabel.text = userName + " " + NSLocalizedString("inviteDescribe", comment: "")
-        titleLabel.text = roomInfo.title
-        numberLabel.text = roomInfo.inviteCode
-        timeLabel.text = formatter.string(from: roomInfo.beginTime)
+        titleLabel.text = roomTitle
+        numberLabel.text = roomNumber
+        timeLabel.text = formatter.string(from: roomTime)
         preferredContentSize = .init(width: 360, height: 255)
     }
     

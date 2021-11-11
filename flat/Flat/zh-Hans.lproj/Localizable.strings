@@ -6,6 +6,13 @@
   Copyright © 2021 agora.io. All rights reserved.
 */
 
+"Alert" = "提示";
+"Remove From List" = "移除房间";
+"Modify Room" = "修改房间";
+"Cancel Room" = "取消房间";
+"Remove Room Verbose" = "确定从房间列表移除该房间？移除后可通过房间号再次加入。";
+"Cancel Room Verbose" = "确定取消该房间？取消后其他成员将无法加入。";
+
 "Home" = "首页";
 "Room" = "房间";
 "Profile" = "个人资料";
@@ -34,7 +41,8 @@
 "User List" = "用户列表";
 "Teacher" = "老师";
 "Raised Hand" = "已举手";
-"Mic Opening" = "连麦中";
+"Interacting" = "互动中";
+"Stop All Interacting" = "停止所有互动";
 "inviteDescribe" = "邀请你参加 Flat 房间";
 "Room Subject" = "房间主题";
 "Room Number" = "房间号";
@@ -64,6 +72,7 @@
 "Room Subject Placeholder" = "请输入房间主题";
 "Join Options" = "加入选项";
 "Open Camera" = "开启摄像头";
+"Open Mic" = "开启麦克风";
 "Create" = "创建";
 "Created Room" = "Created Room";
 "Join" = "加入";

@@ -15,6 +15,11 @@ class RtcVideoCollectionViewCell: UICollectionViewCell {
         avatarImageView.kf.setImage(with: avatar)
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        videoContainerView.subviews.forEach({ $0.removeFromSuperview() })
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .black

@@ -23,7 +23,8 @@ class ChatNoticeTableViewCell: UITableViewCell {
         selectionStyle = .none
         contentView.addSubview(labelView)
         labelView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview()
         }
         labelView.edge = .init(top: 6, left: 12, bottom: 6, right: 12)
     }

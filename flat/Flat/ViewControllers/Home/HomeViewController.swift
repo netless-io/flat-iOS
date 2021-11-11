@@ -12,6 +12,8 @@ import SnapKit
 import Kingfisher
 import EmptyDataSet_Swift
 
+let homeShouldUpdateListNotification = "homeShouldUpdateListNotification"
+
 extension RoomStartStatus {
     var textColor: UIColor {
         if self == .Idle {
@@ -87,6 +89,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        observeNotification()
     }
     
     override func viewDidLayoutSubviews() {
@@ -188,7 +191,15 @@ class HomeViewController: UIViewController {
         }
     }
     
+    @objc func onUpdateNotificaton(_ noti: Notification) {
+        loadRooms(nil)
+    }
+    
     // MARK: - Private
+    func observeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onUpdateNotificaton(_:)), name: .init(rawValue: "homeShouldUpdateListNotification"), object: nil)
+    }
+    
     func setupViews() {
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white

@@ -10,6 +10,18 @@
 import Foundation
 
 struct ClassRoomType: RawRepresentable, Codable, Equatable {
+    enum RtcStrategy {
+        case teacherOnly
+        case all
+    }
+    
+    var rtcStrategy: RtcStrategy {
+        if self == .bigClass {
+            return .teacherOnly
+        }
+        return .all
+    }
+     
     static let bigClass = ClassRoomType(rawValue: "BigClass")
     static let smallClass = ClassRoomType(rawValue: "SmallClass")
     static let oneToOne = ClassRoomType(rawValue: "OneToOne")

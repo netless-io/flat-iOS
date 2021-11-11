@@ -30,10 +30,6 @@ extension RoomPlayInfo {
     var rtmUID: String {
         userInfo?.userUUID ?? ""
     }
-    
-    var isTeacher: Bool {
-        rtmUID == ownerUUID
-    }
 }
 
 extension RoomPlayInfo {

@@ -16,7 +16,7 @@ class ClassRoomRtm: NSObject {
     var channel: AgoraRtmChannel?
     var commandChannel: AgoraRtmChannel?
     let rtmToken: String
-    let roomUID: String
+    let userUID: String
     let roomUUID: String
     var commandChannelId: String { roomUUID + "commands" }
     
@@ -27,12 +27,14 @@ class ClassRoomRtm: NSObject {
         print(self, "destory")
     }
     
-    init(rtmToken: String, roomUID: String, roomUUID: String) {
+    init(rtmToken: String, userUID: String, roomUUID: String) {
         self.roomUUID = roomUUID
         self.rtmToken = rtmToken
-        self.roomUID = roomUID
+        self.userUID = userUID
         super.init()
         agoraKit = AgoraRtmKit.init(appId: Env().agoraAppId, delegate: self)
+        agoraGenerator.agoraToken = rtmToken
+        agoraGenerator.agoraUserId = userUID
     }
     
     // MARK: - Public
@@ -57,7 +59,7 @@ class ClassRoomRtm: NSObject {
     }
     
     func joinChannel(completion: @escaping ((Error?) ->Void)) {
-        agoraKit.login(byToken: rtmToken, user: roomUID) { errCode in
+        agoraKit.login(byToken: rtmToken, user: userUID) { errCode in
             guard errCode == .ok else {
                 completion("rtm login fail, code \(errCode.rawValue)")
                 return

@@ -10,7 +10,34 @@
 import UIKit
 
 class JoinRoomViewController: UIViewController {
+    let deviceStatusStore: UserDevicePreferredStatusStore
+    
+    var cameraOn: Bool {
+        didSet {
+            cameraButton.isSelected = cameraOn
+        }
+    }
+    
+    var micOn: Bool {
+        didSet {
+            micButton.isSelected = micOn
+        }
+    }
+    
     // MARK: - LifeCycle
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
+        let mic = deviceStatusStore.getDevicePreferredStatus(.mic)
+        let camera = deviceStatusStore.getDevicePreferredStatus(.camera)
+        self.cameraOn = camera
+        self.micOn = mic
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fillTextfieldWithPasterBoard()
@@ -22,27 +49,45 @@ class JoinRoomViewController: UIViewController {
     }
     
     // MARK: - Action
+    @objc func onClickCamera(_ sender: UIButton) {
+        cameraOn = !cameraOn
+    }
+    
+    @objc func onClickMic(_ sender: UIButton) {
+        micOn = !micOn
+    }
+    
     @objc func onJoin(_ sender: UIButton) {
         guard let uuid = subjectTextField.text, !uuid.isEmpty else {
             return
         }
+        showActivityIndicator()
         RoomPlayInfo.fetchByJoinWith(uuid: uuid) { joinResult in
             switch joinResult {
             case .success(let roomPlayInfo):
                 RoomInfo.fetchInfoBy(uuid: roomPlayInfo.roomUUID) { infoResult in
                     switch infoResult {
                     case .success(let roomInfo):
-                        let vc = ClassRoomViewController(roomPlayInfo: roomPlayInfo, roomInfo: roomInfo, cameraOn: false, micOn: false)
+                        let micOn = self.micOn
+                        let cameraOn = self.cameraOn
+                        let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: roomPlayInfo,
+                                                                             detailInfo: roomInfo,
+                                                                             deviceStatus: .init(mic: micOn, camera: cameraOn))
+                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: micOn)
+                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: cameraOn)
                         if let split = self.splitViewController {
                             split.present(vc, animated: true, completion: nil)
                         } else {
                             self.navigationController?.pushViewController(vc, animated: true)
                         }
+                        self.stopActivityIndicator()
                     case .failure(let roomInfoError):
                         self.showAlertWith(message: roomInfoError.localizedDescription)
+                        self.stopActivityIndicator()
                     }
                 }
             case .failure(let joinError):
+                self.stopActivityIndicator()
                 self.showAlertWith(message: joinError.localizedDescription)
             }
         }
@@ -69,9 +114,18 @@ class JoinRoomViewController: UIViewController {
         topLabel.font = .systemFont(ofSize: 14)
         topLabel.textColor = .subText
         topLabel.text = NSLocalizedString("Room Number", comment: "")
+        
+        let joinOptionsLabel = UILabel()
+        joinOptionsLabel.font = .systemFont(ofSize: 14)
+        joinOptionsLabel.textColor = .subText
+        joinOptionsLabel.text = NSLocalizedString("Join Options", comment: "")
+        
         view.addSubview(topLabel)
         view.addSubview(subjectTextField)
         view.addSubview(joinButton)
+        view.addSubview(joinOptionsLabel)
+        view.addSubview(cameraButton)
+        view.addSubview(micButton)
         
         let margin: CGFloat = 16
         topLabel.snp.makeConstraints { make in
@@ -84,9 +138,24 @@ class JoinRoomViewController: UIViewController {
             make.height.equalTo(48)
         }
         
+        joinOptionsLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(margin)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(110)
+        }
+        
+        cameraButton.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(135)
+        }
+        
+        micButton.snp.makeConstraints { make in
+            make.left.equalTo(cameraButton.snp.right).offset(12)
+            make.top.equalTo(cameraButton)
+        }
+        
         joinButton.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(110)
+            make.centerY.equalTo(cameraButton)
             make.height.equalTo(32)
         }
     }
@@ -118,6 +187,34 @@ class JoinRoomViewController: UIViewController {
         btn.setTitle(NSLocalizedString("Join", comment: ""), for: .normal)
         btn.addTarget(self, action: #selector(onJoin(_:)), for: .touchUpInside)
         btn.contentEdgeInsets = .init(top: 0, left: 29, bottom: 0, right: 29)
+        return btn
+    }()
+    
+    lazy var cameraButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        let circleImg = UIImage.circleImage()
+        btn.setImage(circleImg, for: .normal)
+        btn.setImage(.filledCircleImage(radius: circleImg.size.width / 2), for: .selected)
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.subText, for: .normal)
+        btn.setTitle("  " + NSLocalizedString("Open Camera", comment: ""), for: .normal)
+        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
+        btn.addTarget(self, action: #selector(onClickCamera(_:)), for: .touchUpInside)
+        btn.isSelected = cameraOn
+        return btn
+    }()
+    
+    lazy var micButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        let circleImg = UIImage.circleImage()
+        btn.setImage(circleImg, for: .normal)
+        btn.setImage(.filledCircleImage(radius: circleImg.size.width / 2), for: .selected)
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.subText, for: .normal)
+        btn.setTitle("  " + NSLocalizedString("Open Mic", comment: ""), for: .normal)
+        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
+        btn.addTarget(self, action: #selector(onClickMic(_:)), for: .touchUpInside)
+        btn.isSelected = micOn
         return btn
     }()
 }

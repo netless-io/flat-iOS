@@ -80,8 +80,6 @@ class ClassRoomViewController: UIViewController {
         self.roomPlayInfo = roomPlayInfo
         self.userStatus = .init(isSpeak: false, isRaisingHand: false, camera: cameraOn, mic: micOn)
         super.init(nibName: nil, bundle: nil)
-        agoraGenerator.agoraToken = roomPlayInfo.rtmToken
-        agoraGenerator.agoraUserId = roomPlayInfo.rtmUID
         modalPresentationStyle = .fullScreen
     }
     
@@ -993,4 +991,6 @@ extension ClassRoomViewController: ClassRoomUsersViewControllerDelegate {
             toast("无法操作")
         }
     }
+    
+    
 }

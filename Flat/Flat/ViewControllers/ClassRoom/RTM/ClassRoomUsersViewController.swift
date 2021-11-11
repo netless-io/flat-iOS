@@ -17,22 +17,38 @@ protocol ClassRoomUsersViewControllerDelegate: AnyObject {
     func classRoomUsersViewControllerDidClickCamera(_ vc: ClassRoomUsersViewController, user: RoomUser)
     
     func classRoomUsersViewControllerDidClickMic(_ vc: ClassRoomUsersViewController, user: RoomUser)
+    
+    func classRoomUsersViewControllerDidClickStopInteracting(_ vc: ClassRoomUsersViewController)
 }
 
 class ClassRoomUsersViewController: PopOverDismissDetectableViewController {
     let cellIdentifier = "cellIdentifier"
 
+    let userUUID: String
+    let roomOwnerRtmUUID: String
+    let isTeacher: Bool
+    
     weak var delegate: ClassRoomUsersViewControllerDelegate?
-    var roomOwnerRtmUUID: String = "" {
-        didSet {
-            tableView.reloadData()
-        }
-    }
     
     var users: [RoomUser] = [] {
         didSet {
             tableView.reloadData()
         }
+    }
+    
+    var displayUsers: [RoomUser] { users.filter({ $0.rtmUUID != roomOwnerRtmUUID })}
+    
+    // MARK: - LifeCycle
+    init(userUUID: String,
+         roomOwnerRtmUUID: String) {
+        self.roomOwnerRtmUUID = roomOwnerRtmUUID
+        self.userUUID = userUUID
+        self.isTeacher = roomOwnerRtmUUID == userUUID
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
     }
     
     override func viewDidLoad() {
@@ -44,6 +60,11 @@ class ClassRoomUsersViewController: PopOverDismissDetectableViewController {
         super.viewDidLayoutSubviews()
         tableView.contentInset = .init(top: topView.bounds.height, left: 0, bottom: 8, right: 0)
         preferredContentSize = .init(width: 360, height: UIScreen.main.bounds.height * 0.67)
+    }
+    
+    // MARK: - Action
+    @objc func onClickIntercting() {
+        delegate?.classRoomUsersViewControllerDidClickStopInteracting(self)
     }
     
     // MARK: - Private
@@ -60,33 +81,34 @@ class ClassRoomUsersViewController: PopOverDismissDetectableViewController {
         }
     }
     
+    func getTeacherIfExist() -> RoomUser? {
+        users.first(where: { $0.rtmUUID == roomOwnerRtmUUID })
+    }
+    
     func config(cell: RoomUserTableViewCell, user: RoomUser) {
-        if user.rtmUUID == roomOwnerRtmUUID {
-            cell.nameLabel.text = user.name + "(\(NSLocalizedString("Teach", comment: "")))"
-        } else {
-            cell.nameLabel.text = user.name
-        }
-        // TODO: maybe user status = error ??
-        cell.avatarImageView.kf.setImage(with: user.avatarURL)
+        let isTeacher = user.rtmUUID == roomOwnerRtmUUID
         cell.disconnectButton.isHidden = true
         cell.raiseHandButton.isHidden = true
-        cell.cameraButton.isSelected = user.status?.camera ?? false
-        cell.micButton.isSelected = user.status?.mic ?? false
-        if let status = user.status {
-            if status.isRaisingHand {
+        if isTeacher {
+            cell.nameLabel.text = user.name + "(\(NSLocalizedString("Teach", comment: "")))"
+            cell.statusLabel.text = nil
+        } else {
+            cell.nameLabel.text = user.name
+            if user.status.isRaisingHand {
                 cell.statusLabel.text = "(\(NSLocalizedString("Raised Hand", comment: "")))"
                 cell.statusLabel.textColor = .controlSelected
                 cell.raiseHandButton.isHidden = false
-            } else if status.isSpeak {
-                cell.statusLabel.text = "(\(NSLocalizedString("Mic Opening", comment: "")))"
+            } else if user.status.isSpeak {
+                cell.statusLabel.text = "(\(NSLocalizedString("Interacting", comment: "")))"
                 cell.statusLabel.textColor = .init(hexString: "#9FDF76")
                 cell.disconnectButton.isHidden = false
             } else {
                 cell.statusLabel.text = nil
             }
-        } else {
-            cell.statusLabel.text = nil
         }
+        cell.avatarImageView.kf.setImage(with: user.avatarURL)
+        cell.cameraButton.isSelected = user.status.camera
+        cell.micButton.isSelected = user.status.mic
         cell.clickHandler = { [weak self] type in
             guard let self = self else { return }
             switch type {
@@ -125,23 +147,93 @@ class ClassRoomUsersViewController: PopOverDismissDetectableViewController {
         view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         view.delegate = self
         view.dataSource = self
-        view.rowHeight = 54
+        view.rowHeight = 55
+        return view
+    }()
+    
+    lazy var teacherLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .text
+        label.font = .systemFont(ofSize: 14)
+        return label
+    }()
+    
+    lazy var stopInteractingButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.titleLabel?.font = .systemFont(ofSize: 12)
+        btn.setTitleColor(.text, for: .normal)
+        btn.setTitle(NSLocalizedString("Stop Interacting", comment: ""), for: .normal)
+        btn.contentEdgeInsets = .init(top: 12, left: 12, bottom: 12, right: 12)
+        btn.layer.borderColor = UIColor.borderColor.cgColor
+        btn.layer.borderWidth = 1 / UIScreen.main.scale
+        btn.addTarget(self, action: #selector(onClickIntercting), for: .touchUpInside)
+        return btn
+    }()
+    
+    lazy var teacherHeaderView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        let line = UIView()
+        line.backgroundColor = .borderColor
+        view.addSubview(line)
+        line.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(1 / UIScreen.main.scale)
+        }
+        view.addSubview(teacherLabel)
+        view.addSubview(stopInteractingButton)
+        teacherLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
+            make.right.lessThanOrEqualTo(stopInteractingButton.snp.left).offset(-10)
+        }
+        stopInteractingButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
+            make.height.equalTo(28)
+        }
+        stopInteractingButton.layer.cornerRadius = 14
         return view
     }()
 }
 
 extension ClassRoomUsersViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        users.count
+        displayUsers.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! RoomUserTableViewCell
-        config(cell: cell, user: users[indexPath.row])
+        config(cell: cell, user: displayUsers[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let _ = getTeacherIfExist() {
+            return 48
+        } else {
+            return .leastNonzeroMagnitude
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let teacher = getTeacherIfExist() {
+            teacherLabel.text = "\(NSLocalizedString("Teacher", comment: "")) : \(teacher.name)"
+            let shouldProcessInteracting = users.contains(where: { $0.status.isRaisingHand || $0.status.isSpeak })
+            if isTeacher {
+                stopInteractingButton.isHidden =  !shouldProcessInteracting
+            } else {
+                stopInteractingButton.isHidden = true
+            }
+            return teacherHeaderView
+        } else {
+            return nil
+        }
     }
 }

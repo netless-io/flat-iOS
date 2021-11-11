@@ -23,6 +23,11 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     weak var delegate: ChatViewControllerDelegate?
     var userRtmId: String = ""
+    var isInMessageBan = false {
+        didSet {
+            banTextButton.isSelected = isInMessageBan
+        }
+    }
     var isMessageBaned = false {
         didSet {
             updateDidMessageBan(isMessageBaned)
@@ -32,6 +37,10 @@ class ChatViewController: PopOverDismissDetectableViewController {
     var messages: [Message] = [] {
         didSet {
             tableView.reloadData()
+            let last = tableView.numberOfRows(inSection: 0) - 1
+            if last >= 0 {
+                tableView.scrollToRow(at: IndexPath(row: last, section: 0), at: .middle, animated: true)
+            }
         }
     }
     
@@ -232,14 +241,18 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         case .user(let message):
             let isSelf = message.userId == userRtmId
             let width = view.bounds.width - (2 * ChatTableViewCell.textMargin) - ChatTableViewCell.textEdge.left - ChatTableViewCell.textEdge.right
-            let textSize = NSString(string: message.text).boundingRect(with: .init(width: width, height: 10), attributes: [.font: ChatTableViewCell.textFont], context: nil).size
+            let textSize = message.text.boundingRect(with: .init(width: width,
+                                                  height: .greatestFiniteMagnitude),
+                                      options: [.usesLineFragmentOrigin, .usesFontLeading],
+                                      attributes: [.font: ChatTableViewCell.textFont],
+                                      context: nil).size
             var height: CGFloat = textSize.height + ChatTableViewCell.textEdge.top + ChatTableViewCell.textEdge.bottom + ChatTableViewCell.bottomMargin
             if !isSelf {
                 height += ChatTableViewCell.nickNameHeight
             }
             return height
         case .notice:
-            return 22 + ChatTableViewCell.bottomMargin
+            return 26.5 + ChatTableViewCell.bottomMargin
         }
     }
     

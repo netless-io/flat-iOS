@@ -6,6 +6,13 @@
   Copyright © 2021 agora.io. All rights reserved.
 */
 
+"Alert" = "Alert";
+"Remove From List" = "Remove From List";
+"Modify Room" = "Modify Room";
+"Cancel Room" = "Cancel Room";
+"Remove Room Verbose" = "Sure to cancel this room? Other members will not be able to join after cancellation.";
+"Cancel Room Verbose" = "Sure to remove the room from the room list? Once removed, you can join the room again by using the room number.";
+
 "Home" = "Home";
 "Room" = "Room";
 "Profile" = "Profile";
@@ -34,7 +41,8 @@
 "User List" = "User List";
 "Teacher" = "Teacher";
 "Raised Hand" = "Raised Hand";
-"Mic Opening" = "Mic Opening";
+"Interacting" = "Interacting";
+"Stop All Interacting" = "Stop All Interacting";
 "inviteDescribe" = "invite you to join the Flat classroom";
 "Room Subject" = "Room Subject";
 "Room Number" = "Room Number";
@@ -64,6 +72,7 @@
 "Room Subject Placeholder" = "Please enter a room subject";
 "Join Options" = "Join Options";
 "Open Camera" = "Open Camera";
+"Open Mic" = "Open Mic";
 "Create" = "Create";
 "Created Room" = "创建的房间";
 "Join" = "Join";
