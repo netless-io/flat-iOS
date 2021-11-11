@@ -1,0 +1,21 @@
+target 'Flat' do
+  use_frameworks!
+  
+  pod 'SwiftTrace'
+  pod 'WechatOpenSDK'
+  pod 'Kingfisher'
+  pod 'Hero'
+  pod 'SnapKit'
+  pod 'EmptyDataSet-Swift'
+  pod 'IQKeyboardManagerSwift'
+  pod 'Whiteboard'
+  pod 'AgoraRtm_iOS'
+  pod 'AgoraRtcEngine_iOS'
+  
+  post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
+  end
+  
+end

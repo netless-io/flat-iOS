@@ -1,0 +1,44 @@
+//
+//  RoomPlayInfo.swift
+//  flat
+//
+//  Created by xuyunshi on 2021/10/15.
+//  Copyright © 2021 agora.io. All rights reserved.
+//
+
+
+import Foundation
+
+struct RoomPlayInfo: Codable {
+    let roomType: ClassRoomType
+    let roomUUID: String
+    let ownerUUID: String
+    let whiteboardRoomToken: String
+    let whiteboardRoomUUID: String
+    let rtcUID: UInt
+    let rtcToken: String
+    let rtcShareScreen: RTCShareScreen
+    let rtmToken: String
+    let region: String
+}
+
+extension RoomPlayInfo {
+    var userInfo: User? {
+        AuthStore.shared.user
+    }
+    
+    var rtmUID: String {
+        userInfo?.userUUID ?? ""
+    }
+    
+    var isTeacher: Bool {
+        rtmUID == ownerUUID
+    }
+}
+
+extension RoomPlayInfo {
+    static func fetchByJoinWith(uuid: String, completion: @escaping ((Result<Self, ApiError>)->Void)) {
+        let request = JoinRoomRequest(info: .init(roomUUID: uuid, inviteCode: ""))
+        ApiProvider.shared.request(fromApi: request, completionHandler: completion)
+    }
+}

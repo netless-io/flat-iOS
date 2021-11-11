@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AGORA_APP_ID</key>
+	<string>$(AGORA_APP_ID)</string>
+	<key>API_URL</key>
+	<string>$(API_URL)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>wxDev</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wx1133c2153a45e9b8</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>wxPrd</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wx96d522d69d384cce</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>x-agora-flat-client</string>
+			</array>
+		</dict>
+	</array>
+	<key>GITHUB_CLIENT_ID</key>
+	<string>$(GITHUB_CLIENT_ID)</string>
+	<key>NETLESS_APP_ID</key>
+	<string>$(NETLESS_APP_ID)</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>WECHAT_APP_ID</key>
+	<string>$(WECHAT_APP_ID)</string>
+</dict>
+</plist>

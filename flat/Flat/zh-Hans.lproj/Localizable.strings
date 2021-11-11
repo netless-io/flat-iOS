@@ -1,0 +1,73 @@
+/* 
+  Localizable.strings
+  flat
+
+  Created by xuyunshi on 2021/10/15.
+  Copyright © 2021 agora.io. All rights reserved.
+*/
+
+"Home" = "首页";
+"Room" = "房间";
+"Profile" = "个人资料";
+"Setting" = "个人设置";
+"Language Setting" = "语言设置";
+"Version" = "检查更新";
+"Contact Us" = "吐个槽";
+"About" = "关于我们";
+"Logout" = "退出登录";
+"Cancel" = "取消";
+"Submit" = "提交";
+"Privacy Policy" = "隐私政策";
+"Select Language" = "选择语言";
+"selected" = "（已选）";
+"Service Agreement" = "服务协议";
+"Join Room" = "加入房间";
+"Create Room" = "创建房间";
+"Book Room" = "预定房间";
+"Room List" = "房间列表";
+"History" = "历史记录";
+"Online interaction Synchronize ideas" = "在线互动，让想法同步";
+"No room at the moment" = "暂无房间";
+"Leaving Classroom" = "退出教室";
+"Chat" = "聊天";
+"Say Something..." = "说点什么吧...";
+"User List" = "用户列表";
+"Teacher" = "老师";
+"Raised Hand" = "已举手";
+"Mic Opening" = "连麦中";
+"inviteDescribe" = "邀请你参加 Flat 房间";
+"Room Subject" = "房间主题";
+"Room Number" = "房间号";
+"Room Number Input PlaceHolder" = "请输入房间号";
+"Start Time" = "开始时间";
+"Copy Invite Link" = "复制邀请链接";
+"Join Link" = "加入链接";
+"All banned" = "全体禁言中";
+"Camera" = "摄像头";
+"Mic" = "麦克风";
+"Video Area" = "视频区域";
+"Room Type" = "房间类型";
+"Invite" = "邀请";
+"Enter Room" = "进入房间";
+"Room Detail" = "房间详情";
+"Idle" = "未开始";
+"Started" = "进行中";
+"Paused" = "暂停中";
+"Stopped" = "已结束";
+"BigClass" = "大班课";
+"SmallClass" = "小班课";
+"OneToOne" = "一对一";
+"BigClass Description" = "面向大量学生";
+"SmallClass Description" = "最多16位学生";
+"OneToOne Description" = "面向1位学生";
+"Today" = "今天";
+"Room Subject Placeholder" = "请输入房间主题";
+"Join Options" = "加入选项";
+"Open Camera" = "开启摄像头";
+"Create" = "创建";
+"Created Room" = "Created Room";
+"Join" = "加入";
+"Start Class" = "开始上课";
+"Stop Class" = "结束上课";
+"Pause Class" = "暂停上课";
+"Resume Class" = "恢复上课";

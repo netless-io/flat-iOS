@@ -1,0 +1,43 @@
+//
+//  XCConfiguration.swift
+//  flat
+//
+//  Created by xuyunshi on 2021/10/13.
+//  Copyright © 2021 agora.io. All rights reserved.
+//
+
+
+import Foundation
+
+struct Env {
+    fileprivate func value<T>(for key: String) -> T {
+        guard let value = Bundle.main.infoDictionary?[key] as? T else {
+            fatalError("Invalid or missing Info.plist key: \(key)")
+        }
+        return value
+    }
+    
+    var wechatAppId: String {
+        value(for: "WECHAT_APP_ID") as String
+    }
+    
+    var githubClientId: String {
+        value(for: "GITHUB_CLIENT_ID") as String
+    }
+    
+    var baseURL: String {
+        "https://\(value(for: "API_URL") as String)"
+    }
+    
+    var version: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
+    
+    var netlessAppId: String {
+        Bundle.main.infoDictionary?["NETLESS_APP_ID"] as? String ?? ""
+    }
+    
+    var agoraAppId: String {
+        Bundle.main.infoDictionary?["AGORA_APP_ID"] as? String ?? ""
+    }
+}

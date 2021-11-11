@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ClassRoomSettingTableViewCell" customModule="Flat" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="麦克风" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRz-pY-tDB">
+                        <rect key="frame" x="8" y="13.5" width="43" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" name="SubText"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="huR-eH-g4L">
+                        <rect key="frame" x="263" y="6.5" width="51" height="31"/>
+                        <color key="onTintColor" name="BrandColor"/>
+                        <connections>
+                            <action selector="switchValueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="FQT-wB-SPf"/>
+                        </connections>
+                    </switch>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vjS-8p-I6h">
+                        <rect key="frame" x="8" y="43" width="304" height="1"/>
+                        <color key="backgroundColor" name="BorderColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="IfA-HX-YPc"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="huR-eH-g4L" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="2dA-w6-wiq"/>
+                    <constraint firstItem="NRz-pY-tDB" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="KxI-AG-ZUH"/>
+                    <constraint firstAttribute="bottom" secondItem="vjS-8p-I6h" secondAttribute="bottom" id="MaG-S7-Szo"/>
+                    <constraint firstAttribute="trailing" secondItem="huR-eH-g4L" secondAttribute="trailing" constant="8" id="TAe-q9-q6L"/>
+                    <constraint firstAttribute="trailing" secondItem="vjS-8p-I6h" secondAttribute="trailing" constant="8" id="VaA-tJ-75U"/>
+                    <constraint firstItem="vjS-8p-I6h" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="Yvu-IA-NAa"/>
+                    <constraint firstItem="NRz-pY-tDB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="rXZ-2e-bfg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="label" destination="NRz-pY-tDB" id="jd6-a1-7L7"/>
+                <outlet property="lineHeightConstraint" destination="IfA-HX-YPc" id="mXZ-Ai-1bL"/>
+                <outlet property="switch" destination="huR-eH-g4L" id="ZQM-ZD-VDg"/>
+            </connections>
+            <point key="canvasLocation" x="-59.420289855072468" y="-31.473214285714285"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="BorderColor">
+            <color red="0.86299997568130493" green="0.88099998235702515" blue="0.91500002145767212" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="BrandColor">
+            <color red="0.28200000524520874" green="0.49799999594688416" blue="0.9649999737739563" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="SubText">
+            <color red="0.36470588235294116" green="0.36470588235294116" blue="0.36470588235294116" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>

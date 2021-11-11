@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="131" id="KGk-i7-Jjw" customClass="RoomTableViewCell" customModule="Flat" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="516" height="131"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="516" height="131"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="iEd-Vs-nE5">
+                        <rect key="frame" x="0.0" y="0.0" width="516" height="131"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hjh-ie-bAc">
+                                <rect key="frame" x="0.0" y="0.0" width="516" height="34"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_calendar" translatesAutoresizingMaskIntoConstraints="NO" id="QvW-Z5-mui">
+                                        <rect key="frame" x="16" y="12" width="22" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="QvW-Z5-mui" secondAttribute="height" id="LSl-pk-7qP"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11月24日 · 今天" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHE-up-a5j">
+                                        <rect key="frame" x="42" y="14.5" width="464" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                        <color key="textColor" name="Text"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="Ak3-fG-hjf"/>
+                                    <constraint firstItem="sHE-up-a5j" firstAttribute="leading" secondItem="QvW-Z5-mui" secondAttribute="trailing" constant="4" id="cDC-3F-ZmR"/>
+                                    <constraint firstAttribute="trailing" secondItem="sHE-up-a5j" secondAttribute="trailing" constant="10" id="gGG-JR-WBc"/>
+                                    <constraint firstAttribute="bottom" secondItem="QvW-Z5-mui" secondAttribute="bottom" id="lJ6-dP-nNB"/>
+                                    <constraint firstItem="sHE-up-a5j" firstAttribute="centerY" secondItem="QvW-Z5-mui" secondAttribute="centerY" id="mXe-C7-uHe"/>
+                                    <constraint firstItem="QvW-Z5-mui" firstAttribute="leading" secondItem="hjh-ie-bAc" secondAttribute="leading" constant="16" id="qMP-8j-0mh"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mdp-wE-dKd">
+                                <rect key="frame" x="0.0" y="34" width="516" height="97"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="C8f-iz-tdT">
+                                        <rect key="frame" x="16" y="12" width="484" height="48"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房间名房间名房间名房间名房间名房间名房间名房间名房间名房间名房间名房间名房间名房间名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ha-Hg-WhR">
+                                                <rect key="frame" x="0.0" y="0.0" width="484" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="22" id="VD3-qp-X7S"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                                <color key="textColor" name="Text"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11月24日 · 今天" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EcH-QX-dha">
+                                                <rect key="frame" x="0.0" y="30" width="484" height="18"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="18" id="GBf-Z6-YpC"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <color key="textColor" name="SubText"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="C8f-iz-tdT" secondAttribute="trailing" constant="16" id="42c-4B-OEN"/>
+                                    <constraint firstItem="C8f-iz-tdT" firstAttribute="leading" secondItem="Mdp-wE-dKd" secondAttribute="leading" constant="16" id="8rr-zP-oRA"/>
+                                    <constraint firstItem="C8f-iz-tdT" firstAttribute="top" secondItem="Mdp-wE-dKd" secondAttribute="top" constant="12" id="hV7-40-upo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已结束" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kd2-AR-Nys">
+                        <rect key="frame" x="463" y="78" width="37" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" name="7A7B7C"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dam-SV-4Jd">
+                        <rect key="frame" x="16" y="130" width="516" height="1"/>
+                        <color key="backgroundColor" name="DBE1EA"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="RWc-FB-A3f"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="iEd-Vs-nE5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="4DS-G9-jU2"/>
+                    <constraint firstItem="Kd2-AR-Nys" firstAttribute="centerY" secondItem="EcH-QX-dha" secondAttribute="centerY" id="84D-dO-rJf"/>
+                    <constraint firstAttribute="trailing" secondItem="iEd-Vs-nE5" secondAttribute="trailing" id="UJh-ES-QNO"/>
+                    <constraint firstItem="Kd2-AR-Nys" firstAttribute="trailing" secondItem="C8f-iz-tdT" secondAttribute="trailing" id="Uwc-8h-Psl"/>
+                    <constraint firstItem="dam-SV-4Jd" firstAttribute="leading" secondItem="Mdp-wE-dKd" secondAttribute="leading" constant="16" id="aqw-WQ-kys"/>
+                    <constraint firstAttribute="bottom" secondItem="iEd-Vs-nE5" secondAttribute="bottom" id="jHn-BS-31V"/>
+                    <constraint firstItem="iEd-Vs-nE5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="mQX-NW-dev"/>
+                    <constraint firstItem="dam-SV-4Jd" firstAttribute="bottom" secondItem="Mdp-wE-dKd" secondAttribute="bottom" id="nTE-t9-95x"/>
+                    <constraint firstItem="dam-SV-4Jd" firstAttribute="trailing" secondItem="Mdp-wE-dKd" secondAttribute="trailing" constant="16" id="yoz-Ez-ZgD"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="calendarLabel" destination="sHE-up-a5j" id="WgH-nx-ZOO"/>
+                <outlet property="calendarView" destination="hjh-ie-bAc" id="CBM-zA-Eqv"/>
+                <outlet property="mainTextView" destination="Mdp-wE-dKd" id="AIA-Ej-IEe"/>
+                <outlet property="roomTimeLabel" destination="EcH-QX-dha" id="K2w-bl-FmD"/>
+                <outlet property="roomTitleLabel" destination="2ha-Hg-WhR" id="bZw-Jc-uh3"/>
+                <outlet property="seperatorLineHeightConstraint" destination="RWc-FB-A3f" id="Yvw-5f-KAM"/>
+                <outlet property="statusLabel" destination="Kd2-AR-Nys" id="mT6-jR-4Cw"/>
+            </connections>
+            <point key="canvasLocation" x="-768" y="-234"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="room_calendar" width="22" height="22"/>
+        <namedColor name="7A7B7C">
+            <color red="0.47843137254901963" green="0.47843137254901963" blue="0.4823529411764706" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="DBE1EA">
+            <color red="0.86274509803921573" green="0.8784313725490196" blue="0.9137254901960784" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="SubText">
+            <color red="0.36470588235294116" green="0.36470588235294116" blue="0.36470588235294116" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="Text">
+            <color red="0.10196078431372549" green="0.11764705882352941" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>

@@ -1,0 +1,73 @@
+/* 
+  Localizable.strings
+  flat
+
+  Created by xuyunshi on 2021/10/15.
+  Copyright © 2021 agora.io. All rights reserved.
+*/
+
+"Home" = "Home";
+"Room" = "Room";
+"Profile" = "Profile";
+"Setting" = "Setting";
+"Language Setting" = "Language";
+"Version" = "Version";
+"Contact Us" = "Contact Us";
+"About" = "About";
+"Logout" = "Logout";
+"Cancel" = "Cancel";
+"Submit" = "Submit";
+"Privacy Policy" = "Privacy Policy";
+"Service Agreement" = "Service Agreement";
+"Select Language" = "Select Language";
+"selected" = "(selected)";
+"Join Room" = "Join Room";
+"Create Room" = "Create Room";
+"Book Room" = "Book Room";
+"Room List" = "Room List";
+"History" = "History";
+"Online interaction Synchronize ideas" = "Online interaction Synchronize ideas";
+"No room at the moment" = "No room at the moment";
+"Leaving Classroom" = "Leaving Classroom";
+"Chat" = "Chat";
+"Say Something..." = "Say Something...";
+"User List" = "User List";
+"Teacher" = "Teacher";
+"Raised Hand" = "Raised Hand";
+"Mic Opening" = "Mic Opening";
+"inviteDescribe" = "invite you to join the Flat classroom";
+"Room Subject" = "Room Subject";
+"Room Number" = "Room Number";
+"Room Number Input PlaceHolder" = "Please enter the room number";
+"Start Time" = "Start Time";
+"Copy Invite Link" = "Copy Link";
+"Join Link" = "Join Link";
+"All banned" = "All banned";
+"Camera" = "Camera";
+"Mic" = "Mic";
+"Video Area" = "Video Area";
+"Room Type" = "Room Type";
+"Invite" = "Invite";
+"Enter Room" = "Enter Room";
+"Room Detail" = "Room Detail";
+"Idle" = "Idle";
+"Started" = "Started";
+"Paused" = "Paused";
+"Stopped" = "Stopped";
+"BigClass" = "BigClass";
+"SmallClass" = "SmallClass";
+"OneToOne" = "OneToOne";
+"BigClass Description" = "For a large number of students";
+"SmallClass Description" = "Up to 16 students";
+"OneToOne Description" = "Facing 1 student";
+"Today" = "Today";
+"Room Subject Placeholder" = "Please enter a room subject";
+"Join Options" = "Join Options";
+"Open Camera" = "Open Camera";
+"Create" = "Create";
+"Created Room" = "创建的房间";
+"Join" = "Join";
+"Start Class" = "Start Class";
+"Stop Class" = "End Class";
+"Pause Class" = "Pause Class";
+"Resume Class" = "Resume Class";
