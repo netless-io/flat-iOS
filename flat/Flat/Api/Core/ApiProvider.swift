@@ -8,9 +8,11 @@
 
 
 import Foundation
+import RxSwift
 
 let defaultNetworkTimeoutInterval: TimeInterval = 30
 let callBackQueue = DispatchQueue.main
+let rootQueue = DispatchQueue(label: "agora.io.flat.session.rootQueue")
 
 let flatGenerator =  FlatRequestGenerator(host: Env().baseURL, timeoutInterval: defaultNetworkTimeoutInterval)
 let flatResponseHandler = FlatResponseHandler()
@@ -21,17 +23,46 @@ class ApiProvider: NSObject {
     static let shared = ApiProvider()
     
     @discardableResult
+    func request<T: FlatRequest>(fromApi api: T) -> Observable<T.Response> {
+        request(fromApi: api, generator: flatGenerator, responseDataHandler: flatResponseHandler)
+    }
+    
+    @discardableResult
+    func request<T: AgoraRequest>(fromApi api: T) -> Observable<T.Response> {
+        request(fromApi: api, generator: agoraGenerator, responseDataHandler: agoraResponseHandler)
+    }
+    
+    @discardableResult
     func request<T: FlatRequest>(fromApi api: T,
                              completionHandler: @escaping (Result<T.Response, ApiError>) -> Void
     ) -> URLSessionDataTask? {
-        request(fromApi: api, generator: flatGenerator, responseDataHandler: flatResponseHandler, completionHandler: completionHandler)
+        let task = request(fromApi: api, generator: flatGenerator, responseDataHandler: flatResponseHandler, completionHandler: completionHandler)
+        task?.resume()
+        return task
     }
     
     @discardableResult
     func request<T: AgoraRequest>(fromApi api: T,
                              completionHandler: @escaping (Result<T.Response, ApiError>) -> Void
     ) -> URLSessionDataTask? {
-        request(fromApi: api, generator: agoraGenerator, responseDataHandler: agoraResponseHandler, completionHandler: completionHandler)
+        let task = request(fromApi: api, generator: agoraGenerator, responseDataHandler: agoraResponseHandler, completionHandler: completionHandler)
+        task?.resume()
+        return task
+    }
+    
+    @discardableResult
+    func request<T: Request>(fromApi api: T,
+                             generator: Generator,
+                             responseDataHandler: ResponseDataHandler) -> Observable<T.Response> {
+        generator.generateObservableRequest(fromApi: api)
+            .flatMap {
+                self.session.rx.data(request: $0)
+            }
+            .flatMap {
+                responseDataHandler.processObservableResponseData($0, decoder: api.decoder, forResponseType: T.Response.self)
+            }
+            .subscribe(on: ConcurrentDispatchQueueScheduler(queue: rootQueue))
+            .observe(on: SerialDispatchQueueScheduler(queue: callBackQueue, internalSerialQueueName: "io.agora.flat.session.callback"))
     }
     
     @discardableResult
@@ -81,7 +112,6 @@ class ApiProvider: NSObject {
                     }
                 }
             }
-            task.resume()
             return task
         }
         catch {
