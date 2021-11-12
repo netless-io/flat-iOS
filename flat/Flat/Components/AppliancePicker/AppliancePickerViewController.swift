@@ -8,35 +8,26 @@
 
 
 import UIKit
-
-protocol AppliancePickerViewControllerDelegate: AnyObject {
-    func appliancePickerViewControllerShouldSelectAppliance(_ controller: AppliancePickerViewController, index: Int) -> Bool
-    
-    func appliancePickerViewControllerDidSelectAppliance(_ controller: AppliancePickerViewController, index: Int)
-}
+import RxSwift
+import RxRelay
+import Whiteboard
 
 class AppliancePickerViewController: PopOverDismissDetectableViewController {
-    weak var delegate: AppliancePickerViewControllerDelegate?
-
     let appliancePickerCellIdentifier = "appliancePickerCellIdentifier"
-    var selectedIndex: Int? {
-        didSet {
-            if let selectedIndex = selectedIndex {
-                delegate?.appliancePickerViewControllerDidSelectAppliance(self, index: selectedIndex)
-            }
-            collectionView.reloadData()
-        }
-    }
-    let applianceImages: [UIImage]
+    let newOperation: PublishRelay<WhiteBoardOperation> = .init()
     
-    init(applianceImages: [UIImage],
+    let operations: BehaviorRelay<[WhiteBoardOperation]>
+    let selectedIndex: BehaviorRelay<Int?>
+    let itemSize = CGSize(width: 40, height: 40)
+    
+    init(operations: [WhiteBoardOperation],
          selectedIndex: Int?) {
-        self.applianceImages = applianceImages
-        self.selectedIndex = selectedIndex
+        self.operations = .init(value: operations)
+        self.selectedIndex = .init(value: selectedIndex)
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -44,10 +35,8 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        setupPreferredContentSize()
+        bind()
     }
-    
-    let itemSize = CGSize(width: 40, height: 40)
     
     // MARK: - Private
     func setupViews() {
@@ -58,10 +47,42 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
         }
     }
     
-    func setupPreferredContentSize() {
+    func bind() {
+        let operationsAndSelectedIndex = Observable.combineLatest(operations, selectedIndex)
+        
+        operationsAndSelectedIndex.map { ops, si in
+            return ops.enumerated().map {
+                ($0.element, $0.offset == si)
+            }
+        }
+        .asDriver(onErrorJustReturn: ([]))
+        .drive(collectionView.rx.items(cellIdentifier: appliancePickerCellIdentifier, cellType: AppliancePickerCollectionViewCell.self)) {  index, item, cell in
+            cell.imageView.image = item.0.buttonImage
+            cell.imageView.tintColor = item.1 ? .controlSelected : .controlNormal
+        }
+        .disposed(by: rx.disposeBag)
+        
         let itemPerRow: CGFloat = 5
-        let rows = ceil(CGFloat(applianceImages.count) / itemPerRow)
-        preferredContentSize = itemSize.applying(.init(scaleX: itemPerRow, y: rows))
+        let rows = operations.map { ceil(CGFloat($0.count) / itemPerRow) }
+        rows.asDriver(onErrorJustReturn: 44)
+            .drive(onNext: { [weak self] r in
+                guard let self = self else { return }
+                self.preferredContentSize = self.itemSize.applying(.init(scaleX: itemPerRow, y: r))
+            })
+            .disposed(by: rx.disposeBag)
+        
+        collectionView.rx.itemSelected
+            .map { $0.row }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] row in
+                guard let operaion = self?.operations.value[row] else { return }
+                self?.newOperation.accept(operaion)
+                if case .clean = operaion {
+                } else {
+                    self?.selectedIndex.accept(row)
+                }
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     // MARK: - Lazy
@@ -77,39 +98,7 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
     lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .clear
-        view.delegate = self
-        view.dataSource = self
         view.register(AppliancePickerCollectionViewCell.self, forCellWithReuseIdentifier: appliancePickerCellIdentifier)
         return view
     }()
-}
-
-extension AppliancePickerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        applianceImages.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: appliancePickerCellIdentifier, for: indexPath) as! AppliancePickerCollectionViewCell
-        cell.imageView.image = applianceImages[indexPath.row]
-        cell.imageView.tintColor = indexPath.row == selectedIndex ? .controlSelected : .controlNormal
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let shouldSelect = delegate?.appliancePickerViewControllerShouldSelectAppliance(self, index: indexPath.row),
-              shouldSelect else {
-                  let cell = (collectionView.cellForItem(at: indexPath) as? AppliancePickerCollectionViewCell)
-                  cell?.imageView.tintColor = .controlSelected
-                  UIView.animate(withDuration: 0.3) {
-                      cell?.imageView.tintColor = .controlNormal
-                  }
-                  return
-              }
-        selectedIndex = indexPath.row
-    }
 }
