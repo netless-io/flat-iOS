@@ -226,7 +226,7 @@ class HomeViewController: UIViewController {
     
     func shouldShowCalendarAt(indexPath: IndexPath) -> Bool {
         let lastIndex = indexPath.row - 1
-        guard lastIndex > 0 else { return true }
+        guard lastIndex >= 0 else { return true }
         return !list[indexPath.row].beginTime.isSameDayTo(list[lastIndex].beginTime)
     }
     
