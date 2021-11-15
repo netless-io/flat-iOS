@@ -13,15 +13,50 @@ import RxSwift
 import NSObject_Rx
 import RxCocoa
 
+struct WhiteboardToolNavigator {
+    let appliancePickerButton: UIButton
+    let strokePickerButton: UIButton
+    let root: UIViewController
+    
+    let appliancePickerViewController = AppliancePickerViewController.init(operations: WhiteboardPannel.operations, selectedIndex: nil)
+    let strokePickerViewController = StrokePickerViewController()
+    
+    func presentColorPicker(withCurrentColor color: UIColor, currentWidth: Float) -> (Driver<(UIColor, Float)>){
+        strokePickerViewController.updateCurrentColor(color, lineWidth: currentWidth)
+        root.popoverViewController(viewController: strokePickerViewController, fromSource: strokePickerButton)
+        let out = Observable.combineLatest(strokePickerViewController.selectedColor,
+                                 strokePickerViewController.lineWidth)
+            .asDriver(onErrorJustReturn: (.black, 0))
+        return out
+    }
+    
+    func presentAppliancePicker(withSelectedAppliance appliance: WhiteApplianceNameKey) -> Driver<WhiteBoardOperation> {
+        let index = appliancePickerViewController.operations.value.firstIndex(where: { op in
+            if case .updateAppliance(name: let name) = op {
+                return name == appliance
+            }
+            return false
+        })
+        appliancePickerViewController.selectedIndex.accept(index)
+        root.popoverViewController(viewController: appliancePickerViewController, fromSource: appliancePickerButton)
+        return appliancePickerViewController.newOperation.asDriver(onErrorJustReturn: .clean)
+    }
+}
+
 class WhiteboardViewController: UIViewController {
-    let viewModel: WhiteboardViewModel
+    var viewModel: WhiteboardViewModel!
     
     // MARK: - LifeCycle
-    init(uuid: String,
-         token: String,
-         userName: String?) {
-        viewModel = .init(uuid: uuid, token: token, userName: userName)
+    init(sdkConfig: WhiteSdkConfiguration,
+         roomConfig: WhiteRoomConfig) {
         super.init(nibName: nil, bundle: nil)
+        let navi = WhiteboardToolNavigator(appliancePickerButton: applicanceIndicatorButton,
+                                           strokePickerButton: colorPickIndicatorButton,
+                                           root: self)
+        viewModel = .init(whiteRoomConfig: roomConfig,
+                          whiteboardToolNavigator: navi)
+        let whiteSDK = WhiteSDK(whiteBoardView: whiteboardView, config: sdkConfig, commonCallbackDelegate: viewModel)
+        viewModel.sdk = whiteSDK
     }
     
     required init?(coder: NSCoder) {
@@ -30,21 +65,37 @@ class WhiteboardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(whiteboardView)
-        whiteboardView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        viewModel.setupWith(whiteboardView)
+        setupViews()
         
-        viewModel.joinRoom().subscribe(onCompleted:  { [weak self] in
-            self?.setupControlBar()
-        }).disposed(by: rx.disposeBag)
+        let trigger = Single<Void>.create(subscribe: {
+            $0(.success(()))
+            return Disposables.create()
+        }).asDriver(onErrorJustReturn: ())
         
-        viewModel.appliance
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] i in
-                self?.applicanceIndicatorButton.updateAppliance(i)
-            }
+        let output = viewModel.transformInput(trigger: trigger,
+                                              undoTap: undoButton.rx.tap.asDriver(),
+                                              redoTap: redoButton.rx.tap.asDriver(),
+                                              applianceTap: applicanceIndicatorButton.rx.tap.asDriver(),
+                                              strokeTap: colorPickIndicatorButton.rx.tap.asDriver())
+        
+        output.join
+            .subscribe(onCompleted: { [weak self] in
+                self?.setupControlBar()
+            })
+            .disposed(by: rx.disposeBag)
+        
+        output.taps
+            .drive()
+            .disposed(by: rx.disposeBag)
+        
+        output.appliance
+            .drive(onNext: { [weak self] in
+                self?.applicanceIndicatorButton.updateAppliance($0)
+            })
+            .disposed(by: rx.disposeBag)
+        
+        output.strokeValue
+            .drive()
             .disposed(by: rx.disposeBag)
         
         viewModel.strokeColor
@@ -54,30 +105,25 @@ class WhiteboardViewController: UIViewController {
             }
             .disposed(by: rx.disposeBag)
         
-        
-        viewModel.redoEnableCount
-            .map { $0 > 0 }
-            .bind(to: redoButton.rx.isEnabled)
-            .disposed(by: rx.disposeBag)
-        viewModel.undoEnableCount
-            .map { $0 > 0 }
-            .bind(to: undoButton.rx.isEnabled)
+        viewModel.undoEnable
+            .asDriver()
+            .drive(undoButton.rx.isEnabled)
             .disposed(by: rx.disposeBag)
         
-        undoButton.rx.tap
-            .subscribe { [weak self] _ in
-                self?.viewModel.undo()
-            }
-            .disposed(by: rx.disposeBag)
-        
-        redoButton.rx.tap
-            .subscribe { [weak self] _ in
-                self?.viewModel.redo()
-            }
+        viewModel.redoEnable
+            .asDriver()
+            .drive(redoButton.rx.isEnabled)
             .disposed(by: rx.disposeBag)
     }
     
     // MARK: - Private
+    func setupViews() {
+        view.addSubview(whiteboardView)
+        whiteboardView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
     func updateColorPickIndicatorButton(withColor color: UIColor) {
         let normalImage = UIImage.pickerItemImage(withColor: color, size: .init(width: 18, height: 18), radius: 9)
         colorPickIndicatorButton.setImage(normalImage, for: .normal)
@@ -87,16 +133,6 @@ class WhiteboardViewController: UIViewController {
             let selectedImage = bg.compose(normalImage)
             colorPickIndicatorButton.setImage(selectedImage, for: .selected)
         }
-    }
-    
-    // MARK: - Action
-    @objc func onClickMoreAppliance(_ sender: UIButton) {
-        popoverViewController(viewController: appliancePickerController, fromSource: sender, permittedArrowDirections: .left)
-    }
-    
-    @objc func onClickColor(_ sender: UIButton) {
-        sender.isSelected = true
-        popoverViewController(viewController: colorPickerController, fromSource: sender, permittedArrowDirections: .left)
     }
     
     // MARK: - Private
@@ -109,44 +145,6 @@ class WhiteboardViewController: UIViewController {
     }
     
     // MARK: - Lazy
-    lazy var colorPickerController: StrokePickerViewController = {
-        let color = try! viewModel.strokeColor.value()
-        let width = try! viewModel.strokeWidth.value()
-        let vc = StrokePickerViewController(selectedColor: color,
-                                            lineWidth: width)
-        vc.dismissHandler = { [weak self] in
-            guard let self = self else { return }
-            self.colorPickIndicatorButton.isSelected = false
-            let lineWidth = self.colorPickerController.lineWidth
-            let selectedColor = self.colorPickerController.selectedColor
-            self.viewModel.update(stokeWidth: lineWidth,
-                                  stokeColor: selectedColor,
-                                  appliance: nil)
-        }
-        vc.delegate = self
-        return vc
-    }()
-    
-    lazy var appliancePickerController: AppliancePickerViewController = {
-        let current = viewModel.room.memberState.currentApplianceName
-        let images = viewModel.panelOperations.map { $0.buttonImage! }
-        let selectedIndex = viewModel.panelOperations.firstIndex(where: {
-            if case .updateAppliance(name: let key) = $0, key == current {
-                return true
-            }
-            return false
-        })
-        let vc = AppliancePickerViewController(applianceImages: images, selectedIndex: selectedIndex)
-        vc.dismissHandler = { [weak self] in
-            guard let self = self else { return }
-            if let index = self.appliancePickerController.selectedIndex {
-                self.viewModel.pickOperation(index: index)
-            }
-        }
-        vc.delegate = self
-        return vc
-    }()
-    
     lazy var whiteboardView: WhiteBoardView = {
         let view = WhiteBoardView()
         // handle keyboard by IQKeyboardManager
@@ -157,7 +155,6 @@ class WhiteboardViewController: UIViewController {
     lazy var colorPickIndicatorButton: UIButton = {
         let button = IndicatorMoreButton(type: .custom)
         button.indicatorInset = .init(top: 5, left: 0, bottom: 0, right: 5)
-        button.addTarget(self, action: #selector(onClickColor(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -166,7 +163,6 @@ class WhiteboardViewController: UIViewController {
         button.indicatorInset = .init(top: 5, left: 0, bottom: 0, right: 5)
         button.updateAppliance(.ApplianceArrow)
         button.isSelected = true
-        button.addTarget(self, action: #selector(onClickMoreAppliance(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -201,25 +197,4 @@ class WhiteboardViewController: UIViewController {
                               borderMask: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner],
                               buttons: [colorPickIndicatorButton, applicanceIndicatorButton])
     }()
-}
-
-extension WhiteboardViewController: StrokePickerViewControllerDelegate {
-    func strokePickerViewControllerDidUpdateSelectedColor(_ controller: StrokePickerViewController, selectedColor: UIColor) {
-        viewModel.update(stokeWidth: nil,
-                         stokeColor: selectedColor,
-                         appliance: nil)
-    }
-    
-    func strokePickerViewControllerDidUpdateStrokeLineWidth(_ controller: StrokePickerViewController, lineWidth: Float) {
-    }
-}
-
-extension WhiteboardViewController: AppliancePickerViewControllerDelegate {
-    func appliancePickerViewControllerDidSelectAppliance(_ controller: AppliancePickerViewController, index: Int) {
-        viewModel.pickOperation(index: index)
-    }
-    
-    func appliancePickerViewControllerShouldSelectAppliance(_ controller: AppliancePickerViewController, index: Int) -> Bool {
-        viewModel.couldPickOperation(index: index)
-    }
 }

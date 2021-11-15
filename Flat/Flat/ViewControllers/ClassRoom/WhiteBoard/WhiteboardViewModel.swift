@@ -10,26 +10,13 @@
 import RxSwift
 import Whiteboard
 import RxRelay
+import RxCocoa
+import SwiftUI
 
 class WhiteboardViewModel: NSObject {
-    let panelOperations: [WhiteBoardOperation] = [
-        .updateAppliance(name: .ApplianceClicker),
-        .updateAppliance(name: .ApplianceSelector),
-        .updateAppliance(name: .AppliancePencil),
-        .updateAppliance(name: .ApplianceRectangle),
-        .updateAppliance(name: .ApplianceEllipse),
-        .updateAppliance(name: .ApplianceText),
-        .updateAppliance(name: .ApplianceEraser),
-//        .updateAppliance(name: .ApplianceLaserPointer),
-        .updateAppliance(name: .ApplianceArrow),
-        .updateAppliance(name: .ApplianceStraight),
-//        .updateAppliance(name: .ApplianceHand),
-        .clean
-    ]
+    let toolNavigator: WhiteboardToolNavigator!
+    let whiteRoomConfig: WhiteRoomConfig
     
-    let userName: String?
-    let whiteboardUUID: String
-    let whiteboardToken: String
     var isRoomJoined = false
     
     var sdk: WhiteSDK!
@@ -40,108 +27,115 @@ class WhiteboardViewModel: NSObject {
         }
     }
     
-    let redoEnableCount: BehaviorRelay<Int> = .init(value: 0)
-    let undoEnableCount: BehaviorRelay<Int> = .init(value: 0)
+    let redoEnable: BehaviorRelay<Bool> = .init(value: false)
+    let undoEnable: BehaviorRelay<Bool> = .init(value: false)
+    
     let strokeColor: BehaviorSubject<UIColor> = .init(value: .white)
-    let appliance: BehaviorSubject<WhiteApplianceNameKey> = .init(value: .ApplianceArrow)
     let strokeWidth: BehaviorSubject<Float> = .init(value: 1)
     let status: PublishSubject<WhiteRoomPhase> = .init()
     
-    init(uuid: String,
-         token: String,
-         userName: String?) {
-        self.whiteboardUUID = uuid
-        self.whiteboardToken = token
-        self.userName = userName
+    init(whiteRoomConfig: WhiteRoomConfig,
+         whiteboardToolNavigator: WhiteboardToolNavigator) {
+        self.toolNavigator = whiteboardToolNavigator
+        self.whiteRoomConfig = whiteRoomConfig
+        super.init()
     }
     
-    // MARK: - Private
-    func setMemberStateWith(strokeWidth: Float? = nil,
-                            strokeColor: UIColor? = nil,
-                            appliance: WhiteApplianceNameKey? = nil) {
-        let newState = WhiteMemberState()
-        newState.strokeWidth = strokeWidth.map { NSNumber(value: $0) }
-        if let strokeColor = strokeColor {
-            newState.strokeColor = strokeColor.getNumersArray()
+    func transformInput(trigger: Driver<Void>,
+                        undoTap: Driver<Void>,
+                        redoTap: Driver<Void>,
+                        applianceTap: Driver<Void>,
+                        strokeTap: Driver<Void>
+    ) -> (join: Observable<Void>,
+          taps: Driver<Void>,
+          appliance: Driver<WhiteApplianceNameKey>,
+          strokeValue: Driver<(UIColor, Float)>) {
+        let join = trigger.asObservable()
+            .flatMap { self.joinRoom() }
+        
+        _ = undoTap.do(onNext: { [unowned self] in
+            self.room.undo()
+        })
+        _ = redoTap.do(onNext: { [unowned self] in
+            self.room.redo()
+        })
+            
+        let stokeValue = strokeTap.asObservable()
+            .flatMap { [unowned self] _ -> Driver<(UIColor, Float)> in
+                let state = self.room.state.memberState
+                let color = UIColor(numberArray: state?.strokeColor ?? [])
+                let out = self.toolNavigator.presentColorPicker(withCurrentColor: color, currentWidth: (state?.strokeWidth ?? 0).floatValue)
+                return out
+            }.do(onNext: { [weak self] value in
+                let newState = WhiteMemberState()
+                newState.strokeWidth = .init(value: value.1)
+                newState.strokeColor = value.0.getNumersArray()
+                self?.room.setMemberState(newState)
+            })
+            .asDriver(onErrorJustReturn: (.white, 0))
+            
+        let applianceManualChange = applianceTap.asObservable().flatMap { [unowned self] _ -> Driver<WhiteBoardOperation> in
+            let name = self.room.state.memberState?.currentApplianceName ?? .ApplianceArrow
+            return self.toolNavigator.presentAppliancePicker(withSelectedAppliance: name)
         }
-        newState.currentApplianceName = appliance
-        room.setMemberState(newState)
+        .do(onNext: {
+            switch $0 {
+            case .updateAppliance(let name):
+                let newState = WhiteMemberState()
+                newState.currentApplianceName = name
+                self.room.setMemberState(newState)
+            case .clean:
+                self.room.cleanScene(true)
+            }
+        })
+            .filter({
+                switch $0 {
+                case .clean: return false
+                case .updateAppliance: return true
+                }
+            })
+            .map { op -> WhiteApplianceNameKey in
+                switch op {
+                case .clean: fatalError()
+                case .updateAppliance(name: let name):
+                    return name
+                }
+            }
+
+        let initApplianceName = join.map { [weak self] _ -> WhiteApplianceNameKey in
+            return self?.room.state.memberState?.currentApplianceName ?? .ApplianceArrow
+        }
+        
+        let appliance = Observable.of(initApplianceName, applianceManualChange)
+            .merge()
+            .asDriver(onErrorJustReturn: .ApplianceArrow)
+        
+        let taps = Driver.of(undoTap, redoTap)
+            .merge()
+        return (join, taps, appliance, stokeValue)
     }
     
     // MARK: - Public
-    func undo() {
-        room.undo()
-    }
-    
-    func redo() {
-        room.redo()
-    }
-    
-    func update(stokeWidth: Float?,
-                stokeColor: UIColor?,
-                appliance: WhiteApplianceNameKey?) {
-        if let stokeWidth = stokeWidth {
-            strokeWidth.on(.next(stokeWidth))
-        }
-        if let stokeColor = stokeColor {
-            strokeColor.on(.next(stokeColor))
-        }
-        if let appliance = appliance {
-            self.appliance.on(.next(appliance))
-        }
-        setMemberStateWith(strokeWidth: stokeWidth,
-                            strokeColor: stokeColor,
-                            appliance: appliance)
-    }
-    
-    func couldPickOperation(index: Int) -> Bool {
-        let operation = panelOperations[index]
-        if case .clean = operation {
-            room.cleanScene(true)
-            return false
-        }
-        return true
-    }
-    
-    func pickOperation(index: Int) {
-        let operation = panelOperations[index]
-        if case .updateAppliance(name: let name) = operation {
-            update(stokeWidth: nil,
-                   stokeColor: nil,
-                   appliance: name)
-        }
-    }
-    
-    func setupWith(_ whiteboardView: WhiteBoardView) {
-        let sdkConfig = WhiteSdkConfiguration(app: Env().netlessAppId)
-        sdkConfig.renderEngine = .canvas
-        sdkConfig.region = .CN
-        sdkConfig.userCursor = true
-        sdk = WhiteSDK(whiteBoardView: whiteboardView, config: sdkConfig, commonCallbackDelegate: self)
-    }
-    
-    func joinRoom() -> Completable {
-        let payload: [String:String] = ["cursorName": userName ?? ""]
-        let roomConfig: WhiteRoomConfig = .init(uuid: whiteboardUUID,
-                                                roomToken: whiteboardToken,
-                                                userPayload: payload)
-        return Completable.create { [weak self] subscribe in
+    func joinRoom() -> Observable<Void> {
+        return Observable.create { [weak self] observer in
             guard let self = self else {
                 return Disposables.create()
             }
-            self.sdk.joinRoom(with: roomConfig,
+            self.sdk.joinRoom(with: self.whiteRoomConfig,
                               callbacks: self) { [weak self] success, room, error in
                 guard let self = self else { return }
                 if let error = error {
-                    subscribe(.error(error))
+                    observer.onError(error)
                     return
                 }
                 self.room = room
-                self.isRoomJoined = true
-                subscribe(.completed)
+                observer.onNext(())
+                observer.onCompleted()
             }
             return Disposables.create()
-        }
+        }.do(onCompleted: { [weak self] in
+            self?.isRoomJoined = true
+        })
     }
     
     @discardableResult
@@ -177,7 +171,6 @@ extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
                 strokeWidth.on(.next(stokeWidth))
             }
             strokeColor.on(.next(UIColor(numberArray: memberState.strokeColor)))
-            appliance.on(.next(memberState.currentApplianceName))
         }
     }
     
@@ -196,10 +189,11 @@ extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
     }
     
     func fireCanRedoStepsUpdate(_ canRedoSteps: Int) {
-        redoEnableCount.accept(canRedoSteps)
+        redoEnable.accept(canRedoSteps > 0)
     }
     
     func fireCanUndoStepsUpdate(_ canUndoSteps: Int) {
-        undoEnableCount.accept(canUndoSteps)
+        undoEnable.accept(canUndoSteps > 0)
     }
 }
+

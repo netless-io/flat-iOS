@@ -11,6 +11,32 @@ import UIKit
 
 extension UIViewController {
     func popoverViewController(viewController: UIViewController,
+                               fromSource sender: UIView?,
+                               sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-10, 0),
+                               permittedArrowDirections: UIPopoverArrowDirection = .unknown,
+                          animated: Bool = true) {
+        popoverViewController(viewController: viewController,
+                              fromSource: sender,
+                              fromItem: nil,
+                              sourceBoundsInset: sourceBoundsInset,
+                              permittedArrowDirections: permittedArrowDirections,
+                              animated: animated)
+    }
+    
+    func popoverViewController(viewController: UIViewController,
+                               fromItem item: UIBarButtonItem?,
+                               sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-10, 0),
+                               permittedArrowDirections: UIPopoverArrowDirection = .unknown,
+                               animated: Bool = true) {
+        popoverViewController(viewController: viewController,
+                              fromSource: nil,
+                              fromItem: item,
+                              sourceBoundsInset: sourceBoundsInset,
+                              permittedArrowDirections: permittedArrowDirections,
+                              animated: animated)
+    }
+    
+    fileprivate func popoverViewController(viewController: UIViewController,
                                fromSource sender: UIView? = nil,
                                fromItem item: UIBarButtonItem? = nil,
                                sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-10, 0),

@@ -8,59 +8,45 @@
 
 
 import UIKit
-import SwiftUI
-
-protocol StrokePickerViewControllerDelegate: AnyObject {
-    func strokePickerViewControllerDidUpdateSelectedColor(_ controller: StrokePickerViewController, selectedColor: UIColor)
-    
-    func strokePickerViewControllerDidUpdateStrokeLineWidth(_ controller: StrokePickerViewController, lineWidth: Float)
-}
+import RxSwift
+import RxRelay
 
 class StrokePickerViewController: PopOverDismissDetectableViewController {
-    var selectedColor: UIColor = .white {
-        didSet {
-            syncSelectedColor()
-            delegate?.strokePickerViewControllerDidUpdateSelectedColor(self, selectedColor: selectedColor)
-        }
-    }
-    var lineWidth: Float {
-        didSet {
-            delegate?.strokePickerViewControllerDidUpdateStrokeLineWidth(self, lineWidth: lineWidth)
-        }
-    }
-    let colors: [UIColor]
-    let maxStrokeWidth: Float
-    let minStrokeWidth: Float
-    weak var delegate: StrokePickerViewControllerDelegate?
+    let selectedColor: BehaviorRelay<UIColor>
+    let lineWidth: BehaviorRelay<Float>
     
-    let pickerCellIdentifier = "pickerCellIdentifier"
-    
+    var colors: [UIColor]
     let itemSize = CGSize(width: 30, height: 30)
     let collectionViewEdgeInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
     let itemSpacing: CGFloat = 10
     let sliderSpace: CGFloat = 44
+    let pickerCellIdentifier = "pickerCellIdentifier"
+    
+    func updateCurrentColor(_ currentColor: UIColor, lineWidth: Float) {
+        self.lineWidth.accept(lineWidth)
+        if !self.colors.contains(currentColor) {
+            colors.append(currentColor)
+        }
+        self.selectedColor.accept(currentColor)
+        slider.value = lineWidth
+    }
     
     // MARK: - LifeCycle
-    init(selectedColor: UIColor,
-         lineWidth: Float,
-         minStrokeWidth: Float = 1,
+    init(minStrokeWidth: Float = 1,
          maxStrokeWidth: Float = 20,
          candicateColors: [UIColor] = [.systemRed, .systemOrange, .systemYellow, .systemGreen,
                                        .systemTeal, .systemBlue, .init(hexString: "#6236FF"), .systemPurple,
                                        .init(hexString: "#BCC0C6"), .systemGray, .black, .white]
          
     ) {
-        self.lineWidth = lineWidth
-        var candicateColors: [UIColor] = candicateColors
-        self.selectedColor = selectedColor
-        if !candicateColors.contains(selectedColor) {
-            candicateColors.append(selectedColor)
-        }
-        self.minStrokeWidth = minStrokeWidth
-        self.maxStrokeWidth = maxStrokeWidth
+        self.lineWidth = .init(value: minStrokeWidth)
+        self.selectedColor = .init(value: candicateColors[0])
         self.colors = candicateColors
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
+        self.slider.minimumValue = minStrokeWidth
+        self.slider.maximumValue = maxStrokeWidth
+        self.slider.value = minStrokeWidth
     }
     
     required init?(coder: NSCoder) {
@@ -70,14 +56,45 @@ class StrokePickerViewController: PopOverDismissDetectableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        syncSelectedColor()
         setupPreferredContentSize()
+        bind()
     }
 
     // MARK: - Private
-    func syncSelectedColor() {
-        slider.tintColor = selectedColor
-        collectionView.reloadData()
+    func bind() {
+        let startIndex = selectedColor
+            .take(1)
+            .map {
+                Int(self.colors.firstIndex(of: $0)!)
+            }
+        
+        let selectIndex = collectionView.rx.itemSelected.map { $0.row }
+        Observable.of(startIndex, selectIndex)
+            .merge()
+            .map { [weak self] index -> [(UIColor, Bool)] in
+                guard let self = self else { return [] }
+                return self.colors.enumerated().map {
+                    ($0.element, $0.offset == index)
+                }
+            }
+            .asDriver(onErrorJustReturn: [])
+            .drive(collectionView.rx.items(cellIdentifier: pickerCellIdentifier, cellType: StrokeColorCollectionViewCell.self)) { index, item, cell in
+                cell.update(color: item.0, selected: item.1)
+            }
+            .disposed(by: rx.disposeBag)
+        
+        selectIndex
+            .map { [weak self] index -> UIColor in
+                self?.colors[index] ?? .black
+            }
+            .asDriver(onErrorJustReturn: .black)
+            .drive(selectedColor)
+            .disposed(by: rx.disposeBag)
+        
+        slider.rx.value
+            .asDriver()
+            .drive(lineWidth)
+            .disposed(by: rx.disposeBag)
     }
     
     func setupPreferredContentSize() {
@@ -113,12 +130,6 @@ class StrokePickerViewController: PopOverDismissDetectableViewController {
         }
     }
     
-    // MARK: - Action
-    @objc func onSliderValueUpdate(_ sender: UISlider) {
-        print(sender.value)
-        lineWidth = sender.value
-    }
-    
     // MARK: - Lazy
     lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -133,38 +144,11 @@ class StrokePickerViewController: PopOverDismissDetectableViewController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .clear
         view.register(StrokeColorCollectionViewCell.self, forCellWithReuseIdentifier: pickerCellIdentifier)
-        view.delegate = self
-        view.dataSource = self
         return view
     }()
     
     lazy var slider: UISlider = {
         let slider = UISlider(frame: .zero)
-        slider.minimumValue = minStrokeWidth
-        slider.maximumValue = maxStrokeWidth
-        slider.value = lineWidth
-        slider.addTarget(self, action: #selector(onSliderValueUpdate(_:)), for: .valueChanged)
         return slider
     }()
-}
-
-extension StrokePickerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        colors.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: pickerCellIdentifier, for: indexPath) as! StrokeColorCollectionViewCell
-        let color = colors[indexPath.row]
-        cell.update(color: color, selected: color == selectedColor)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedColor = colors[indexPath.row]
-    }
 }
