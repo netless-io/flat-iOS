@@ -12,6 +12,13 @@ import Foundation
 enum Message {
     case user(UserMessage)
     case notice(String)
+    
+    var userId: String? {
+        if case .user(let i) = self {
+            return i.userId
+        }
+        return nil
+    }
 }
 
 struct UserMessage: Codable {
