@@ -17,7 +17,7 @@ class WhiteboardViewModel: NSObject {
     let toolNavigator: WhiteboardToolNavigator!
     let whiteRoomConfig: WhiteRoomConfig
     
-    var isRoomJoined = false
+    let isRoomJoined: BehaviorRelay<Bool> = .init(value: false)
     
     var sdk: WhiteSDK!
     var room: WhiteRoom! {
@@ -134,16 +134,19 @@ class WhiteboardViewModel: NSObject {
             }
             return Disposables.create()
         }.do(onCompleted: { [weak self] in
-            self?.isRoomJoined = true
+            self?.isRoomJoined.accept(true)
         })
     }
     
     @discardableResult
-    func leave() -> Observable<Void> {
-        guard isRoomJoined else { return .empty() }
-        room.disconnect(nil)
-        isRoomJoined = false
-        return .empty()
+    func leave() -> Single<Void> {
+        guard isRoomJoined.value else { return .just(()) }
+        return .create { [weak self] observer in
+            self?.room.disconnect({
+                observer(.success(()))
+            })
+            return Disposables.create()
+        }
     }
 }
 
@@ -176,16 +179,16 @@ extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
     
     func fireDisconnectWithError(_ error: String!) {
         status.onError(error)
-        print(error)
+        print(#function, error)
     }
     
     func fireKicked(withReason reason: String!) {
         status.onError(reason)
-        print(reason)
+        print(#function, reason)
     }
     
     func fireCatchError(whenAppendFrame userId: UInt, error: String!) {
-        print(userId)
+        print(#function, userId)
     }
     
     func fireCanRedoStepsUpdate(_ canRedoSteps: Int) {
