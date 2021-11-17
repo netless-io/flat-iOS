@@ -91,6 +91,22 @@ class ChatViewController1: PopOverDismissDetectableViewController {
                 weakSelf.messages = msgs
             })
             .disposed(by: rx.disposeBag)
+        
+        // Outside
+        viewModel.isBanning
+            .drive(banTextButton.rx.isSelected)
+            .disposed(by: rx.disposeBag)
+        
+        viewModel.isBanned
+            .drive(with: self, onNext: { weakSelf, ban in
+                weakSelf.inputTextField.isEnabled = !ban
+                if ban {
+                    weakSelf.inputTextField.text = nil
+                    weakSelf.inputTextField.sendActions(for: .valueChanged)
+                }
+                weakSelf.inputTextField.placeholder = ban ? NSLocalizedString("All banned", comment: ""): NSLocalizedString("Say Something...", comment: "")
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     func setupViews() {
@@ -146,12 +162,6 @@ class ChatViewController1: PopOverDismissDetectableViewController {
         inputTextField.placeholder = ban ? NSLocalizedString("All banned", comment: ""): NSLocalizedString("Say Something...", comment: "")
     }
     
-    // MARK: - Action
-    
-    @objc func onClickBan() {
-//        delegate?.chatViewControllerDidClickBanMessage(self)
-    }
-    
     // MARK: - Lazy
     lazy var sendButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -183,7 +193,6 @@ class ChatViewController1: PopOverDismissDetectableViewController {
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "message_ban")?.tintColor(.controlNormal), for: .normal)
         btn.setImage(UIImage(named: "message_ban")?.tintColor(.controlSelected), for: .selected)
-        btn.addTarget(self, action: #selector(onClickBan), for: .touchUpInside)
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
     }()

@@ -31,32 +31,41 @@ class ChatViewModel {
     var cachedUserName: [String: String]
     let rtm: AnyChannelHandler
     let notice: Observable<String>
+    let isBanning: Driver<Bool>
+    let isBanned: Driver<Bool>
     
     init(roomUUID: String,
          cachedUserName: [String : String],
          rtm: AnyChannelHandler,
-         notice: Observable<String>) {
+         notice: Observable<String>,
+         banning: Driver<Bool>,
+         banned: Driver<Bool>) {
         self.rtm = rtm
         self.notice = notice
         self.roomUUID = roomUUID
         self.cachedUserName = cachedUserName
+        self.isBanned = banned
+        self.isBanning = banning
     }
     
     func tranform(input: Input) -> Output {
         let send = input.sendTap.withLatestFrom(input.textInput)
             .flatMapLatest { [unowned self] text in
-                self.rtm.sendMessage(text).asDriver(onErrorJustReturn: ())
+                self.rtm.sendMessage(text, appendToNewMessage: true)
+                    .asDriver(onErrorJustReturn: ())
             }
         
         let sendMessageEnable = input.textInput.map {
             !$0.isEmpty
+        }.withLatestFrom(isBanned) { inputEnable, baned in
+            return inputEnable && !baned
         }
         
         let history = requestHistory(channelId: rtm.channelId).asObservable()
         let newMessage = rtm.newMessagePublish.map { [Message.user(UserMessage.init(userId: $0.sender, text: $0.text))] }
         let noticeMessage = notice.map { [Message.notice($0)]}
         
-        let rawMessages = Observable.of(history, newMessage, noticeMessage) .merge()
+        let rawMessages = Observable.of(history, newMessage, noticeMessage).merge()
             .scan([Message](), accumulator: {
                 var r = $0
                 r.append(contentsOf: $1)
