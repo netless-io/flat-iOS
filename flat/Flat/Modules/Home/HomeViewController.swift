@@ -51,6 +51,8 @@ class HomeViewController: UIViewController {
     
     let roomTableViewCellIdentifier = "roomTableViewCellIdentifier"
     
+    var cachedList: [ListStyle: [RoomListInfo]] = [:]
+    
     var style: ListStyle = .exist {
         didSet {
             guard style != oldValue else { return }
@@ -69,14 +71,13 @@ class HomeViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    // TODO: Disk cache
-    var cachedList: [ListStyle: [RoomListInfo]] = [:]
     
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
+        splitViewController?.delegate = self
         avatarButton.isHidden = false
         loadRooms(nil)
     }
@@ -90,24 +91,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         observeNotification()
-        
-//        let btn = UIButton(type: .system)
-//        btn.backgroundColor = .red
-//        view.addSubview(btn)
-//
-//        btn.snp.makeConstraints { make in
-//            make.center.equalToSuperview()
-//            make.width.height.equalTo(66)
-//        }
-//        btn.rx.tap.asDriver().drive(onNext: { [weak self] _ in
-//            let vc = AppliancePickerViewController(operations: WhiteboardPannel.operations,
-//                                                   selectedIndex: 1)
-//            vc.newOperation.subscribe(onNext: { op in
-//                print(op)
-//            }).disposed(by: self!.rx.disposeBag)
-//            self?.popoverViewController(viewController: vc, fromSource: btn)
-//        })
-//            .disposed(by: rx.disposeBag)
     }
     
     override func viewDidLayoutSubviews() {
@@ -165,9 +148,6 @@ class HomeViewController: UIViewController {
         }))
         alertController.addAction(.init(title: NSLocalizedString("Setting", comment: ""), style: .default, handler: { _ in
             self.onClickSetting()
-        }))
-        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .destructive, handler: { _ in
-            
         }))
         alertController.modalPresentationStyle = .popover
         let popPresent = alertController.popoverPresentationController
@@ -324,17 +304,20 @@ class HomeViewController: UIViewController {
         avatarButton.kf.setBackgroundImage(with: AuthStore.shared.user?.avatar, for: .normal)
         avatarButton.isUserInteractionEnabled = true
         if #available(iOS 14.0, *) {
-            avatarButton.menu = UIMenu.init(title: "", image: UIImage(named: "login_logo"), identifier: nil, children: [
-                UIAction(title: NSLocalizedString("Profile", comment: ""),
-                         image: UIImage(named: "profile")
-                        ) { _ in
-                            self.onClickProfile()
-                },
-                UIAction(title: NSLocalizedString("Setting", comment: ""),
-                         image: UIImage(named: "setting")
-                        ) { _ in
-                            self.onClickSetting()
-                }])
+            avatarButton.menu = UIMenu.init(title: "",
+                                            image: UIImage(named: "login_logo"),
+                                            identifier: nil,
+                                            children: [
+                                                UIAction(title: NSLocalizedString("Profile", comment: ""),
+                                                         image: UIImage(named: "profile")
+                                                        ) { _ in
+                                                            self.onClickProfile()
+                                                        },
+                                                UIAction(title: NSLocalizedString("Setting", comment: ""),
+                                                         image: UIImage(named: "setting")
+                                                        ) { _ in
+                                                            self.onClickSetting()
+                                                        }])
             avatarButton.showsMenuAsPrimaryAction = true
         } else {
             avatarButton.addTarget(self, action: #selector(onClickAvatarBeforeiOS14(_:)), for: .touchUpInside)
@@ -460,5 +443,20 @@ extension HomeViewController: UITabBarDelegate {
         } else {
             style = .history
         }
+    }
+}
+
+extension HomeViewController: UISplitViewControllerDelegate {
+    func splitViewController(_ splitViewController: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
+        if let selectedItem = tableView.indexPathForSelectedRow {
+            let item = list[selectedItem.row]
+            if let vc = (vc as? UINavigationController)?.topViewController as? RoomDetailViewController {
+                if vc.info.roomUUID == item.roomUUID {
+                    return false
+                }
+            }
+            tableView.deselectRow(at: selectedItem, animated: true)
+        }
+        return false
     }
 }
