@@ -266,6 +266,12 @@ class RoomDetailViewController: UIViewController {
         
         roomNumberLabel.text = info.inviteCode
         roomTypeLabel.text = NSLocalizedString(roomType.rawValue, comment: "")
+        
+        if status == .Stopped {
+            micButton.isHidden = true
+            cameraButton.isHidden = true
+            roomOperationStackView.arrangedSubviews.forEach { $0.isHidden = true }
+        }
     }
     
     // MARK: - Action
@@ -345,6 +351,7 @@ class RoomDetailViewController: UIViewController {
     @IBOutlet weak var startTimeLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
     
+    @IBOutlet weak var roomOperationStackView: UIStackView!
     // MARK: - Lazy
     lazy var cameraButton: UIButton = {
         let btn = UIButton(type: .custom)

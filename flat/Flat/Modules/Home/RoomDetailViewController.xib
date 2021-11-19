@@ -18,6 +18,7 @@
                 <outlet property="endTimeLabel" destination="9EO-3S-Gx4" id="Uxe-QG-CrO"/>
                 <outlet property="mainStackView" destination="fGi-pz-Ned" id="wuO-AR-XhR"/>
                 <outlet property="roomNumberLabel" destination="wKx-vU-49V" id="q8f-17-Klx"/>
+                <outlet property="roomOperationStackView" destination="oyc-oS-6GD" id="HWo-GG-nxi"/>
                 <outlet property="roomTypeLabel" destination="nF2-zJ-qsn" id="3eW-Zy-Dn8"/>
                 <outlet property="startDateLabel" destination="UDR-io-MKk" id="4zI-3O-62j"/>
                 <outlet property="startTimeLabel" destination="UgY-57-XR6" id="yeu-Ry-QYo"/>
