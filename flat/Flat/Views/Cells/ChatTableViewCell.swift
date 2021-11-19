@@ -44,6 +44,7 @@ class ChatTableViewCell: UITableViewCell {
 //            make.bottom.equalToSuperview().inset(ChatTableViewCell.textEdge.bottom)
 //            make.
             make.edges.equalToSuperview().inset(ChatTableViewCell.textEdge)
+            make.width.greaterThanOrEqualTo(10)
         }
     }
     

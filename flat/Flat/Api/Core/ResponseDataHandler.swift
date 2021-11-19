@@ -18,7 +18,6 @@ extension ResponseDataHandler {
     func processObservableResponseData<T>(_ data: Data, decoder: JSONDecoder, forResponseType: T.Type) -> Observable<T> where T : Decodable {
         return .create { observer in
             do {
-                print("xys thread \(Thread.current)")
                 let result: T = try self.processResponseData(data, decoder: decoder, forResponseType: T.self)
                 observer.onNext(result)
                 observer.onCompleted()
