@@ -95,25 +95,15 @@ class RoomDetailViewController: UIViewController {
     
     let deviceStatusStore: UserDevicePreferredStatusStore
     
-    var cameraOn: Bool {
-        didSet {
-            cameraButton.isSelected = cameraOn
-        }
-    }
+    var cameraOn: Bool
     
-    var micOn: Bool {
-        didSet {
-            micButton.isSelected = micOn
-        }
-    }
+    var micOn: Bool
     
     init(info: RoomListInfo) {
         self.info = info
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
-        let mic = deviceStatusStore.getDevicePreferredStatus(.mic)
-        let camera = deviceStatusStore.getDevicePreferredStatus(.camera)
-        self.cameraOn = camera
-        self.micOn = mic
+        self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+        self.micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -136,15 +126,6 @@ class RoomDetailViewController: UIViewController {
         updateViewWithCurrentStatus()
         updateAvailableActions()
         observeClassStop()
-    }
-    
-    // MARK: - Action
-    @objc func onClickCamera(_ sender: UIButton) {
-        cameraOn = !cameraOn
-    }
-    
-    @objc func onClickMic(_ sender: UIButton) {
-        micOn = !micOn
     }
     
     // MARK: - Private
@@ -214,18 +195,6 @@ class RoomDetailViewController: UIViewController {
             }
             j += 1
         }
-        
-        bottomView.addSubview(cameraButton)
-        bottomView.addSubview(micButton)
-        
-        cameraButton.snp.makeConstraints { make in
-            make.left.top.equalToSuperview()
-        }
-        
-        micButton.snp.makeConstraints { make in
-            make.left.equalTo(cameraButton.snp.right).offset(12)
-            make.top.equalToSuperview()
-        }
     }
     
     func updateViewWithCurrentStatus() {
@@ -268,8 +237,6 @@ class RoomDetailViewController: UIViewController {
         roomTypeLabel.text = NSLocalizedString(roomType.rawValue, comment: "")
         
         if status == .Stopped {
-            micButton.isHidden = true
-            cameraButton.isHidden = true
             roomOperationStackView.arrangedSubviews.forEach { $0.isHidden = true }
         }
     }
@@ -318,16 +285,9 @@ class RoomDetailViewController: UIViewController {
             self.stopActivityIndicator()
             switch result {
             case .success(let playInfo):
-                let micOn = self.micOn
-                let cameraOn = self.cameraOn
-                
-                let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo, detailInfo: detailInfo)
-                
-//                let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo,
-//                                                                     detailInfo: detailInfo,
-//                                                                     deviceStatus: .init(mic: micOn, camera: cameraOn))
-                self.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: micOn)
-                self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: cameraOn)
+                let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo, detailInfo:
+                                                                        detailInfo, deviceStatus: .init(mic: self.micOn,
+                                                                                                        camera: self.cameraOn))
                 vc.modalPresentationStyle = .fullScreen
                 if let split = self.splitViewController {
                     split.present(vc, animated: true, completion: nil)
@@ -352,32 +312,4 @@ class RoomDetailViewController: UIViewController {
     @IBOutlet weak var bottomView: UIView!
     
     @IBOutlet weak var roomOperationStackView: UIStackView!
-    // MARK: - Lazy
-    lazy var cameraButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.tintColor = .white
-        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
-        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.subText, for: .normal)
-        btn.setTitle("  " + NSLocalizedString("Open Camera", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 0, bottom: 8, right: 0)
-        btn.addTarget(self, action: #selector(onClickCamera(_:)), for: .touchUpInside)
-        btn.isSelected = cameraOn
-        return btn
-    }()
-    
-    lazy var micButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.tintColor = .white
-        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
-        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.subText, for: .normal)
-        btn.setTitle("  " + NSLocalizedString("Open Mic", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 0, bottom: 8, right: 0)
-        btn.addTarget(self, action: #selector(onClickMic(_:)), for: .touchUpInside)
-        btn.isSelected = micOn
-        return btn
-    }()
 }
