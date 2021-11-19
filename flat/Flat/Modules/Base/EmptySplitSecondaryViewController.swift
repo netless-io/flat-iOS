@@ -9,6 +9,10 @@
 
 import UIKit
 
+extension UIViewController {
+    static func emptySplitSecondaryViewController() -> EmptySplitSecondaryViewController { .init() }
+}
+
 class EmptySplitSecondaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()

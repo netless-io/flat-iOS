@@ -149,7 +149,7 @@ class CreateClassRoomViewController: UIViewController {
         cameraOn = !cameraOn
     }
     
-    @objc func onCreate(_ sender: UIButton) {
+    @objc func onClickCreate(_ sender: UIButton) {
         let title: String
         let text = subjectTextField.text ?? ""
         let defaultTitle = "\(AuthStore.shared.user?.name ?? "") " + NSLocalizedString("Created Room", comment: "")
@@ -165,9 +165,12 @@ class CreateClassRoomViewController: UIViewController {
                     switch result {
                     case .success(let vc):
                         if let split = self.splitViewController {
+                            split.showDetailViewController(.emptySplitSecondaryViewController(), sender: nil)
                             split.present(vc, animated: true, completion: nil)
                         } else {
-                            self.navigationController?.pushViewController(vc, animated: true)
+                            let navi = self.navigationController
+                            navi?.popViewController(animated: false)
+                            navi?.pushViewController(vc, animated: true)
                         }
                     case .failure(let error):
                         self.showAlertWith(message: error.localizedDescription)
@@ -239,7 +242,7 @@ class CreateClassRoomViewController: UIViewController {
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
         btn.setTitle(NSLocalizedString("Create", comment: ""), for: .normal)
-        btn.addTarget(self, action: #selector(onCreate(_:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(onClickCreate(_:)), for: .touchUpInside)
         btn.contentEdgeInsets = .init(top: 0, left: 29, bottom: 0, right: 29)
         return btn
     }()

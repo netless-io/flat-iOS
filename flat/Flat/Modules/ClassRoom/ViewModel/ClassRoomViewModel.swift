@@ -11,6 +11,8 @@ import Foundation
 import RxCocoa
 import RxSwift
 
+let classStopNotification = Notification.Name("classStopNotification")
+
 class ClassRoomViewModel {
     struct Input {
         let trigger: Driver<Void>
@@ -365,6 +367,9 @@ class ClassRoomViewModel {
             }.asSingle()
             .do(onSuccess: { [weak self] in
                 self?.state.startStatus.accept(.Stopped)
+                NotificationCenter.default.post(name: classStopNotification,
+                                                object: nil,
+                                                userInfo: ["classRoomUUID": self?.state.roomUUID ?? ""])
             })
     }
     

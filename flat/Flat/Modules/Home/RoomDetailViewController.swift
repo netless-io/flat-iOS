@@ -8,6 +8,7 @@
 
 
 import UIKit
+import RxSwift
 
 class RoomDetailViewController: UIViewController {
     enum RoomOperation {
@@ -134,6 +135,7 @@ class RoomDetailViewController: UIViewController {
         setupViews()
         updateViewWithCurrentStatus()
         updateAvailableActions()
+        observeClassStop()
     }
     
     // MARK: - Action
@@ -156,6 +158,21 @@ class RoomDetailViewController: UIViewController {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func observeClassStop() {
+        NotificationCenter.default.rx.notification(classStopNotification)
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { weakSelf, info in
+                if let infoUUID = info.userInfo?["classRoomUUID"] as? String {
+                    if weakSelf.info.roomUUID == infoUUID {
+                        weakSelf.splitViewController?.showDetailViewController(.emptySplitSecondaryViewController(), sender: nil)
+                        weakSelf.navigationController?.popViewController(animated: false)
+                    }
+                }
+            })
+            .disposed(by: rx.disposeBag)
+        
     }
     
     func updateAvailableActions() {

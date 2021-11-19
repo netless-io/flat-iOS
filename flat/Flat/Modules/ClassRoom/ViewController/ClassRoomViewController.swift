@@ -48,6 +48,7 @@ class ClassRoomViewController: UIViewController {
         self.rtcViewController = rtcViewController
         self.whiteboardViewController = whiteboardViewController
         super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .fullScreen
         
         let alertProvider = DefaultAlertProvider(root: self) { [weak self] model in
             guard let self = self else {
