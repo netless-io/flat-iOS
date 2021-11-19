@@ -27,10 +27,8 @@ class JoinRoomViewController: UIViewController {
     // MARK: - LifeCycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
-        let mic = deviceStatusStore.getDevicePreferredStatus(.mic)
-        let camera = deviceStatusStore.getDevicePreferredStatus(.camera)
-        self.cameraOn = camera
-        self.micOn = mic
+        self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+        self.micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     

@@ -21,6 +21,12 @@ class CreateClassRoomViewController: UIViewController {
         }
     }
     
+    var micOn: Bool {
+        didSet {
+            micButton.isSelected = micOn
+        }
+    }
+    
     var cameraOn: Bool {
         didSet {
             cameraButton.isSelected = cameraOn
@@ -30,8 +36,8 @@ class CreateClassRoomViewController: UIViewController {
     // MARK: - LifeCycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
-        let camera = deviceStatusStore.getDevicePreferredStatus(.camera)
-        self.cameraOn = camera
+        self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+        self.micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -75,6 +81,7 @@ class CreateClassRoomViewController: UIViewController {
         joinOptionsLabel.text = NSLocalizedString("Join Options", comment: "")
         view.addSubview(joinOptionsLabel)
         view.addSubview(cameraButton)
+        view.addSubview(micButton)
         view.addSubview(createButton)
         
         let margin: CGFloat = 16
@@ -118,6 +125,11 @@ class CreateClassRoomViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).inset(274)
         }
         
+        micButton.snp.makeConstraints { make in
+            make.left.equalTo(cameraButton.snp.right).offset(12)
+            make.top.equalTo(cameraButton)
+        }
+        
         createButton.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(338)
@@ -147,6 +159,10 @@ class CreateClassRoomViewController: UIViewController {
     
     @objc func onClickCamera(_ sender: UIButton) {
         cameraOn = !cameraOn
+    }
+    
+    @objc func onClickMic(_ sender: UIButton) {
+        micOn = !micOn
     }
     
     @objc func onClickCreate(_ sender: UIButton) {
@@ -189,11 +205,12 @@ class CreateClassRoomViewController: UIViewController {
                 RoomInfo.fetchInfoBy(uuid: UUID) { result in
                     switch result {
                     case .success(let roomInfo):
-                        let cameraOn = self.cameraOn
                         let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo,
                                                                              detailInfo: roomInfo,
-                                                                             deviceStatus: .init(mic: true, camera: cameraOn))
-                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: cameraOn)
+                                                                             deviceStatus: .init(mic: self.micOn,
+                                                                                                 camera: self.cameraOn))
+                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: self.cameraOn)
+                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: self.micOn)
                         completion?(.success(vc))
                     case .failure(let error):
                         completion?(.failure(error))
@@ -222,15 +239,31 @@ class CreateClassRoomViewController: UIViewController {
     
     lazy var cameraButton: UIButton = {
         let btn = UIButton(type: .custom)
-        let circleImg = UIImage.circleImage()
-        btn.setImage(circleImg, for: .normal)
-        btn.setImage(.filledCircleImage(radius: circleImg.size.width / 2), for: .selected)
+        btn.tintColor = .white
+        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
+        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
+        btn.adjustsImageWhenHighlighted = false
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.subText, for: .normal)
         btn.setTitle("  " + NSLocalizedString("Open Camera", comment: ""), for: .normal)
         btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
         btn.addTarget(self, action: #selector(onClickCamera(_:)), for: .touchUpInside)
         btn.isSelected = cameraOn
+        return btn
+    }()
+    
+    lazy var micButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.tintColor = .white
+        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
+        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
+        btn.adjustsImageWhenHighlighted = false
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.setTitleColor(.subText, for: .normal)
+        btn.setTitle("  " + NSLocalizedString("Open Mic", comment: ""), for: .normal)
+        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
+        btn.addTarget(self, action: #selector(onClickMic(_:)), for: .touchUpInside)
+        btn.isSelected = micOn
         return btn
     }()
     

@@ -355,9 +355,9 @@ class RoomDetailViewController: UIViewController {
     // MARK: - Lazy
     lazy var cameraButton: UIButton = {
         let btn = UIButton(type: .custom)
-        let circleImg = UIImage.circleImage()
-        btn.setImage(circleImg, for: .normal)
-        btn.setImage(.filledCircleImage(radius: circleImg.size.width / 2), for: .selected)
+        btn.tintColor = .white
+        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
+        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.subText, for: .normal)
         btn.setTitle("  " + NSLocalizedString("Open Camera", comment: ""), for: .normal)
@@ -369,9 +369,9 @@ class RoomDetailViewController: UIViewController {
     
     lazy var micButton: UIButton = {
         let btn = UIButton(type: .custom)
-        let circleImg = UIImage.circleImage()
-        btn.setImage(circleImg, for: .normal)
-        btn.setImage(.filledCircleImage(radius: circleImg.size.width / 2), for: .selected)
+        btn.tintColor = .white
+        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
+        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.subText, for: .normal)
         btn.setTitle("  " + NSLocalizedString("Open Mic", comment: ""), for: .normal)
