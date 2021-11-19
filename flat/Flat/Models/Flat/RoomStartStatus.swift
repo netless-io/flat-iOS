@@ -16,4 +16,8 @@ struct RoomStartStatus: RawRepresentable, Codable, Equatable {
     static let Paused = RoomStartStatus(rawValue: "Paused")
     
     let rawValue: String
+    
+    func getDisplayStatus() -> Self {
+        self == .Paused ? RoomStartStatus.Started : self
+    }
 }

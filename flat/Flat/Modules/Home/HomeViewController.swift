@@ -247,10 +247,11 @@ class HomeViewController: UIViewController {
         timeFormmater.timeStyle = .short
         timeFormmater.dateFormat = "HH:mm"
         cell.roomTimeLabel.text = timeFormmater.string(from: room.beginTime) + " ~ " + timeFormmater.string(from: room.endTime)
-        
         cell.roomTitleLabel.text = room.title
-        cell.statusLabel.text = NSLocalizedString(room.roomStatus.rawValue, comment: "")
-        cell.statusLabel.textColor = room.roomStatus.textColor
+        
+        let displayStatus = room.roomStatus.getDisplayStatus()
+        cell.statusLabel.text = NSLocalizedString(displayStatus.rawValue, comment: "")
+        cell.statusLabel.textColor = displayStatus.textColor
     }
     
     private func moveAndResizeImage(for height: CGFloat) {

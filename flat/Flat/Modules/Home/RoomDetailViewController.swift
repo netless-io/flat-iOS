@@ -260,8 +260,9 @@ class RoomDetailViewController: UIViewController {
         durationFormatter.allowedUnits = [.hour, .minute]
         durationLabel.text = durationFormatter.string(from: duration)
         
-        statusLabel.text = NSLocalizedString(status.rawValue, comment: "")
-        statusLabel.textColor = status.textColor
+        let displayStatus = status.getDisplayStatus()
+        statusLabel.text = NSLocalizedString(displayStatus.rawValue, comment: "")
+        statusLabel.textColor = displayStatus.textColor
         
         roomNumberLabel.text = info.inviteCode
         roomTypeLabel.text = NSLocalizedString(roomType.rawValue, comment: "")
