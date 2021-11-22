@@ -268,6 +268,7 @@ class RoomDetailViewController: UIViewController {
         
         let vc = InviteViewController(roomTitle: detailInfo.title,
                                       roomTime: detailInfo.beginTime,
+                                      roomEndTime: detailInfo.endTime,
                                       roomNumber: info.formatterInviteCode,
                                       roomUUID: info.roomUUID,
                                       userName: AuthStore.shared.user?.name ?? "")

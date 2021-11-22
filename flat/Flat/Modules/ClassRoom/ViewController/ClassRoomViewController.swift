@@ -33,6 +33,7 @@ class ClassRoomViewController: UIViewController {
          roomOwnerRtmUUID: String,
          roomTitle: String,
          beginTime: Date,
+         endTime: Date,
          roomNumber: String,
          roomUUID: String,
          isTeacher: Bool,
@@ -42,6 +43,7 @@ class ClassRoomViewController: UIViewController {
                                                                 roomOwnerRtmUUID: roomOwnerRtmUUID)
         self.inviteViewController = .init(roomTitle: roomTitle,
                                           roomTime: beginTime,
+                                          roomEndTime: endTime,
                                           roomNumber: roomNumber,
                                           roomUUID: roomUUID,
                                           userName: userName)

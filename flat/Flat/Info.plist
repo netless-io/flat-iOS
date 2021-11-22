@@ -39,6 +39,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>FLAT_WEB_HOST</key>
+	<string>$(FLAT_WEB_HOST)</string>
 	<key>GITHUB_CLIENT_ID</key>
 	<string>$(GITHUB_CLIENT_ID)</string>
 	<key>NETLESS_APP_ID</key>

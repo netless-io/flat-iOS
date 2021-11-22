@@ -12,17 +12,20 @@ import UIKit
 class InviteViewController: PopOverDismissDetectableViewController {
     let roomTitle: String
     let roomTime: Date
+    let roomEndTime: Date
     let roomNumber: String
     let roomUUID: String
     let userName: String
     
     init(roomTitle: String,
          roomTime: Date,
+         roomEndTime: Date,
          roomNumber: String,
          roomUUID: String,
          userName: String) {
         self.roomTitle = roomTitle
         self.roomTime = roomTime
+        self.roomEndTime = roomEndTime
         self.roomNumber = roomNumber
         self.roomUUID = roomUUID
         self.userName = userName
@@ -39,15 +42,20 @@ class InviteViewController: PopOverDismissDetectableViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
+        
+        let endTimeFormmater = DateFormatter()
+        endTimeFormmater.dateStyle = .none
+        endTimeFormmater.timeStyle = .short
+        
         invitorNameLabel.text = userName + " " + NSLocalizedString("inviteDescribe", comment: "")
         titleLabel.text = roomTitle
         numberLabel.text = roomNumber
-        timeLabel.text = formatter.string(from: roomTime)
+        timeLabel.text = formatter.string(from: roomTime) + "~" + endTimeFormmater.string(from: roomEndTime)
         preferredContentSize = .init(width: 360, height: 255)
     }
     
     @IBAction func onClickCopy(_ sender: Any) {
-        let link = Env().baseURL + "/join/\(roomUUID)"
+        let link = Env().webHost + "/join/\(roomUUID)"
         let text = """
 \(invitorNameLabel.text!)\n
 \(NSLocalizedString("Room Subject", comment: "")): \(titleLabel.text!)\n

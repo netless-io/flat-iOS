@@ -70,6 +70,7 @@ struct ClassRoomFactory {
                                                   roomOwnerRtmUUID: playInfo.ownerUUID,
                                                   roomTitle: detailInfo.title,
                                                   beginTime: detailInfo.beginTime,
+                                                 endTime: detailInfo.endTime,
                                                   roomNumber: detailInfo.formatterInviteCode,
                                                   roomUUID: playInfo.roomUUID,
                                                   isTeacher: detailInfo.ownerUUID == playInfo.rtmUID,

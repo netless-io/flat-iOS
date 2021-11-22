@@ -25,6 +25,10 @@ struct Env {
         value(for: "GITHUB_CLIENT_ID") as String
     }
     
+    var webHost: String {
+        "https://\(value(for: "FLAT_WEB_HOST") as String)"
+    }
+    
     var baseURL: String {
         "https://\(value(for: "API_URL") as String)"
     }
