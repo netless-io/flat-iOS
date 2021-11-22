@@ -18,7 +18,11 @@ class AnyChannelHandler: NSObject, AgoraRtmChannelDelegate {
     
     var userUUID: String!
     var channelId: String!
-    var channel: AgoraRtmChannel!
+    weak var channel: AgoraRtmChannel!
+    
+    deinit {
+        print(self, channelId ?? "", "deinit")
+    }
     
     func sendMessage(_ text: String, appendToNewMessage: Bool = false) -> Single<Void> {
         .create { [weak self] observer in

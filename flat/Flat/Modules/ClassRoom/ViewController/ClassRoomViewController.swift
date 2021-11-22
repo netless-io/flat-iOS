@@ -66,6 +66,10 @@ class ClassRoomViewController: UIViewController {
                                alertProvider: alertProvider)
     }
     
+    deinit {
+        print(self, "deinit")
+    }
+    
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -73,13 +77,14 @@ class ClassRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        
         bindGeneral()
         bindUsers()
         bindRtc()
         bindUserList()
         bindSetting()
         bindInteracting()
-        
+
         if viewModel.isTeacher {
             bindTeacherOperations()
         }
@@ -392,8 +397,14 @@ class ClassRoomViewController: UIViewController {
         output.dismiss.asObservable()
             .filter { $0 }
             .mapToVoid()
-            .flatMap { self.whiteboardViewController.viewModel.leave() }
-            .flatMap { self.rtcViewController.leave() }
+            .flatMap { [weak self] _ -> Single<Void> in
+                guard let self = self else { return .error("self not exist") }
+                return self.whiteboardViewController.viewModel.leave()
+            }
+            .flatMap { [weak self] _ -> Single<Void> in
+                guard let self = self else { return .error("self not exist") }
+                return self.rtcViewController.leave()
+            }
             .asDriver(onErrorJustReturn: ())
             .drive(onNext: { [weak self] in
                 self?.leaveUIHierarchy()

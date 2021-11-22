@@ -128,7 +128,7 @@
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
 		8AA97EA02741F20300C3F92E /* ClassRoomState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97E9F2741F20300C3F92E /* ClassRoomState.swift */; };
 		8AA97EA22741F83A00C3F92E /* AnyChannelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* AnyChannelHandler.swift */; };
-		8AA97EA42741F97B00C3F92E /* ClassRoomRtm1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* ClassRoomRtm1.swift */; };
+		8AA97EA42741F97B00C3F92E /* ClassRoomRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* ClassRoomRtm.swift */; };
 		8AAC69B02717E32E00F9A3B4 /* AuthProcessRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */; };
 		8AAC69B32717E3EB00F9A3B4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B22717E3EB00F9A3B4 /* User.swift */; };
 		8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */; };
@@ -330,7 +330,7 @@
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		8AA97E9F2741F20300C3F92E /* ClassRoomState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomState.swift; sourceTree = "<group>"; };
 		8AA97EA12741F83A00C3F92E /* AnyChannelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyChannelHandler.swift; sourceTree = "<group>"; };
-		8AA97EA32741F97B00C3F92E /* ClassRoomRtm1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomRtm1.swift; sourceTree = "<group>"; };
+		8AA97EA32741F97B00C3F92E /* ClassRoomRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomRtm.swift; sourceTree = "<group>"; };
 		8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProcessRequest.swift; sourceTree = "<group>"; };
 		8AAC69B22717E3EB00F9A3B4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
@@ -901,7 +901,7 @@
 			isa = PBXGroup;
 			children = (
 				8AA97E9F2741F20300C3F92E /* ClassRoomState.swift */,
-				8AA97EA32741F97B00C3F92E /* ClassRoomRtm1.swift */,
+				8AA97EA32741F97B00C3F92E /* ClassRoomRtm.swift */,
 				8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */,
 				8A3460CC27293E3F0066063E /* RoomUser.swift */,
 				8A3460D0272962D70066063E /* RoomStatus.swift */,
@@ -1426,7 +1426,7 @@
 				8A0EB7B3272BCDC200003DF7 /* UIButton+Appearance.swift in Sources */,
 				8A9ACC01271E712100E7E7CE /* RoomListRequest.swift in Sources */,
 				8A5DCF9D273B6E7A0068D5DF /* ClassRoomViewModel.swift in Sources */,
-				8AA97EA42741F97B00C3F92E /* ClassRoomRtm1.swift in Sources */,
+				8AA97EA42741F97B00C3F92E /* ClassRoomRtm.swift in Sources */,
 				8A9ACC05271E726B00E7E7CE /* RoomStartStatus.swift in Sources */,
 				8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */,
 				8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */,

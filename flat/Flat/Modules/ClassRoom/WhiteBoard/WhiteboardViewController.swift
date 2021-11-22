@@ -14,14 +14,17 @@ import NSObject_Rx
 import RxCocoa
 
 struct WhiteboardToolNavigator {
-    let appliancePickerButton: UIButton
-    let strokePickerButton: UIButton
-    let root: UIViewController
+    weak var appliancePickerButton: UIButton?
+    weak var strokePickerButton: UIButton?
+    weak var root: UIViewController?
     
     let appliancePickerViewController = AppliancePickerViewController.init(operations: WhiteboardPannel.operations, selectedIndex: nil)
     let strokePickerViewController = StrokePickerViewController()
     
     func presentColorPicker(withCurrentColor color: UIColor, currentWidth: Float) -> (Driver<(UIColor, Float)>){
+        guard let root = root else {
+            return .just((.black, 0))
+        }
         strokePickerViewController.updateCurrentColor(color, lineWidth: currentWidth)
         root.popoverViewController(viewController: strokePickerViewController, fromSource: strokePickerButton)
         let out = Observable.combineLatest(strokePickerViewController.selectedColor,
@@ -31,6 +34,9 @@ struct WhiteboardToolNavigator {
     }
     
     func presentAppliancePicker(withSelectedAppliance appliance: WhiteApplianceNameKey) -> Driver<WhiteBoardOperation> {
+        guard let root = root else {
+            return .just(.updateAppliance(name: .ApplianceArrow))
+        }
         let index = appliancePickerViewController.operations.value.firstIndex(where: { op in
             if case .updateAppliance(name: let name) = op {
                 return name == appliance
@@ -59,6 +65,10 @@ class WhiteboardViewController: UIViewController {
         viewModel.sdk = whiteSDK
     }
     
+    deinit {
+        print(self, "deinit")
+    }
+    
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -67,12 +77,7 @@ class WhiteboardViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         
-        let trigger = Single<Void>.create(subscribe: {
-            $0(.success(()))
-            return Disposables.create()
-        }).asDriver(onErrorJustReturn: ())
-        
-        let output = viewModel.transformInput(trigger: trigger,
+        let output = viewModel.transformInput(trigger: .just(()),
                                               undoTap: undoButton.rx.tap.asDriver(),
                                               redoTap: redoButton.rx.tap.asDriver(),
                                               applianceTap: applicanceIndicatorButton.rx.tap.asDriver(),

@@ -50,6 +50,10 @@ class ClassRoomViewModel {
         let tapSomeUserMic: Driver<RoomUser>
     }
     
+    deinit {
+        print(self, "deinit")
+    }
+    
     internal init(isTeacher: Bool,
                   chatChannelId: String,
                   commandChannelId: String,
@@ -166,14 +170,16 @@ class ClassRoomViewModel {
         }.share(replay: 1, scope: .whileConnected).asSingle()
         
         // Process member left
-        let memberLeft = initRoom.asObservable().flatMap {
+        let memberLeft = initRoom.asObservable().flatMap { [weak self] _ -> Observable<String> in
+            guard let self = self else { return .error("self not exist") }
             return self.commandHandler.memberLeftPublisher.asObservable()
         }.do(onNext: { [weak self] uuid in
             self?.state.removeUser(forUUID: uuid)
         })
         
         // Process command
-        let newCommand = initRoom.asObservable().flatMap { _ in
+        let newCommand = initRoom.asObservable().flatMap { [weak self] _ -> Observable<(text: String, sender: String)> in
+            guard let self = self else { return .error("self not exist") }
             return self.commandHandler.newMessagePublish.asObservable()
         }.flatMap { [weak self] (text, sender) -> Single<RtmCommand> in
             guard let self = self else {
@@ -572,8 +578,11 @@ class ClassRoomViewModel {
                 }
                 return self.rtm.joinChannelId(self.commandChannelId)
             }.do(onSuccess: { [weak self] handler in self?.commandHandler = handler })
-            .flatMap { _ -> Single<Void> in
-                self.requestRoomStatus()
+            .flatMap { [weak self] _ -> Single<Void> in
+                guard let self = self else{
+                    return .error("self not exist")
+                }
+                return self.requestRoomStatus()
             }
     }
     
@@ -604,6 +613,7 @@ class ClassRoomViewModel {
                         self?.state.appendUser(fromContentsOf: users)
                     }).asObservable()
                 
+                        // TODO: Fix for somebody not response
                 let firstStatusCommand = self.rtm.p2pMessage
                         .map { (str, userId) -> ChannelStatusCommand? in
                             let command = try self.commandDecoder.decode(str)

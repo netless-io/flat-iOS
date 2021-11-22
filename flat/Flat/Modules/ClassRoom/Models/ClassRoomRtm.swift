@@ -28,6 +28,10 @@ class ClassRoomRtm: NSObject {
         agoraGenerator.agoraToken = rtmToken
         agoraGenerator.agoraUserId = rtmUserUUID
     }
+
+    deinit {
+        print("rtm deinit")
+    }
     
     func sendMessage(text: String, toUUID UUID: String) -> Single<Void> {
         return .create { [weak self] observer in

@@ -34,6 +34,10 @@ class WhiteboardViewModel: NSObject {
     let strokeWidth: BehaviorSubject<Float> = .init(value: 1)
     let status: PublishSubject<WhiteRoomPhase> = .init()
     
+    deinit {
+        print(self, "deinit")
+    }
+    
     init(whiteRoomConfig: WhiteRoomConfig,
          whiteboardToolNavigator: WhiteboardToolNavigator) {
         self.toolNavigator = whiteboardToolNavigator

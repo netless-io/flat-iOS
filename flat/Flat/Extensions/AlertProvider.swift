@@ -48,12 +48,15 @@ protocol AlertProvider {
 }
 
 struct DefaultAlertProvider: AlertProvider {
-    let root: UIViewController
+    weak var root: UIViewController?
     
     var customPopOverSourceProvider: ((AlertModel) -> (UIView, CGRect))?
     
     // Cancel style will be called when white space clicked
     func showAcionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel> {
+        guard let root = root else {
+            return .error("root deinit")
+        }
         let task = Single<AlertModel.ActionModel>.create { observer in
             let models = model.actionModels.map { model -> AlertModel.ActionModel in
                 var newModel = model
@@ -93,6 +96,9 @@ struct DefaultAlertProvider: AlertProvider {
     }
     
     func showAlert(with model: AlertModel) -> Single<AlertModel.ActionModel> {
+        guard let root = root else {
+            return .error("root deinit")
+        }
         return .create { observer in
             let models = model.actionModels.map { model -> AlertModel.ActionModel in
                 var newModel = model
