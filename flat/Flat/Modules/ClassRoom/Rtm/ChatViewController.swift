@@ -87,6 +87,11 @@ class ChatViewController: PopOverDismissDetectableViewController {
             .disposed(by: rx.disposeBag)
         
         output.message.asDriver(onErrorJustReturn: [])
+            .do(onNext: { [weak self] _ in
+                self?.view.endFlatLoading()
+            }, onSubscribed: { [weak self] in
+                self?.view.startFlatLoading()
+            })
             .drive(with: self, onNext: { weakSelf, msgs in
                 weakSelf.messages = msgs
             })

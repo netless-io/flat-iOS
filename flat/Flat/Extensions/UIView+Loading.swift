@@ -18,6 +18,7 @@ fileprivate class FlatLoadingView: UIView {
         addSubview(loadingView)
         loadingView.snp.makeConstraints { make in
             make.center.equalToSuperview()
+            make.width.lessThanOrEqualTo(self.snp.width).multipliedBy(0.3)
         }
         
         addSubview(cancelButton)
@@ -58,7 +59,7 @@ fileprivate class FlatLoadingView: UIView {
         let resource = LocalFileImageDataProvider(fileURL: path)
         let loadingImageView = AnimatedImageView()
         loadingImageView.kf.setImage(with: resource)
-        loadingImageView.contentMode = .scaleAspectFill
+        loadingImageView.contentMode = .scaleAspectFit
         return loadingImageView
     }()
 }
