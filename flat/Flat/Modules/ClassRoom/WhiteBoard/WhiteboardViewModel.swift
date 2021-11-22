@@ -183,12 +183,12 @@ extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
     
     func fireDisconnectWithError(_ error: String!) {
         status.onError(error)
-        print(#function, error)
+        print(#function, error ?? "")
     }
     
     func fireKicked(withReason reason: String!) {
         status.onError(reason)
-        print(#function, reason)
+        print(#function, reason ?? "")
     }
     
     func fireCatchError(whenAppendFrame userId: UInt, error: String!) {

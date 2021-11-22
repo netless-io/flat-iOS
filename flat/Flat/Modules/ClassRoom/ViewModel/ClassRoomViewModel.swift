@@ -22,6 +22,7 @@ class ClassRoomViewModel {
         let initRoom: Single<Void>
         let newCommand: Observable<RtmCommand>
         let memberLeft: Observable<String>
+        let roomStopped: Driver<Void>
     }
     
     struct TeacherOperationInput {
@@ -193,9 +194,19 @@ class ClassRoomViewModel {
             return self.processCommandMessage(text: text, senderId: sender)
         }.asObservable()
         
+        let roomStopped = state.startStatus
+            .filter { $0 == .Stopped }
+            .take(1)
+            .flatMap { [weak self] _ -> Single<Void> in
+                guard let self = self else { return .error("self not exits") }
+                return self.stopOperation()
+            }
+            .asDriver(onErrorJustReturn: ())
+        
         return .init(initRoom: initRoom,
                      newCommand: newCommand,
-                     memberLeft: memberLeft)
+                     memberLeft: memberLeft,
+                     roomStopped: roomStopped)
     }
     
     func transformRaiseHand(_ raiseHandTap: Driver<Void>) -> Driver<Void> {

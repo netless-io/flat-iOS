@@ -69,6 +69,10 @@ class RtcViewController: UIViewController {
         }
     }
     
+    deinit {
+        print(self, "deinit")
+    }
+    
     // MARK: - LifeCycle
     init(token: String,
          channelId: String,

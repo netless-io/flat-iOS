@@ -224,7 +224,7 @@ class ClassRoomViewController: UIViewController {
                 self?.view.endFlatLoading()
             }, onSubscribe: { [weak self] in
                 self?.view.startFlatLoading(showCancelDelay: 7, cancelCompletion: {
-                    self?.leaveUIHierarchy()
+                    self?.leaveUIHierarchyAndStopSubModule()
                 })
             })
             .subscribe(with: self, onSuccess: { weakSelf, _ in
@@ -232,7 +232,7 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.setupChatViewController()
                 weakSelf.setupRtcViewController()
             }, onFailure: { weakSelf, error in
-                weakSelf.leaveUIHierarchy()
+                weakSelf.leaveUIHierarchyAndStopSubModule()
             })
             .disposed(by: rx.disposeBag)
         
@@ -240,14 +240,10 @@ class ClassRoomViewController: UIViewController {
             .subscribe()
             .disposed(by: rx.disposeBag)
         
-        // Leave when room status turn to stopped
-        viewModel.state.startStatus
-            .filter { $0 == .Stopped }
-            .take(1)
-            .asDriver(onErrorJustReturn: .Stopped)
-            .drive(onNext: { [weak self] _ in
-                self?.showAlertWith(message: "即将离开房间") {
-                    self?.leaveUIHierarchy()
+        output.roomStopped
+            .drive(with: self, onNext: { weakSelf, _ in
+                weakSelf.showAlertWith(message: "即将离开房间") {
+                    weakSelf.leaveUIHierarchyAndStopSubModule()
                 }
             })
             .disposed(by: rx.disposeBag)
@@ -404,18 +400,9 @@ class ClassRoomViewController: UIViewController {
         
         output.dismiss.asObservable()
             .filter { $0 }
-            .mapToVoid()
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
-                return self.whiteboardViewController.viewModel.leave()
-            }
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
-                return self.rtcViewController.leave()
-            }
-            .asDriver(onErrorJustReturn: ())
-            .drive(onNext: { [weak self] in
-                self?.leaveUIHierarchy()
+            .asDriver(onErrorJustReturn: false)
+            .drive(with: self, onNext: { weakSelf, _ in
+                weakSelf.leaveUIHierarchyAndStopSubModule()
             })
             .disposed(by: rx.disposeBag)
     }
@@ -446,7 +433,13 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
     
-    func leaveUIHierarchy() {
+    func leaveUIHierarchyAndStopSubModule() {
+        whiteboardViewController.viewModel.leave()
+            .subscribe()
+            .disposed(by: rx.disposeBag)
+        rtcViewController.leave()
+            .subscribe()
+            .disposed(by: rx.disposeBag)
         if let presenting = presentingViewController {
             presenting.dismiss(animated: true, completion: nil)
         } else {
