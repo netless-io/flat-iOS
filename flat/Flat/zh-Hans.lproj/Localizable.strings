@@ -58,7 +58,7 @@
 "Invite" = "邀请";
 "Enter Room" = "进入房间";
 "Room Detail" = "房间详情";
-"Idle" = "未开始";
+"Idle" = "待开始";
 "Started" = "进行中";
 "Paused" = "暂停中";
 "Stopped" = "已结束";

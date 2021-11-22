@@ -89,7 +89,17 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
-    let info: RoomListInfo
+    struct RoomDetailDisplayInfo {
+        let beginTime: Date
+        let endTime: Date
+        let roomStatus: RoomStartStatus
+        let roomType: ClassRoomType
+        let roomUUID: String
+        let isOwner: Bool
+        let formatterInviteCode: String
+    }
+    
+    let info: RoomDetailDisplayInfo
     var detailInfo: RoomInfo?
     var availableOperations: [RoomOperation] = []
     
@@ -99,7 +109,7 @@ class RoomDetailViewController: UIViewController {
     
     var micOn: Bool
     
-    init(info: RoomListInfo) {
+    init(info: RoomDetailDisplayInfo) {
         self.info = info
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
         self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
@@ -156,7 +166,7 @@ class RoomDetailViewController: UIViewController {
     }
     
     func updateAvailableActions() {
-        let isTeacher = info.ownerUUID == AuthStore.shared.user?.userUUID
+        let isTeacher = info.isOwner
         availableOperations = RoomOperation.actionsWith(isTeacher: isTeacher, roomStatus: info.roomStatus)
         if availableOperations.isEmpty {
             navigationItem.rightBarButtonItem = nil

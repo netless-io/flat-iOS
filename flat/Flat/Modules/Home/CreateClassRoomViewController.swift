@@ -8,6 +8,7 @@
 
 
 import UIKit
+import RxSwift
 
 class CreateClassRoomViewController: UIViewController {
     var availableTypes: [ClassRoomType] = [.bigClass, .smallClass, .oneToOne]
@@ -166,39 +167,51 @@ class CreateClassRoomViewController: UIViewController {
     }
     
     @objc func onClickCreate(_ sender: UIButton) {
-        sender.isEnabled = false
         let title: String
         let text = subjectTextField.text ?? ""
         let defaultTitle = "\(AuthStore.shared.user?.name ?? "") " + NSLocalizedString("Created Room", comment: "")
         title = text.isEmpty ? defaultTitle : text
         let startDate = Date()
-        let request = CreateRoomRequest(beginTime: startDate,
+        let createQuest = CreateRoomRequest(beginTime: startDate,
                           title: title,
                           type: currentRoomType)
-        ApiProvider.shared.request(fromApi: request) { result in
-            switch result {
-            case .success(let info):
-                self.joinRoom(withUUID: info.roomUUID) { result in
-                    sender.isEnabled = true
-                    switch result {
-                    case .success(let vc):
-                        if let split = self.splitViewController {
-                            split.showDetailViewController(.emptySplitSecondaryViewController(), sender: nil)
-                            split.present(vc, animated: true, completion: nil)
-                        } else {
-                            let navi = self.navigationController
-                            navi?.popViewController(animated: false)
-                            navi?.pushViewController(vc, animated: true)
-                        }
-                    case .failure(let error):
-                        self.showAlertWith(message: error.localizedDescription)
-                    }
-                }
-            case .failure(let error):
-                self.showAlertWith(message: error.localizedDescription)
-                sender.isEnabled = true
+        
+        sender.isEnabled = false
+        ApiProvider.shared.request(fromApi: createQuest)
+            .flatMap { info -> Observable<(RoomPlayInfo, RoomInfo)> in
+                let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID)
+                let roomInfo = RoomInfo.fetchInfoBy(uuid: info.roomUUID)
+                return Observable.zip(playInfo, roomInfo)
             }
-        }
+            .asSingle()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onSuccess: { weakSelf, tuple in
+                sender.isEnabled = true
+                let playInfo = tuple.0
+                let roomInfo = tuple.1
+                let deviceStatus = ClassRoomFactory.DeviceStatus(mic: weakSelf.micOn, camera: weakSelf.cameraOn)
+                let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo,
+                                                                     detailInfo: roomInfo,
+                                                                     deviceStatus: deviceStatus)
+                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
+                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
+                
+                if let split = weakSelf.splitViewController {
+                    let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: roomInfo, roomUUID: playInfo.roomUUID)
+                    split.showDetailViewController(BaseNavigationViewController(rootViewController: detailVC), sender: nil)
+                    split.present(vc, animated: true, completion: nil)
+                } else {
+                    let navi = self.navigationController
+                    navi?.popViewController(animated: false)
+                    navi?.pushViewController(vc, animated: true)
+                }
+            }, onFailure: { weakSelf, error in
+                sender.isEnabled = true
+                weakSelf.showAlertWith(message: error.localizedDescription)
+            }, onDisposed: { _ in
+                return
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     func joinRoom(withUUID UUID: String, completion: ((Result<ClassRoomViewController, Error>)->Void)?) {

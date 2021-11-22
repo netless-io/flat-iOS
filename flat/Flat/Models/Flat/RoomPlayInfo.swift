@@ -8,6 +8,7 @@
 
 
 import Foundation
+import RxSwift
 
 struct RoomPlayInfo: Codable {
     let roomType: ClassRoomType
@@ -33,6 +34,11 @@ extension RoomPlayInfo {
 }
 
 extension RoomPlayInfo {
+    static func fetchByJoinWith(uuid: String) -> Observable<Self> {
+        let request = JoinRoomRequest(info: .init(roomUUID: uuid, inviteCode: ""))
+        return ApiProvider.shared.request(fromApi: request)
+    }
+    
     static func fetchByJoinWith(uuid: String, completion: @escaping ((Result<Self, ApiError>)->Void)) {
         let request = JoinRoomRequest(info: .init(roomUUID: uuid, inviteCode: ""))
         ApiProvider.shared.request(fromApi: request, completionHandler: completion)

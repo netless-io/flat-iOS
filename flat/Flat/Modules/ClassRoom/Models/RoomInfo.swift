@@ -8,6 +8,7 @@
 
 
 import Foundation
+import RxSwift
 
 struct RawRoomInfo: Decodable {
     let roomInfo: RoomInfo
@@ -31,6 +32,11 @@ struct RoomInfo: Decodable {
 }
 
 extension RoomInfo {
+    static func fetchInfoBy(uuid: String) -> Observable<Self> {
+        let request = RoomInfoRequest(uuid: uuid)
+        return ApiProvider.shared.request(fromApi: request).map { $0.roomInfo }
+    }
+    
     static func fetchInfoBy(uuid: String, completion: @escaping ((Result<Self, ApiError>)->Void)) {
         let request = RoomInfoRequest(uuid: uuid)
         ApiProvider.shared.request(fromApi: request) { result in

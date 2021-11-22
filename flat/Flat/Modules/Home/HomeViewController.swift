@@ -395,10 +395,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
-        let vc = RoomDetailViewController(info: item)
+        let vc = RoomDetailViewControllerFactory.getRoomDetail(withListinfo: item)
         if let split = splitViewController {
             let navi = BaseNavigationViewController(rootViewController: vc)
             split.showDetailViewController(navi, sender: nil)
+        } else {
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

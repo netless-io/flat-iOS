@@ -143,6 +143,7 @@
 		8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362B27464E63000D5003 /* String+Empty.swift */; };
 		8ABF362F2747B356000D5003 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8ABF362E2747B355000D5003 /* loading.gif */; };
 		8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+Loading.swift */; };
+		8AC05357274B8C160064CF84 /* RoomDetailFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05356274B8C160064CF84 /* RoomDetailFactory.swift */; };
 		8AC9CEF82742487D00EEBEE7 /* RtcViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
@@ -346,6 +347,7 @@
 		8ABF362B27464E63000D5003 /* String+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Empty.swift"; sourceTree = "<group>"; };
 		8ABF362E2747B355000D5003 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		8ABF36302747B696000D5003 /* UIView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loading.swift"; sourceTree = "<group>"; };
+		8AC05356274B8C160064CF84 /* RoomDetailFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailFactory.swift; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC376B0271D23AA003464B0 /* README-zh.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "README-zh.md"; path = "../README-zh.md"; sourceTree = "<group>"; };
 		8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcViewController.swift; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 			children = (
 				8A270B6E271829AB00450DC6 /* HomeViewController.swift */,
 				8ACE3A25272FF77100BC37F7 /* RoomDetailViewController.swift */,
+				8AC05356274B8C160064CF84 /* RoomDetailFactory.swift */,
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
 				8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */,
 				8ACE3A26272FF77100BC37F7 /* RoomDetailViewController.xib */,
@@ -1399,6 +1402,7 @@
 				8AA97EA02741F20300C3F92E /* ClassRoomState.swift in Sources */,
 				8A2975212726A6810095F9F0 /* UIColor+Theme.swift in Sources */,
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
+				8AC05357274B8C160064CF84 /* RoomDetailFactory.swift in Sources */,
 				8AE8F56627213ACD00D2E0F5 /* RoomInfo.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
 				8A7741C42734CFAC009FAADA /* BorderLabel.swift in Sources */,
