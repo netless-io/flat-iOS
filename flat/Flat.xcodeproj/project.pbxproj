@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A0BD7AE274B336000383E9D /* RoomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AD274B336000383E9D /* RoomDetailViewModel.swift */; };
+		8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
 		8A0EB7B3272BCDC200003DF7 /* UIButton+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */; };
@@ -139,6 +141,8 @@
 		8ABF36242745F2D8000D5003 /* AlertProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36232745F2D8000D5003 /* AlertProvider.swift */; };
 		8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362527462F93000D5003 /* Observable+Extension.swift */; };
 		8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362B27464E63000D5003 /* String+Empty.swift */; };
+		8ABF362F2747B356000D5003 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8ABF362E2747B355000D5003 /* loading.gif */; };
+		8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+Loading.swift */; };
 		8AC9CEF82742487D00EEBEE7 /* RtcViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
@@ -200,6 +204,8 @@
 		5C4A9F25272576BC00D296C5 /* DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C4A9F2F272576BC00D296C5 /* DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		82375266484DBD839D90DB24 /* Pods-flat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.debug.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.debug.xcconfig"; sourceTree = "<group>"; };
+		8A0BD7AD274B336000383E9D /* RoomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewModel.swift; sourceTree = "<group>"; };
+		8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralButton.swift; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
 		8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Appearance.swift"; sourceTree = "<group>"; };
@@ -338,6 +344,8 @@
 		8ABF36232745F2D8000D5003 /* AlertProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertProvider.swift; sourceTree = "<group>"; };
 		8ABF362527462F93000D5003 /* Observable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extension.swift"; sourceTree = "<group>"; };
 		8ABF362B27464E63000D5003 /* String+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Empty.swift"; sourceTree = "<group>"; };
+		8ABF362E2747B355000D5003 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
+		8ABF36302747B696000D5003 /* UIView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loading.swift"; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC376B0271D23AA003464B0 /* README-zh.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "README-zh.md"; path = "../README-zh.md"; sourceTree = "<group>"; };
 		8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcViewController.swift; sourceTree = "<group>"; };
@@ -425,6 +433,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		8A0BD7B1274B345900383E9D /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
 		8A0EB7BB272BE6D500003DF7 /* Invite */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,6 +453,7 @@
 		8A11CBE0271FEBB1001D0B1F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8A0BD7B1274B345900383E9D /* Button */,
 				8A7741C22734CF8E009FAADA /* Label */,
 				8AEA34F227279CB500EA4009 /* Popover */,
 			);
@@ -515,6 +532,7 @@
 			children = (
 				8A270B6E271829AB00450DC6 /* HomeViewController.swift */,
 				8ACE3A25272FF77100BC37F7 /* RoomDetailViewController.swift */,
+				8A0BD7AD274B336000383E9D /* RoomDetailViewModel.swift */,
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
 				8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */,
 				8ACE3A26272FF77100BC37F7 /* RoomDetailViewController.xib */,
@@ -909,6 +927,7 @@
 				8AD3CDF82716B53D008BD904 /* UIViewController+Alert.swift */,
 				8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */,
 				8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */,
+				8ABF36302747B696000D5003 /* UIView+Loading.swift */,
 				8A270B7327182B9300450DC6 /* UIColor+Extension.swift */,
 				8A29751E2726A2DC0095F9F0 /* UIImage+tintColor.swift */,
 				8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */,
@@ -973,6 +992,7 @@
 				8A2D0B9527158C9000123207 /* Api */,
 				8A2D0B8F271587C000123207 /* Launch */,
 				8AD7C6C527157EA7001C4AAD /* Assets.xcassets */,
+				8ABF362E2747B355000D5003 /* loading.gif */,
 				8AD7C6C727157EA7001C4AAD /* LaunchScreen.storyboard */,
 				8AD7C6CA27157EA7001C4AAD /* Info.plist */,
 				8A270B9227195A1200450DC6 /* Localizable.strings */,
@@ -1193,6 +1213,7 @@
 				8A270BC3271980A300450DC6 /* AboutUsViewController.xib in Resources */,
 				8A270BA8271977EE00450DC6 /* ContactUsViewController.xib in Resources */,
 				8A9ACC0B271E98DB00E7E7CE /* RoomTableViewCell.xib in Resources */,
+				8ABF362F2747B356000D5003 /* loading.gif in Resources */,
 				8A270B8827192A6600450DC6 /* SettingTableViewCell.xib in Resources */,
 				8ACE3A28272FF77100BC37F7 /* RoomDetailViewController.xib in Resources */,
 			);
@@ -1361,6 +1382,7 @@
 				8A9ACC17271EBD9300E7E7CE /* UIImage+Appliance.swift in Sources */,
 				8ABF36242745F2D8000D5003 /* AlertProvider.swift in Sources */,
 				8A9FB3B227226B4000F6F06F /* AnyKeyDecodable.swift in Sources */,
+				8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */,
 				8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */,
 				8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */,
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
@@ -1369,6 +1391,7 @@
 				8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */,
 				8AE8F5642721386200D2E0F5 /* RoomInfoRequest.swift in Sources */,
 				8A270B9D271967D800450DC6 /* Language.swift in Sources */,
+				8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */,
 				8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */,
 				8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */,
 				8A270BA4271972F100450DC6 /* ContactUsViewController.swift in Sources */,
@@ -1411,6 +1434,7 @@
 				8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */,
 				8A7741BD2733BF15009FAADA /* RoomStatusUpdateRequest.swift in Sources */,
 				8A7741BF2733D040009FAADA /* UIViewController+Toast.swift in Sources */,
+				8A0BD7AE274B336000383E9D /* RoomDetailViewModel.swift in Sources */,
 				8A270B762718314200450DC6 /* TopViewController.swift in Sources */,
 				8ACE3A2A2730CD4600BC37F7 /* CreateClassRoomViewController.swift in Sources */,
 				8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */,

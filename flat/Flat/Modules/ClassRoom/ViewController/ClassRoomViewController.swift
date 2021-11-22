@@ -113,6 +113,8 @@ class ClassRoomViewController: UIViewController {
         rtcViewController.view.snp.makeConstraints { make in
             make.height.equalTo(104)
         }
+        
+        setupToolbar()
     }
     
     func setupToolbar() {
@@ -206,11 +208,18 @@ class ClassRoomViewController: UIViewController {
         
         output.initRoom
             .observe(on: MainScheduler.instance)
+            .do(onSuccess: { [weak self] in
+                self?.view.endFlatLoading()
+            }, onSubscribe: { [weak self] in
+                self?.view.startFlatLoading(showCancelDelay: 7, cancelCompletion: {
+                    self?.leaveUIHierarchy()
+                })
+            })
             .subscribe(with: self, onSuccess: { weakSelf, _ in
-                weakSelf.setupToolbar()
+                weakSelf.rightToolBar.isHidden = false
                 weakSelf.setupChatViewController()
             }, onFailure: { weakSelf, error in
-                return
+                weakSelf.leaveUIHierarchy()
             })
             .disposed(by: rx.disposeBag)
         
@@ -230,7 +239,7 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
         
-        // Should show user red
+        // Should show user red (when received raisehand while user panel is not presenting)
         let hideUserRedpointWhenNewRaiseHand = output.newCommand.filter {
             if case .raiseHand(let raise) = $0, raise { return true }
             return false

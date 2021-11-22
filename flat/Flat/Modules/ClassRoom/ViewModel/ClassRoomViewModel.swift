@@ -165,12 +165,14 @@ class ClassRoomViewModel {
             self.initialRoomStatus()
         }.share(replay: 1, scope: .whileConnected).asSingle()
         
+        // Process member left
         let memberLeft = initRoom.asObservable().flatMap {
             return self.commandHandler.memberLeftPublisher.asObservable()
         }.do(onNext: { [weak self] uuid in
             self?.state.removeUser(forUUID: uuid)
         })
         
+        // Process command
         let newCommand = initRoom.asObservable().flatMap { _ in
             return self.commandHandler.newMessagePublish.asObservable()
         }.flatMap { [weak self] (text, sender) -> Single<RtmCommand> in
@@ -183,8 +185,7 @@ class ClassRoomViewModel {
         
         return .init(initRoom: initRoom,
                      newCommand: newCommand,
-                     memberLeft: memberLeft
-                     )
+                     memberLeft: memberLeft)
     }
     
     func transformRaiseHand(_ raiseHandTap: Driver<Void>) -> Driver<Void> {
