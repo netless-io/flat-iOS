@@ -24,6 +24,10 @@ struct RoomInfo: Decodable {
     let ownerUserName: String
     let region: String
     let inviteCode: String
+    
+    var formatterInviteCode: String {
+        inviteCode.split(every: 3).joined(separator: " ")
+    }
 }
 
 extension RoomInfo {

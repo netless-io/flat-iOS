@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */; };
+		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
 		8A0EB7B3272BCDC200003DF7 /* UIButton+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */; };
@@ -204,6 +205,7 @@
 		5C4A9F2F272576BC00D296C5 /* DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		82375266484DBD839D90DB24 /* Pods-flat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.debug.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.debug.xcconfig"; sourceTree = "<group>"; };
 		8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralButton.swift; sourceTree = "<group>"; };
+		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
 		8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Appearance.swift"; sourceTree = "<group>"; };
@@ -943,6 +945,7 @@
 				8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */,
 				8ACE3A1A272F8BA800BC37F7 /* UIViewController+Extension.swift */,
 				8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */,
+				8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */,
 				8ABF362B27464E63000D5003 /* String+Empty.swift */,
 				8A7741E2273A47C2009FAADA /* Array+Extension.swift */,
 				8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */,
@@ -1358,6 +1361,7 @@
 				8A9FB3C327229A7C00F6F06F /* Method.swift in Sources */,
 				8AE892FB2727E99D009C71DA /* CommandType.swift in Sources */,
 				8A2D0B9A27158FCD00123207 /* Request.swift in Sources */,
+				8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */,
 				8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */,
 				8A9FB3BB2722981200F6F06F /* JSONEncoder+Extension.swift in Sources */,
 				8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */,

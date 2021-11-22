@@ -103,6 +103,7 @@ class JoinRoomViewController: UIViewController {
             } else {
                 subjectTextField.text = str
             }
+            subjectTextField.sendActions(for: .valueChanged)
         }
     }
     

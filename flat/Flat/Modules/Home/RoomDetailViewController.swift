@@ -232,7 +232,7 @@ class RoomDetailViewController: UIViewController {
         statusLabel.text = NSLocalizedString(displayStatus.rawValue, comment: "")
         statusLabel.textColor = displayStatus.textColor
         
-        roomNumberLabel.text = info.inviteCode
+        roomNumberLabel.text = info.formatterInviteCode
         roomTypeLabel.text = NSLocalizedString(roomType.rawValue, comment: "")
         
         if status == .Stopped {
@@ -258,7 +258,7 @@ class RoomDetailViewController: UIViewController {
         
         let vc = InviteViewController(roomTitle: detailInfo.title,
                                       roomTime: detailInfo.beginTime,
-                                      roomNumber: info.inviteCode,
+                                      roomNumber: info.formatterInviteCode,
                                       roomUUID: info.roomUUID,
                                       userName: AuthStore.shared.user?.name ?? "")
         popoverViewController(viewController: vc, fromSource: sender)

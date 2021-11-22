@@ -22,4 +22,8 @@ struct RoomListInfo: Decodable {
     let region: String
     let hasRecord: Bool
     let inviteCode: String
+    
+    var formatterInviteCode: String {
+        inviteCode.split(every: 3).joined(separator: " ")
+    }
 }
