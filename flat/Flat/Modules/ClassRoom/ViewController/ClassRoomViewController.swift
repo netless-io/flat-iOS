@@ -150,6 +150,13 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
+    func setupRtcViewController() {
+        // Todo: Update UI when join failed
+        rtcViewController.joinChannel()
+            .subscribe()
+            .disposed(by: rx.disposeBag)
+    }
+    
     func setupChatViewController() {
         chatButton.isHidden = true
         let banNotice = viewModel.state.messageBan
@@ -223,6 +230,7 @@ class ClassRoomViewController: UIViewController {
             .subscribe(with: self, onSuccess: { weakSelf, _ in
                 weakSelf.rightToolBar.isHidden = false
                 weakSelf.setupChatViewController()
+                weakSelf.setupRtcViewController()
             }, onFailure: { weakSelf, error in
                 weakSelf.leaveUIHierarchy()
             })
@@ -417,6 +425,13 @@ class ClassRoomViewController: UIViewController {
                             rtcMicTap: rtcViewController.micClickPublisher.asDriver(onErrorJustReturn: .emtpy))
             .drive()
             .disposed(by: rx.disposeBag)
+        
+        viewModel.userSelf.map { $0.status }
+        .drive(with: self) { weakSelf, status in
+            weakSelf.rtcViewController.updateLocalUserWith(status: status)
+        }
+        .disposed(by: rx.disposeBag)
+
         
         viewModel.rtcUsers
             .drive(with: self, onNext: { weakSelf, users in

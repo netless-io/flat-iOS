@@ -16,7 +16,7 @@ class ClassRoomRtm: NSObject {
     fileprivate let rtmToken: String
     fileprivate let rtmUserUUID: String
     
-    let p2pMessage: PublishRelay<(text: String, userId: String)> = .init()
+    let p2pMessage: PublishRelay<(text: String, sender: String)> = .init()
     
     init(rtmToken: String,
          rtmUserUUID: String,

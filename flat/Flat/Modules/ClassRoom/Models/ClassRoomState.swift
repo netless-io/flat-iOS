@@ -43,10 +43,17 @@ struct ClassRoomState {
     
     func applyWithNoUser() {
         messageBan.accept(false)
-        if startStatus.value == .Started {
+        switch roomType.interactionStrategy {
+        case .disable:
             mode.accept(.lecture)
-        } else {
+        case .enable:
             mode.accept(.interaction)
+        case .depending:
+            if startStatus.value == .Started {
+                mode.accept(.lecture)
+            } else {
+                mode.accept(.interaction)
+            }
         }
         print("init room with no users, isTeacher \(isTeacher)")
         if !isTeacher {

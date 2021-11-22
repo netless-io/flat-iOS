@@ -108,6 +108,8 @@ class ClassRoomViewModel {
             let canSpeak: Bool
             if self.state.roomType.interactionStrategy == .enable {
                 canSpeak = true
+            } else if mode.interactionEnable {
+                canSpeak = true
             } else {
                 canSpeak = user.status.isSpeak
             }
@@ -177,10 +179,12 @@ class ClassRoomViewModel {
             self?.state.removeUser(forUUID: uuid)
         })
         
-        // Process command
+        // Process command, include p2pcommand && channel command
         let newCommand = initRoom.asObservable().flatMap { [weak self] _ -> Observable<(text: String, sender: String)> in
             guard let self = self else { return .error("self not exist") }
-            return self.commandHandler.newMessagePublish.asObservable()
+            let p2p = self.rtm.p2pMessage.asObservable()
+            let channel = self.commandHandler.newMessagePublish.asObservable()
+            return Observable.of(p2p, channel).merge()
         }.flatMap { [weak self] (text, sender) -> Single<RtmCommand> in
             guard let self = self else {
                 return .error("self not exist")

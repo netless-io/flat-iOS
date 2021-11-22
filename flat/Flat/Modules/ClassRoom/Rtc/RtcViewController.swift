@@ -206,15 +206,20 @@ class RtcViewController: UIViewController {
         
     }
     
+    func updateLocalUserWith(status: RoomUserStatus) {
+        // Self
+        agoraKit.enableLocalAudio(status.mic)
+        agoraKit.enableLocalVideo(status.camera)
+        agoraKit.muteLocalAudioStream(!status.mic)
+        agoraKit.muteLocalVideoStream(!status.camera)
+        print("update local user status camera: \(status.camera), mic: \(status.mic) ")
+    }
+    
     func updateUsersRtcStatus() {
         for user in users {
             let status = user.status
             if user.rtcUID == rtcUid {
-                // Self
-                agoraKit.enableLocalAudio(status.mic)
-                agoraKit.enableLocalVideo(status.camera)
-                agoraKit.muteLocalAudioStream(!status.mic)
-                agoraKit.muteLocalVideoStream(!status.camera)
+                updateLocalUserWith(status: status)
             } else {
                 agoraKit.setRemoteVideoStream(user.rtcUID, type: .low)
                 // Others
