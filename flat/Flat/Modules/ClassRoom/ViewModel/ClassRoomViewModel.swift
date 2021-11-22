@@ -199,8 +199,14 @@ class ClassRoomViewModel {
             .take(1)
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self = self else { return .error("self not exits") }
-                return self.stopOperation()
+                return self.leaveRoomProcess()
             }
+            .asSingle()
+            .do(onSuccess: { [weak self] in
+                NotificationCenter.default.post(name: classStopNotification,
+                                                object: nil,
+                                                userInfo: ["classRoomUUID": self?.state.roomUUID ?? ""])
+            })
             .asDriver(onErrorJustReturn: ())
         
         return .init(initRoom: initRoom,
@@ -383,15 +389,9 @@ class ClassRoomViewModel {
                 } else {
                     return .just(())
                 }
-            }.flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .just(()) }
-                return self.leaveRoomProcess()
             }.asSingle()
             .do(onSuccess: { [weak self] in
                 self?.state.startStatus.accept(.Stopped)
-                NotificationCenter.default.post(name: classStopNotification,
-                                                object: nil,
-                                                userInfo: ["classRoomUUID": self?.state.roomUUID ?? ""])
             })
     }
     

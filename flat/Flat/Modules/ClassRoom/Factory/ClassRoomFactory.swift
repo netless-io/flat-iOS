@@ -9,13 +9,14 @@
 
 import Foundation
 import Whiteboard
+import RxCocoa
 
 struct ClassRoomFactory {
     struct DeviceStatus {
         let mic: Bool
         let camera: Bool
     }
-
+    
     static func getClassRoomViewController(withPlayinfo playInfo: RoomPlayInfo,
                                             detailInfo: RoomInfo,
                                             deviceStatus: DeviceStatus = .init(mic: false, camera: false)) -> ClassRoomViewController {

@@ -8,6 +8,7 @@
 
 
 import UIKit
+import RxSwift
 
 class JoinRoomViewController: UIViewController {
     let deviceStatusStore: UserDevicePreferredStatusStore
@@ -57,39 +58,45 @@ class JoinRoomViewController: UIViewController {
     }
     
     @objc func onJoin(_ sender: UIButton) {
-        sender.isEnabled = false
         guard let uuid = subjectTextField.text, !uuid.isEmpty else {
-            sender.isEnabled = true
             return
         }
-        RoomPlayInfo.fetchByJoinWith(uuid: uuid) { joinResult in
-            switch joinResult {
-            case .success(let roomPlayInfo):
-                RoomInfo.fetchInfoBy(uuid: roomPlayInfo.roomUUID) { infoResult in
-                    sender.isEnabled = true
-                    switch infoResult {
-                    case .success(let roomInfo):
-                        let micOn = self.micOn
-                        let cameraOn = self.cameraOn
-                        let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: roomPlayInfo,
-                                                                             detailInfo: roomInfo,
-                                                                             deviceStatus: .init(mic: micOn, camera: cameraOn))
-                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: micOn)
-                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: cameraOn)
-                        if let split = self.splitViewController {
-                            split.present(vc, animated: true, completion: nil)
-                        } else {
-                            self.navigationController?.pushViewController(vc, animated: true)
-                        }
-                    case .failure(let roomInfoError):
-                        self.showAlertWith(message: roomInfoError.localizedDescription)
-                    }
-                }
-            case .failure(let joinError):
-                self.showAlertWith(message: joinError.localizedDescription)
-                sender.isEnabled = true
-            }
+        
+        sender.isEnabled = false
+        let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: uuid).share(replay: 1, scope: .whileConnected)
+        let roomInfo = playInfo.flatMap { info in
+            return RoomInfo.fetchInfoBy(uuid: info.roomUUID)
         }
+        Observable.zip(playInfo, roomInfo)
+            .asSingle()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onSuccess: { weakSelf, tuple in
+                sender.isEnabled = true
+                let playInfo = tuple.0
+                let roomInfo = tuple.1
+                let deviceStatus = ClassRoomFactory.DeviceStatus(mic: weakSelf.micOn, camera: weakSelf.cameraOn)
+                let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo,
+                                                                     detailInfo: roomInfo,
+                                                                     deviceStatus: deviceStatus)
+                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
+                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
+                
+                if let split = weakSelf.splitViewController {
+                    let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: roomInfo, roomUUID: playInfo.roomUUID)
+                    split.showDetailViewController(BaseNavigationViewController(rootViewController: detailVC), sender: nil)
+                    split.present(vc, animated: true, completion: nil)
+                } else {
+                    let navi = self.navigationController
+                    navi?.popViewController(animated: false)
+                    navi?.pushViewController(vc, animated: true)
+                }
+            }, onFailure: { weakSelf, error in
+                sender.isEnabled = true
+                weakSelf.showAlertWith(message: error.localizedDescription)
+            }, onDisposed: { _ in
+                return
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     // MARK: - Private

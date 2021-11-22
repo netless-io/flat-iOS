@@ -157,7 +157,7 @@ class RoomDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { weakSelf, info in
                 if let infoUUID = info.userInfo?["classRoomUUID"] as? String {
                     if weakSelf.info.roomUUID == infoUUID {
-                        weakSelf.splitViewController?.showDetailViewController(.emptySplitSecondaryViewController(), sender: nil)
+                        weakSelf.navigationController?.splitViewController?.showDetailViewController(.emptySplitSecondaryViewController(), sender: nil)
                         weakSelf.navigationController?.popViewController(animated: false)
                     }
                 }
