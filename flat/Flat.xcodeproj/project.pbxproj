@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8A0BD7AE274B336000383E9D /* RoomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AD274B336000383E9D /* RoomDetailViewModel.swift */; };
 		8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
@@ -204,7 +203,6 @@
 		5C4A9F25272576BC00D296C5 /* DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C4A9F2F272576BC00D296C5 /* DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		82375266484DBD839D90DB24 /* Pods-flat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.debug.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.debug.xcconfig"; sourceTree = "<group>"; };
-		8A0BD7AD274B336000383E9D /* RoomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewModel.swift; sourceTree = "<group>"; };
 		8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralButton.swift; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
@@ -532,7 +530,6 @@
 			children = (
 				8A270B6E271829AB00450DC6 /* HomeViewController.swift */,
 				8ACE3A25272FF77100BC37F7 /* RoomDetailViewController.swift */,
-				8A0BD7AD274B336000383E9D /* RoomDetailViewModel.swift */,
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
 				8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */,
 				8ACE3A26272FF77100BC37F7 /* RoomDetailViewController.xib */,
@@ -1434,7 +1431,6 @@
 				8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */,
 				8A7741BD2733BF15009FAADA /* RoomStatusUpdateRequest.swift in Sources */,
 				8A7741BF2733D040009FAADA /* UIViewController+Toast.swift in Sources */,
-				8A0BD7AE274B336000383E9D /* RoomDetailViewModel.swift in Sources */,
 				8A270B762718314200450DC6 /* TopViewController.swift in Sources */,
 				8ACE3A2A2730CD4600BC37F7 /* CreateClassRoomViewController.swift in Sources */,
 				8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */,

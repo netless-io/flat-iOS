@@ -44,6 +44,7 @@ class JoinRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        bindJoinEnable()
     }
     
     // MARK: - Action
@@ -56,14 +57,16 @@ class JoinRoomViewController: UIViewController {
     }
     
     @objc func onJoin(_ sender: UIButton) {
+        sender.isEnabled = false
         guard let uuid = subjectTextField.text, !uuid.isEmpty else {
+            sender.isEnabled = true
             return
         }
-        showActivityIndicator()
         RoomPlayInfo.fetchByJoinWith(uuid: uuid) { joinResult in
             switch joinResult {
             case .success(let roomPlayInfo):
                 RoomInfo.fetchInfoBy(uuid: roomPlayInfo.roomUUID) { infoResult in
+                    sender.isEnabled = true
                     switch infoResult {
                     case .success(let roomInfo):
                         let micOn = self.micOn
@@ -78,15 +81,13 @@ class JoinRoomViewController: UIViewController {
                         } else {
                             self.navigationController?.pushViewController(vc, animated: true)
                         }
-                        self.stopActivityIndicator()
                     case .failure(let roomInfoError):
                         self.showAlertWith(message: roomInfoError.localizedDescription)
-                        self.stopActivityIndicator()
                     }
                 }
             case .failure(let joinError):
-                self.stopActivityIndicator()
                 self.showAlertWith(message: joinError.localizedDescription)
+                sender.isEnabled = true
             }
         }
     }
@@ -103,6 +104,13 @@ class JoinRoomViewController: UIViewController {
                 subjectTextField.text = str
             }
         }
+    }
+    
+    func bindJoinEnable() {
+        subjectTextField.rx.text.orEmpty.asDriver()
+            .map { $0.isNotEmptyOrAllSpacing }
+            .drive(joinButton.rx.isEnabled)
+            .disposed(by: rx.disposeBag)
     }
     
     func setupViews() {
@@ -176,15 +184,9 @@ class JoinRoomViewController: UIViewController {
     }()
     
     lazy var joinButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.clipsToBounds = true
-        btn.layer.cornerRadius = 4
-        btn.backgroundColor = .brandColor
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.white, for: .normal)
+        let btn = FlatGeneralButton(type: .custom)
         btn.setTitle(NSLocalizedString("Join", comment: ""), for: .normal)
         btn.addTarget(self, action: #selector(onJoin(_:)), for: .touchUpInside)
-        btn.contentEdgeInsets = .init(top: 0, left: 29, bottom: 0, right: 29)
         return btn
     }()
     

@@ -166,6 +166,7 @@ class CreateClassRoomViewController: UIViewController {
     }
     
     @objc func onClickCreate(_ sender: UIButton) {
+        sender.isEnabled = false
         let title: String
         let text = subjectTextField.text ?? ""
         let defaultTitle = "\(AuthStore.shared.user?.name ?? "") " + NSLocalizedString("Created Room", comment: "")
@@ -178,6 +179,7 @@ class CreateClassRoomViewController: UIViewController {
             switch result {
             case .success(let info):
                 self.joinRoom(withUUID: info.roomUUID) { result in
+                    sender.isEnabled = true
                     switch result {
                     case .success(let vc):
                         if let split = self.splitViewController {
@@ -194,6 +196,7 @@ class CreateClassRoomViewController: UIViewController {
                 }
             case .failure(let error):
                 self.showAlertWith(message: error.localizedDescription)
+                sender.isEnabled = true
             }
         }
     }
@@ -267,16 +270,10 @@ class CreateClassRoomViewController: UIViewController {
         return btn
     }()
     
-    lazy var createButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.clipsToBounds = true
-        btn.layer.cornerRadius = 4
-        btn.backgroundColor = .brandColor
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.white, for: .normal)
+    lazy var createButton: FlatGeneralButton = {
+        let btn = FlatGeneralButton(type: .custom)
         btn.setTitle(NSLocalizedString("Create", comment: ""), for: .normal)
         btn.addTarget(self, action: #selector(onClickCreate(_:)), for: .touchUpInside)
-        btn.contentEdgeInsets = .init(top: 0, left: 29, bottom: 0, right: 29)
         return btn
     }()
     

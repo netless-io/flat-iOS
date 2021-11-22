@@ -16,6 +16,7 @@
                 <outlet property="durationLabel" destination="4Jp-yX-b2v" id="HMp-Zv-giy"/>
                 <outlet property="endDateLabel" destination="cjf-FP-q8N" id="4XQ-pb-jBz"/>
                 <outlet property="endTimeLabel" destination="9EO-3S-Gx4" id="Uxe-QG-CrO"/>
+                <outlet property="enterRoomButton" destination="GeJ-mC-FiS" id="tyk-iy-iZW"/>
                 <outlet property="mainStackView" destination="fGi-pz-Ned" id="wuO-AR-XhR"/>
                 <outlet property="roomNumberLabel" destination="wKx-vU-49V" id="q8f-17-Klx"/>
                 <outlet property="roomOperationStackView" destination="oyc-oS-6GD" id="HWo-GG-nxi"/>
@@ -244,7 +245,7 @@
                                                 <action selector="onClickInvite:" destination="-1" eventType="touchUpInside" id="ZE8-ka-Deh"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeJ-mC-FiS">
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeJ-mC-FiS" customClass="FlatGeneralButton" customModule="Flat" customModuleProvider="target">
                                             <rect key="frame" x="103" y="0.0" width="95" height="32"/>
                                             <color key="backgroundColor" name="BrandColor"/>
                                             <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
@@ -254,9 +255,6 @@
                                                 <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </buttonConfiguration>
                                             <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="radius">
-                                                    <real key="value" value="4"/>
-                                                </userDefinedRuntimeAttribute>
                                                 <userDefinedRuntimeAttribute type="string" keyPath="xibLocKey" value="Enter Room"/>
                                             </userDefinedRuntimeAttributes>
                                             <connections>

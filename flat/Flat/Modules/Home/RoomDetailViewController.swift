@@ -153,7 +153,6 @@ class RoomDetailViewController: UIViewController {
                 }
             })
             .disposed(by: rx.disposeBag)
-        
     }
     
     func updateAvailableActions() {
@@ -266,23 +265,24 @@ class RoomDetailViewController: UIViewController {
     }
     
     @IBAction func onClickEnterRoom(_ sender: Any) {
+        enterRoomButton.isEnabled = false
+        // Fetch detail
         guard let detailInfo = detailInfo else {
-            showActivityIndicator()
             loadData { result in
-                self.stopActivityIndicator()
                 switch result {
                 case .success:
                     self.onClickEnterRoom(sender)
                 case .failure(let error):
                     self.showAlertWith(message: error.localizedDescription)
+                    self.enterRoomButton.isEnabled = true
                 }
             }
             return
         }
         
-        showActivityIndicator()
+        // Join room
         RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID) { result in
-            self.stopActivityIndicator()
+            self.enterRoomButton.isEnabled = true
             switch result {
             case .success(let playInfo):
                 let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo, detailInfo:
@@ -300,6 +300,7 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var enterRoomButton: UIButton!
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var roomTypeLabel: UILabel!
     @IBOutlet weak var roomNumberLabel: UILabel!
