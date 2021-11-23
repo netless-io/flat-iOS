@@ -314,7 +314,7 @@ class ClassRoomViewController: UIViewController {
                 return self.viewModel.isWhiteboardEnable
             }
             .drive(with: self, onNext: { weakSelf, enable in
-                weakSelf.whiteboardViewController.toolStackView.isHidden = !enable
+                weakSelf.whiteboardViewController.updateToolsHide(!enable)
                 weakSelf.whiteboardViewController.viewModel.room.setWritable(enable, completionHandler: nil)
             })
             .disposed(by: rx.disposeBag)

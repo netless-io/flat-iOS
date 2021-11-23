@@ -34,10 +34,7 @@ class StrokePickerViewController: PopOverDismissDetectableViewController {
     // MARK: - LifeCycle
     init(minStrokeWidth: Float = 1,
          maxStrokeWidth: Float = 20,
-         candicateColors: [UIColor] = [.systemRed, .systemOrange, .systemYellow, .systemGreen,
-                                       .systemTeal, .systemBlue, .init(hexString: "#6236FF"), .systemPurple,
-                                       .init(hexString: "#BCC0C6"), .systemGray, .black, .white]
-         
+         candicateColors: [UIColor]
     ) {
         self.lineWidth = .init(value: minStrokeWidth)
         self.selectedColor = .init(value: candicateColors[0])

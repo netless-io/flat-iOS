@@ -21,7 +21,6 @@
 		8A11CBDF271FBCC1001D0B1F /* StrokePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBDE271FBCC1001D0B1F /* StrokePickerViewController.swift */; };
 		8A11CBE3271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBE2271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift */; };
 		8A11CBE5271FF00F001D0B1F /* AppliancePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBE4271FF00F001D0B1F /* AppliancePickerViewController.swift */; };
-		8A11CBE9271FFFBC001D0B1F /* WhiteBoardOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBE8271FFFBC001D0B1F /* WhiteBoardOperation.swift */; };
 		8A11CBEB272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBEA272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift */; };
 		8A11CBF227201069001D0B1F /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBF127201069001D0B1F /* String+Error.swift */; };
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
@@ -49,7 +48,6 @@
 		8A270BC7271989FB00450DC6 /* UIView+DidLayoutBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270BC6271989FB00450DC6 /* UIView+DidLayoutBlock.swift */; };
 		8A270BC927198A1800450DC6 /* UIButton+Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270BC827198A1800450DC6 /* UIButton+Spacing.swift */; };
 		8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270BCA27198FBE00450DC6 /* UIImage+Color.swift */; };
-		8A270BCF2719962900450DC6 /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270BCE2719962900450DC6 /* WhiteboardViewController.swift */; };
 		8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29751E2726A2DC0095F9F0 /* UIImage+tintColor.swift */; };
 		8A2975212726A6810095F9F0 /* UIColor+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2975202726A6810095F9F0 /* UIColor+Theme.swift */; };
 		8A2D0B9727158C9000123207 /* ApiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9627158C9000123207 /* ApiProvider.swift */; };
@@ -80,7 +78,6 @@
 		8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6E271829AB00450DC6 /* HomeViewController.swift */; };
 		8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */; };
 		8A7741DC2738BB06009FAADA /* ClassRoomFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741DB2738BB06009FAADA /* ClassRoomFactory.swift */; };
-		8A7741DF2738CAEE009FAADA /* WhiteboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741DE2738CAEE009FAADA /* WhiteboardViewModel.swift */; };
 		8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E2273A47C2009FAADA /* Array+Extension.swift */; };
 		8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E4273A542F009FAADA /* UIView+Badge.swift */; };
 		8A7741E7273A6FA2009FAADA /* RoomCancelRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E6273A6FA2009FAADA /* RoomCancelRequest.swift */; };
@@ -144,6 +141,11 @@
 		8ABF362F2747B356000D5003 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8ABF362E2747B355000D5003 /* loading.gif */; };
 		8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+Loading.swift */; };
 		8AC05357274B8C160064CF84 /* RoomDetailFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05356274B8C160064CF84 /* RoomDetailFactory.swift */; };
+		8AC0535D274C72300064CF84 /* WhiteboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05359274C72300064CF84 /* WhiteboardViewModel.swift */; };
+		8AC0535E274C72300064CF84 /* WhitePannelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0535A274C72300064CF84 /* WhitePannelItem.swift */; };
+		8AC0535F274C72300064CF84 /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0535B274C72300064CF84 /* WhiteboardViewController.swift */; };
+		8AC05362274CC47B0064CF84 /* WhiteboardMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05361274CC47B0064CF84 /* WhiteboardMenuNavigator.swift */; };
+		8AC05364274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05363274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift */; };
 		8AC9CEF82742487D00EEBEE7 /* RtcViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
@@ -165,7 +167,6 @@
 		8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */; };
 		8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AD7C6C527157EA7001C4AAD /* Assets.xcassets */; };
 		8AD7C6C927157EA7001C4AAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AD7C6C727157EA7001C4AAD /* LaunchScreen.storyboard */; };
-		8AD82377273E2475008786F4 /* WhiteboardPannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD82376273E2475008786F4 /* WhiteboardPannel.swift */; };
 		8AE892FB2727E99D009C71DA /* CommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* CommandType.swift */; };
 		8AE892FE2727E9DB009C71DA /* SpeakCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FD2727E9DB009C71DA /* SpeakCommand.swift */; };
 		8AE893022727EFA3009C71DA /* RequestChannelStatusCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE893012727EFA3009C71DA /* RequestChannelStatusCommand.swift */; };
@@ -219,7 +220,6 @@
 		8A11CBDE271FBCC1001D0B1F /* StrokePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokePickerViewController.swift; sourceTree = "<group>"; };
 		8A11CBE2271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A11CBE4271FF00F001D0B1F /* AppliancePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppliancePickerViewController.swift; sourceTree = "<group>"; };
-		8A11CBE8271FFFBC001D0B1F /* WhiteBoardOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteBoardOperation.swift; sourceTree = "<group>"; };
 		8A11CBEA272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppliancePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A11CBF127201069001D0B1F /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
@@ -251,7 +251,6 @@
 		8A270BC827198A1800450DC6 /* UIButton+Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Spacing.swift"; sourceTree = "<group>"; };
 		8A270BCA27198FBE00450DC6 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A270BCC2719959A00450DC6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		8A270BCE2719962900450DC6 /* WhiteboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewController.swift; sourceTree = "<group>"; };
 		8A29751E2726A2DC0095F9F0 /* UIImage+tintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+tintColor.swift"; sourceTree = "<group>"; };
 		8A2975202726A6810095F9F0 /* UIColor+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Theme.swift"; sourceTree = "<group>"; };
 		8A2D0B9627158C9000123207 /* ApiProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiProvider.swift; sourceTree = "<group>"; };
@@ -280,7 +279,6 @@
 		8A7741C52734FFF0009FAADA /* RtcNoTeachCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcNoTeachCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A7741CB2735210C009FAADA /* String+Diffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Diffable.swift"; sourceTree = "<group>"; };
 		8A7741DB2738BB06009FAADA /* ClassRoomFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomFactory.swift; sourceTree = "<group>"; };
-		8A7741DE2738CAEE009FAADA /* WhiteboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewModel.swift; sourceTree = "<group>"; };
 		8A7741E2273A47C2009FAADA /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		8A7741E4273A542F009FAADA /* UIView+Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Badge.swift"; sourceTree = "<group>"; };
 		8A7741E6273A6FA2009FAADA /* RoomCancelRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCancelRequest.swift; sourceTree = "<group>"; };
@@ -348,6 +346,11 @@
 		8ABF362E2747B355000D5003 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		8ABF36302747B696000D5003 /* UIView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loading.swift"; sourceTree = "<group>"; };
 		8AC05356274B8C160064CF84 /* RoomDetailFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailFactory.swift; sourceTree = "<group>"; };
+		8AC05359274C72300064CF84 /* WhiteboardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteboardViewModel.swift; sourceTree = "<group>"; };
+		8AC0535A274C72300064CF84 /* WhitePannelItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhitePannelItem.swift; sourceTree = "<group>"; };
+		8AC0535B274C72300064CF84 /* WhiteboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteboardViewController.swift; sourceTree = "<group>"; };
+		8AC05361274CC47B0064CF84 /* WhiteboardMenuNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardMenuNavigator.swift; sourceTree = "<group>"; };
+		8AC05363274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardMenuNavigatorImp.swift; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC376B0271D23AA003464B0 /* README-zh.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "README-zh.md"; path = "../README-zh.md"; sourceTree = "<group>"; };
 		8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcViewController.swift; sourceTree = "<group>"; };
@@ -375,7 +378,6 @@
 		8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8AD7C6C527157EA7001C4AAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AD7C6CA27157EA7001C4AAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8AD82376273E2475008786F4 /* WhiteboardPannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardPannel.swift; sourceTree = "<group>"; };
 		8AE892FA2727E99D009C71DA /* CommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandType.swift; sourceTree = "<group>"; };
 		8AE892FD2727E9DB009C71DA /* SpeakCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakCommand.swift; sourceTree = "<group>"; };
 		8AE893012727EFA3009C71DA /* RequestChannelStatusCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestChannelStatusCommand.swift; sourceTree = "<group>"; };
@@ -480,20 +482,10 @@
 			path = AppliancePicker;
 			sourceTree = "<group>";
 		};
-		8A11CBE7271FFFA4001D0B1F /* WhiteBoard */ = {
-			isa = PBXGroup;
-			children = (
-				8A270BCE2719962900450DC6 /* WhiteboardViewController.swift */,
-				8A7741DE2738CAEE009FAADA /* WhiteboardViewModel.swift */,
-				8AD82376273E2475008786F4 /* WhiteboardPannel.swift */,
-				8A11CBE8271FFFBC001D0B1F /* WhiteBoardOperation.swift */,
-			);
-			path = WhiteBoard;
-			sourceTree = "<group>";
-		};
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
+				8AC05358274C72300064CF84 /* Whiteboard */,
 				8A11CBE1271FEBB9001D0B1F /* StrokePicker */,
 				8A11CBE6271FF012001D0B1F /* AppliancePicker */,
 				8A11CC2827202236001D0B1F /* Setting */,
@@ -501,7 +493,6 @@
 				8ABF362827464543000D5003 /* ViewController */,
 				8ABF362727464538000D5003 /* ViewModel */,
 				8ACDD8A427293D6500007B46 /* Models */,
-				8A11CBE7271FFFA4001D0B1F /* WhiteBoard */,
 				8AE8F55C272101E600D2E0F5 /* Rtm */,
 				8A11CC23272019D6001D0B1F /* Rtc */,
 			);
@@ -880,6 +871,18 @@
 				8A9FB394272154B800F6F06F /* Message.swift */,
 			);
 			path = Flat;
+			sourceTree = "<group>";
+		};
+		8AC05358274C72300064CF84 /* Whiteboard */ = {
+			isa = PBXGroup;
+			children = (
+				8AC05359274C72300064CF84 /* WhiteboardViewModel.swift */,
+				8AC0535A274C72300064CF84 /* WhitePannelItem.swift */,
+				8AC0535B274C72300064CF84 /* WhiteboardViewController.swift */,
+				8AC05361274CC47B0064CF84 /* WhiteboardMenuNavigator.swift */,
+				8AC05363274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift */,
+			);
+			path = Whiteboard;
 			sourceTree = "<group>";
 		};
 		8AC376B1271D25BB003464B0 /* ContactUs */ = {
@@ -1301,12 +1304,12 @@
 				8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */,
 				8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */,
 				8ACE3A2C2730D15700BC37F7 /* ClassTypeCell.swift in Sources */,
+				8AC0535F274C72300064CF84 /* WhiteboardViewController.swift in Sources */,
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
 				8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */,
 				8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */,
 				8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */,
 				8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */,
-				8A7741DF2738CAEE009FAADA /* WhiteboardViewModel.swift in Sources */,
 				8A7741CC2735210C009FAADA /* String+Diffable.swift in Sources */,
 				8A9FB3CB2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift in Sources */,
 				8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */,
@@ -1328,7 +1331,6 @@
 				8AAC69B02717E32E00F9A3B4 /* AuthProcessRequest.swift in Sources */,
 				8A270B6C271822BA00450DC6 /* MainTabbarController.swift in Sources */,
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
-				8A270BCF2719962900450DC6 /* WhiteboardViewController.swift in Sources */,
 				8A9FB3AF2722676400F6F06F /* AgoraResponseDataHandler.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8AAC69B32717E3EB00F9A3B4 /* User.swift in Sources */,
@@ -1347,8 +1349,6 @@
 				8AE8930A2727FAE9009C71DA /* ChannelStatusCommand.swift in Sources */,
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
 				8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */,
-				8AD82377273E2475008786F4 /* WhiteboardPannel.swift in Sources */,
-				8A11CBE9271FFFBC001D0B1F /* WhiteBoardOperation.swift in Sources */,
 				8A11CBF227201069001D0B1F /* String+Error.swift in Sources */,
 				8A270BC927198A1800450DC6 /* UIButton+Spacing.swift in Sources */,
 				8AE893042727F2F1009C71DA /* AcceptRaiseHandCommand.swift in Sources */,
@@ -1366,12 +1366,14 @@
 				8A2D0B9A27158FCD00123207 /* Request.swift in Sources */,
 				8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */,
 				8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */,
+				8AC0535E274C72300064CF84 /* WhitePannelItem.swift in Sources */,
 				8A9FB3BB2722981200F6F06F /* JSONEncoder+Extension.swift in Sources */,
 				8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */,
 				8A270BA72719759E00450DC6 /* UIView+NibProperty.swift in Sources */,
 				8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */,
 				8A9FB3AA272262D800F6F06F /* ResponseDataHandler.swift in Sources */,
 				8A9ACC11271EAE3700E7E7CE /* IndicatorMoreButton.swift in Sources */,
+				8AC0535D274C72300064CF84 /* WhiteboardViewModel.swift in Sources */,
 				8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */,
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
 				8A9FB3AD2722674F00F6F06F /* FlatResponseDataHandler.swift in Sources */,
@@ -1407,6 +1409,7 @@
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
 				8A7741C42734CFAC009FAADA /* BorderLabel.swift in Sources */,
 				8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */,
+				8AC05362274CC47B0064CF84 /* WhiteboardMenuNavigator.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,
 				8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */,
@@ -1424,6 +1427,7 @@
 				8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */,
 				8A0EB7BA272BD4E300003DF7 /* RoomUserTableViewCell.swift in Sources */,
 				8A9FB3C927229E5E00F6F06F /* AnyEncodable.swift in Sources */,
+				8AC05364274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift in Sources */,
 				8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */,
 				8A9FB3B72722949600F6F06F /* ParameterEncoder.swift in Sources */,
 				8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */,

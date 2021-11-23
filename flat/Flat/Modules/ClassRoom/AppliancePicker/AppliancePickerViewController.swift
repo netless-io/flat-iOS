@@ -14,13 +14,13 @@ import Whiteboard
 
 class AppliancePickerViewController: PopOverDismissDetectableViewController {
     let appliancePickerCellIdentifier = "appliancePickerCellIdentifier"
-    let newOperation: PublishRelay<WhiteBoardOperation> = .init()
+    let newOperation: PublishRelay<WhiteboardPannelOperation> = .init()
     
-    let operations: BehaviorRelay<[WhiteBoardOperation]>
+    let operations: BehaviorRelay<[WhiteboardPannelOperation]>
     let selectedIndex: BehaviorRelay<Int?>
     let itemSize = CGSize(width: 40, height: 40)
     
-    init(operations: [WhiteBoardOperation],
+    init(operations: [WhiteboardPannelOperation],
          selectedIndex: Int?) {
         self.operations = .init(value: operations)
         self.selectedIndex = .init(value: selectedIndex)
@@ -57,8 +57,7 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
         }
         .asDriver(onErrorJustReturn: ([]))
         .drive(collectionView.rx.items(cellIdentifier: appliancePickerCellIdentifier, cellType: AppliancePickerCollectionViewCell.self)) {  index, item, cell in
-            cell.imageView.image = item.0.buttonImage
-            cell.imageView.tintColor = item.1 ? .controlSelected : .controlNormal
+            cell.imageView.image = item.1 ? item.0.selectedImage : item.0.image
         }
         .disposed(by: rx.disposeBag)
         

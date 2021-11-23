@@ -11,10 +11,10 @@ import RxSwift
 import Whiteboard
 import RxRelay
 import RxCocoa
-import SwiftUI
 
 class WhiteboardViewModel: NSObject {
-    let toolNavigator: WhiteboardToolNavigator!
+    var pannelItems: [WhitePannelItem]
+    let menuNavigator: WhiteboardMenuNavigator
     let whiteRoomConfig: WhiteRoomConfig
     
     let isRoomJoined: BehaviorRelay<Bool> = .init(value: false)
@@ -38,106 +38,171 @@ class WhiteboardViewModel: NSObject {
         print(self, "deinit")
     }
     
-    init(whiteRoomConfig: WhiteRoomConfig,
-         whiteboardToolNavigator: WhiteboardToolNavigator) {
-        self.toolNavigator = whiteboardToolNavigator
+    struct Input {
+        let pannelTap: Driver<WhitePannelItem>
+        let undoTap: Driver<Void>
+        let redoTap: Driver<Void>
+    }
+    
+    struct Output {
+        let join: Observable<WhiteRoom>
+        let selectedItem: Observable<WhitePannelItem?>
+        let actions: Observable<WhiteboardPannelOperation?>
+        let undo: Observable<Void>
+        let redo: Observable<Void>
+        let colorAndWidth: Observable<(UIColor, Float)>
+        let subMenuPresent: Observable<Void>
+    }
+    
+    init(pannelItems: [WhitePannelItem],
+         whiteRoomConfig: WhiteRoomConfig,
+         menuNavigator: WhiteboardMenuNavigator) {
+        self.pannelItems = pannelItems
+        self.menuNavigator = menuNavigator
         self.whiteRoomConfig = whiteRoomConfig
         super.init()
     }
     
-    func transformInput(trigger: Driver<Void>,
-                        undoTap: Driver<Void>,
-                        redoTap: Driver<Void>,
-                        applianceTap: Driver<Void>,
-                        strokeTap: Driver<Void>
-    ) -> (join: Observable<Void>,
-          taps: Driver<Void>,
-          appliance: Driver<WhiteApplianceNameKey>,
-          strokeValue: Driver<(UIColor, Float)>) {
-        let join = trigger.asObservable()
-            .flatMap { self.joinRoom() }
+    func transform(_ input: Input) -> Output {
+        let joinRoom = joinRoom().asObservable().share(replay: 1, scope: .whileConnected)
         
-        _ = undoTap.do(onNext: { [unowned self] in
-            self.room.undo()
-        })
-        _ = redoTap.do(onNext: { [unowned self] in
-            self.room.redo()
-        })
-            
-        let stokeValue = strokeTap.asObservable()
-            .flatMap { [unowned self] _ -> Driver<(UIColor, Float)> in
-                let state = self.room.state.memberState
-                let color = UIColor(numberArray: state?.strokeColor ?? [])
-                let out = self.toolNavigator.presentColorPicker(withCurrentColor: color, currentWidth: (state?.strokeWidth ?? 0).floatValue)
-                return out
-            }.do(onNext: { [weak self] value in
-                let newState = WhiteMemberState()
-                newState.strokeWidth = .init(value: value.1)
-                newState.strokeColor = value.0.getNumersArray()
-                self?.room.setMemberState(newState)
-            })
-            .asDriver(onErrorJustReturn: (.white, 0))
-            
-        let applianceManualChange = applianceTap.asObservable().flatMap { [unowned self] _ -> Driver<WhiteBoardOperation> in
-            let name = self.room.state.memberState?.currentApplianceName ?? .ApplianceArrow
-            return self.toolNavigator.presentAppliancePicker(withSelectedAppliance: name)
-        }
-        .do(onNext: {
-            switch $0 {
-            case .updateAppliance(let name):
-                let newState = WhiteMemberState()
-                newState.currentApplianceName = name
-                self.room.setMemberState(newState)
-            case .clean:
-                self.room.cleanScene(true)
+        let initPannelItem = joinRoom.flatMap { [weak self] room -> Observable<WhitePannelItem?> in
+            guard let self = self else {
+                return .error("self not exist")
             }
-        })
-            .filter({
-                switch $0 {
-                case .clean: return false
-                case .updateAppliance: return true
-                }
-            })
-            .map { op -> WhiteApplianceNameKey in
-                switch op {
-                case .clean: fatalError()
-                case .updateAppliance(name: let name):
-                    return name
-                }
+            if let initName = room.state.memberState?.currentApplianceName {
+                let initPannelItem = self.pannelItems.first(where: { $0.contains(operation: .appliance(initName))})
+                return .just(initPannelItem)
+            } else {
+                return .just(nil)
             }
-
-        let initApplianceName = join.map { [weak self] _ -> WhiteApplianceNameKey in
-            return self?.room.state.memberState?.currentApplianceName ?? .ApplianceArrow
         }
         
-        let appliance = Observable.of(initApplianceName, applianceManualChange)
-            .merge()
-            .asDriver(onErrorJustReturn: .ApplianceArrow)
+        let selectableTap = input.pannelTap.asObservable().filter { $0.selectable }.map { [weak self] tap -> WhitePannelItem? in
+            guard let self = self, let room = self.room else { return nil }
+            switch tap {
+            case .single(let op):
+                op.excute(inRoom: room)
+            case .subops(_, current: let op):
+                op?.excute(inRoom: room)
+            default:
+                break
+            }
+            return tap
+        }
         
-        let taps = Driver.of(undoTap, redoTap)
+        let subMenuItem = menuNavigator.getNewApplianceObserver().map { [weak self] name -> WhitePannelItem? in
+            guard let self = self, let room = self.room else { return nil }
+            let op = WhiteboardPannelOperation.appliance(name)
+            op.excute(inRoom: room)
+            if let index = self.pannelItems.firstIndex(where: { $0.contains(operation: op) }) {
+                return self.pannelItems[index]
+            }
+            return nil
+        }
+        
+        let initColorAndWidth = joinRoom.map { room -> (UIColor, Float) in
+            if let initColor = room.state.memberState?.strokeColor {
+                let color = UIColor.init(numberArray: initColor)
+                let width = (room.state.memberState?.strokeWidth ?? 0).floatValue
+                return (color, width)
+            } else {
+                return (.black, 1)
+            }
+        }
+        
+        let selectedColorAndWidth = menuNavigator.getColorAndWidthObserver().do(onNext: { [weak self] color, width in
+            if let room = self?.room {
+                let newState = WhiteMemberState()
+                newState.strokeColor = color.getNumersArray()
+                newState.strokeWidth = .init(value: width)
+                room.setMemberState(newState)
+                
+                if let index = self?.pannelItems.firstIndex(of: .colorAndWidth(displayColor: .gray)) {
+                    self?.pannelItems[index] = .colorAndWidth(displayColor: color)
+                }
+            }
+        })
+                                                                                                   
+        let selectColorAndWidthPresent = input.pannelTap.asObservable().filter { $0.hasSubMenu && !$0.selectable }.flatMap { [weak self] tap -> Observable<Void> in
+            guard let self = self, let room = self.room else { return .just(()) }
+            switch tap {
+            case .colorAndWidth:
+                let lineWidth = room.state.memberState?.strokeWidth?.floatValue ?? 0
+                self.menuNavigator.presentColorAndWidthPicker(item: tap, lineWidth: lineWidth)
+                return .just(())
+            default:
+                return .just(())
+            }
+        }
+        
+        let appliancePresent = input.pannelTap.asObservable().filter { $0.hasSubMenu && $0.selectable }.flatMap { [unowned self] tap -> Observable<Void> in
+            self.menuNavigator.presentPicker(item: tap)
+            return .just(())
+        }
+        
+        let actions = input.pannelTap.asObservable().filter { $0.onlyAction }.map { [weak self] tap -> WhiteboardPannelOperation? in
+            switch tap {
+            case .single(let op):
+                if let room = self?.room {
+                    op.excute(inRoom: room)
+                }
+                return op
+            default:
+                return nil
+            }
+        }
+        
+        let pannelItem = Observable.of(initPannelItem,
+                                       selectableTap,
+                                       subMenuItem)
             .merge()
-        return (join, taps, appliance, stokeValue)
+                
+        let undo = input.undoTap.asObservable()
+            .do(onNext: { [unowned self] in
+                self.room.undo()
+                
+            })
+        let redo = input.redoTap.asObservable()
+            .do(onNext: { [unowned self] in
+                self.room.redo()
+            })
+                
+        let colorAndWidth = Observable.of(initColorAndWidth, selectedColorAndWidth).merge()
+        let subMenuPresent = Observable.of(selectColorAndWidthPresent, appliancePresent).merge()
+                
+        return .init(join: joinRoom,
+                     selectedItem: pannelItem,
+                     actions: actions,
+                     undo: undo,
+                     redo: redo,
+                     colorAndWidth: colorAndWidth,
+                     subMenuPresent: subMenuPresent)
     }
     
     // MARK: - Public
-    func joinRoom() -> Observable<Void> {
-        return Observable.create { [weak self] observer in
+    func joinRoom() -> Single<WhiteRoom> {
+        return .create { [weak self] observer in
             guard let self = self else {
+                observer(.failure("self not exist"))
                 return Disposables.create()
             }
             self.sdk.joinRoom(with: self.whiteRoomConfig,
                               callbacks: self) { [weak self] success, room, error in
                 guard let self = self else { return }
+                guard let room = room else {
+                    observer(.failure("error room"))
+                    return
+                }
                 if let error = error {
-                    observer.onError(error)
+                    observer(.failure(error))
                     return
                 }
                 self.room = room
-                observer.onNext(())
-                observer.onCompleted()
+                observer(.success(room))
             }
             return Disposables.create()
-        }.do(onCompleted: { [weak self] in
+        }.do(onSuccess: { [weak self] _ in
             self?.isRoomJoined.accept(true)
         })
     }
