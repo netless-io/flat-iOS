@@ -358,9 +358,59 @@ class ClassRoomViewController: UIViewController {
                                                                    resumeTap: resumeButton.rx.tap.asDriver(onErrorJustReturn: ()),
                                                                    endTap: endButton.rx.tap.asDriver(onErrorJustReturn: ()),
                                                                    pauseTap: pauseButton.rx.tap.asDriver(onErrorJustReturn: ())))
-        output
+        
+        output.taps
             .drive()
             .disposed(by: rx.disposeBag)
+        
+        output.starting
+            .drive(with: self, onNext: { weakSelf, starting in
+                let title = NSLocalizedString("Start Class", comment: "")
+                if starting {
+                    weakSelf.startButton.setTitle(title + "...", for: .normal)
+                } else {
+                    weakSelf.startButton.setTitle(title, for: .normal)
+                }
+                weakSelf.startButton.isEnabled = !starting
+            })
+            .disposed(by: rx.disposeBag)
+        
+        output.pausing
+            .drive(with: self, onNext: { weakSelf, pausing in
+                let title = NSLocalizedString("Pause Class", comment: "")
+                if pausing {
+                    weakSelf.pauseButton.setTitle(title + "...", for: .normal)
+                } else {
+                    weakSelf.pauseButton.setTitle(title, for: .normal)
+                }
+                weakSelf.pauseButton.isEnabled = !pausing
+            })
+            .disposed(by: rx.disposeBag)
+        
+        output.resuming
+            .drive(with: self, onNext: { weakSelf, resuming in
+                let title = NSLocalizedString("Resume Class", comment: "")
+                if resuming {
+                    weakSelf.resumeButton.setTitle(title + "...", for: .normal)
+                } else {
+                    weakSelf.resumeButton.setTitle(title, for: .normal)
+                }
+                weakSelf.resumeButton.isEnabled = !resuming
+            })
+            .disposed(by: rx.disposeBag)
+        
+        output.stopping
+            .drive(with: self, onNext: { weakSelf, stopping in
+                let title = NSLocalizedString("Stop Class", comment: "")
+                if stopping {
+                    weakSelf.endButton.setTitle(title + "...", for: .normal)
+                } else {
+                    weakSelf.endButton.setTitle(title, for: .normal)
+                }
+                weakSelf.endButton.isEnabled = !stopping
+            })
+            .disposed(by: rx.disposeBag)
+        
     }
     
     func bindUsers() {

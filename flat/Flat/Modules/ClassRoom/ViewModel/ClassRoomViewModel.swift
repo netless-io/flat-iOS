@@ -138,33 +138,54 @@ class ClassRoomViewModel {
     let commandEncoder = CommandEncoder()
     let commandDecoder = CommandDecoder()
     
+    struct TeacherOperationOutPut {
+        let taps: Driver<Void>
+        let starting: Driver<Bool>
+        let pausing: Driver<Bool>
+        let resuming: Driver<Bool>
+        let stopping: Driver<Bool>
+    }
+    
     // MARK: - Public
-    func tranfromTeacherInput(_ input: TeacherOperationInput) -> Driver<Void> {
-        let startTap = input.startTap.flatMap { [unowned self] _ -> Driver<Void> in
-            return self.startOperation().asDriver(onErrorJustReturn: ())
-        }
+    func tranfromTeacherInput(_ input: TeacherOperationInput) -> TeacherOperationOutPut {
+        let starting = BehaviorRelay<Bool>.init(value: false)
+        let startTap = input.startTap.do(onNext: { starting.accept(true) })
+            .flatMap { [unowned self] _ -> Driver<Void> in
+                return self.startOperation().asDriver(onErrorJustReturn: ())
+            }.do(onNext: { starting.accept(false) })
+                
+        let pausing = BehaviorRelay<Bool>.init(value: false)
+        let pauseTap = input.pauseTap.do(onNext: { pausing.accept(true)})
+                .flatMap { [unowned self] _ -> Driver<Void> in
+                    return self.pauseOperation().asDriver(onErrorJustReturn: ())
+                }.do(onNext: { pausing.accept(false) })
         
-        let pauseTap = input.pauseTap.flatMap { [unowned self] _ -> Driver<Void> in
-            return self.pauseOperation().asDriver(onErrorJustReturn: ())
-        }
+        let resuming = BehaviorRelay<Bool>.init(value: false)
+        let resumeTap = input.resumeTap.do(onNext: { resuming.accept(true)})
+                    .flatMap { [unowned self] _ -> Driver<Void> in
+                        return self.resumeOperation().asDriver(onErrorJustReturn: ())
+                    }.do(onNext: { resuming.accept(false) })
         
-        let resumeTap = input.resumeTap.flatMap { [unowned self] _ -> Driver<Void> in
-            return self.resumeOperation().asDriver(onErrorJustReturn: ())
-        }
-        
+        let stopping = BehaviorRelay<Bool>.init(value: false)
         let stopTap = input.endTap.flatMap { [unowned self] _ -> Driver<Void> in
-            return self.alertProvider.showAlert(with: .init(title: "确认结束上课？",
-                                                     message: "一旦结束上课，所有用户退出房间，并且自动结束课程和录制（如有），不能继续直播",
-                                                     preferredStyle: .alert,
-                                                     actionModels: [.cancel, .comfirm]))
-                .filter { $0.title == AlertModel.ActionModel.comfirm.title }
-                .flatMap { [unowned self] _ -> Maybe<Void> in
-                    self.stopOperation().asMaybe()
-                }
-                .asDriver(onErrorJustReturn: ())
-        }
+                        return self.alertProvider.showAlert(with: .init(title: "确认结束上课？",
+                                                                        message: "一旦结束上课，所有用户退出房间，并且自动结束课程和录制（如有），不能继续直播",
+                                                                        preferredStyle: .alert,
+                                                                        actionModels: [.cancel, .comfirm]))
+                            .filter { $0.title == AlertModel.ActionModel.comfirm.title }
+                            .do(onNext: { _ in stopping.accept(true) })
+                            .flatMap { [unowned self] _ -> Maybe<Void> in
+                                self.stopOperation().asMaybe()
+                            }
+                            .asDriver(onErrorJustReturn: ())
+                    }.do(onNext: { stopping.accept(false) })
         
-        return Driver.of(startTap, pauseTap, resumeTap, stopTap).merge()
+        let taps = Driver.of(startTap, pauseTap, resumeTap, stopTap).merge()
+        return .init(taps: taps,
+                     starting: starting.asDriver(),
+                     pausing: pausing.asDriver(),
+                     resuming: resuming.asDriver(),
+                     stopping: stopping.asDriver())
     }
     
     func transform(_ input: Input) -> Output {
