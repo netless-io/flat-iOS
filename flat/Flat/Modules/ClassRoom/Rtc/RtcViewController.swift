@@ -100,6 +100,16 @@ class RtcViewController: UIViewController {
         fatalError()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.isIdleTimerDisabled = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
