@@ -15,6 +15,10 @@ class CreateClassRoomViewController: UIViewController {
     
     let deviceStatusStore: UserDevicePreferredStatusStore
     
+    var defaultTitle: String {
+        "\(AuthStore.shared.user?.name ?? "") " + NSLocalizedString("Created Room", comment: "")
+    }
+    
     lazy var currentRoomType = availableTypes.first! {
         didSet {
             guard currentRoomType != oldValue else { return }
@@ -34,6 +38,8 @@ class CreateClassRoomViewController: UIViewController {
         }
     }
     
+    let margin: CGFloat = 16
+    
     // MARK: - LifeCycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
@@ -46,10 +52,29 @@ class CreateClassRoomViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let distance = createButton.frame.maxY - subjectTextField.frame.maxY
+        subjectTextField.keyboardDistanceFromTextField = distance
+        
+        let width = view.bounds.width
+        let normalWidth: CGFloat = 210
+        let count = CGFloat(typesStackView.arrangedSubviews.count)
+        let averageDivideWidh = (width - (2 * margin) - ((count - 1) * typesStackView.spacing)) / count
+        let preferredWidth = max(normalWidth, averageDivideWidh)
+        
+        if let fw = typeViews.first?.bounds.width, fw != preferredWidth {
+            typeViews.first?.snp.remakeConstraints({
+                $0.width.equalTo(preferredWidth)
+            })
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         updateSelected()
+        subjectTextField.becomeFirstResponder()
     }
     
     // MARK: - Private
@@ -71,8 +96,7 @@ class CreateClassRoomViewController: UIViewController {
         
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
-        let stackView = UIStackView(arrangedSubviews: typeViews)
-        stackView.axis = .horizontal
+        let stackView = typesStackView
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
         
@@ -85,7 +109,6 @@ class CreateClassRoomViewController: UIViewController {
         view.addSubview(micButton)
         view.addSubview(createButton)
         
-        let margin: CGFloat = 16
         topLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(margin)
@@ -99,12 +122,6 @@ class CreateClassRoomViewController: UIViewController {
             make.top.equalTo(subjectTextField.snp.bottom).offset(16)
             make.left.equalToSuperview().inset(margin)
         }
-        
-        stackView.spacing = margin
-        stackView.distribution = .fillEqually
-        let count = CGFloat(stackView.arrangedSubviews.count)
-        let inset = (count + 1) / count  * margin
-        typeViews.first?.snp.makeConstraints({ $0.width.equalTo(self.view).offset(-inset).multipliedBy(1.0 / 3.0)})
         
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -141,7 +158,7 @@ class CreateClassRoomViewController: UIViewController {
     func typeViewForType(_ type: ClassRoomType) -> ClassTypeCell {
         let view = ClassTypeCell()
         view.typeImageView.image = UIImage(named: type.rawValue)
-        view.typeLaebl.text = NSLocalizedString(type.rawValue, comment: "")
+        view.typeLabel.text = NSLocalizedString(type.rawValue, comment: "")
         view.typeDescriptionLaebl.text = NSLocalizedString(type.rawValue + " Description", comment: "")
         view.addTarget(self, action: #selector(onClickType(_:)), for: .touchUpInside)
         return view
@@ -169,7 +186,6 @@ class CreateClassRoomViewController: UIViewController {
     @objc func onClickCreate(_ sender: UIButton) {
         let title: String
         let text = subjectTextField.text ?? ""
-        let defaultTitle = "\(AuthStore.shared.user?.name ?? "") " + NSLocalizedString("Created Room", comment: "")
         title = text.isEmpty ? defaultTitle : text
         let startDate = Date()
         let createQuest = CreateRoomRequest(beginTime: startDate,
@@ -250,6 +266,7 @@ class CreateClassRoomViewController: UIViewController {
         tf.placeholder = NSLocalizedString("Room Subject Placeholder", comment: "")
         tf.leftView = .init(frame: .init(origin: .zero, size: .init(width: 10, height: 20)))
         tf.leftViewMode = .always
+        tf.text = defaultTitle
         return tf
     }()
     
@@ -288,6 +305,14 @@ class CreateClassRoomViewController: UIViewController {
         btn.setTitle(NSLocalizedString("Create", comment: ""), for: .normal)
         btn.addTarget(self, action: #selector(onClickCreate(_:)), for: .touchUpInside)
         return btn
+    }()
+    
+    lazy var typesStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: typeViews)
+        view.axis = .horizontal
+        view.spacing = margin
+        view.distribution = .fillEqually
+        return view
     }()
     
     lazy var typeViews: [ClassTypeCell] = availableTypes.enumerated().map {

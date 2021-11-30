@@ -32,32 +32,16 @@ class ClassTypeCell: UIControl {
     func setup() {
         clipsToBounds = true
         layer.cornerRadius = 4
-        
         addSubview(typeImageView)
-        addSubview(typeLaebl)
-        addSubview(typeDescriptionLaebl)
-        addSubview(selectedIndicatorImageVIew)
-        
+        addSubview(rightItemsStackView)
+        rightItemsStackView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(typeImageView)
+            make.left.equalTo(typeImageView.snp.right).offset(6)
+            make.right.equalToSuperview().inset(6)
+        }
         typeImageView.snp.makeConstraints { make in
             make.left.top.bottom.equalToSuperview().inset(12)
             make.width.equalTo(typeImageView.snp.height)
-        }
-        typeLaebl.snp.makeConstraints { make in
-            make.top.equalTo(typeImageView)
-            make.left.equalTo(typeImageView.snp.right).offset(6)
-            make.right.equalToSuperview().inset(6)
-            make.height.equalTo(24)
-        }
-        
-        typeDescriptionLaebl.snp.makeConstraints { make in
-            make.top.equalTo(typeLaebl.snp.bottom).offset(4)
-            make.left.equalTo(typeImageView.snp.right).offset(6)
-            make.right.equalToSuperview().inset(6)
-        }
-        
-        selectedIndicatorImageVIew.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(typeDescriptionLaebl.snp.bottom).offset(4)
-            make.right.bottom.equalToSuperview().inset(12)
         }
     }
     
@@ -73,24 +57,40 @@ class ClassTypeCell: UIControl {
         label.font = .systemFont(ofSize: 12)
         label.textColor = .subText
         label.numberOfLines = 2
-        label.minimumScaleFactor = 0.5
-        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
-    lazy var typeLaebl: UILabel = {
+    lazy var typeLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textColor = .text
-        label.minimumScaleFactor = 0.5
-        label.adjustsFontSizeToFitWidth = true
         return label
+    }()
+    
+    lazy var selectedIndicatorImageVIewContainer: UIView = {
+        let view = UIView()
+        view.addSubview(selectedIndicatorImageVIew)
+        selectedIndicatorImageVIew.snp.makeConstraints { make in
+            make.right.bottom.top.equalToSuperview()
+            make.width.equalTo(selectedIndicatorImageVIew.snp.height)
+        }
+        return view
     }()
     
     lazy var selectedIndicatorImageVIew: UIImageView = {
         let view = UIImageView()
         view.tintColor = .borderColor
         view.setContentCompressionResistancePriority(.required, for: .vertical)
+        return view
+    }()
+    
+    lazy var rightItemsStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [typeLabel, typeDescriptionLaebl, selectedIndicatorImageVIewContainer])
+        view.isUserInteractionEnabled = false
+        view.distribution = .fill
+        view.axis = .vertical
+        typeLabel.snp.makeConstraints { $0.height.equalTo(24) }
+        selectedIndicatorImageVIewContainer.snp.makeConstraints { $0.height.equalTo(16) }
         return view
     }()
     
