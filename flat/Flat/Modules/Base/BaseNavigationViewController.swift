@@ -19,6 +19,14 @@ class BaseNavigationViewController: UINavigationController {
         navigationBar.tintColor = .subText
     }
     
+    override func show(_ vc: UIViewController, sender: Any?) {
+        if let sender = sender as? Bool {
+            pushViewController(vc, animated: sender)
+        } else {
+            pushViewController(vc, animated: true)
+        }
+    }
+    
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if viewControllers.count == 1 {
             viewController.hidesBottomBarWhenPushed = true

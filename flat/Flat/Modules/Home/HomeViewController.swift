@@ -77,7 +77,7 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-        splitViewController?.delegate = self
+        (splitViewController as? MainSplitViewController)?.detailUpdateDelegate = self
         avatarButton.isHidden = false
         loadRooms(nil)
     }
@@ -99,20 +99,19 @@ class HomeViewController: UIViewController {
         let width = view.bounds.width
         let itemWidth = width / 3
         let itemHeight = itemWidth / headerRatio
-        tableHeader.frame = .init(origin: .zero, size: .init(width: itemWidth, height: itemHeight))
-        tableView.tableHeaderView = tableHeader
-        tableView.reloadData()
-        tableView.reloadEmptyDataSet()
+        
+        let targetFrame: CGRect = .init(origin: .zero, size: .init(width: width, height: itemHeight))
+        if tableHeader.frame != targetFrame {
+            tableHeader.frame = targetFrame
+            tableView.tableHeaderView = tableHeader
+            tableView.reloadData()
+            tableView.reloadEmptyDataSet()
+        }
     }
     
     // MARK: - Action
     @objc func onClickSetting() {
-        if let split = splitViewController {
-            let vc = BaseNavigationViewController(rootViewController: SettingViewController())
-            split.showDetailViewController(vc, sender: nil)
-        } else {
-            navigationController?.pushViewController(SettingViewController(), animated: true)
-        }
+        splitViewController?.showDetailViewController(SettingViewController(), sender: nil)
     }
     
     @objc func onClickProfile() {
@@ -120,21 +119,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc func onClickCreate() {
-        let vc = CreateClassRoomViewController()
-        if let split = splitViewController {
-            split.showDetailViewController(BaseNavigationViewController(rootViewController: vc), sender: nil)
-        } else {
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        splitViewController?.showDetailViewController(CreateClassRoomViewController(), sender: nil)
     }
     
     @objc func onClickJoin() {
-        let vc = JoinRoomViewController()
-        if let split = splitViewController {
-            split.showDetailViewController(BaseNavigationViewController(rootViewController: vc), sender: nil)
-        } else {
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        splitViewController?.showDetailViewController(JoinRoomViewController(), sender: nil)
     }
     
     @objc func onClickBook() {
@@ -157,6 +146,9 @@ class HomeViewController: UIViewController {
     }
     
     @objc func onRefresh(_ sender: UIRefreshControl) {
+        // Update for sometimes network doesn't work
+        avatarButton.kf.setBackgroundImage(with: AuthStore.shared.user?.avatar, for: .normal)
+        
         loadRooms(sender) { _ in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 sender.endRefreshing()
@@ -229,7 +221,7 @@ class HomeViewController: UIViewController {
     }
     
     func config(cell: RoomTableViewCell, with room: RoomListInfo, indexPath: IndexPath) {
-        cell.selectionStyle = .none
+//        cell.selectionStyle = .none
         cell.calendarView.isHidden = !shouldShowCalendarAt(indexPath: indexPath)
         
         let formatter = DateFormatter()
@@ -396,12 +388,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
         let vc = RoomDetailViewControllerFactory.getRoomDetail(withListinfo: item)
-        if let split = splitViewController {
-            let navi = BaseNavigationViewController(rootViewController: vc)
-            split.showDetailViewController(navi, sender: nil)
-        } else {
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        splitViewController?.showDetailViewController(vc, sender: nil)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -449,17 +436,17 @@ extension HomeViewController: UITabBarDelegate {
     }
 }
 
-extension HomeViewController: UISplitViewControllerDelegate {
-    func splitViewController(_ splitViewController: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
+extension HomeViewController: MainSplitViewControllerDetailUpdateDelegate {
+    func mainSplitViewControllerDidUpdateDetail(_ vc: UIViewController, sender: Any?) {
+        // If select a vc is not the room detail, deselect the tableview
         if let selectedItem = tableView.indexPathForSelectedRow {
             let item = list[selectedItem.row]
-            if let vc = (vc as? UINavigationController)?.topViewController as? RoomDetailViewController {
+            if let vc = ((vc as? UINavigationController)?.topViewController as? RoomDetailViewController) {
                 if vc.info.roomUUID == item.roomUUID {
-                    return false
+                    return
                 }
             }
             tableView.deselectRow(at: selectedItem, animated: true)
         }
-        return false
     }
 }

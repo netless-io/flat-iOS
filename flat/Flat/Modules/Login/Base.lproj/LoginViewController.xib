@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="Flat" customModuleProvider="target">
             <connections>
                 <outlet property="githubLoginButton" destination="66p-b6-epO" id="UmJ-jc-cPR"/>
+                <outlet property="loginBg" destination="XSB-Cf-LTe" id="Fw4-oL-sUW"/>
                 <outlet property="stackView" destination="Eu9-lO-dxG" id="HNj-Ff-97c"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="wechatLoginButton" destination="bLG-0j-XGe" id="Hs7-ii-aUc"/>

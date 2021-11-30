@@ -81,15 +81,13 @@ class JoinRoomViewController: UIViewController {
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
                 
-                if let split = weakSelf.splitViewController {
-                    let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: roomInfo, roomUUID: playInfo.roomUUID)
-                    split.showDetailViewController(BaseNavigationViewController(rootViewController: detailVC), sender: nil)
-                    split.present(vc, animated: true, completion: nil)
-                } else {
-                    let navi = self.navigationController
-                    navi?.popViewController(animated: false)
-                    navi?.pushViewController(vc, animated: true)
-                }
+                let split = weakSelf.splitViewController
+                let navi = weakSelf.navigationController
+                let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: roomInfo, roomUUID: playInfo.roomUUID)
+                
+                split?.present(vc, animated: true, completion: nil)
+                navi?.popViewController(animated: false)
+                split?.showDetailViewController(detailVC, sender: nil)
             }, onFailure: { weakSelf, error in
                 sender.isEnabled = true
                 weakSelf.showAlertWith(message: error.localizedDescription)
@@ -143,22 +141,22 @@ class JoinRoomViewController: UIViewController {
         
         let margin: CGFloat = 16
         topLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(margin)
+            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(margin)
         }
         subjectTextField.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(margin)
+            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(46)
             make.height.equalTo(48)
         }
         
         joinOptionsLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(margin)
+            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(110)
         }
         
         cameraButton.snp.makeConstraints { make in
-            make.left.equalToSuperview()
+            make.left.equalTo(view.safeAreaLayoutGuide)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(135)
         }
         
@@ -168,7 +166,7 @@ class JoinRoomViewController: UIViewController {
         }
         
         joinButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(margin)
+            make.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
             make.centerY.equalTo(cameraButton)
             make.height.equalTo(32)
         }

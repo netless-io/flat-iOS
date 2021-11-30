@@ -43,11 +43,6 @@ class LaunchCoordinator {
 //                window.rootViewController = MainTabbarController()
                 
                 window.rootViewController = MainSplitViewController()
-//                if #available(iOS 14.0, *) {
-//                    window.rootViewController = MainSplitViewController(style: .doubleColumn)
-//                } else {
-//                    window.rootViewController = MainSplitViewController()
-//                }
                 window.makeKeyAndVisible()
                 return
             }

@@ -12,6 +12,14 @@ import UIKit
 class LoginViewController: UIViewController {
     var githunLogin: GithubLogin?
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact {
+            return [.portrait]
+        } else {
+            return [.all]
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // TODO: hide wechat when wx not intsalled
@@ -24,15 +32,10 @@ class LoginViewController: UIViewController {
     }
     
     func syncTraiCollection(_ trait: UITraitCollection) {
-        switch trait.horizontalSizeClass {
-        case .compact:
-            stackView.axis = .vertical
-        case .regular:
-            stackView.axis = .horizontal
-        case .unspecified:
-            return
-        @unknown default:
-            return
+        if trait.horizontalSizeClass == .compact || trait.verticalSizeClass == .compact {
+            loginBg.isHidden = true
+        } else {
+            loginBg.isHidden = false
         }
     }
     
@@ -83,6 +86,7 @@ class LoginViewController: UIViewController {
         popoverViewController(viewController: alert, fromSource: githubLoginButton)
     }
     
+    @IBOutlet weak var loginBg: UIView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var githubLoginButton: UIButton!
     @IBOutlet weak var wechatLoginButton: UIButton!

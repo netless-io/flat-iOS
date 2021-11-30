@@ -56,11 +56,9 @@ class RoomDetailViewController: UIViewController {
                     case .success:
                         NotificationCenter.default.post(name: .init(rawValue: homeShouldUpdateListNotification), object: nil)
                         hud.stopAnimating()
-                        if let split = viewController.splitViewController {
-                            split.showDetailViewController(EmptySplitSecondaryViewController(), sender: nil)
-                        } else {
-                            viewController.navigationController?.popViewController(animated: true)
-                        }
+                        
+                        viewController.navigationController?.popViewController(animated: true)
+                        viewController.mainSplitViewController?.cleanSecondary()
                     case .failure(let error):
                         hud.stopAnimating()
                         viewController.toast(error.localizedDescription)
@@ -300,11 +298,7 @@ class RoomDetailViewController: UIViewController {
                                                                         detailInfo, deviceStatus: .init(mic: self.micOn,
                                                                                                         camera: self.cameraOn))
                 vc.modalPresentationStyle = .fullScreen
-                if let split = self.splitViewController {
-                    split.present(vc, animated: true, completion: nil)
-                } else {
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
+                self.splitViewController?.present(vc, animated: true, completion: nil)
             case .failure(let error):
                 self.showAlertWith(message: error.localizedDescription)
             }

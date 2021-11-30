@@ -93,12 +93,7 @@ class SettingViewController: UITableViewController {
                 } else {
                     (UIApplication.shared.delegate as? AppDelegate)?.launch?.reboot()
                 }
-                if let split = UIApplication.shared.topViewController?.splitViewController {
-                    let vc = BaseNavigationViewController(rootViewController: SettingViewController())
-                    split.showDetailViewController(vc, sender: nil)
-                } else if let navi = UIApplication.shared.topViewController?.navigationController {
-                    navi.pushViewController(SettingViewController(), animated: false)
-                }
+                UIApplication.shared.topViewController?.splitViewController?.showDetailViewController(SettingViewController(), sender: false)
                 print(LocaleManager.languageCode)
             }))
         }

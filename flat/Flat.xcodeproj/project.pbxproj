@@ -85,6 +85,8 @@
 		8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A80208C275473D900F5691C /* RtcVideoItemView.swift */; };
 		8A80208F2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A80208E2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift */; };
 		8A8020912755B09000F5691C /* RtcViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8020902755B09000F5691C /* RtcViewController.swift */; };
+		8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8020922755F12600F5691C /* UIView+LoopForSuperView.swift */; };
+		8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8020942755F51C00F5691C /* UIScrollView+Centerize.swift */; };
 		8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBAE2719983700965185 /* CreateRoomRequest.swift */; };
 		8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB02719993C00965185 /* JoinRoomInfo.swift */; };
 		8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB22719999000965185 /* JoinRoomRequest.swift */; };
@@ -288,6 +290,8 @@
 		8A80208C275473D900F5691C /* RtcVideoItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcVideoItemView.swift; sourceTree = "<group>"; };
 		8A80208E2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassRoomType+AgoraVideoSteamType.swift"; sourceTree = "<group>"; };
 		8A8020902755B09000F5691C /* RtcViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RtcViewController.swift; sourceTree = "<group>"; };
+		8A8020922755F12600F5691C /* UIView+LoopForSuperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LoopForSuperView.swift"; sourceTree = "<group>"; };
+		8A8020942755F51C00F5691C /* UIScrollView+Centerize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Centerize.swift"; sourceTree = "<group>"; };
 		8A97EBAE2719983700965185 /* CreateRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomRequest.swift; sourceTree = "<group>"; };
 		8A97EBB02719993C00965185 /* JoinRoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInfo.swift; sourceTree = "<group>"; };
 		8A97EBB22719999000965185 /* JoinRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomRequest.swift; sourceTree = "<group>"; };
@@ -963,6 +967,8 @@
 				8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */,
 				8ABF36232745F2D8000D5003 /* AlertProvider.swift */,
 				8ABF362527462F93000D5003 /* Observable+Extension.swift */,
+				8A8020922755F12600F5691C /* UIView+LoopForSuperView.swift */,
+				8A8020942755F51C00F5691C /* UIScrollView+Centerize.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1329,6 +1335,7 @@
 				8A7741E7273A6FA2009FAADA /* RoomCancelRequest.swift in Sources */,
 				8A270B7227182A2B00450DC6 /* CloudStorageViewController.swift in Sources */,
 				8ACE3A1B272F8BA800BC37F7 /* UIViewController+Extension.swift in Sources */,
+				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
 				8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */,
 				8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */,
 				8A3460D1272962D70066063E /* RoomStatus.swift in Sources */,
@@ -1340,6 +1347,7 @@
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
 				8A9FB3AF2722676400F6F06F /* AgoraResponseDataHandler.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
+				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,
 				8AAC69B32717E3EB00F9A3B4 /* User.swift in Sources */,
 				8A0EB7BE272BE6FB00003DF7 /* InviteViewController.swift in Sources */,
 				8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */,

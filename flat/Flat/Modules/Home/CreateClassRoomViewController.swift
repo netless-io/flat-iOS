@@ -54,8 +54,6 @@ class CreateClassRoomViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let distance = createButton.frame.maxY - subjectTextField.frame.maxY
-        subjectTextField.keyboardDistanceFromTextField = distance
         
         let width = view.bounds.width
         let normalWidth: CGFloat = 210
@@ -74,7 +72,6 @@ class CreateClassRoomViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         updateSelected()
-        subjectTextField.becomeFirstResponder()
     }
     
     // MARK: - Private
@@ -110,36 +107,35 @@ class CreateClassRoomViewController: UIViewController {
         view.addSubview(createButton)
         
         topLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(margin)
+            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(margin)
         }
         subjectTextField.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(margin)
+            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(46)
             make.height.equalTo(48)
         }
         typeLabel.snp.makeConstraints { make in
             make.top.equalTo(subjectTextField.snp.bottom).offset(16)
-            make.left.equalToSuperview().inset(margin)
+            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
         }
-        
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.height.equalTo(96)
         }
         scrollView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(margin)
+            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(140)
             make.height.equalTo(96)
         }
         
         joinOptionsLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(margin)
+            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(252)
         }
         
         cameraButton.snp.makeConstraints { make in
-            make.left.equalToSuperview()
+            make.left.equalTo(view.safeAreaLayoutGuide)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(274)
         }
         
@@ -149,8 +145,8 @@ class CreateClassRoomViewController: UIViewController {
         }
         
         createButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(338)
+            make.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
+            make.centerY.equalTo(cameraButton)
             make.height.equalTo(32)
         }
     }
@@ -167,7 +163,12 @@ class CreateClassRoomViewController: UIViewController {
     func updateSelected() {
         typeViews.forEach({ $0.isSelected = false })
         if let index = availableTypes.firstIndex(of: currentRoomType) {
-            typeViews[index].isSelected = true
+            let selectedTypeView = typeViews[index]
+            selectedTypeView.isSelected = true
+            
+            if let scrollView = selectedTypeView.searchSuperViewForType(UIScrollView.self) {
+                scrollView.centerize(selectedTypeView, animated: true)
+            }
         }
     }
     
@@ -212,15 +213,13 @@ class CreateClassRoomViewController: UIViewController {
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
                 
-                if let split = weakSelf.splitViewController {
-                    let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: roomInfo, roomUUID: playInfo.roomUUID)
-                    split.showDetailViewController(BaseNavigationViewController(rootViewController: detailVC), sender: nil)
-                    split.present(vc, animated: true, completion: nil)
-                } else {
-                    let navi = self.navigationController
-                    navi?.popViewController(animated: false)
-                    navi?.pushViewController(vc, animated: true)
-                }
+                let split = weakSelf.splitViewController
+                let navi = weakSelf.navigationController
+                let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: roomInfo, roomUUID: playInfo.roomUUID)
+                
+                split?.present(vc, animated: true, completion: nil)
+                navi?.popViewController(animated: false)
+                split?.showDetailViewController(detailVC, sender: nil)
             }, onFailure: { weakSelf, error in
                 sender.isEnabled = true
                 weakSelf.showAlertWith(message: error.localizedDescription)
@@ -266,7 +265,9 @@ class CreateClassRoomViewController: UIViewController {
         tf.placeholder = NSLocalizedString("Room Subject Placeholder", comment: "")
         tf.leftView = .init(frame: .init(origin: .zero, size: .init(width: 10, height: 20)))
         tf.leftViewMode = .always
+        tf.returnKeyType = .done
         tf.text = defaultTitle
+        tf.delegate = self
         return tf
     }()
     
@@ -319,5 +320,12 @@ class CreateClassRoomViewController: UIViewController {
         let view = typeViewForType($0.element)
         view.tag = $0.offset
         return view
+    }
+}
+
+extension CreateClassRoomViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
