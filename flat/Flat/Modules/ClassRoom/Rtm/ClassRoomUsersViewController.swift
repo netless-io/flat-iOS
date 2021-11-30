@@ -209,7 +209,7 @@ class ClassRoomUsersViewController: UIViewController {
             make.right.lessThanOrEqualTo(stopInteractingButton.snp.left).offset(-10)
         }
         stopInteractingButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(12)
+            make.right.equalTo(view.safeAreaLayoutGuide).inset(12)
             make.centerY.equalToSuperview()
             make.height.equalTo(28)
         }

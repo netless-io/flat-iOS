@@ -73,7 +73,6 @@
 		8A7741BF2733D040009FAADA /* UIViewController+Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */; };
 		8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741C02734CEFE009FAADA /* ChatNoticeTableViewCell.swift */; };
 		8A7741C42734CFAC009FAADA /* BorderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741C32734CFAC009FAADA /* BorderLabel.swift */; };
-		8A7741C62734FFF0009FAADA /* RtcNoTeachCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741C52734FFF0009FAADA /* RtcNoTeachCollectionViewCell.swift */; };
 		8A7741CC2735210C009FAADA /* String+Diffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741CB2735210C009FAADA /* String+Diffable.swift */; };
 		8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6E271829AB00450DC6 /* HomeViewController.swift */; };
 		8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */; };
@@ -81,6 +80,11 @@
 		8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E2273A47C2009FAADA /* Array+Extension.swift */; };
 		8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E4273A542F009FAADA /* UIView+Badge.swift */; };
 		8A7741E7273A6FA2009FAADA /* RoomCancelRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E6273A6FA2009FAADA /* RoomCancelRequest.swift */; };
+		8A8020892754697500F5691C /* RtcViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8020882754697500F5691C /* RtcViewModel.swift */; };
+		8A80208B2754699300F5691C /* Rtc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A80208A2754699300F5691C /* Rtc.swift */; };
+		8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A80208C275473D900F5691C /* RtcVideoItemView.swift */; };
+		8A80208F2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A80208E2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift */; };
+		8A8020912755B09000F5691C /* RtcViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8020902755B09000F5691C /* RtcViewController.swift */; };
 		8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBAE2719983700965185 /* CreateRoomRequest.swift */; };
 		8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB02719993C00965185 /* JoinRoomInfo.swift */; };
 		8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB22719999000965185 /* JoinRoomRequest.swift */; };
@@ -146,7 +150,6 @@
 		8AC0535F274C72300064CF84 /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0535B274C72300064CF84 /* WhiteboardViewController.swift */; };
 		8AC05362274CC47B0064CF84 /* WhiteboardMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05361274CC47B0064CF84 /* WhiteboardMenuNavigator.swift */; };
 		8AC05364274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05363274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift */; };
-		8AC9CEF82742487D00EEBEE7 /* RtcViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
@@ -175,7 +178,6 @@
 		8AE8930A2727FAE9009C71DA /* ChannelStatusCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE893092727FAE9009C71DA /* ChannelStatusCommand.swift */; };
 		8AE8F5642721386200D2E0F5 /* RoomInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */; };
 		8AE8F56627213ACD00D2E0F5 /* RoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */; };
-		8AEA34F92727D17A00EA4009 /* RtcVideoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA34F82727D17A00EA4009 /* RtcVideoCollectionViewCell.swift */; };
 		9AE3AF17B16B9CA81A411696 /* Pods_Flat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B773F9587EAD9D58FD45B88 /* Pods_Flat.framework */; };
 /* End PBXBuildFile section */
 
@@ -276,12 +278,16 @@
 		8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Toast.swift"; sourceTree = "<group>"; };
 		8A7741C02734CEFE009FAADA /* ChatNoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNoticeTableViewCell.swift; sourceTree = "<group>"; };
 		8A7741C32734CFAC009FAADA /* BorderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderLabel.swift; sourceTree = "<group>"; };
-		8A7741C52734FFF0009FAADA /* RtcNoTeachCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcNoTeachCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A7741CB2735210C009FAADA /* String+Diffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Diffable.swift"; sourceTree = "<group>"; };
 		8A7741DB2738BB06009FAADA /* ClassRoomFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomFactory.swift; sourceTree = "<group>"; };
 		8A7741E2273A47C2009FAADA /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		8A7741E4273A542F009FAADA /* UIView+Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Badge.swift"; sourceTree = "<group>"; };
 		8A7741E6273A6FA2009FAADA /* RoomCancelRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCancelRequest.swift; sourceTree = "<group>"; };
+		8A8020882754697500F5691C /* RtcViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcViewModel.swift; sourceTree = "<group>"; };
+		8A80208A2754699300F5691C /* Rtc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rtc.swift; sourceTree = "<group>"; };
+		8A80208C275473D900F5691C /* RtcVideoItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcVideoItemView.swift; sourceTree = "<group>"; };
+		8A80208E2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassRoomType+AgoraVideoSteamType.swift"; sourceTree = "<group>"; };
+		8A8020902755B09000F5691C /* RtcViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RtcViewController.swift; sourceTree = "<group>"; };
 		8A97EBAE2719983700965185 /* CreateRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomRequest.swift; sourceTree = "<group>"; };
 		8A97EBB02719993C00965185 /* JoinRoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInfo.swift; sourceTree = "<group>"; };
 		8A97EBB22719999000965185 /* JoinRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomRequest.swift; sourceTree = "<group>"; };
@@ -353,7 +359,6 @@
 		8AC05363274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardMenuNavigatorImp.swift; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC376B0271D23AA003464B0 /* README-zh.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "README-zh.md"; path = "../README-zh.md"; sourceTree = "<group>"; };
-		8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcViewController.swift; sourceTree = "<group>"; };
 		8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingViewController.swift; sourceTree = "<group>"; };
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -387,7 +392,6 @@
 		8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoRequest.swift; sourceTree = "<group>"; };
 		8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfo.swift; sourceTree = "<group>"; };
 		8AEA34F327279D0C00EA4009 /* BorderPopoverBackgrounView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderPopoverBackgrounView.swift; sourceTree = "<group>"; };
-		8AEA34F82727D17A00EA4009 /* RtcVideoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcVideoCollectionViewCell.swift; sourceTree = "<group>"; };
 		ED5C49EBD78FE2B54C911AB1 /* Pods-flat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.release.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -502,12 +506,13 @@
 		8A11CC23272019D6001D0B1F /* Rtc */ = {
 			isa = PBXGroup;
 			children = (
-				8AC9CEF72742487D00EEBEE7 /* RtcViewController.swift */,
+				8A8020902755B09000F5691C /* RtcViewController.swift */,
+				8A8020882754697500F5691C /* RtcViewModel.swift */,
+				8A80208A2754699300F5691C /* Rtc.swift */,
 				8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */,
 				8A7741B8273287C2009FAADA /* RtcCellPopMenuView.swift */,
 				8A7741BA27328AEA009FAADA /* PopMenuView.swift */,
-				8AEA34F82727D17A00EA4009 /* RtcVideoCollectionViewCell.swift */,
-				8A7741C52734FFF0009FAADA /* RtcNoTeachCollectionViewCell.swift */,
+				8A80208C275473D900F5691C /* RtcVideoItemView.swift */,
 			);
 			path = Rtc;
 			sourceTree = "<group>";
@@ -865,6 +870,7 @@
 				8A9ACC04271E726B00E7E7CE /* RoomStartStatus.swift */,
 				8A9ACC02271E71B100E7E7CE /* RoomListInfo.swift */,
 				8A97EBB627199AC700965185 /* ClassRoomType.swift */,
+				8A80208E2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift */,
 				8A97EBB827199AD300965185 /* RTCShareScreen.swift */,
 				8AAC69B22717E3EB00F9A3B4 /* User.swift */,
 				8A97EBB02719993C00965185 /* JoinRoomInfo.swift */,
@@ -1308,6 +1314,7 @@
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
 				8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */,
 				8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */,
+				8A80208B2754699300F5691C /* Rtc.swift in Sources */,
 				8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */,
 				8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */,
 				8A7741CC2735210C009FAADA /* String+Diffable.swift in Sources */,
@@ -1344,6 +1351,7 @@
 				8AE893022727EFA3009C71DA /* RequestChannelStatusCommand.swift in Sources */,
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
 				8A11CBEB272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift in Sources */,
+				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
 				8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
 				8AE8930A2727FAE9009C71DA /* ChannelStatusCommand.swift in Sources */,
@@ -1354,6 +1362,7 @@
 				8AE893042727F2F1009C71DA /* AcceptRaiseHandCommand.swift in Sources */,
 				8A9FB3A327224E8000F6F06F /* HistoryMessageSourceRequest.swift in Sources */,
 				8AD7C6BD27157EA7001C4AAD /* AppDelegate.swift in Sources */,
+				8A8020892754697500F5691C /* RtcViewModel.swift in Sources */,
 				8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */,
 				8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */,
 				8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */,
@@ -1368,6 +1377,7 @@
 				8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */,
 				8AC0535E274C72300064CF84 /* WhitePannelItem.swift in Sources */,
 				8A9FB3BB2722981200F6F06F /* JSONEncoder+Extension.swift in Sources */,
+				8A8020912755B09000F5691C /* RtcViewController.swift in Sources */,
 				8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */,
 				8A270BA72719759E00450DC6 /* UIView+NibProperty.swift in Sources */,
 				8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */,
@@ -1416,7 +1426,6 @@
 				8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */,
 				8A270B9F2719681F00450DC6 /* Bundle+Language.swift in Sources */,
 				8A9FB3C127229A6200F6F06F /* FlatRequest.swift in Sources */,
-				8AEA34F92727D17A00EA4009 /* RtcVideoCollectionViewCell.swift in Sources */,
 				8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */,
 				8A9ACC03271E71B100E7E7CE /* RoomListInfo.swift in Sources */,
 				8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */,
@@ -1448,10 +1457,9 @@
 				8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */,
 				8A9FB3D02722C14B00F6F06F /* AgoraMessage.swift in Sources */,
 				8AE893062727F564009C71DA /* DeviceStateCommand.swift in Sources */,
-				8AC9CEF82742487D00EEBEE7 /* RtcViewController.swift in Sources */,
+				8A80208F2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift in Sources */,
 				8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */,
 				8A270BBF27197F1500450DC6 /* XIBLocalizeable.swift in Sources */,
-				8A7741C62734FFF0009FAADA /* RtcNoTeachCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

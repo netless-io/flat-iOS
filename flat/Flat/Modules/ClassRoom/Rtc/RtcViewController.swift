@@ -1,99 +1,93 @@
 //
-//  RtcViewController.swift
+//  RtcViewController1.swift
 //  Flat
 //
-//  Created by xuyunshi on 2021/11/15.
+//  Created by xuyunshi on 2021/11/29.
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
 import UIKit
-import AgoraRtcKit
-import Hero
-import RxCocoa
 import RxSwift
+import RxRelay
+import Hero
+import AgoraRtcKit
+import RxCocoa
 
 class RtcViewController: UIViewController {
-    let error: PublishSubject<Error> = .init()
-    let cameraClickPublisher: PublishRelay<RoomUser> = .init()
-    let micClickPublisher: PublishRelay<RoomUser> = .init()
+    let viewModel: RtcViewModel
     
-    var agoraKit: AgoraRtcEngineKit!
-    let token: String
-    let channelId: String
-    let rtcUid: UInt
-    let noTeachCellIdentifier = "noTeachCellIdentifier"
-    let cellIdentifier = "RtcVideoCollectionViewCell"
-    var shouldShowNoTeach = false {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    let localUserCameraClick: PublishRelay<Void> = .init()
+    let localUserMicClick: PublishRelay<Void> = .init()
     
-    /// Append user or remove user should manage this variable directely outside
-    var users: [RoomUser] = [] {
-        didSet {
-            updateUsersRtcStatus()
-            // TODO: diff
-            collectionView.performBatchUpdates {
-                self.collectionView.reloadData()
-                self.view.setNeedsLayout()
-                self.view.layoutIfNeeded()
-            } completion: { _ in
+    var localCameraOn = false
+    var localMicOn = false
+    
+    func bindUsers(_ users: Driver<[RoomUser]>, withTeacherRtmUUID uuid: String) {
+        let output = viewModel.transform(users: users, teacherRtmUUID: uuid)
+        output.noTeacherViewHide
+            .distinctUntilChanged()
+            .do(onNext: { [weak self] _ in
+                self?.updateScrollViewInset()
+            })
+            .drive(noTeacherPlaceHolderView.rx.isHidden)
+            .disposed(by: rx.disposeBag)
+        
+        output.nonLocalUsers
+            .distinctUntilChanged({ i, j in
+                return i.map { $0.user } == j.map { $0.user }
+            })
+            .drive(with: self, onNext: { weakSelf, values in
+                let oldStackCount = weakSelf.videoItemsStackView.arrangedSubviews.count
+                weakSelf.updateWith(nonTeacherValues: values)
+                let newStackCount = weakSelf.videoItemsStackView.arrangedSubviews.count
+                if newStackCount != oldStackCount {
+                    weakSelf.cellMenuView.dismiss()
+                }
                 
-            }
-            cellMenuView.dismiss()
-        }
+                let existIds = values.map { $0.user.rtcUID }
+                // If someuser leave during preview, stop previewing
+                if let user = weakSelf.previewingUser, !existIds.contains(user.rtcUID) {
+                    weakSelf.previewViewController.showAvatar(url: user.avatarURL)
+                }
+            })
+            .disposed(by: rx.disposeBag)
+        
+        output.localUserHide
+            .drive(localVideoItemView.rx.isHidden)
+            .disposed(by: rx.disposeBag)
     }
     
-    // MARK: - Public
-    func leave() -> Single<Void> {
-        agoraKit.leaveChannel(nil)
-        AgoraRtcEngineKit.destroy()
-        return .just(())
-    }
-    
-    // TODO: show a disconnected view when join failed
-    func joinChannel() -> Completable {
-        .create { [weak self] observer in
-            guard let self = self else {
-                observer(.error("self not exist"))
-                return Disposables.create()
-            }
-            self.agoraKit.joinChannel(byToken: self.token,
-                                      channelId: self.channelId,
-                                      info: nil,
-                                      uid: self.rtcUid) { _, _, _ in
-                observer(.completed)
-            }
-            return Disposables.create()
-        }
-    }
-    
-    deinit {
-        print(self, "deinit")
+    func bindLocalUser(_ user: Driver<RoomUser>) {
+        let output = viewModel.transformLocalUser(user: user)
+        
+        output.user
+            .drive(with: self, onNext: { weakSelf, user in
+                weakSelf.localMicOn = user.status.mic
+                weakSelf.localCameraOn = user.status.camera
+                if !weakSelf.localVideoItemView.containsUserValue {
+                    weakSelf.update(itemView: weakSelf.localVideoItemView, user: user)
+                }
+            })
+            .disposed(by: rx.disposeBag)
+
+        output.mic
+            .drive(localVideoItemView.silenceImageView.rx.isHidden)
+            .disposed(by: rx.disposeBag)
+        
+        output.camera
+            .drive(with: self, onNext: { weakSelf, value in
+                weakSelf.localVideoItemView.showAvatar(!value.0)
+                weakSelf.apply(canvas: value.1,
+                               toView: value.0 ? weakSelf.localVideoItemView.videoContainerView : nil,
+                               isLocal: true)
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     // MARK: - LifeCycle
-    init(token: String,
-         channelId: String,
-         rtcUid: UInt) {
-        self.token = token
-        self.channelId = channelId
-        self.rtcUid = rtcUid
+    init(viewModel: RtcViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: Env().agoraAppId, delegate: self)
-        self.agoraKit.setLogFile("") // set to default path
-        self.agoraKit.setLogFilter(AgoraLogFilter.error.rawValue)
-        
-        // 大流720P视频
-        let config = AgoraVideoEncoderConfiguration(size: .init(width: 1280, height: 720), frameRate: .fps15, bitrate: 1130, orientationMode: .adaptative)
-        agoraKit.setVideoEncoderConfiguration(config)
-        // 各发流端在加入频道前或者后，都可以调用 enableDualStreamMode 方法开启双流模式。
-        self.agoraKit.enableDualStreamMode(true)
-        // 启用针对多人通信场景的优化策略。
-        self.agoraKit.setParameters("{\"che.audio.live_for_comm\": true}")
-        // Agora 建议自定义的小流分辨率不超过 320 × 180 px，码率不超过 140 Kbps，且小流帧率不能超过大流帧率。
-        self.agoraKit.setParameters("{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":5,\"bitRate\":140}}")
     }
     
     required init?(coder: NSCoder) {
@@ -113,336 +107,244 @@ class RtcViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        // TODO: Update with permission
-        agoraKit.enableVideo()
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
-        view.addGestureRecognizer(panGesture)
+    }
+    
+    let itemsInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+    let itemRatio: CGFloat = 112.0 / 84
+    
+    func updateScrollViewInset() {
+        let itemHeight = view.bounds.height - itemsInset.top - itemsInset.bottom
+        let itemWidth = itemRatio * itemHeight
+        let itemCount = CGFloat(videoItemsStackView.arrangedSubviews.filter { !$0.isHidden }.count)
+        let estimateWidth = itemWidth * itemCount + (itemCount - 1) * videoItemsStackView.spacing
+        if estimateWidth <= view.bounds.width {
+            let margin = (view.bounds.width - estimateWidth) / 2
+            mainScrollView.contentInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
+        } else {
+            mainScrollView.contentInset = .zero
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let topMargin: CGFloat = 10
-        let minSideMargin: CGFloat = 11
-        let spacing: CGFloat = 8
-        let itemWidth: CGFloat = 112
-        let itemHeight: CGFloat = 84
-        layout.itemSize = .init(width: itemWidth, height: itemHeight)
-        layout.sectionInset = .init(top: topMargin, left: minSideMargin, bottom: topMargin, right: minSideMargin)
-        layout.minimumLineSpacing = spacing
-        layout.minimumInteritemSpacing = spacing
-        let itemCount: CGFloat = CGFloat(collectionView(collectionView, numberOfItemsInSection: 0))
-        let estimateWidth = itemWidth * itemCount + (itemCount - 1) * spacing
-        if estimateWidth <= view.bounds.width {
-            var new = layout.sectionInset
-            let margin = (view.bounds.width - estimateWidth) / 2
-            new.left = margin
-            new.right = margin
-            layout.sectionInset = new
-        }
-        collectionView.reloadSections([0])
-    }
-    
-    // MARK: - Action
-    var panStartIndexPath: IndexPath?
-    @objc func onPan(_ pan: UIPanGestureRecognizer) {
-        switch pan.state {
-        case .began:
-            let locaion = pan.location(in: collectionView)
-            if let responderView = collectionView.hitTest(locaion, with: nil) {
-                if responderView is UICollectionView {
-                    return
-                }
-                var cell = responderView.superview
-                while cell != nil {
-                    if let cell = cell as? RtcVideoCollectionViewCell, let indexPath = collectionView.indexPath(for: cell) {
-                        if let presented = presentedViewController {
-                            presented.dismiss(animated: false) {
-                                self.panStartIndexPath = indexPath
-                                self.preview(cell: cell, indexPath: indexPath)
-                            }
-                        } else {
-                            self.panStartIndexPath = indexPath
-                            self.preview(cell: cell, indexPath: indexPath)
-                        }
-                        return
-                    } else {
-                        cell = cell?.superview
-                    }
-                }
-            }
-        case .changed:
-            guard panStartIndexPath != nil else { return }
-            let y = pan.translation(in: view).y
-            let screenHeight = UIScreen.main.bounds.height
-            if y >= 0 {
-                Hero.shared.update(y / screenHeight )
-            } else {
-                Hero.shared.update(0.01)
-            }
-        default:
-            guard panStartIndexPath != nil else { return }
-            let y = pan.translation(in: view).y
-            let velocityY = pan.velocity(in: view).y
-            let screenHeight = UIScreen.main.bounds.height
-            let total = y + velocityY
-            if total / screenHeight >= 0.5 {
-                Hero.shared.finish()
-            } else {
-                Hero.shared.cancel()
-            }
-            panStartIndexPath = nil
-        }
+        updateScrollViewInset()
     }
     
     // MARK: - Private
     func setupViews() {
-        view.backgroundColor = .white
-        view.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
+        view.backgroundColor = .init(hexString: "#F7F9FB")
+        view.addSubview(mainScrollView)
+        mainScrollView.addSubview(videoItemsStackView)
+        mainScrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-    }
-    
-    func createOrFetchFromCacheCanvs(for uid: UInt) -> AgoraRtcVideoCanvas {
-        if let canvas = remoteCanvas[uid] {
-            return canvas
-        } else {
-            let canvas = AgoraRtcVideoCanvas()
-            canvas.uid = uid
-            canvas.mirrorMode = .enabled
-            canvas.renderMode = .hidden
-            remoteCanvas[uid] = canvas
-            return canvas
+        videoItemsStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(itemsInset)
+            make.height.equalTo(self.view).offset(-(itemsInset.top + itemsInset.bottom))
         }
     }
     
-    func configCellEndDisplay(_ cell: RtcVideoCollectionViewCell, user: RoomUser) {
+    func update(itemView: RtcVideoItemView, user: RoomUser) {
+        itemView.heroID = nil
+        itemView.update(avatar: user.avatarURL)
+        itemView.nameLabel.text = user.name
+        itemView.nameLabel.isHidden = true
+        itemView.silenceImageView.isHidden = user.status.mic
+        itemView.containsUserValue = true
+    }
+    
+    func refresh(view: RtcVideoItemView,
+                 user: RoomUser,
+                 canvas: AgoraRtcVideoCanvas,
+                 isLocal: Bool) {
+        update(itemView: view, user: user)
+        view.showAvatar(!user.status.camera)
         
+        viewModel.rtc.updateRemoteUserStreamType(rtcUID: user.rtcUID, type: viewModel.userThumbnailStream(user.rtcUID))
+        apply(canvas: canvas,
+              toView: user.status.camera ? view.videoContainerView : nil,
+              isLocal: isLocal)
     }
     
-    func updateLocalUserWith(status: RoomUserStatus) {
-        // Self
-        agoraKit.enableLocalAudio(status.mic)
-        agoraKit.enableLocalVideo(status.camera)
-        agoraKit.muteLocalAudioStream(!status.mic)
-        agoraKit.muteLocalVideoStream(!status.camera)
-        print("update local user status camera: \(status.camera), mic: \(status.mic) ")
-    }
-    
-    func updateUsersRtcStatus() {
-        for user in users {
-            let status = user.status
-            if user.rtcUID == rtcUid {
-                updateLocalUserWith(status: status)
-            } else {
-                agoraKit.setRemoteVideoStream(user.rtcUID, type: .low)
-                // Others
-                agoraKit.muteRemoteVideoStream(user.rtcUID, mute: !status.camera)
-                agoraKit.muteRemoteAudioStream(user.rtcUID, mute: !status.mic)
+    func updateWith(nonTeacherValues values: [(user: RoomUser, canvas: AgoraRtcVideoCanvas)]) {
+        for value in values {
+            let itemView = itemViewForUid(value.user.rtcUID)
+            if itemView.superview == nil {
+                videoItemsStackView.addArrangedSubview(itemView)
+                itemView.tapHandler = { [weak self] view in
+                    self?.respondToVideoItemVideoTap(view: view, isLocal: false)
+                }
+                itemView.snp.makeConstraints { make in
+                    make.width.equalTo(videoItemsStackView.snp.height).multipliedBy(self.itemRatio)
+                }
+            }
+            itemView.isHidden = false
+            refresh(view: itemView,
+                    user: value.user,
+                    canvas: value.canvas,
+                    isLocal: false)
+        }
+        var existIds = values.map { $0.user.rtcUID }
+        // Local users
+        existIds.append(0)
+        for view in videoItemsStackView.arrangedSubviews {
+            if let itemView = view as? RtcVideoItemView {
+                if !existIds.contains(itemView.uid){
+                    itemView.removeFromSuperview()
+                    videoItemsStackView.removeArrangedSubview(itemView)
+                }
             }
         }
+        updateScrollViewInset()
     }
     
-    func applyVideoCanvasTo(view: UIView?,
-                            uid: UInt,
-                            camera: Bool) {
-        if uid == rtcUid {
-            localVideoCanvas.view = camera ? view : nil
-            agoraKit.setupLocalVideo(localVideoCanvas)
+    func apply(canvas: AgoraRtcVideoCanvas, toView view: UIView?, isLocal: Bool) {
+        if canvas.view == view { return }
+        canvas.view = view
+        if isLocal {
+            viewModel.rtc.agoraKit.setupLocalVideo(canvas)
         } else {
-            let canvas = createOrFetchFromCacheCanvs(for: uid)
-            canvas.view = camera ? view : nil
-            agoraKit.setupRemoteVideo(canvas)
+            viewModel.rtc.agoraKit.setupRemoteVideo(canvas)
         }
     }
     
-    func config(cell: RtcVideoCollectionViewCell, user: RoomUser) {
-        func showAvatar(_ show: Bool) {
-            cell.largeAvatarImageView.isHidden = !show
-            cell.effectView.isHidden = !show
-            cell.avatarImageView.isHidden = !show
+    func itemViewForUid(_ uid: UInt) -> RtcVideoItemView {
+        if let view = videoItemsStackView.arrangedSubviews.compactMap({ v -> RtcVideoItemView? in
+            v as? RtcVideoItemView
+        }).first(where: { $0.uid == uid }) {
+            return view
+        } else {
+            return RtcVideoItemView(uid: uid)
         }
-        cell.heroID = nil
-        cell.update(avatar: user.avatarURL)
-        cell.nameLabel.text = user.name
-        cell.nameLabel.isHidden = true
-        cell.silenceImageView.isHidden = user.status.mic
+    }
+    
+    // MARK: - Preview
+    var previewingUser: RoomUser?
+    func preview(view: RtcVideoItemView) {
+        let uid = view.uid
+        guard let user = viewModel.userFetch(uid) else { return }
+        previewingUser = user
+        print("start preview \(uid)")
+        view.nameLabel.isHidden = true
+        let heroId = uid.description
+        view.heroID = heroId
         if user.status.camera {
-            showAvatar(false)
-        } else {
-            showAvatar(true)
-        }
-
-        // Do not update canvas when presenting preview
-        // Update at not presented or being dismissed
-        if previewViewController.presentingViewController == nil || previewViewController.isBeingDismissed {
-            applyVideoCanvasTo(view: cell.videoContainerView,
-                               uid: user.rtcUID,
-                               camera: user.status.camera)
-        }
-    }
-    
-    func userAt(_ indexPath: IndexPath) -> RoomUser? {
-        if shouldShowNoTeach, indexPath.row > 0 {
-            return users[indexPath.row - 1]
-        } else {
-            return users[indexPath.row]
-        }
-    }
-    // MARK: - Lazy
-    lazy var layout: UICollectionViewFlowLayout = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        return layout
-    }()
-    
-    lazy var localVideoCanvas: AgoraRtcVideoCanvas = {
-        let canvas = AgoraRtcVideoCanvas()
-        canvas.uid = rtcUid
-        canvas.renderMode = .hidden
-        return canvas
-    }()
-    
-    lazy var remoteCanvas: [UInt: AgoraRtcVideoCanvas] = [:]
-    
-    lazy var collectionView: UICollectionView = {
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.backgroundColor = .init(hexString: "#F7F9FB")
-        view.register(RtcVideoCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
-        view.register(RtcNoTeachCollectionViewCell.self, forCellWithReuseIdentifier: noTeachCellIdentifier)
-        view.delegate = self
-        view.dataSource = self
-        return view
-    }()
-    
-    lazy var previewViewController: RtcPreviewViewController = {
-        let vc = RtcPreviewViewController()
-        vc.dismissHandler = { [weak self] in
-            guard let self = self else { return }
-            self.collectionView.reloadData()
-        }
-        vc.modalPresentationStyle = .fullScreen
-        return vc
-    }()
-    
-    lazy var cellMenuView: RtcCellPopMenuView = {
-        let view = RtcCellPopMenuView()
-        return view
-    }()
-}
-
-extension RtcViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        shouldShowNoTeach ? users.count + 1 : users.count }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if shouldShowNoTeach, indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: noTeachCellIdentifier, for: indexPath) as! RtcNoTeachCollectionViewCell
-            return cell
-        }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! RtcVideoCollectionViewCell
-        if let user = userAt(indexPath) {
-            config(cell: cell, user: user)
-        }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        // TODO: Model is removed before UI
-    }
-    
-    func preview(cell: RtcVideoCollectionViewCell, indexPath: IndexPath) {
-        // Dismiss some popover
-        guard let user = userAt(indexPath) else { return }
-        let id = "preview\(user.rtcUID)"
-        cell.nameLabel.isHidden = true
-        
-        cell.heroID = id
-        if user.status.camera {
-            previewViewController.contentView.isHidden = false
-            previewViewController.avatarContainer.isHidden = true
+            previewViewController.showVideoPreview()
             
-            if user.rtcUID == rtcUid {
-                localVideoCanvas.view = previewViewController.contentView
-                agoraKit.setupLocalVideo(localVideoCanvas)
+            if viewModel.localUserRegular(uid) {
+                viewModel.rtc.localVideoCanvas.view = previewViewController.contentView
+                viewModel.rtc.agoraKit.setupLocalVideo(viewModel.rtc.localVideoCanvas)
             } else {
-                let canvas = createOrFetchFromCacheCanvs(for: user.rtcUID)
+                let canvas = viewModel.rtc.createOrFetchFromCacheCanvs(for: uid)
                 canvas.view = previewViewController.contentView
-                // 将订阅的一路视频流设为大流，其它路视频流均设置为小流。
-                agoraKit.setRemoteVideoStream(user.rtcUID, type: .high)
-                agoraKit.setupRemoteVideo(canvas)
+                // 放大为大流
+                viewModel.rtc.updateRemoteUserStreamType(rtcUID: uid, type: .high)
+                viewModel.rtc.agoraKit.setupRemoteVideo(canvas)
             }
-            previewViewController.contentView.heroID = id
+            previewViewController.contentView.heroID = heroId
             previewViewController.avatarContainer.heroID = nil
             previewViewController.contentView.heroModifiers = [.useNoSnapshot]
         } else {
-            previewViewController.contentView.isHidden = true
-            previewViewController.avatarContainer.isHidden = false
-            
-            previewViewController.avatarImageView.kf.setImage(with: user.avatarURL)
-            previewViewController.largeAvatarImageView.kf.setImage(with: user.avatarURL)
-            
-            previewViewController.avatarContainer.heroID = id
+            previewViewController.showAvatar(url: user.avatarURL)
+            previewViewController.avatarContainer.heroID = heroId
             previewViewController.contentView.heroID = nil
         }
+        
         previewViewController.hero.isEnabled = true
         previewViewController.hero.modalAnimationType = .none
         previewViewController.view.heroModifiers = [.fade, .useNoSnapshot]
         present(previewViewController, animated: true, completion: nil)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? RtcVideoCollectionViewCell {
-            collectionView.visibleCells.forEach({
-                if $0 !== cell {
-                    ($0 as? RtcVideoCollectionViewCell)?.nameLabel.isHidden = true
-                }
-            })
-            cell.nameLabel.isHidden = !cell.nameLabel.isHidden
-            
-            guard let user = userAt(indexPath),
-                  user.rtcUID == rtcUid else { return }
-            let status = user.status
-            cellMenuView.show(fromSouce: cell,
-                              direction: .bottom,
-                              inset: .init(top: -10, left: -10, bottom: -10, right: -10))
-            cellMenuView.update(cameraOn: status.camera, micOn: status.mic)
-            cellMenuView.dismissHandle = { [weak cell] in
-                cell?.nameLabel.isHidden = true
+    func endPreviewing(UID: UInt) {
+        guard let user = viewModel.userFetch(UID) else { return }
+        let isLocal = viewModel.localUserRegular(UID)
+        if let view = videoItemsStackView.arrangedSubviews.first(where: {
+            return ($0 as? RtcVideoItemView)?.uid == UID
+        }) as? RtcVideoItemView {
+            refresh(view: view,
+                    user: user,
+                    canvas: isLocal ? viewModel.rtc.localVideoCanvas : viewModel.rtc.createOrFetchFromCacheCanvs(for: UID),
+                    isLocal: isLocal)
+        }
+    }
+    
+    lazy var previewViewController: RtcPreviewViewController = {
+        let vc = RtcPreviewViewController()
+        vc.dismissHandler = { [weak self] in
+            guard let self = self,
+                  let previewingUser = self.previewingUser else { return }
+            self.endPreviewing(UID: previewingUser.rtcUID)
+        }
+        vc.modalPresentationStyle = .fullScreen
+        return vc
+    }()
+    
+    // MARK: - Lazy View
+    lazy var noTeacherPlaceHolderView: UIImageView = {
+        let view = UIImageView(image: UIImage(named: "teach_not_showup"))
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
+    
+    func respondToVideoItemVideoTap(view: RtcVideoItemView, isLocal: Bool) {
+        videoItemsStackView.arrangedSubviews.forEach {
+            ($0 as? RtcVideoItemView)?.nameLabel.isHidden = true
+        }
+        view.nameLabel.isHidden = !view.nameLabel.isHidden
+        
+        if isLocal {
+            cellMenuView.show(fromSouce: view, direction: .bottom, inset: .init(top: -10, left: -10, bottom: -10, right: -10))
+            cellMenuView.update(cameraOn: localCameraOn, micOn: localMicOn)
+            cellMenuView.dismissHandle = { [weak view] in
+                view?.nameLabel.isHidden = true
             }
             cellMenuView.clickHandler = { [weak self] op in
                 guard let self = self else { return }
                 switch op {
                 case .camera:
-                    self.cameraClickPublisher.accept(user)
+                    self.localUserCameraClick.accept(())
                 case .mic:
-                    self.micClickPublisher.accept(user)
+                    self.localUserMicClick.accept(())
                 case .scale:
-                    self.preview(cell: cell, indexPath: indexPath)
+                    self.preview(view: view)
                 }
             }
+        } else {
+            self.preview(view: view)
         }
     }
-}
-
-extension RtcViewController: AgoraRtcEngineDelegate {
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurWarning warningCode: AgoraWarningCode) {
-    }
     
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurError errorCode: AgoraErrorCode) {
-        self.error.onNext("rtc error \(errorCode.rawValue)")
-    }
+    lazy var localVideoItemView: RtcVideoItemView = {
+        let view = RtcVideoItemView(uid: 0)
+        view.tapHandler = { [weak self] in
+            self?.respondToVideoItemVideoTap(view: $0, isLocal: true)
+        }
+        return view
+    }()
     
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didApiCallExecute error: Int, api: String, result: String) {
-    }
+    lazy var mainScrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.showsHorizontalScrollIndicator = false
+        return view
+    }()
     
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
-    }
+    lazy var videoItemsStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [noTeacherPlaceHolderView, localVideoItemView])
+        view.axis = .horizontal
+        view.distribution = .equalSpacing
+        view.spacing = 8
+        noTeacherPlaceHolderView.snp.makeConstraints { make in
+            make.width.equalTo(view.snp.height).multipliedBy(self.itemRatio)
+        }
+        localVideoItemView.snp.makeConstraints { make in
+            make.width.equalTo(view.snp.height).multipliedBy(self.itemRatio)
+        }
+        return view
+    }()
     
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didLeaveChannelWith stats: AgoraChannelStats) {
-    }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
-    }
+    lazy var cellMenuView: RtcCellPopMenuView = {
+        let view = RtcCellPopMenuView()
+        return view
+    }()
 }

@@ -1,5 +1,5 @@
 //
-//  RtcVideoCollectionViewCell.swift
+//  RtcVideoItemView.swift
 //  Flat
 //
 //  Created by xuyunshi on 2021/10/26.
@@ -9,32 +9,44 @@
 
 import UIKit
 
-class RtcVideoCollectionViewCell: UICollectionViewCell {
+class RtcVideoItemView: UIView {
+    var containsUserValue = false
+    
+    var tapHandler: ((RtcVideoItemView)->Void)?
+    
+    let uid: UInt
+
+    @objc func onTap() {
+        tapHandler?(self)
+    }
+    
+    func showAvatar(_ show: Bool) {
+        largeAvatarImageView.isHidden = !show
+        effectView.isHidden = !show
+        avatarImageView.isHidden = !show
+    }
+    
     func update(avatar: URL?) {
         largeAvatarImageView.kf.setImage(with: avatar)
         avatarImageView.kf.setImage(with: avatar)
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        videoContainerView.subviews.forEach({ $0.removeFromSuperview() })
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(uid: UInt) {
+        self.uid = uid
+        super.init(frame: .zero)
         backgroundColor = .black
         clipsToBounds = true
         layer.cornerRadius = 4
 
-        contentView.addSubview(videoContainerView)
-        contentView.addSubview(largeAvatarImageView)
-        contentView.addSubview(effectView)
-        contentView.addSubview(avatarImageView)
-        contentView.addSubview(silenceImageView)
+        addSubview(videoContainerView)
+        addSubview(largeAvatarImageView)
+        addSubview(effectView)
+        addSubview(avatarImageView)
+        addSubview(silenceImageView)
         addSubview(nameLabel)
         avatarImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.height.equalTo(contentView.snp.width).multipliedBy(48.0 / 112.0)
+            make.width.height.equalTo(self.snp.width).multipliedBy(48.0 / 112.0)
         }
         largeAvatarImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -48,6 +60,11 @@ class RtcVideoCollectionViewCell: UICollectionViewCell {
         silenceImageView.snp.makeConstraints { make in
             make.right.bottom.equalToSuperview().inset(4)
         }
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTap)))
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
     }
     
     override func layoutSubviews() {
@@ -55,10 +72,7 @@ class RtcVideoCollectionViewCell: UICollectionViewCell {
         videoContainerView.frame = bounds
     }
     
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-
+    // MARK: - Lazy
     lazy var videoContainerView = UIView()
     
     lazy var largeAvatarImageView: UIImageView  = {

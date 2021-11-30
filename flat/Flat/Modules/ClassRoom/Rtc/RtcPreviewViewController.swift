@@ -16,6 +16,18 @@ class RtcPreviewViewController: UIViewController {
 
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     
+    func showVideoPreview() {
+        contentView.isHidden = false
+        avatarContainer.isHidden = true
+    }
+    
+    func showAvatar(url: URL?) {
+        contentView.isHidden = true
+        avatarContainer.isHidden = false
+        avatarImageView.kf.setImage(with: url)
+        largeAvatarImageView.kf.setImage(with: url)
+    }
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }

@@ -152,13 +152,6 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
-    func setupRtcViewController() {
-        // Todo: Update UI when join failed
-        rtcViewController.joinChannel()
-            .subscribe()
-            .disposed(by: rx.disposeBag)
-    }
-    
     func setupChatViewController() {
         chatButton.isHidden = true
         let banNotice = viewModel.state.messageBan
@@ -232,7 +225,6 @@ class ClassRoomViewController: UIViewController {
             .subscribe(with: self, onSuccess: { weakSelf, _ in
                 weakSelf.rightToolBar.isHidden = false
                 weakSelf.setupChatViewController()
-                weakSelf.setupRtcViewController()
             }, onFailure: { weakSelf, error in
                 weakSelf.leaveUIHierarchyAndStopSubModule()
             })
@@ -460,36 +452,24 @@ class ClassRoomViewController: UIViewController {
     }
     
     func bindRtc() {
-        viewModel.transform(rtcCameraTap: rtcViewController.cameraClickPublisher.asDriver(onErrorJustReturn: .emtpy),
-                            rtcMicTap: rtcViewController.micClickPublisher.asDriver(onErrorJustReturn: .emtpy))
+        let cameraTap = rtcViewController.localUserCameraClick.asDriver(onErrorJustReturn: ())
+        let micTap = rtcViewController.localUserMicClick.asDriver(onErrorJustReturn: ())
+        
+        viewModel.transform(localUserCameraTap: cameraTap,
+                            localUserMicTap: micTap)
             .drive()
             .disposed(by: rx.disposeBag)
         
-        viewModel.userSelf.map { $0.status }
-        .drive(with: self) { weakSelf, status in
-            weakSelf.rtcViewController.updateLocalUserWith(status: status)
-        }
-        .disposed(by: rx.disposeBag)
-
+        rtcViewController.bindLocalUser(viewModel.userSelf)
         
-        viewModel.rtcUsers
-            .drive(with: self, onNext: { weakSelf, users in
-                weakSelf.rtcViewController.users = users
-            })
-            .disposed(by: rx.disposeBag)
-        
-        viewModel.didTeacherShow
-            .drive(with: self, onNext: { weakSelf, didTeacherShow in
-                weakSelf.rtcViewController.shouldShowNoTeach = !didTeacherShow
-            })
-            .disposed(by: rx.disposeBag)
+        rtcViewController.bindUsers(viewModel.rtcUsers, withTeacherRtmUUID: viewModel.state.roomOwnerRtmUUID)
     }
     
     func leaveUIHierarchyAndStopSubModule() {
         whiteboardViewController.viewModel.leave()
             .subscribe()
             .disposed(by: rx.disposeBag)
-        rtcViewController.leave()
+        rtcViewController.viewModel.rtc.leave()
             .subscribe()
             .disposed(by: rx.disposeBag)
         if let presenting = presentingViewController {

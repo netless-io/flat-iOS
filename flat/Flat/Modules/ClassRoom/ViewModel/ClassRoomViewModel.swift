@@ -81,14 +81,6 @@ class ClassRoomViewModel {
     let rtm: ClassRoomRtm
     let alertProvider: AlertProvider
     
-    var didTeacherShow: Driver<Bool> {
-        let ownerRtmUUID = state.roomOwnerRtmUUID
-        return state.users.asDriver()
-            .map { users -> Bool in
-                users.contains(where: { $0.rtmUUID == ownerRtmUUID })
-            }
-    }
-    
     lazy var isWhiteboardEnable: Driver<Bool> = {
         if self.isTeacher { return .just(true) }
         if state.roomType.interactionStrategy == .enable { return .just(true) }
@@ -323,13 +315,14 @@ class ClassRoomViewModel {
             .merge()
     }
     
-    func transform(rtcCameraTap: Driver<RoomUser>,
-                   rtcMicTap: Driver<RoomUser>) -> Driver<Void> {
-        let camera = rtcCameraTap.flatMap {
-            self.oppositeCameraFor($0.rtmUUID).asDriver(onErrorJustReturn: ())
+    func transform(localUserCameraTap: Driver<Void>,
+                   localUserMicTap: Driver<Void>) -> Driver<Void> {
+        let uuid = self.userUUID
+        let camera = localUserCameraTap.flatMap {
+            self.oppositeCameraFor(uuid).asDriver(onErrorJustReturn: ())
         }
-        let mic = rtcMicTap.flatMap {
-            self.oppositeMicFor($0.rtmUUID).asDriver(onErrorJustReturn: ())
+        let mic = localUserMicTap.flatMap {
+            self.oppositeMicFor(uuid).asDriver(onErrorJustReturn: ())
         }
         return Driver.of(camera, mic).merge()
     }

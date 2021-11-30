@@ -10,6 +10,7 @@
 import Foundation
 import Whiteboard
 import RxCocoa
+import AgoraRtcKit
 
 struct ClassRoomFactory {
     struct DeviceStatus {
@@ -57,9 +58,19 @@ struct ClassRoomFactory {
                                 agoraAppId: Env().agoraAppId)
         
         // Config Rtc
-        let rtcViewController = RtcViewController(token: playInfo.rtcToken,
-                                                   channelId: playInfo.roomUUID,
-                                                   rtcUid: playInfo.rtcUID)
+        let rtcViewController = RtcViewController(viewModel: .init(rtc: .init(appId: Env().agoraAppId,
+                                                                               channelId: playInfo.roomUUID,
+                                                                               token: playInfo.rtcToken,
+                                                                               uid: playInfo.rtcUID),
+                                                                    localUserRegular: { $0 == 0 || $0 == playInfo.rtcUID },
+                                                                    userFetch: { rtcId -> RoomUser? in
+            if rtcId == 0 { return state.users.value.first(where: { $0.rtcUID == playInfo.rtcUID })}
+            return state.users.value.first(where: { $0.rtcUID == rtcId }) },
+                                                                    userThumbnailStream: { uid -> AgoraVideoStreamType in
+            guard let user = state.users.value.first(where: { $0.rtcUID == uid }) else { return .low }
+            let isTeacher = user.rtmUUID == playInfo.ownerUUID
+            return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
+        }))
         
         let controller = ClassRoomViewController(whiteboardViewController: whiteboardViewController,
                                                   rtcViewController: rtcViewController,
