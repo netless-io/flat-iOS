@@ -54,7 +54,7 @@
                 <outlet property="settingDetailLabel" destination="QaV-KI-TuR" id="MF2-6Y-qY5"/>
                 <outlet property="settingTitleLabel" destination="kii-l4-55a" id="Llc-0D-9mr"/>
             </connections>
-            <point key="canvasLocation" x="-332" y="-39"/>
+            <point key="canvasLocation" x="370" y="73"/>
         </tableViewCell>
     </objects>
     <resources>

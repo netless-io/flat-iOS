@@ -27,6 +27,11 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     
     weak var detailUpdateDelegate: MainSplitViewControllerDetailUpdateDelegate?
     
+    override func loadView() {
+        viewControllers = [BaseNavigationViewController(rootViewController: HomeViewController())]
+        super.loadView()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -41,7 +46,6 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         preferredDisplayMode = .oneBesideSecondary
-        viewControllers = [BaseNavigationViewController(rootViewController: HomeViewController())]
         delegate = self
     }
     

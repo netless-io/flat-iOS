@@ -90,7 +90,7 @@
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dam-SV-4Jd">
                         <rect key="frame" x="16" y="130" width="516" height="1"/>
-                        <color key="backgroundColor" name="DBE1EA"/>
+                        <color key="backgroundColor" name="BorderColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="RWc-FB-A3f"/>
                         </constraints>
@@ -124,10 +124,10 @@
     <resources>
         <image name="room_calendar" width="22" height="22"/>
         <namedColor name="7A7B7C">
-            <color red="0.47843137254901963" green="0.47843137254901963" blue="0.4823529411764706" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.47843137254901963" green="0.4823529411764706" blue="0.48627450980392156" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
-        <namedColor name="DBE1EA">
-            <color red="0.86274509803921573" green="0.8784313725490196" blue="0.9137254901960784" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        <namedColor name="BorderColor">
+            <color red="0.86299997568130493" green="0.88099998235702515" blue="0.91500002145767212" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="SubText">
             <color red="0.36470588235294116" green="0.36470588235294116" blue="0.36470588235294116" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
