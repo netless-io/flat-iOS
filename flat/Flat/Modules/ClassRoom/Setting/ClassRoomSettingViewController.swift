@@ -78,14 +78,15 @@ class ClassRoomSettingViewController: UIViewController {
     func setupViews() {
         view.backgroundColor = .white
         view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         view.addSubview(topView)
         let topViewHeight: CGFloat = 34
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
             make.height.equalTo(topViewHeight)
+        }
+        
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(UIEdgeInsets.init(top: topViewHeight, left: 0, bottom: 0, right: 0))
         }
         
         let bottomContainer = UIView(frame: .init(origin: .zero, size: .init(width: 240, height: 64)))
@@ -97,7 +98,6 @@ class ClassRoomSettingViewController: UIViewController {
             make.height.equalTo(36)
         }
         
-        tableView.contentInset = .init(top: topViewHeight, left: 0, bottom: 0, right: 0)
         preferredContentSize = .init(width: 240, height: 205)
     }
     
