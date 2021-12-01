@@ -307,6 +307,7 @@ class ClassRoomViewController: UIViewController {
             }
             .drive(with: self, onNext: { weakSelf, enable in
                 weakSelf.whiteboardViewController.updateToolsHide(!enable)
+                weakSelf.whiteboardViewController.updatePageOperationHide(!enable)
                 weakSelf.whiteboardViewController.viewModel.room.setWritable(enable, completionHandler: nil)
             })
             .disposed(by: rx.disposeBag)

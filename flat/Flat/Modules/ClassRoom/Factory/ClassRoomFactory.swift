@@ -27,11 +27,16 @@ struct ClassRoomFactory {
         whiteSDkConig.renderEngine = .canvas
         whiteSDkConig.region = .CN
         whiteSDkConig.userCursor = true
+        whiteSDkConig.useMultiViews = true
         let payload: [String: String] = ["cursorName": userName]
         let roomConfig = WhiteRoomConfig(uuid: playInfo.whiteboardRoomUUID,
                         roomToken: playInfo.whiteboardRoomToken,
                         uid: AuthStore.shared.user?.userUUID ?? "",
                         userPayload: payload)
+        roomConfig.disableNewPencil = false
+        let windowParams = WhiteWindowParams()
+        windowParams.chessboard = false
+        roomConfig.windowParams = windowParams
         let whiteboardViewController = WhiteboardViewController(sdkConfig: whiteSDkConig, roomConfig: roomConfig)
         
         // Config init state

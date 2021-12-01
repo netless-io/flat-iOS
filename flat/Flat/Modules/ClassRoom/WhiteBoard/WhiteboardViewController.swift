@@ -16,6 +16,10 @@ import RxCocoa
 class WhiteboardViewController: UIViewController {
     var viewModel: WhiteboardViewModel!
     
+    func updatePageOperationHide(_ hide: Bool) {
+        [newSceneButton, nextSceneButton, previousSceneButton].forEach { $0.isHidden = hide }
+    }
+    
     func updateToolsHide(_ hide: Bool) {
         undoRedoOperationBar.isHidden = hide
         operationBar.isHidden = hide
@@ -94,6 +98,24 @@ class WhiteboardViewController: UIViewController {
             .subscribe()
             .disposed(by: rx.disposeBag)
         
+        let sceneOutput = viewModel.transformSceneInput(.init(previousTap: previousSceneButton.rx.tap.asDriver(),
+                                            nextTap: nextSceneButton.rx.tap.asDriver(),
+                                            newTap: newSceneButton.rx.tap.asDriver()))
+        
+        sceneOutput.taps
+            .drive()
+            .disposed(by: rx.disposeBag)
+        
+        sceneOutput.nextEnable
+            .drive(nextSceneButton.rx.isEnabled)
+            .disposed(by: rx.disposeBag)
+        sceneOutput.previousEnable
+            .drive(previousSceneButton.rx.isEnabled)
+            .disposed(by: rx.disposeBag)
+        sceneOutput.sceneTitle
+            .drive(sceneLabel.rx.title(for: .normal))
+            .disposed(by: rx.disposeBag)
+        
         viewModel.undoEnable
             .asDriver()
             .drive(undoButton.rx.isEnabled)
@@ -132,6 +154,11 @@ class WhiteboardViewController: UIViewController {
             make.bottom.equalToSuperview()
             make.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(86)
         }
+        view.addSubview(sceneOperationBar)
+        sceneOperationBar.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.right.equalTo(view.safeAreaLayoutGuide.snp.right).inset(86)
+        }
         
         syncSelectedPannelItem()
     }
@@ -142,6 +169,38 @@ class WhiteboardViewController: UIViewController {
         // handle keyboard by IQKeyboardManager
         view.disableKeyboardHandler = true
         return view
+    }()
+    
+    lazy var sceneLabel: UIButton = {
+        let button = UIButton(type: .custom)
+        button.isUserInteractionEnabled = false
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.setTitleColor(.text, for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.minimumScaleFactor = 0.5
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        return button
+    }()
+    
+    lazy var nextSceneButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .controlNormal
+        button.setImage(UIImage(named: "scene_next"), for: .normal)
+        return button
+    }()
+    
+    lazy var previousSceneButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .controlNormal
+        button.setImage(UIImage(named: "scene_previous"), for: .normal)
+        return button
+    }()
+    
+    lazy var newSceneButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .controlNormal
+        button.setImage(UIImage(named: "scene_new"), for: .normal)
+        return button
     }()
     
     lazy var undoButton: UIButton = {
@@ -198,6 +257,16 @@ class WhiteboardViewController: UIViewController {
             syncSelectedPannelItem()
         }
     }
+    
+    lazy var sceneOperationBar: RoomControlBar = {
+        let bar = RoomControlBar(direction: .horizontal,
+                              borderMask: [.layerMinXMinYCorner, .layerMaxXMinYCorner],
+                              buttons: [newSceneButton, previousSceneButton, sceneLabel, nextSceneButton])
+        sceneLabel.snp.remakeConstraints { make in
+            make.size.equalTo(CGSize(width: 80, height: 40))
+        }
+        return bar
+    }()
     
     lazy var undoRedoOperationBar: RoomControlBar = {
         return RoomControlBar(direction: .horizontal,

@@ -24,6 +24,8 @@ class WhiteboardViewModel: NSObject {
         didSet {
             strokeColor.on(.next(UIColor(numberArray: room.memberState.strokeColor)))
             strokeWidth.on(.next(room.memberState.strokeWidth?.floatValue ?? 1))
+            // enable serialization to enable undo, redo
+            room.disableSerialization(false)
         }
     }
     
@@ -33,6 +35,7 @@ class WhiteboardViewModel: NSObject {
     let strokeColor: BehaviorSubject<UIColor> = .init(value: .white)
     let strokeWidth: BehaviorSubject<Float> = .init(value: 1)
     let status: PublishSubject<WhiteRoomPhase> = .init()
+    fileprivate let scene: BehaviorRelay<WhiteSceneState> = .init(value: .init())
     
     deinit {
         print(self, "deinit")
@@ -61,6 +64,46 @@ class WhiteboardViewModel: NSObject {
         self.menuNavigator = menuNavigator
         self.whiteRoomConfig = whiteRoomConfig
         super.init()
+    }
+    
+    struct SceneInput {
+        let previousTap: Driver<Void>
+        let nextTap: Driver<Void>
+        let newTap: Driver<Void>
+    }
+    struct SceneOutput {
+        let sceneTitle: Driver<String>
+        let previousEnable: Driver<Bool>
+        let nextEnable: Driver<Bool>
+        let taps: Driver<Void>
+    }
+    func transformSceneInput(_ input: SceneInput) -> SceneOutput {
+        let ds = scene.asDriver()
+        
+        let sceneTitle = ds.map { "\($0.index + 1)/\($0.scenes.count)" }
+        let previousEnable = ds.map { $0.index > 0 }
+        let nextEnable = ds.map { $0.index + 1 < $0.scenes.endIndex }
+        
+        let pTap = input.previousTap.do(onNext: { [unowned self] in
+            self.room.pptPreviousStep() })
+        
+        let nextTap = input.nextTap.do(onNext: { [unowned self] in
+            self.room.pptNextStep()
+        })
+        
+        let newTap = input.newTap.do(onNext: { [unowned self] in
+            let index = self.scene.value.index
+            let nextIndex = UInt(index + 1)
+            self.room.putScenes("/", scenes: [WhiteScene()], index: nextIndex)
+            self.room.setSceneIndex(nextIndex, completionHandler: nil)
+        })
+        
+        let taps = Driver.of(pTap, newTap, nextTap).merge()
+        
+        return .init(sceneTitle: sceneTitle,
+                     previousEnable: previousEnable,
+                     nextEnable: nextEnable,
+                     taps: taps)
     }
     
     func transform(_ input: Input) -> Output {
@@ -199,7 +242,16 @@ class WhiteboardViewModel: NSObject {
                     return
                 }
                 self.room = room
-                observer(.success(room))
+                room.getStateWithResult { [weak self, weak room] state in
+                    if let sceneState = state.sceneState {
+                        self?.scene.accept(sceneState)
+                    }
+                    guard let room = room else {
+                        observer(.failure("room error"))
+                        return
+                    }
+                    observer(.success(room))
+                }
             }
             return Disposables.create()
         }.do(onSuccess: { [weak self] _ in
@@ -243,6 +295,10 @@ extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
                 strokeWidth.on(.next(stokeWidth))
             }
             strokeColor.on(.next(UIColor(numberArray: memberState.strokeColor)))
+        }
+        
+        if let scene = modifyState.sceneState {
+            self.scene.accept(scene)
         }
     }
     
