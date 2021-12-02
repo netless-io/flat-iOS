@@ -1,20 +1,24 @@
 <div align="center">
     <img width="200" height="200" style="display: block;" src="art/flat-logo.png">
 </div>
-
-<!-- 
 <div align="center">
-    <img alt="GitHub" src="https://img.shields.io/github/license/netless-io/flat?color=9cf&style=flat-square">
-</div> 
--->
+    <img alt="GitHub" src="https://img.shields.io/github/license/netless-io/flat-ios?color=9cf&style=flat-square">
+    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/netless-io/flat-ios?color=9cf&style=flat-square">
+    <br>
+    <a target="_blank" href="https://twitter.com/AgoraFlat">
+    <img alt="Twitter URL" src="https://img.shields.io/badge/Twitter-AgoraFlat-9cf.svg?logo=twitter&style=flat-square">
+    </a>
+    <a target="_blank" href="https://github.com/netless-io/flat/issues/926">
+        <img alt="Slack URL" src="https://img.shields.io/badge/Slack-AgoraFlat-9cf.svg?logo=slack&style=flat-square">
+    </a>
+</div>
 
 <div align="center">
     <h1>Agora Flat iOS</h1>
-    <p>Project Flat iOS is the iOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
-    <img src="art/flat-showcase.png">
+    <p>Project flat is the iOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
     <p><a href="./README-zh.md">中文</a></p>
+    <img src="art/flat-showcase.png">
 </div>
-
 
 # Features
 -   Open sourced front-end and back-end
@@ -37,16 +41,11 @@
     -   [ ] Google
 -   Classroom management
     -   [x] Join and create classrooms
-    -   [x] Support periodic rooms
-    -   [x] View room history
+    -   [ ] Support periodic rooms
     -   [ ] schedule classrooms
--   Classroom recording and replaying
-    -   [x] Whiteboard replaying
-    -   [x] Cloud recording for video and audio
-    -   [x] Messaging replaying
+    -   [x] View room history
 -   [x] Cloud Storage for multi-media courseware
--   [ ] Device self-check
--   [ ] Auto Updater       
+-   [ ] Screen sharing
 # Development
 
 Flat is written entirely in swift.
@@ -59,7 +58,7 @@ iOS Deployment Target | Xcode Version | Swift Language Version
 
 ### Installation
 1. Install [CocoaPods](https://cocoapods.org).
-2. Run `pod install`.
+2. Go to the Flat directory in terminal and execute `pod install`.
 
 ### Configure Signing
 1. Open `Flat.xcworkspace` with Xcode.
@@ -69,16 +68,20 @@ iOS Deployment Target | Xcode Version | Swift Language Version
 
 ### Run
 1. In Xcode use the Scheme menu to select the Flat-DEV scheme.
+
 2. Run ⌘R the app.
 
-[flat-homepage]: https://flat.whiteboard.agora.io/en/#download
-[flat-web]: https://flat-web.whiteboard.agora.io/
-[flat-server]: https://github.com/netless-io/flat-server
-[flat-android]: https://github.com/netless-io/flat-android
-[flat-storybook]: https://netless-io.github.io/flat/storybook/
-[open-wechat]: https://open.weixin.qq.com/
-[netless-auth]: https://docs.agora.io/en/whiteboard/generate_whiteboard_token_at_app_server?platform=RESTful
-[agora-app-id-auth]: https://docs.agora.io/en/Agora%20Platform/token#a-name--appidause-an-app-id-for-authentication
-[cloud-recording]: https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest?platform=RESTful#storageConfig
-[cloud-recording-background]: https://docs.agora.io/en/cloud-recording/cloud_recording_layout?platform=RESTful#background
-[electron-updater]: https://github.com/electron-userland/electron-builder/tree/master/packages/electron-updater
+# Disclaimer
+
+This project is only for learning and communication use, please comply with the laws and 
+
+regulations of the host country, do not use it in the field of politics, religion, pornography, 
+
+crime, etc., all illegal consequences please bear.
+
+# License
+Copyright © Agora Corporation. All rights reserved.
+
+Licensed under the MIT license.
+
+When using the Flat or other GitHub logos, be sure to follow the GitHub logo guidelines.

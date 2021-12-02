@@ -312,6 +312,7 @@
 		8A8020A6275722BB00F5691C /* NetlessRequestGenerator .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetlessRequestGenerator .swift"; sourceTree = "<group>"; };
 		8A8020A827573F1400F5691C /* ConversionTaskProgressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionTaskProgressRequest.swift; sourceTree = "<group>"; };
 		8A8020AA27574D7D00F5691C /* ConvertProgressDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertProgressDetail.swift; sourceTree = "<group>"; };
+		8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatDebug.entitlements; sourceTree = "<group>"; };
 		8A97EBAE2719983700965185 /* CreateRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomRequest.swift; sourceTree = "<group>"; };
 		8A97EBB02719993C00965185 /* JoinRoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInfo.swift; sourceTree = "<group>"; };
 		8A97EBB22719999000965185 /* JoinRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomRequest.swift; sourceTree = "<group>"; };
@@ -1053,6 +1054,7 @@
 		8AD7C6BB27157EA7001C4AAD /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */,
 				8A11CBE0271FEBB1001D0B1F /* Components */,
 				8A9ACBF9271D602600E7E7CE /* Views */,
 				8A9ACBF4271D50F000E7E7CE /* EnvConfigs */,
@@ -1944,10 +1946,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = Flat/FlatDebug.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L922897LKX;
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1964,9 +1967,9 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat.xys;
+				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-DEV";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = flat2;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = Flat/bridgingHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
