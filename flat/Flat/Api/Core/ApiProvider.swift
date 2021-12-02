@@ -24,6 +24,12 @@ let netlessResponseHandler = NetlessResponseHandler()
 class ApiProvider: NSObject {
     static let shared = ApiProvider()
     
+    private override init() {
+        super.init()
+        // Disable network log
+        URLSession.rx.shouldLogRequest = { _ in false }
+    }
+    
     @discardableResult
     func request<T: FlatRequest>(fromApi api: T) -> Observable<T.Response> {
         request(fromApi: api, generator: flatGenerator, responseDataHandler: flatResponseHandler)
