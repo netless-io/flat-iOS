@@ -13,6 +13,8 @@ import RxRelay
 import RxCocoa
 
 class ClassRoomViewController: UIViewController {
+    override var prefersHomeIndicatorAutoHidden: Bool { true }
+    
     var viewModel: ClassRoomViewModel!
     
     // MARK: - Child Controllers
@@ -563,6 +565,33 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
+    @objc func onClickStorage(_ sender: UIButton) {
+        popoverViewController(viewController: cloudStorageListViewController, fromSource: sender)
+    }
+    
+    lazy var cloudStorageListViewController: CloudStorageListViewController = {
+        let vc = CloudStorageListViewController()
+        vc.fileContentSelectedHandler = { [weak self] fileContent in
+            guard let self = self else { return }
+            let whiteViewModel = self.whiteboardViewController.viewModel
+            switch fileContent {
+            case .image(url: let url, image: let image):
+                whiteViewModel?.insertImg(url, imgSize: image.size)
+            case .media(url: let url, title: let title):
+                whiteViewModel?.insertMedia(url, title: title)
+            case .multiPages(pages: let pages, title: let title):
+                whiteViewModel?.insertMultiPages(pages, title: title)
+            }
+        }
+        return vc
+    }()
+     
+    lazy var cloudStorageButton: UIButton = {
+        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "tab_cloud_storage")!)
+        button.addTarget(self, action: #selector(onClickStorage(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     lazy var inviteButton: UIButton = {
         let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "invite")!)
         return button
@@ -571,7 +600,7 @@ class ClassRoomViewController: UIViewController {
     lazy var rightToolBar: RoomControlBar = {
         let bar = RoomControlBar(direction: .vertical,
                                  borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                 buttons: viewModel.isTeacher ? [chatButton, usersButton, inviteButton, settingButton] : [chatButton, usersButton, inviteButton, settingButton],
+                                 buttons: viewModel.isTeacher ? [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton] : [chatButton, usersButton, inviteButton, settingButton],
                                  narrowStyle: .narrowMoreThan(count: 1))
         return bar
     }()

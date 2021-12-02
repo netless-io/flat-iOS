@@ -258,6 +258,28 @@ class WhiteboardViewModel: NSObject {
             self?.isRoomJoined.accept(true)
         })
     }
+
+    func insertMedia(_ src: URL, title: String) {
+        let appParam = WhiteAppParam.createMediaPlayerApp(src.absoluteString, title: title)
+        room.addApp(appParam) { msg in }
+    }
+    
+    func insertImg(_ src: URL, imgSize: CGSize) {
+        let info = WhiteImageInformation(size: imgSize)
+        room.insertImage(info, src: src.absoluteString)
+    }
+    
+    func insertMultiPages(_ pages: [(url: URL, preview: URL, size: CGSize)], title: String) {
+        let scenes = pages.enumerated().map { (index, item) -> WhiteScene in
+            let pptPage = WhitePptPage(src: item.url.absoluteString,
+                                       preview: item.preview.absoluteString,
+                                       size: item.size)
+            return WhiteScene(name: (index + 1).description,
+                                   ppt: pptPage)
+        }
+        let appParam = WhiteAppParam.createDocsViewerApp("/" + UUID().uuidString, scenes: scenes, title: title)
+        room.addApp(appParam) { _ in }
+    }
     
     @discardableResult
     func leave() -> Single<Void> {

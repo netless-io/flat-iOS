@@ -43,7 +43,7 @@ enum WhiteboardPannelOperation: Equatable {
             newState.currentApplianceName = whiteApplianceNameKey
             room.setMemberState(newState)
         case .clean:
-            room.cleanScene(false)
+            room.cleanScene(true)
         }
     }
     
