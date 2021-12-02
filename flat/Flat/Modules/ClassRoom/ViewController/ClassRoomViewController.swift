@@ -263,6 +263,15 @@ class ClassRoomViewController: UIViewController {
                 }
             })
             .disposed(by: rx.disposeBag)
+                
+        output.roomError
+                .asDriver(onErrorJustReturn: "unknown reason")
+                .drive(with: self, onNext: { weakSelf, reason in
+                    weakSelf.showAlertWith(message: reason) {
+                        weakSelf.leaveUIHierarchyAndStopSubModule()
+                    }
+                })
+                .disposed(by: rx.disposeBag)
         
         // Should show user red (when received raisehand while user panel is not presenting)
         let hideUserRedpointWhenNewRaiseHand = output.newCommand.filter {

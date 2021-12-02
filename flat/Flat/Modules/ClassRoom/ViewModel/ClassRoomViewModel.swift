@@ -26,6 +26,7 @@ class ClassRoomViewModel {
         let newCommand: Observable<RtmCommand>
         let memberLeft: Observable<String>
         let roomStopped: Driver<Void>
+        let roomError: Observable<String>
     }
     
     struct TeacherOperationInput {
@@ -223,6 +224,12 @@ class ClassRoomViewModel {
             return self.processCommandMessage(text: text, senderId: sender)
         }.asObservable()
         
+        // Do not have do any leave process for rtm is in error
+        let roomError = rtm.error.map {
+            $0.localizedDescription
+        }
+            .share(replay: 1, scope: .whileConnected)
+        
         let roomStopped = state.startStatus
             .filter { $0 == .Stopped }
             .take(1)
@@ -242,7 +249,8 @@ class ClassRoomViewModel {
                      leaveRoomTemporary: leaveRoomTemporary,
                      newCommand: newCommand,
                      memberLeft: memberLeft,
-                     roomStopped: roomStopped)
+                     roomStopped: roomStopped,
+                     roomError: roomError)
     }
     
     func transformRaiseHand(_ raiseHandTap: Driver<Void>) -> Driver<Void> {

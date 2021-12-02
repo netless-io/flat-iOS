@@ -17,6 +17,7 @@ class ClassRoomRtm: NSObject {
     fileprivate let rtmUserUUID: String
     
     let p2pMessage: PublishRelay<(text: String, sender: String)> = .init()
+    let error: PublishRelay<Error> = .init()
     
     init(rtmToken: String,
          rtmUserUUID: String,
@@ -106,13 +107,13 @@ class ClassRoomRtm: NSObject {
 
 extension ClassRoomRtm: AgoraRtmDelegate {
     func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
-//        print("rtm state update \(state.rawValue), reson \(reason.rawValue)")
-//        switch state {
-//        case .aborted:
-//            error.onError("another instance has login")
-//        default:
-//            return
-//        }
+        print("rtm state update \(state.rawValue), reson \(reason.rawValue)")
+        switch state {
+        case .aborted:
+            error.accept(NSLocalizedString("Rtm abort tips", comment: ""))
+        default:
+            return
+        }
     }
     
     func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
