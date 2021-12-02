@@ -62,7 +62,7 @@ class ChatViewModel {
             return inputEnable && !baned
         }
         
-        let history = requestHistory(channelId: rtm.channelId).asObservable()
+        let history = requestHistory(channelId: rtm.channelId).asObservable().share(replay: 1, scope: .whileConnected)
         let newMessage = rtm.newMessagePublish.map { [Message.user(UserMessage.init(userId: $0.sender, text: $0.text))] }
         let noticeMessage = notice.map { [Message.notice($0)]}
         
@@ -150,7 +150,10 @@ class ChatViewModel {
                     ApiProvider.shared.request(fromApi: HistoryMessageRequest(path: path)) { result in
                         switch result {
                         case .success(let historyResult):
-                            let historyMessages = historyResult.result.map { UserMessage(userId: $0.sourceUserId, text: $0.message) }.map { Message.user($0) }
+                            let historyMessages: [Message] = historyResult.result
+                                .map { UserMessage(userId: $0.sourceUserId, text: $0.message) }
+                                .map { Message.user($0) }
+                                .reversed()
                             observer(.success(historyMessages))
                         case .failure(let error):
                             print("request history error", error)

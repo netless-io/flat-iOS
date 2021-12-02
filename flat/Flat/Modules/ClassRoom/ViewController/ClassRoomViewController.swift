@@ -17,6 +17,8 @@ class ClassRoomViewController: UIViewController {
     
     var viewModel: ClassRoomViewModel!
     
+    var chatVCDisposeBag = DisposeBag()
+    
     // MARK: - Child Controllers
     let whiteboardViewController: WhiteboardViewController
     let rtcViewController: RtcViewController
@@ -154,7 +156,16 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
+    func destoryChatViewContrller() {
+        print("destory chatVC")
+        chatVC?.dismiss(animated: false, completion: nil)
+        chatButton.isHidden = false
+        chatVC = nil
+        chatVCDisposeBag = DisposeBag()
+    }
+    
     func setupChatViewController() {
+        print("setup chatVC")
         chatButton.isHidden = true
         let banNotice = viewModel.state.messageBan
             .skip(1)
@@ -207,31 +218,40 @@ class ClassRoomViewController: UIViewController {
             .drive(onNext: { [weak self] show in
                 self?.chatButton.updateBadgeHide(!show)
             })
-            .disposed(by: rx.disposeBag)
+            .disposed(by: chatVCDisposeBag)
     }
     
     // MARK: - Private
     func bindGeneral() {
-        let input = ClassRoomViewModel.Input(trigger: .just(()))
+        let input = ClassRoomViewModel.Input(trigger: .just(()),
+                                             enterBackground: UIApplication.rx.didEnterBackground.asDriver(),
+                                             enterForeground: UIApplication.rx.willEnterForeground.asDriver())
         let output = viewModel.transform(input)
         
         output.initRoom
             .observe(on: MainScheduler.instance)
-            .do(onSuccess: { [weak self] in
+            .do(onNext: { [weak self] in
                 self?.view.endFlatLoading()
-            }, onSubscribe: { [weak self] in
+            }, onSubscribed: { [weak self] in
                 self?.view.startFlatLoading(showCancelDelay: 7, cancelCompletion: {
                     self?.leaveUIHierarchyAndStopSubModule()
                 })
             })
-            .subscribe(with: self, onSuccess: { weakSelf, _ in
+            .subscribe(with: self, onNext: { weakSelf, _ in
                 weakSelf.rightToolBar.isHidden = false
                 weakSelf.setupChatViewController()
-            }, onFailure: { weakSelf, error in
+            }, onError: { weakSelf, error in
                 weakSelf.leaveUIHierarchyAndStopSubModule()
             })
             .disposed(by: rx.disposeBag)
         
+        output.leaveRoomTemporary
+                .subscribe(on: MainScheduler.instance)
+                .subscribe(onNext: { [weak self] in
+                    self?.destoryChatViewContrller()
+                })
+                .disposed(by: rx.disposeBag)
+                
         output.memberLeft
             .subscribe()
             .disposed(by: rx.disposeBag)

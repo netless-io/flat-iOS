@@ -16,10 +16,13 @@ let classStopNotification = Notification.Name("classStopNotification")
 class ClassRoomViewModel {
     struct Input {
         let trigger: Driver<Void>
+        let enterBackground: Driver<Void>
+        let enterForeground: Driver<Void>
     }
     
     struct Output {
-        let initRoom: Single<Void>
+        let initRoom: Observable<Void>
+        let leaveRoomTemporary: Observable<Void>
         let newCommand: Observable<RtmCommand>
         let memberLeft: Observable<String>
         let roomStopped: Driver<Void>
@@ -181,12 +184,25 @@ class ClassRoomViewModel {
     }
     
     func transform(_ input: Input) -> Output {
-        let initRoom = input.trigger.asObservable().flatMapLatest { [unowned self] in
-            self.initialRoomStatus()
-        }.share(replay: 1, scope: .whileConnected).asSingle()
+        let initRoom = Driver.of(input.trigger, input.enterForeground)
+            .merge()
+            .asObservable()
+            .flatMapLatest({ [unowned self] _ -> Observable<Void> in
+                print("start init room")
+                return self.initialRoomStatus().asObservable()
+            })
+            .share(replay: 1, scope: .whileConnected)
+        
+        let leaveRoomTemporary = input.enterBackground
+            .asObservable()
+            .flatMap { [unowned self] _ -> Observable<Void> in
+                print("leave room temp")
+                return self.leaveRoomProcess().asObservable()
+            }
+            .share(replay: 1, scope: .whileConnected)
         
         // Process member left
-        let memberLeft = initRoom.asObservable().flatMap { [weak self] _ -> Observable<String> in
+        let memberLeft = initRoom.flatMap { [weak self] _ -> Observable<String> in
             guard let self = self else { return .error("self not exist") }
             return self.commandHandler.memberLeftPublisher.asObservable()
         }.do(onNext: { [weak self] uuid in
@@ -194,7 +210,7 @@ class ClassRoomViewModel {
         })
         
         // Process command, include p2pcommand && channel command
-        let newCommand = initRoom.asObservable().flatMap { [weak self] _ -> Observable<(text: String, sender: String)> in
+        let newCommand = initRoom.flatMap { [weak self] _ -> Observable<(text: String, sender: String)> in
             guard let self = self else { return .error("self not exist") }
             let p2p = self.rtm.p2pMessage.asObservable()
             let channel = self.commandHandler.newMessagePublish.asObservable()
@@ -223,6 +239,7 @@ class ClassRoomViewModel {
             .asDriver(onErrorJustReturn: ())
         
         return .init(initRoom: initRoom,
+                     leaveRoomTemporary: leaveRoomTemporary,
                      newCommand: newCommand,
                      memberLeft: memberLeft,
                      roomStopped: roomStopped)

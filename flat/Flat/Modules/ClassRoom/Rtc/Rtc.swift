@@ -25,6 +25,30 @@ class Rtc: NSObject {
         return .just(())
     }
     
+    private func observeApplicationLifeCycle() {
+        UIApplication.rx.didEnterBackground
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                // Leave channle when enter background
+                if let state = self?.agoraKit.getConnectionState(), state == .connected {
+                    self?.agoraKit.leaveChannel(nil)
+                    print("leave channel by application lifecycle")
+                }
+            })
+            .disposed(by: rx.disposeBag)
+        
+        UIApplication.rx.willEnterForeground
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                // Rejoin channel when enter foreground
+                if let state = self?.agoraKit.getConnectionState(), (state != .connected || state != .connecting || state != .reconnecting) {
+                    self?.joinChannel()
+                    print("rejoin channel by application lifecycle")
+                }
+            })
+            .disposed(by: rx.disposeBag)
+    }
+    
     func updateRemoteUserStreamType(rtcUID: UInt, type: AgoraVideoStreamType) {
         agoraKit.setRemoteVideoStream(rtcUID, type: type)
     }
@@ -97,6 +121,7 @@ class Rtc: NSObject {
             })
         }
         joinChannel()
+        observeApplicationLifeCycle()
     }
 }
 
