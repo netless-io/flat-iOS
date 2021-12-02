@@ -18,6 +18,13 @@ fileprivate let defaultFlatEncoder: JSONEncoder = {
     return encoder
 }()
 
+fileprivate let defaultNetlessEncoder: JSONEncoder = {
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .iso8601
+    encoder.keyEncodingStrategy = .convertToSnakeCase
+    return encoder
+}()
+
 fileprivate let defaultAgoraEncoder: JSONEncoder = {
     let encoder = JSONEncoder()
     encoder.dateEncodingStrategy = .iso8601
@@ -32,5 +39,9 @@ extension JSONEncoder {
     
     static var agoraEncoder: JSONEncoder {
         defaultAgoraEncoder
+    }
+    
+    static var netlessEncoder: JSONEncoder {
+        defaultNetlessEncoder
     }
 }

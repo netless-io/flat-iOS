@@ -39,6 +39,9 @@ class FlatRequestGenerator: Generator {
             }
             request.httpBody = try JSONSerialization.data(withJSONObject: [:], options: [])
         }
+        for (field, value) in api.header {
+            request.addValue(value, forHTTPHeaderField: field)
+        }
         switch api.task {
         case .requestPlain:
             return request

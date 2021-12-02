@@ -15,6 +15,12 @@ fileprivate let defaultFlatDecoder: JSONDecoder = {
     return decoder
 }()
 
+fileprivate let defaultNetlessDecoder: JSONDecoder = {
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+    return decoder
+}()
+
 fileprivate let defaultAgoraDecoder: JSONDecoder = {
     let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .iso8601
@@ -28,5 +34,9 @@ extension JSONDecoder {
     
     static var agoraDecoder: JSONDecoder {
         defaultAgoraDecoder
+    }
+    
+    static var netlessDecoder: JSONDecoder {
+        defaultNetlessDecoder
     }
 }

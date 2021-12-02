@@ -17,6 +17,11 @@ protocol Request {
     var responseType: Response.Type { get }
     var decoder: JSONDecoder { get }
     var task: Task { get }
+    var header: [String: String] { get }
+}
+
+extension Request {
+    var header: [String: String] { [:] }
 }
 
 extension Request where Self: Encodable {

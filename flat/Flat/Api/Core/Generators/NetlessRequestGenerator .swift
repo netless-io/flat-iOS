@@ -1,5 +1,5 @@
 //
-//  RequestGenerator.swift
+//  NetlessRequestGenerator .swift
 //  flat
 //
 //  Created by xuyunshi on 2021/10/12.
@@ -9,27 +9,19 @@
 
 import Foundation
 
-class AgoraRequestGenerator: Generator {
-    var agoraToken: String = ""
-    var agoraUserId: String = ""
-    let agoraAppId: String
+class NetlessRequestGenerator : Generator {
     let timeoutInterval: TimeInterval
-    let agoraApi: String = "https://api.agora.io/dev/v2/project"
+    let netlessApi: String = "https://api.netless.link/v5"
     
-    init(agoraAppId: String,
-        timeoutInterval: TimeInterval
-    ) {
-        self.agoraAppId = agoraAppId
+    init(timeoutInterval: TimeInterval) {
         self.timeoutInterval = timeoutInterval
     }
     
     func generateRequest<T: Request>(fromApi api: T) throws -> URLRequest {
-        let fullPath = "\(agoraApi)/\(agoraAppId)\(api.path)"
+        let fullPath = "\(netlessApi)\(api.path)"
         let url = URL(string: fullPath)!
         var request = URLRequest(url: url, timeoutInterval: timeoutInterval)
         request.httpMethod = api.method.rawValue
-        request.addValue(agoraToken, forHTTPHeaderField: "x-agora-token")
-        request.addValue(agoraUserId, forHTTPHeaderField: "x-agora-uid")
         for (field, value) in api.header {
             request.addValue(value, forHTTPHeaderField: field)
         }
@@ -41,7 +33,7 @@ class AgoraRequestGenerator: Generator {
         case .requestCustomURLEncodable(parameters: let parameters, customEncoder: let encoder):
             return try encoder.encode(request: request, parameters)
         case .requestJSONEncodable(encodable: let encodable):
-            return try request.encoded(encodable: AnyEncodable(encodable), encoder: .agoraEncoder)
+            return try request.encoded(encodable: AnyEncodable(encodable), encoder: .netlessEncoder)
         case .requestCustomJSONEncodable(encodable: let encodable, customEncoder: let customEncoder):
             return try request.encoded(encodable: AnyEncodable(encodable), encoder: customEncoder)
         }

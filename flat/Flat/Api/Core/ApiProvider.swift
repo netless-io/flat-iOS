@@ -17,7 +17,9 @@ let rootQueue = DispatchQueue(label: "agora.io.flat.session.rootQueue")
 let flatGenerator =  FlatRequestGenerator(host: Env().baseURL, timeoutInterval: defaultNetworkTimeoutInterval)
 let flatResponseHandler = FlatResponseHandler()
 let agoraGenerator = AgoraRequestGenerator(agoraAppId: Env().agoraAppId, timeoutInterval: defaultNetworkTimeoutInterval)
+let netlessGenerator = NetlessRequestGenerator(timeoutInterval: defaultNetworkTimeoutInterval)
 let agoraResponseHandler = AgoraResponseHandler()
+let netlessResponseHandler = NetlessResponseHandler()
 
 class ApiProvider: NSObject {
     static let shared = ApiProvider()
@@ -30,6 +32,11 @@ class ApiProvider: NSObject {
     @discardableResult
     func request<T: AgoraRequest>(fromApi api: T) -> Observable<T.Response> {
         request(fromApi: api, generator: agoraGenerator, responseDataHandler: agoraResponseHandler)
+    }
+    
+    @discardableResult
+    func request<T: NetlessRequest>(fromApi api: T) -> Observable<T.Response> {
+        request(fromApi: api, generator: netlessGenerator, responseDataHandler: netlessResponseHandler)
     }
     
     @discardableResult
@@ -46,6 +53,15 @@ class ApiProvider: NSObject {
                              completionHandler: @escaping (Result<T.Response, ApiError>) -> Void
     ) -> URLSessionDataTask? {
         let task = request(fromApi: api, generator: agoraGenerator, responseDataHandler: agoraResponseHandler, completionHandler: completionHandler)
+        task?.resume()
+        return task
+    }
+    
+    @discardableResult
+    func request<T: NetlessRequest>(fromApi api: T,
+                             completionHandler: @escaping (Result<T.Response, ApiError>) -> Void
+    ) -> URLSessionDataTask? {
+        let task = request(fromApi: api, generator: netlessGenerator, responseDataHandler: netlessResponseHandler, completionHandler: completionHandler)
         task?.resume()
         return task
     }
