@@ -12,10 +12,16 @@ import UIKit
 import SafariServices
 
 class GithubLogin: LaunchItem {
-    func shouldHandle(url: URL) -> Bool {
-        guard url.absoluteString == "x-agora-flat-client://open",
+    var removeLaunchItemFromLaunchCoordinator: (()->Void)?
+    
+    func shouldHandle(url: URL?) -> Bool {
+        guard url?.absoluteString == "x-agora-flat-client://open",
                 handler != nil else { return false }
         return true
+    }
+    
+    func shouldHandle(userActivity: NSUserActivity) -> Bool {
+        false
     }
     
     func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {
@@ -29,14 +35,27 @@ class GithubLogin: LaunchItem {
     
     var handler: LoginHanlder?
     
-    func startLogin(completionHandler: @escaping LoginHanlder) {
-        ApiProvider.shared.request(fromApi: SetAuthUuidRequest(uuid: uuid)) { r in
+    func startLogin(withAuthstore authStore: AuthStore, launchCoordinator: LaunchCoordinator, completionHandler: @escaping LoginHanlder) {
+        ApiProvider.shared.request(fromApi: SetAuthUuidRequest(uuid: uuid)) { [weak self] r in
+            guard let self = self else { return }
             switch r {
             case .success:
                 let controller = SFSafariViewController(url: self.githubLoginURL)
                 controller.modalPresentationStyle = .pageSheet
                 UIApplication.shared.topViewController?.present(controller, animated: true, completion: nil)
-                self.handler = completionHandler
+                let launchItemIdentifier = self.uuid
+                launchCoordinator.registerLaunchItem(self, identifier: launchItemIdentifier)
+                self.removeLaunchItemFromLaunchCoordinator = { [weak launchCoordinator] in
+                    launchCoordinator?.removeLaunchItem(fromIdentifier: launchItemIdentifier)
+                }
+                self.handler = { [weak authStore, weak self] result in
+                    guard let self = self else { return }
+                    if case .success(let user) = result {
+                        authStore?.processLoginSuccessUserInfo(user)
+                    }
+                    completionHandler(result)
+                    self.removeLaunchItemFromLaunchCoordinator?()
+                }
             case .failure(let error):
                 completionHandler(.failure(error))
             }

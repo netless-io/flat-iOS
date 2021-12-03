@@ -33,27 +33,6 @@ class AuthStore {
     var isLogin: Bool { user != nil }
     
     var user: User?
-    
-    var githubLogin: GithubLogin?
-    
-    func startGithubLogin(completionHandler: @escaping LoginHanlder) {
-        if githubLogin == nil {
-            githubLogin = GithubLogin()
-        }
-        githubLogin?.startLogin(completionHandler: { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let user):
-                self.processNewUser(user)
-            case .failure(let error):
-                self.delegate?.authStoreDidLoginFail(self, error: error)
-            }
-            if case .success(let user) = result {
-                self.processNewUser(user)
-            }
-            completionHandler(result)
-        })
-    }
 
     func logout() {
         user = nil
@@ -61,7 +40,7 @@ class AuthStore {
         delegate?.authStoreDidLogout(self)
     }
     
-    func processNewUser(_ user: User) {
+    func processLoginSuccessUserInfo(_ user: User) {
         do {
             let data = try JSONEncoder().encode(user)
             UserDefaults.standard.setValue(data, forKey: userDefaultKey)
@@ -71,20 +50,5 @@ class AuthStore {
         }
         self.user = user
         delegate?.authStoreDidLoginSuccess(self, user: user)
-    }
-}
-
-extension AuthStore: LaunchItem {
-    func shouldHandle(url: URL) -> Bool {
-        guard githubLogin?.shouldHandle(url: url) ?? false else { return false }
-        return true
-    }
-    
-    func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {
-        githubLogin?.immediateImplementation(withLaunchCoordinator: launchCoordinator)
-    }
-    
-    var afterLoginImplementation: ((LaunchCoordinator) -> Void)? {
-        githubLogin?.afterLoginImplementation
     }
 }

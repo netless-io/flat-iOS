@@ -13,6 +13,5 @@
 
 #endif /* bridgingHeader_h */
 
-//#import <WhiteBoard/WhiteBoard.h>
-//#import "WXApi.h"
+#import "WXApi.h"
 //#import <WeChatOpenSDK/WechatAuthSDK.h>

@@ -15,7 +15,7 @@
 			<string>wxDev</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wx1133c2153a45e9b8</string>
+				<string>wx09437693798bc108</string>
 			</array>
 		</dict>
 		<dict>
@@ -43,6 +43,11 @@
 	<string>$(FLAT_WEB_HOST)</string>
 	<key>GITHUB_CLIENT_ID</key>
 	<string>$(GITHUB_CLIENT_ID)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>weixinULAPI</string>
+		<string>weixin</string>
+	</array>
 	<key>NETLESS_APP_ID</key>
 	<string>$(NETLESS_APP_ID)</string>
 	<key>UIApplicationSceneManifest</key>

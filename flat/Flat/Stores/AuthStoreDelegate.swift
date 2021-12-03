@@ -12,7 +12,5 @@ import Foundation
 protocol AuthStoreDelegate: AnyObject {
     func authStoreDidLoginSuccess(_ authStore: AuthStore, user: User)
     
-    func authStoreDidLoginFail(_ authStore: AuthStore, error: Error)
-    
     func authStoreDidLogout(_ authStore: AuthStore)
 }

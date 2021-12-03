@@ -10,6 +10,7 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+    var wechatLogin: WechatLogin?
     var githunLogin: GithubLogin?
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -20,9 +21,14 @@ class LoginViewController: UIViewController {
         }
     }
     
+    deinit {
+        print(self, "deinit")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: hide wechat when wx not intsalled
+        // Hide wechat login when wechat not installed
+        wechatLoginButton.isHidden = !WXApi.isWXAppInstalled()
         syncTraiCollection(traitCollection)
         #if DEBUG
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(debugLogin))
@@ -45,19 +51,33 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func onClickWechatButton(_ sender: Any) {
+        guard let launchCoordinator = globalLaunchCoordinator else { return }
+        showActivityIndicator(forSeconds: 1)
+        self.wechatLogin = WechatLogin()
+        self.wechatLogin?.startLogin(withAuthstore: AuthStore.shared,
+                                 launchCoordinator: launchCoordinator) { [weak self] result in
+            switch result {
+            case .success:
+                return
+            case .failure(let error):
+                self?.showAlertWith(message: error.localizedDescription)
+            }
+        }
     }
     
     @IBAction func onClickGithubButton(_ sender: Any) {
+        guard let coordinator = globalLaunchCoordinator else { return }
         showActivityIndicator(forSeconds: 1)
-        AuthStore.shared.startGithubLogin { result in
+        self.githunLogin = GithubLogin()
+        self.githunLogin?.startLogin(withAuthstore: AuthStore.shared,
+                                     launchCoordinator: coordinator, completionHandler: { [weak self] result in
             switch result {
             case .success(let user):
-                print(user)
                 return
             case .failure(let error):
-                self.showAlertWith(message: error.localizedDescription)
+                self?.showAlertWith(message: error.localizedDescription)
             }
-        }
+        })
     }
     
     @objc func debugLogin() {
@@ -79,7 +99,7 @@ class LoginViewController: UIViewController {
             alert.addAction(.init(title: user.name,
                                   style: .default,
                                   handler: { _ in
-                AuthStore.shared.processNewUser(user)
+                AuthStore.shared.processLoginSuccessUserInfo(user)
             }))
         }
         alert.addAction(.init(title: "cancel", style: .cancel, handler: nil))

@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:flat-api-dev.whiteboard.agora.io</string>
+		<string>applinks:flat-api.whiteboard.agora.io</string>
 	</array>
 </dict>
 </plist>

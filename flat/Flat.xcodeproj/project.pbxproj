@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A05C2AF2758B98F009BCA79 /* WechatLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */; };
+		8A05C2B32758C78E009BCA79 /* WechatAuthCallbackRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */; };
 		8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
@@ -220,6 +222,10 @@
 		5C4A9F25272576BC00D296C5 /* DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C4A9F2F272576BC00D296C5 /* DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		82375266484DBD839D90DB24 /* Pods-flat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.debug.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.debug.xcconfig"; sourceTree = "<group>"; };
+		8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatLogin.swift; sourceTree = "<group>"; };
+		8A05C2B02758BBBF009BCA79 /* FlatStage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatStage.entitlements; sourceTree = "<group>"; };
+		8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatRelease.entitlements; sourceTree = "<group>"; };
+		8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatAuthCallbackRequest.swift; sourceTree = "<group>"; };
 		8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralButton.swift; sourceTree = "<group>"; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
@@ -649,6 +655,7 @@
 				8A270B962719607700450DC6 /* LoginViewController.xib */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
 				8AD3CDF1271693EC008BD904 /* GithubLogin.swift */,
+				8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -773,6 +780,7 @@
 				8A80209D27570EAA00F5691C /* StorageListRequest.swift */,
 				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
 				8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */,
+				8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */,
 				8A97EBAE2719983700965185 /* CreateRoomRequest.swift */,
 				8A97EBB22719999000965185 /* JoinRoomRequest.swift */,
 				8A9FB39C2721783B00F6F06F /* MemberRequest.swift */,
@@ -1054,6 +1062,8 @@
 		8AD7C6BB27157EA7001C4AAD /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */,
+				8A05C2B02758BBBF009BCA79 /* FlatStage.entitlements */,
 				8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */,
 				8A11CBE0271FEBB1001D0B1F /* Components */,
 				8A9ACBF9271D602600E7E7CE /* Views */,
@@ -1400,6 +1410,7 @@
 				8A8020982757097600F5691C /* CloudStorageListViewController.swift in Sources */,
 				8A9FB39D2721783B00F6F06F /* MemberRequest.swift in Sources */,
 				8A2D0B9727158C9000123207 /* ApiProvider.swift in Sources */,
+				8A05C2B32758C78E009BCA79 /* WechatAuthCallbackRequest.swift in Sources */,
 				8A270B81271929F900450DC6 /* ProfileViewController.swift in Sources */,
 				8AAC69B02717E32E00F9A3B4 /* AuthProcessRequest.swift in Sources */,
 				8A270B6C271822BA00450DC6 /* MainTabbarController.swift in Sources */,
@@ -1440,6 +1451,7 @@
 				8A7741B9273287C2009FAADA /* RtcCellPopMenuView.swift in Sources */,
 				8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */,
 				8A9FB3C327229A7C00F6F06F /* Method.swift in Sources */,
+				8A05C2AF2758B98F009BCA79 /* WechatLogin.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
 				8AE892FB2727E99D009C71DA /* CommandType.swift in Sources */,
 				8A2D0B9A27158FCD00123207 /* Request.swift in Sources */,
@@ -1966,7 +1978,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-DEV";
 				PROVISIONING_PROFILE_SPECIFIER = flat2;
@@ -1985,6 +1997,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Flat/FlatRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2002,7 +2015,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2083,6 +2096,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Flat/FlatStage.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2100,7 +2114,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-STAGE";
 				PROVISIONING_PROFILE_SPECIFIER = "";

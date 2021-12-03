@@ -15,17 +15,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        print(LocaleManager.languageCode)
+        print(LocaleManager.languageCode ?? "local")
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        launch = .init(window: window!)
+        launch = .init(window: window!, authStore: AuthStore.shared)
         launch?.start(withLaunchUrl: connectionOptions.urlContexts.first?.url)
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        // TODO: url换成deeplink吧?
+        // TODO: url to useractivity
         guard let url = URLContexts.first?.url else { return }
         launch?.start(withLaunchUrl: url)
+    }
+    
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        _ = launch?.start(withLaunchUserActivity: userActivity)
     }
 }
 

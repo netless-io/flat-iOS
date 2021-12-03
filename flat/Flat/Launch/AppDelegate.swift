@@ -12,6 +12,14 @@ import SwiftUI
 import Kingfisher
 import SwiftTrace
 
+var globalLaunchCoordinator: LaunchCoordinator? {
+    if #available(iOS 13.0, *) {
+        return (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch
+    } else {
+        return (UIApplication.shared.delegate as? AppDelegate)?.launch
+    }
+}
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
@@ -22,12 +30,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
+        WXApi.registerApp(Env().wechatAppId, universalLink: Env().baseURL)
         if #available(iOS 13, *) {
             // SceneDelegate
         } else {
             let url = launchOptions?[.url] as? URL
             window = UIWindow(frame: UIScreen.main.bounds)
-            launch = LaunchCoordinator(window: window!)
+            launch = LaunchCoordinator(window: window!, authStore: AuthStore.shared)
             launch?.start(withLaunchUrl: url)
         }
         return true
@@ -41,6 +50,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         launch?.start(withLaunchUrl: url)
+        return true
+    }
+    
+
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        let _ = launch?.start(withLaunchUserActivity: userActivity)
         return true
     }
 }
