@@ -13,7 +13,10 @@ import UIKit
 class LaunchCoordinator {
     let window: UIWindow
     
+    var hitedItems: [LaunchItem] = []
     var afterLoginImplementations: [((LaunchCoordinator)->Void)] = []
+    
+    var authStore: AuthStore
     
     // All the registed launchItem will be stored here
     fileprivate var launchItems: [String: LaunchItem] = [:] {
@@ -24,9 +27,11 @@ class LaunchCoordinator {
         }
     }
     
-    init(window: UIWindow, authStore: AuthStore) {
+    init(window: UIWindow, authStore: AuthStore, defaultLaunchItems: [LaunchItem]) {
         self.window = window
+        self.authStore = authStore
         authStore.delegate = self
+        defaultLaunchItems.forEach { registerLaunchItem($0, identifier: String(describing: $0)) }
     }
     
     func registerLaunchItem(_ item: LaunchItem, identifier: String) {
@@ -38,33 +43,35 @@ class LaunchCoordinator {
     }
     
     func start(withLaunchUserActivity userActivity: NSUserActivity) -> Bool {
-        configRootWith(isLogin: AuthStore.shared.isLogin)
-        let targetItems = launchItems.map { $0.value }.filter { $0.shouldHandle(userActivity: userActivity) }
-        for item in targetItems {
-            item.immediateImplementation(withLaunchCoordinator: self)
+        configRootWith(isLogin: authStore.isLogin)
+        hitedItems = launchItems.map { $0.value }.filter { $0.shouldHandle(userActivity: userActivity) }
+        hitedItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
+        if authStore.isLogin, let user = authStore.user {
+            hitedItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+            hitedItems = []
         }
-        self.afterLoginImplementations = targetItems.compactMap { $0.afterLoginImplementation }
-        return !targetItems.isEmpty
+        return !hitedItems.isEmpty
     }
     
     func start(withLaunchUrl launchUrl: URL? = nil) {
-        configRootWith(isLogin: AuthStore.shared.isLogin)
-        let targetItems = launchItems.map { $0.value }.filter { $0.shouldHandle(url: launchUrl) }
-        for item in targetItems {
-            item.immediateImplementation(withLaunchCoordinator: self)
+        configRootWith(isLogin: authStore.isLogin)
+        hitedItems = launchItems.map { $0.value }.filter { $0.shouldHandle(url: launchUrl) }
+        hitedItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
+        if authStore.isLogin, let user = authStore.user {
+            hitedItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+            hitedItems = []
         }
-        self.afterLoginImplementations = targetItems.compactMap { $0.afterLoginImplementation }
     }
     
     func reboot() {
-        window.rootViewController = AuthStore.shared.isLogin ? MainSplitViewController() : LoginViewController()
+        window.rootViewController = authStore.isLogin ? MainSplitViewController() : LoginViewController()
     }
     
     // MARK: - Private
     fileprivate func configRootWith(isLogin: Bool) {
-        flatGenerator.token = AuthStore.shared.user?.token
+        flatGenerator.token = authStore.user?.token
         if isLogin {
-            guard let _ = window.rootViewController as? MainTabbarController else {
+            guard let _ = window.rootViewController as? MainSplitViewController else {
                 window.rootViewController = MainSplitViewController()
                 window.makeKeyAndVisible()
                 return
@@ -82,8 +89,8 @@ class LaunchCoordinator {
 extension LaunchCoordinator: AuthStoreDelegate {
     func authStoreDidLoginSuccess(_ authStore: AuthStore, user: User) {
         configRootWith(isLogin: true)
-        afterLoginImplementations.forEach { $0(self) }
-        afterLoginImplementations = []
+        hitedItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+        hitedItems = []
     }
     
     func authStoreDidLogout(_ authStore: AuthStore) {

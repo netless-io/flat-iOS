@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             let url = launchOptions?[.url] as? URL
             window = UIWindow(frame: UIScreen.main.bounds)
-            launch = LaunchCoordinator(window: window!, authStore: AuthStore.shared)
+            launch = LaunchCoordinator(window: window!, authStore: AuthStore.shared, defaultLaunchItems: [JoinRoomLaunchItem()])
             launch?.start(withLaunchUrl: url)
         }
         return true

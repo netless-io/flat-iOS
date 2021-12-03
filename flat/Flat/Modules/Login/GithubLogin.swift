@@ -16,8 +16,12 @@ class GithubLogin: LaunchItem {
     
     func shouldHandle(url: URL?) -> Bool {
         guard url?.absoluteString == "x-agora-flat-client://open",
-                handler != nil else { return false }
+                  handler != nil else { return false }
         return true
+    }
+    
+    deinit {
+        removeLaunchItemFromLaunchCoordinator?()
     }
     
     func shouldHandle(userActivity: NSUserActivity) -> Bool {
@@ -29,7 +33,7 @@ class GithubLogin: LaunchItem {
         ApiProvider.shared.request(fromApi: AuthProcessRequest(uuid: uuid), completionHandler: handler)
     }
     
-    var afterLoginImplementation: ((LaunchCoordinator) -> Void)? { nil }
+    func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) {}
     
     let uuid: String = UUID().uuidString
     

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8A05C2AF2758B98F009BCA79 /* WechatLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */; };
 		8A05C2B32758C78E009BCA79 /* WechatAuthCallbackRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */; };
+		8A05C2B62759B722009BCA79 /* JoinRoomLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2B52759B722009BCA79 /* JoinRoomLaunchItem.swift */; };
 		8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
@@ -226,6 +227,7 @@
 		8A05C2B02758BBBF009BCA79 /* FlatStage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatStage.entitlements; sourceTree = "<group>"; };
 		8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatRelease.entitlements; sourceTree = "<group>"; };
 		8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatAuthCallbackRequest.swift; sourceTree = "<group>"; };
+		8A05C2B52759B722009BCA79 /* JoinRoomLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomLaunchItem.swift; sourceTree = "<group>"; };
 		8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralButton.swift; sourceTree = "<group>"; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
@@ -472,6 +474,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		8A05C2B42759B6EC009BCA79 /* DefaultLaunchItems */ = {
+			isa = PBXGroup;
+			children = (
+				8A05C2B52759B722009BCA79 /* JoinRoomLaunchItem.swift */,
+			);
+			path = DefaultLaunchItems;
+			sourceTree = "<group>";
+		};
 		8A0BD7B1274B345900383E9D /* Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -632,6 +642,7 @@
 		8A2D0B8F271587C000123207 /* Launch */ = {
 			isa = PBXGroup;
 			children = (
+				8A05C2B42759B6EC009BCA79 /* DefaultLaunchItems */,
 				8AD7C6BC27157EA7001C4AAD /* AppDelegate.swift */,
 				8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */,
 				8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */,
@@ -1437,6 +1448,7 @@
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
 				8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */,
 				8A11CBF227201069001D0B1F /* String+Error.swift in Sources */,
+				8A05C2B62759B722009BCA79 /* JoinRoomLaunchItem.swift in Sources */,
 				8A8020A927573F1400F5691C /* ConversionTaskProgressRequest.swift in Sources */,
 				8A270BC927198A1800450DC6 /* UIButton+Spacing.swift in Sources */,
 				8AE893042727F2F1009C71DA /* AcceptRaiseHandCommand.swift in Sources */,

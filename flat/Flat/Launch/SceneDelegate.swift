@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print(LocaleManager.languageCode ?? "local")
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        launch = .init(window: window!, authStore: AuthStore.shared)
+        launch = .init(window: window!, authStore: AuthStore.shared, defaultLaunchItems: [JoinRoomLaunchItem()])
         launch?.start(withLaunchUrl: connectionOptions.urlContexts.first?.url)
     }
     

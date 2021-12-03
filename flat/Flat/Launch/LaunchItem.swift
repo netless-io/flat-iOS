@@ -12,7 +12,7 @@ import Foundation
 // An Item can be registerd to Application launch process
 protocol LaunchItem {
     // The task should be excuted after user login
-    var afterLoginImplementation: ((LaunchCoordinator)->Void)? { get }
+    func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User)
     
     // The Task will be immediately excute when the item been handle
     func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator)

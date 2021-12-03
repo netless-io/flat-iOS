@@ -29,7 +29,7 @@ class WechatLogin: NSObject, LaunchItem {
     
     let uuid: String = UUID().uuidString
     
-    var afterLoginImplementation: ((LaunchCoordinator) -> Void)? { nil }
+    func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) { }
     
     func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {}
     
