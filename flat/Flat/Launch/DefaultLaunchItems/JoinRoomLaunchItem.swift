@@ -15,25 +15,41 @@ class JoinRoomLaunchItem: LaunchItem {
     var disposeBag = DisposeBag()
     
     func shouldHandle(url: URL?) -> Bool {
-        guard let url = url,
-                url.scheme == "x-agora-flat-client",
-                url.host == "joinRoom" else {
-                    return false
-                }
-        guard let item = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first(where: { $0.name == "roomUUID"}),
-              let id = item.value,
-              !id.isNotEmptyOrAllSpacing
-        else { return false }
-        self.uuid = id
-        return true
+        if let url = url {
+            if url.scheme == "x-agora-flat-client",
+               url.host == "joinRoom",
+               let roomId = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?
+                .first(where: { $0.name == "roomUUID"})?
+                .value,
+                roomId.isNotEmptyOrAllSpacing {
+                self.uuid = roomId
+                return true
+            } else if let roomId = getUniversalLinkRoomUUID(url) {
+                self.uuid = roomId
+                UIApplication.shared.topViewController?.showAlertWith(message: roomId)
+                return true
+            }
+        }
+        return false
+    }
+    
+    fileprivate func getUniversalLinkRoomUUID(_ url: URL) -> String? {
+        if url.pathComponents.contains("join"),
+           let roomUUID = url.pathComponents.last,
+           roomUUID.isNotEmptyOrAllSpacing {
+            return roomUUID
+        }
+        return nil
     }
     
     func shouldHandle(userActivity: NSUserActivity) -> Bool {
         guard let url = userActivity.webpageURL else { return false }
-        guard url.pathComponents.contains("join"),
-                let roomUUID = url.pathComponents.last else { return false }
-        self.uuid = roomUUID
-        return true
+        if let roomId = getUniversalLinkRoomUUID(url) {
+            self.uuid = roomId
+            return true
+        }
+        return false
     }
     
     func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {

@@ -19,13 +19,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         launch = .init(window: window!, authStore: AuthStore.shared, defaultLaunchItems: [JoinRoomLaunchItem()])
-        launch?.start(withLaunchUrl: connectionOptions.urlContexts.first?.url)
+        if let userActivity = connectionOptions.userActivities.first {
+            _ = launch?.start(withLaunchUserActivity: userActivity)
+        } else {
+            launch?.start(withLaunchUrl: connectionOptions.urlContexts.first?.url)
+        }
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        // TODO: url to useractivity
+        // TODO: url to userActivity
         guard let url = URLContexts.first?.url else { return }
         launch?.start(withLaunchUrl: url)
+        UIApplication.shared.topViewController?.showAlertWith(message: "open" + (URLContexts.first?.url.absoluteString ?? "empty"))
     }
     
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {

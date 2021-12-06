@@ -13,7 +13,7 @@ import UIKit
 class LaunchCoordinator {
     let window: UIWindow
     
-    var hitedItems: [LaunchItem] = []
+    var hitItems: [LaunchItem] = []
     var afterLoginImplementations: [((LaunchCoordinator)->Void)] = []
     
     var authStore: AuthStore
@@ -44,22 +44,22 @@ class LaunchCoordinator {
     
     func start(withLaunchUserActivity userActivity: NSUserActivity) -> Bool {
         configRootWith(isLogin: authStore.isLogin)
-        hitedItems = launchItems.map { $0.value }.filter { $0.shouldHandle(userActivity: userActivity) }
-        hitedItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
+        hitItems = launchItems.map { $0.value }.filter { $0.shouldHandle(userActivity: userActivity) }
+        hitItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
         if authStore.isLogin, let user = authStore.user {
-            hitedItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
-            hitedItems = []
+            hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+            hitItems = []
         }
-        return !hitedItems.isEmpty
+        return !hitItems.isEmpty
     }
     
     func start(withLaunchUrl launchUrl: URL? = nil) {
         configRootWith(isLogin: authStore.isLogin)
-        hitedItems = launchItems.map { $0.value }.filter { $0.shouldHandle(url: launchUrl) }
-        hitedItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
+        hitItems = launchItems.map { $0.value }.filter { $0.shouldHandle(url: launchUrl) }
+        hitItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
         if authStore.isLogin, let user = authStore.user {
-            hitedItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
-            hitedItems = []
+            hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+            hitItems = []
         }
     }
     
@@ -89,8 +89,8 @@ class LaunchCoordinator {
 extension LaunchCoordinator: AuthStoreDelegate {
     func authStoreDidLoginSuccess(_ authStore: AuthStore, user: User) {
         configRootWith(isLogin: true)
-        hitedItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
-        hitedItems = []
+        hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+        hitItems = []
     }
     
     func authStoreDidLogout(_ authStore: AuthStore) {

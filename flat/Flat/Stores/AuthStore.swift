@@ -10,7 +10,7 @@
 import Foundation
 import UIKit
 
-typealias LoginHanlder = (Result<User, ApiError>) -> Void
+typealias LoginHandler = (Result<User, ApiError>) -> Void
 
 class AuthStore {
     private let userDefaultKey = "AuthStore_user"

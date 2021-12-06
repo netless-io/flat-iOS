@@ -500,7 +500,7 @@ class ClassRoomViewModel {
     
     func acceptRaiseHand(forUUID UUID: String) -> Single<Void> {
         guard isTeacher else { return .just(())}
-        return sendCommand(.accpetRaiseHand(.init(userUUID: UUID, accept: true)), toTargetUID: nil)
+        return sendCommand(.acceptRaiseHand(.init(userUUID: UUID, accept: true)), toTargetUID: nil)
             .do(onSuccess: { [weak self] in
                 guard var status = self?.state.userStatusFor(userUUID: UUID) else { return }
                 status.isRaisingHand = false
@@ -560,7 +560,7 @@ class ClassRoomViewModel {
                 return .just(command)
             case .requestChannelStatus(let requestChannelStatusCommand):
                 // TODO: response is not reliable, should depend on the current status
-                return respondToReqeustChannelStatusCommand(requestChannelStatusCommand, fromUID: senderId).map { _ ->  RtmCommand in
+                return respondToRequestChannelStatusCommand(requestChannelStatusCommand, fromUID: senderId).map { _ ->  RtmCommand in
                     return command
                 }
             case .roomStartStatus(let status):
@@ -576,15 +576,15 @@ class ClassRoomViewModel {
                 status.isRaisingHand = raiseHand
                 state.updateUserStatusFor(userRtmUID: senderId, status: status)
                 return .just(command)
-            case .accpetRaiseHand(let accpetCommand):
-                guard var status = state.userStatusFor(userUUID: accpetCommand.userUUID) else {
+            case .acceptRaiseHand(let acceptCommand):
+                guard var status = state.userStatusFor(userUUID: acceptCommand.userUUID) else {
                     return .just(command)
                 }
-                if accpetCommand.accept {
+                if acceptCommand.accept {
                     status.isRaisingHand = false
                     status.mic = true
                     status.isSpeak = true
-                    state.updateUserStatusFor(userRtmUID: accpetCommand.userUUID, status: status)
+                    state.updateUserStatusFor(userRtmUID: acceptCommand.userUUID, status: status)
                 }
                 return .just(command)
             case .cancelRaiseHand:
@@ -715,7 +715,7 @@ class ClassRoomViewModel {
         state.users.value.first(where: { $0.rtmUUID == userUUID })
     }
     
-    func respondToReqeustChannelStatusCommand(_ command: RequestChannelStatusCommand, fromUID uid: String) -> Single<Void> {
+    func respondToRequestChannelStatusCommand(_ command: RequestChannelStatusCommand, fromUID uid: String) -> Single<Void> {
         let userValue = ApiProvider.shared.request(fromApi: MemberRequest(roomUUID: state.roomUUID,
                                                                           usersUUID: [uid]))
             .map {

@@ -21,7 +21,7 @@ enum RtmCommand {
     case undefined(String)
     
     case raiseHand(Bool)
-    case accpetRaiseHand(AccpetRaiseHandCommand)
+    case acceptRaiseHand(AccpetRaiseHandCommand)
     case cancelRaiseHand(Bool)
 }
 

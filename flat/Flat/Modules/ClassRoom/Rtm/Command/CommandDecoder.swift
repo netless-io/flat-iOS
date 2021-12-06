@@ -32,7 +32,7 @@ struct CommandDecoder {
             return .raiseHand(value)
         case .acceptRaiseHand:
             let value = try decode.decode(AnyKeyDecodable<AccpetRaiseHandCommand>.self, from: data).result
-            return .accpetRaiseHand(value)
+            return .acceptRaiseHand(value)
         case .cancelHandRaising:
             let value = try decode.decode(AnyKeyDecodable<Bool>.self, from: data).result
             return .cancelRaiseHand(value)
