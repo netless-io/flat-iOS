@@ -29,18 +29,20 @@ class WhiteboardViewController: UIViewController {
     init(sdkConfig: WhiteSdkConfiguration,
          roomConfig: WhiteRoomConfig) {
         super.init(nibName: nil, bundle: nil)
-        let pannelItems = WhiteboardPannelConfig.defaultPannelItems
+        let panelItems = WhiteboardPanelConfig.defaultPanelItems
         let navi = WhiteboardMenuNavigatorImp(root: self, tapSourceHandler: { [weak self] item -> UIView? in
             guard let self = self else { return nil }
-            if let index = self.viewModel.pannelItems.firstIndex(of: item) {
-                return self.pannelButtons[index]
+            if let index = self.viewModel.panelItems.firstIndex(of: item) {
+                return self.panelButtons[index]
             }
             return nil
-        }, strokePickerViewController: .init(candicateColors: WhiteboardPannelConfig.defaultColors))
-        viewModel = .init(pannelItems: pannelItems,
+        }, strokePickerViewController: .init(candidateColors: WhiteboardPanelConfig.defaultColors))
+        viewModel = .init(panelItems: panelItems,
                           whiteRoomConfig: roomConfig,
                           menuNavigator: navi)
-        let whiteSDK = WhiteSDK(whiteBoardView: whiteboardView, config: sdkConfig, commonCallbackDelegate: viewModel)
+        let whiteSDK = WhiteSDK(whiteBoardView: whiteboardView,
+                                config: sdkConfig,
+                                commonCallbackDelegate: viewModel)
         viewModel.sdk = whiteSDK
     }
     
@@ -56,22 +58,24 @@ class WhiteboardViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         
-        let taps = pannelButtons.enumerated().map { [unowned self] index, btn in
-            btn.rx.tap.asDriver().map { self.viewModel.pannelItems[index] }
+        let taps = panelButtons.enumerated().map { [unowned self] index, btn in
+            btn.rx.tap.asDriver().map { self.viewModel.panelItems[index] }
         }
-        let output = viewModel.transform(.init(pannelTap: Driver.merge(taps),
+        let output = viewModel.transform(.init(panelTap: Driver.merge(taps),
                                                undoTap: undoButton.rx.tap.asDriver(),
                                                redoTap: redoButton.rx.tap.asDriver()))
         
+        // TODO: join room error
         output.join
-            .subscribe(onCompleted: { [weak self] in
-                self?.setupControlBar()
-            })
+            .subscribe(
+                onCompleted: { [weak self] in
+                    self?.setupControlBar()
+                })
             .disposed(by: rx.disposeBag)
-
+        
         output.selectedItem.asDriver(onErrorJustReturn: nil)
             .drive(with: self, onNext: { weakSelf, item in
-                weakSelf.selectedPannelItem = item
+                weakSelf.selectedPanelItem = item
             })
             .disposed(by: rx.disposeBag)
         
@@ -99,8 +103,8 @@ class WhiteboardViewController: UIViewController {
             .disposed(by: rx.disposeBag)
         
         let sceneOutput = viewModel.transformSceneInput(.init(previousTap: previousSceneButton.rx.tap.asDriver(),
-                                            nextTap: nextSceneButton.rx.tap.asDriver(),
-                                            newTap: newSceneButton.rx.tap.asDriver()))
+                                                              nextTap: nextSceneButton.rx.tap.asDriver(),
+                                                              newTap: newSceneButton.rx.tap.asDriver()))
         
         sceneOutput.taps
             .drive()
@@ -120,7 +124,7 @@ class WhiteboardViewController: UIViewController {
             .asDriver()
             .drive(undoButton.rx.isEnabled)
             .disposed(by: rx.disposeBag)
-
+        
         viewModel.redoEnable
             .asDriver()
             .drive(redoButton.rx.isEnabled)
@@ -136,8 +140,8 @@ class WhiteboardViewController: UIViewController {
     }
     
     func updateColorPickIndicatorButton(withColor color: UIColor) {
-        if let index = viewModel.pannelItems.firstIndex(of: .colorAndWidth(displayColor: color)) {
-            updateImage(forButton: pannelButtons[index], item: .colorAndWidth(displayColor: color))
+        if let index = viewModel.panelItems.firstIndex(of: .color(displayColor: color)) {
+            updateImage(forButton: panelButtons[index], item: .color(displayColor: color))
             print("update color button with \(color)")
         }
     }
@@ -160,7 +164,7 @@ class WhiteboardViewController: UIViewController {
             make.right.equalTo(view.safeAreaLayoutGuide.snp.right).inset(86)
         }
         
-        syncSelectedPannelItem()
+        syncSelectedPanelItem()
     }
     
     // MARK: - Lazy
@@ -217,8 +221,8 @@ class WhiteboardViewController: UIViewController {
         return button
     }()
     
-    lazy var pannelButtons: [UIButton] = {
-        let btns = viewModel.pannelItems.enumerated().map { index, item -> UIButton in
+    lazy var panelButtons: [UIButton] = {
+        let btns = viewModel.panelItems.enumerated().map { index, item -> UIButton in
             let btn: UIButton
             if item.hasSubMenu {
                 btn = IndicatorMoreButton(type: .custom)
@@ -233,35 +237,35 @@ class WhiteboardViewController: UIViewController {
         return btns
     }()
     
-    func updateImage(forButton button: UIButton, item: WhitePannelItem) {
+    func updateImage(forButton button: UIButton, item: WhitePanelItem) {
         button.setImage(item.image, for: .normal)
         button.setImage(item.selectedImage, for: .selected)
     }
     
-    func syncSelectedPannelItem() {
-        viewModel.pannelItems.enumerated().forEach { index, item in
-            let btn = pannelButtons[index]
-            btn.isSelected = item == selectedPannelItem
+    func syncSelectedPanelItem() {
+        viewModel.panelItems.enumerated().forEach { index, item in
+            let btn = panelButtons[index]
+            btn.isSelected = item == selectedPanelItem
         }
-
-        if let selected = selectedPannelItem, let buttonIndex = viewModel.pannelItems.firstIndex(of: selected) {
-            let btn = pannelButtons[buttonIndex]
+        
+        if let selected = selectedPanelItem, let buttonIndex = viewModel.panelItems.firstIndex(of: selected) {
+            let btn = panelButtons[buttonIndex]
             updateImage(forButton: btn, item: selected)
             // TODO: Move this to viewmodel
-            viewModel.pannelItems[buttonIndex] = selected
+            viewModel.panelItems[buttonIndex] = selected
         }
     }
     
-    lazy var selectedPannelItem: WhitePannelItem? = nil {
+    lazy var selectedPanelItem: WhitePanelItem? = nil {
         didSet {
-            syncSelectedPannelItem()
+            syncSelectedPanelItem()
         }
     }
     
     lazy var sceneOperationBar: RoomControlBar = {
         let bar = RoomControlBar(direction: .horizontal,
-                              borderMask: [.layerMinXMinYCorner, .layerMaxXMinYCorner],
-                              buttons: [newSceneButton, previousSceneButton, sceneLabel, nextSceneButton])
+                                 borderMask: [.layerMinXMinYCorner, .layerMaxXMinYCorner],
+                                 buttons: [newSceneButton, previousSceneButton, sceneLabel, nextSceneButton])
         sceneLabel.snp.remakeConstraints { make in
             make.size.equalTo(CGSize(width: 80, height: 40))
         }
@@ -277,6 +281,6 @@ class WhiteboardViewController: UIViewController {
     lazy var operationBar: RoomControlBar = {
         return RoomControlBar(direction: .vertical,
                               borderMask: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner],
-                              buttons: pannelButtons)
+                              buttons: panelButtons)
     }()
 }

@@ -19,7 +19,7 @@ class RoomTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        seperatorLineHeightConstraint.constant = 1 / UIScreen.main.scale
+        separatorLineHeightConstraint.constant = 1 / UIScreen.main.scale
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -40,5 +40,5 @@ class RoomTableViewCell: UITableViewCell {
         }
     }
     
-    @IBOutlet weak var seperatorLineHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var separatorLineHeightConstraint: NSLayoutConstraint!
 }

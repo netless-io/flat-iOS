@@ -17,7 +17,7 @@ class PageListContainer<T> {
     
     fileprivate let maxItemsPerPage: Int = 50
     
-    func appendResult(items: [T], fromPage page: Int) {
+    func receive(items: [T], withItemsPage page: Int) {
         if page == 1 {
             self.currentPage = page
             self.canLoadMore = items.count >= maxItemsPerPage

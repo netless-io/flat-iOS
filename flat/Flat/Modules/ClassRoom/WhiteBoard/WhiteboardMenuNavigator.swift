@@ -12,9 +12,9 @@ import RxCocoa
 import Whiteboard
 
 protocol WhiteboardMenuNavigator {
-    func presentPicker(item: WhitePannelItem)
+    func presentPicker(item: WhitePanelItem)
     
-    func presentColorAndWidthPicker(item: WhitePannelItem, lineWidth: Float)
+    func presentColorAndWidthPicker(item: WhitePanelItem, lineWidth: Float)
     
     func getNewApplianceObserver() -> Observable<WhiteApplianceNameKey>
     

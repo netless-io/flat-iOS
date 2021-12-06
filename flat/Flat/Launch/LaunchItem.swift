@@ -14,7 +14,7 @@ protocol LaunchItem {
     // The task should be excuted after user login
     func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User)
     
-    // The Task will be immediately excute when the item been handle
+    // The Task will be immediately execute when the item been handle
     func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator)
     
     func shouldHandle(url: URL?) -> Bool

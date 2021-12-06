@@ -29,5 +29,5 @@ class ChatNoticeTableViewCell: UITableViewCell {
         labelView.edge = .init(top: 6, left: 12, bottom: 6, right: 12)
     }
     
-    lazy var labelView = BorderLabel()
+    lazy var labelView = BorderLabelView()
 }

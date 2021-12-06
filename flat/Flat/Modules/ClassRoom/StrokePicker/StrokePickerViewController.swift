@@ -34,11 +34,11 @@ class StrokePickerViewController: PopOverDismissDetectableViewController {
     // MARK: - LifeCycle
     init(minStrokeWidth: Float = 1,
          maxStrokeWidth: Float = 20,
-         candicateColors: [UIColor]
+         candidateColors: [UIColor]
     ) {
         self.lineWidth = .init(value: minStrokeWidth)
-        self.selectedColor = .init(value: candicateColors[0])
-        self.colors = candicateColors
+        self.selectedColor = .init(value: candidateColors[0])
+        self.colors = candidateColors
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
         self.slider.minimumValue = minStrokeWidth

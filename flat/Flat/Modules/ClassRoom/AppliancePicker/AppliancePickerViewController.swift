@@ -14,13 +14,13 @@ import Whiteboard
 
 class AppliancePickerViewController: PopOverDismissDetectableViewController {
     let appliancePickerCellIdentifier = "appliancePickerCellIdentifier"
-    let newOperation: PublishRelay<WhiteboardPannelOperation> = .init()
+    let newOperation: PublishRelay<WhiteboardPanelOperation> = .init()
     
-    let operations: BehaviorRelay<[WhiteboardPannelOperation]>
+    let operations: BehaviorRelay<[WhiteboardPanelOperation]>
     let selectedIndex: BehaviorRelay<Int?>
     let itemSize = CGSize(width: 40, height: 40)
     
-    init(operations: [WhiteboardPannelOperation],
+    init(operations: [WhiteboardPanelOperation],
          selectedIndex: Int?) {
         self.operations = .init(value: operations)
         self.selectedIndex = .init(value: selectedIndex)
@@ -56,8 +56,9 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
             }
         }
         .asDriver(onErrorJustReturn: ([]))
-        .drive(collectionView.rx.items(cellIdentifier: appliancePickerCellIdentifier, cellType: AppliancePickerCollectionViewCell.self)) {  index, item, cell in
-            cell.imageView.image = item.1 ? item.0.selectedImage : item.0.image
+        .drive(
+            collectionView.rx.items(cellIdentifier: appliancePickerCellIdentifier, cellType: AppliancePickerCollectionViewCell.self)) {  index, item, cell in
+                cell.imageView.image = item.1 ? item.0.selectedImage : item.0.image
         }
         .disposed(by: rx.disposeBag)
         
@@ -74,9 +75,9 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
             .map { $0.row }
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] row in
-                guard let operaion = self?.operations.value[row] else { return }
-                self?.newOperation.accept(operaion)
-                if case .clean = operaion {
+                guard let operation = self?.operations.value[row] else { return }
+                self?.newOperation.accept(operation)
+                if case .clean = operation {
                 } else {
                     self?.selectedIndex.accept(row)
                 }

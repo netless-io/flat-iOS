@@ -21,19 +21,20 @@ class CloudStorageListViewController: UIViewController {
     
     var fileSelectTask: StorageFileModel? {
         didSet {
+            // none 会不会比较生硬
             if let oldIndex = container.items.firstIndex(where: { $0 == oldValue }) {
-                tableView.reloadRows(at: [.init(row: oldIndex, section: 0)], with: .none)
+                tableView.reloadRows(at: [.init(row: oldIndex, section: 0)], with: .fade)
             }
             
             if let index = container.items.firstIndex(where: { $0 == fileSelectTask }) {
-                tableView.reloadRows(at: [.init(row: index, section: 0)], with: .none)
+                tableView.reloadRows(at: [.init(row: index, section: 0)], with: .fade)
             }
         }
     }
     var fileContentSelectedHandler: ((CloudStorageFileContent)->Void)?
     
     let cellIdentifier = "CloudStorageTableViewCell"
-    let container = PageListContainer<StorageFileModel>.init()
+    let container = PageListContainer<StorageFileModel>()
     var loadingMoreRequest: URLSessionDataTask?
     
     override func viewDidLoad() {
@@ -79,7 +80,7 @@ class CloudStorageListViewController: UIViewController {
             self.tableView.refreshControl?.endRefreshing()
             switch result {
             case .success(let r):
-                self.container.appendResult(items: r.files, fromPage: page)
+                self.container.receive(items: r.files, withItemsPage: page)
                 if page > 1 {
                     self.loadingMoreRequest = nil
                 }
@@ -124,10 +125,10 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
         let item = container.items[indexPath.row]
         cell.iconImage.image = UIImage(named: item.fileType.iconImageName)
         cell.fileNameLabel.text = item.fileName
-        let formmater = DateFormatter()
-        formmater.dateStyle = .none
-        formmater.timeStyle = .short
-        let dateStr = formmater.string(from: item.createAt)
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        let dateStr = formatter.string(from: item.createAt)
         cell.sizeAndTimeLabel.text = dateStr + "   " + item.fileSizeDescription
         let isProcessing = item == fileSelectTask
         if isProcessing {

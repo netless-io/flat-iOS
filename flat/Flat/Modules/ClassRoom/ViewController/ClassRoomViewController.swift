@@ -156,8 +156,8 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
-    func destoryChatViewContrller() {
-        print("destory chatVC")
+    func destroyChatViewContrller() {
+        print("destroy chatVC")
         chatVC?.dismiss(animated: false, completion: nil)
         chatButton.isHidden = false
         chatVC = nil
@@ -174,12 +174,13 @@ class ClassRoomViewController: UIViewController {
         // Is chat been banning, not include user self
         let banning = viewModel.state.messageBan.asDriver()
         
-        // Is user benn banned
+        // Is user banned
         let baned = viewModel.state.messageBan.map { [ weak self] in
             (self?.viewModel.isTeacher ?? false) ? false : $0
         }.asDriver(onErrorJustReturn: true)
         
         let showRedPoint = viewModel.rtm.joinChannelId(viewModel.chatChannelId)
+            // TODO: onError
             .do(onSuccess: { [weak self] handler in
                 guard let self = self else { return }
                 let pairs = self.viewModel.state.users.value.map {
@@ -248,7 +249,7 @@ class ClassRoomViewController: UIViewController {
         output.leaveRoomTemporary
                 .subscribe(on: MainScheduler.instance)
                 .subscribe(onNext: { [weak self] in
-                    self?.destoryChatViewContrller()
+                    self?.destroyChatViewContrller()
                 })
                 .disposed(by: rx.disposeBag)
                 
@@ -379,14 +380,15 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
         
         let output = viewModel.tranfromTeacherInput(.init(startTap: startButton.rx.tap.asDriver(onErrorJustReturn: ()),
-                                                                   resumeTap: resumeButton.rx.tap.asDriver(onErrorJustReturn: ()),
-                                                                   endTap: endButton.rx.tap.asDriver(onErrorJustReturn: ()),
-                                                                   pauseTap: pauseButton.rx.tap.asDriver(onErrorJustReturn: ())))
+                                                          resumeTap: resumeButton.rx.tap.asDriver(onErrorJustReturn: ()),
+                                                          endTap: endButton.rx.tap.asDriver(onErrorJustReturn: ()),
+                                                          pauseTap: pauseButton.rx.tap.asDriver(onErrorJustReturn: ())))
         
         output.taps
             .drive()
             .disposed(by: rx.disposeBag)
         
+        // TODO: More reactive
         output.starting
             .drive(with: self, onNext: { weakSelf, starting in
                 let title = NSLocalizedString("Start Class", comment: "")

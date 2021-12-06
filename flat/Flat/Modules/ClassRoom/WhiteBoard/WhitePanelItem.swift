@@ -10,39 +10,40 @@
 import Foundation
 import Whiteboard
 
-struct WhiteboardPannelConfig {
+struct WhiteboardPanelConfig {
     static var defaultColors: [UIColor] = [.systemRed, .systemOrange, .systemYellow, .systemGreen,
                                            .systemTeal, .systemBlue, .init(hexString: "#6236FF"), .systemPurple,
                                            .init(hexString: "#BCC0C6"), .systemGray, .black, .white]
     
-    static var defaultPannelItems: [WhitePannelItem] {
+    static var defaultPanelItems: [WhitePanelItem] {
         return [
             .single(.appliance(.ApplianceClicker)),
                 .single(.appliance(.ApplianceSelector)),
                 .single(.appliance(.AppliancePencil)),
                 .single(.appliance(.ApplianceText)),
                 .single(.appliance(.ApplianceEraser)),
-            .subops(ops: [.appliance(.ApplianceRectangle),
+            .subOps(ops: [.appliance(.ApplianceRectangle),
                           .appliance(.ApplianceEllipse),
                           .appliance(.ApplianceArrow),
                           .appliance(.ApplianceStraight)], current: .appliance(.ApplianceRectangle)),
-            .colorAndWidth(displayColor: defaultColors.first!),
+            .color(displayColor: defaultColors.first!),
             .single(.clean)
         ]
     }
 }
 
-enum WhiteboardPannelOperation: Equatable {
+enum WhiteboardPanelOperation: Equatable {
     case appliance(WhiteApplianceNameKey)
     case clean
-    
-    func excute(inRoom room: WhiteRoom) {
+    // execute
+    func execute(inRoom room: WhiteRoom) {
         switch self {
         case .appliance(let whiteApplianceNameKey):
             let newState = WhiteMemberState()
             newState.currentApplianceName = whiteApplianceNameKey
             room.setMemberState(newState)
         case .clean:
+            // 默认 true，不考虑 false ，直接清空 ppt 么？
             room.cleanScene(true)
         }
     }
@@ -97,31 +98,32 @@ enum WhiteboardPannelOperation: Equatable {
     }
 }
 
-enum WhitePannelItem: Equatable {
-    case single(WhiteboardPannelOperation)
-    case subops(ops: [WhiteboardPannelOperation], current: WhiteboardPannelOperation?)
-    case colorAndWidth(displayColor: UIColor)
+enum WhitePanelItem: Equatable {
+    case single(WhiteboardPanelOperation)
+    case subOps(ops: [WhiteboardPanelOperation], current: WhiteboardPanelOperation?)
+    case color(displayColor: UIColor)
     
-    static func == (lhs: WhitePannelItem, rhs: WhitePannelItem) -> Bool {
+    static func == (lhs: WhitePanelItem, rhs: WhitePanelItem) -> Bool {
         switch (lhs, rhs) {
         case (.single(let l), .single(let r)):
             return l == r
-        case (.subops(ops: let ls, _), .subops(ops: let rs, _)):
+        case (.subOps(ops: let ls, _), .subOps(ops: let rs, _)):
             return ls == rs
-        case (.colorAndWidth, .colorAndWidth):
+        case (.color, .color):
             return true
         default:
             return false
         }
     }
     
-    func contains(operation: WhiteboardPannelOperation) -> Bool {
+    func contains(operation: WhiteboardPanelOperation) -> Bool {
         switch self {
-        case .single(let whiteboardPannelOperation):
-            return whiteboardPannelOperation == operation
-        case .subops(let ops, _):
+        case .single(let whiteboardPanelOperation):
+            return whiteboardPanelOperation == operation
+        case .subOps(let ops, _):
             return ops.contains(operation)
-        case .colorAndWidth:
+        case .color:
+            // Color won't be contained in any operations
             return false
         }
     }
@@ -130,64 +132,65 @@ enum WhitePannelItem: Equatable {
         switch self {
         case .single(let op):
             return op.appliance
-        case .subops(_, current: let current):
+        case .subOps(_, current: let current):
             return current?.appliance
-        case .colorAndWidth:
+        case .color:
             return nil
         }
     }
     
     var hasSubMenu: Bool {
         switch self {
-        case .subops: return true
-        case .colorAndWidth: return true
+        case .subOps: return true
+        case .color: return true
         default: return false
         }
     }
     
     var selectable: Bool {
         switch self {
-        case .single(let whiteboardPannelOperation):
-            return whiteboardPannelOperation.selectable
-        case .subops(let ops, _):
+        case .single(let whiteboardPanelOperation):
+            return whiteboardPanelOperation.selectable
+        case .subOps(let ops, _):
+            // 不重要：不是看 current 么？
             switch ops[0] {
             case .appliance: return true
             default: return false
             }
-        case .colorAndWidth:
+        case .color:
             return false
         }
     }
     
     var onlyAction: Bool {
         switch self {
-        case .single(let whiteboardPannelOperation):
-            return whiteboardPannelOperation.onlyAction
-        case .subops:
+        case .single(let whiteboardPanelOperation):
+            return whiteboardPanelOperation.onlyAction
+        case .subOps:
             return false
-        case .colorAndWidth:
+        case .color:
             return false
         }
     }
     
     var image: UIImage {
         switch self {
-        case .single(let whiteboardPannelOperation):
-            return whiteboardPannelOperation.image
-        case .subops(let ops, let current):
+        case .single(let whiteboardPanelOperation):
+            return whiteboardPanelOperation.image
+        case .subOps(let ops, let current):
             return current?.image ?? ops.first!.image
-        case .colorAndWidth(let color):
+        case .color(let color):
             return UIImage.pickerItemImage(withColor: color, size: .init(width: 18, height: 18), radius: 9)!
         }
     }
     
     var selectedImage: UIImage {
         switch self {
-        case .single(let whiteboardPannelOperation):
-            return whiteboardPannelOperation.selectedImage
-        case .subops(let ops, let current):
+        case .single(let whiteboardPanelOperation):
+            return whiteboardPanelOperation.selectedImage
+        case .subOps(let ops, let current):
             return current?.selectedImage ?? ops.first!.selectedImage
-        case .colorAndWidth:
+        case .color:
             let bg = UIImage.pointWith(color: .controlSelectedBG,
                               size: .init(width: 30, height: 30),
                               radius: 5)

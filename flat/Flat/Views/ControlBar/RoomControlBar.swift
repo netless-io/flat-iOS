@@ -64,8 +64,8 @@ class RoomControlBar: UIView {
             }
         })
         if narrowMoreThan > 0 {
-            stack.addArrangedSubview(scaleButton)
-            scaleButton.snp.makeConstraints { make in
+            stack.addArrangedSubview(foldButton)
+            foldButton.snp.makeConstraints { make in
                 make.size.equalTo(CGSize.init(width: 40, height: 40))
             }
         }
@@ -103,7 +103,7 @@ class RoomControlBar: UIView {
         return stack
     }()
     
-    lazy var scaleButton: UIButton = {
+    lazy var foldButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.addTarget(self, action: #selector(onClickScale), for: .touchUpInside)
         btn.setImage(UIImage(named: "small_arr_down")?.tintColor(.controlNormal), for: .selected) // narrow

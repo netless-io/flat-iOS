@@ -9,7 +9,7 @@
 
 import UIKit
 
-class BorderLabel: UIView {
+class BorderLabelView: UIView {
     var edge: UIEdgeInsets? {
         didSet {
             label.snp.remakeConstraints { make in

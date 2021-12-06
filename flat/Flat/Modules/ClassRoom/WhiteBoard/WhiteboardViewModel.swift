@@ -13,7 +13,7 @@ import RxRelay
 import RxCocoa
 
 class WhiteboardViewModel: NSObject {
-    var pannelItems: [WhitePannelItem]
+    var panelItems: [WhitePanelItem]
     let menuNavigator: WhiteboardMenuNavigator
     let whiteRoomConfig: WhiteRoomConfig
     
@@ -42,25 +42,25 @@ class WhiteboardViewModel: NSObject {
     }
     
     struct Input {
-        let pannelTap: Driver<WhitePannelItem>
+        let panelTap: Driver<WhitePanelItem>
         let undoTap: Driver<Void>
         let redoTap: Driver<Void>
     }
     
     struct Output {
         let join: Observable<WhiteRoom>
-        let selectedItem: Observable<WhitePannelItem?>
-        let actions: Observable<WhiteboardPannelOperation?>
+        let selectedItem: Observable<WhitePanelItem?>
+        let actions: Observable<WhiteboardPanelOperation?>
         let undo: Observable<Void>
         let redo: Observable<Void>
         let colorAndWidth: Observable<(UIColor, Float)>
         let subMenuPresent: Observable<Void>
     }
     
-    init(pannelItems: [WhitePannelItem],
+    init(panelItems: [WhitePanelItem],
          whiteRoomConfig: WhiteRoomConfig,
          menuNavigator: WhiteboardMenuNavigator) {
-        self.pannelItems = pannelItems
+        self.panelItems = panelItems
         self.menuNavigator = menuNavigator
         self.whiteRoomConfig = whiteRoomConfig
         super.init()
@@ -109,37 +109,37 @@ class WhiteboardViewModel: NSObject {
     func transform(_ input: Input) -> Output {
         let joinRoom = joinRoom().asObservable().share(replay: 1, scope: .whileConnected)
         
-        let initPannelItem = joinRoom.flatMap { [weak self] room -> Observable<WhitePannelItem?> in
+        let initPanelItem = joinRoom.flatMap { [weak self] room -> Observable<WhitePanelItem?> in
             guard let self = self else {
                 return .error("self not exist")
             }
             if let initName = room.state.memberState?.currentApplianceName {
-                let initPannelItem = self.pannelItems.first(where: { $0.contains(operation: .appliance(initName))})
-                return .just(initPannelItem)
+                let initPanelItem = self.panelItems.first(where: { $0.contains(operation: .appliance(initName))})
+                return .just(initPanelItem)
             } else {
                 return .just(nil)
             }
         }
         
-        let selectableTap = input.pannelTap.asObservable().filter { $0.selectable }.map { [weak self] tap -> WhitePannelItem? in
+        let selectableTap = input.panelTap.asObservable().filter { $0.selectable }.map { [weak self] tap -> WhitePanelItem? in
             guard let self = self, let room = self.room else { return nil }
             switch tap {
             case .single(let op):
-                op.excute(inRoom: room)
-            case .subops(_, current: let op):
-                op?.excute(inRoom: room)
+                op.execute(inRoom: room)
+            case .subOps(_, current: let op):
+                op?.execute(inRoom: room)
             default:
                 break
             }
             return tap
         }
         
-        let subMenuItem = menuNavigator.getNewApplianceObserver().map { [weak self] name -> WhitePannelItem? in
+        let subMenuItem = menuNavigator.getNewApplianceObserver().map { [weak self] name -> WhitePanelItem? in
             guard let self = self, let room = self.room else { return nil }
-            let op = WhiteboardPannelOperation.appliance(name)
-            op.excute(inRoom: room)
-            if let index = self.pannelItems.firstIndex(where: { $0.contains(operation: op) }) {
-                return self.pannelItems[index]
+            let op = WhiteboardPanelOperation.appliance(name)
+            op.execute(inRoom: room)
+            if let index = self.panelItems.firstIndex(where: { $0.contains(operation: op) }) {
+                return self.panelItems[index]
             }
             return nil
         }
@@ -161,16 +161,16 @@ class WhiteboardViewModel: NSObject {
                 newState.strokeWidth = .init(value: width)
                 room.setMemberState(newState)
                 
-                if let index = self?.pannelItems.firstIndex(of: .colorAndWidth(displayColor: .gray)) {
-                    self?.pannelItems[index] = .colorAndWidth(displayColor: color)
+                if let index = self?.panelItems.firstIndex(of: .color(displayColor: .gray)) {
+                    self?.panelItems[index] = .color(displayColor: color)
                 }
             }
         })
                                                                                                    
-        let selectColorAndWidthPresent = input.pannelTap.asObservable().filter { $0.hasSubMenu && !$0.selectable }.flatMap { [weak self] tap -> Observable<Void> in
+        let selectColorAndWidthPresent = input.panelTap.asObservable().filter { $0.hasSubMenu && !$0.selectable }.flatMap { [weak self] tap -> Observable<Void> in
             guard let self = self, let room = self.room else { return .just(()) }
             switch tap {
-            case .colorAndWidth:
+            case .color:
                 let lineWidth = room.state.memberState?.strokeWidth?.floatValue ?? 0
                 self.menuNavigator.presentColorAndWidthPicker(item: tap, lineWidth: lineWidth)
                 return .just(())
@@ -179,16 +179,16 @@ class WhiteboardViewModel: NSObject {
             }
         }
         
-        let appliancePresent = input.pannelTap.asObservable().filter { $0.hasSubMenu && $0.selectable }.flatMap { [unowned self] tap -> Observable<Void> in
+        let appliancePresent = input.panelTap.asObservable().filter { $0.hasSubMenu && $0.selectable }.flatMap { [unowned self] tap -> Observable<Void> in
             self.menuNavigator.presentPicker(item: tap)
             return .just(())
         }
         
-        let actions = input.pannelTap.asObservable().filter { $0.onlyAction }.map { [weak self] tap -> WhiteboardPannelOperation? in
+        let actions = input.panelTap.asObservable().filter { $0.onlyAction }.map { [weak self] tap -> WhiteboardPanelOperation? in
             switch tap {
             case .single(let op):
                 if let room = self?.room {
-                    op.excute(inRoom: room)
+                    op.execute(inRoom: room)
                 }
                 return op
             default:
@@ -196,7 +196,7 @@ class WhiteboardViewModel: NSObject {
             }
         }
         
-        let pannelItem = Observable.of(initPannelItem,
+        let panelItem = Observable.of(initPanelItem,
                                        selectableTap,
                                        subMenuItem)
             .merge()
@@ -215,7 +215,7 @@ class WhiteboardViewModel: NSObject {
         let subMenuPresent = Observable.of(selectColorAndWidthPresent, appliancePresent).merge()
                 
         return .init(join: joinRoom,
-                     selectedItem: pannelItem,
+                     selectedItem: panelItem,
                      actions: actions,
                      undo: undo,
                      redo: redo,

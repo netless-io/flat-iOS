@@ -14,7 +14,7 @@ import UIKit
 
 struct WhiteboardMenuNavigatorImp: WhiteboardMenuNavigator {
     weak var root: UIViewController?
-    var tapSourceHandler: ((WhitePannelItem) -> UIView?)?
+    var tapSourceHandler: ((WhitePanelItem) -> UIView?)?
     let appliancePickerViewController = AppliancePickerViewController.init(operations: [], selectedIndex: nil)
     let strokePickerViewController: StrokePickerViewController
     
@@ -31,10 +31,10 @@ struct WhiteboardMenuNavigatorImp: WhiteboardMenuNavigator {
         return out
     }
     
-    func presentPicker(item: WhitePannelItem) {
+    func presentPicker(item: WhitePanelItem) {
         guard let root = root else { return }
         switch item {
-        case .subops(ops: let ops, current: let current):
+        case .subOps(ops: let ops, current: let current):
             appliancePickerViewController.operations.accept(ops)
             if let current = current {
                 let index = ops.firstIndex(of: current) ?? 0
@@ -49,10 +49,10 @@ struct WhiteboardMenuNavigatorImp: WhiteboardMenuNavigator {
     }
     
     
-    func presentColorAndWidthPicker(item: WhitePannelItem, lineWidth: Float) {
+    func presentColorAndWidthPicker(item: WhitePanelItem, lineWidth: Float) {
         guard let root = root else { return }
         let color: UIColor
-        if case .colorAndWidth(displayColor: let c) = item {
+        if case .color(displayColor: let c) = item {
             color = c
         } else {
             color = .black
