@@ -115,7 +115,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc func onClickProfile() {
-        
+        splitViewController?.showDetailViewController(ProfileViewController(style: .grouped), sender: nil)
     }
     
     @objc func onClickCreate() {

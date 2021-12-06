@@ -10,6 +10,7 @@
 		8A05C2AF2758B98F009BCA79 /* WechatLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */; };
 		8A05C2B32758C78E009BCA79 /* WechatAuthCallbackRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */; };
 		8A05C2B62759B722009BCA79 /* JoinRoomLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2B52759B722009BCA79 /* JoinRoomLaunchItem.swift */; };
+		8A05C313275DE279009BCA79 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C312275DE279009BCA79 /* ProfileViewController.swift */; };
 		8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
@@ -32,7 +33,6 @@
 		8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7327182B9300450DC6 /* UIColor+Extension.swift */; };
 		8A270B762718314200450DC6 /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B752718314200450DC6 /* TopViewController.swift */; };
 		8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7B2718352C00450DC6 /* LaunchItem.swift */; };
-		8A270B81271929F900450DC6 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B80271929F900450DC6 /* ProfileViewController.swift */; };
 		8A270B8427192A0800450DC6 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B8327192A0800450DC6 /* SettingViewController.swift */; };
 		8A270B8727192A6600450DC6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B8527192A6600450DC6 /* SettingTableViewCell.swift */; };
 		8A270B8827192A6600450DC6 /* SettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A270B8627192A6600450DC6 /* SettingTableViewCell.xib */; };
@@ -228,6 +228,7 @@
 		8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatRelease.entitlements; sourceTree = "<group>"; };
 		8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatAuthCallbackRequest.swift; sourceTree = "<group>"; };
 		8A05C2B52759B722009BCA79 /* JoinRoomLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomLaunchItem.swift; sourceTree = "<group>"; };
+		8A05C312275DE279009BCA79 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralButton.swift; sourceTree = "<group>"; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
@@ -251,7 +252,6 @@
 		8A270B7327182B9300450DC6 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		8A270B752718314200450DC6 /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewController.swift; sourceTree = "<group>"; };
 		8A270B7B2718352C00450DC6 /* LaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchItem.swift; sourceTree = "<group>"; };
-		8A270B80271929F900450DC6 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		8A270B8327192A0800450DC6 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		8A270B8527192A6600450DC6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		8A270B8627192A6600450DC6 /* SettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingTableViewCell.xib; sourceTree = "<group>"; };
@@ -600,7 +600,7 @@
 		8A270B7F271929DF00450DC6 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				8A270B80271929F900450DC6 /* ProfileViewController.swift */,
+				8A05C312275DE279009BCA79 /* ProfileViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1422,7 +1422,6 @@
 				8A9FB39D2721783B00F6F06F /* MemberRequest.swift in Sources */,
 				8A2D0B9727158C9000123207 /* ApiProvider.swift in Sources */,
 				8A05C2B32758C78E009BCA79 /* WechatAuthCallbackRequest.swift in Sources */,
-				8A270B81271929F900450DC6 /* ProfileViewController.swift in Sources */,
 				8AAC69B02717E32E00F9A3B4 /* AuthProcessRequest.swift in Sources */,
 				8A270B6C271822BA00450DC6 /* MainTabbarController.swift in Sources */,
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
@@ -1470,6 +1469,7 @@
 				8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */,
 				8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */,
 				8AC0535E274C72300064CF84 /* WhitePanelItem.swift in Sources */,
+				8A05C313275DE279009BCA79 /* ProfileViewController.swift in Sources */,
 				8A9FB3BB2722981200F6F06F /* JSONEncoder+Extension.swift in Sources */,
 				8A8020912755B09000F5691C /* RtcViewController.swift in Sources */,
 				8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */,

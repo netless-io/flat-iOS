@@ -20,11 +20,11 @@ struct ClassRoomType: RawRepresentable, Codable, Equatable {
         case teacherOrSpeaking
         case all
         
-        func displayingUsers(with users: [RoomUser], ownnerRtmUUID: String) -> [RoomUser] {
+        func displayingUsers(with users: [RoomUser], ownerRtmUUID: String) -> [RoomUser] {
             switch self {
             case .all: return users
             case .teacherOrSpeaking:
-                return users.filter { $0.status.isSpeak || $0.rtmUUID == ownnerRtmUUID}
+                return users.filter { $0.status.isSpeak || $0.rtmUUID == ownerRtmUUID}
             }
         }
     }
