@@ -40,7 +40,7 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
     
     // MARK: - Private
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)

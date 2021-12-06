@@ -49,4 +49,12 @@ extension UIColor {
     static var commonBG: UIColor {
         UIColor(named: "CommonBGColor")!
     }
+    
+    static var blackBG: UIColor {
+        UIColor(named: "blackBG")!
+    }
+    
+    static var whiteBG: UIColor {
+        UIColor(named: "whiteBG")!
+    }
 }

@@ -76,7 +76,7 @@ class ClassRoomSettingViewController: UIViewController {
 
     // MARK: - Private
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         view.addSubview(tableView)
         view.addSubview(topView)
         let topViewHeight: CGFloat = 34
@@ -139,7 +139,7 @@ class ClassRoomSettingViewController: UIViewController {
     
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         let topLabel = UILabel(frame: .zero)
         topLabel.text = NSLocalizedString("Setting", comment: "")
         topLabel.textColor = .text

@@ -104,7 +104,7 @@ class StrokePickerViewController: PopOverDismissDetectableViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.bottom.right.equalToSuperview()

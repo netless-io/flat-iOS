@@ -16,9 +16,17 @@ class ClassRoomViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .landscape }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        } else {
+            return .default
+        }
+    }
+    
     var viewModel: ClassRoomViewModel!
     
-    var chatVCDisposeBag = DisposeBag()
+    var chatVCDisposeBag = RxSwift.DisposeBag()
     
     // MARK: - Child Controllers
     let whiteboardViewController: WhiteboardViewController
@@ -157,12 +165,12 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
-    func destroyChatViewContrller() {
+    func destroyChatViewController() {
         print("destroy chatVC")
         chatVC?.dismiss(animated: false, completion: nil)
         chatButton.isHidden = false
         chatVC = nil
-        chatVCDisposeBag = DisposeBag()
+        chatVCDisposeBag = RxSwift.DisposeBag()
     }
     
     func setupChatViewController() {
@@ -250,7 +258,7 @@ class ClassRoomViewController: UIViewController {
         output.leaveRoomTemporary
                 .subscribe(on: MainScheduler.instance)
                 .subscribe(onNext: { [weak self] in
-                    self?.destroyChatViewContrller()
+                    self?.destroyChatViewController()
                 })
                 .disposed(by: rx.disposeBag)
                 
@@ -350,7 +358,7 @@ class ClassRoomViewController: UIViewController {
         viewModel.transformUserListInput(.init(stopInteractingTap: usersViewController.stopInteractingTap.asDriver(onErrorJustReturn: ()),
                                                          disconnectTap: usersViewController.disconnectTap.asDriver(onErrorJustReturn: .emtpy),
                                                          tapSomeUserRaiseHand: usersViewController.raiseHandTap.asDriver(onErrorJustReturn: .emtpy),
-                                                         tapSomeUserCamera: usersViewController.camaraTap.asDriver(onErrorJustReturn: .emtpy),
+                                                         tapSomeUserCamera: usersViewController.cameraTap.asDriver(onErrorJustReturn: .emtpy),
                                                          tapSomeUserMic: usersViewController.micTap.asDriver(onErrorJustReturn: .emtpy)))
             .drive()
             .disposed(by: rx.disposeBag)

@@ -19,7 +19,7 @@ class ClassRoomUsersViewController: UIViewController {
     
     let disconnectTap: PublishRelay<RoomUser> = .init()
     let raiseHandTap: PublishRelay<RoomUser> = .init()
-    let camaraTap: PublishRelay<RoomUser> = .init()
+    let cameraTap: PublishRelay<RoomUser> = .init()
     let micTap: PublishRelay<RoomUser> = .init()
     let stopInteractingTap: PublishRelay<Void> = .init()
     
@@ -96,7 +96,7 @@ class ClassRoomUsersViewController: UIViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         view.addSubview(tableView)
         view.addSubview(topView)
         topView.snp.makeConstraints { make in
@@ -136,7 +136,7 @@ class ClassRoomUsersViewController: UIViewController {
             guard let self = self else { return }
             switch type {
             case .camera:
-                self.camaraTap.accept(user)
+                self.cameraTap.accept(user)
             case .mic:
                 self.micTap.accept(user)
             case .disconnect:
@@ -150,7 +150,7 @@ class ClassRoomUsersViewController: UIViewController {
     // MARK: - Lazy
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         let topLabel = UILabel(frame: .zero)
         topLabel.text = NSLocalizedString("User List", comment: "")
         topLabel.textColor = .text
@@ -192,7 +192,7 @@ class ClassRoomUsersViewController: UIViewController {
     
     lazy var teacherHeaderView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         let line = UIView()
         line.backgroundColor = .borderColor
         view.addSubview(line)

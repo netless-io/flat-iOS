@@ -43,7 +43,7 @@ class RoomControlBar: UIView {
         //        effectView.snp.makeConstraints { make in
         //            make.edges.equalToSuperview()
         //        }
-        backgroundColor = .white
+        backgroundColor = .whiteBG
         
         clipsToBounds = true
         layer.maskedCorners = borderMask

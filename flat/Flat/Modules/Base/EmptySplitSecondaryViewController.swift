@@ -16,7 +16,7 @@ extension UIViewController {
 class EmptySplitSecondaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         let imgView = UIImageView(image: UIImage(named: "split_empty"))
         view.addSubview(imgView)
         imgView.snp.makeConstraints({ $0.center.equalToSuperview() })

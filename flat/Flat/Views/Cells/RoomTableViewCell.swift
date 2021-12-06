@@ -25,18 +25,18 @@ class RoomTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.3) {
-                self.mainTextView.layer.backgroundColor = selected ?  UIColor.controlSelectedBG.cgColor : UIColor.white.cgColor
+                self.mainTextView.layer.backgroundColor = selected ?  UIColor.controlSelectedBG.cgColor : UIColor.whiteBG.cgColor
             }
         } else {
-            mainTextView.backgroundColor = selected ?  .controlSelectedBG : .white
+            mainTextView.backgroundColor = selected ?  .controlSelectedBG : .whiteBG
         }
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         if animated {
-            mainTextView.layer.backgroundColor = highlighted ?  UIColor.controlSelectedBG.cgColor : UIColor.white.cgColor
+            mainTextView.layer.backgroundColor = highlighted ?  UIColor.controlSelectedBG.cgColor : UIColor.whiteBG.cgColor
         } else {
-            mainTextView.backgroundColor = highlighted ?  .controlSelectedBG : .white
+            mainTextView.backgroundColor = highlighted ?  .controlSelectedBG : .whiteBG
         }
     }
     

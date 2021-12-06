@@ -28,7 +28,8 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     weak var detailUpdateDelegate: MainSplitViewControllerDetailUpdateDelegate?
     
     override func loadView() {
-        viewControllers = [BaseNavigationViewController(rootViewController: HomeViewController())]
+        viewControllers = [MainTabBarController()]
+//        viewControllers = [BaseNavigationViewController(rootViewController: HomeViewController())]
         super.loadView()
     }
     

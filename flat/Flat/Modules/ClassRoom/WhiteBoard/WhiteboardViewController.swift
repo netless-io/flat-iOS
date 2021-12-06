@@ -240,6 +240,10 @@ class WhiteboardViewController: UIViewController {
     func updateImage(forButton button: UIButton, item: WhitePanelItem) {
         button.setImage(item.image, for: .normal)
         button.setImage(item.selectedImage, for: .selected)
+        button.traitCollectionUpdateHandler = { [weak button] _ in
+            button?.setImage(item.image, for: .normal)
+            button?.setImage(item.selectedImage, for: .selected)
+        }
     }
     
     func syncSelectedPanelItem() {

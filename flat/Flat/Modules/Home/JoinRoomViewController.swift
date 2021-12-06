@@ -121,7 +121,7 @@ class JoinRoomViewController: UIViewController {
     
     func setupViews() {
         navigationItem.title = NSLocalizedString("Join Room", comment: "")
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         let topLabel = UILabel()
         topLabel.font = .systemFont(ofSize: 14)
         topLabel.textColor = .subText

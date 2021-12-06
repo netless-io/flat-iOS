@@ -11,7 +11,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
     var wechatLogin: WechatLogin?
-    var githunLogin: GithubLogin?
+    var githubLogin: GithubLogin?
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact {
@@ -29,7 +29,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         // Hide wechat login when wechat not installed
         wechatLoginButton.isHidden = !WXApi.isWXAppInstalled()
-        syncTraiCollection(traitCollection)
+        syncTraitCollection(traitCollection)
         #if DEBUG
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(debugLogin))
         doubleTap.numberOfTapsRequired = 2
@@ -37,17 +37,12 @@ class LoginViewController: UIViewController {
         #endif
     }
     
-    func syncTraiCollection(_ trait: UITraitCollection) {
+    func syncTraitCollection(_ trait: UITraitCollection) {
         if trait.horizontalSizeClass == .compact || trait.verticalSizeClass == .compact {
             loginBg.isHidden = true
         } else {
             loginBg.isHidden = false
         }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        syncTraiCollection(traitCollection)
     }
     
     @IBAction func onClickWechatButton(_ sender: Any) {
@@ -68,8 +63,8 @@ class LoginViewController: UIViewController {
     @IBAction func onClickGithubButton(_ sender: Any) {
         guard let coordinator = globalLaunchCoordinator else { return }
         showActivityIndicator(forSeconds: 1)
-        self.githunLogin = GithubLogin()
-        self.githunLogin?.startLogin(withAuthstore: AuthStore.shared,
+        self.githubLogin = GithubLogin()
+        self.githubLogin?.startLogin(withAuthstore: AuthStore.shared,
                                      launchCoordinator: coordinator, completionHandler: { [weak self] result in
             switch result {
             case .success(let user):

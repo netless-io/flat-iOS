@@ -9,10 +9,14 @@
 
 import UIKit
 
-class HomeTabbar: UITabBar {
+class HomeTabBar: UITabBar {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        setupAppearance()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setupAppearance()
     }
     
     required init?(coder: NSCoder) {
@@ -29,10 +33,10 @@ class HomeTabbar: UITabBar {
         })
     }
     
-    func setup() {
-        backgroundColor = .white
-        unselectedItemTintColor = .white
-        backgroundImage = .imageWith(color: .white)
+    func setupAppearance() {
+        backgroundColor = .whiteBG
+        unselectedItemTintColor = .whiteBG
+        backgroundImage = .imageWith(color: .whiteBG)
         shadowImage = .imageWith(color: .borderColor)
         selectionIndicatorImage = createSelectionIndicator(color: .brandColor,
                                                            size: .init(width: 44, height: 44),
@@ -50,7 +54,7 @@ class HomeTabbar: UITabBar {
     
     func addItem(title: String,tag: Int) -> UITabBarItem {
         let item = UITabBarItem.init(title: title, image: nil, tag: tag)
-        item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(hexString: "#A1A6AF").withAlphaComponent(0.5),
+        item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.text.withAlphaComponent(0.5),
                                      NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .medium)], for: .normal)
         item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.text], for: .selected)
         return item

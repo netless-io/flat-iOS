@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var launch: LaunchCoordinator?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        processMethodExchange()
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
@@ -40,6 +41,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             launch?.start(withLaunchUrl: url)
         }
         return true
+    }
+    
+    func processMethodExchange() {
+        methodExchange(cls: UIViewController.self,
+                       originalSelector: #selector(UIViewController.traitCollectionDidChange(_:)),
+                       swizzledSelector: #selector(UIViewController.exchangedTraitCollectionDidChange(_:)))
+        
+        methodExchange(cls: UIView.self,
+                       originalSelector: #selector(UIView.traitCollectionDidChange(_:)),
+                       swizzledSelector: #selector(UIView.exchangedTraitCollectionDidChange(_:)))
     }
     
     // MARK: UISceneSession Lifecycle

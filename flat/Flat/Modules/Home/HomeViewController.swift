@@ -181,13 +181,13 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc func onUpdateNotificaton(_ noti: Notification) {
+    @objc func onHomeShouldUpdateNotification(_ noti: Notification) {
         loadRooms(nil)
     }
     
     // MARK: - Private
     func observeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onUpdateNotificaton(_:)), name: .init(rawValue: "homeShouldUpdateListNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onHomeShouldUpdateNotification(_:)), name: .init(rawValue: "homeShouldUpdateListNotification"), object: nil)
     }
     
     func setupViews() {
@@ -221,7 +221,6 @@ class HomeViewController: UIViewController {
     }
     
     func config(cell: RoomTableViewCell, with room: RoomListInfo, indexPath: IndexPath) {
-//        cell.selectionStyle = .none
         cell.calendarView.isHidden = !shouldShowCalendarAt(indexPath: indexPath)
         
         let formatter = DateFormatter()
@@ -235,10 +234,10 @@ class HomeViewController: UIViewController {
             cell.calendarLabel.text = dateStr + " · " + weekStr
         }
         
-        let timeFormmater = DateFormatter()
-        timeFormmater.timeStyle = .short
-        timeFormmater.dateFormat = "HH:mm"
-        cell.roomTimeLabel.text = timeFormmater.string(from: room.beginTime) + " ~ " + timeFormmater.string(from: room.endTime)
+        let timeFormatter = DateFormatter()
+        timeFormatter.timeStyle = .short
+        timeFormatter.dateFormat = "HH:mm"
+        cell.roomTimeLabel.text = timeFormatter.string(from: room.beginTime) + " ~ " + timeFormatter.string(from: room.endTime)
         cell.roomTitleLabel.text = room.title
         
         let displayStatus = room.roomStatus.getDisplayStatus()
@@ -349,13 +348,13 @@ class HomeViewController: UIViewController {
         return table
     }()
     
-    lazy var tabbar: HomeTabbar = {
-        let tabbar = HomeTabbar(frame: .zero)
-        tabbar.items = [tabbar.addItem(title: NSLocalizedString("Room List", comment: ""), tag: 0),
-                        tabbar.addItem(title: NSLocalizedString("History", comment: ""), tag: 1)]
-        tabbar.selectedItem = tabbar.items?.first
-        tabbar.delegate = self
-        return tabbar
+    lazy var tabBar: HomeTabBar = {
+        let tabBar = HomeTabBar(frame: .zero)
+        tabBar.items = [tabBar.addItem(title: NSLocalizedString("Room List", comment: ""), tag: 0),
+                        tabBar.addItem(title: NSLocalizedString("History", comment: ""), tag: 1)]
+        tabBar.selectedItem = tabBar.items?.first
+        tabBar.delegate = self
+        return tabBar
     }()
 }
 
@@ -400,7 +399,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return tabbar
+        return tabBar
     }
 }
 

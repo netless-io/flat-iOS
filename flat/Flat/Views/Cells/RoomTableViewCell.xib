@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -94,6 +96,7 @@
                         </constraints>
                     </view>
                 </subviews>
+                <color key="backgroundColor" name="whiteBG"/>
                 <constraints>
                     <constraint firstItem="iEd-Vs-nE5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="4DS-G9-jU2"/>
                     <constraint firstItem="Kd2-AR-Nys" firstAttribute="centerY" secondItem="EcH-QX-dha" secondAttribute="centerY" id="84D-dO-rJf"/>
@@ -116,7 +119,7 @@
                 <outlet property="separatorLineHeightConstraint" destination="RWc-FB-A3f" id="Yvw-5f-KAM"/>
                 <outlet property="statusLabel" destination="Kd2-AR-Nys" id="mT6-jR-4Cw"/>
             </connections>
-            <point key="canvasLocation" x="-768" y="-234"/>
+            <point key="canvasLocation" x="-1188" y="-292"/>
         </tableViewCell>
     </objects>
     <resources>
@@ -132,6 +135,9 @@
         </namedColor>
         <namedColor name="Text">
             <color red="0.10196078431372549" green="0.11764705882352941" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="whiteBG">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>

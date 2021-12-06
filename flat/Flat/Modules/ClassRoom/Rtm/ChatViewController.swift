@@ -115,10 +115,10 @@ class ChatViewController: PopOverDismissDetectableViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         view.addSubview(tableView)
         let inputBg = UIView()
-        inputBg.backgroundColor = .white
+        inputBg.backgroundColor = .whiteBG
         view.addSubview(inputBg)
         view.addSubview(inputStackView)
         view.addSubview(topView)
@@ -204,7 +204,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     lazy var inputTextField: UITextField = {
         let inputTextField = UITextField.init(frame: .zero)
-        inputTextField.backgroundColor = .white
+        inputTextField.backgroundColor = .whiteBG
         inputTextField.clipsToBounds = true
         inputTextField.layer.borderWidth = 1 / UIScreen.main.scale
         inputTextField.layer.cornerRadius = 4
@@ -219,7 +219,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         let topLabel = UILabel(frame: .zero)
         topLabel.text = NSLocalizedString("Chat", comment: "")
         topLabel.textColor = .text

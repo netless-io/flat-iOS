@@ -12,7 +12,7 @@ import RxSwift
 class JoinRoomLaunchItem: LaunchItem {
     var uuid: String!
     
-    var disposeBag = DisposeBag()
+    var disposeBag = RxSwift.DisposeBag()
     
     func shouldHandle(url: URL?) -> Bool {
         if let url = url {

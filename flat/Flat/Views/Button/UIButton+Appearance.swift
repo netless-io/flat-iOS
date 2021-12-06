@@ -16,6 +16,10 @@ extension UIButton {
         let button = UIButton(type: .custom)
         button.setImage(image.tintColor(.controlNormal), for: .normal)
         button.setImage(image.tintColor(.controlSelected), for: .selected)
+        button.traitCollectionUpdateHandler = { [weak button] _ in
+            button?.setImage(image.tintColor(.controlNormal), for: .normal)
+            button?.setImage(image.tintColor(.controlSelected), for: .selected)
+        }
         return button
     }
 }

@@ -77,7 +77,7 @@ class CreateClassRoomViewController: UIViewController {
     // MARK: - Private
     func setupViews() {
         navigationItem.title = NSLocalizedString("Create Room", comment: "")
-        view.backgroundColor = .white
+        view.backgroundColor = .whiteBG
         let topLabel = UILabel()
         topLabel.font = .systemFont(ofSize: 14)
         topLabel.textColor = .subText

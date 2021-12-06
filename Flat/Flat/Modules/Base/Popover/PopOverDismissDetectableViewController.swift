@@ -13,6 +13,14 @@ import UIKit
 class PopOverDismissDetectableViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     var dismissHandler: (()->Void)?
     
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        if let style = adaptivePresentationStyleAdaptor?(controller, traitCollection) {
+            return style
+        } else {
+            return .none
+        }
+    }
+    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         dismissHandler?()
     }
@@ -21,3 +29,4 @@ class PopOverDismissDetectableViewController: UIViewController, UIPopoverPresent
         dismissHandler?()
     }
 }
+
