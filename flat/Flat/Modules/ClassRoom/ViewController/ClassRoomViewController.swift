@@ -14,6 +14,7 @@ import RxCocoa
 
 class ClassRoomViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .landscape }
     
     var viewModel: ClassRoomViewModel!
     
@@ -379,7 +380,7 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
         
-        let output = viewModel.tranfromTeacherInput(.init(startTap: startButton.rx.tap.asDriver(onErrorJustReturn: ()),
+        let output = viewModel.transformTeacherInput(.init(startTap: startButton.rx.tap.asDriver(onErrorJustReturn: ()),
                                                           resumeTap: resumeButton.rx.tap.asDriver(onErrorJustReturn: ()),
                                                           endTap: endButton.rx.tap.asDriver(onErrorJustReturn: ()),
                                                           pauseTap: pauseButton.rx.tap.asDriver(onErrorJustReturn: ())))

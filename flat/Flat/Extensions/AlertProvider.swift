@@ -17,9 +17,9 @@ struct AlertModel {
         var style: UIAlertAction.Style
         var handler: ((UIAlertAction)->Void)?
         
-        static let emtpy = ActionModel(title: "", style: .default, handler: nil)
-        static let cancel = ActionModel(title: "取消", style: .cancel, handler: nil)
-        static let comfirm = ActionModel(title: "确认", style: .default, handler: nil)
+        static let empty = ActionModel(title: "", style: .default, handler: nil)
+        static let cancel = ActionModel(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
+        static let confirm = ActionModel(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: nil)
     }
     
     var title: String?
@@ -44,7 +44,7 @@ struct AlertBuilder {
 protocol AlertProvider {
     func showAlert(with model: AlertModel) -> Single<AlertModel.ActionModel>
     
-    func showAcionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel>
+    func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel>
 }
 
 struct DefaultAlertProvider: AlertProvider {
@@ -53,7 +53,7 @@ struct DefaultAlertProvider: AlertProvider {
     var customPopOverSourceProvider: ((AlertModel) -> (UIView, CGRect))?
     
     // Cancel style will be called when white space clicked
-    func showAcionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel> {
+    func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel> {
         guard let root = root else {
             return .error("root deinit")
         }
@@ -89,7 +89,7 @@ struct DefaultAlertProvider: AlertProvider {
         
         return root.rx.isPresenting.asObservable().asSingle()
             .flatMap { [weak root] presenting -> Single<AlertModel.ActionModel> in
-                guard let root = root else { return .just(.emtpy) }
+                guard let root = root else { return .just(.empty) }
                 if !presenting { return task }
                 return root.rx.dismiss(animated: true).flatMap { task }
             }

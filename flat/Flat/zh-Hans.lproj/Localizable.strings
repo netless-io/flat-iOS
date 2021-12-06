@@ -24,6 +24,7 @@
 "Logout" = "退出登录";
 "Cancel" = "取消";
 "Submit" = "提交";
+"Confirm" = "确认";
 "Privacy Policy" = "隐私政策";
 "Select Language" = "选择语言";
 "selected" = "（已选）";
@@ -82,3 +83,11 @@
 "Resume Class" = "恢复上课";
 "Cloud Storage" = "云盘";
 "Rtm abort tips" = "你已在另一台设备登录";
+"Class end confirming title" = "确认结束上课？";
+"Class end confirming detail" = "一旦结束上课，所有用户退出房间，并且自动结束课程和录制（如有），不能继续直播";
+"Class exit confirming title" = "确认退出房间？";
+"Class exit confirming detail" = "课堂正在继续，确定退出房间";
+"Close options" = "关闭选项";
+"Teacher close class room alert detail" = "课堂正在继续，你是暂时离开还是结束上课？";
+"Leaving for now" = "暂时离开";
+"End the class" = "结束上课";

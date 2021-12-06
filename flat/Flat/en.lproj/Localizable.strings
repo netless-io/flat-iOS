@@ -24,6 +24,7 @@
 "Logout" = "Logout";
 "Cancel" = "Cancel";
 "Submit" = "Submit";
+"Confirm" = "Confirm";
 "Privacy Policy" = "Privacy Policy";
 "Service Agreement" = "Service Agreement";
 "Select Language" = "Select Language";
@@ -82,3 +83,11 @@
 "Resume Class" = "Resume Class";
 "Cloud Storage" = "Cloud Storage";
 "Rtm abort tips" = "You are logged in on another device";
+"Class end confirming title" = "Confirming the end of classes?";
+"Class end confirming detail" = "Once the lesson ends, all users exit the room and the lesson and recording (if any) are automatically ended and cannot continue live";
+"Class exit confirming title" = "Confirming exit room?";
+"Class exit confirming detail" = "The class is continuing, make sure to exit the room";
+"Close options" = "Close options";
+"Teacher close class room alert detail" = "The class is continuing, will you leave for now or end the class?";
+"Leaving for now" = "Leaving for now";
+"End the class" = "End the class";

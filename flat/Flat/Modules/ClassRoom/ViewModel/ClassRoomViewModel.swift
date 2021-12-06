@@ -127,7 +127,7 @@ class ClassRoomViewModel {
         let type = state.roomType
         let ownerRtmUUID = state.roomOwnerRtmUUID
         return state.users
-            .map { type.rtcStrategy.displayingUsers(with: $0, ownnerRtmUUID: ownerRtmUUID) }
+            .map { type.rtcStrategy.displayingUsers(with: $0, ownerRtmUUID: ownerRtmUUID) }
             .asDriver(onErrorJustReturn: [])
     }()
     
@@ -143,7 +143,7 @@ class ClassRoomViewModel {
     }
     
     // MARK: - Public
-    func tranfromTeacherInput(_ input: TeacherOperationInput) -> TeacherOperationOutPut {
+    func transformTeacherInput(_ input: TeacherOperationInput) -> TeacherOperationOutPut {
         let starting = BehaviorRelay<Bool>.init(value: false)
         let startTap = input.startTap.do(onNext: { starting.accept(true) })
             .flatMap { [unowned self] _ -> Driver<Void> in
@@ -164,11 +164,11 @@ class ClassRoomViewModel {
         
         let stopping = BehaviorRelay<Bool>.init(value: false)
         let stopTap = input.endTap.flatMap { [unowned self] _ -> Driver<Void> in
-                        return self.alertProvider.showAlert(with: .init(title: "确认结束上课？",
-                                                                        message: "一旦结束上课，所有用户退出房间，并且自动结束课程和录制（如有），不能继续直播",
+                        return self.alertProvider.showAlert(with: .init(title: NSLocalizedString("Class end confirming title", comment: ""),
+                                                                        message: NSLocalizedString("Class end confirming detail", comment: ""),
                                                                         preferredStyle: .alert,
-                                                                        actionModels: [.cancel, .comfirm]))
-                            .filter { $0.title == AlertModel.ActionModel.comfirm.title }
+                                                                        actionModels: [.cancel, .confirm]))
+                            .filter { $0.title == AlertModel.ActionModel.confirm.title }
                             .do(onNext: { _ in stopping.accept(true) })
                             .flatMap { [unowned self] _ -> Maybe<Void> in
                                 self.stopOperation().asMaybe()
@@ -210,7 +210,7 @@ class ClassRoomViewModel {
             self?.state.removeUser(forUUID: uuid)
         })
         
-        // Process command, include p2pcommand && channel command
+        // Process command, include p2p command && channel command
         let newCommand = initRoom.flatMap { [weak self] _ -> Observable<(text: String, sender: String)> in
             guard let self = self else { return .error("self not exist") }
             let p2p = self.rtm.p2pMessage.asObservable()
@@ -220,7 +220,7 @@ class ClassRoomViewModel {
             guard let self = self else {
                 return .error("self not exist")
             }
-            print("receive comand", text, sender)
+            print("receive command", text, sender)
             return self.processCommandMessage(text: text, senderId: sender)
         }.asObservable()
         
@@ -255,7 +255,7 @@ class ClassRoomViewModel {
     
     func transformRaiseHand(_ raiseHandTap: Driver<Void>) -> Driver<Void> {
         let raiseHandTap = raiseHandTap.flatMap { [unowned self] _ -> Driver<Void> in
-            return self.oppositeraiseHand().asDriver(onErrorJustReturn: ())
+            return self.oppositeRaisingHand().asDriver(onErrorJustReturn: ())
         }
         
         return raiseHandTap
@@ -271,31 +271,31 @@ class ClassRoomViewModel {
         }
         
         
-        let studentAlert = AlertModel(title: "确认退出房间？",
-                                      message: "课堂正在继续，确定退出房间",
+        let studentAlert = AlertModel(title: NSLocalizedString("Class exit confirming title", comment: ""),
+                                      message: NSLocalizedString("Class exit confirming detail", comment: ""),
                                       preferredStyle: .actionSheet, actionModels: [
-                                        .init(title: "确认退出", style: .destructive, handler: nil),
-                                        .init(title: "取消退出", style: .cancel, handler: nil)])
+                                        .init(title: NSLocalizedString("Confirm", comment: ""), style: .destructive, handler: nil),
+                                        .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)])
         
-        let teacherStartAlert = AlertModel(title: "关闭选项",
-                                           message: "课堂正在继续，你是暂时离开还是结束上课？",
+        let teacherStartAlert = AlertModel(title: NSLocalizedString("Close options", comment: ""),
+                                           message: NSLocalizedString("Teacher close class room alert detail", comment: ""),
                                            preferredStyle: .actionSheet, actionModels: [
-                                             .init(title: "暂时离开", style: .default, handler: nil),
-                                             .init(title: "结束上课", style: .destructive, handler: nil),
-                                             .init(title: "取消退出", style: .cancel, handler: nil)])
+                                             .init(title: NSLocalizedString("Leaving for now", comment: ""), style: .default, handler: nil),
+                                             .init(title: NSLocalizedString("End the class", comment: ""), style: .destructive, handler: nil),
+                                             .init(title: NSLocalizedString("End the class", comment: ""), style: .cancel, handler: nil)])
         
         let dismiss = input.leaveTap.flatMap { [unowned self] source -> Driver<AlertModel.ActionModel> in
             let status = self.state.startStatus.value
             if status == .Idle {
-                return .just(.emtpy)
+                return .just(.empty)
             }
             if !self.isTeacher {
-                return self.alertProvider.showAcionSheet(with: studentAlert, source: source).asDriver(onErrorJustReturn: .emtpy)
+                return self.alertProvider.showActionSheet(with: studentAlert, source: source).asDriver(onErrorJustReturn: .empty)
             }
-            return self.alertProvider.showAcionSheet(with: teacherStartAlert, source: source).asDriver(onErrorJustReturn: .emtpy)
+            return self.alertProvider.showActionSheet(with: teacherStartAlert, source: source).asDriver(onErrorJustReturn: .empty)
         }.flatMap { model -> Driver<Bool> in
             if model.style == .cancel { return .just(false) }
-            if model.title == "结束上课" {
+            if model.title == NSLocalizedString("End the class", comment: "") {
                 return self.stopOperation().flatMap { [weak self] in
                     guard let self = self else { return .just(()) }
                     return self.leaveRoomProcess()
@@ -329,7 +329,7 @@ class ClassRoomViewModel {
         }
         
         let someUserDisconnectTap = input.disconnectTap.flatMapLatest { [unowned self] user in
-            self.disconect(user.rtmUUID).asDriver(onErrorJustReturn: ())
+            self.disconnect(user.rtmUUID).asDriver(onErrorJustReturn: ())
         }
         
         return Driver.of(stopInteractingTask,
@@ -474,7 +474,7 @@ class ClassRoomViewModel {
         })
     }
     
-    func disconect(_ UUID: String) -> Single<Void> {
+    func disconnect(_ UUID: String) -> Single<Void> {
         let task = sendCommand(.speak([.init(userUUID: UUID, speak: false)]), toTargetUID: nil)
         return task.do(onSuccess: { [weak self] in
             guard var status = self?.state.userStatusFor(userUUID: UUID) else { return }
@@ -485,7 +485,7 @@ class ClassRoomViewModel {
         })
     }
     
-    func oppositeraiseHand() -> Single<Void> {
+    func oppositeRaisingHand() -> Single<Void> {
         guard let user = currentUser(), !isTeacher else {
             return .just(())
         }
@@ -742,7 +742,7 @@ class ClassRoomViewModel {
             guard command.userUUIDs.contains(self.userUUID) else {
                 return .just(())
             }
-            // Send the recent user list to the new comming
+            // Send the recent user list to the new coming
             var userStates: [String: String] = [:]
             for user in self.state.users.value {
                 let uuid = user.rtmUUID
