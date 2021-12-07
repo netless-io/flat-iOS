@@ -45,7 +45,7 @@ class RtcViewController: UIViewController {
                 }
                 
                 let existIds = values.map { $0.user.rtcUID }
-                // If someuser leave during preview, stop previewing
+                // If some user leave during preview, stop previewing
                 if let user = weakSelf.previewingUser, !existIds.contains(user.rtcUID) {
                     weakSelf.previewViewController.showAvatar(url: user.avatarURL)
                 }
@@ -132,7 +132,7 @@ class RtcViewController: UIViewController {
     
     // MARK: - Private
     func setupViews() {
-        view.backgroundColor = .init(hexString: "#F7F9FB")
+        view.backgroundColor = .commonBG
         view.addSubview(mainScrollView)
         mainScrollView.addSubview(videoItemsStackView)
         mainScrollView.snp.makeConstraints { make in
@@ -294,7 +294,7 @@ class RtcViewController: UIViewController {
         view.nameLabel.isHidden = !view.nameLabel.isHidden
         
         if isLocal {
-            cellMenuView.show(fromSouce: view, direction: .bottom, inset: .init(top: -10, left: -10, bottom: -10, right: -10))
+            cellMenuView.show(fromSource: view, direction: .bottom, inset: .init(top: -10, left: -10, bottom: -10, right: -10))
             cellMenuView.update(cameraOn: localCameraOn, micOn: localMicOn)
             cellMenuView.dismissHandle = { [weak view] in
                 view?.nameLabel.isHidden = true

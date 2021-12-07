@@ -19,33 +19,33 @@ class PopMenuView: UIView {
     
     var dismissHandle: (()->Void)?
     weak var sourceView: UIView?
-    
+
     func dismiss() {
         bg.removeFromSuperview()
         removeFromSuperview()
         dismissHandle?()
         sourceView = nil
     }
-    
+
     override func didMoveToWindow() {
         super.didMoveToWindow()
         if window == nil {
             sourceView = nil
         }
     }
-    
+
     @objc func onTapBg(_ tapGesture: UITapGestureRecognizer) {
         dismiss()
     }
-    
+
     lazy var bg: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+        view.backgroundColor = UIColor.blackBG.withAlphaComponent(0.1)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapBg(_:))))
         return view
     }()
-    
-    func show(fromSouce source: UIView?,
+
+    func show(fromSource source: UIView?,
               direction: Direction,
               inset: UIEdgeInsets) {
         if source == sourceView { return }

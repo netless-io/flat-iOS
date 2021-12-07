@@ -54,6 +54,11 @@ class WhiteboardViewController: UIViewController {
         fatalError()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        whiteboardView.backgroundColor = .whiteBG
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -172,6 +177,7 @@ class WhiteboardViewController: UIViewController {
         let view = WhiteBoardView()
         // handle keyboard by IQKeyboardManager
         view.disableKeyboardHandler = true
+        view.backgroundColor = .whiteBG
         return view
     }()
     

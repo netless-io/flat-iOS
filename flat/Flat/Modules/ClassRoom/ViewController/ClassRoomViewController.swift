@@ -107,11 +107,11 @@ class ClassRoomViewController: UIViewController {
     
     // MARK: - Private Setup
     func setupViews() {
-        view.backgroundColor = .init(hexString: "#F7F9FB")
+        view.backgroundColor = .commonBG
         addChild(whiteboardViewController)
         addChild(rtcViewController)
         let horizontalLine = UIView(frame: .zero)
-        horizontalLine.backgroundColor = .popoverBorder
+        horizontalLine.backgroundColor = .borderColor
         
         let stackView = UIStackView(arrangedSubviews: [rtcViewController.view,
                                                        horizontalLine,
@@ -143,10 +143,10 @@ class ClassRoomViewController: UIViewController {
             make.right.equalTo(whiteboardViewController.view.snp.right)
             make.centerY.equalTo(whiteboardViewController.view)
         }
-        let seperateLine = UIView()
-        seperateLine.backgroundColor = .borderColor
-        view.addSubview(seperateLine)
-        seperateLine.snp.makeConstraints { make in
+        let separateLine = UIView()
+        separateLine.backgroundColor = .borderColor
+        view.addSubview(separateLine)
+        separateLine.snp.makeConstraints { make in
             make.left.equalTo(whiteboardViewController.view.snp.right)
             make.top.bottom.equalTo(whiteboardViewController.view)
             make.width.equalTo(1)

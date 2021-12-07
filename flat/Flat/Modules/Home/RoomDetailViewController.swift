@@ -191,6 +191,7 @@ class RoomDetailViewController: UIViewController {
     }
     
     func setupViews() {
+        view.backgroundColor = .whiteBG
         navigationItem.title = NSLocalizedString("Room Detail", comment: "")
         var j = 0
         for i in 1...mainStackView.arrangedSubviews.count - 1 {

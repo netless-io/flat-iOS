@@ -334,6 +334,7 @@ class HomeViewController: UIViewController {
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.separatorStyle = .none
+        table.backgroundColor = .whiteBG
         table.tableHeaderView = tableHeader
         table.delegate = self
         table.dataSource = self

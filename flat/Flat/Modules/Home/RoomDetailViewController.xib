@@ -122,7 +122,7 @@
                                     </subviews>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" name="whiteBG"/>
                             <constraints>
                                 <constraint firstItem="iq0-9w-5fB" firstAttribute="centerX" secondItem="q4q-Vm-KFU" secondAttribute="centerX" id="Dn8-Vl-FNQ"/>
                                 <constraint firstItem="iq0-9w-5fB" firstAttribute="centerY" secondItem="q4q-Vm-KFU" secondAttribute="centerY" id="E7m-91-NPL"/>
@@ -157,7 +157,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <color key="backgroundColor" name="whiteBG"/>
                                             <constraints>
                                                 <constraint firstItem="MeP-3U-hzf" firstAttribute="leading" secondItem="Ut3-Gf-Ody" secondAttribute="leading" id="4MX-V3-dlb"/>
                                                 <constraint firstItem="wKx-vU-49V" firstAttribute="centerY" secondItem="Ut3-Gf-Ody" secondAttribute="centerY" id="G9f-6S-dP5"/>
@@ -191,7 +191,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <color key="backgroundColor" name="whiteBG"/>
                                             <constraints>
                                                 <constraint firstItem="ahf-Mr-276" firstAttribute="centerY" secondItem="Dvo-tz-zig" secondAttribute="centerY" id="06Z-Zk-Was"/>
                                                 <constraint firstAttribute="trailing" secondItem="nF2-zJ-qsn" secondAttribute="trailing" id="FxD-ez-jGo"/>
@@ -206,7 +206,7 @@
                                     </subviews>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" name="whiteBG"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="0m1-uw-fQc" secondAttribute="trailing" id="If8-QT-cv3"/>
                                 <constraint firstAttribute="bottom" secondItem="0m1-uw-fQc" secondAttribute="bottom" constant="16" id="V9p-lb-V2Q"/>
@@ -267,7 +267,7 @@
                                     </constraints>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" name="whiteBG"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="64" id="8xA-b2-GkT"/>
                                 <constraint firstAttribute="trailing" secondItem="oyc-oS-6GD" secondAttribute="trailing" constant="16" id="eVd-bI-mB2"/>
@@ -275,6 +275,7 @@
                             </constraints>
                         </view>
                     </subviews>
+                    <color key="backgroundColor" name="whiteBG"/>
                 </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

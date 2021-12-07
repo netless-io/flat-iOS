@@ -17,6 +17,7 @@ class HomeTabBar: UITabBar {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         setupAppearance()
+        updateAllTitleAttribute()
     }
     
     required init?(coder: NSCoder) {
@@ -34,8 +35,9 @@ class HomeTabBar: UITabBar {
     }
     
     func setupAppearance() {
+        tintColor = .text
+        unselectedItemTintColor = .subText
         backgroundColor = .whiteBG
-        unselectedItemTintColor = .whiteBG
         backgroundImage = .imageWith(color: .whiteBG)
         shadowImage = .imageWith(color: .borderColor)
         selectionIndicatorImage = createSelectionIndicator(color: .brandColor,
@@ -52,11 +54,9 @@ class HomeTabBar: UITabBar {
         return image!
     }
     
-    func addItem(title: String,tag: Int) -> UITabBarItem {
+    func addItem(title: String, tag: Int) -> UITabBarItem {
         let item = UITabBarItem.init(title: title, image: nil, tag: tag)
-        item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.text.withAlphaComponent(0.5),
-                                     NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .medium)], for: .normal)
-        item.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.text], for: .selected)
+        item.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 14, weight: .medium)], for: .normal)
         return item
     }
 }
