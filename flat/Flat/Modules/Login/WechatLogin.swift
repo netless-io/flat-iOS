@@ -22,10 +22,15 @@ class WechatLogin: NSObject, LaunchItem {
     
     deinit {
         print(self, "deinit")
-        removeLaunchItemFromLaunchCoordinator?()
     }
     
-    func shouldHandle(url: URL?) -> Bool { false }
+    func shouldHandle(url: URL?) -> Bool {
+        guard let url = url else { return false }
+        if WXApi.handleOpen(url, delegate: self) {
+            return true
+        }
+        return false
+    }
     
     let uuid: String = UUID().uuidString
     
@@ -70,6 +75,7 @@ extension WechatLogin: WXApiDelegate {
     func onReq(_ req: BaseReq) {}
     
     func onResp(_ resp: BaseResp) {
+        removeLaunchItemFromLaunchCoordinator?()
         guard let handler = self.handler else { return }
         guard resp.isKind(of: SendAuthResp.self) else { return }
         guard resp.errCode == 0, let newResp = resp as? SendAuthResp, let code = newResp.code else {

@@ -50,5 +50,17 @@ class AuthStore {
         }
         self.user = user
         delegate?.authStoreDidLoginSuccess(self, user: user)
+        
+        #if DEBUG
+        var debugUsers = (try? JSONDecoder().decode([User].self, from: UserDefaults.standard.data(forKey: "debugUsers") ?? Data())) ?? []
+        if let index = debugUsers.firstIndex(where: { $0.userUUID == user.userUUID }) {
+            debugUsers[index] = user
+        } else {
+            debugUsers.append(user)
+        }
+        if let newData = try? JSONEncoder().encode(debugUsers) {
+            UserDefaults.standard.set(newData, forKey: "debugUsers")
+        }
+        #endif
     }
 }

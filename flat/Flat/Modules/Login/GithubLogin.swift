@@ -31,6 +31,7 @@ class GithubLogin: LaunchItem {
     func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {
         guard let handler = handler else { return }
         ApiProvider.shared.request(fromApi: AuthProcessRequest(uuid: uuid), completionHandler: handler)
+        removeLaunchItemFromLaunchCoordinator?()
     }
     
     func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) {}
