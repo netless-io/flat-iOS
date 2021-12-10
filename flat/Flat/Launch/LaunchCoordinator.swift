@@ -18,7 +18,7 @@ class LaunchCoordinator {
     
     var authStore: AuthStore
     
-    // All the registed launchItem will be stored here
+    // All the registerd launchItem will be stored here
     fileprivate var launchItems: [String: LaunchItem] = [:] {
         didSet {
             #if DEBUG
@@ -64,7 +64,24 @@ class LaunchCoordinator {
     }
     
     func reboot() {
-        window.rootViewController = authStore.isLogin ? MainSplitViewController() : LoginViewController()
+        window.rootViewController = authStore.isLogin ? createNewMainSplitViewController() : LoginViewController()
+    }
+    
+    func createNewMainSplitViewController() -> UISplitViewController {
+        if #available(iOS 14.0, *) {
+            let vc = MainSplitViewController(style: .tripleColumn)
+            vc.preferredDisplayMode = .twoBesideSecondary
+            vc.preferredSupplementaryColumnWidthFraction = 0.32
+            vc.preferredPrimaryColumnWidthFraction = 0.18
+            vc.setViewController(SidebarViewController(), for: .primary)
+            // For reduce XCode assert runtime
+            vc.setViewController(UIViewController(), for: .supplementary)
+            return vc
+        } else {
+            let vc = MainSplitViewController()
+            vc.preferredDisplayMode = .oneBesideSecondary
+            return vc
+        }
     }
     
     // MARK: - Private
@@ -72,7 +89,7 @@ class LaunchCoordinator {
         flatGenerator.token = authStore.user?.token
         if isLogin {
             guard let _ = window.rootViewController as? MainSplitViewController else {
-                window.rootViewController = MainSplitViewController()
+                window.rootViewController = createNewMainSplitViewController()
                 window.makeKeyAndVisible()
                 return
             }

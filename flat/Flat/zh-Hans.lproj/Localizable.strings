@@ -82,6 +82,13 @@
 "Pause Class" = "暂停上课";
 "Resume Class" = "恢复上课";
 "Cloud Storage" = "云盘";
+"Upload" = "上传";
+"Uploading List" = "上传列表";
+"Upload Image" = "上传图片";
+"Upload Video" = "上传视频";
+"Upload Music" = "上传音频";
+"Upload Doc" = "上传文档";
+
 "Rtm abort tips" = "你已在另一台设备登录";
 "Class end confirming title" = "确认结束上课？";
 "Class end confirming detail" = "一旦结束上课，所有用户退出房间，并且自动结束课程和录制（如有），不能继续直播";
@@ -93,3 +100,19 @@
 "End the class" = "结束上课";
 
 "Nickname" = "昵称";
+"Edit" = "编辑";
+"Finish" = "完成";
+"Used Capacity" = "已使用";
+"Delete All" = "删除全部";
+"Delete File Alert" = "确认删除所选课件？课件删除后不可恢复";
+
+"Preview" = "预览";
+"Rename" = "重命名";
+"Share" = "分享";
+
+"Upload Idle" = "等待上传";
+"Upload Preparing" = "上传准备中";
+"Upload Success" = "上传成功";
+"Upload Fail" = "上传失败";
+"Upload Reporting" = "上传成功，等待中";
+"Video Converting" = "视频转码中 ...";

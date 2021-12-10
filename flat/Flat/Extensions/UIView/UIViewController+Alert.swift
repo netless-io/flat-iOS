@@ -11,22 +11,22 @@ import Foundation
 import UIKit
 
 extension UIViewController {
-    func showCheckAlert(title: String = "提示",
+    func showCheckAlert(title: String = NSLocalizedString("Alert", comment: ""),
                         message: String = "",
                         completionHandler: (()->Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(.init(title: "取消", style: .cancel, handler: nil))
-        alertController.addAction(.init(title: "确认", style: .default, handler: { _ in
+        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: { _ in
             completionHandler?()
         }))
         present(alertController, animated: true, completion: nil)
     }
     
-    func showAlertWith(title: String = "提示",
+    func showAlertWith(title: String = NSLocalizedString("Alert", comment: ""),
                        message: String,
                        completionHandler: (()->Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(.init(title: "确认", style: .default) { _ in
+        alertController.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .default) { _ in
             completionHandler?()
         })
         present(alertController, animated: true, completion: nil)

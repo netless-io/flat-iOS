@@ -55,7 +55,7 @@ class InviteViewController: PopOverDismissDetectableViewController {
     }
     
     @IBAction func onClickCopy(_ sender: Any) {
-        let link = Env().webHost + "/join/\(roomUUID)"
+        let link = Env().webBaseURL + "/join/\(roomUUID)"
         let text = """
 \(invitorNameLabel.text!)\n
 \(NSLocalizedString("Room Subject", comment: "")): \(titleLabel.text!)\n

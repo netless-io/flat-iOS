@@ -19,6 +19,8 @@ class CloudStorageTableViewCell: UITableViewCell {
     }
     
     func setupViews() {
+        backgroundColor = .whiteBG
+        contentView.backgroundColor = .whiteBG
         let textStack = UIStackView(arrangedSubviews: [fileNameLabel, sizeAndTimeLabel])
         textStack.axis = .vertical
         textStack.distribution = .fillEqually
@@ -34,6 +36,12 @@ class CloudStorageTableViewCell: UITableViewCell {
         }
         iconImage.snp.makeConstraints { $0.width.equalTo(32) }
         addImage.snp.makeConstraints { $0.width.equalTo(24) }
+        iconImage.addSubview(convertingIcon)
+        convertingIcon.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(2)
+            make.bottom.equalToSuperview().inset(6)
+        }
+        convertingIcon.isHidden = true
         
         let line = UIView(frame: .zero)
         line.backgroundColor = .borderColor
@@ -45,6 +53,22 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview()
         }
     }
+    
+    func stopConvertingAnimation() {
+        convertingIcon.isHidden = true
+        convertingIcon.layer.removeAnimation(forKey: "r")
+    }
+    
+    func startConvertingAnimation() {
+        convertingIcon.isHidden = false
+        let animation = CABasicAnimation(keyPath: "transform.rotation")
+        animation.fromValue = 0
+        animation.toValue = CGFloat.pi * 2
+        animation.duration = 0.5
+        animation.repeatCount = .infinity
+        convertingIcon.layer.add(animation, forKey: "r")
+    }
+    
     
     func updateActivityAnimate(_ animate: Bool) {
         if animate {
@@ -60,6 +84,8 @@ class CloudStorageTableViewCell: UITableViewCell {
             activity.stopAnimating()
         }
     }
+    
+    lazy var convertingIcon = UIImageView(image: UIImage(named: "converting"))
     
     lazy var activity: UIActivityIndicatorView = {
         if #available(iOS 13.0, *) {

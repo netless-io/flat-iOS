@@ -21,7 +21,6 @@ class CloudStorageListViewController: UIViewController {
     
     var fileSelectTask: StorageFileModel? {
         didSet {
-            // none 会不会比较生硬
             if let oldIndex = container.items.firstIndex(where: { $0 == oldValue }) {
                 tableView.reloadRows(at: [.init(row: oldIndex, section: 0)], with: .fade)
             }
@@ -178,9 +177,13 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
         case .video, .music:
             fileContentSelectedHandler?(.media(url: item.fileURL, title: item.fileName))
         case .pdf, .ppt, .word:
+            guard let taskType = item.taskType else {
+                toast("can't get the task type")
+                return
+            }
             fileSelectTask = item
             let req = ConversionTaskProgressRequest(uuid: item.taskUUID,
-                                                    type: item.fileType.taskType,
+                                                    type: taskType,
                                                     token: item.taskToken)
             ApiProvider.shared.request(fromApi: req) { [weak self] result in
                 guard let self = self else { return }

@@ -111,19 +111,19 @@ class HomeViewController: UIViewController {
     
     // MARK: - Action
     @objc func onClickSetting() {
-        splitViewController?.showDetailViewController(SettingViewController(), sender: nil)
+        splitViewController?.show(SettingViewController())
     }
     
     @objc func onClickProfile() {
-        splitViewController?.showDetailViewController(ProfileViewController(style: .grouped), sender: nil)
+        splitViewController?.show(ProfileViewController(style: .grouped))
     }
     
     @objc func onClickCreate() {
-        splitViewController?.showDetailViewController(CreateClassRoomViewController(), sender: nil)
+        splitViewController?.show(CreateClassRoomViewController())
     }
     
     @objc func onClickJoin() {
-        splitViewController?.showDetailViewController(JoinRoomViewController(), sender: nil)
+        splitViewController?.show(JoinRoomViewController())
     }
     
     @objc func onClickBook() {
@@ -388,7 +388,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
         let vc = RoomDetailViewControllerFactory.getRoomDetail(withListinfo: item)
-        splitViewController?.showDetailViewController(vc, sender: nil)
+        splitViewController?.show(vc)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -441,10 +441,13 @@ extension HomeViewController: MainSplitViewControllerDetailUpdateDelegate {
         // If select a vc is not the room detail, deselect the tableview
         if let selectedItem = tableView.indexPathForSelectedRow {
             let item = list[selectedItem.row]
-            if let vc = ((vc as? UINavigationController)?.topViewController as? RoomDetailViewController) {
-                if vc.info.roomUUID == item.roomUUID {
-                    return
-                }
+            if let vc = ((vc as? UINavigationController)?.topViewController as? RoomDetailViewController),
+               vc.info.roomUUID == item.roomUUID {
+                return
+            }
+            if let vc = vc as? RoomDetailViewController,
+               vc.info.roomUUID == item.roomUUID {
+                return
             }
             tableView.deselectRow(at: selectedItem, animated: true)
         }

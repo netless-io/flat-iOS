@@ -11,8 +11,9 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 API_URL = flat-api-dev.whiteboard.agora.io
-FLAT_WEB_HOST = flat-web-dev.whiteboard.agora.io
+FLAT_WEB_BASE_URL = flat-web-dev.whiteboard.agora.io
 GITHUB_CLIENT_ID = 9821657775fbc74773f1
 WECHAT_APP_ID = wx09437693798bc108
 NETLESS_APP_ID = cFjxAJjiEeuUQ0211QCRBw/mO9uJB_DiCIqug
 AGORA_APP_ID = 931b86d6781e49a2a255db4ce6e8e804
+OSS_ACCESS_KEY_ID = LTAI5t9Gb6tzQzzLmB6cTVf7

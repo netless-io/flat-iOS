@@ -59,7 +59,7 @@ class SettingViewController: UITableViewController {
     
     func setupViews() {
         title = NSLocalizedString("Setting", comment: "")
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .whiteBG
         tableView.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 0)
         tableView.separatorStyle = .singleLine
         tableView.register(UINib(nibName: String(describing: SettingTableViewCell.self), bundle: nil), forCellReuseIdentifier: cellIdentifier)

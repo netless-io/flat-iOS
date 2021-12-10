@@ -40,6 +40,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             launch = LaunchCoordinator(window: window!, authStore: AuthStore.shared, defaultLaunchItems: [JoinRoomLaunchItem()])
             launch?.start(withLaunchUrl: url)
         }
+        
+#if DEBUG
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            guard AuthStore.shared.isLogin else { return }
+            // Cancel all the previous upload task, for old task will block the new upload
+            ApiProvider.shared.request(fromApi: CancelUploadRequest(fileUUIDs: [])) { _ in
+            }
+        }
+#endif
+        
         return true
     }
     

@@ -28,7 +28,11 @@ class EmptySplitSecondaryViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .whiteBG
         let imgView = UIImageView(image: UIImage(named: "split_empty"))
+        imgView.contentMode = .scaleAspectFit
         view.addSubview(imgView)
-        imgView.snp.makeConstraints({ $0.center.equalToSuperview() })
+        imgView.snp.makeConstraints({
+            $0.center.equalTo(view.safeAreaLayoutGuide)
+            $0.width.lessThanOrEqualTo(view.safeAreaLayoutGuide.snp.width)
+        })
     }
 }

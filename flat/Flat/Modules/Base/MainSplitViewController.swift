@@ -13,6 +13,13 @@ protocol MainSplitViewControllerDetailUpdateDelegate: AnyObject {
     func mainSplitViewControllerDidUpdateDetail(_ vc: UIViewController, sender: Any?)
 }
 
+extension UISplitViewController {
+    /// hidePrimary will only effect when style is triple column
+    @objc func show(_ vc: UIViewController, hidePrimary: Bool = true) {
+        showDetailViewController(vc, sender: nil)
+    }
+}
+
 extension UIViewController {
     var mainSplitViewController: MainSplitViewController? {
         splitViewController as? MainSplitViewController
@@ -28,8 +35,6 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     weak var detailUpdateDelegate: MainSplitViewControllerDetailUpdateDelegate?
     
     override func loadView() {
-        viewControllers = [MainTabBarController()]
-//        viewControllers = [BaseNavigationViewController(rootViewController: HomeViewController())]
         super.loadView()
     }
     
@@ -39,20 +44,36 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         if canShowDetail {
             // Show detail for device support split
             if viewControllers.count == 1 {
-                showDetailViewController(emptyDetailController, sender: nil)
+                show(emptyDetailController)
             }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        preferredDisplayMode = .oneBesideSecondary
         delegate = self
+    }
+    
+    override func show(_ vc: UIViewController, hidePrimary: Bool = true) {
+        detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: nil)
+        if #available(iOS 14.0, *) {
+            if let _ = vc as? UINavigationController {
+                setViewController(vc, for: .secondary)
+            } else {
+                let targetVC = BaseNavigationViewController(rootViewController: vc)
+                setViewController(targetVC, for: .secondary)
+            }
+            if hidePrimary {
+                show(.secondary)
+            }
+        } else {
+            showDetailViewController(vc, sender: nil)
+        }
     }
     
     func cleanSecondary() {
         if canShowDetail {
-            showDetailViewController(.emptySplitSecondaryViewController(), sender: nil)
+            show(emptyDetailController, hidePrimary: false)
         }
     }
     
@@ -62,14 +83,14 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         // Wrap a navigation controller for split show a single vc
         if canShowDetail {
             if vc is UINavigationController {
-                detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: sender)
+//                detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: sender)
                 return false
             } else {
                 showDetailViewController(BaseNavigationViewController(rootViewController: vc), sender: sender)
                 return true
             }
         } else {
-            detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: sender)
+//            detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: sender)
             return false
         }
     }

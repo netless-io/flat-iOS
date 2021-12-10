@@ -82,6 +82,14 @@
 "Pause Class" = "Pause Class";
 "Resume Class" = "Resume Class";
 "Cloud Storage" = "Cloud Storage";
+"Upload" = "Upload";
+"Uploading List" = "Uploading List";
+"Upload Image" = "Upload Image";
+"Upload Video" = "Upload Video";
+"Upload Music" = "Upload Music";
+"Upload Doc" = "Upload Doc";
+
+
 "Rtm abort tips" = "You are logged in on another device";
 "Class end confirming title" = "Confirming the end of classes?";
 "Class end confirming detail" = "Once the lesson ends, all users exit the room and the lesson and recording (if any) are automatically ended and cannot continue live";
@@ -92,3 +100,20 @@
 "Leaving for now" = "Leaving for now";
 "End the class" = "End the class";
 "Nickname" = "Nickname";
+
+"Edit" = "Edit";
+"Finish" = "Finish";
+"Used Capacity" = "Used Capacity";
+"Delete All" = "Delete All";
+"Delete File Alert" = "Do you confirm the deletion of the selected courseware? You can't recover the deleted courseware";
+
+"Preview" = "Preview";
+"Rename" = "Rename";
+"Share" = "Share";
+
+"Upload Idle" = "Upload Idle";
+"Upload Preparing" = "Preparing";
+"Upload Success" = "Upload Success";
+"Upload Fail" = "Upload Fail";
+"Upload Reporting" = "Upload Success Waiting";
+"Video Converting" = "Video Converting ...";

@@ -56,7 +56,7 @@ class LoginViewController: UIViewController {
             case .success:
                 return
             case .failure(let error):
-                self?.showAlertWith(message: error.localizedDescription)
+                self?.showAlertWith(message: error.localizedDescription.isEmpty ? "Login fail" : error.localizedDescription)
             }
         }
     }

@@ -39,8 +39,8 @@
 			</array>
 		</dict>
 	</array>
-	<key>FLAT_WEB_HOST</key>
-	<string>$(FLAT_WEB_HOST)</string>
+	<key>FLAT_WEB_BASE_URL</key>
+	<string>$(FLAT_WEB_BASE_URL)</string>
 	<key>GITHUB_CLIENT_ID</key>
 	<string>$(GITHUB_CLIENT_ID)</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -50,6 +50,8 @@
 	</array>
 	<key>NETLESS_APP_ID</key>
 	<string>$(NETLESS_APP_ID)</string>
+	<key>OSS_ACCESS_KEY_ID</key>
+	<string>$(OSS_ACCESS_KEY_ID)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

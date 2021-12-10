@@ -17,7 +17,6 @@ class HomeTabBar: UITabBar {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         setupAppearance()
-        updateAllTitleAttribute()
     }
     
     required init?(coder: NSCoder) {

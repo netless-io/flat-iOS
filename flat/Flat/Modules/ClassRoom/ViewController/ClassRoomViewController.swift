@@ -640,7 +640,7 @@ class ClassRoomViewController: UIViewController {
     lazy var rightToolBar: RoomControlBar = {
         let bar = RoomControlBar(direction: .vertical,
                                  borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                 buttons: viewModel.isTeacher ? [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton] : [chatButton, usersButton, inviteButton, settingButton],
+                                 buttons: viewModel.isTeacher ? [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton] : [chatButton,  usersButton, inviteButton, settingButton],
                                  narrowStyle: .narrowMoreThan(count: 1))
         return bar
     }()

@@ -25,8 +25,8 @@ struct Env {
         value(for: "GITHUB_CLIENT_ID") as String
     }
     
-    var webHost: String {
-        "https://\(value(for: "FLAT_WEB_HOST") as String)"
+    var webBaseURL: String {
+        "https://\(value(for: "FLAT_WEB_BASE_URL") as String)"
     }
     
     var baseURL: String {
@@ -35,6 +35,10 @@ struct Env {
     
     var version: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
+    
+    var ossAccessKeyId: String {
+        Bundle.main.infoDictionary?["OSS_ACCESS_KEY_ID"] as? String ?? ""
     }
     
     var netlessAppId: String {

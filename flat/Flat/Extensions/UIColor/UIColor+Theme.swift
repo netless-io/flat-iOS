@@ -57,4 +57,8 @@ extension UIColor {
     static var whiteBG: UIColor {
         UIColor(named: "whiteBG")!
     }
+    
+    static var lightBlueBar: UIColor {
+        UIColor(named: "LightBlueBar")!
+    }
 }

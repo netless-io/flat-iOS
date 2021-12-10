@@ -30,7 +30,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // TODO: url to userActivity
         guard let url = URLContexts.first?.url else { return }
         launch?.start(withLaunchUrl: url)
-        UIApplication.shared.topViewController?.showAlertWith(message: "open" + (URLContexts.first?.url.absoluteString ?? "empty"))
     }
     
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {

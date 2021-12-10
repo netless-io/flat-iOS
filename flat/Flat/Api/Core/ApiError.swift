@@ -9,17 +9,24 @@
 
 import Foundation
 
-enum ApiError: Error {
+enum ApiError: LocalizedError {
     case unknown
     case serverError(message: String)
     case message(message: String)
     case encode(message: String)
     case decode(message: String)
     
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case .serverError(let message):
-            return "server error \(message)"
+            if let data = message.data(using: .utf8) {
+                if let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) as? [String: Any] {
+                    if let code = json["code"] as? Int {
+                        return "code: \(code)"
+                    }
+                }
+            }
+            return message
         case .message(let message):
             return message
         case .unknown:

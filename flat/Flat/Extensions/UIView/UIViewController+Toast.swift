@@ -11,14 +11,14 @@ import UIKit
 
 extension UIViewController {
     func toast(_ text: String,
-               timeinterval: TimeInterval = 1.5) {
+               timeInterval: TimeInterval = 1.5) {
         let frame = NSString(string: text).boundingRect(with: .init(width: 66, height: 66), attributes: [.font: toastLabel.font!], context: nil)
         let size = frame.insetBy(dx: -20, dy: -10).size
         toastLabel.bounds = .init(origin: .zero, size: size)
         toastLabel.center = view.center
         toastLabel.text = text
         toastLabel.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + timeinterval) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
             self.toastLabel.isHidden = true
         }
     }

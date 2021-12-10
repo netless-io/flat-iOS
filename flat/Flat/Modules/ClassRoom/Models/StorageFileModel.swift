@@ -25,11 +25,6 @@ struct StorageFileModel: Codable, Equatable {
         case word
         case unknown
         
-        var taskType: ConversionTaskType {
-            if self == .ppt { return .dynamic }
-            return .static
-        }
-        
         var iconImageName: String {
             switch self {
             case .img:
@@ -80,15 +75,26 @@ struct StorageFileModel: Codable, Equatable {
         }
     }
     
-    let convertStep: StorageCovertStep
+    var convertStep: StorageCovertStep
     let createAt: Date
     let external: Bool
-    let fileName: String
+    var fileName: String
     let fileSize: Int
     var fileType: FileType { .init(fileName: fileName) }
     var fileSizeDescription: String {
         String(format: "%.2fMB", Float(fileSize) / 1024 / 1024)
     }
+    
+    var taskType: ConversionTaskType? {
+        let ext = (fileName.split(separator: ".").last ?? "").lowercased()
+        if ConvertConfig.staticConvertPathExtensions.contains(ext) {
+            return .static
+        } else if ConvertConfig.dynamicConvertPathExtensions.contains(ext) {
+            return .dynamic
+        }
+        return nil
+    }
+    
     var usable: Bool {
         convertStep == .none || convertStep == .done
     }
