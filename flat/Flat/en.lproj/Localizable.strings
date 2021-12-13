@@ -117,3 +117,5 @@
 "Upload Fail" = "Upload Fail";
 "Upload Reporting" = "Upload Success Waiting";
 "Video Converting" = "Video Converting ...";
+
+"Got New File Alert" = "A new document is received, upload?";

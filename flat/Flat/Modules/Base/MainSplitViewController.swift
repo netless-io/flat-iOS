@@ -22,7 +22,10 @@ extension UISplitViewController {
 
 extension UIViewController {
     var mainSplitViewController: MainSplitViewController? {
-        splitViewController as? MainSplitViewController
+        if let vc = presentingViewController as? MainSplitViewController {
+            return vc
+        }
+        return splitViewController as? MainSplitViewController
     }
 }
 

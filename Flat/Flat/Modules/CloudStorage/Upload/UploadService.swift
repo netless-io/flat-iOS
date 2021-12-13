@@ -122,7 +122,7 @@ class UploadService {
     func createUploadTaskFrom(fileURL: URL, shouldAccessingSecurityScopedResource: Bool) throws -> (task: Single<String>,  tracker: BehaviorRelay<UploadStatus>)  {
         if shouldAccessingSecurityScopedResource {
             let accessing = fileURL.startAccessingSecurityScopedResource()
-            guard accessing else { throw "access file error" }
+            guard accessing else { throw "access file error, \(fileURL)" }
         }
         var fileUUID: String?
         let tracker = BehaviorRelay<UploadStatus>(value: .idle)

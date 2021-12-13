@@ -2,10 +2,92 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AGORA_APP_ID</key>
-	<string>$(AGORA_APP_ID)</string>
-	<key>API_URL</key>
-	<string>$(API_URL)</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.mp3</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>MP3</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+		</dict>
+		<dict>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.adobe.pdf</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>PDF</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+		</dict>
+		<dict>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.microsoft.word.doc</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>DOC</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+		</dict>
+		<dict>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.microsoft.powerpoint.​ppt</string>
+				<string>org.openxmlformats.presentationml.presentation</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>PPT</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+		</dict>
+		<dict>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.jpeg</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>IMAGE</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+		</dict>
+		<dict>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.mpeg-4</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>MPEG-4</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+		</dict>
+	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>weixinULAPI</string>
+		<string>weixin</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -39,36 +121,18 @@
 			</array>
 		</dict>
 	</array>
+	<key>AGORA_APP_ID</key>
+	<string>$(AGORA_APP_ID)</string>
+	<key>API_URL</key>
+	<string>$(API_URL)</string>
 	<key>FLAT_WEB_BASE_URL</key>
 	<string>$(FLAT_WEB_BASE_URL)</string>
 	<key>GITHUB_CLIENT_ID</key>
 	<string>$(GITHUB_CLIENT_ID)</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>weixinULAPI</string>
-		<string>weixin</string>
-	</array>
 	<key>NETLESS_APP_ID</key>
 	<string>$(NETLESS_APP_ID)</string>
 	<key>OSS_ACCESS_KEY_ID</key>
 	<string>$(OSS_ACCESS_KEY_ID)</string>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
-		<key>UISceneConfigurations</key>
-		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneConfigurationName</key>
-					<string>Default Configuration</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-				</dict>
-			</array>
-		</dict>
-	</dict>
 	<key>WECHAT_APP_ID</key>
 	<string>$(WECHAT_APP_ID)</string>
 </dict>

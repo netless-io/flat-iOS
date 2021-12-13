@@ -116,3 +116,5 @@
 "Upload Fail" = "上传失败";
 "Upload Reporting" = "上传成功，等待中";
 "Video Converting" = "视频转码中 ...";
+
+"Got New File Alert" = "收到一份新的文件，是否上传？";

@@ -70,12 +70,12 @@ class UploadHomeViewController: UIViewController {
                 present(vc, animated: true, completion: nil)
                 return
             case .music:
-                let types = ["mp3", "aac"].compactMap { UTType(filenameExtension: $0) }
+                let types = ["public.mp3", "aac"].compactMap { UTType(filenameExtension: $0) }
                 vc = UIDocumentPickerViewController.init(forOpeningContentTypes: types)
                 vc.delegate = self
                 splitViewController?.present(vc, animated: true, completion: nil)
             case .doc:
-                let types = ["pdf", "doc", "docx", "ppt", "pptx"].compactMap { UTType(filenameExtension: $0) }
+                let types = ["com.adobe.pdf", "com.microsoft.word.doc", "docx", "com.microsoft.powerpoint.​ppt", "org.openxmlformats.presentationml.presentation"].compactMap { UTType(filenameExtension: $0) }
                 vc = UIDocumentPickerViewController.init(forOpeningContentTypes: types)
                 vc.delegate = self
                 splitViewController?.present(vc, animated: true, completion: nil)
