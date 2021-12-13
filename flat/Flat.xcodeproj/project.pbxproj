@@ -178,6 +178,7 @@
 		8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */; };
 		8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BA27634986004FDC36 /* FinishConvertRequest.swift */; };
 		8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */; };
+		8ABD71BF276716AA004FDC36 /* UploadType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BE276716AA004FDC36 /* UploadType.swift */; };
 		8ABF36242745F2D8000D5003 /* AlertProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36232745F2D8000D5003 /* AlertProvider.swift */; };
 		8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362527462F93000D5003 /* Observable+Extension.swift */; };
 		8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362B27464E63000D5003 /* String+Empty.swift */; };
@@ -426,6 +427,7 @@
 		8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandButton.swift; sourceTree = "<group>"; };
 		8ABD71BA27634986004FDC36 /* FinishConvertRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishConvertRequest.swift; sourceTree = "<group>"; };
 		8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileShareLaunchItem.swift; sourceTree = "<group>"; };
+		8ABD71BE276716AA004FDC36 /* UploadType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadType.swift; sourceTree = "<group>"; };
 		8ABF36232745F2D8000D5003 /* AlertProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertProvider.swift; sourceTree = "<group>"; };
 		8ABF362527462F93000D5003 /* Observable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extension.swift"; sourceTree = "<group>"; };
 		8ABF362B27464E63000D5003 /* String+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Empty.swift"; sourceTree = "<group>"; };
@@ -663,6 +665,7 @@
 			isa = PBXGroup;
 			children = (
 				8A05C327275F399E009BCA79 /* UploadHomeViewController.swift */,
+				8ABD71BE276716AA004FDC36 /* UploadType.swift */,
 				8AAB062927630392006CAEF2 /* ConvertConfig.swift */,
 				8AAB06232762E514006CAEF2 /* ExportService.swift */,
 				8A05C34C2760AB26009BCA79 /* UploadTasksViewController.swift */,
@@ -1641,6 +1644,7 @@
 				8A11CBF227201069001D0B1F /* String+Error.swift in Sources */,
 				8A05C2B62759B722009BCA79 /* JoinRoomLaunchItem.swift in Sources */,
 				8A8020A927573F1400F5691C /* ConversionTaskProgressRequest.swift in Sources */,
+				8ABD71BF276716AA004FDC36 /* UploadType.swift in Sources */,
 				8A270BC927198A1800450DC6 /* UIButton+Spacing.swift in Sources */,
 				8AE893042727F2F1009C71DA /* AcceptRaiseHandCommand.swift in Sources */,
 				8A9FB3A327224E8000F6F06F /* HistoryMessageSourceRequest.swift in Sources */,

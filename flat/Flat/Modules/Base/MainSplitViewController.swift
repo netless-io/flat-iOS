@@ -37,10 +37,6 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     
     weak var detailUpdateDelegate: MainSplitViewControllerDetailUpdateDelegate?
     
-    override func loadView() {
-        super.loadView()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         

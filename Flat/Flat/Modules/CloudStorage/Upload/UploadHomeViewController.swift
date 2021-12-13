@@ -15,34 +15,6 @@ import PhotosUI
 class UploadHomeViewController: UIViewController {
     var exportingTask: AVAssetExportSession?
     
-    enum UploadType: String, CaseIterable {
-        case image
-        case video
-        case music
-        case doc
-        
-        var title: String {
-            let str = rawValue.first!.uppercased() + rawValue.dropFirst()
-            return NSLocalizedString("Upload " + str, comment: "")
-        }
-        
-        var imageName: String { "upload_" + rawValue }
-        
-        var bgColor: UIColor {
-            switch self {
-            case .image:
-                return .init(hexString: "#00A0FF")
-            case .video:
-                return .init(hexString: "#6B6ECF")
-            case .music:
-                return .init(hexString: "#56C794")
-            case .doc:
-                return .init(hexString: "#3A69E5")
-            }
-        }
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = NSLocalizedString("Upload", comment: "")
@@ -52,7 +24,6 @@ class UploadHomeViewController: UIViewController {
     // MARK: - Action
     @objc func onClick(_ button: UIButton) {
         let type = UploadType.allCases[button.tag]
-        let vc: UIDocumentPickerViewController
         if #available(iOS 14.0, *) {
             switch type {
             case .image:
@@ -69,20 +40,30 @@ class UploadHomeViewController: UIViewController {
                 vc.delegate = self
                 present(vc, animated: true, completion: nil)
                 return
-            case .music:
-                let types = ["public.mp3", "aac"].compactMap { UTType(filenameExtension: $0) }
-                vc = UIDocumentPickerViewController.init(forOpeningContentTypes: types)
+            case .audio:
+                let types = type.allowedUTStrings.compactMap { UTType(filenameExtension: $0) }
+                let vc = UIDocumentPickerViewController(forOpeningContentTypes: types)
                 vc.delegate = self
                 splitViewController?.present(vc, animated: true, completion: nil)
             case .doc:
-                let types = ["com.adobe.pdf", "com.microsoft.word.doc", "docx", "com.microsoft.powerpoint.​ppt", "org.openxmlformats.presentationml.presentation"].compactMap { UTType(filenameExtension: $0) }
-                vc = UIDocumentPickerViewController.init(forOpeningContentTypes: types)
+                let types = type.allowedUTStrings.compactMap { UTType(filenameExtension: $0) }
+                let vc = UIDocumentPickerViewController(forOpeningContentTypes: types)
                 vc.delegate = self
                 splitViewController?.present(vc, animated: true, completion: nil)
             }
         } else {
-            // Fallback on earlier versions
-            return
+            switch type {
+            case .image, .video:
+                let vc = UIImagePickerController()
+                vc.mediaTypes = type.allowedUTStrings
+                vc.videoExportPreset = AVAssetExportPresetPassthrough
+                vc.delegate = self
+                splitViewController?.present(vc, animated: true, completion: nil)
+            case .audio, .doc:
+                let vc = UIDocumentPickerViewController(documentTypes: type.allowedUTStrings, in: .open)
+                vc.delegate = self
+                splitViewController?.present(vc, animated: true, completion: nil)
+            }
         }
     }
     
@@ -110,7 +91,9 @@ class UploadHomeViewController: UIViewController {
             })
             result = (newTask, result.tracker)
             tasksViewController.appendTask(task: result.task, fileURL: url, subject: result.tracker)
-            mainSplitViewController?.present(tasksViewController, animated: true, completion: nil)
+            if presentedViewController == nil, tasksViewController.isBeingPresented {
+                mainSplitViewController?.present(tasksViewController, animated: true, completion: nil)
+            }
         }
         catch {
             print(error)
@@ -169,22 +152,49 @@ class UploadHomeViewController: UIViewController {
     }()
 }
 
+// MARK: - Image
 extension UploadHomeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: false, completion: nil)
-        guard let url = info[.imageURL] as? URL else { return }
-        uploadFile(url: url, shouldAccessingSecurityScopedResource: false)
+        if let url = info[.imageURL] as? URL {
+            uploadFile(url: url, shouldAccessingSecurityScopedResource: false)
+        } else if let url = info[.mediaURL] as? URL {
+            let fileName = UUID().uuidString
+            DispatchQueue.main.async {
+                self.showActivityIndicator(text: NSLocalizedString("Video Converting", comment: ""))
+            }
+            let task = VideoConvertService.convert(url: url, convertedFileName: fileName) { [weak self] result in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.stopActivityIndicator()
+                }
+                do {
+                    try FileManager.default.removeItem(at: url)
+                }
+                catch {
+                    print("clean temp video file error \(error)")
+                }
+                switch result {
+                case .failure(let error):
+                    self.toast(error.localizedDescription)
+                case .success(let convertedUrl):
+                    self.uploadFile(url: convertedUrl, shouldAccessingSecurityScopedResource: false)
+                }
+            }
+            self.exportingTask = task
+        }
     }
 }
 
+// MARK: - Document
 extension UploadHomeViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
-        // TODO: covert
         uploadFile(url: url, shouldAccessingSecurityScopedResource: true)
     }
 }
 
+// MARK: - PHPicker
 @available(iOS 14, *)
 extension UploadHomeViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {

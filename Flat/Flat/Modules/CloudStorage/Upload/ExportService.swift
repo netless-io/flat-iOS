@@ -12,7 +12,7 @@ import AVFoundation
 struct VideoConvertService {
     static func convert(url: URL, convertedFileName: String, handler: @escaping ((Result<URL, Error>)->Void)) -> AVAssetExportSession? {
         let asset = AVAsset(url: url)
-        let export = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetMediumQuality)
+        let export = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)
         export?.outputFileType = .mp4
         export?.shouldOptimizeForNetworkUse = true
         var path = FileManager.default.temporaryDirectory

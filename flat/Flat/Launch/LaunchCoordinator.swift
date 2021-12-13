@@ -79,6 +79,7 @@ class LaunchCoordinator {
             return vc
         } else {
             let vc = MainSplitViewController()
+            vc.viewControllers = [MainTabBarController()]
             vc.preferredDisplayMode = .oneBesideSecondary
             return vc
         }
