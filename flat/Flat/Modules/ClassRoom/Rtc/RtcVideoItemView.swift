@@ -70,6 +70,7 @@ class RtcVideoItemView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         videoContainerView.frame = bounds
+        avatarImageView.layer.cornerRadius = avatarImageView.bounds.width / 2
     }
     
     // MARK: - Lazy
@@ -86,7 +87,6 @@ class RtcVideoItemView: UIView {
     
     lazy var avatarImageView: UIImageView = {
         let view = UIImageView(frame: .init(origin: .zero, size: .init(width: 48, height: 48)))
-        view.layer.cornerRadius = 24
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view

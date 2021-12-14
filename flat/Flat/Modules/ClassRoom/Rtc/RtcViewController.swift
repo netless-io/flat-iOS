@@ -22,6 +22,16 @@ class RtcViewController: UIViewController {
     var localCameraOn = false
     var localMicOn = false
     
+    var preferredMargin: CGFloat = 10 {
+        didSet {
+            guard preferredMargin != oldValue else { return }
+            sync(direction: direction)
+            updateScrollViewInset()
+        }
+    }
+    
+    let itemRatio: CGFloat = ClassRoomLayoutRatioConfig.rtcItemRatio
+    
     func bindUsers(_ users: Driver<[RoomUser]>, withTeacherRtmUUID uuid: String) {
         let output = viewModel.transform(users: users, teacherRtmUUID: uuid)
         output.noTeacherViewHide
@@ -43,7 +53,6 @@ class RtcViewController: UIViewController {
                 if newStackCount != oldStackCount {
                     weakSelf.cellMenuView.dismiss()
                 }
-                
                 let existIds = values.map { $0.user.rtcUID }
                 // If some user leave during preview, stop previewing
                 if let user = weakSelf.previewingUser, !existIds.contains(user.rtcUID) {
@@ -94,40 +103,42 @@ class RtcViewController: UIViewController {
         fatalError()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIApplication.shared.isIdleTimerDisabled = false
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.isIdleTimerDisabled = true
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
     
-    let itemsInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-    let itemRatio: CGFloat = 112.0 / 84
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        direction = view.bounds.width > view.bounds.height ? .top : .right
+        updateScrollViewInset()
+    }
     
-    func updateScrollViewInset() {
-        let itemHeight = view.bounds.height - itemsInset.top - itemsInset.bottom
-        let itemWidth = itemRatio * itemHeight
-        let itemCount = CGFloat(videoItemsStackView.arrangedSubviews.filter { !$0.isHidden }.count)
-        let estimateWidth = itemWidth * itemCount + (itemCount - 1) * videoItemsStackView.spacing
-        if estimateWidth <= view.bounds.width {
-            let margin = (view.bounds.width - estimateWidth) / 2
-            mainScrollView.contentInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
-        } else {
-            mainScrollView.contentInset = .zero
+    // MARK: - Direction
+    fileprivate var direction: ClassRoomLayout.RtcDirection = .top {
+        didSet {
+            guard direction != oldValue else { return }
+            sync(direction: direction)
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateScrollViewInset()
+    fileprivate func sync(direction: ClassRoomLayout.RtcDirection) {
+        let marginInset = preferredMargin * 2
+        switch direction {
+        case .right:
+            videoItemsStackView.axis = .vertical
+            videoItemsStackView.snp.remakeConstraints { make in
+                make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: preferredMargin, bottom: 0, right: preferredMargin))
+                make.width.equalTo(self.view).offset(-marginInset)
+            }
+        case .top:
+            videoItemsStackView.axis = .horizontal
+            videoItemsStackView.snp.remakeConstraints { make in
+                make.edges.equalToSuperview().inset(UIEdgeInsets(top: preferredMargin, left: 0, bottom: preferredMargin, right: 0))
+                make.height.equalTo(self.view).offset(-marginInset)
+            }
+        }
+        videoItemsStackView.arrangedSubviews.forEach { remakeConstraintForItemView(view: $0, direction: direction) }
     }
     
     // MARK: - Private
@@ -138,10 +149,7 @@ class RtcViewController: UIViewController {
         mainScrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        videoItemsStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(itemsInset)
-            make.height.equalTo(self.view).offset(-(itemsInset.top + itemsInset.bottom))
-        }
+        sync(direction: direction)
     }
     
     func update(itemView: RtcVideoItemView, user: RoomUser) {
@@ -166,6 +174,19 @@ class RtcViewController: UIViewController {
               isLocal: isLocal)
     }
     
+    func remakeConstraintForItemView(view: UIView, direction: ClassRoomLayout.RtcDirection) {
+        switch direction {
+        case .right:
+            view.snp.remakeConstraints { make in
+                make.height.equalTo(videoItemsStackView.snp.width).multipliedBy(self.itemRatio)
+            }
+        case .top:
+            view.snp.remakeConstraints { make in
+                make.width.equalTo(videoItemsStackView.snp.height).multipliedBy(1 / self.itemRatio)
+            }
+        }
+    }
+    
     func updateWith(nonTeacherValues values: [(user: RoomUser, canvas: AgoraRtcVideoCanvas)]) {
         for value in values {
             let itemView = itemViewForUid(value.user.rtcUID)
@@ -174,9 +195,7 @@ class RtcViewController: UIViewController {
                 itemView.tapHandler = { [weak self] view in
                     self?.respondToVideoItemVideoTap(view: view, isLocal: false)
                 }
-                itemView.snp.makeConstraints { make in
-                    make.width.equalTo(videoItemsStackView.snp.height).multipliedBy(self.itemRatio)
-                }
+                remakeConstraintForItemView(view: itemView, direction: direction)
             }
             itemView.isHidden = false
             refresh(view: itemView,
@@ -196,6 +215,35 @@ class RtcViewController: UIViewController {
             }
         }
         updateScrollViewInset()
+    }
+    
+    func updateScrollViewInset() {
+        switch direction {
+        case.right:
+            let widthInset = preferredMargin * 2
+            let itemWidth = view.bounds.width - widthInset
+            let itemHeight = itemWidth * itemRatio
+            let itemCount = CGFloat(videoItemsStackView.arrangedSubviews.filter { !$0.isHidden }.count)
+            let estimateHeight = itemHeight * itemCount + (itemCount - 1) * videoItemsStackView.spacing
+            if estimateHeight <= view.bounds.height {
+                let margin = (view.bounds.height - estimateHeight) / 2
+                mainScrollView.contentInset = UIEdgeInsets(top: margin, left: 0, bottom: margin, right: 0)
+            } else {
+                mainScrollView.contentInset = .zero
+            }
+        case .top:
+            let heightInset = preferredMargin * 2
+            let itemHeight = view.bounds.height - heightInset
+            let itemWidth = itemHeight / itemRatio
+            let itemCount = CGFloat(videoItemsStackView.arrangedSubviews.filter { !$0.isHidden }.count)
+            let estimateWidth = itemWidth * itemCount + (itemCount - 1) * videoItemsStackView.spacing
+            if estimateWidth <= view.bounds.width {
+                let margin = (view.bounds.width - estimateWidth) / 2
+                mainScrollView.contentInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
+            } else {
+                mainScrollView.contentInset = .zero
+            }
+        }
     }
     
     func apply(canvas: AgoraRtcVideoCanvas, toView view: UIView?, isLocal: Bool) {
@@ -334,12 +382,6 @@ class RtcViewController: UIViewController {
         view.axis = .horizontal
         view.distribution = .equalSpacing
         view.spacing = 8
-        noTeacherPlaceHolderView.snp.makeConstraints { make in
-            make.width.equalTo(view.snp.height).multipliedBy(self.itemRatio)
-        }
-        localVideoItemView.snp.makeConstraints { make in
-            make.width.equalTo(view.snp.height).multipliedBy(self.itemRatio)
-        }
         return view
     }()
     

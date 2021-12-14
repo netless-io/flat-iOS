@@ -14,7 +14,11 @@ import RxCocoa
 
 class ClassRoomViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .landscape }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if traitCollection.horizontalSizeClass == .regular, traitCollection.verticalSizeClass == .regular { return .landscape }
+        return .landscapeRight
+    }
+    override var prefersStatusBarHidden: Bool { traitCollection.verticalSizeClass == .compact }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if #available(iOS 13.0, *) {
@@ -23,6 +27,8 @@ class ClassRoomViewController: UIViewController {
             return .default
         }
     }
+    
+    let layout = ClassRoomLayout()
     
     var viewModel: ClassRoomViewModel!
     
@@ -34,6 +40,7 @@ class ClassRoomViewController: UIViewController {
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true)
     let inviteViewController: InviteViewController
     let usersViewController: ClassRoomUsersViewController
+    var stackView: UIStackView!
     var chatVC: ChatViewController?
     
     // MARK: - LifeCycle
@@ -89,6 +96,16 @@ class ClassRoomViewController: UIViewController {
         fatalError()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isIdleTimerDisabled = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -105,35 +122,56 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let safeInset = UIEdgeInsets.zero
+        let contentSize = view.bounds.inset(by: safeInset).size
+        let layoutOutput = layout.update(rtcHide: rtcViewController.view.isHidden, contentSize: contentSize)
+        let x = layoutOutput.inset.left
+        let y = layoutOutput.inset.top
+        let height = contentSize.height - layoutOutput.inset.top - layoutOutput.inset.bottom
+        let width = contentSize.width - layoutOutput.inset.left - layoutOutput.inset.right
+        stackView.frame = .init(origin: .init(x: x, y: y), size: .init(width: width, height: height))
+        rtcViewController.preferredMargin = layout.rtcMargin
+        
+        switch layoutOutput.rtcDirection {
+        case .top:
+            stackView.axis = .vertical
+            rtcViewController.view.snp.remakeConstraints { make in
+                make.height.equalTo(layoutOutput.rtcSize.height)
+            }
+            whiteboardViewController.view.snp.remakeConstraints { make in
+                make.height.equalTo(layoutOutput.whiteboardSize.height)
+            }
+        case .right:
+            stackView.axis = .horizontal
+            stackView.removeArrangedSubview(rtcViewController.view)
+            stackView.addArrangedSubview(rtcViewController.view)
+            rtcViewController.view.snp.remakeConstraints { make in
+                make.width.equalTo(layoutOutput.rtcSize.width)
+            }
+            whiteboardViewController.view.snp.remakeConstraints { make in
+                make.width.equalTo(layoutOutput.whiteboardSize.width)
+            }
+        }
+    }
+    
     // MARK: - Private Setup
     func setupViews() {
         view.backgroundColor = .commonBG
+        
         addChild(whiteboardViewController)
         addChild(rtcViewController)
-        let horizontalLine = UIView(frame: .zero)
-        horizontalLine.backgroundColor = .borderColor
-        
         let stackView = UIStackView(arrangedSubviews: [rtcViewController.view,
-                                                       horizontalLine,
                                                        whiteboardViewController.view
                                                        ])
         stackView.axis = .vertical
         stackView.distribution = .fill
         view.addSubview(stackView)
+        self.stackView = stackView
         
         whiteboardViewController.didMove(toParent: self)
         rtcViewController.didMove(toParent: self)
-        
-        stackView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-        horizontalLine.snp.makeConstraints { make in
-            make.height.equalTo(1 / UIScreen.main.scale)
-        }
-        rtcViewController.view.snp.makeConstraints { make in
-            make.height.equalTo(104)
-        }
-        
         setupToolbar()
     }
     
@@ -142,14 +180,6 @@ class ClassRoomViewController: UIViewController {
         rightToolBar.snp.makeConstraints { make in
             make.right.equalTo(whiteboardViewController.view.snp.right)
             make.centerY.equalTo(whiteboardViewController.view)
-        }
-        let separateLine = UIView()
-        separateLine.backgroundColor = .borderColor
-        view.addSubview(separateLine)
-        separateLine.snp.makeConstraints { make in
-            make.left.equalTo(whiteboardViewController.view.snp.right)
-            make.top.bottom.equalTo(whiteboardViewController.view)
-            make.width.equalTo(1)
         }
         if viewModel.isTeacher {
             view.addSubview(teacherOperationStackView)
@@ -472,6 +502,8 @@ class ClassRoomViewController: UIViewController {
                     weakSelf.settingVC.videoAreaOn.accept(hide)
                     UIView.animate(withDuration: 0.3) {
                         weakSelf.rtcViewController.view.isHidden = !hide
+                        // Trigger for viewDidLayoutSubviews
+                        weakSelf.view.frame = weakSelf.view.frame
                     }
                 })
                 .disposed(by: rx.disposeBag)

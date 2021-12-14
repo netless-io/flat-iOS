@@ -18,16 +18,16 @@ struct ClassRoomFactory {
         let camera: Bool
     }
     
-    static func getClassRoomViewController(withPlayinfo playInfo: RoomPlayInfo,
+    static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
                                             detailInfo: RoomInfo,
-                                            deviceStatus: DeviceStatus = .init(mic: false, camera: false)) -> ClassRoomViewController {
+                                            deviceStatus: DeviceStatus) -> ClassRoomViewController {
         // Config Whiteboard
         let userName = AuthStore.shared.user?.name ?? ""
-        let whiteSDkConig = WhiteSdkConfiguration.init(app: Env().netlessAppId)
-        whiteSDkConig.renderEngine = .canvas
-        whiteSDkConig.region = .CN
-        whiteSDkConig.userCursor = true
-        whiteSDkConig.useMultiViews = true
+        let whiteSDkConfig = WhiteSdkConfiguration(app: Env().netlessAppId)
+        whiteSDkConfig.renderEngine = .canvas
+        whiteSDkConfig.region = .CN
+        whiteSDkConfig.userCursor = true
+        whiteSDkConfig.useMultiViews = true
         let payload: [String: String] = ["cursorName": userName]
         let roomConfig = WhiteRoomConfig(uuid: playInfo.whiteboardRoomUUID,
                         roomToken: playInfo.whiteboardRoomToken,
@@ -36,8 +36,9 @@ struct ClassRoomFactory {
         roomConfig.disableNewPencil = false
         let windowParams = WhiteWindowParams()
         windowParams.chessboard = false
+        windowParams.containerSizeRatio = NSNumber(value: ClassRoomLayoutRatioConfig.whiteboardRatio)
         roomConfig.windowParams = windowParams
-        let whiteboardViewController = WhiteboardViewController(sdkConfig: whiteSDkConig, roomConfig: roomConfig)
+        let whiteboardViewController = WhiteboardViewController(sdkConfig: whiteSDkConfig, roomConfig: roomConfig)
         
         // Config init state
         let initUser: RoomUser = .init(rtmUUID: playInfo.rtmUID,
@@ -48,6 +49,7 @@ struct ClassRoomFactory {
                                            isRaisingHand: false,
                                            camera: deviceStatus.camera,
                                            mic: deviceStatus.mic))
+        
         let state = ClassRoomState(roomType: detailInfo.roomType,
                                    roomOwnerRtmUUID: playInfo.ownerUUID,
                                    roomUUID: playInfo.roomUUID,
