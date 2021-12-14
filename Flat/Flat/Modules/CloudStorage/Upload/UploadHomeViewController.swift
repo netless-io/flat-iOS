@@ -13,7 +13,13 @@ import PhotosUI
 #endif
 
 class UploadHomeViewController: UIViewController {
+    let itemHeight: CGFloat = 114
     var exportingTask: AVAssetExportSession?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.largeTitleDisplayMode = .never
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,14 +46,8 @@ class UploadHomeViewController: UIViewController {
                 vc.delegate = self
                 present(vc, animated: true, completion: nil)
                 return
-            case .audio:
-                let types = type.allowedUTStrings.compactMap { UTType(filenameExtension: $0) }
-                let vc = UIDocumentPickerViewController(forOpeningContentTypes: types)
-                vc.delegate = self
-                splitViewController?.present(vc, animated: true, completion: nil)
-            case .doc:
-                let types = type.allowedUTStrings.compactMap { UTType(filenameExtension: $0) }
-                let vc = UIDocumentPickerViewController(forOpeningContentTypes: types)
+            case .audio, .doc:
+                let vc = UIDocumentPickerViewController(forOpeningContentTypes: type.utTypes)
                 vc.delegate = self
                 splitViewController?.present(vc, animated: true, completion: nil)
             }
@@ -91,9 +91,7 @@ class UploadHomeViewController: UIViewController {
             })
             result = (newTask, result.tracker)
             tasksViewController.appendTask(task: result.task, fileURL: url, subject: result.tracker)
-            if presentedViewController == nil, tasksViewController.isBeingPresented {
-                mainSplitViewController?.present(tasksViewController, animated: true, completion: nil)
-            }
+            mainSplitViewController?.present(tasksViewController, animated: true, completion: nil)
         }
         catch {
             print(error)
@@ -103,7 +101,9 @@ class UploadHomeViewController: UIViewController {
     
     // MARK: - Private
     func setupViews() {
-        navigationItem.leftBarButtonItem = .init(title: NSLocalizedString("Uploading List", comment: ""), style: .plain, target: self, action: #selector(onClickUploadList))
+        navigationItem.rightBarButtonItem = .init(title: NSLocalizedString("Uploading List", comment: ""),
+                                                  style: .plain, target: self,
+                                                  action: #selector(onClickUploadList))
         view.backgroundColor = .whiteBG
         let buttons = UploadType.allCases
             .enumerated()
@@ -120,7 +120,7 @@ class UploadHomeViewController: UIViewController {
             make.width.lessThanOrEqualTo(view.safeAreaLayoutGuide.snp.width)
         }
         stack.arrangedSubviews.first?.snp.makeConstraints { make in
-            make.width.equalTo(114)
+            make.width.equalTo(itemHeight)
         }
     }
     
@@ -155,7 +155,7 @@ class UploadHomeViewController: UIViewController {
 // MARK: - Image
 extension UploadHomeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        picker.dismiss(animated: false, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
         if let url = info[.imageURL] as? URL {
             uploadFile(url: url, shouldAccessingSecurityScopedResource: false)
         } else if let url = info[.mediaURL] as? URL {

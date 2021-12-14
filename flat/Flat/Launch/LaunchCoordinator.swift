@@ -68,7 +68,18 @@ class LaunchCoordinator {
     }
     
     func createNewMainSplitViewController() -> UISplitViewController {
+        func tab() -> MainSplitViewController {
+            let vc = MainSplitViewController()
+            vc.viewControllers = [MainTabBarController()]
+            vc.preferredDisplayMode = .oneBesideSecondary
+            return vc
+        }
+        
         if #available(iOS 14.0, *) {
+            if window.traitCollection.horizontalSizeClass == .compact ||
+                window.traitCollection.verticalSizeClass == .compact {
+                return tab()
+            }
             let vc = MainSplitViewController(style: .tripleColumn)
             vc.preferredDisplayMode = .twoBesideSecondary
             vc.preferredSupplementaryColumnWidthFraction = 0.32
@@ -78,10 +89,7 @@ class LaunchCoordinator {
             vc.setViewController(UIViewController(), for: .supplementary)
             return vc
         } else {
-            let vc = MainSplitViewController()
-            vc.viewControllers = [MainTabBarController()]
-            vc.preferredDisplayMode = .oneBesideSecondary
-            return vc
+            return tab()
         }
     }
     

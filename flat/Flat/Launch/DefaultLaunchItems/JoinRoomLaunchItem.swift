@@ -84,7 +84,7 @@ class JoinRoomLaunchItem: LaunchItem {
                 let playInfo = tuple.0
                 let roomInfo = tuple.1
                 let deviceStatus = ClassRoomFactory.DeviceStatus(mic: micOn, camera: cameraOn)
-                let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo,
+                let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: roomInfo,
                                                                      deviceStatus: deviceStatus)
                 

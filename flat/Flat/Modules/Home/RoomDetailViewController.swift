@@ -295,7 +295,7 @@ class RoomDetailViewController: UIViewController {
             self.enterRoomButton.isEnabled = true
             switch result {
             case .success(let playInfo):
-                let vc = ClassRoomFactory.getClassRoomViewController(withPlayinfo: playInfo, detailInfo:
+                let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo, detailInfo:
                                                                         detailInfo, deviceStatus: .init(mic: self.micOn,
                                                                                                         camera: self.cameraOn))
                 vc.modalPresentationStyle = .fullScreen

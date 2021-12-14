@@ -156,7 +156,8 @@ class WhiteboardViewController: UIViewController {
         view.addSubview(operationBar)
         operationBar.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.left.equalToSuperview()
+            make.left.greaterThanOrEqualToSuperview()
+            make.left.equalTo(view.safeAreaLayoutGuide)
         }
         view.addSubview(undoRedoOperationBar)
         undoRedoOperationBar.snp.makeConstraints { make in

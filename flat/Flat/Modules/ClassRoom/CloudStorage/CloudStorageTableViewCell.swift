@@ -64,7 +64,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         let animation = CABasicAnimation(keyPath: "transform.rotation")
         animation.fromValue = 0
         animation.toValue = CGFloat.pi * 2
-        animation.duration = 0.5
+        animation.duration = 1
         animation.repeatCount = .infinity
         convertingIcon.layer.add(animation, forKey: "r")
     }

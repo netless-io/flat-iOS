@@ -7,12 +7,28 @@
 //
 
 import UIKit
+import UniformTypeIdentifiers
 
 enum UploadType: String, CaseIterable {
     case image
     case video
     case audio
     case doc
+    
+    @available(iOS 14.0, *)
+    var utTypes: [UTType] {
+        switch self {
+        case .image:
+            return [.image]
+        case .video:
+            return [.mpeg4Movie]
+        case .audio:
+            return [.mp3]
+        case .doc:
+            let fileExtensions = ["doc", "docx", "pdf", "ppt", "pptx"]
+            return fileExtensions.compactMap { UTType(filenameExtension: $0) }
+        }
+    }
     
     var allowedUTStrings: [String] {
         switch self {

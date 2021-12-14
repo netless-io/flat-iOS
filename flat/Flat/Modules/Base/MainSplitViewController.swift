@@ -61,14 +61,18 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     override func show(_ vc: UIViewController, hidePrimary: Bool = true) {
         detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: nil)
         if #available(iOS 14.0, *) {
-            if let _ = vc as? UINavigationController {
-                setViewController(vc, for: .secondary)
+            if style == .tripleColumn {
+                if let _ = vc as? UINavigationController {
+                    setViewController(vc, for: .secondary)
+                } else {
+                    let targetVC = BaseNavigationViewController(rootViewController: vc)
+                    setViewController(targetVC, for: .secondary)
+                }
+                if hidePrimary {
+                    show(.secondary)
+                }
             } else {
-                let targetVC = BaseNavigationViewController(rootViewController: vc)
-                setViewController(targetVC, for: .secondary)
-            }
-            if hidePrimary {
-                show(.secondary)
+                showDetailViewController(vc, sender: nil)
             }
         } else {
             showDetailViewController(vc, sender: nil)
@@ -87,14 +91,12 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         // Wrap a navigation controller for split show a single vc
         if canShowDetail {
             if vc is UINavigationController {
-//                detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: sender)
                 return false
             } else {
                 showDetailViewController(BaseNavigationViewController(rootViewController: vc), sender: sender)
                 return true
             }
         } else {
-//            detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: sender)
             return false
         }
     }
