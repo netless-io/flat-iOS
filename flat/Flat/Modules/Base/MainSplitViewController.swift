@@ -30,6 +30,11 @@ extension UIViewController {
 }
 
 class MainSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if traitCollection.horizontalSizeClass == .regular, traitCollection.verticalSizeClass == .regular { return .all }
+        return .portrait
+    }
+    
     var canShowDetail: Bool {
         if isCollapsed || displayMode == .secondaryOnly { return false }
         return true
