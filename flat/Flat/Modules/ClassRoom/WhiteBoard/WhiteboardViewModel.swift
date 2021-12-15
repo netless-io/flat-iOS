@@ -269,6 +269,18 @@ class WhiteboardViewModel: NSObject {
         room.insertImage(info, src: src.absoluteString)
     }
     
+    func insertPptx(_ pages: [(url: URL, preview: URL, size: CGSize)], title: String) {
+        let scenes = pages.enumerated().map { (index, item) -> WhiteScene in
+            let pptPage = WhitePptPage(src: item.url.absoluteString,
+                                       preview: item.preview.absoluteString,
+                                       size: item.size)
+            return WhiteScene(name: (index + 1).description,
+                                   ppt: pptPage)
+        }
+        let appParam = WhiteAppParam.createSlideApp("/" + UUID().uuidString, scenes: scenes, title: title)
+        room.addApp(appParam) { _ in }
+    }
+    
     func insertMultiPages(_ pages: [(url: URL, preview: URL, size: CGSize)], title: String) {
         let scenes = pages.enumerated().map { (index, item) -> WhiteScene in
             let pptPage = WhitePptPage(src: item.url.absoluteString,

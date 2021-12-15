@@ -17,6 +17,8 @@ class CloudStorageListViewController: UIViewController {
         case media(url: URL, title: String)
         /// pdf, doc or ppt
         case multiPages(pages: [(url: URL, preview: URL, size: CGSize)], title: String)
+        /// pptx
+        case pptx(pages: [(url: URL, preview: URL, size: CGSize)], title: String)
     }
     
     var fileSelectTask: StorageFileModel? {
@@ -125,7 +127,7 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
         cell.iconImage.image = UIImage(named: item.fileType.iconImageName)
         cell.fileNameLabel.text = item.fileName
         let formatter = DateFormatter()
-        formatter.dateStyle = .none
+        formatter.dateStyle = .medium
         formatter.timeStyle = .short
         let dateStr = formatter.string(from: item.createAt)
         cell.sizeAndTimeLabel.text = dateStr + "   " + item.fileSizeDescription
@@ -195,7 +197,11 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
                         let pages: [(URL, URL, CGSize)] = detail.progress.convertedFileList.map { item -> (URL, URL, CGSize) in
                             return (item.conversionFileUrl, item.preview ?? item.conversionFileUrl, CGSize(width: item.width, height: item.height))
                         }
-                        self.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
+                        if item.fileName.hasSuffix("pptx") {
+                            self.fileContentSelectedHandler?(.pptx(pages: pages, title: item.fileName))
+                        } else {
+                            self.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
+                        }
                     default:
                         self.toast("file not ready")
                     }
