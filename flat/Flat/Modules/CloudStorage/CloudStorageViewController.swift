@@ -373,7 +373,7 @@ class CloudStorageViewController: UIViewController {
     lazy var deleteAllButton: UIButton = {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.setTitle(NSLocalizedString("Delete All", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("Delete", comment: ""), for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
         button.contentEdgeInsets = .init(top: 16, left: 16, bottom: 16, right: 16)
         button.addTarget(self, action: #selector(onClickDelete), for: .touchUpInside)
@@ -425,7 +425,7 @@ extension CloudStorageViewController: UITableViewDelegate, UITableViewDataSource
         cell.iconImage.image = UIImage(named: item.fileType.iconImageName)
         cell.fileNameLabel.text = item.fileName
         let formatter = DateFormatter()
-        formatter.dateStyle = .none
+        formatter.dateStyle = .medium
         formatter.timeStyle = .short
         let dateStr = formatter.string(from: item.createAt)
         cell.sizeAndTimeLabel.text = dateStr + "   " + item.fileSizeDescription

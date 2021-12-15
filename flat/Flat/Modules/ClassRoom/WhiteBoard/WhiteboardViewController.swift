@@ -17,7 +17,7 @@ class WhiteboardViewController: UIViewController {
     var viewModel: WhiteboardViewModel!
     
     func updatePageOperationHide(_ hide: Bool) {
-        [newSceneButton, nextSceneButton, previousSceneButton].forEach { $0.isHidden = hide }
+        sceneOperationBar.isHidden = hide
     }
     
     func updateToolsHide(_ hide: Bool) {

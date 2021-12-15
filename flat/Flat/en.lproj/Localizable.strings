@@ -13,6 +13,10 @@
 "Remove Room Verbose" = "Sure to cancel this room? Other members will not be able to join after cancellation.";
 "Cancel Room Verbose" = "Sure to remove the room from the room list? Once removed, you can join the room again by using the room number.";
 
+"Have read and agree" = "Have read and agree";
+"and" = "and";
+"Please agree to the Terms of Service first" = "Please agree to the Terms of Service first";
+
 "Home" = "Home";
 "Room" = "Room";
 "Profile" = "Profile";
@@ -30,7 +34,7 @@
 "Select Language" = "Select Language";
 "selected" = "(selected)";
 "Join Room" = "Join Room";
-"Create Room" = "Create Room";
+"Start Now" = "Start Now";
 "Book Room" = "Book Room";
 "Room List" = "Room List";
 "History" = "History";
@@ -50,6 +54,7 @@
 "Room Number Input PlaceHolder" = "Please enter the room number";
 "Start Time" = "Start Time";
 "Copy Invite Link" = "Copy Link";
+"Copy Success" = "Copy Success";
 "Join Link" = "Join Link";
 "All banned" = "All banned";
 "Camera" = "Camera";
@@ -104,7 +109,7 @@
 "Edit" = "Edit";
 "Finish" = "Finish";
 "Used Capacity" = "Used Capacity";
-"Delete All" = "Delete All";
+"Delete" = "Delete";
 "Delete File Alert" = "Do you confirm the deletion of the selected courseware? You can't recover the deleted courseware";
 
 "Preview" = "Preview";

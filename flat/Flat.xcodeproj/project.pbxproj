@@ -220,6 +220,7 @@
 		8AE8930A2727FAE9009C71DA /* ChannelStatusCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE893092727FAE9009C71DA /* ChannelStatusCommand.swift */; };
 		8AE8F5642721386200D2E0F5 /* RoomInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */; };
 		8AE8F56627213ACD00D2E0F5 /* RoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */; };
+		8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF06A0276980590009904A /* UIButton+CheckBox.swift */; };
 		9AE3AF17B16B9CA81A411696 /* Pods_Flat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B773F9587EAD9D58FD45B88 /* Pods_Flat.framework */; };
 /* End PBXBuildFile section */
 
@@ -458,6 +459,7 @@
 		8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoRequest.swift; sourceTree = "<group>"; };
 		8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfo.swift; sourceTree = "<group>"; };
 		8AEA34F327279D0C00EA4009 /* BorderPopoverBackgrounView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderPopoverBackgrounView.swift; sourceTree = "<group>"; };
+		8AEF06A0276980590009904A /* UIButton+CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+CheckBox.swift"; sourceTree = "<group>"; };
 		ED5C49EBD78FE2B54C911AB1 /* Pods-flat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.release.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -643,6 +645,7 @@
 			isa = PBXGroup;
 			children = (
 				8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */,
+				8AEF06A0276980590009904A /* UIButton+CheckBox.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -1433,6 +1436,7 @@
 			files = (
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
+				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
 				8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */,
 				8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */,
 				8A97EBB927199AD300965185 /* RTCShareScreen.swift in Sources */,

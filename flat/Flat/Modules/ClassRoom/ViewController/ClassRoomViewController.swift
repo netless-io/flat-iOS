@@ -72,12 +72,7 @@ class ClassRoomViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         
-        let alertProvider = DefaultAlertProvider(root: self) { [weak self] model in
-            guard let self = self else {
-                return (UIView(), .zero)
-            }
-            return (self.rightToolBar, self.rightToolBar.bounds.insetBy(dx: -10, dy: 0))
-        }
+        let alertProvider = DefaultAlertProvider(root: self)
         
         self.viewModel = .init(isTeacher: isTeacher,
                                chatChannelId: chatChannelId,
@@ -380,6 +375,7 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.whiteboardViewController.updateToolsHide(!enable)
                 weakSelf.whiteboardViewController.updatePageOperationHide(!enable)
                 weakSelf.whiteboardViewController.viewModel.room.setWritable(enable, completionHandler: nil)
+                weakSelf.rightToolBar.updateButtonHide(weakSelf.cloudStorageButton, hide: !enable)
             })
             .disposed(by: rx.disposeBag)
     }
@@ -509,7 +505,7 @@ class ClassRoomViewController: UIViewController {
                 .disposed(by: rx.disposeBag)
         
         let output = viewModel.transformSetting(.init(
-            leaveTap:settingVC.logoutButton.rx.sourceTap.asDriver(),
+            leaveTap: settingVC.logoutButton.rx.sourceTap.asDriver().map { [unowned self] _ in self.settingButton },
             cameraTap: settingVC.cameraPublish.asDriver(onErrorJustReturn: ()),
             micTap: settingVC.micPublish.asDriver(onErrorJustReturn: ())))
         
@@ -653,13 +649,16 @@ class ClassRoomViewController: UIViewController {
                 whiteViewModel?.insertMedia(url, title: title)
             case .multiPages(pages: let pages, title: let title):
                 whiteViewModel?.insertMultiPages(pages, title: title)
+            case .pptx(pages: let pages, title: let title):
+                whiteViewModel?.insertPptx(pages, title: title)
             }
+            self.dismiss(animated: true, completion: nil)
         }
         return vc
     }()
      
     lazy var cloudStorageButton: UIButton = {
-        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "tab_cloud_storage")!)
+        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "classroom_cloud")!)
         button.addTarget(self, action: #selector(onClickStorage(_:)), for: .touchUpInside)
         return button
     }()
@@ -672,7 +671,7 @@ class ClassRoomViewController: UIViewController {
     lazy var rightToolBar: RoomControlBar = {
         let bar = RoomControlBar(direction: .vertical,
                                  borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                 buttons: viewModel.isTeacher ? [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton] : [chatButton,  usersButton, inviteButton, settingButton],
+                                 buttons: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton],
                                  narrowStyle: .narrowMoreThan(count: 1))
         return bar
     }()

@@ -190,6 +190,14 @@ class ClassRoomUsersViewController: UIViewController {
         return btn
     }()
     
+    lazy var teachAvatarImageView: UIImageView = {
+        let view = UIImageView()
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
+        view.layer.cornerRadius = 15
+        return view
+    }()
+    
     lazy var teacherHeaderView: UIView = {
         let view = UIView()
         view.backgroundColor = .whiteBG
@@ -201,10 +209,16 @@ class ClassRoomUsersViewController: UIViewController {
             make.bottom.equalToSuperview()
             make.height.equalTo(1 / UIScreen.main.scale)
         }
+        view.addSubview(teachAvatarImageView)
         view.addSubview(teacherLabel)
         view.addSubview(stopInteractingButton)
-        teacherLabel.snp.makeConstraints { make in
+        teachAvatarImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(30)
+        }
+        teacherLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(50)
             make.centerY.equalToSuperview()
             make.right.lessThanOrEqualTo(stopInteractingButton.snp.left).offset(-10)
         }
@@ -229,7 +243,8 @@ extension ClassRoomUsersViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let teacher = teacher {
-            teacherLabel.text = "\(NSLocalizedString("Teacher", comment: "")) : \(teacher.name)"
+            teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
+            teacherLabel.text = teacher.name + " (" + NSLocalizedString("Teacher", comment: "") + ")"
             return teacherHeaderView
         } else {
             return nil

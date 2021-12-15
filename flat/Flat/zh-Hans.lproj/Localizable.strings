@@ -13,6 +13,10 @@
 "Remove Room Verbose" = "确定从房间列表移除该房间？移除后可通过房间号再次加入。";
 "Cancel Room Verbose" = "确定取消该房间？取消后其他成员将无法加入。";
 
+"Have read and agree" = "已阅读并同意";
+"and" = "和";
+"Please agree to the Terms of Service first" = "请先同意服务条款";
+
 "Home" = "首页";
 "Room" = "房间";
 "Profile" = "个人资料";
@@ -30,7 +34,7 @@
 "selected" = "（已选）";
 "Service Agreement" = "服务协议";
 "Join Room" = "加入房间";
-"Create Room" = "创建房间";
+"Start Now" = "立即开始";
 "Book Room" = "预定房间";
 "Room List" = "房间列表";
 "History" = "历史记录";
@@ -50,6 +54,7 @@
 "Room Number Input PlaceHolder" = "请输入房间号";
 "Start Time" = "开始时间";
 "Copy Invite Link" = "复制邀请链接";
+"Copy Success" = "复制成功";
 "Join Link" = "加入链接";
 "All banned" = "全体禁言中";
 "Camera" = "摄像头";
@@ -103,7 +108,7 @@
 "Edit" = "编辑";
 "Finish" = "完成";
 "Used Capacity" = "已使用";
-"Delete All" = "删除全部";
+"Delete" = "删除";
 "Delete File Alert" = "确认删除所选课件？课件删除后不可恢复";
 
 "Preview" = "预览";

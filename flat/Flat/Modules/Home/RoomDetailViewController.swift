@@ -231,11 +231,18 @@ class RoomDetailViewController: UIViewController {
         startDateLabel.text = formatter.string(from: beginTime)
         endDateLabel.text = formatter.string(from: endTime)
         
+        
         let duration = info.endTime.timeIntervalSince(beginTime)
         let durationFormatter = DateComponentsFormatter()
         durationFormatter.unitsStyle = .brief
-        durationFormatter.allowedUnits = [.hour, .minute]
-        durationLabel.text = durationFormatter.string(from: duration)
+        durationFormatter.maximumUnitCount = 1
+        durationFormatter.allowedUnits = [.day, .hour, .minute, .second]
+        if var durationStr = durationFormatter.string(from: duration) {
+            if durationStr.hasPrefix("-") {
+                durationStr = String(durationStr.dropFirst())
+            }
+            durationLabel.text = durationStr
+        }
         
         let displayStatus = status.getDisplayStatus()
         statusLabel.text = NSLocalizedString(displayStatus.rawValue, comment: "")

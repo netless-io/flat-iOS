@@ -225,6 +225,10 @@ class HomeViewController: UIViewController {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd"
+        if let code = LocaleManager.languageCode {
+            let locale = Locale(identifier: code)
+            formatter.locale = locale
+        }
         let dateStr = formatter.string(from: room.beginTime)
         
         if Calendar.current.isDateInToday(room.beginTime) {
@@ -321,7 +325,7 @@ class HomeViewController: UIViewController {
         let header = UIView()
         let stack = UIStackView(arrangedSubviews: [
             createHeaderButton(title: NSLocalizedString("Join Room", comment: ""), imageName: "room_join", target: self, action: #selector(onClickJoin)),
-            createHeaderButton(title: NSLocalizedString("Create Room", comment: ""), imageName: "room_create", target: self, action: #selector(onClickCreate)),
+            createHeaderButton(title: NSLocalizedString("Start Now", comment: ""), imageName: "room_create", target: self, action: #selector(onClickCreate)),
             createHeaderButton(title: NSLocalizedString("Book Room", comment: ""), imageName: "room_book", target: self, action: #selector(onClickBook))
         ])
         stack.distribution = .fillEqually

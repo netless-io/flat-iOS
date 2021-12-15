@@ -18,7 +18,7 @@ fileprivate class FlatLoadingView: UIView {
         addSubview(loadingView)
         loadingView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.lessThanOrEqualTo(self.snp.width).multipliedBy(0.3)
+            make.width.lessThanOrEqualTo(self.snp.width).multipliedBy(0.2)
         }
         
         addSubview(cancelButton)

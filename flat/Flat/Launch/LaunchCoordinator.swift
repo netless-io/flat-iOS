@@ -85,8 +85,8 @@ class LaunchCoordinator {
             vc.preferredSupplementaryColumnWidthFraction = 0.32
             vc.preferredPrimaryColumnWidthFraction = 0.18
             vc.setViewController(SidebarViewController(), for: .primary)
-            // For reduce XCode assert runtime
-            vc.setViewController(UIViewController(), for: .supplementary)
+            vc.setViewController(HomeViewController(), for: .supplementary)
+            vc.setViewController(.emptySplitSecondaryViewController(), for: .secondary)
             return vc
         } else {
             return tab()

@@ -33,7 +33,7 @@ class ClassRoomLayout {
     let verticalRtcFixedHeight: CGFloat = 84
     let rtcRatio = ClassRoomLayoutRatioConfig.rtcItemRatio
     let rtcMinRatio: CGFloat = 0.1
-    let rtcMaxRatio: CGFloat = 0.2
+    let rtcMaxRatio: CGFloat = 0.3
     let whiteboardRatio: CGFloat = CGFloat(ClassRoomLayoutRatioConfig.whiteboardRatio)
     
     func update(rtcHide: Bool, contentSize: CGSize) -> OutPut {

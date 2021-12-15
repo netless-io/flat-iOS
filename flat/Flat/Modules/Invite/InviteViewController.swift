@@ -67,6 +67,7 @@ class InviteViewController: PopOverDismissDetectableViewController {
         dismiss(animated: true) { [weak self] in
             self?.dismissHandler?()
         }
+        mainSplitViewController?.toast(NSLocalizedString("Copy Success", comment: ""))
     }
     
     @IBOutlet weak var timeLabel: UILabel!
