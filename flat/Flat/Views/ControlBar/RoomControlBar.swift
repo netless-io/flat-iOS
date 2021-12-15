@@ -9,10 +9,23 @@
 
 import UIKit
 
+/// All the buttons inserted in this container should not update the button isHidden property
+/// call 'updateButtonHide'
 class RoomControlBar: UIView {
     enum NarrowStyle {
         case none
         case narrowMoreThan(count: Int)
+    }
+    
+    var manualHideButtons: [UIButton] = []
+    
+    func updateButtonHide(_ button: UIButton, hide: Bool) {
+        if hide, !manualHideButtons.contains(button) {
+            manualHideButtons.append(button)
+        } else if !hide, manualHideButtons.contains(button) {
+            manualHideButtons.removeAll(where: { $0 == button })
+        }
+        button.isHidden = hide
     }
     
     let direction: NSLayoutConstraint.Axis
@@ -60,13 +73,13 @@ class RoomControlBar: UIView {
         buttons.forEach({
             stack.addArrangedSubview($0)
             $0.snp.makeConstraints { make in
-                make.size.equalTo(CGSize.init(width: 40, height: 40))
+                make.size.equalTo(CGSize.init(width: 48, height: 48))
             }
         })
         if narrowMoreThan > 0 {
             stack.addArrangedSubview(foldButton)
             foldButton.snp.makeConstraints { make in
-                make.size.equalTo(CGSize.init(width: 40, height: 40))
+                make.size.equalTo(CGSize.init(width: 48, height: 48))
             }
         }
     }
@@ -79,16 +92,25 @@ class RoomControlBar: UIView {
         sender.isSelected = !sender.isSelected
         let isNarrow = sender.isSelected
         if !isNarrow {
-            stack.arrangedSubviews.forEach({ $0.isHidden = false })
+            stack.arrangedSubviews.filter { view in
+                let btn = view as! UIButton
+                return !self.manualHideButtons.contains(btn)
+            }.forEach({
+                $0.isHidden = false
+            })
         } else {
-            let itemCount = stack.arrangedSubviews.count
-            stack.arrangedSubviews.enumerated().forEach { i in
-                if i.offset == itemCount - 1 {
-                    i.element.isHidden = false
-                    return
+            stack.arrangedSubviews
+                .filter { view in
+                    let btn = view as! UIButton
+                    return !self.manualHideButtons.contains(btn)
+                }.enumerated().forEach { i in
+                    // The last one can't be hide
+                    if i.element === foldButton {
+                        i.element.isHidden = false
+                        return
+                    }
+                    i.element.isHidden = i.offset >= narrowMoreThan
                 }
-                i.element.isHidden = i.offset >= narrowMoreThan
-            }
         }
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
