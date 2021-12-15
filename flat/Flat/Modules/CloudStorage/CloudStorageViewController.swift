@@ -94,14 +94,32 @@ class CloudStorageViewController: UIViewController {
     }
     
     func deleteItems(_ items: [StorageFileModel]) {
-        let fileIds = items.map { $0.fileUUID }
+        let externalFileUUIDs = items.filter { $0.external }.map { $0.fileUUID }
+        let internalFileUUIDs = items.filter { !$0.external }.map { $0.fileUUID }
+        let externalRequest = RemoveFilesRequest(fileUUIDs: externalFileUUIDs, external: true)
+        let internalRequest = RemoveFilesRequest(fileUUIDs: internalFileUUIDs, external: false)
+        let externalR: Observable<Void> = externalFileUUIDs.isEmpty ? .just(()) : ApiProvider.shared.request(fromApi: externalRequest).mapToVoid()
+        let internalR: Observable<Void> = internalFileUUIDs.isEmpty ? .just(()) : ApiProvider.shared.request(fromApi: internalRequest).mapToVoid()
+        
+        func executeDelete() {
+            showActivityIndicator()
+            externalR
+                .flatMap { internalR }
+                .asSingle()
+                .subscribe(with: self, onSuccess: { weakSelf, _ in
+                    weakSelf.stopActivityIndicator()
+                    weakSelf.loadData(loadMore: false)
+                }, onFailure: { weakSelf, error in
+                    weakSelf.stopActivityIndicator()
+                    weakSelf.toast(error.localizedDescription)
+                }, onDisposed: { weakSelf in
+                    weakSelf.stopActivityIndicator()
+                })
+                .disposed(by: rx.disposeBag)
+        }
+        
         showCheckAlert( message: NSLocalizedString("Delete File Alert", comment: "")) {
-            self.showActivityIndicator()
-            ApiProvider.shared.request(fromApi: RemoveFilesRequest(fileUUIDs: fileIds)) { [weak self] result in
-                guard let self = self else { return }
-                self.stopActivityIndicator()
-                self.loadData(loadMore: false)
-            }
+            executeDelete()
         }
     }
     
@@ -234,7 +252,7 @@ class CloudStorageViewController: UIViewController {
         alert.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: { _ in
             let newName = alert.textFields?[0].text ?? ""
             let newFileName = newName + ".\(ext)"
-            let req = RenameFileRequest(fileName: newFileName, fileUUID: item.fileUUID)
+            let req = RenameFileRequest(fileName: newFileName, fileUUID: item.fileUUID, external: item.external)
             self.showActivityIndicator()
             ApiProvider.shared.request(fromApi: req) { [weak self] result in
                 guard let self = self else { return }
