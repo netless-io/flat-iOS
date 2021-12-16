@@ -26,9 +26,17 @@ class MainTabBarController: UITabBarController {
         }
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        tabBar.backgroundImage = UIImage.imageWith(color: .blackBG)
+    }
+    
     func setup() {
         tabBar.backgroundImage = UIImage.imageWith(color: .blackBG)
-        tabBar.tintColor = .white
+        tabBar.isTranslucent = true
+        tabBar.backgroundColor = .blackBG
+        tabBar.barTintColor = .blackBG
+        tabBar.tintColor = .blackBG
         let home = makeSubController(fromViewController: HomeViewController(),
                                      image: UIImage(named: "tab_room")!,
                                      title: NSLocalizedString("Home", comment: ""))

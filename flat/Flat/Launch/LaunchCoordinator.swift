@@ -83,8 +83,9 @@ class LaunchCoordinator {
             let vc = MainSplitViewController(style: .tripleColumn)
             vc.preferredDisplayMode = .twoBesideSecondary
             vc.preferredSupplementaryColumnWidthFraction = 0.32
-            vc.preferredPrimaryColumnWidthFraction = 0.18
-            vc.setViewController(SidebarViewController(), for: .primary)
+            vc.minimumSupplementaryColumnWidth = 0.32
+            vc.preferredPrimaryColumnWidth = 64
+            vc.setViewController(BaseNavigationViewController(rootViewController: SidebarViewController()), for: .primary)
             vc.setViewController(HomeViewController(), for: .supplementary)
             vc.setViewController(.emptySplitSecondaryViewController(), for: .secondary)
             return vc

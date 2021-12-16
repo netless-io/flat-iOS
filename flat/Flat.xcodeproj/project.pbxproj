@@ -223,6 +223,7 @@
 		8AEF069F276973E40009904A /* AppleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF069E276973E40009904A /* AppleLogin.swift */; };
 		8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF06A0276980590009904A /* UIButton+CheckBox.swift */; };
 		8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */; };
+		8AFCCDDF276AE051008BD0FC /* SideBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCCDDE276AE051008BD0FC /* SideBarCell.swift */; };
 		9AE3AF17B16B9CA81A411696 /* Pods_Flat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B773F9587EAD9D58FD45B88 /* Pods_Flat.framework */; };
 /* End PBXBuildFile section */
 
@@ -464,6 +465,7 @@
 		8AEF069E276973E40009904A /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
 		8AEF06A0276980590009904A /* UIButton+CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+CheckBox.swift"; sourceTree = "<group>"; };
 		8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
+		8AFCCDDE276AE051008BD0FC /* SideBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarCell.swift; sourceTree = "<group>"; };
 		ED5C49EBD78FE2B54C911AB1 /* Pods-flat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.release.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -787,10 +789,10 @@
 		8A270B8927192FDC00450DC6 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				8AFCCDE0276B089A008BD0FC /* SideBar */,
 				8A05C30E275DA785009BCA79 /* Popover */,
 				8A270B8A27192FEE00450DC6 /* BaseNavigationViewController.swift */,
 				8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */,
-				8A05C325275EF6B0009BCA79 /* SidebarViewController.swift */,
 				8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */,
 			);
 			path = Base;
@@ -1304,6 +1306,15 @@
 			path = Popover;
 			sourceTree = "<group>";
 		};
+		8AFCCDE0276B089A008BD0FC /* SideBar */ = {
+			isa = PBXGroup;
+			children = (
+				8A05C325275EF6B0009BCA79 /* SidebarViewController.swift */,
+				8AFCCDDE276AE051008BD0FC /* SideBarCell.swift */,
+			);
+			path = SideBar;
+			sourceTree = "<group>";
+		};
 		B3E62956D194E85D15145A0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1598,6 +1609,7 @@
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,
 				8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */,
 				8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */,
+				8AFCCDDF276AE051008BD0FC /* SideBarCell.swift in Sources */,
 				8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */,
 				8A270B9F2719681F00450DC6 /* Bundle+Language.swift in Sources */,
 				8A9FB3C127229A6200F6F06F /* FlatRequest.swift in Sources */,
