@@ -8,16 +8,19 @@
 
 
 import UIKit
+import AuthenticationServices
+import SafariServices
 
 class LoginViewController: UIViewController {
     var wechatLogin: WechatLogin?
     var githubLogin: GithubLogin?
+    var appleLogin: Any?
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact {
-            return [.portrait]
+            return .portrait
         } else {
-            return [.all]
+            return .all
         }
     }
     
@@ -27,14 +30,31 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Hide wechat login when wechat not installed
-        wechatLoginButton.isHidden = !WXApi.isWXAppInstalled()
-        syncTraitCollection(traitCollection)
+        setupViews()
         #if DEBUG
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(debugLogin))
         doubleTap.numberOfTapsRequired = 2
         view.addGestureRecognizer(doubleTap)
         #endif
+    }
+    
+    // MARK: - Private
+    func setupViews() {
+        // Hide wechat login when wechat not installed
+        wechatLoginButton.isHidden = !WXApi.isWXAppInstalled()
+        syncTraitCollection(traitCollection)
+        if #available(iOS 13.0, *) {
+            setupAppleLogin()
+        }
+        view.addSubview(agreementCheckStackView)
+        agreementCheckStackView.snp.makeConstraints { make in
+            make.centerX.equalTo(verticalLoginTypesStackView)
+            make.top.equalTo(verticalLoginTypesStackView.snp.bottom).offset(34)
+        }
+    }
+    
+    func checkAgreementDidAgree() -> Bool {
+        agreementCheckButton.isSelected
     }
     
     func syncTraitCollection(_ trait: UITraitCollection) {
@@ -45,7 +65,48 @@ class LoginViewController: UIViewController {
         }
     }
     
+    @available(iOS 13.0, *)
+    func setupAppleLogin() {
+        let container = UIView()
+        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
+        container.addSubview(button)
+        horizontalLoginTypesStackView.addArrangedSubview(container)
+        container.snp.makeConstraints { make in
+            make.width.equalTo(58)
+        }
+        button.addTarget(self, action: #selector(onClickAppleLogin), for: .touchUpInside)
+        button.cornerRadius = 29
+        button.snp.makeConstraints { make in
+            make.width.height.equalTo(58)
+            make.center.equalToSuperview()
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    @objc func onClickAppleLogin() {
+        guard checkAgreementDidAgree() else {
+            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            return
+        }
+        guard let launchCoordinator = globalLaunchCoordinator else { return }
+        showActivityIndicator()
+        appleLogin = AppleLogin()
+        (appleLogin as! AppleLogin).startLogin(launchCoordinator: launchCoordinator) { [weak self] result in
+            self?.stopActivityIndicator()
+            switch result {
+            case .success:
+                return
+            case .failure(let error):
+                self?.showAlertWith(message: error.localizedDescription.isEmpty ? "Login fail" : error.localizedDescription)
+            }
+        }
+    }
+    
     @IBAction func onClickWechatButton(_ sender: Any) {
+        guard checkAgreementDidAgree() else {
+            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            return
+        }
         guard let launchCoordinator = globalLaunchCoordinator else { return }
         showActivityIndicator(forSeconds: 1)
         self.wechatLogin?.removeLaunchItemFromLaunchCoordinator?()
@@ -62,6 +123,10 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func onClickGithubButton(_ sender: Any) {
+        guard checkAgreementDidAgree() else {
+            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            return
+        }
         guard let coordinator = globalLaunchCoordinator else { return }
         showActivityIndicator(forSeconds: 1)
         self.githubLogin?.removeLaunchItemFromLaunchCoordinator?()
@@ -94,8 +159,60 @@ class LoginViewController: UIViewController {
         popoverViewController(viewController: alert, fromSource: githubLoginButton)
     }
     
+    @objc func onClickAgreement(sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+    }
+    
+    @objc func onClickPrivacy() {
+        let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/privacy.html")!)
+        present(controller, animated: true, completion: nil)
+    }
+    
+    @objc func onClickServiceAgreement() {
+        let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/service.html")!)
+        present(controller, animated: true, completion: nil)
+    }
+    
+    @IBOutlet weak var verticalLoginTypesStackView: UIStackView!
+    @IBOutlet weak var horizontalLoginTypesStackView: UIStackView!
     @IBOutlet weak var loginBg: UIView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var githubLoginButton: UIButton!
     @IBOutlet weak var wechatLoginButton: UIButton!
+    
+    // MARK: Lazy
+    lazy var agreementCheckButton: UIButton = {
+        let btn = UIButton.checkBoxStyleButton()
+        btn.setTitleColor(.text, for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 12)
+        btn.setTitle("  " + NSLocalizedString("Have read and agree", comment: "") + " ", for: .normal)
+        btn.addTarget(self, action: #selector(onClickAgreement), for: .touchUpInside)
+        btn.contentEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 0)
+        return btn
+    }()
+    
+    lazy var agreementCheckStackView: UIStackView = {
+        let privacyButton = UIButton(type: .custom)
+        privacyButton.tintColor = .brandColor
+        privacyButton.setTitleColor(.brandColor, for: .normal)
+        privacyButton.titleLabel?.font = .systemFont(ofSize: 12)
+        privacyButton.setTitle(NSLocalizedString("Privacy Policy", comment: ""), for: .normal)
+        privacyButton.addTarget(self, action: #selector(onClickPrivacy), for: .touchUpInside)
+        
+        let serviceAgreementButton = UIButton(type: .custom)
+        serviceAgreementButton.tintColor = .brandColor
+        serviceAgreementButton.titleLabel?.font = .systemFont(ofSize: 12)
+        serviceAgreementButton.setTitle(NSLocalizedString("Service Agreement", comment: ""), for: .normal)
+        serviceAgreementButton.setTitleColor(.brandColor, for: .normal)
+        serviceAgreementButton.addTarget(self, action: #selector(onClickServiceAgreement), for: .touchUpInside)
+        
+        let label1 = UILabel()
+        label1.textColor = .text
+        label1.font = .systemFont(ofSize: 12)
+        label1.text = " " + NSLocalizedString("and", comment: "") + " "
+        let view = UIStackView(arrangedSubviews: [agreementCheckButton, privacyButton, label1, serviceAgreementButton])
+        view.axis = .horizontal
+        view.distribution = .fill
+        return view
+    }()
 }

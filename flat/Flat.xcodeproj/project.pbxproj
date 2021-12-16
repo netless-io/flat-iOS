@@ -220,7 +220,9 @@
 		8AE8930A2727FAE9009C71DA /* ChannelStatusCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE893092727FAE9009C71DA /* ChannelStatusCommand.swift */; };
 		8AE8F5642721386200D2E0F5 /* RoomInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */; };
 		8AE8F56627213ACD00D2E0F5 /* RoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */; };
+		8AEF069F276973E40009904A /* AppleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF069E276973E40009904A /* AppleLogin.swift */; };
 		8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF06A0276980590009904A /* UIButton+CheckBox.swift */; };
+		8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */; };
 		9AE3AF17B16B9CA81A411696 /* Pods_Flat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B773F9587EAD9D58FD45B88 /* Pods_Flat.framework */; };
 /* End PBXBuildFile section */
 
@@ -459,7 +461,9 @@
 		8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoRequest.swift; sourceTree = "<group>"; };
 		8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfo.swift; sourceTree = "<group>"; };
 		8AEA34F327279D0C00EA4009 /* BorderPopoverBackgrounView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderPopoverBackgrounView.swift; sourceTree = "<group>"; };
+		8AEF069E276973E40009904A /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
 		8AEF06A0276980590009904A /* UIButton+CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+CheckBox.swift"; sourceTree = "<group>"; };
+		8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
 		ED5C49EBD78FE2B54C911AB1 /* Pods-flat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.release.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -829,6 +833,7 @@
 			children = (
 				8A270B962719607700450DC6 /* LoginViewController.xib */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
+				8AEF069E276973E40009904A /* AppleLogin.swift */,
 				8AD3CDF1271693EC008BD904 /* GithubLogin.swift */,
 				8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */,
 			);
@@ -954,6 +959,7 @@
 				8ACE3A23272FED7700BC37F7 /* RoomHistoryRequest.swift */,
 				8A80209D27570EAA00F5691C /* StorageListRequest.swift */,
 				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
+				8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */,
 				8A05C34A2760A6FD009BCA79 /* RemoveFilesRequest.swift */,
 				8AAB06272762FD06006CAEF2 /* StartConvertRequest.swift */,
 				8ABD71BA27634986004FDC36 /* FinishConvertRequest.swift */,
@@ -1469,6 +1475,7 @@
 				8A7741E7273A6FA2009FAADA /* RoomCancelRequest.swift in Sources */,
 				8A80209E27570EAA00F5691C /* StorageListRequest.swift in Sources */,
 				8A270B7227182A2B00450DC6 /* CloudStorageViewController.swift in Sources */,
+				8AEF069F276973E40009904A /* AppleLogin.swift in Sources */,
 				8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */,
 				8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */,
 				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
@@ -1590,6 +1597,7 @@
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,
 				8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */,
+				8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */,
 				8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */,
 				8A270B9F2719681F00450DC6 /* Bundle+Language.swift in Sources */,
 				8A9FB3C127229A6200F6F06F /* FlatRequest.swift in Sources */,

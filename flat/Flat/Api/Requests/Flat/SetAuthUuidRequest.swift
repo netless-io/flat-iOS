@@ -8,7 +8,6 @@
 
 
 import Foundation
-import UIKit
 
 struct SetAuthUuidRequest: FlatRequest {
     let uuid: String

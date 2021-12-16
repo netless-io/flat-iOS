@@ -231,7 +231,6 @@ class RoomDetailViewController: UIViewController {
         startDateLabel.text = formatter.string(from: beginTime)
         endDateLabel.text = formatter.string(from: endTime)
         
-        
         let duration = info.endTime.timeIntervalSince(beginTime)
         let durationFormatter = DateComponentsFormatter()
         durationFormatter.unitsStyle = .brief
