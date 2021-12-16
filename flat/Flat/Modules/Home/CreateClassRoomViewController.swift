@@ -266,6 +266,7 @@ class CreateClassRoomViewController: UIViewController {
         tf.leftView = .init(frame: .init(origin: .zero, size: .init(width: 10, height: 20)))
         tf.leftViewMode = .always
         tf.returnKeyType = .done
+        tf.clearButtonMode = .whileEditing
         tf.text = defaultTitle
         tf.delegate = self
         return tf

@@ -673,6 +673,7 @@ class ClassRoomViewController: UIViewController {
                                  borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
                                  buttons: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton],
                                  narrowStyle: .narrowMoreThan(count: 1))
+        bar.updateButtonHide(cloudStorageButton, hide: true)
         return bar
     }()
 }
