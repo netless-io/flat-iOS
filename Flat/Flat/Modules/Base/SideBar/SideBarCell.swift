@@ -8,54 +8,18 @@
 
 import UIKit
 
-class SideBarCell: UICollectionViewCell {
-    var rawImage: UIImage? {
-        didSet {
-            syncSelected()
+@available(iOS 14.0, *)
+class SideBarCell: UICollectionViewListCell {
+    override func updateConfiguration(using state: UICellConfigurationState) {
+        super.updateConfiguration(using: state)
+        guard
+            var config = self.contentConfiguration as? UIListContentConfiguration
+        else {
+            return
         }
+        config.imageProperties.tintColor = state.isSelected ? .whiteBG : .blackBG
+        config.textProperties.color = state.isSelected ? .whiteBG : .text
+        self.contentConfiguration = config
+        self.backgroundConfiguration?.backgroundColor = state.isSelected ? self.tintColor : .clear
     }
-    
-    func syncSelected() {
-        iconImageView.image = rawImage?.tintColor(isSelected ? .white : .subText)
-        itemTitleLabel.textColor = isSelected ? .white : .subText
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .blackBG
-        let stack = UIStackView(arrangedSubviews: [iconImageView, itemTitleLabel])
-        stack.axis = .vertical
-        stack.distribution = .fill
-        stack.spacing = 4
-        addSubview(stack)
-        stack.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.right.equalToSuperview()
-            make.width.equalTo(64)
-        }
-    }
-    
-    override var isSelected: Bool {
-        didSet {
-            syncSelected()
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    // MARK: - LAZY
-    lazy var iconImageView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        return view
-    }()
-    
-    lazy var itemTitleLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 12)
-        return label
-    }()
 }

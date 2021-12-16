@@ -39,13 +39,10 @@ class SidebarViewController: UIViewController, UICollectionViewDelegate {
     var datasource: UICollectionViewDiffableDataSource<Section, Item>! = nil
     private var collectionView: UICollectionView!
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.setBackgroundImage(UIImage.imageWith(color: .clear), for: .default)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Flat"
+        navigationController?.navigationBar.prefersLargeTitles = true
         setupCollectionView()
         initSupplementary()
     }
@@ -58,13 +55,15 @@ class SidebarViewController: UIViewController, UICollectionViewDelegate {
     func setupCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .blackBG
         collectionView.delegate = self
         
-        
         let reg = UICollectionView.CellRegistration<SideBarCell, Item>.init { cell, indexPath, itemIdentifier in
-            cell.itemTitleLabel.text = itemIdentifier.title
-            cell.rawImage = UIImage(named: itemIdentifier.imageName)
+            var config = cell.defaultContentConfiguration()
+            config.text = itemIdentifier.title
+            config.image = UIImage(named: itemIdentifier.imageName)
+            cell.contentConfiguration = config
+            cell.backgroundConfiguration = .listSidebarCell()
+            cell.tintColor = .brandColor
         }
         
         datasource = .init(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
@@ -72,9 +71,9 @@ class SidebarViewController: UIViewController, UICollectionViewDelegate {
         })
         var initSnapShot = NSDiffableDataSourceSectionSnapshot<Item>()
         initSnapShot.append([.init(title: NSLocalizedString("Home", comment: ""),
-                                   imageName: "tab_room"),
+                                   imageName: "side_bar_home"),
                                 .init(title: NSLocalizedString("Cloud Storage", comment: ""),
-                                      imageName: "tab_cloud_storage")], to: nil)
+                                      imageName: "side_bar_cloud")], to: nil)
         
         datasource.apply(initSnapShot, to: .main)
         
@@ -83,11 +82,9 @@ class SidebarViewController: UIViewController, UICollectionViewDelegate {
     
     private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout() { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+            var configuration = UICollectionLayoutListConfiguration(appearance: .sidebar)
             configuration.showsSeparators = false
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
-            section.interGroupSpacing = 24
-            section.decorationItems = []
             return section
         }
         return layout
