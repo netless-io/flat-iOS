@@ -6,6 +6,8 @@
   Copyright © 2021 agora.io. All rights reserved.
 */
 
+"Reconnect" = "重新连接";
+
 "Alert" = "提示";
 "Remove From List" = "移除房间";
 "Modify Room" = "修改房间";

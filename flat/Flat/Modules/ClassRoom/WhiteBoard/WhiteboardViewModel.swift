@@ -34,7 +34,8 @@ class WhiteboardViewModel: NSObject {
     
     let strokeColor: BehaviorSubject<UIColor> = .init(value: .white)
     let strokeWidth: BehaviorSubject<Float> = .init(value: 1)
-    let status: PublishSubject<WhiteRoomPhase> = .init()
+    let status: BehaviorRelay<WhiteRoomPhase> = .init(value: WhiteRoomPhase.disconnecting)
+    let errorSignal = PublishRelay<Error>()
     fileprivate let scene: BehaviorRelay<WhiteSceneState> = .init(value: .init())
     
     deinit {
@@ -256,6 +257,8 @@ class WhiteboardViewModel: NSObject {
             return Disposables.create()
         }.do(onSuccess: { [weak self] _ in
             self?.isRoomJoined.accept(true)
+        }, onError: { [weak self] _ in
+            self?.isRoomJoined.accept(false)
         })
     }
 
@@ -307,19 +310,19 @@ class WhiteboardViewModel: NSObject {
 
 extension WhiteboardViewModel: WhiteCommonCallbackDelegate {
     func throwError(_ error: Error) {
-        status.onError(error)
-        print(error)
+        errorSignal.accept(error)
+        print("whiteboard throw error", error)
     }
     
     func sdkSetupFail(_ error: Error) {
-        status.onError(error)
-        print(error)
+        errorSignal.accept(error)
+        print("setup whiteboard sdk error", error)
     }
 }
 
 extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
     func firePhaseChanged(_ phase: WhiteRoomPhase) {
-        status.on(.next(phase))
+        status.accept(phase)
         print(#function, phase.rawValue)
     }
     
@@ -337,17 +340,17 @@ extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
     }
     
     func fireDisconnectWithError(_ error: String!) {
-        status.onError(error)
+        errorSignal.accept(error)
         print(#function, error ?? "")
     }
     
     func fireKicked(withReason reason: String!) {
-        status.onError(reason)
+        errorSignal.accept(reason)
         print(#function, reason ?? "")
     }
     
     func fireCatchError(whenAppendFrame userId: UInt, error: String!) {
-        print(#function, userId)
+        print(#function, userId, error as Any)
     }
     
     func fireCanRedoStepsUpdate(_ canRedoSteps: Int) {

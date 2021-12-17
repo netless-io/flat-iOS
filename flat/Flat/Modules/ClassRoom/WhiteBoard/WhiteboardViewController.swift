@@ -62,7 +62,25 @@ class WhiteboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        
+        bind()
+    }
+    
+    // MARK: - Private
+    func setupViews() {
+        view.addSubview(whiteboardView)
+        whiteboardView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    @objc func rebindFromError() {
+        hideErrorView()
+        var temp = self
+        temp.rx.disposeBag = DisposeBag()
+        bind()
+    }
+    
+    func bind() {
         let taps = panelButtons.enumerated().map { [unowned self] index, btn in
             btn.rx.tap.asDriver().map { self.viewModel.panelItems[index] }
         }
@@ -70,39 +88,40 @@ class WhiteboardViewController: UIViewController {
                                                undoTap: undoButton.rx.tap.asDriver(),
                                                redoTap: redoButton.rx.tap.asDriver()))
         
-        // TODO: join room error
+        showActivityIndicator()
         output.join
-            .subscribe(
-                onCompleted: { [weak self] in
-                    self?.setupControlBar()
-                })
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(with: self) { weakSelf, room in
+                weakSelf.hideErrorView()
+                weakSelf.setupControlBar()
+            } onError: { weakSelf, error in
+                weakSelf.showErrorView(error: error)
+            } onCompleted: { weakSelf in
+                weakSelf.stopActivityIndicator()
+            } onDisposed: { weakSelf in
+                weakSelf.stopActivityIndicator()
+            }
             .disposed(by: rx.disposeBag)
-        
         output.selectedItem.asDriver(onErrorJustReturn: nil)
             .drive(with: self, onNext: { weakSelf, item in
                 weakSelf.selectedPanelItem = item
             })
             .disposed(by: rx.disposeBag)
-        
         output.actions
             .subscribe()
             .disposed(by: rx.disposeBag)
-        
         output.subMenuPresent
             .subscribe()
             .disposed(by: rx.disposeBag)
-        
         output.colorAndWidth
             .asDriver(onErrorJustReturn: ((.black, 1)))
             .drive(with: self, onNext: { weakSelf, tuple in
                 weakSelf.updateColorPickIndicatorButton(withColor: tuple.0)
             })
             .disposed(by: rx.disposeBag)
-        
         output.undo
             .subscribe()
             .disposed(by: rx.disposeBag)
-        
         output.redo
             .subscribe()
             .disposed(by: rx.disposeBag)
@@ -114,7 +133,6 @@ class WhiteboardViewController: UIViewController {
         sceneOutput.taps
             .drive()
             .disposed(by: rx.disposeBag)
-        
         sceneOutput.nextEnable
             .drive(nextSceneButton.rx.isEnabled)
             .disposed(by: rx.disposeBag)
@@ -134,14 +152,13 @@ class WhiteboardViewController: UIViewController {
             .asDriver()
             .drive(redoButton.rx.isEnabled)
             .disposed(by: rx.disposeBag)
-    }
-    
-    // MARK: - Private
-    func setupViews() {
-        view.addSubview(whiteboardView)
-        whiteboardView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        
+        viewModel.errorSignal
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { weakSelf, error in
+                weakSelf.showErrorView(error: error)
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     func updateColorPickIndicatorButton(withColor color: UIColor) {
@@ -173,12 +190,72 @@ class WhiteboardViewController: UIViewController {
         syncSelectedPanelItem()
     }
     
+    func hideErrorView() {
+        errorView.removeFromSuperview()
+    }
+    
+    func showErrorView(error: Error) {
+        if errorView.superview == nil {
+            view.addSubview(errorView)
+            errorView.snp.makeConstraints { make in
+                make.edges.equalTo(whiteboardView)
+            }
+        }
+        view.bringSubviewToFront(errorView)
+        errorViewLabel.text = error.localizedDescription
+        errorView.isHidden = false
+        errorView.alpha = 0.3
+        UIView.animate(withDuration: 0.3) {
+            self.errorView.alpha = 1
+        }
+    }
+    
     // MARK: - Lazy
+    lazy var errorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .whiteBG
+        view.addSubview(errorViewLabel)
+        errorViewLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        view.addSubview(errorReconnectButton)
+        errorReconnectButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(errorViewLabel.snp.bottom).offset(20)
+        }
+        
+        if #available(iOS 13.0, *) {
+            let warningImage = UIImage(systemName: "icloud.slash.fill", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+            let imageView = UIImageView(image: warningImage)
+            view.addSubview(imageView)
+            imageView.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.bottom.equalTo(errorViewLabel.snp.top).offset(-20)
+            }
+        }
+        return view
+    }()
+    
+    lazy var errorReconnectButton: FlatGeneralButton = {
+        let reconnectButton = FlatGeneralButton(type: .custom)
+        reconnectButton.setTitle(NSLocalizedString("Reconnect", comment: ""), for: .normal)
+        reconnectButton.addTarget(self, action: #selector(rebindFromError), for: .touchUpInside)
+        return reconnectButton
+    }()
+    
+    lazy var errorViewLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 14)
+        return label
+    }()
+    
     lazy var whiteboardView: WhiteBoardView = {
         let view = WhiteBoardView()
         // handle keyboard by IQKeyboardManager
         view.disableKeyboardHandler = true
         view.backgroundColor = .whiteBG
+        view.navigationDelegate = self
         return view
     }()
     
@@ -294,4 +371,10 @@ class WhiteboardViewController: UIViewController {
                               borderMask: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner],
                               buttons: panelButtons)
     }()
+}
+
+extension WhiteboardViewController: WKNavigationDelegate {
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        UIApplication.shared.topViewController?.showAlertWith(message: "whiteboard view terminate, please rejoin the room again")
+    }
 }

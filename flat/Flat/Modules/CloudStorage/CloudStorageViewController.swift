@@ -188,6 +188,7 @@ class CloudStorageViewController: UIViewController {
             }
         }
     }
+    
     func startPollingConvertingTasks(fromItems items: [StorageFileModel]) {
         convertingItems = items
         pollingDisposable = Observable<Int>.interval(.milliseconds(5000), scheduler: ConcurrentDispatchQueueScheduler.init(queue: .global()))

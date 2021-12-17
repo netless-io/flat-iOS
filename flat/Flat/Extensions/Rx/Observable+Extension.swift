@@ -14,6 +14,12 @@ extension ObservableType {
     func mapToVoid() -> Observable<Void> {
         map { _ -> Void in return () }
     }
+    
+    func asDriverOnErrorJustComplete() -> Driver<Element> {
+        return asDriver { error in
+            return Driver.empty()
+        }
+    }
 }
 
 extension PrimitiveSequenceType where Trait == SingleTrait {
