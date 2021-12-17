@@ -92,7 +92,7 @@ class SettingViewController: UITableViewController {
         }
         tableView.tableFooterView = container
     }
- 
+    
     // MARK: - Action
     @objc func onClickLogout() {
         AuthStore.shared.logout()

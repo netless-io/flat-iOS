@@ -69,7 +69,7 @@ class ClassRoomLayout {
                     }
                     let output = OutPut(rtcSize: .init(width: contentSize.width, height: realRtcHeight),
                                         rtcDirection: rtcDirection,
-                                        whiteboardSize: .init(width: width, height: estimateHeight),
+                                        whiteboardSize: .init(width: width, height: estimateWhiteHeight),
                                         inset: .init(top: topMargin, left: 0, bottom: bottomMargin, right: 0))
                     return (output, preferredStyle)
                 }

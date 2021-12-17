@@ -40,7 +40,6 @@ class ClassRoomViewController: UIViewController {
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true)
     let inviteViewController: InviteViewController
     let usersViewController: ClassRoomUsersViewController
-    var stackView: UIStackView!
     var chatVC: ChatViewController?
     
     // MARK: - LifeCycle
@@ -111,42 +110,48 @@ class ClassRoomViewController: UIViewController {
         bindUserList()
         bindSetting()
         bindInteracting()
+        updateLayout()
 
         if viewModel.isTeacher {
             bindTeacherOperations()
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateLayout()
+    }
+    
+    func updateLayout() {
         let safeInset = UIEdgeInsets.zero
         let contentSize = view.bounds.inset(by: safeInset).size
         let layoutOutput = layout.update(rtcHide: rtcViewController.view.isHidden, contentSize: contentSize)
         let x = layoutOutput.inset.left
         let y = layoutOutput.inset.top
-        let height = contentSize.height - layoutOutput.inset.top - layoutOutput.inset.bottom
-        let width = contentSize.width - layoutOutput.inset.left - layoutOutput.inset.right
-        stackView.frame = .init(origin: .init(x: x, y: y), size: .init(width: width, height: height))
         rtcViewController.preferredMargin = layout.rtcMargin
-        
+                
         switch layoutOutput.rtcDirection {
         case .top:
-            stackView.axis = .vertical
             rtcViewController.view.snp.remakeConstraints { make in
-                make.height.equalTo(layoutOutput.rtcSize.height)
+                make.left.equalTo(x)
+                make.top.equalTo(y)
+                make.size.equalTo(layoutOutput.rtcSize)
             }
             whiteboardViewController.view.snp.remakeConstraints { make in
-                make.height.equalTo(layoutOutput.whiteboardSize.height)
+                make.left.equalTo(rtcViewController.view)
+                make.top.equalTo(rtcViewController.view.snp.bottom)
+                make.size.equalTo(layoutOutput.whiteboardSize)
             }
         case .right:
-            stackView.axis = .horizontal
-            stackView.removeArrangedSubview(rtcViewController.view)
-            stackView.addArrangedSubview(rtcViewController.view)
-            rtcViewController.view.snp.remakeConstraints { make in
-                make.width.equalTo(layoutOutput.rtcSize.width)
-            }
             whiteboardViewController.view.snp.remakeConstraints { make in
-                make.width.equalTo(layoutOutput.whiteboardSize.width)
+                make.left.equalTo(x)
+                make.top.equalTo(y)
+                make.size.equalTo(layoutOutput.whiteboardSize)
+            }
+            rtcViewController.view.snp.remakeConstraints { make in
+                make.left.equalTo(whiteboardViewController.view.snp.right)
+                make.top.equalTo(whiteboardViewController.view)
+                make.size.equalTo(layoutOutput.rtcSize)
             }
         }
     }
@@ -154,17 +159,10 @@ class ClassRoomViewController: UIViewController {
     // MARK: - Private Setup
     func setupViews() {
         view.backgroundColor = .commonBG
-        
         addChild(whiteboardViewController)
         addChild(rtcViewController)
-        let stackView = UIStackView(arrangedSubviews: [rtcViewController.view,
-                                                       whiteboardViewController.view
-                                                       ])
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        view.addSubview(stackView)
-        self.stackView = stackView
-        
+        view.addSubview(rtcViewController.view)
+        view.addSubview(whiteboardViewController.view)
         whiteboardViewController.didMove(toParent: self)
         rtcViewController.didMove(toParent: self)
         setupToolbar()

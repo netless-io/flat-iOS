@@ -234,12 +234,12 @@ class WhiteboardViewModel: NSObject {
             self.sdk.joinRoom(with: self.whiteRoomConfig,
                               callbacks: self) { [weak self] success, room, error in
                 guard let self = self else { return }
-                guard let room = room else {
-                    observer(.failure("error room"))
-                    return
-                }
                 if let error = error {
                     observer(.failure(error))
+                    return
+                }
+                guard let room = room else {
+                    observer(.failure("error room without error"))
                     return
                 }
                 self.room = room
@@ -341,12 +341,12 @@ extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
     
     func fireDisconnectWithError(_ error: String!) {
         errorSignal.accept(error)
-        print(#function, error ?? "")
+        print("whiteboard disconnect error", error ?? "")
     }
     
     func fireKicked(withReason reason: String!) {
         errorSignal.accept(reason)
-        print(#function, reason ?? "")
+        print("whiteboard kicked error", reason ?? "")
     }
     
     func fireCatchError(whenAppendFrame userId: UInt, error: String!) {

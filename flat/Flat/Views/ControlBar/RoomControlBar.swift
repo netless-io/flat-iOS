@@ -35,7 +35,8 @@ class RoomControlBar: UIView {
     init(direction: NSLayoutConstraint.Axis,
          borderMask: CACornerMask,
          buttons: [UIButton],
-         narrowStyle: NarrowStyle = .none) {
+         narrowStyle: NarrowStyle = .none,
+         itemWidth: CGFloat = 48) {
         self.direction = direction
         self.borderMask = borderMask
         switch narrowStyle {
@@ -73,13 +74,13 @@ class RoomControlBar: UIView {
         buttons.forEach({
             stack.addArrangedSubview($0)
             $0.snp.makeConstraints { make in
-                make.size.equalTo(CGSize.init(width: 48, height: 48))
+                make.size.equalTo(CGSize.init(width: itemWidth, height: itemWidth))
             }
         })
         if narrowMoreThan > 0 {
             stack.addArrangedSubview(foldButton)
             foldButton.snp.makeConstraints { make in
-                make.size.equalTo(CGSize.init(width: 48, height: 48))
+                make.size.equalTo(CGSize.init(width: itemWidth, height: itemWidth))
             }
         }
     }

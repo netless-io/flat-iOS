@@ -45,7 +45,9 @@ extension UIViewController {
             self.view.addSubview(activityView)
             activityView.center = self.view.center
             activityView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
-            activityView.snp.makeConstraints({ $0.edges.equalToSuperview() })
+            activityView.snp.makeConstraints({
+                $0.edges.equalToSuperview()
+            })
             activityView.tag = activityViewTag
         }
         view.bringSubviewToFront(activityView)

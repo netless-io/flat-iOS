@@ -354,9 +354,6 @@ class WhiteboardViewController: UIViewController {
         let bar = RoomControlBar(direction: .horizontal,
                                  borderMask: [.layerMinXMinYCorner, .layerMaxXMinYCorner],
                                  buttons: [newSceneButton, previousSceneButton, sceneLabel, nextSceneButton])
-        sceneLabel.snp.remakeConstraints { make in
-            make.size.equalTo(CGSize(width: 80, height: 40))
-        }
         return bar
     }()
     
@@ -367,9 +364,11 @@ class WhiteboardViewController: UIViewController {
     }()
     
     lazy var operationBar: RoomControlBar = {
+        let hasCompact = traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact
         return RoomControlBar(direction: .vertical,
                               borderMask: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner],
-                              buttons: panelButtons)
+                              buttons: panelButtons,
+                              itemWidth: hasCompact ? 40 : 48)
     }()
 }
 
