@@ -7,6 +7,7 @@ target 'Flat' do
   pod 'RxCocoa'
   pod 'NSObject+Rx'
   
+  pod 'MBProgressHUD', '~> 1.2.0'
   pod 'DifferenceKit'
   pod 'SwiftTrace'
   pod 'Kingfisher'

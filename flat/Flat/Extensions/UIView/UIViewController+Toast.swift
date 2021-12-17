@@ -8,40 +8,26 @@
 
 
 import UIKit
+import MBProgressHUD
+
+func configProgressHUDAppearance() {
+    MBProgressHUD.appearance().margin = 10
+    MBProgressHUD.appearance().animationType = .zoom
+}
 
 extension UIViewController {
     func toast(_ text: String,
-               timeInterval: TimeInterval = 1.5) {
-        let frame = NSString(string: text).boundingRect(with: .init(width: 66, height: 66), attributes: [.font: toastLabel.font!], context: nil)
-        let size = frame.insetBy(dx: -20, dy: -10).size
-        toastLabel.bounds = .init(origin: .zero, size: size)
-        toastLabel.center = view.center
-        toastLabel.text = text
-        toastLabel.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
-            self.toastLabel.isHidden = true
-        }
-    }
-    
-    fileprivate var toastLabel: UILabel {
-        let toastLabelTag = 888
-        let toastLabel: UILabel
-        if let label = view.viewWithTag(toastLabelTag) as? UILabel {
-            toastLabel = label
-        } else {
-            let label = UILabel()
-            label.textColor = .white
-            label.font = .systemFont(ofSize: 14)
-            label.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-            label.numberOfLines = 0
-            label.textAlignment = .center
-            label.tag = toastLabelTag
-            label.clipsToBounds = true
-            label.layer.cornerRadius = 4
-            toastLabel = label
-            view.addSubview(toastLabel)
-        }
-        view.bringSubviewToFront(toastLabel)
-        return toastLabel
+               timeInterval: TimeInterval = 1.5,
+               preventTouching: Bool = false) {
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
+        hud.bezelView.style = .solidColor
+        hud.bezelView.color = UIColor.black.withAlphaComponent(0.45)
+        hud.backgroundView.style = .solidColor
+        hud.backgroundView.color = UIColor.black.withAlphaComponent(0.05)
+        hud.mode = .text
+        hud.label.textColor = .white
+        hud.label.text = text
+        hud.hide(animated: true, afterDelay: timeInterval)
+        hud.isUserInteractionEnabled = !preventTouching
     }
 }

@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
         UINavigationBar.appearance().tintColor = .subText
+        configProgressHUDAppearance()
         WXApi.registerApp(Env().wechatAppId, universalLink: Env().baseURL)
         if #available(iOS 13, *) {
             // SceneDelegate
