@@ -37,6 +37,10 @@ struct Env {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
     
+    var build: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+    }
+    
     var ossAccessKeyId: String {
         Bundle.main.infoDictionary?["OSS_ACCESS_KEY_ID"] as? String ?? ""
     }

@@ -8,10 +8,30 @@
 
 
 import UIKit
+import Whiteboard
 
 class SettingViewController: UITableViewController {
+    enum DisplayVersion: CaseIterable {
+        case flat
+        case whiteboard
+        
+        var description: String {
+            switch self {
+            case .flat:
+                return "Flat v\(Env().version) (\(Env().build))"
+            case .whiteboard:
+                return "Whiteboard v\(WhiteSDK.version())"
+            }
+        }
+    }
+    
     let cellIdentifier = "cellIdentifier"
     var items: [(UIImage, String, String, (NSObject, Selector)?)] = []
+    var displayVersion: DisplayVersion = DisplayVersion.flat {
+        didSet {
+            updateItems()
+        }
+    }
     
     init() {
         super.init(style: .grouped)
@@ -41,8 +61,8 @@ class SettingViewController: UITableViewController {
             
             (UIImage(named: "update_version")!,
              NSLocalizedString("Version", comment: ""),
-             "v\(Env().version)",
-             nil),
+             displayVersion.description,
+             (self, #selector(onVersion))),
             
             (UIImage(named: "message")!,
              NSLocalizedString("Contact Us", comment: ""),
@@ -76,6 +96,16 @@ class SettingViewController: UITableViewController {
     // MARK: - Action
     @objc func onClickLogout() {
         AuthStore.shared.logout()
+    }
+    
+    @objc func onVersion() {
+        guard let i = DisplayVersion.allCases.firstIndex(of: displayVersion) else { return }
+        let nextIndex = DisplayVersion.allCases.index(after: i)
+        if nextIndex == DisplayVersion.allCases.endIndex {
+            displayVersion = .allCases.first!
+        } else {
+            displayVersion = DisplayVersion.allCases[nextIndex]
+        }
     }
     
     @objc func onClickAbout() {
