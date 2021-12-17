@@ -9,6 +9,7 @@
 import UIKit
 import Whiteboard
 import Kingfisher
+import RxSwift
 
 class CloudStorageListViewController: UIViewController {
     enum CloudStorageFileContent {
@@ -38,11 +39,15 @@ class CloudStorageListViewController: UIViewController {
     let container = PageListContainer<StorageFileModel>()
     var loadingMoreRequest: URLSessionDataTask?
     
+    var pollingDisposable: Disposable?
+    var convertingItems: [StorageFileModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         loadData(loadMore: false)
-        container.itemsUpdateHandler = { [weak self] _, _ in
+        container.itemsUpdateHandler = { [weak self] items, _ in
+            self?.configPollingTaskWith(newItems: items)
             self?.tableView.reloadData()
         }
     }
@@ -65,6 +70,67 @@ class CloudStorageListViewController: UIViewController {
         let refreshControl = UIRefreshControl(frame: .zero)
         refreshControl.addTarget(self, action: #selector(onRefreshControl), for: .valueChanged)
         tableView.refreshControl = refreshControl
+    }
+    
+    func configPollingTaskWith(newItems: [StorageFileModel]) {
+        let itemsShouldPolling = newItems.filter {
+            $0.convertStep == .converting && $0.taskType != nil
+        }
+        guard !itemsShouldPolling.isEmpty else { return }
+        startPollingConvertingTasks(fromItems: itemsShouldPolling)
+        tableView.reloadData()
+    }
+    
+    func removeConvertingTask(fromTaskUUID uuid: String, status: ConvertProgressDetail.ConversionTaskStatus) {
+        print("remove item \(uuid)")
+        convertingItems.removeAll(where: { c in
+            return uuid == c.taskUUID
+        })
+        let isConvertSuccess = status == .finished
+        if let index = container.items.firstIndex(where: { $0.taskUUID == uuid }) {
+            let item = container.items[index]
+            ApiProvider.shared.request(fromApi: FinishConvertRequest(fileUUID: item.fileUUID, region: item.region)) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    if isConvertSuccess {
+                        if let index = self.container.items.firstIndex(where: { $0.taskUUID == uuid }){
+                            var new = self.container.items[index]
+                            new.convertStep = .done
+                            self.container.items[index] = new
+                            self.tableView.reloadData()
+                        }
+                    }
+                case .failure(let error):
+                    print("report convert finish error, \(error)")
+                }
+            }
+        }
+    }
+    
+    func startPollingConvertingTasks(fromItems items: [StorageFileModel]) {
+        convertingItems = items
+        pollingDisposable = Observable<Int>.interval(.milliseconds(5000), scheduler: ConcurrentDispatchQueueScheduler.init(queue: .global()))
+            .map { [weak self] _ -> [Observable<Void>] in
+                let convertingItems = self?.convertingItems ?? []
+                return convertingItems
+                    .map { ConversionTaskProgressRequest(uuid: $0.taskUUID, type: $0.taskType!, token: $0.taskToken)}
+                    .map {
+                        ApiProvider.shared.request(fromApi: $0)
+                            .do(onNext: { [weak self] info in
+                                if info.status == .finished || info.status == .fail {
+                                    self?.removeConvertingTask(fromTaskUUID: info.uuid, status: info.status)
+                                }
+                            }).mapToVoid()
+                    }
+            }
+            .take(until: { $0.isEmpty })
+            .flatMapLatest { requests -> Observable<Void> in
+                return requests.reduce(Observable<Void>.just(())) { partialResult, i in
+                    return partialResult.flatMapLatest { i }
+                }
+            }
+            .subscribe()
     }
     
     @objc func onRefreshControl() {
@@ -140,6 +206,11 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
             cell.iconImage.alpha = 1
             cell.updateActivityAnimate(false)
             cell.contentView.alpha = item.usable ? 1 : 0.5
+        }
+        if item.convertStep == .converting {
+            cell.startConvertingAnimation()
+        } else {
+            cell.stopConvertingAnimation()
         }
         return cell
     }
