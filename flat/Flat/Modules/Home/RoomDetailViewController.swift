@@ -203,6 +203,12 @@ class RoomDetailViewController: UIViewController {
             }
             j += 1
         }
+        
+        if self.info.isOwner, info.roomStatus == .Idle {
+            self.enterRoomButton.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
+        } else {
+            self.enterRoomButton.setTitle(NSLocalizedString("Enter Room", comment: ""), for: .normal)
+        }
     }
     
     func updateViewWithCurrentStatus() {

@@ -113,10 +113,6 @@ class ClassRoomViewController: UIViewController {
         bindSetting()
         bindInteracting()
         updateLayout()
-
-        if viewModel.isTeacher {
-            bindTeacherOperations()
-        }
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -184,13 +180,8 @@ class ClassRoomViewController: UIViewController {
             make.right.equalTo(whiteboardViewController.view.snp.right)
             make.centerY.equalTo(whiteboardViewController.view)
         }
-        if viewModel.isTeacher {
-            view.addSubview(teacherOperationStackView)
-            teacherOperationStackView.snp.makeConstraints { make in
-                make.top.equalTo(whiteboardViewController.view).offset(10)
-                make.centerX.equalTo(whiteboardViewController.view)
-            }
-        } else {
+        
+        if !viewModel.isTeacher {
             view.addSubview(raiseHandButton)
             raiseHandButton.snp.makeConstraints { make in
                 make.bottom.right.equalTo(view.safeAreaLayoutGuide).inset(28)
@@ -398,90 +389,6 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
     
-    func bindTeacherOperations() {
-        viewModel.state.startStatus
-            .asDriver(onErrorJustReturn: .Idle)
-            .drive(with: self, onNext: { weakSelf, status in
-                // Teacher tool bar
-                weakSelf.teacherOperationStackView.arrangedSubviews.forEach({
-                    $0.removeFromSuperview()
-                    weakSelf.teacherOperationStackView.removeArrangedSubview($0)
-                })
-                switch status {
-                case .Idle:
-                    weakSelf.teacherOperationStackView.addArrangedSubview(weakSelf.startButton)
-                case .Paused:
-                    weakSelf.teacherOperationStackView.addArrangedSubview(weakSelf.resumeButton)
-                    weakSelf.teacherOperationStackView.addArrangedSubview(weakSelf.endButton)
-                case .Started:
-                    weakSelf.teacherOperationStackView.addArrangedSubview(weakSelf.pauseButton)
-                    weakSelf.teacherOperationStackView.addArrangedSubview(weakSelf.endButton)
-                default:
-                    break
-                }
-            })
-            .disposed(by: rx.disposeBag)
-        
-        let output = viewModel.transformTeacherInput(.init(startTap: startButton.rx.tap.asDriver(onErrorJustReturn: ()),
-                                                          resumeTap: resumeButton.rx.tap.asDriver(onErrorJustReturn: ()),
-                                                          endTap: endButton.rx.tap.asDriver(onErrorJustReturn: ()),
-                                                          pauseTap: pauseButton.rx.tap.asDriver(onErrorJustReturn: ())))
-        
-        output.taps
-            .drive()
-            .disposed(by: rx.disposeBag)
-        
-        // TODO: More reactive
-        output.starting
-            .drive(with: self, onNext: { weakSelf, starting in
-                let title = NSLocalizedString("Start Class", comment: "")
-                if starting {
-                    weakSelf.startButton.setTitle(title + "...", for: .normal)
-                } else {
-                    weakSelf.startButton.setTitle(title, for: .normal)
-                }
-                weakSelf.startButton.isEnabled = !starting
-            })
-            .disposed(by: rx.disposeBag)
-        
-        output.pausing
-            .drive(with: self, onNext: { weakSelf, pausing in
-                let title = NSLocalizedString("Pause Class", comment: "")
-                if pausing {
-                    weakSelf.pauseButton.setTitle(title + "...", for: .normal)
-                } else {
-                    weakSelf.pauseButton.setTitle(title, for: .normal)
-                }
-                weakSelf.pauseButton.isEnabled = !pausing
-            })
-            .disposed(by: rx.disposeBag)
-        
-        output.resuming
-            .drive(with: self, onNext: { weakSelf, resuming in
-                let title = NSLocalizedString("Resume Class", comment: "")
-                if resuming {
-                    weakSelf.resumeButton.setTitle(title + "...", for: .normal)
-                } else {
-                    weakSelf.resumeButton.setTitle(title, for: .normal)
-                }
-                weakSelf.resumeButton.isEnabled = !resuming
-            })
-            .disposed(by: rx.disposeBag)
-        
-        output.stopping
-            .drive(with: self, onNext: { weakSelf, stopping in
-                let title = NSLocalizedString("Stop Class", comment: "")
-                if stopping {
-                    weakSelf.endButton.setTitle(title + "...", for: .normal)
-                } else {
-                    weakSelf.endButton.setTitle(title, for: .normal)
-                }
-                weakSelf.endButton.isEnabled = !stopping
-            })
-            .disposed(by: rx.disposeBag)
-        
-    }
-    
     func bindUsers() {
         usersButton.rx.tap.asDriver()
             .drive(with: self, onNext: { weakSelf, _ in
@@ -560,66 +467,6 @@ class ClassRoomViewController: UIViewController {
     }
     
     // MARK: - Lazy
-    lazy var teacherOperationStackView: UIStackView = {
-       let view = UIStackView(arrangedSubviews: [])
-        view.axis = .horizontal
-        view.distribution = .equalSpacing
-        view.spacing = 10
-        return view
-    }()
-
-    lazy var startButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.titleLabel?.font = .systemFont(ofSize: 16)
-        btn.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
-        btn.setTitleColor(.brandColor, for: .normal)
-        btn.layer.cornerRadius = 10
-        btn.layer.borderColor = UIColor.brandColor.cgColor
-        btn.layer.borderWidth = 1 / UIScreen.main.scale
-        btn.clipsToBounds = true
-        return btn
-    }()
-
-    lazy var pauseButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.titleLabel?.font = .systemFont(ofSize: 16)
-        btn.setTitle(NSLocalizedString("Pause Class", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
-        btn.setTitleColor(.subText, for: .normal)
-        btn.layer.cornerRadius = 10
-        btn.layer.borderColor = UIColor.borderColor.cgColor
-        btn.layer.borderWidth = 1 / UIScreen.main.scale
-        btn.clipsToBounds = true
-        return btn
-    }()
-
-    lazy var resumeButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.titleLabel?.font = .systemFont(ofSize: 16)
-        btn.setTitle(NSLocalizedString("Resume Class", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
-        btn.setTitleColor(.brandColor, for: .normal)
-        btn.layer.cornerRadius = 10
-        btn.layer.borderColor = UIColor.brandColor.cgColor
-        btn.layer.borderWidth = 1 / UIScreen.main.scale
-        btn.clipsToBounds = true
-        return btn
-    }()
-
-    lazy var endButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.setTitle(NSLocalizedString("Stop Class", comment: ""), for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 16)
-        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
-        btn.setTitleColor(.init(hexString: "#F45454"), for: .normal)
-        btn.layer.cornerRadius = 10
-        btn.layer.borderColor = UIColor.init(hexString: "#F45454").cgColor
-        btn.layer.borderWidth = 1 / UIScreen.main.scale
-        btn.clipsToBounds = true
-        return btn
-    }()
-
     lazy var settingButton: UIButton = {
         let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "classroom_setting")!)
         return button

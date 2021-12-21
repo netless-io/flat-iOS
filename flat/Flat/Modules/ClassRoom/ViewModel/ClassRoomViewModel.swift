@@ -29,13 +29,6 @@ class ClassRoomViewModel {
         let roomError: Observable<String>
     }
     
-    struct TeacherOperationInput {
-        let startTap: Driver<Void>
-        let resumeTap: Driver<Void>
-        let endTap: Driver<Void>
-        let pauseTap: Driver<Void>
-    }
-    
     struct SettingInput {
         let leaveTap: Driver<TapSource>
         let cameraTap: Driver<Void>
@@ -143,47 +136,6 @@ class ClassRoomViewModel {
     }
     
     // MARK: - Public
-    func transformTeacherInput(_ input: TeacherOperationInput) -> TeacherOperationOutPut {
-        let starting = BehaviorRelay<Bool>.init(value: false)
-        let startTap = input.startTap.do(onNext: { starting.accept(true) })
-            .flatMap { [unowned self] _ -> Driver<Void> in
-                return self.startOperation().asDriver(onErrorJustReturn: ())
-            }.do(onNext: { starting.accept(false) })
-                
-        let pausing = BehaviorRelay<Bool>.init(value: false)
-        let pauseTap = input.pauseTap.do(onNext: { pausing.accept(true)})
-                .flatMap { [unowned self] _ -> Driver<Void> in
-                    return self.pauseOperation().asDriver(onErrorJustReturn: ())
-                }.do(onNext: { pausing.accept(false) })
-        
-        let resuming = BehaviorRelay<Bool>.init(value: false)
-        let resumeTap = input.resumeTap.do(onNext: { resuming.accept(true)})
-                    .flatMap { [unowned self] _ -> Driver<Void> in
-                        return self.resumeOperation().asDriver(onErrorJustReturn: ())
-                    }.do(onNext: { resuming.accept(false) })
-        
-        let stopping = BehaviorRelay<Bool>.init(value: false)
-        let stopTap = input.endTap.flatMap { [unowned self] _ -> Driver<Void> in
-                        return self.alertProvider.showAlert(with: .init(title: NSLocalizedString("Class end confirming title", comment: ""),
-                                                                        message: NSLocalizedString("Class end confirming detail", comment: ""),
-                                                                        preferredStyle: .alert,
-                                                                        actionModels: [.cancel, .confirm]))
-                            .filter { $0.title == AlertModel.ActionModel.confirm.title }
-                            .do(onNext: { _ in stopping.accept(true) })
-                            .flatMap { [unowned self] _ -> Maybe<Void> in
-                                self.stopOperation().asMaybe()
-                            }
-                            .asDriver(onErrorJustReturn: ())
-                    }.do(onNext: { stopping.accept(false) })
-        
-        let taps = Driver.of(startTap, pauseTap, resumeTap, stopTap).merge()
-        return .init(taps: taps,
-                     starting: starting.asDriver(),
-                     pausing: pausing.asDriver(),
-                     resuming: resuming.asDriver(),
-                     stopping: stopping.asDriver())
-    }
-    
     func transform(_ input: Input) -> Output {
         let initRoom = Driver.of(input.trigger, input.enterForeground)
             .merge()
@@ -637,6 +589,13 @@ class ClassRoomViewModel {
                     return .error("self not exist")
                 }
                 return self.requestRoomStatus()
+            }.flatMap { [weak self] _ -> Single<Void> in
+                guard let self = self else { return .error("self not exist") }
+                if self.isTeacher, self.state.startStatus.value == .Idle {
+                    return self.startOperation()
+                } else {
+                    return .just(())
+                }
             }
     }
     

@@ -304,7 +304,7 @@ class CreateClassRoomViewController: UIViewController {
     
     lazy var createButton: FlatGeneralButton = {
         let btn = FlatGeneralButton(type: .custom)
-        btn.setTitle(NSLocalizedString("Create", comment: ""), for: .normal)
+        btn.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
         btn.addTarget(self, action: #selector(onClickCreate(_:)), for: .touchUpInside)
         return btn
     }()
