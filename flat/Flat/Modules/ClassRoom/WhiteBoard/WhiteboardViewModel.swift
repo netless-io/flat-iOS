@@ -12,8 +12,13 @@ import Whiteboard
 import RxRelay
 import RxCocoa
 
+typealias IndexedWhiteboardPanelItem = (indexPath: IndexPath, item: WhitePanelItem)
+
 class WhiteboardViewModel: NSObject {
-    var panelItems: [WhitePanelItem]
+    /// Equal to traitCollection hasCompact
+    let shouldNarrowPanelItems: Bool
+    var panelItems: [[WhitePanelItem]]
+    var panelItemsWithDisplayInfo: [[(item: WhitePanelItem, hide: Bool)]]
     let menuNavigator: WhiteboardMenuNavigator
     let whiteRoomConfig: WhiteRoomConfig
     
@@ -42,6 +47,95 @@ class WhiteboardViewModel: NSObject {
         print(self, "deinit")
     }
     
+    func needDeleteSelection(withSelectedItem selectedItem: WhitePanelItem?) -> Bool {
+        if isRoomJoined.value {
+            if let selectedItem = selectedItem {
+                switch selectedItem {
+                case .single(let whiteboardPanelOperation):
+                    return whiteboardPanelOperation == .appliance(.ApplianceSelector)
+                case .subOps(_, let current):
+                    return current == .appliance(.ApplianceSelector)
+                case .color:
+                    return false
+                }
+            }
+        }
+        return false
+    }
+    
+    func configWhitePanelItemsHide(from items: [[WhitePanelItem]], selectedItem: IndexedWhiteboardPanelItem?) -> [[(item: WhitePanelItem, hide: Bool)]] {
+        func needColor(fromItems items: [[WhitePanelItem]]) -> Bool {
+            if !shouldNarrowPanelItems {
+                return true
+            }
+            func needColor(fromAppliance: WhiteApplianceNameKey) -> Bool {
+                switch fromAppliance {
+                case .AppliancePencil, .ApplianceText, .ApplianceRectangle, .ApplianceEllipse, .ApplianceStraight, .ApplianceArrow:
+                    return true
+                default:
+                    return false
+                }
+            }
+            
+            func needColor(fromOperation: WhiteboardPanelOperation?) -> Bool {
+                guard let fromOperation = fromOperation else {
+                    return false
+                }
+                switch fromOperation {
+                case .appliance(let whiteApplianceNameKey):
+                    return needColor(fromAppliance: whiteApplianceNameKey)
+                case .clean:
+                    return false
+                case .removeSelection:
+                    return false
+                }
+            }
+            
+            func needColor(fromItem item: WhitePanelItem) -> Bool {
+                switch item {
+                case .single(let whiteboardPanelOperation):
+                    return needColor(fromOperation: whiteboardPanelOperation)
+                case .subOps(_, let current):
+                    return needColor(fromOperation: current)
+                case .color:
+                    return false
+                }
+            }
+            for item in items {
+                for subItem in item {
+                    if needColor(fromItem: subItem) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+
+        var result: [[(item: WhitePanelItem, hide: Bool)]] = []
+        for (_, sectionItems) in items.enumerated() {
+            var sectionResult: [(item: WhitePanelItem, hide: Bool)] = []
+            for (_, item) in sectionItems.enumerated() {
+                switch item {
+                case .single(let whiteboardPanelOperation):
+                    switch whiteboardPanelOperation {
+                    case .appliance:
+                        sectionResult.append((item, false))
+                    case .clean:
+                        sectionResult.append((item, false))
+                    case .removeSelection:
+                        sectionResult.append((item, !needDeleteSelection(withSelectedItem: selectedItem?.item)))
+                    }
+                case .subOps:
+                    sectionResult.append((item, false))
+                case .color:
+                    sectionResult.append((item, !needColor(fromItems: items)))
+                }
+            }
+            result.append(sectionResult)
+        }
+        return result
+    }
+    
     struct Input {
         let panelTap: Driver<WhitePanelItem>
         let undoTap: Driver<Void>
@@ -50,21 +144,25 @@ class WhiteboardViewModel: NSObject {
     
     struct Output {
         let join: Observable<WhiteRoom>
-        let selectedItem: Observable<WhitePanelItem?>
-        let actions: Observable<WhiteboardPanelOperation?>
+        let selectedItem: Observable<IndexedWhiteboardPanelItem?>
+        let actions: Observable<IndexedWhiteboardPanelItem?>
         let undo: Observable<Void>
         let redo: Observable<Void>
         let colorAndWidth: Observable<(UIColor, Float)>
         let subMenuPresent: Observable<Void>
     }
     
-    init(panelItems: [WhitePanelItem],
+    init(shouldNarrowPanelItems: Bool,
+         panelItems: [[WhitePanelItem]],
          whiteRoomConfig: WhiteRoomConfig,
          menuNavigator: WhiteboardMenuNavigator) {
+        self.shouldNarrowPanelItems = shouldNarrowPanelItems
         self.panelItems = panelItems
+        self.panelItemsWithDisplayInfo = []
         self.menuNavigator = menuNavigator
         self.whiteRoomConfig = whiteRoomConfig
         super.init()
+        self.panelItemsWithDisplayInfo = configWhitePanelItemsHide(from: panelItems, selectedItem: nil)
     }
     
     struct SceneInput {
@@ -106,41 +204,78 @@ class WhiteboardViewModel: NSObject {
                      nextEnable: nextEnable,
                      taps: taps)
     }
+
+    func getPanelItem(forItem panelItem: WhitePanelItem) -> IndexedWhiteboardPanelItem? {
+        for (section, groupItems) in panelItems.enumerated() {
+            for (row, item) in groupItems.enumerated() {
+                if item == panelItem {
+                    return (IndexPath(row: row, section: section), item)
+                }
+            }
+        }
+        return nil
+    }
+    
+    func getPanelItem(forOperation operation: WhiteboardPanelOperation) -> IndexedWhiteboardPanelItem? {
+        for (section, groupItems) in panelItems.enumerated() {
+            for (row, item) in groupItems.enumerated() {
+                if item.contains(operation: operation) {
+                    return (IndexPath(row: row, section: section), item)
+                }
+            }
+        }
+        return nil
+    }
     
     func transform(_ input: Input) -> Output {
         let joinRoom = joinRoom().asObservable().share(replay: 1, scope: .whileConnected)
         
-        let initPanelItem = joinRoom.flatMap { [weak self] room -> Observable<WhitePanelItem?> in
+        let initPanelItem = joinRoom.flatMap { [weak self] room -> Observable<IndexedWhiteboardPanelItem?> in
             guard let self = self else {
                 return .error("self not exist")
             }
-            if let initName = room.state.memberState?.currentApplianceName {
-                let initPanelItem = self.panelItems.first(where: { $0.contains(operation: .appliance(initName))})
-                return .just(initPanelItem)
+            if let initName = room.state.memberState?.currentApplianceName,
+               var initPanel = self.getPanelItem(forOperation: .appliance(initName)) {
+                if case .subOps(ops: let ops, current: _) = initPanel.item {
+                    initPanel = (initPanel.indexPath, .subOps(ops: ops, current: .appliance(initName)))
+                    self.panelItems[initPanel.indexPath.section][initPanel.indexPath.row] = initPanel.item
+                }
+                return .just(initPanel)
             } else {
                 return .just(nil)
             }
         }
         
-        let selectableTap = input.panelTap.asObservable().filter { $0.selectable }.map { [weak self] tap -> WhitePanelItem? in
+        // If selectable: execute, select it
+        let selectableTap = input.panelTap.asObservable().filter { $0.selectable }.map { [weak self] tap -> IndexedWhiteboardPanelItem? in
             guard let self = self, let room = self.room else { return nil }
+            let operation: WhiteboardPanelOperation
             switch tap {
             case .single(let op):
                 op.execute(inRoom: room)
+                operation = op
             case .subOps(_, current: let op):
                 op?.execute(inRoom: room)
+                operation = op!
             default:
-                break
+                fatalError()
             }
-            return tap
+            return self.getPanelItem(forOperation: operation)
         }
-        
-        let subMenuItem = menuNavigator.getNewApplianceObserver().map { [weak self] name -> WhitePanelItem? in
+
+        // If tap submenu: execute, update panel, select it
+        let subMenuItem = menuNavigator.getNewOperationObserver().map { [weak self] op -> IndexedWhiteboardPanelItem? in
             guard let self = self, let room = self.room else { return nil }
-            let op = WhiteboardPanelOperation.appliance(name)
             op.execute(inRoom: room)
-            if let index = self.panelItems.firstIndex(where: { $0.contains(operation: op) }) {
-                return self.panelItems[index]
+            if let panelItem = self.getPanelItem(forOperation: op) {
+                var new = self.panelItems[panelItem.indexPath.section][panelItem.indexPath.row]
+                if case .subOps(ops: let ops, _) = new {
+                    if op.selectable {
+                        new = .subOps(ops: ops, current: op)
+                    }
+                }
+                self.panelItems[panelItem.indexPath.section][panelItem.indexPath.row] = new
+                return (panelItem.indexPath, new)
             }
             return nil
         }
@@ -156,15 +291,14 @@ class WhiteboardViewModel: NSObject {
         }
         
         let selectedColorAndWidth = menuNavigator.getColorAndWidthObserver().do(onNext: { [weak self] color, width in
-            if let room = self?.room {
-                let newState = WhiteMemberState()
-                newState.strokeColor = color.getNumersArray()
-                newState.strokeWidth = .init(value: width)
-                room.setMemberState(newState)
-                
-                if let index = self?.panelItems.firstIndex(of: .color(displayColor: .gray)) {
-                    self?.panelItems[index] = .color(displayColor: color)
-                }
+            guard let self = self, let room = self.room else { return }
+            let newState = WhiteMemberState()
+            newState.strokeColor = color.getNumbersArray()
+            newState.strokeWidth = .init(value: width)
+            room.setMemberState(newState)
+            
+            if let item = self.getPanelItem(forItem: .color(displayColor: .gray)) {
+                self.panelItems[item.indexPath.section][item.indexPath.row] = .color(displayColor: color)
             }
         })
                                                                                                    
@@ -185,22 +319,20 @@ class WhiteboardViewModel: NSObject {
             return .just(())
         }
         
-        let actions = input.panelTap.asObservable().filter { $0.onlyAction }.map { [weak self] tap -> WhiteboardPanelOperation? in
-            switch tap {
-            case .single(let op):
-                if let room = self?.room {
-                    op.execute(inRoom: room)
-                }
-                return op
-            default:
-                return nil
-            }
+        let actions = input.panelTap.asObservable().filter { $0.onlyAction }.map { [weak self] tap -> IndexedWhiteboardPanelItem? in
+            guard let self = self, let room = self.room else { return nil }
+            guard case .single(let operation) = tap else { fatalError() }
+            operation.execute(inRoom: room)
+            return self.getPanelItem(forOperation: operation)
         }
         
         let panelItem = Observable.of(initPanelItem,
-                                       selectableTap,
-                                       subMenuItem)
+                                      selectableTap,
+                                      subMenuItem)
             .merge()
+            .do(onNext: { [unowned self] item in
+                self.panelItemsWithDisplayInfo = self.configWhitePanelItemsHide(from: self.panelItems, selectedItem: item)
+            })
                 
         let undo = input.undoTap.asObservable()
             .do(onNext: { [unowned self] in

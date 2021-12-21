@@ -27,7 +27,7 @@ extension UIColor {
         return image!
     }
     
-    public func getNumersArray() -> [NSNumber] {
+    public func getNumbersArray() -> [NSNumber] {
         var r: CGFloat = 0
         var g: CGFloat = 0
         var b: CGFloat = 0

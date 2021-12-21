@@ -15,7 +15,9 @@ import RxCocoa
 class ClassRoomViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if traitCollection.horizontalSizeClass == .regular, traitCollection.verticalSizeClass == .regular { return .landscape }
+        return traitCollection.hasCompact ? .landscapeRight : .landscape
+    }
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         return .landscapeRight
     }
     override var prefersStatusBarHidden: Bool { traitCollection.verticalSizeClass == .compact }
@@ -125,22 +127,30 @@ class ClassRoomViewController: UIViewController {
     func updateLayout() {
         let safeInset = UIEdgeInsets.zero
         let contentSize = view.bounds.inset(by: safeInset).size
-        let layoutOutput = layout.update(rtcHide: rtcViewController.view.isHidden, contentSize: contentSize)
+        let layoutOutput = layout.update(rtcHide: !settingVC.videoAreaOn.value, contentSize: contentSize)
         let x = layoutOutput.inset.left
         let y = layoutOutput.inset.top
         rtcViewController.preferredMargin = layout.rtcMargin
                 
         switch layoutOutput.rtcDirection {
         case .top:
-            rtcViewController.view.snp.remakeConstraints { make in
-                make.left.equalTo(x)
-                make.top.equalTo(y)
-                make.size.equalTo(layoutOutput.rtcSize)
-            }
-            whiteboardViewController.view.snp.remakeConstraints { make in
-                make.left.equalTo(rtcViewController.view)
-                make.top.equalTo(rtcViewController.view.snp.bottom)
-                make.size.equalTo(layoutOutput.whiteboardSize)
+            if layoutOutput.rtcSize.height == 0 {
+                whiteboardViewController.view.snp.remakeConstraints { make in
+                    make.left.equalTo(x)
+                    make.top.equalTo(y)
+                    make.size.equalTo(layoutOutput.whiteboardSize)
+                }
+            } else {
+                rtcViewController.view.snp.remakeConstraints { make in
+                    make.left.equalTo(x)
+                    make.top.equalTo(y)
+                    make.size.equalTo(layoutOutput.rtcSize)
+                }
+                whiteboardViewController.view.snp.remakeConstraints { make in
+                    make.left.equalTo(rtcViewController.view)
+                    make.top.equalTo(rtcViewController.view.snp.bottom)
+                    make.size.equalTo(layoutOutput.whiteboardSize)
+                }
             }
         case .right:
             whiteboardViewController.view.snp.remakeConstraints { make in
@@ -492,12 +502,13 @@ class ClassRoomViewController: UIViewController {
                 
         settingVC.videoAreaPublish.asDriver(onErrorJustReturn: ())
                 .drive(with: self, onNext: { weakSelf, _ in
-                    let hide = weakSelf.rtcViewController.view.isHidden
-                    weakSelf.settingVC.videoAreaOn.accept(hide)
+                    let isOpen = !weakSelf.settingVC.videoAreaOn.value
+                    weakSelf.settingVC.videoAreaOn.accept(isOpen)
+                    weakSelf.updateLayout()
                     UIView.animate(withDuration: 0.3) {
-                        weakSelf.rtcViewController.view.isHidden = !hide
-                        // Trigger for viewDidLayoutSubviews
-                        weakSelf.view.frame = weakSelf.view.frame
+                        weakSelf.rtcViewController.view.alpha = isOpen ? 1 : 0
+                        weakSelf.view.setNeedsLayout()
+                        weakSelf.view.layoutIfNeeded()
                     }
                 })
                 .disposed(by: rx.disposeBag)

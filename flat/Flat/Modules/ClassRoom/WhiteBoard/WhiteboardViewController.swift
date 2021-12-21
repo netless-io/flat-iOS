@@ -22,22 +22,23 @@ class WhiteboardViewController: UIViewController {
     
     func updateToolsHide(_ hide: Bool) {
         undoRedoOperationBar.isHidden = hide
-        operationBar.isHidden = hide
+        operationBars.forEach { $0.isHidden = hide }
     }
     
     // MARK: - LifeCycle
     init(sdkConfig: WhiteSdkConfiguration,
          roomConfig: WhiteRoomConfig) {
         super.init(nibName: nil, bundle: nil)
-        let panelItems = WhiteboardPanelConfig.defaultPanelItems
-        let navi = WhiteboardMenuNavigatorImp(root: self, tapSourceHandler: { [weak self] item -> UIView? in
+        let panelItems = traitCollection.hasCompact ? WhiteboardPanelConfig.defaultCompactPanelItems : WhiteboardPanelConfig.defaultPanelItems
+        let navi = WhiteboardMenuNavigatorImp(root: self, clickToDismiss: traitCollection.hasCompact, tapSourceHandler: { [weak self] item -> UIView? in
             guard let self = self else { return nil }
-            if let index = self.viewModel.panelItems.firstIndex(of: item) {
-                return self.panelButtons[index]
+            if let indexPath = self.viewModel.getPanelItem(forItem: item)?.indexPath {
+                return self.panelButtons[indexPath.section][indexPath.row]
             }
             return nil
-        }, strokePickerViewController: .init(candidateColors: WhiteboardPanelConfig.defaultColors))
-        viewModel = .init(panelItems: panelItems,
+        })
+        viewModel = .init(shouldNarrowPanelItems: traitCollection.hasCompact,
+                          panelItems: panelItems,
                           whiteRoomConfig: roomConfig,
                           menuNavigator: navi)
         let whiteSDK = WhiteSDK(whiteBoardView: whiteboardView,
@@ -81,9 +82,11 @@ class WhiteboardViewController: UIViewController {
     }
     
     func bind() {
-        let taps = panelButtons.enumerated().map { [unowned self] index, btn in
-            btn.rx.tap.asDriver().map { self.viewModel.panelItems[index] }
+        let taps = panelButtons.flatMap{ $0 }.map { [unowned self] btn -> Driver<WhitePanelItem> in
+            let indexPath = self.getPanelButtonIndexPath(fromTag: btn.tag)
+            return btn.rx.tap.asDriver().map { self.viewModel.panelItems[indexPath.section][indexPath.row] }
         }
+        
         let output = viewModel.transform(.init(panelTap: Driver.merge(taps),
                                                undoTap: undoButton.rx.tap.asDriver(),
                                                redoTap: redoButton.rx.tap.asDriver()))
@@ -92,6 +95,7 @@ class WhiteboardViewController: UIViewController {
         output.join
             .subscribe(on: MainScheduler.instance)
             .subscribe(with: self) { weakSelf, room in
+                weakSelf.stopActivityIndicator()
                 weakSelf.hideErrorView()
                 weakSelf.setupControlBar()
             } onError: { weakSelf, error in
@@ -162,29 +166,56 @@ class WhiteboardViewController: UIViewController {
     }
     
     func updateColorPickIndicatorButton(withColor color: UIColor) {
-        if let index = viewModel.panelItems.firstIndex(of: .color(displayColor: color)) {
-            updateImage(forButton: panelButtons[index], item: .color(displayColor: color))
-            print("update color button with \(color)")
-        }
+        guard let indexPath = viewModel.getPanelItem(forItem: .color(displayColor: color))?.indexPath else { return }
+        let button = panelButtons[indexPath.section][indexPath.row]
+        updateImage(forButton: button, item: .color(displayColor: color))
     }
     
     // MARK: - Private
     func setupControlBar() {
-        view.addSubview(operationBar)
-        operationBar.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.greaterThanOrEqualToSuperview()
-            make.left.equalTo(view.safeAreaLayoutGuide)
-        }
-        view.addSubview(undoRedoOperationBar)
-        undoRedoOperationBar.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(86)
-        }
-        view.addSubview(sceneOperationBar)
-        sceneOperationBar.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.right.equalTo(view.safeAreaLayoutGuide.snp.right).inset(86)
+        if traitCollection.hasCompact {
+            var itemViews: [UIView] = []
+            itemViews.append(undoRedoOperationBar)
+            itemViews.append(contentsOf: operationBars)
+            let stackView = UIStackView(arrangedSubviews: itemViews)
+            stackView.axis = .vertical
+            stackView.distribution = .fill
+            stackView.spacing = 20
+            view.addSubview(stackView)
+            stackView.snp.makeConstraints { make in
+                make.left.greaterThanOrEqualToSuperview().priority(.high)
+                make.left.equalTo(view.safeAreaLayoutGuide)
+                let off = globalRoomControlBarItemWidth * 2 + stackView.spacing / 2
+                make.top.equalTo(self.view.snp.centerY).offset(-off)
+            }
+        } else {
+            operationBars.reversed().enumerated().forEach { index, bar in
+                view.addSubview(bar)
+                if index == 0 {
+                    bar.snp.makeConstraints { make in
+                        make.centerY.equalToSuperview()
+                        make.left.greaterThanOrEqualToSuperview().priority(.high)
+                        make.left.equalTo(view.safeAreaLayoutGuide)
+                    }
+                } else {
+                    let lastBar = operationBars.reversed()[index - 1]
+                    bar.snp.makeConstraints { make in
+                        make.left.equalTo(lastBar)
+                        make.bottom.equalTo(lastBar.snp.top).offset(-20)
+                    }
+                }
+            }
+            view.addSubview(undoRedoOperationBar)
+            undoRedoOperationBar.snp.makeConstraints { make in
+                make.bottom.equalToSuperview()
+                make.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(86)
+            }
+            
+            view.addSubview(sceneOperationBar)
+            sceneOperationBar.snp.makeConstraints { make in
+                make.bottom.equalToSuperview()
+                make.right.equalTo(view.safeAreaLayoutGuide.snp.right).inset(86)
+            }
         }
         
         syncSelectedPanelItem()
@@ -305,20 +336,32 @@ class WhiteboardViewController: UIViewController {
         return button
     }()
     
-    lazy var panelButtons: [UIButton] = {
-        let btns = viewModel.panelItems.enumerated().map { index, item -> UIButton in
-            let btn: UIButton
-            if item.hasSubMenu {
-                btn = IndicatorMoreButton(type: .custom)
-                (btn as? IndicatorMoreButton)?.indicatorInset = .init(top: 5, left: 0, bottom: 0, right: 5)
-            } else {
-                btn = UIButton(type: .custom)
+    func getPanelButtonIndexPath(fromTag tag: Int) -> IndexPath {
+        let section = tag / 1000 - 1
+        let row = tag % 10
+        return .init(row: row, section: section)
+    }
+    
+    func panelButtonTag(indexPath: IndexPath) -> Int {
+        return (indexPath.section + 1) * 1000 + indexPath.row
+    }
+    
+    lazy var panelButtons: [[UIButton]] = {
+        viewModel.panelItems.enumerated().map { section, items -> [UIButton] in
+            let btns = items.enumerated().map { row, item -> UIButton in
+                let btn: UIButton
+                if item.hasSubMenu {
+                    btn = IndicatorMoreButton(type: .custom)
+                    (btn as? IndicatorMoreButton)?.indicatorInset = .init(top: 5, left: 0, bottom: 0, right: 5)
+                } else {
+                    btn = UIButton(type: .custom)
+                }
+                updateImage(forButton: btn, item: item)
+                btn.tag = panelButtonTag(indexPath: IndexPath(row: row, section: section))
+                return btn
             }
-            updateImage(forButton: btn, item: item)
-            btn.tag = index
-            return btn
+            return btns
         }
-        return btns
     }()
     
     func updateImage(forButton button: UIButton, item: WhitePanelItem) {
@@ -331,20 +374,25 @@ class WhiteboardViewController: UIViewController {
     }
     
     func syncSelectedPanelItem() {
-        viewModel.panelItems.enumerated().forEach { index, item in
-            let btn = panelButtons[index]
-            btn.isSelected = item == selectedPanelItem
+        viewModel.panelItemsWithDisplayInfo.enumerated().forEach { section, items in
+            items.enumerated().forEach { row, value in
+                let item = value.item
+                let hide = value.hide
+                let selected = item == selectedPanelItem?.item
+                let btn = panelButtons[section][row]
+                
+                btn.isSelected = selected
+                sceneOperationBar.updateButtonHide(btn, hide: hide)
+            }
         }
         
-        if let selected = selectedPanelItem, let buttonIndex = viewModel.panelItems.firstIndex(of: selected) {
-            let btn = panelButtons[buttonIndex]
-            updateImage(forButton: btn, item: selected)
-            // TODO: Move this to viewmodel
-            viewModel.panelItems[buttonIndex] = selected
+        if let selected = selectedPanelItem {
+            let btn = panelButtons[selected.indexPath.section][selected.indexPath.row]
+            updateImage(forButton: btn, item: selected.item)
         }
     }
     
-    lazy var selectedPanelItem: WhitePanelItem? = nil {
+    lazy var selectedPanelItem: IndexedWhiteboardPanelItem? = nil {
         didSet {
             syncSelectedPanelItem()
         }
@@ -358,17 +406,23 @@ class WhiteboardViewController: UIViewController {
     }()
     
     lazy var undoRedoOperationBar: RoomControlBar = {
-        return RoomControlBar(direction: .horizontal,
-                              borderMask: [.layerMinXMinYCorner, .layerMaxXMinYCorner],
-                              buttons: [undoButton, redoButton])
+        if traitCollection.hasCompact {
+            return RoomControlBar(direction: .vertical,
+                                  borderMask: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner],
+                                  buttons: [undoButton, redoButton])
+        } else {
+            return RoomControlBar(direction: .horizontal,
+                                  borderMask: [.layerMinXMinYCorner, .layerMaxXMinYCorner],
+                                  buttons: [undoButton, redoButton])
+        }
     }()
     
-    lazy var operationBar: RoomControlBar = {
-        let hasCompact = traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact
-        return RoomControlBar(direction: .vertical,
-                              borderMask: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner],
-                              buttons: panelButtons,
-                              itemWidth: hasCompact ? 40 : 48)
+    lazy var operationBars: [RoomControlBar] = {
+        return panelButtons.map {
+            return RoomControlBar(direction: .vertical,
+                           borderMask: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner],
+                           buttons: $0)
+        }
     }()
 }
 

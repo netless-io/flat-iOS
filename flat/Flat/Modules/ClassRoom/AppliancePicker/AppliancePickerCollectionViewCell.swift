@@ -24,6 +24,25 @@ class AppliancePickerCollectionViewCell: UICollectionViewCell {
         fatalError()
     }
     
+    func triggerActivityAnimation() {
+        let view: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            view = UIActivityIndicatorView(style: .medium)
+        } else {
+            view = UIActivityIndicatorView(style: .gray)
+        }
+        contentView.addSubview(view)
+        view.snp.makeConstraints { make in
+            make.edges.equalTo(imageView)
+        }
+        view.startAnimating()
+        imageView.isHidden = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            view.stopAnimating()
+            self.imageView.isHidden = false
+        }
+    }
+    
     lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .center

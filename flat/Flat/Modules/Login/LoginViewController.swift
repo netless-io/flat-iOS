@@ -68,14 +68,15 @@ class LoginViewController: UIViewController {
     @available(iOS 13.0, *)
     func setupAppleLogin() {
         let container = UIView()
-        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .black)
+        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .default, authorizationButtonStyle: .black)
         container.addSubview(button)
         horizontalLoginTypesStackView.addArrangedSubview(container)
         container.snp.makeConstraints { make in
-            make.width.equalTo(58)
+            make.width.equalTo(82)
         }
         button.addTarget(self, action: #selector(onClickAppleLogin), for: .touchUpInside)
         button.cornerRadius = 29
+        button.removeConstraints(button.constraints)
         button.snp.makeConstraints { make in
             make.width.height.equalTo(58)
             make.center.equalToSuperview()
@@ -111,7 +112,7 @@ class LoginViewController: UIViewController {
         showActivityIndicator(forSeconds: 1)
         self.wechatLogin?.removeLaunchItemFromLaunchCoordinator?()
         self.wechatLogin = WechatLogin()
-        self.wechatLogin?.startLogin(withAuthstore: AuthStore.shared,
+        self.wechatLogin?.startLogin(withAuthStore: AuthStore.shared,
                                  launchCoordinator: launchCoordinator) { [weak self] result in
             switch result {
             case .success:
@@ -131,7 +132,7 @@ class LoginViewController: UIViewController {
         showActivityIndicator(forSeconds: 1)
         self.githubLogin?.removeLaunchItemFromLaunchCoordinator?()
         self.githubLogin = GithubLogin()
-        self.githubLogin?.startLogin(withAuthstore: AuthStore.shared,
+        self.githubLogin?.startLogin(withAuthStore: AuthStore.shared,
                                      launchCoordinator: coordinator, completionHandler: { [weak self] result in
             switch result {
             case .success(let user):

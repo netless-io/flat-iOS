@@ -9,6 +9,8 @@
 
 import UIKit
 
+var globalRoomControlBarItemWidth: CGFloat = 48
+
 /// All the buttons inserted in this container should not update the button isHidden property
 /// call 'updateButtonHide'
 class RoomControlBar: UIView {
@@ -36,7 +38,7 @@ class RoomControlBar: UIView {
          borderMask: CACornerMask,
          buttons: [UIButton],
          narrowStyle: NarrowStyle = .none,
-         itemWidth: CGFloat = 48) {
+         itemWidth: CGFloat = globalRoomControlBarItemWidth) {
         self.direction = direction
         self.borderMask = borderMask
         switch narrowStyle {

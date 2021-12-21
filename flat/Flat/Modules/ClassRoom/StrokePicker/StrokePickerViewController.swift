@@ -12,6 +12,7 @@ import RxSwift
 import RxRelay
 
 class StrokePickerViewController: PopOverDismissDetectableViewController {
+    var clickToDismiss = false
     let selectedColor: BehaviorRelay<UIColor>
     let lineWidth: BehaviorRelay<Float>
     
@@ -75,6 +76,13 @@ class StrokePickerViewController: PopOverDismissDetectableViewController {
                 }
             }
             .asDriver(onErrorJustReturn: [])
+            .do(onNext: { [unowned self] _ in
+                if self.clickToDismiss {
+                    if let vc = self.presentingViewController {
+                        vc.dismiss(animated: true, completion: nil)
+                    }
+                }
+            })
             .drive(collectionView.rx.items(cellIdentifier: pickerCellIdentifier, cellType: StrokeColorCollectionViewCell.self)) { index, item, cell in
                 cell.update(color: item.0, selected: item.1)
             }

@@ -15,9 +15,26 @@ struct WhiteboardPanelConfig {
                                            .systemTeal, .systemBlue, .init(hexString: "#6236FF"), .systemPurple,
                                            .init(hexString: "#BCC0C6"), .systemGray, .black, .white]
     
-    static var defaultPanelItems: [WhitePanelItem] {
+    static var defaultCompactPanelItems: [[WhitePanelItem]] {
+        return [[
+            .single(.removeSelection),
+            .color(displayColor: defaultColors.first!),
+            .subOps(ops: [
+                .appliance(.ApplianceArrow),
+                .appliance(.ApplianceSelector),
+                .appliance(.AppliancePencil),
+                .appliance(.ApplianceRectangle),
+                .appliance(.ApplianceText),
+                .appliance(.ApplianceEraser),
+                .clean
+            ], current: .appliance(.ApplianceArrow))
+        ]]
+    }
+    
+    static var defaultPanelItems: [[WhitePanelItem]] {
         return [
-            .single(.appliance(.ApplianceClicker)),
+            [.single(.removeSelection)],
+            [.single(.appliance(.ApplianceClicker)),
                 .single(.appliance(.ApplianceSelector)),
                 .single(.appliance(.AppliancePencil)),
                 .single(.appliance(.ApplianceText)),
@@ -28,13 +45,15 @@ struct WhiteboardPanelConfig {
                           .appliance(.ApplianceStraight)], current: .appliance(.ApplianceRectangle)),
             .color(displayColor: defaultColors.first!),
             .single(.clean)
-        ]
+        ]]
     }
 }
 
 enum WhiteboardPanelOperation: Equatable {
     case appliance(WhiteApplianceNameKey)
     case clean
+    case removeSelection
+    
     // execute
     func execute(inRoom room: WhiteRoom) {
         switch self {
@@ -43,8 +62,9 @@ enum WhiteboardPanelOperation: Equatable {
             newState.currentApplianceName = whiteApplianceNameKey
             room.setMemberState(newState)
         case .clean:
-            // 默认 true，不考虑 false ，直接清空 ppt 么？
             room.cleanScene(true)
+        case .removeSelection:
+            room.deleteOperation()
         }
     }
     
@@ -56,8 +76,14 @@ enum WhiteboardPanelOperation: Equatable {
     }
     
     var onlyAction: Bool {
-        if case .clean = self { return true }
-        return false
+        switch self {
+        case .appliance:
+            return false
+        case .clean:
+            return true
+        case .removeSelection:
+            return true
+        }
     }
     
     var appliance: WhiteApplianceNameKey? {
@@ -74,6 +100,7 @@ enum WhiteboardPanelOperation: Equatable {
         case .appliance(name: let name):
             return .init(appliance: name)!
         case .clean: return UIImage(named: "whiteboard_clean")!
+        case .removeSelection: return UIImage(named: "whiteboard_remove_selection")!
         }
     }
         
@@ -81,6 +108,8 @@ enum WhiteboardPanelOperation: Equatable {
         switch self {
         case .appliance:
             return rawImage.tintColor(.controlNormal)
+        case .removeSelection:
+            return rawImage.tintColor(.systemRed)
         case .clean:
             return rawImage.tintColor(.controlNormal)
         }
@@ -92,7 +121,7 @@ enum WhiteboardPanelOperation: Equatable {
             return image.tintColor(.controlSelected,
                                    backgroundColor: .controlSelectedBG,
                                    cornerRadius: 5)
-        case .clean:
+        case .clean, .removeSelection:
             return image
         }
     }

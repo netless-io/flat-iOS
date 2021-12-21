@@ -16,7 +16,7 @@ protocol WhiteboardMenuNavigator {
     
     func presentColorAndWidthPicker(item: WhitePanelItem, lineWidth: Float)
     
-    func getNewApplianceObserver() -> Observable<WhiteApplianceNameKey>
+    func getNewOperationObserver() -> Observable<WhiteboardPanelOperation>
     
     func getColorAndWidthObserver() -> Observable<(UIColor, Float)>
 }

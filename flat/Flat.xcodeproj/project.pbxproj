@@ -212,6 +212,7 @@
 		8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */; };
 		8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AD7C6C527157EA7001C4AAD /* Assets.xcassets */; };
 		8AD7C6C927157EA7001C4AAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AD7C6C727157EA7001C4AAD /* LaunchScreen.storyboard */; };
+		8ADD9E0227701D05009A7050 /* UITraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD9E0127701D05009A7050 /* UITraitCollection.swift */; };
 		8AE892FB2727E99D009C71DA /* CommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* CommandType.swift */; };
 		8AE892FE2727E9DB009C71DA /* SpeakCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FD2727E9DB009C71DA /* SpeakCommand.swift */; };
 		8AE893022727EFA3009C71DA /* RequestChannelStatusCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE893012727EFA3009C71DA /* RequestChannelStatusCommand.swift */; };
@@ -453,6 +454,7 @@
 		8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8AD7C6C527157EA7001C4AAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AD7C6CA27157EA7001C4AAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8ADD9E0127701D05009A7050 /* UITraitCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitCollection.swift; sourceTree = "<group>"; };
 		8AE892FA2727E99D009C71DA /* CommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandType.swift; sourceTree = "<group>"; };
 		8AE892FD2727E9DB009C71DA /* SpeakCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakCommand.swift; sourceTree = "<group>"; };
 		8AE893012727EFA3009C71DA /* RequestChannelStatusCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestChannelStatusCommand.swift; sourceTree = "<group>"; };
@@ -1201,6 +1203,7 @@
 		8AD3CDF72716B524008BD904 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8ADD9E0027701CFB009A7050 /* UITraitCollection */,
 				8A05C320275E046D009BCA79 /* Array */,
 				8A05C31E275E0450009BCA79 /* UIScrollView */,
 				8A05C31D275E0444009BCA79 /* Rx */,
@@ -1260,6 +1263,14 @@
 				8AC376AE271D21F2003464B0 /* bridgingHeader.h */,
 			);
 			path = Flat;
+			sourceTree = "<group>";
+		};
+		8ADD9E0027701CFB009A7050 /* UITraitCollection */ = {
+			isa = PBXGroup;
+			children = (
+				8ADD9E0127701D05009A7050 /* UITraitCollection.swift */,
+			);
+			path = UITraitCollection;
 			sourceTree = "<group>";
 		};
 		8AE892F92727E98B009C71DA /* Command */ = {
@@ -1573,6 +1584,7 @@
 				8A9FB3C527229AB300F6F06F /* AgoraRequest.swift in Sources */,
 				8A11CBE3271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift in Sources */,
 				8A05C330275F5044009BCA79 /* UploadInfo.swift in Sources */,
+				8ADD9E0227701D05009A7050 /* UITraitCollection.swift in Sources */,
 				8AAB06262762F509006CAEF2 /* RenameFileRequest.swift in Sources */,
 				8A9FB3A52722501F00F6F06F /* Generator.swift in Sources */,
 				8A9ACC17271EBD9300E7E7CE /* UIImage+Appliance.swift in Sources */,
@@ -1839,8 +1851,9 @@
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1867,18 +1880,19 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Flat/FlatRelease.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1888,7 +1902,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "flat-release";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = Flat/bridgingHeader.h;
 				SWIFT_VERSION = 5.0;
@@ -1970,15 +1984,16 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3QTDRHG63K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

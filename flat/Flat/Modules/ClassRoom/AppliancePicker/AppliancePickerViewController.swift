@@ -13,6 +13,7 @@ import RxRelay
 import Whiteboard
 
 class AppliancePickerViewController: PopOverDismissDetectableViewController {
+    var clickToDismiss = false
     let appliancePickerCellIdentifier = "appliancePickerCellIdentifier"
     let newOperation: PublishRelay<WhiteboardPanelOperation> = .init()
     
@@ -56,6 +57,13 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
             }
         }
         .asDriver(onErrorJustReturn: ([]))
+        .do(onNext: { [unowned self] _ in
+            if self.clickToDismiss {
+                if let vc = self.presentingViewController {
+                    vc.dismiss(animated: true, completion: nil)
+                }
+            }
+        })
         .drive(
             collectionView.rx.items(cellIdentifier: appliancePickerCellIdentifier, cellType: AppliancePickerCollectionViewCell.self)) {  index, item, cell in
                 cell.imageView.image = item.1 ? item.0.selectedImage : item.0.image
@@ -73,13 +81,15 @@ class AppliancePickerViewController: PopOverDismissDetectableViewController {
         
         collectionView.rx.itemSelected
             .map { $0.row }
-            .distinctUntilChanged()
             .subscribe(onNext: { [weak self] row in
                 guard let operation = self?.operations.value[row] else { return }
                 self?.newOperation.accept(operation)
-                if case .clean = operation {
-                } else {
+                if operation.selectable {
                     self?.selectedIndex.accept(row)
+                } else {
+                    if let cell = self?.collectionView.cellForItem(at: IndexPath(row: row, section: 0)) as? AppliancePickerCollectionViewCell {
+                        cell.triggerActivityAnimation()
+                    }
                 }
             })
             .disposed(by: rx.disposeBag)

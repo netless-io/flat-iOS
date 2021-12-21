@@ -12,6 +12,10 @@ import SwiftUI
 import Kingfisher
 import SwiftTrace
 
+func configGlobalAppearanceWithWindow(_ window: UIWindow) {
+    globalRoomControlBarItemWidth = window.traitCollection.hasCompact ? 40 : 48
+}
+
 var globalLaunchCoordinator: LaunchCoordinator? {
     if #available(iOS 13.0, *) {
         return (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch
@@ -39,10 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             let url = launchOptions?[.url] as? URL
             window = UIWindow(frame: UIScreen.main.bounds)
+            configGlobalAppearanceWithWindow(window!)
             launch = LaunchCoordinator(window: window!, authStore: AuthStore.shared, defaultLaunchItems: [JoinRoomLaunchItem(), FileShareLaunchItem()])
             launch?.start(withLaunchUrl: url)
         }
-        
 #if DEBUG
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             guard AuthStore.shared.isLogin else { return }

@@ -40,7 +40,7 @@ class GithubLogin: LaunchItem {
     
     var handler: LoginHandler?
     
-    func startLogin(withAuthstore authStore: AuthStore, launchCoordinator: LaunchCoordinator, completionHandler: @escaping LoginHandler) {
+    func startLogin(withAuthStore authStore: AuthStore, launchCoordinator: LaunchCoordinator, completionHandler: @escaping LoginHandler) {
         ApiProvider.shared.request(fromApi: SetAuthUuidRequest(uuid: uuid)) { [weak self] r in
             guard let self = self else { return }
             switch r {

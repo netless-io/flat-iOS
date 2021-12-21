@@ -13,13 +13,25 @@ import Whiteboard
 import UIKit
 
 struct WhiteboardMenuNavigatorImp: WhiteboardMenuNavigator {
+    internal init(root: UIViewController? = nil, clickToDismiss: Bool, tapSourceHandler: ((WhitePanelItem) -> UIView?)? = nil) {
+        self.root = root
+        self.tapSourceHandler = tapSourceHandler
+        let avc = AppliancePickerViewController.init(operations: [], selectedIndex: nil)
+        avc.clickToDismiss = clickToDismiss
+        self.appliancePickerViewController = avc
+        
+        let svc = StrokePickerViewController(candidateColors: WhiteboardPanelConfig.defaultColors)
+        svc.clickToDismiss = clickToDismiss
+        self.strokePickerViewController = svc
+    }
+    
     weak var root: UIViewController?
     var tapSourceHandler: ((WhitePanelItem) -> UIView?)?
-    let appliancePickerViewController = AppliancePickerViewController.init(operations: [], selectedIndex: nil)
+    let appliancePickerViewController: AppliancePickerViewController
     let strokePickerViewController: StrokePickerViewController
     
-    func getNewApplianceObserver() -> Observable<WhiteApplianceNameKey> {
-        appliancePickerViewController.newOperation.map { $0.appliance! }
+    func getNewOperationObserver() -> Observable<WhiteboardPanelOperation> {
+        appliancePickerViewController.newOperation.asObservable()
     }
     
     func getColorAndWidthObserver() -> Observable<(UIColor, Float)> {
