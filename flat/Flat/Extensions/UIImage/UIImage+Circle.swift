@@ -8,7 +8,6 @@
 
 
 import UIKit
-import SwiftUI
 
 extension UIImage {
     static func circleImage() -> UIImage {

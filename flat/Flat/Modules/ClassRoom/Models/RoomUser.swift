@@ -8,9 +8,8 @@
 
 
 import Foundation
-import DifferenceKit
 
-struct RoomUser: Hashable, Differentiable {
+struct RoomUser: Hashable {
     let rtmUUID: String
     let rtcUID: UInt
     let name: String

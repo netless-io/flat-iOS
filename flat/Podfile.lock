@@ -1,17 +1,12 @@
 PODS:
   - AgoraRtcEngine_iOS (3.5.0.4)
   - AgoraRtm_iOS (1.4.8)
-  - DifferenceKit (1.2.0):
-    - DifferenceKit/Core (= 1.2.0)
-    - DifferenceKit/UIKitExtension (= 1.2.0)
-  - DifferenceKit/Core (1.2.0)
-  - DifferenceKit/UIKitExtension (1.2.0):
-    - DifferenceKit/Core
   - dsBridge (3.0.6)
   - EmptyDataSet-Swift (5.0.0)
   - Hero (1.6.1)
   - IQKeyboardManagerSwift (6.5.6)
   - Kingfisher (7.1.0)
+  - MBProgressHUD (1.2.0)
   - "NSObject+Rx (5.2.2)":
     - RxSwift (~> 6.2)
   - RxCocoa (6.2.0):
@@ -21,46 +16,44 @@ PODS:
     - RxSwift (= 6.2.0)
   - RxSwift (6.2.0)
   - SnapKit (5.0.1)
-  - SwiftTrace (6.6.0)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.15.5):
-    - Whiteboard/Base (= 2.15.5)
-    - Whiteboard/Converter (= 2.15.5)
-    - Whiteboard/Model (= 2.15.5)
-    - Whiteboard/NativeReplayer (= 2.15.5)
-    - Whiteboard/Object (= 2.15.5)
-    - Whiteboard/Replayer (= 2.15.5)
-    - Whiteboard/Room (= 2.15.5)
-  - Whiteboard/Base (2.15.5):
+  - Whiteboard (2.15.15):
+    - Whiteboard/Base (= 2.15.15)
+    - Whiteboard/Converter (= 2.15.15)
+    - Whiteboard/Model (= 2.15.15)
+    - Whiteboard/NativeReplayer (= 2.15.15)
+    - Whiteboard/Object (= 2.15.15)
+    - Whiteboard/Replayer (= 2.15.15)
+    - Whiteboard/Room (= 2.15.15)
+  - Whiteboard/Base (2.15.15):
     - dsBridge (~> 3.0.2)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.15.5):
+  - Whiteboard/Converter (2.15.15):
     - Whiteboard/Object
-  - Whiteboard/Model (2.15.5):
+  - Whiteboard/Model (2.15.15):
     - YYModel (~> 1.0.4)
-  - Whiteboard/NativeReplayer (2.15.5):
+  - Whiteboard/NativeReplayer (2.15.15):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.15.5):
+  - Whiteboard/Object (2.15.15):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.15.5):
+  - Whiteboard/Replayer (2.15.15):
     - Whiteboard/Base
-  - Whiteboard/Room (2.15.5):
+  - Whiteboard/Room (2.15.15):
     - Whiteboard/Base
   - YYModel (1.0.4)
 
 DEPENDENCIES:
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
-  - DifferenceKit
   - EmptyDataSet-Swift
   - Hero
   - IQKeyboardManagerSwift
   - Kingfisher
+  - MBProgressHUD (~> 1.2.0)
   - "NSObject+Rx"
   - RxCocoa
   - RxSwift
   - SnapKit
-  - SwiftTrace
   - WechatOpenSDK
   - Whiteboard
 
@@ -68,18 +61,17 @@ SPEC REPOS:
   trunk:
     - AgoraRtcEngine_iOS
     - AgoraRtm_iOS
-    - DifferenceKit
     - dsBridge
     - EmptyDataSet-Swift
     - Hero
     - IQKeyboardManagerSwift
     - Kingfisher
+    - MBProgressHUD
     - "NSObject+Rx"
     - RxCocoa
     - RxRelay
     - RxSwift
     - SnapKit
-    - SwiftTrace
     - WechatOpenSDK
     - Whiteboard
     - YYModel
@@ -87,22 +79,21 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AgoraRtcEngine_iOS: a5c32145692b996e67bd646ddde268c77b04ad71
   AgoraRtm_iOS: 382a54763803dad098d3b31a2608ccd62972e00b
-  DifferenceKit: 5659c430bb7fe45876fa32ce5cba5d6167f0c805
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
   Kingfisher: cdabaf49be7ee7cc124f0f276b355edf61903cf8
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
   RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SwiftTrace: affc6601a316add7c299a3916d9f43c286a583ef
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: d8d5e683c25ca74ca870dfe737a658ad87eda1bc
+  Whiteboard: a21473034bc3521b9776d14a0f09ed1c92970790
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 040f57ffb6e7f7ba87e6a4ee504a3eac053aca49
+PODFILE CHECKSUM: 586d3823394d09f9927a86126fe1c4c8d055d386
 
 COCOAPODS: 1.11.2

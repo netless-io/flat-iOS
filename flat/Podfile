@@ -6,16 +6,12 @@ target 'Flat' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'NSObject+Rx'
-  
   pod 'MBProgressHUD', '~> 1.2.0'
-  pod 'DifferenceKit'
-  pod 'SwiftTrace'
   pod 'Kingfisher'
   pod 'Hero'
   pod 'SnapKit'
   pod 'EmptyDataSet-Swift'
   pod 'IQKeyboardManagerSwift'
-  
   pod 'Whiteboard'
   pod 'WechatOpenSDK'
   pod 'AgoraRtm_iOS'
@@ -26,5 +22,5 @@ target 'Flat' do
       config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
     end
   end
-  
 end
+

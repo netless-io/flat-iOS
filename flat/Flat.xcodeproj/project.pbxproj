@@ -94,7 +94,6 @@
 		8A7741BF2733D040009FAADA /* UIViewController+Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */; };
 		8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741C02734CEFE009FAADA /* ChatNoticeTableViewCell.swift */; };
 		8A7741C42734CFAC009FAADA /* BorderLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741C32734CFAC009FAADA /* BorderLabelView.swift */; };
-		8A7741CC2735210C009FAADA /* String+Diffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741CB2735210C009FAADA /* String+Diffable.swift */; };
 		8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6E271829AB00450DC6 /* HomeViewController.swift */; };
 		8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */; };
 		8A7741DC2738BB06009FAADA /* ClassRoomFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741DB2738BB06009FAADA /* ClassRoomFactory.swift */; };
@@ -328,7 +327,6 @@
 		8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Toast.swift"; sourceTree = "<group>"; };
 		8A7741C02734CEFE009FAADA /* ChatNoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNoticeTableViewCell.swift; sourceTree = "<group>"; };
 		8A7741C32734CFAC009FAADA /* BorderLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderLabelView.swift; sourceTree = "<group>"; };
-		8A7741CB2735210C009FAADA /* String+Diffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Diffable.swift"; sourceTree = "<group>"; };
 		8A7741DB2738BB06009FAADA /* ClassRoomFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomFactory.swift; sourceTree = "<group>"; };
 		8A7741E2273A47C2009FAADA /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		8A7741E4273A542F009FAADA /* UIView+Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Badge.swift"; sourceTree = "<group>"; };
@@ -442,6 +440,7 @@
 		8ACE3A26272FF77100BC37F7 /* RoomDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDetailViewController.xib; sourceTree = "<group>"; };
 		8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateClassRoomViewController.swift; sourceTree = "<group>"; };
 		8ACE3A2B2730D15700BC37F7 /* ClassTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTypeCell.swift; sourceTree = "<group>"; };
+		8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatNon_Sign.entitlements; sourceTree = "<group>"; };
 		8AD3CDEC27168E75008BD904 /* Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Develop.xcconfig; sourceTree = "<group>"; };
 		8AD3CDED27168E80008BD904 /* Stage.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stage.xcconfig; sourceTree = "<group>"; };
 		8AD3CDEE27168E87008BD904 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -468,6 +467,7 @@
 		8AEF06A0276980590009904A /* UIButton+CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+CheckBox.swift"; sourceTree = "<group>"; };
 		8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
 		8AFCCDDE276AE051008BD0FC /* SideBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarCell.swift; sourceTree = "<group>"; };
+		BC6B0D117C2DAF19559EAF75 /* Pods-Flat.non_sign.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.non_sign.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.non_sign.xcconfig"; sourceTree = "<group>"; };
 		ED5C49EBD78FE2B54C911AB1 /* Pods-flat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flat.release.xcconfig"; path = "Target Support Files/Pods-flat/Pods-flat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -492,6 +492,7 @@
 				2B04301B3580D4870E261FCB /* Pods-Flat.debug.xcconfig */,
 				16E4F2E49FB9DB4F6EEFE76E /* Pods-Flat.stage.xcconfig */,
 				008B9639548F2FB6957A66FC /* Pods-Flat.release.xcconfig */,
+				BC6B0D117C2DAF19559EAF75 /* Pods-Flat.non_sign.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -556,7 +557,6 @@
 			isa = PBXGroup;
 			children = (
 				8A11CBF127201069001D0B1F /* String+Error.swift */,
-				8A7741CB2735210C009FAADA /* String+Diffable.swift */,
 				8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */,
 				8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */,
 				8ABF362B27464E63000D5003 /* String+Empty.swift */,
@@ -1242,6 +1242,7 @@
 		8AD7C6BB27157EA7001C4AAD /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */,
 				8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */,
 				8A05C2B02758BBBF009BCA79 /* FlatStage.entitlements */,
 				8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */,
@@ -1483,7 +1484,6 @@
 				8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */,
 				8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */,
 				8A05C34B2760A6FD009BCA79 /* RemoveFilesRequest.swift in Sources */,
-				8A7741CC2735210C009FAADA /* String+Diffable.swift in Sources */,
 				8A9FB3CB2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift in Sources */,
 				8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */,
 				8A270B8B27192FEE00450DC6 /* BaseNavigationViewController.swift in Sources */,
@@ -1711,6 +1711,199 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		8AD2EF672772F39900087280 /* Non_Sign */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8AD3CDEC27168E75008BD904 /* Develop.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Non_Sign;
+		};
+		8AD2EF682772F39900087280 /* Non_Sign */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BC6B0D117C2DAF19559EAF75 /* Pods-Flat.non_sign.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Flat/FlatNon_Sign.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = L922897LKX;
+				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Flat/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"WeChatSDK\"",
+					"-l\"c++\"",
+					"-l\"resolv\"",
+					"-l\"sqlite3.0\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"AgoraAIDenoiseExtension\"",
+					"-framework",
+					"\"AgoraCore\"",
+					"-framework",
+					"\"AgoraDav1dExtension\"",
+					"-framework",
+					"\"AgoraFDExtension\"",
+					"-framework",
+					"\"AgoraJNDExtension\"",
+					"-framework",
+					"\"AgoraRtcKit\"",
+					"-framework",
+					"\"AgoraRtmKit\"",
+					"-framework",
+					"\"AgoraSoundTouch\"",
+					"-framework",
+					"\"AgoraVideoSegmentationExtension\"",
+					"-framework",
+					"\"Agorafdkaac\"",
+					"-framework",
+					"\"Agoraffmpeg\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreMedia\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"EmptyDataSet_Swift\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"Hero\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"NSObject_Rx\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"RxCocoa\"",
+					"-framework",
+					"\"RxRelay\"",
+					"-framework",
+					"\"RxSwift\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"WebKit\"",
+					"-framework",
+					"\"Whiteboard\"",
+					"-framework",
+					"\"YYModel\"",
+					"-framework",
+					"\"dsBridge\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.flat.-";
+				PRODUCT_NAME = "$(TARGET_NAME)-DEV";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = Flat/bridgingHeader.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Non_Sign;
+		};
 		8AD7C6E127157EA7001C4AAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8AD3CDEC27168E75008BD904 /* Develop.xcconfig */;
@@ -1841,8 +2034,9 @@
 				CODE_SIGN_ENTITLEMENTS = Flat/FlatDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 48TB6ZZL5S;
+				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1855,12 +2049,100 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"WeChatSDK\"",
+					"-l\"c++\"",
+					"-l\"resolv\"",
+					"-l\"sqlite3.0\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"AgoraAIDenoiseExtension\"",
+					"-framework",
+					"\"AgoraCore\"",
+					"-framework",
+					"\"AgoraDav1dExtension\"",
+					"-framework",
+					"\"AgoraFDExtension\"",
+					"-framework",
+					"\"AgoraJNDExtension\"",
+					"-framework",
+					"\"AgoraRtcKit\"",
+					"-framework",
+					"\"AgoraRtmKit\"",
+					"-framework",
+					"\"AgoraSoundTouch\"",
+					"-framework",
+					"\"AgoraVideoSegmentationExtension\"",
+					"-framework",
+					"\"Agorafdkaac\"",
+					"-framework",
+					"\"Agoraffmpeg\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreMedia\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"EmptyDataSet_Swift\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"Hero\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"NSObject_Rx\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"RxCocoa\"",
+					"-framework",
+					"\"RxRelay\"",
+					"-framework",
+					"\"RxSwift\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"WebKit\"",
+					"-framework",
+					"\"Whiteboard\"",
+					"-framework",
+					"\"YYModel\"",
+					"-framework",
+					"\"dsBridge\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-DEV";
 				PROVISIONING_PROFILE_SPECIFIER = flat2;
@@ -1882,7 +2164,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flat/FlatRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
@@ -1894,12 +2176,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "flat-release";
@@ -1983,7 +2266,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flat/FlatStage.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 3QTDRHG63K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
@@ -1995,12 +2278,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-STAGE";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2019,6 +2303,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8AD7C6E127157EA7001C4AAD /* Debug */,
+				8AD2EF672772F39900087280 /* Non_Sign */,
 				8AD7C6F027158487001C4AAD /* Stage */,
 				8AD7C6E227157EA7001C4AAD /* Release */,
 			);
@@ -2029,6 +2314,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8AD7C6E427157EA7001C4AAD /* Debug */,
+				8AD2EF682772F39900087280 /* Non_Sign */,
 				8AD7C6F127158487001C4AAD /* Stage */,
 				8AD7C6E527157EA7001C4AAD /* Release */,
 			);

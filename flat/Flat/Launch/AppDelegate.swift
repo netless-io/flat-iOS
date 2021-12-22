@@ -8,9 +8,7 @@
 
 import UIKit
 import IQKeyboardManagerSwift
-import SwiftUI
 import Kingfisher
-import SwiftTrace
 
 func configGlobalAppearanceWithWindow(_ window: UIWindow) {
     globalRoomControlBarItemWidth = window.traitCollection.hasCompact ? 40 : 48
