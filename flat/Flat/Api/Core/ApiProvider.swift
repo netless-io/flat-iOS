@@ -30,6 +30,12 @@ class ApiProvider: NSObject {
         URLSession.rx.shouldLogRequest = { _ in false }
     }
     
+    func cancelAllTasks() {
+        session.getAllTasks(completionHandler: {
+            $0.forEach { $0.cancel() }
+        })
+    }
+    
     @discardableResult
     func request<T: FlatRequest>(fromApi api: T) -> Observable<T.Response> {
         request(fromApi: api, generator: flatGenerator, responseDataHandler: flatResponseHandler)
@@ -97,6 +103,10 @@ class ApiProvider: NSObject {
             let req = try generator.generateRequest(fromApi: api)
             let task = session.dataTask(with: req) { data, response, error in
                 if let error = error {
+                    // Request was canceled
+                    if (error as NSError).code == -999 {
+                        return
+                    }
                     callBackQueue.async {
                         completionHandler(.failure(.message(message: error.localizedDescription)))
                     }

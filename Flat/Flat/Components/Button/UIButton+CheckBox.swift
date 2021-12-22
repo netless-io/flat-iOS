@@ -13,6 +13,8 @@ extension UIButton {
         let btn = UIButton(type: .custom)
         btn.tintColor = .white
         btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
+        btn.setImage(UIImage(named: "checklist_normal"), for: .reserved)
+        btn.setImage(UIImage(named: "checklist_selected"), for: .highlighted)
         btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
         btn.adjustsImageWhenHighlighted = false
         btn.titleLabel?.font = .systemFont(ofSize: 14)

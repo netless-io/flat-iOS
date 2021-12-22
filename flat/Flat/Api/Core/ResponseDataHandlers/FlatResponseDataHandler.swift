@@ -8,19 +8,24 @@
 
 
 import Foundation
+import RxSwift
+import RxRelay
 
 class FlatResponseHandler: ResponseDataHandler {
+    static var jwtExpireSignal = PublishRelay<Void>()
+    
     func processResponseData<T>(_ data: Data, decoder: JSONDecoder, forResponseType: T.Type) throws -> T where T : Decodable {
         guard let jsonObj = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
               let status = jsonObj["status"] as? Int else {
             throw ApiError.serverError(message: "unknown data type")
         }
-        // JWT Fail
-        if let code = jsonObj["code"] as? Int, code == 100006 {
-            DispatchQueue.main.async {
-                AuthStore.shared.logout()
+        
+        if let code = jsonObj["code"] as? Int,
+            let error = FlatApiError(rawValue: code) {
+            if error == .JWTSignFailed {
+                FlatResponseHandler.jwtExpireSignal.accept(())
             }
-            throw ApiError.message(message: "JWT expire")
+            throw ApiError.message(message: error.localizedDescription)
         }
         guard status == 0 else {
             let str = String(data: data, encoding: .utf8)

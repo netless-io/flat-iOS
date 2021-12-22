@@ -29,13 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         processMethodExchange()
-        IQKeyboardManager.shared.enable = true
-        IQKeyboardManager.shared.enableAutoToolbar = false
-        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
-        IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
-        UINavigationBar.appearance().tintColor = .subText
-        configProgressHUDAppearance()
-        WXApi.registerApp(Env().wechatAppId, universalLink: Env().baseURL)
+        configAppearance()
+        registerThirdPartSDK()
         if #available(iOS 13, *) {
             // SceneDelegate
         } else {
@@ -54,6 +49,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 #endif
         return true
+    }
+    
+    func registerThirdPartSDK() {
+        WXApi.registerApp(Env().wechatAppId, universalLink: "https://flat-api.whiteboard.agora.io")
+    }
+    
+    func configAppearance() {
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = false
+        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
+        UINavigationBar.appearance().tintColor = .subText
+        configProgressHUDAppearance()
     }
     
     func processMethodExchange() {

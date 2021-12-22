@@ -9,9 +9,12 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 class LaunchCoordinator {
     let window: UIWindow
+    
+    var disposeBag = DisposeBag()
     
     var hitItems: [LaunchItem] = []
     var afterLoginImplementations: [((LaunchCoordinator)->Void)] = []
@@ -32,6 +35,10 @@ class LaunchCoordinator {
         self.authStore = authStore
         authStore.delegate = self
         defaultLaunchItems.forEach { registerLaunchItem($0, identifier: String(describing: $0)) }
+        
+        if authStore.isLogin {
+            observeFirstJWTExpire()
+        }
     }
     
     func registerLaunchItem(_ item: LaunchItem, identifier: String) {
@@ -110,6 +117,22 @@ class LaunchCoordinator {
             }
         }
     }
+    
+    func observeFirstJWTExpire() {
+        FlatResponseHandler
+            .jwtExpireSignal
+            .take(1)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { weakSelf, _ in
+                guard let root = weakSelf.window.rootViewController else { return }
+                if let _ = root.presentedViewController { root.dismiss(animated: false, completion: nil) }
+                ApiProvider.shared.cancelAllTasks()
+                root.showAlertWith(message: FlatApiError.JWTSignFailed.localizedDescription) {
+                    AuthStore.shared.logout()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 extension LaunchCoordinator: AuthStoreDelegate {
@@ -117,6 +140,8 @@ extension LaunchCoordinator: AuthStoreDelegate {
         configRootWith(isLogin: true)
         hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
         hitItems = []
+        
+        observeFirstJWTExpire()
     }
     
     func authStoreDidLogout(_ authStore: AuthStore) {

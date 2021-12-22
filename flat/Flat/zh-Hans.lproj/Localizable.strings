@@ -125,3 +125,35 @@
 "Video Converting" = "视频转码中 ...";
 
 "Got New File Alert" = "收到一份新的文件，是否上传？";
+
+// Flat Server Error
+"ParamsCheckFailed" = "参数错误";
+"ServerFail" = "请求失败";
+"CurrentProcessFailed" = "当前请求失败";
+"NotPermission" = "没有权限操作";
+"NeedLoginAgain" = "凭证已过期，请重新登录";
+"UnsupportedPlatform" = "不支持的登录平台";
+"JWTSignFailed" = "认证信息校验失败，请重新登录";
+"RoomNotFound" = "房间不存在";
+"RoomIsEnded" = "房间已结束";
+"RoomIsRunning" = "房间正在进行中";
+"RoomNotIsRunning" = "房间不在进行中";
+"RoomNotIsEnded" = "房间还未结束";
+"RoomNotIsIdle" = "房间还未开始";
+"PeriodicNotFound" = "周期性房间不存在";
+"PeriodicIsEnded" = "周期性房间已结束";
+"PeriodicSubRoomHasRunning" = "周期性子房间不存在";
+"UserNotFound" = "用户不存在";
+"RecordNotFound" = "回放不存在";
+"UploadConcurrentLimit" = "到达并发上限";
+"NotEnoughTotalUsage" = "没有足够容量";
+"FileSizeTooBig" = "文件过大";
+"FileNotFound" = "无法找到文件";
+"FileExists" = "文件已经存在";
+"FileIsConverted" = "文件已被转码";
+"FileConvertFailed" = "文件转码失败";
+"FileIsConverting" = "文件正在转码中";
+"FileIsConvertWaiting" = "文件等待转码中";
+"LoginGithubSuspended" = "Github登录暂停";
+"LoginGithubURLMismatch" = "Github登录地址不正确";
+"LoginGithubAccessDenied" = "Github登录被拒绝";

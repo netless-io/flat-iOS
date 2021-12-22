@@ -203,6 +203,7 @@
 		8ACE3A28272FF77100BC37F7 /* RoomDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8ACE3A26272FF77100BC37F7 /* RoomDetailViewController.xib */; };
 		8ACE3A2A2730CD4600BC37F7 /* CreateClassRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */; };
 		8ACE3A2C2730D15700BC37F7 /* ClassTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A2B2730D15700BC37F7 /* ClassTypeCell.swift */; };
+		8AD2EF6B27730A1800087280 /* FlatServerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF6A27730A1800087280 /* FlatServerError.swift */; };
 		8AD3CDF027168F25008BD904 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDEF27168F25008BD904 /* Env.swift */; };
 		8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF1271693EC008BD904 /* GithubLogin.swift */; };
 		8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */; };
@@ -441,6 +442,7 @@
 		8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateClassRoomViewController.swift; sourceTree = "<group>"; };
 		8ACE3A2B2730D15700BC37F7 /* ClassTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTypeCell.swift; sourceTree = "<group>"; };
 		8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatNon_Sign.entitlements; sourceTree = "<group>"; };
+		8AD2EF6A27730A1800087280 /* FlatServerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatServerError.swift; sourceTree = "<group>"; };
 		8AD3CDEC27168E75008BD904 /* Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Develop.xcconfig; sourceTree = "<group>"; };
 		8AD3CDED27168E80008BD904 /* Stage.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stage.xcconfig; sourceTree = "<group>"; };
 		8AD3CDEE27168E87008BD904 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -1076,6 +1078,7 @@
 				8A2D0B9627158C9000123207 /* ApiProvider.swift */,
 				8A55F1B1273A710000D4DA0F /* AnyRequest.swift */,
 				8A2D0B9D27159F4C00123207 /* ApiError.swift */,
+				8AD2EF6A27730A1800087280 /* FlatServerError.swift */,
 				8A9FB3A9272262D800F6F06F /* ResponseDataHandler.swift */,
 				8A48A9C82716D734003719DB /* EmptyResponse.swift */,
 				8A2D0B9927158FCD00123207 /* Request.swift */,
@@ -1478,6 +1481,7 @@
 				8AC0535F274C72300064CF84 /* WhiteboardViewController.swift in Sources */,
 				8A05C33C2760411D009BCA79 /* MultipartFormData.swift in Sources */,
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
+				8AD2EF6B27730A1800087280 /* FlatServerError.swift in Sources */,
 				8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */,
 				8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */,
 				8A80208B2754699300F5691C /* Rtc.swift in Sources */,

@@ -28,6 +28,6 @@ extension UIViewController {
         hud.label.textColor = .white
         hud.label.text = text
         hud.hide(animated: true, afterDelay: timeInterval)
-        hud.isUserInteractionEnabled = !preventTouching
+        hud.isUserInteractionEnabled = preventTouching
     }
 }

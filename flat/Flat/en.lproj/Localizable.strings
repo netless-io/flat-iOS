@@ -126,3 +126,35 @@
 "Video Converting" = "Video Converting ...";
 
 "Got New File Alert" = "A new document is received, upload?";
+
+// Flat Server Error
+"ParamsCheckFailed" = "Parameter error";
+"ServerFail" = "Request failed";
+"CurrentProcessFailed" = "Current Request failed";
+"NotPermission" = "No permission to operate";
+"NeedLoginAgain" = "The credentials have expired, please log in again";
+"UnsupportedPlatform" = "Unsupported login platform";
+"JWTSignFailed" = "Authentication information verification failed, please log in again";
+"RoomNotFound" = "Room does not exist";
+"RoomIsEnded" = "Room is over";
+"RoomIsRunning" = "The room is in progress";
+"RoomNotIsRunning" = "The room is not in progress";
+"RoomNotIsEnded" = "The room is not over yet";
+"RoomNotIsIdle" = "The room has not started yet";
+"PeriodicNotFound" = "Periodic room does not exist";
+"PeriodicIsEnded" = "Periodic room has ended";
+"PeriodicSubRoomHasRunning" = "Periodic sub-room does not exist";
+"UserNotFound" = "User does not exist";
+"RecordNotFound" = "Replay does not exist";
+"UploadConcurrentLimit" = "Reaching the upload Concurrent Limit";
+"NotEnoughTotalUsage" = "Reaching capacity limit";
+"FileSizeTooBig" = "File size too big";
+"FileNotFound" = "File not found";
+"FileExists" = "File exists";
+"FileIsConverted" = "File is converted";
+"FileConvertFailed" = "File convert failed";
+"FileIsConverting" = "File is converting";
+"FileIsConvertWaiting" = "File is convert waiting";
+"LoginGithubSuspended" = "Login Github suspended";
+"LoginGithubURLMismatch" = "Login Github Mismatch";
+"LoginGithubAccessDenied" = "Login Github access denied";
