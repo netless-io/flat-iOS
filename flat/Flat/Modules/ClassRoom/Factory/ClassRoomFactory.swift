@@ -28,6 +28,11 @@ struct ClassRoomFactory {
         whiteSDkConfig.region = .CN
         whiteSDkConfig.userCursor = true
         whiteSDkConfig.useMultiViews = true
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                whiteSDkConfig.deviceType = .desktop
+            }
+        }
         let payload: [String: String] = ["cursorName": userName]
         let roomConfig = WhiteRoomConfig(uuid: playInfo.whiteboardRoomUUID,
                         roomToken: playInfo.whiteboardRoomToken,
