@@ -425,7 +425,7 @@ extension HomeViewController: EmptyDataSetDelegate, EmptyDataSetSource {
     }
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        66
+        0
     }
 }
 
