@@ -13,7 +13,10 @@ import AgoraRtcKit
 
 class RtcPreviewViewController: UIViewController {
     var dismissHandler: (()->Void)?
-
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        .landscape
+    }
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     
     func showVideoPreview() {

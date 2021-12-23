@@ -42,7 +42,7 @@ class RtcViewModel {
                 let result = users
                     .filter { !self.localUserRegular($0.rtcUID) }
                     .map { user -> (RoomUser, AgoraRtcVideoCanvas) in
-                        return (user, self.rtc.createOrFetchFromCacheCanvs(for: user.rtcUID))
+                        return (user, self.rtc.createOrFetchFromCacheCanvas(for: user.rtcUID))
                     }
                 return result
             }.do(onNext: { [weak self] values in

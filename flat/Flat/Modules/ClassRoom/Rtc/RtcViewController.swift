@@ -288,7 +288,7 @@ class RtcViewController: UIViewController {
                 viewModel.rtc.localVideoCanvas.view = previewViewController.contentView
                 viewModel.rtc.agoraKit.setupLocalVideo(viewModel.rtc.localVideoCanvas)
             } else {
-                let canvas = viewModel.rtc.createOrFetchFromCacheCanvs(for: uid)
+                let canvas = viewModel.rtc.createOrFetchFromCacheCanvas(for: uid)
                 canvas.view = previewViewController.contentView
                 // 放大为大流
                 viewModel.rtc.updateRemoteUserStreamType(rtcUID: uid, type: .high)
@@ -312,12 +312,18 @@ class RtcViewController: UIViewController {
     func endPreviewing(UID: UInt) {
         guard let user = viewModel.userFetch(UID) else { return }
         let isLocal = viewModel.localUserRegular(UID)
-        if let view = videoItemsStackView.arrangedSubviews.first(where: {
-            return ($0 as? RtcVideoItemView)?.uid == UID
+        if let view = videoItemsStackView.arrangedSubviews.first(where: { [weak self] in
+            guard let self = self else { return false }
+            guard let view = $0 as? RtcVideoItemView else { return false }
+            if isLocal {
+                return self.viewModel.localUserRegular(view.uid)
+            } else {
+                return view.uid == UID
+            }
         }) as? RtcVideoItemView {
             refresh(view: view,
                     user: user,
-                    canvas: isLocal ? viewModel.rtc.localVideoCanvas : viewModel.rtc.createOrFetchFromCacheCanvs(for: UID),
+                    canvas: isLocal ? viewModel.rtc.localVideoCanvas : viewModel.rtc.createOrFetchFromCacheCanvas(for: UID),
                     isLocal: isLocal)
         }
     }

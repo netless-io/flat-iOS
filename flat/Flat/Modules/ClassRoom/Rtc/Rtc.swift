@@ -70,7 +70,7 @@ class Rtc: NSObject {
         print("update local user status mic: \(micOn)")
     }
     
-    func createOrFetchFromCacheCanvs(for uid: UInt) -> AgoraRtcVideoCanvas {
+    func createOrFetchFromCacheCanvas(for uid: UInt) -> AgoraRtcVideoCanvas {
         if let canvas = remoteCanvas[uid] {
             return canvas
         } else {
