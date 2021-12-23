@@ -165,7 +165,6 @@
 		8AAB06242762E514006CAEF2 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06232762E514006CAEF2 /* ExportService.swift */; };
 		8AAB06262762F509006CAEF2 /* RenameFileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06252762F509006CAEF2 /* RenameFileRequest.swift */; };
 		8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06272762FD06006CAEF2 /* StartConvertRequest.swift */; };
-		8AAB062A27630392006CAEF2 /* ConvertConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB062927630392006CAEF2 /* ConvertConfig.swift */; };
 		8AAC69B02717E32E00F9A3B4 /* AuthProcessRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */; };
 		8AAC69B32717E3EB00F9A3B4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B22717E3EB00F9A3B4 /* User.swift */; };
 		8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */; };
@@ -204,6 +203,9 @@
 		8ACE3A2A2730CD4600BC37F7 /* CreateClassRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */; };
 		8ACE3A2C2730D15700BC37F7 /* ClassTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A2B2730D15700BC37F7 /* ClassTypeCell.swift */; };
 		8AD2EF6B27730A1800087280 /* FlatServerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF6A27730A1800087280 /* FlatServerError.swift */; };
+		8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF6C2774128200087280 /* ConvertService.swift */; };
+		8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF6E277451BA00087280 /* CustomPreviewViewController.swift */; };
+		8AD2EF71277461C900087280 /* CustomAVPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */; };
 		8AD3CDF027168F25008BD904 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDEF27168F25008BD904 /* Env.swift */; };
 		8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF1271693EC008BD904 /* GithubLogin.swift */; };
 		8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */; };
@@ -400,7 +402,6 @@
 		8AAB06232762E514006CAEF2 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
 		8AAB06252762F509006CAEF2 /* RenameFileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameFileRequest.swift; sourceTree = "<group>"; };
 		8AAB06272762FD06006CAEF2 /* StartConvertRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartConvertRequest.swift; sourceTree = "<group>"; };
-		8AAB062927630392006CAEF2 /* ConvertConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertConfig.swift; sourceTree = "<group>"; };
 		8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProcessRequest.swift; sourceTree = "<group>"; };
 		8AAC69B22717E3EB00F9A3B4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
@@ -443,6 +444,9 @@
 		8ACE3A2B2730D15700BC37F7 /* ClassTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassTypeCell.swift; sourceTree = "<group>"; };
 		8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatNon_Sign.entitlements; sourceTree = "<group>"; };
 		8AD2EF6A27730A1800087280 /* FlatServerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatServerError.swift; sourceTree = "<group>"; };
+		8AD2EF6C2774128200087280 /* ConvertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertService.swift; sourceTree = "<group>"; };
+		8AD2EF6E277451BA00087280 /* CustomPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPreviewViewController.swift; sourceTree = "<group>"; };
+		8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAVPlayerViewController.swift; sourceTree = "<group>"; };
 		8AD3CDEC27168E75008BD904 /* Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Develop.xcconfig; sourceTree = "<group>"; };
 		8AD3CDED27168E80008BD904 /* Stage.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stage.xcconfig; sourceTree = "<group>"; };
 		8AD3CDEE27168E87008BD904 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -641,7 +645,7 @@
 			children = (
 				8A05C327275F399E009BCA79 /* UploadHomeViewController.swift */,
 				8ABD71BE276716AA004FDC36 /* UploadType.swift */,
-				8AAB062927630392006CAEF2 /* ConvertConfig.swift */,
+				8AD2EF6C2774128200087280 /* ConvertService.swift */,
 				8AAB06232762E514006CAEF2 /* ExportService.swift */,
 				8A05C34C2760AB26009BCA79 /* UploadTasksViewController.swift */,
 				8A05C34F2760ADFC009BCA79 /* UploadTaskTableViewCell.swift */,
@@ -758,6 +762,8 @@
 				8A05C34E2760AB6F009BCA79 /* Upload */,
 				8A05C343276091FB009BCA79 /* Preview */,
 				8A270B7127182A2B00450DC6 /* CloudStorageViewController.swift */,
+				8AD2EF6E277451BA00087280 /* CustomPreviewViewController.swift */,
+				8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */,
 			);
 			path = CloudStorage;
 			sourceTree = "<group>";
@@ -1551,6 +1557,7 @@
 				8A8020892754697500F5691C /* RtcViewModel.swift in Sources */,
 				8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */,
 				8A05C34227604576009BCA79 /* UploadFinishRequest.swift in Sources */,
+				8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */,
 				8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */,
 				8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */,
 				8AE892FE2727E9DB009C71DA /* SpeakCommand.swift in Sources */,
@@ -1601,6 +1608,7 @@
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
 				8A8020AB27574D7D00F5691C /* ConvertProgressDetail.swift in Sources */,
+				8AD2EF71277461C900087280 /* CustomAVPlayerViewController.swift in Sources */,
 				8A9FB39F2721806B00F6F06F /* AnyCodingKey.swift in Sources */,
 				8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */,
 				8AE8F5642721386200D2E0F5 /* RoomInfoRequest.swift in Sources */,
@@ -1613,7 +1621,6 @@
 				8AA97EA02741F20300C3F92E /* ClassRoomState.swift in Sources */,
 				8A2975212726A6810095F9F0 /* UIColor+Theme.swift in Sources */,
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
-				8AAB062A27630392006CAEF2 /* ConvertConfig.swift in Sources */,
 				8AC05357274B8C160064CF84 /* RoomDetailFactory.swift in Sources */,
 				8AE8F56627213ACD00D2E0F5 /* RoomInfo.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
@@ -1644,6 +1651,7 @@
 				8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */,
 				8A9FB3B72722949600F6F06F /* ParameterEncoder.swift in Sources */,
 				8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */,
+				8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */,
 				8A0EB7B3272BCDC200003DF7 /* UIButton+Appearance.swift in Sources */,
 				8A9ACC01271E712100E7E7CE /* RoomListRequest.swift in Sources */,
 				8A5DCF9D273B6E7A0068D5DF /* ClassRoomViewModel.swift in Sources */,

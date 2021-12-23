@@ -72,7 +72,7 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
                     setViewController(targetVC, for: .secondary)
                 }
                 if hidePrimary {
-                    show(.secondary)
+                    hide(.primary)
                 }
             } else {
                 showDetailViewController(vc, sender: nil)
@@ -84,7 +84,11 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     
     func cleanSecondary() {
         if canShowDetail {
-            show(emptyDetailController, hidePrimary: false)
+            if #available(iOS 14.0, *) {
+                setViewController(emptyDetailController, for: .secondary)
+            } else {
+                show(emptyDetailController, hidePrimary: false)
+            }
         }
     }
     

@@ -22,6 +22,18 @@ class CloudStorageViewController: UIViewController {
     let container = PageListContainer<StorageFileModel>()
     var loadingMoreRequest: URLSessionDataTask?
 
+    var previewingUUID: String? {
+        didSet {
+            if let newId = previewingUUID, let newIndex = container.items.firstIndex(where: { $0.fileUUID == newId}) {
+                tableView.reloadRows(at: [IndexPath(row: newIndex, section: 0)], with: .none)
+            }
+            if let oldId = oldValue, let oldIndex = container.items.firstIndex(where: { $0.fileUUID == oldId}) {
+                tableView.reloadRows(at: [IndexPath(row: oldIndex, section: 0)], with: .none)
+            }
+        }
+    }
+    
+    weak var previewingController: CustomPreviewViewController?
     var currentPreview: AnyPreview?
     
     // MARK: - LifeCycle
@@ -30,9 +42,9 @@ class CloudStorageViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
     }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    
+    deinit {
+        cleanPreviewResource()
     }
     
     override func viewDidLoad() {
@@ -302,11 +314,19 @@ class CloudStorageViewController: UIViewController {
     }
     
     func preview(_ item: StorageFileModel) {
+        if let _ = previewingController {
+            mainSplitViewController?.cleanSecondary()
+        }
+        cleanPreviewResource()
+        previewingUUID = item.fileUUID
         let fileExtension = String(item.fileName.split(separator: ".").last ?? "")
         switch item.fileType {
         case .video:
-            let vc = AVPlayerViewController()
+            let vc = CustomAVPlayerViewController()
             let player = AVPlayer(url: item.fileURL)
+            vc.dismissHandler = { [weak self] in
+                self?.cleanPreviewResource()
+            }
             vc.player = player
             player.play()
             mainSplitViewController?.present(vc, animated: true, completion: nil)
@@ -331,9 +351,29 @@ class CloudStorageViewController: UIViewController {
                 let formatURL = item.fileURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
                 let link = Env().webBaseURL + "/preview/\(formatURL)/\(item.taskToken)/\(item.taskUUID)/\(item.region)/"
                 if let url = URL(string: link) {
-                    let vc = SFSafariViewController(url: url)
-                    vc.modalPresentationStyle = .pageSheet
-                    mainSplitViewController?.present(vc, animated: true, completion: nil)
+                    let config = SFSafariViewController.Configuration()
+                    config.barCollapsingEnabled = true
+                    config.entersReaderIfAvailable = false
+                    if #available(iOS 15.0, *) {
+                        config.activityButton = .none
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                    if #available(iOS 15.2, *) {
+                        config.eventAttribution = nil
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                    let vc = SFSafariViewController(url: url, configuration: config)
+                    vc.delegate = self
+                    vc.dismissButtonStyle = .close
+                    vc.title = item.fileName
+                    guard let containerVC = mainSplitViewController else { return }
+                    if containerVC.canShowDetail {
+                        containerVC.show(vc)
+                    } else {
+                        containerVC.present(vc, animated: true, completion: nil)
+                    }
                     return
                 }
             }
@@ -465,6 +505,8 @@ extension CloudStorageViewController: UITableViewDelegate, UITableViewDataSource
         } else {
             cell.stopConvertingAnimation()
         }
+        let isPreviewing = item.fileUUID == previewingUUID
+        cell.contentView.backgroundColor = isPreviewing ? .controlSelectedBG : .whiteBG
         return cell
     }
     
@@ -497,11 +539,19 @@ extension CloudStorageViewController: UITableViewDelegate, UITableViewDataSource
             try FileManager.default.copyItem(atPath: path, toPath: tempURL.path)
             let previewItem = AnyPreview(previewItemURL: URL(fileURLWithPath: tempURL.path), title: fileName)
             currentPreview = previewItem
-            
-            let vc = QLPreviewController()
+            let vc = CustomPreviewViewController()
+            self.previewingController = vc
             vc.dataSource = self
             vc.delegate = self
-            mainSplitViewController?.present(vc, animated: true, completion: nil)
+            vc.clickBackHandler = { [weak self] in
+                self?.cleanPreviewResource()
+            }
+            guard let containerVC = mainSplitViewController else { return }
+            if containerVC.canShowDetail {
+                containerVC.show(vc)
+            } else {
+                containerVC.present(vc, animated: true, completion: nil)
+            }
         }
         catch {
             print(error)
@@ -532,7 +582,8 @@ extension CloudStorageViewController: UITableViewDelegate, UITableViewDataSource
 }
 
 extension CloudStorageViewController: QLPreviewControllerDelegate {
-    func previewControllerDidDismiss(_ controller: QLPreviewController) {
+    func cleanPreviewResource() {
+        previewingUUID = nil
         if let url = currentPreview?.previewItemURL {
             do {
                 try FileManager.default.removeItem(at: url)
@@ -541,6 +592,11 @@ extension CloudStorageViewController: QLPreviewControllerDelegate {
                 print("remove preview item fail")
             }
         }
+        currentPreview = nil
+    }
+    
+    func previewControllerDidDismiss(_ controller: QLPreviewController) {
+        cleanPreviewResource()
     }
 }
 
@@ -551,5 +607,12 @@ extension CloudStorageViewController: QLPreviewControllerDataSource {
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         currentPreview!
+    }
+}
+
+extension CloudStorageViewController: SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        mainSplitViewController?.cleanSecondary()
+        previewingUUID = nil
     }
 }

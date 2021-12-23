@@ -83,17 +83,23 @@ class LaunchCoordinator {
         }
         
         if #available(iOS 14.0, *) {
-            if window.traitCollection.horizontalSizeClass == .compact ||
-                window.traitCollection.verticalSizeClass == .compact {
+            if window.traitCollection.hasCompact {
                 return tab()
             }
             let vc = MainSplitViewController(style: .tripleColumn)
             vc.preferredDisplayMode = .twoBesideSecondary
-            vc.preferredSupplementaryColumnWidthFraction = 0.32
-            vc.preferredPrimaryColumnWidthFraction = 0.18
+            vc.preferredSplitBehavior = .tile
+            vc.showsSecondaryOnlyButton = true
+            if #available(iOS 14.5, *) {
+                vc.displayModeButtonVisibility = .always
+            }
+            vc.preferredSupplementaryColumnWidthFraction = 0.375
+            vc.preferredPrimaryColumnWidthFraction = 0.375 / 2
+            vc.minimumPrimaryColumnWidth = 144
             vc.setViewController(BaseNavigationViewController(rootViewController: SidebarViewController()), for: .primary)
             vc.setViewController(HomeViewController(), for: .supplementary)
-            vc.setViewController(.emptySplitSecondaryViewController(), for: .secondary)
+            vc.setViewController(vc.emptyDetailController, for: .secondary)
+            vc.primaryBackgroundStyle = .sidebar
             return vc
         } else {
             return tab()

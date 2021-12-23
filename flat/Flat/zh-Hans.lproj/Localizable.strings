@@ -7,6 +7,8 @@
 */
 
 "Reconnect" = "重新连接";
+"Back" = "返回";
+"Close" = "关闭";
 
 "Alert" = "提示";
 "Remove From List" = "移除房间";
