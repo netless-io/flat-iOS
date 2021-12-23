@@ -36,7 +36,7 @@ class RtcViewController: UIViewController {
         let output = viewModel.transform(users: users, teacherRtmUUID: uuid)
         output.noTeacherViewHide
             .distinctUntilChanged()
-            .do(onNext: { [weak self] _ in
+            .do(afterNext: { [weak self] _ in
                 self?.updateScrollViewInset()
             })
             .drive(noTeacherPlaceHolderView.rx.isHidden)
@@ -58,10 +58,15 @@ class RtcViewController: UIViewController {
                 if let user = weakSelf.previewingUser, !existIds.contains(user.rtcUID) {
                     weakSelf.previewViewController.showAvatar(url: user.avatarURL)
                 }
+                weakSelf.updateScrollViewInset()
             })
             .disposed(by: rx.disposeBag)
-        
+                
+            
         output.localUserHide
+            .do(afterNext: { [weak self] _ in
+                self?.updateScrollViewInset()
+            })
             .drive(localVideoItemView.rx.isHidden)
             .disposed(by: rx.disposeBag)
     }
