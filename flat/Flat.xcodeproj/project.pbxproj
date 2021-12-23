@@ -1796,7 +1796,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flat/FlatNon_Sign.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L922897LKX;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -1817,7 +1817,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2046,7 +2046,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flat/FlatDebug.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -2067,7 +2067,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2176,7 +2176,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flat/FlatRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
@@ -2194,7 +2194,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "flat-release";
@@ -2278,7 +2278,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flat/FlatStage.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3QTDRHG63K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
@@ -2296,7 +2296,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-STAGE";
 				PROVISIONING_PROFILE_SPECIFIER = "";
