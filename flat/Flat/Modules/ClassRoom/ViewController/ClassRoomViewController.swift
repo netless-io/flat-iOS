@@ -112,6 +112,7 @@ class ClassRoomViewController: UIViewController {
         bindUserList()
         bindSetting()
         bindInteracting()
+        postingClassStatusUpdateNotification()
         updateLayout()
     }
     
@@ -292,7 +293,9 @@ class ClassRoomViewController: UIViewController {
         
         output.roomStopped
             .drive(with: self, onNext: { weakSelf, _ in
-                weakSelf.showAlertWith(message: "即将离开房间") {
+                // Hide the error 'room ban'
+                weakSelf.whiteboardViewController.view.isHidden = true
+                weakSelf.showAlertWith(message: NSLocalizedString("Leaving room soon", comment: "")) {
                     weakSelf.leaveUIHierarchyAndStopSubModule()
                 }
             })
@@ -345,6 +348,20 @@ class ClassRoomViewController: UIViewController {
         inviteButton.rx.tap.asDriver()
             .drive(with: self, onNext: { weakSelf, _ in
                 weakSelf.popoverViewController(viewController: weakSelf.inviteViewController, fromSource: weakSelf.inviteButton)
+            })
+            .disposed(by: rx.disposeBag)
+    }
+    
+    func postingClassStatusUpdateNotification() {
+        viewModel.state.startStatus
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] status in
+                guard let self = self else { return }
+                NotificationCenter.default.post(name: classStatusUpdateNotification,
+                                                object: nil,
+                                                userInfo: ["classRoomUUID": self.viewModel.state.roomUUID,
+                                                           "status": status])
             })
             .disposed(by: rx.disposeBag)
     }

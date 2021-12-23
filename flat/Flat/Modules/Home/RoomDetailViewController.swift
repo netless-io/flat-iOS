@@ -90,14 +90,14 @@ class RoomDetailViewController: UIViewController {
     struct RoomDetailDisplayInfo {
         let beginTime: Date
         let endTime: Date
-        let roomStatus: RoomStartStatus
+        var roomStatus: RoomStartStatus
         let roomType: ClassRoomType
         let roomUUID: String
         let isOwner: Bool
         let formatterInviteCode: String
     }
     
-    let info: RoomDetailDisplayInfo
+    var info: RoomDetailDisplayInfo
     var detailInfo: RoomInfo?
     var availableOperations: [RoomOperation] = []
     
@@ -107,12 +107,21 @@ class RoomDetailViewController: UIViewController {
     
     var micOn: Bool
     
+    func updateStatus(_ status: RoomStartStatus) {
+        info.roomStatus = status
+        detailInfo?.roomStatus = status
+        if isViewLoaded {
+            updateEnterRoomButtonTitle()
+        }
+    }
+    
     init(info: RoomDetailDisplayInfo) {
         self.info = info
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
         self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
         self.micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         super.init(nibName: nil, bundle: nil)
+        observeClassStatus()
     }
     
     required init?(coder: NSCoder) {
@@ -133,7 +142,7 @@ class RoomDetailViewController: UIViewController {
         setupViews()
         updateViewWithCurrentStatus()
         updateAvailableActions()
-        observeClassStop()
+        updateEnterRoomButtonTitle()
     }
     
     // MARK: - Private
@@ -149,14 +158,23 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
-    func observeClassStop() {
-        NotificationCenter.default.rx.notification(classStopNotification)
+    func observeClassStatus() {
+        print("create room \(info.roomUUID)")
+        NotificationCenter.default.rx.notification(classStatusUpdateNotification)
             .subscribe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { weakSelf, info in
-                if let infoUUID = info.userInfo?["classRoomUUID"] as? String {
+                if let infoUUID = info.userInfo?["classRoomUUID"] as? String,
+                   let status = info.userInfo?["status"] as? RoomStartStatus {
                     if weakSelf.info.roomUUID == infoUUID {
-                        weakSelf.navigationController?.splitViewController?.showDetailViewController(.emptySplitSecondaryViewController(), sender: nil)
-                        weakSelf.navigationController?.popViewController(animated: false)
+                        weakSelf.updateStatus(status)
+                        if status == .Stopped {
+                            guard let splitVC = weakSelf.mainSplitViewController else { return }
+                            if splitVC.canShowDetail {
+                                weakSelf.mainSplitViewController?.show(.emptySplitSecondaryViewController())
+                            } else {
+                                weakSelf.navigationController?.popViewController(animated: false)
+                            }
+                        }
                     }
                 }
             })
@@ -203,7 +221,9 @@ class RoomDetailViewController: UIViewController {
             }
             j += 1
         }
-        
+    }
+    
+    func updateEnterRoomButtonTitle() {
         if self.info.isOwner, info.roomStatus == .Idle {
             self.enterRoomButton.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
         } else {

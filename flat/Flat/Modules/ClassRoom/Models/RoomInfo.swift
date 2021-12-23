@@ -19,7 +19,7 @@ struct RoomInfo: Decodable {
     let beginTime: Date
     let endTime: Date
     let roomType: ClassRoomType
-    let roomStatus: RoomStartStatus
+    var roomStatus: RoomStartStatus
     let hasRecord: Bool
     let ownerUUID: String
     let ownerUserName: String

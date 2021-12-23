@@ -11,7 +11,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-let classStopNotification = Notification.Name("classStopNotification")
+let classStatusUpdateNotification = Notification.Name("classStatusUpdateNotification")
 
 class ClassRoomViewModel {
     struct Input {
@@ -190,11 +190,6 @@ class ClassRoomViewModel {
                 return self.leaveRoomProcess()
             }
             .asSingle()
-            .do(onSuccess: { [weak self] in
-                NotificationCenter.default.post(name: classStopNotification,
-                                                object: nil,
-                                                userInfo: ["classRoomUUID": self?.state.roomUUID ?? ""])
-            })
             .asDriver(onErrorJustReturn: ())
         
         return .init(initRoom: initRoom,
@@ -234,7 +229,7 @@ class ClassRoomViewModel {
                                            preferredStyle: .actionSheet, actionModels: [
                                              .init(title: NSLocalizedString("Leaving for now", comment: ""), style: .default, handler: nil),
                                              .init(title: NSLocalizedString("End the class", comment: ""), style: .destructive, handler: nil),
-                                             .init(title: NSLocalizedString("End the class", comment: ""), style: .cancel, handler: nil)])
+                                             .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)])
         
         let dismiss = input.leaveTap.flatMap { [unowned self] source -> Driver<AlertModel.ActionModel> in
             let status = self.state.startStatus.value
@@ -248,12 +243,22 @@ class ClassRoomViewModel {
         }.flatMap { model -> Driver<Bool> in
             if model.style == .cancel { return .just(false) }
             if model.title == NSLocalizedString("End the class", comment: "") {
-                return self.stopOperation().flatMap { [weak self] in
-                    guard let self = self else { return .just(()) }
-                    return self.leaveRoomProcess()
-                }.asDriver(onErrorJustReturn: ()).map { _ -> Bool in return true }
+                return self
+                    .stopOperation()
+                    .flatMap { [weak self] in
+                        guard let self = self else { return .just(()) }
+                        return self.leaveRoomProcess()
+                    }
+                    .asDriver(onErrorJustReturn: ())
+                    .map { _ -> Bool in
+                        // The dismiss process will be completed by room status turning to 'Stop'
+                        return false
+                    }
             } else {
-                return self.leaveRoomProcess().asDriver(onErrorJustReturn: ()).map { _ -> Bool in return true }
+                return self
+                    .leaveRoomProcess()
+                    .asDriver(onErrorJustReturn: ())
+                    .map { _ -> Bool in return true }
             }
         }
 
