@@ -390,7 +390,11 @@ class ClassRoomViewController: UIViewController {
             .drive(with: self, onNext: { weakSelf, enable in
                 weakSelf.whiteboardViewController.updateToolsHide(!enable)
                 weakSelf.whiteboardViewController.updatePageOperationHide(!enable)
-                weakSelf.whiteboardViewController.viewModel.room.setWritable(enable, completionHandler: nil)
+                weakSelf.whiteboardViewController.viewModel.room.setWritable(enable) { _, _ in
+                    if enable {
+                        weakSelf.whiteboardViewController.viewModel.room.disableSerialization(false)
+                    }
+                }
                 weakSelf.rightToolBar.updateButtonHide(weakSelf.cloudStorageButton, hide: !enable)
             })
             .disposed(by: rx.disposeBag)
