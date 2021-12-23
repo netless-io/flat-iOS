@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var launch: LaunchCoordinator?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
         processMethodExchange()
         configAppearance()
         registerThirdPartSDK()

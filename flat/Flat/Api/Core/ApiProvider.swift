@@ -36,6 +36,13 @@ class ApiProvider: NSObject {
         })
     }
     
+    func startEmptyRequestForWakingUpNetworkAlert() {
+        var request = URLRequest(url: URL(string: Env().baseURL)!)
+        request.timeoutInterval = 0.01
+        request.httpMethod = "HEADER"
+        session.dataTask(with: request).resume()
+    }
+    
     @discardableResult
     func request<T: FlatRequest>(fromApi api: T) -> Observable<T.Response> {
         request(fromApi: api, generator: flatGenerator, responseDataHandler: flatResponseHandler)
