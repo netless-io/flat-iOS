@@ -47,7 +47,7 @@ class CloudStorageListViewController: UIViewController {
         setupViews()
         loadData(loadMore: false)
         container.itemsUpdateHandler = { [weak self] items, _ in
-            self?.configPollingTaskWith(newItems: items)
+            self?.confirmConvertingTasks(withItems: items)
             self?.tableView.reloadData()
         }
     }
@@ -70,6 +70,32 @@ class CloudStorageListViewController: UIViewController {
         let refreshControl = UIRefreshControl(frame: .zero)
         refreshControl.addTarget(self, action: #selector(onRefreshControl), for: .valueChanged)
         tableView.refreshControl = refreshControl
+    }
+    
+    func confirmConvertingTasks(withItems items: [StorageFileModel]) {
+        items
+            .filter {
+                ConvertService.shouldConvertFile(withFile: $0)
+            }
+            .forEach {
+                let uuid = $0.fileUUID
+                ConvertService.startConvert(fileUUID: uuid) { [weak self] r in
+                    switch r {
+                    case .success(let model):
+                        guard let self = self else { return }
+                        if let index = self.container.items.firstIndex(where: { $0.fileUUID == uuid }) {
+                            self.container.items[index].convertStep = .converting
+                            self.container.items[index].taskUUID = model.taskUUID
+                            self.container.items[index].taskToken = model.taskToken
+                            self.configPollingTaskWith(newItems: self.container.items)
+                        }
+                    case .failure(let error):
+                        self?.toast(error.localizedDescription)
+                    }
+                }
+            }
+        
+        configPollingTaskWith(newItems: items)
     }
     
     func configPollingTaskWith(newItems: [StorageFileModel]) {
@@ -229,6 +255,16 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = container.items[indexPath.row]
+        switch item.convertStep {
+        case .converting:
+            toast(NSLocalizedString("FileIsConverting", comment: ""))
+            return
+        case .failed:
+            toast(NSLocalizedString("FileConvertFailed", comment: ""))
+            return
+        default:
+            break
+        }
         guard item.usable else { return }
         guard fileSelectTask == nil else {
             toast("waiting for previous file insert")

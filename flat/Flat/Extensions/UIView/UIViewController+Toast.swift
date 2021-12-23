@@ -26,6 +26,7 @@ extension UIViewController {
         hud.backgroundView.color = UIColor.black.withAlphaComponent(0.05)
         hud.mode = .text
         hud.label.textColor = .white
+        hud.label.numberOfLines = 5
         hud.label.text = text
         hud.hide(animated: true, afterDelay: timeInterval)
         hud.isUserInteractionEnabled = preventTouching

@@ -310,8 +310,8 @@ class ClassRoomViewController: UIViewController {
                 })
                 .disposed(by: rx.disposeBag)
         
-        // Should show user red (when received raisehand while user panel is not presenting)
-        let hideUserRedpointWhenNewRaiseHand = output.newCommand.filter {
+        // Should show user red (when received raiseHand while user panel is not presenting)
+        let hideUserRedPointWhenNewRaiseHand = output.newCommand.filter {
             if case .raiseHand(let raise) = $0, raise { return true }
             return false
         }.flatMap { [weak self] _ -> Observable<Bool> in
@@ -319,7 +319,7 @@ class ClassRoomViewController: UIViewController {
             return vc.rx.isPresented.asObservable()
         }.asDriver(onErrorJustReturn: true)
         
-        Driver.of(hideUserRedpointWhenNewRaiseHand,
+        Driver.of(hideUserRedPointWhenNewRaiseHand,
                   usersButton.rx.tap.asDriver().map { _ -> Bool in true })
             .merge()
             .drive(onNext: { [weak self] hide in

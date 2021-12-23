@@ -75,14 +75,13 @@ class UploadHomeViewController: UIViewController {
         do {
             var result = try UploadService.shared.createUploadTaskFrom(fileURL: url, shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
             let newTask = result.task.do(onSuccess: { fillUUID in
-                if ConvertConfig.shouldConvertPathExtensions.contains(url.pathExtension.lowercased()) {
-                    ApiProvider.shared.request(fromApi: StartConvertRequest(fileUUID: fillUUID)) { result in
+                if ConvertService.isFileConvertible(withFileURL: url) {
+                    ConvertService.startConvert(fileUUID: fillUUID) { [weak self] result in
                         switch result {
                         case .success:
-                            print("submit convert task success")
                             NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
-                        case .failure:
-                            print("submit convert task fail")
+                        case .failure(let error):
+                            self?.toast(error.localizedDescription)
                         }
                     }
                 } else {

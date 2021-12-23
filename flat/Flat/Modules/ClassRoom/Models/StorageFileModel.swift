@@ -86,21 +86,15 @@ struct StorageFileModel: Codable, Equatable {
     }
     
     var taskType: ConversionTaskType? {
-        let ext = (fileName.split(separator: ".").last ?? "").lowercased()
-        if ConvertConfig.staticConvertPathExtensions.contains(ext) {
-            return .static
-        } else if ConvertConfig.dynamicConvertPathExtensions.contains(ext) {
-            return .dynamic
-        }
-        return nil
+        ConvertService.convertingTaskTypeFor(url: fileURL)
     }
     
     var usable: Bool {
-        convertStep == .none || convertStep == .done
+        return !ConvertService.shouldConvertFile(withFile: self)
     }
     let fileURL: URL
     let fileUUID: String
     let region: String
-    let taskToken: String
-    let taskUUID: String
+    var taskToken: String
+    var taskUUID: String
 }

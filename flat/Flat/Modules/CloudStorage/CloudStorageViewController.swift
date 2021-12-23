@@ -46,7 +46,7 @@ class CloudStorageViewController: UIViewController {
             if items.isEmpty, self.tableView.isEditing {
                 self.editButton.sendActions(for: .touchUpInside)
             }
-            self.configPollingTaskWith(newItems: items)
+            self.confirmConvertingTasks(withItems: items)
             self.tableView.reloadData()
         }
         observe()
@@ -149,6 +149,32 @@ class CloudStorageViewController: UIViewController {
         let refreshControl = UIRefreshControl(frame: .zero)
         refreshControl.addTarget(self, action: #selector(loadFirstPageData), for: .valueChanged)
         tableView.refreshControl = refreshControl
+    }
+    
+    func confirmConvertingTasks(withItems items: [StorageFileModel]) {
+        items
+            .filter {
+                ConvertService.shouldConvertFile(withFile: $0)
+            }
+            .forEach {
+                let uuid = $0.fileUUID
+                ConvertService.startConvert(fileUUID: uuid) { [weak self] r in
+                    switch r {
+                    case .success(let model):
+                        guard let self = self else { return }
+                        if let index = self.container.items.firstIndex(where: { $0.fileUUID == uuid }) {
+                            self.container.items[index].convertStep = .converting
+                            self.container.items[index].taskUUID = model.taskUUID
+                            self.container.items[index].taskToken = model.taskToken
+                            self.configPollingTaskWith(newItems: self.container.items)
+                        }
+                    case .failure(let error):
+                        self?.toast(error.localizedDescription)
+                    }
+                }
+            }
+        
+        configPollingTaskWith(newItems: items)
     }
     
     func configPollingTaskWith(newItems: [StorageFileModel]) {
@@ -301,7 +327,7 @@ class CloudStorageViewController: UIViewController {
             }
         default:
             // Preview dynamic with web preview
-            if ConvertConfig.dynamicConvertPathExtensions.contains(item.fileURL.pathExtension.lowercased()) {
+            if ConvertService.convertingTaskTypeFor(url: item.fileURL) == .dynamic {
                 let formatURL = item.fileURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
                 let link = Env().webBaseURL + "/preview/\(formatURL)/\(item.taskToken)/\(item.taskUUID)/\(item.region)/"
                 if let url = URL(string: link) {
