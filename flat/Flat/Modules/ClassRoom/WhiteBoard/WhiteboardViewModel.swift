@@ -442,7 +442,7 @@ class WhiteboardViewModel: NSObject {
 
 extension WhiteboardViewModel: WhiteCommonCallbackDelegate {
     func throwError(_ error: Error) {
-        errorSignal.accept(error)
+//        errorSignal.accept(error)
         print("whiteboard throw error", error)
     }
     
