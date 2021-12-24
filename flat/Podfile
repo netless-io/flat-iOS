@@ -13,7 +13,7 @@ target 'Flat' do
   pod 'EmptyDataSet-Swift'
   pod 'IQKeyboardManagerSwift'
   pod 'Whiteboard'
-  pod 'WechatOpenSDK'
+  pod 'WechatOpenSDK_NoPay'
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
   

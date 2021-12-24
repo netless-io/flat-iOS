@@ -36,8 +36,6 @@
 		8A0EB7B3272BCDC200003DF7 /* UIButton+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */; };
 		8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */; };
 		8A0EB7BA272BD4E300003DF7 /* RoomUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */; };
-		8A0EB7BE272BE6FB00003DF7 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7BC272BE6FB00003DF7 /* InviteViewController.swift */; };
-		8A0EB7BF272BE6FB00003DF7 /* InviteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A0EB7BD272BE6FB00003DF7 /* InviteViewController.xib */; };
 		8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C1272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift */; };
 		8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */; };
 		8A11CBDF271FBCC1001D0B1F /* StrokePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBDE271FBCC1001D0B1F /* StrokePickerViewController.swift */; };
@@ -206,6 +204,7 @@
 		8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF6C2774128200087280 /* ConvertService.swift */; };
 		8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF6E277451BA00087280 /* CustomPreviewViewController.swift */; };
 		8AD2EF71277461C900087280 /* CustomAVPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */; };
+		8AD2EF762775665300087280 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF752775665300087280 /* ShareManager.swift */; };
 		8AD3CDF027168F25008BD904 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDEF27168F25008BD904 /* Env.swift */; };
 		8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF1271693EC008BD904 /* GithubLogin.swift */; };
 		8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */; };
@@ -268,8 +267,6 @@
 		8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Appearance.swift"; sourceTree = "<group>"; };
 		8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverDismissDetectableViewController.swift; sourceTree = "<group>"; };
 		8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUserTableViewCell.swift; sourceTree = "<group>"; };
-		8A0EB7BC272BE6FB00003DF7 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
-		8A0EB7BD272BE6FB00003DF7 /* InviteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InviteViewController.xib; sourceTree = "<group>"; };
 		8A0EB7C1272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingTableViewCell.swift; sourceTree = "<group>"; };
 		8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassRoomSettingTableViewCell.xib; sourceTree = "<group>"; };
 		8A11CBDE271FBCC1001D0B1F /* StrokePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokePickerViewController.swift; sourceTree = "<group>"; };
@@ -447,6 +444,7 @@
 		8AD2EF6C2774128200087280 /* ConvertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertService.swift; sourceTree = "<group>"; };
 		8AD2EF6E277451BA00087280 /* CustomPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPreviewViewController.swift; sourceTree = "<group>"; };
 		8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAVPlayerViewController.swift; sourceTree = "<group>"; };
+		8AD2EF752775665300087280 /* ShareManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareManager.swift; sourceTree = "<group>"; };
 		8AD3CDEC27168E75008BD904 /* Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Develop.xcconfig; sourceTree = "<group>"; };
 		8AD3CDED27168E80008BD904 /* Stage.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Stage.xcconfig; sourceTree = "<group>"; };
 		8AD3CDEE27168E87008BD904 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -664,18 +662,10 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
-		8A0EB7BB272BE6D500003DF7 /* Invite */ = {
-			isa = PBXGroup;
-			children = (
-				8A0EB7BC272BE6FB00003DF7 /* InviteViewController.swift */,
-				8A0EB7BD272BE6FB00003DF7 /* InviteViewController.xib */,
-			);
-			path = Invite;
-			sourceTree = "<group>";
-		};
 		8A11CBE0271FEBB1001D0B1F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8AD2EF742775664C00087280 /* Share */,
 				8A8020AC275864A200F5691C /* PageContainer */,
 				8A0BD7B1274B345900383E9D /* Button */,
 				8A7741C22734CF8E009FAADA /* Label */,
@@ -888,7 +878,6 @@
 		8A97EBBB271D180600965185 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				8A0EB7BB272BE6D500003DF7 /* Invite */,
 				8A11CC22272019C9001D0B1F /* ClassRoom */,
 				8A2D0BA62716859700123207 /* Login */,
 				8A270B6D2718299B00450DC6 /* Home */,
@@ -1199,6 +1188,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		8AD2EF742775664C00087280 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				8AD2EF752775665300087280 /* ShareManager.swift */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
 		8AD3CDF42716B11A008BD904 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1410,7 +1407,6 @@
 				8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */,
 				8A270B942719607700450DC6 /* LoginViewController.xib in Resources */,
 				8A05C3522760ADFC009BCA79 /* UploadTaskTableViewCell.xib in Resources */,
-				8A0EB7BF272BE6FB00003DF7 /* InviteViewController.xib in Resources */,
 				8A270B9027195A1200450DC6 /* Localizable.strings in Resources */,
 				8AD7C6C927157EA7001C4AAD /* LaunchScreen.storyboard in Resources */,
 				8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */,
@@ -1528,7 +1524,6 @@
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,
 				8AAC69B32717E3EB00F9A3B4 /* User.swift in Sources */,
-				8A0EB7BE272BE6FB00003DF7 /* InviteViewController.swift in Sources */,
 				8A80209A27570A4A00F5691C /* CloudStorageTableViewCell.swift in Sources */,
 				8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */,
 				8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */,
@@ -1627,6 +1622,7 @@
 				8A05C34D2760AB26009BCA79 /* UploadTasksViewController.swift in Sources */,
 				8A7741C42734CFAC009FAADA /* BorderLabelView.swift in Sources */,
 				8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */,
+				8AD2EF762775665300087280 /* ShareManager.swift in Sources */,
 				8AC05362274CC47B0064CF84 /* WhiteboardMenuNavigator.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,

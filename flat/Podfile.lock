@@ -16,29 +16,29 @@ PODS:
     - RxSwift (= 6.2.0)
   - RxSwift (6.2.0)
   - SnapKit (5.0.1)
-  - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.15.15):
-    - Whiteboard/Base (= 2.15.15)
-    - Whiteboard/Converter (= 2.15.15)
-    - Whiteboard/Model (= 2.15.15)
-    - Whiteboard/NativeReplayer (= 2.15.15)
-    - Whiteboard/Object (= 2.15.15)
-    - Whiteboard/Replayer (= 2.15.15)
-    - Whiteboard/Room (= 2.15.15)
-  - Whiteboard/Base (2.15.15):
+  - WechatOpenSDK_NoPay (1.8.0)
+  - Whiteboard (2.15.17):
+    - Whiteboard/Base (= 2.15.17)
+    - Whiteboard/Converter (= 2.15.17)
+    - Whiteboard/Model (= 2.15.17)
+    - Whiteboard/NativeReplayer (= 2.15.17)
+    - Whiteboard/Object (= 2.15.17)
+    - Whiteboard/Replayer (= 2.15.17)
+    - Whiteboard/Room (= 2.15.17)
+  - Whiteboard/Base (2.15.17):
     - dsBridge (~> 3.0.2)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.15.15):
+  - Whiteboard/Converter (2.15.17):
     - Whiteboard/Object
-  - Whiteboard/Model (2.15.15):
+  - Whiteboard/Model (2.15.17):
     - YYModel (~> 1.0.4)
-  - Whiteboard/NativeReplayer (2.15.15):
+  - Whiteboard/NativeReplayer (2.15.17):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.15.15):
+  - Whiteboard/Object (2.15.17):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.15.15):
+  - Whiteboard/Replayer (2.15.17):
     - Whiteboard/Base
-  - Whiteboard/Room (2.15.15):
+  - Whiteboard/Room (2.15.17):
     - Whiteboard/Base
   - YYModel (1.0.4)
 
@@ -54,7 +54,7 @@ DEPENDENCIES:
   - RxCocoa
   - RxSwift
   - SnapKit
-  - WechatOpenSDK
+  - WechatOpenSDK_NoPay
   - Whiteboard
 
 SPEC REPOS:
@@ -72,7 +72,7 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - SnapKit
-    - WechatOpenSDK
+    - WechatOpenSDK_NoPay
     - Whiteboard
     - YYModel
 
@@ -90,10 +90,10 @@ SPEC CHECKSUMS:
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: a21473034bc3521b9776d14a0f09ed1c92970790
+  WechatOpenSDK_NoPay: 27366a152202a6a7c8a15fad4d07261e87fb2389
+  Whiteboard: 30afb195f671cfa026603699103207ab8b9a3fde
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 92f7de714d5ea35a9cb5dc95b8c2623e5f721b20
+PODFILE CHECKSUM: aa1b6df25bff61211aaced575cffe10e83380f97
 
 COCOAPODS: 1.11.2
