@@ -71,11 +71,15 @@ class LaunchCoordinator {
     }
     
     func reboot() {
-        window.rootViewController = authStore.isLogin ? createNewMainSplitViewController() : LoginViewController()
+        window.rootViewController = authStore.isLogin ? createMainContainer() : LoginViewController()
     }
     
-    func createNewMainSplitViewController() -> UISplitViewController {
-        func tab() -> MainSplitViewController {
+    func createMainContainer() -> UIViewController {
+        func compactMain() -> UIViewController {
+            return MainTabBarController()
+        }
+        
+        func oldPadMain() -> UIViewController {
             let vc = MainSplitViewController()
             vc.viewControllers = [MainTabBarController()]
             vc.preferredDisplayMode = .oneBesideSecondary
@@ -84,7 +88,7 @@ class LaunchCoordinator {
         
         if #available(iOS 14.0, *) {
             if window.traitCollection.hasCompact {
-                return tab()
+                return compactMain()
             }
             let vc = MainSplitViewController(style: .tripleColumn)
             vc.preferredDisplayMode = .twoBesideSecondary
@@ -102,7 +106,7 @@ class LaunchCoordinator {
             vc.primaryBackgroundStyle = .sidebar
             return vc
         } else {
-            return tab()
+            return oldPadMain()
         }
     }
     
@@ -110,8 +114,8 @@ class LaunchCoordinator {
     fileprivate func configRootWith(isLogin: Bool) {
         flatGenerator.token = authStore.user?.token
         if isLogin {
-            guard let _ = window.rootViewController as? MainSplitViewController else {
-                window.rootViewController = createNewMainSplitViewController()
+            guard let _ = window.rootViewController as? MainContainer else {
+                window.rootViewController = createMainContainer()
                 window.makeKeyAndVisible()
                 return
             }

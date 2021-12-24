@@ -19,7 +19,7 @@ class CustomPreviewViewController: QLPreviewController {
     }
     
     @objc func onBack() {
-        mainSplitViewController?.cleanSecondary()
+        mainContainer?.removeTop()
         clickBackHandler?()
     }
 }

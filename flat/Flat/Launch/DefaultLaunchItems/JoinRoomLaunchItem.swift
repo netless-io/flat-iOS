@@ -61,41 +61,34 @@ class JoinRoomLaunchItem: LaunchItem {
         let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: user.userUUID)
         let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-        let splitVC: MainSplitViewController
+        var mainVC: MainContainer
         if let vc = UIApplication.shared.topViewController?.presentingViewController,
-           let svc = vc as? MainSplitViewController {
-            splitVC = svc
-        } else if let svc = UIApplication.shared.topViewController?.splitViewController as? MainSplitViewController {
-            splitVC = svc
-        } else if let svc = UIApplication.shared.topViewController as? MainSplitViewController {
-            splitVC = svc
+           let svc = vc as? MainContainer {
+            mainVC = svc
+        } else if let svc = UIApplication.shared.topViewController?.mainContainer {
+            mainVC = svc
         } else {
             return
         }
-        if let existRoomVC = splitVC.presentedViewController as? ClassRoomViewController,
+        if let existRoomVC = mainVC.concreteViewController.presentedViewController as? ClassRoomViewController,
            existRoomVC.viewModel.state.roomUUID == id {
             return
         }
-        splitVC.showActivityIndicator()
+        mainVC.concreteViewController.showActivityIndicator()
         Observable.zip(RoomPlayInfo.fetchByJoinWith(uuid: id), RoomInfo.fetchInfoBy(uuid: id))
             .asSingle()
             .observe(on: MainScheduler.instance)
-            .subscribe(with: splitVC, onSuccess: { weakSplitVC, tuple in
-                let playInfo = tuple.0
-                let roomInfo = tuple.1
+            .subscribe(onSuccess: { playInfo, roomInfo  in
                 let deviceStatus = ClassRoomFactory.DeviceStatus(mic: micOn, camera: cameraOn)
                 let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: roomInfo,
                                                                      deviceStatus: deviceStatus)
-                
-                let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: roomInfo, roomUUID: playInfo.roomUUID)
-                weakSplitVC.present(vc, animated: true, completion: nil)
-                weakSplitVC.showDetailViewController(detailVC, sender: nil)
-                weakSplitVC.stopActivityIndicator()
-            }, onFailure: { weakSplitVC, error in
-                weakSplitVC.stopActivityIndicator()
-                weakSplitVC.showAlertWith(message: error.localizedDescription)
-            }, onDisposed: { _ in
+                mainVC.concreteViewController.present(vc, animated: true, completion: nil)
+                mainVC.concreteViewController.stopActivityIndicator()
+            }, onFailure: { error in
+                mainVC.concreteViewController.stopActivityIndicator()
+                mainVC.concreteViewController.showAlertWith(message: error.localizedDescription)
+            }, onDisposed: {
                 return
             })
             .disposed(by: disposeBag)

@@ -58,7 +58,7 @@ class RoomDetailViewController: UIViewController {
                         hud.stopAnimating()
                         
                         viewController.navigationController?.popViewController(animated: true)
-                        viewController.mainSplitViewController?.cleanSecondary()
+                        viewController.mainContainer?.removeTop()
                     case .failure(let error):
                         hud.stopAnimating()
                         viewController.toast(error.localizedDescription)
@@ -121,7 +121,6 @@ class RoomDetailViewController: UIViewController {
         self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
         self.micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         super.init(nibName: nil, bundle: nil)
-        observeClassStatus()
     }
     
     required init?(coder: NSCoder) {
@@ -134,6 +133,7 @@ class RoomDetailViewController: UIViewController {
         loadData { _ in
             self.updateViewWithCurrentStatus()
             self.updateAvailableActions()
+            self.updateEnterRoomButtonTitle()
         }
     }
     
@@ -156,29 +156,6 @@ class RoomDetailViewController: UIViewController {
                 completion(.failure(error))
             }
         }
-    }
-    
-    func observeClassStatus() {
-        print("create room \(info.roomUUID)")
-        NotificationCenter.default.rx.notification(classStatusUpdateNotification)
-            .subscribe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { weakSelf, info in
-                if let infoUUID = info.userInfo?["classRoomUUID"] as? String,
-                   let status = info.userInfo?["status"] as? RoomStartStatus {
-                    if weakSelf.info.roomUUID == infoUUID {
-                        weakSelf.updateStatus(status)
-                        if status == .Stopped {
-                            guard let splitVC = weakSelf.mainSplitViewController else { return }
-                            if splitVC.canShowDetail {
-                                weakSelf.mainSplitViewController?.show(.emptySplitSecondaryViewController())
-                            } else {
-                                weakSelf.navigationController?.popViewController(animated: false)
-                            }
-                        }
-                    }
-                }
-            })
-            .disposed(by: rx.disposeBag)
     }
     
     func updateAvailableActions() {
@@ -224,6 +201,14 @@ class RoomDetailViewController: UIViewController {
     }
     
     func updateEnterRoomButtonTitle() {
+        if let detailInfo = detailInfo {
+            if self.info.isOwner, detailInfo.roomStatus == .Idle {
+                self.enterRoomButton.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
+            } else {
+                self.enterRoomButton.setTitle(NSLocalizedString("Enter Room", comment: ""), for: .normal)
+            }
+            return
+        }
         if self.info.isOwner, info.roomStatus == .Idle {
             self.enterRoomButton.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
         } else {
@@ -323,15 +308,15 @@ class RoomDetailViewController: UIViewController {
         }
         
         // Join room
-        RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID) { result in
+        RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID) { [weak self] result in
+            guard let self = self else { return }
             self.enterRoomButton.isEnabled = true
             switch result {
             case .success(let playInfo):
                 let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo, detailInfo:
                                                                         detailInfo, deviceStatus: .init(mic: self.micOn,
                                                                                                         camera: self.cameraOn))
-                vc.modalPresentationStyle = .fullScreen
-                self.splitViewController?.present(vc, animated: true, completion: nil)
+                self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             case .failure(let error):
                 self.showAlertWith(message: error.localizedDescription)
             }

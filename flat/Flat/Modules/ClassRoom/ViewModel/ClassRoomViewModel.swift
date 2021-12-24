@@ -185,12 +185,8 @@ class ClassRoomViewModel {
         let roomStopped = state.startStatus
             .filter { $0 == .Stopped }
             .take(1)
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exits") }
-                return self.leaveRoomProcess()
-            }
-            .asSingle()
-            .asDriver(onErrorJustReturn: ())
+            .mapToVoid()
+            .asDriverOnErrorJustComplete()
         
         return .init(initRoom: initRoom,
                      leaveRoomTemporary: leaveRoomTemporary,
@@ -221,7 +217,7 @@ class ClassRoomViewModel {
         let studentAlert = AlertModel(title: NSLocalizedString("Class exit confirming title", comment: ""),
                                       message: NSLocalizedString("Class exit confirming detail", comment: ""),
                                       preferredStyle: .actionSheet, actionModels: [
-                                        .init(title: NSLocalizedString("Confirm", comment: ""), style: .destructive, handler: nil),
+                                        .init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: nil),
                                         .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)])
         
         let teacherStartAlert = AlertModel(title: NSLocalizedString("Close options", comment: ""),
@@ -242,7 +238,7 @@ class ClassRoomViewModel {
             return self.alertProvider.showActionSheet(with: teacherStartAlert, source: source).asDriver(onErrorJustReturn: .empty)
         }.flatMap { model -> Driver<Bool> in
             if model.style == .cancel { return .just(false) }
-            if model.title == NSLocalizedString("End the class", comment: "") {
+            if model.style == .destructive {
                 return self
                     .stopOperation()
                     .flatMap { [weak self] in
@@ -258,7 +254,9 @@ class ClassRoomViewModel {
                 return self
                     .leaveRoomProcess()
                     .asDriver(onErrorJustReturn: ())
-                    .map { _ -> Bool in return true }
+                    .map { _ -> Bool
+                        in return true
+                    }
             }
         }
 
@@ -388,6 +386,12 @@ class ClassRoomViewModel {
             }.asSingle()
             .do(onSuccess: { [weak self] in
                 self?.state.startStatus.accept(.Stopped)
+            }, onError: { [weak self] error in
+                print("stop room error, \(error)")
+                // Re trigger the stop operation
+                if let status = self?.state.startStatus.value, status == .Stopped {
+                    self?.state.startStatus.accept(.Stopped)
+                }
             })
     }
     

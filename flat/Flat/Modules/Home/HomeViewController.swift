@@ -77,7 +77,7 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
-        (splitViewController as? MainSplitViewController)?.detailUpdateDelegate = self
+        mainSplitViewController?.detailUpdateDelegate = self
         avatarButton.isHidden = false
         loadRooms(nil)
     }
@@ -91,6 +91,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         observeNotification()
+        observeClassLeavingNotification()
     }
     
     override func viewDidLayoutSubviews() {
@@ -111,19 +112,19 @@ class HomeViewController: UIViewController {
     
     // MARK: - Action
     @objc func onClickSetting() {
-        splitViewController?.show(SettingViewController())
+        mainContainer?.push(SettingViewController())
     }
     
     @objc func onClickProfile() {
-        splitViewController?.show(ProfileViewController(style: .grouped))
+        mainContainer?.push(ProfileViewController(style: .grouped))
     }
     
     @objc func onClickCreate() {
-        splitViewController?.show(CreateClassRoomViewController())
+        mainContainer?.push(CreateClassRoomViewController())
     }
     
     @objc func onClickJoin() {
-        splitViewController?.show(JoinRoomViewController())
+        mainContainer?.push(JoinRoomViewController())
     }
     
     @objc func onClickBook() {
@@ -181,13 +182,74 @@ class HomeViewController: UIViewController {
         }
     }
     
+    @objc func onClassLeavingNotification(_ noti: Notification) {
+        guard let state = noti.userInfo?["state"] as? ClassRoomState else { return }
+        guard let vc = mainContainer?.concreteViewController else { return }
+        let isStop = state.startStatus.value == .Stopped
+        if let vc = vc as? MainSplitViewController {
+            if isStop {
+                vc.show(vc.emptyDetailController)
+            } else {
+                if !vc.viewControllers
+                    .map ({ ($0 as? UINavigationController)?.topViewController ?? $0 })
+                    .contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == state.roomUUID }) {
+                    ApiProvider.shared.request(fromApi: RoomInfoRequest(uuid: state.roomUUID)) { result in
+                        switch result {
+                        case .success(let r):
+                            let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: r.roomInfo, roomUUID: state.roomUUID)
+                            vc.push(detailVC)
+                        case .failure: return
+                        }
+                    }
+                }
+            }
+        } else if vc is MainTabBarController, let navi = navigationController {
+            var vcs = navi.viewControllers
+            vcs = vcs.filter {
+                if ($0 is JoinRoomViewController) { return false }
+                if ($0 is CreateClassRoomViewController) { return false }
+                if isStop, ($0 is RoomDetailViewController) { return false }
+                return true
+            }
+            if !isStop {
+                if !vcs.contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == state.roomUUID }) {
+                    if let info = list.first(where: { $0.roomUUID == state.roomUUID }) {
+                        let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withListinfo: info)
+                        vcs.append(detailVC)
+                    } else {
+                        ApiProvider.shared.request(fromApi: RoomInfoRequest(uuid: state.roomUUID)) { result in
+                            switch result {
+                            case .success(let r):
+                                let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: r.roomInfo, roomUUID: state.roomUUID)
+                                vcs.append(detailVC)
+                                navi.setViewControllers(vcs, animated: false)
+                            case .failure: return
+                            }
+                        }
+                    }
+                }
+            }
+            navi.setViewControllers(vcs, animated: false)
+        }
+    }
+    
     @objc func onHomeShouldUpdateNotification(_ noti: Notification) {
         loadRooms(nil)
     }
     
     // MARK: - Private
     func observeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onHomeShouldUpdateNotification(_:)), name: .init(rawValue: "homeShouldUpdateListNotification"), object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(onHomeShouldUpdateNotification(_:)),
+                                               name: .init(rawValue: "homeShouldUpdateListNotification"),
+                                               object: nil)
+    }
+    
+    func observeClassLeavingNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(onClassLeavingNotification(_:)),
+                                               name: classRoomLeavingNotificationName,
+                                               object: nil)
     }
     
     func setupViews() {
@@ -392,7 +454,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
         let vc = RoomDetailViewControllerFactory.getRoomDetail(withListinfo: item)
-        splitViewController?.show(vc)
+        mainContainer?.push(vc)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

@@ -43,7 +43,7 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.centerY.equalTo(iconImage.snp.bottom).inset(13)
             make.width.height.equalTo(10)
         }
-        convertingActivityView.transform = .init(scaleX: 0.7, y: 0.7)
+        convertingActivityView.transform = .init(scaleX: 0.5, y: 0.5)
         
         let line = UIView(frame: .zero)
         line.backgroundColor = .borderColor

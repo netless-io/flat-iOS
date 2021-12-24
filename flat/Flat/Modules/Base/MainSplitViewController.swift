@@ -21,6 +21,12 @@ extension UISplitViewController {
 }
 
 extension UIViewController {
+    var mainContainer: MainContainer? {
+        if let s = mainSplitViewController { return s }
+        if let tab = navigationController?.tabBarController as? MainTabBarController { return tab }
+        return nil
+    }
+    
     var mainSplitViewController: MainSplitViewController? {
         if let vc = presentingViewController as? MainSplitViewController {
             return vc
@@ -39,6 +45,9 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     }
     
     var canShowDetail: Bool {
+        if #available(iOS 14.0, *) {
+            if style == .unspecified { return false }
+        }
         if isCollapsed || displayMode == .secondaryOnly { return false }
         return true
     }
@@ -108,3 +117,4 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         }
     }
 }
+

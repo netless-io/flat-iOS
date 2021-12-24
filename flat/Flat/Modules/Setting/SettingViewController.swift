@@ -123,8 +123,8 @@ class SettingViewController: UITableViewController {
                 } else {
                     (UIApplication.shared.delegate as? AppDelegate)?.launch?.reboot()
                 }
-                UIApplication.shared.topViewController?.splitViewController?.showDetailViewController(SettingViewController(), sender: false)
-                print(LocaleManager.languageCode)
+                UIApplication.shared.topViewController?.mainContainer?.push(SettingViewController())
+                print("local update", LocaleManager.languageCode)
             }))
         }
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .destructive, handler: nil))

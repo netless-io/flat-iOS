@@ -12,6 +12,8 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
+let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
+
 class ClassRoomViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -69,6 +71,7 @@ class ClassRoomViewController: UIViewController {
         self.whiteboardViewController = whiteboardViewController
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
+        modalTransitionStyle = .flipHorizontal
         
         let alertProvider = DefaultAlertProvider(root: self)
         
@@ -477,11 +480,16 @@ class ClassRoomViewController: UIViewController {
         rtcViewController.viewModel.rtc.leave()
             .subscribe()
             .disposed(by: rx.disposeBag)
+        
+        let state = viewModel.state
         if let presenting = presentingViewController {
             presenting.dismiss(animated: true, completion: nil)
         } else {
             navigationController?.popViewController(animated: true)
         }
+        NotificationCenter.default.post(name: classRoomLeavingNotificationName,
+                                        object: nil,
+                                        userInfo: ["state": state])
     }
     
     // MARK: - Lazy

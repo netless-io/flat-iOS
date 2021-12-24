@@ -27,6 +27,17 @@ class BaseNavigationViewController: UINavigationController {
         }
     }
     
+    override func popViewController(animated: Bool) -> UIViewController? {
+        super.popViewController(animated: animated)
+    }
+    
+    override func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
+        if viewControllers.count > 1 {
+            viewControllers.last?.hidesBottomBarWhenPushed = true
+        }
+        super.setViewControllers(viewControllers, animated: animated)
+    }
+    
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if viewControllers.count == 1 {
             viewController.hidesBottomBarWhenPushed = true

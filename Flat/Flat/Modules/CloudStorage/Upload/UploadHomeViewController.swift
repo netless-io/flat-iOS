@@ -49,7 +49,7 @@ class UploadHomeViewController: UIViewController {
             case .audio, .doc:
                 let vc = UIDocumentPickerViewController(forOpeningContentTypes: type.utTypes)
                 vc.delegate = self
-                splitViewController?.present(vc, animated: true, completion: nil)
+                mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             }
         } else {
             switch type {
@@ -58,17 +58,17 @@ class UploadHomeViewController: UIViewController {
                 vc.mediaTypes = type.allowedUTStrings
                 vc.videoExportPreset = AVAssetExportPresetPassthrough
                 vc.delegate = self
-                splitViewController?.present(vc, animated: true, completion: nil)
+                mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             case .audio, .doc:
                 let vc = UIDocumentPickerViewController(documentTypes: type.allowedUTStrings, in: .open)
                 vc.delegate = self
-                splitViewController?.present(vc, animated: true, completion: nil)
+                mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             }
         }
     }
     
     @objc func onClickUploadList() {
-        mainSplitViewController?.present(tasksViewController, animated: true, completion: nil)
+        mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
     }
     
     func uploadFile(url: URL, region: Region, shouldAccessingSecurityScopedResource: Bool) {
@@ -93,7 +93,7 @@ class UploadHomeViewController: UIViewController {
             })
             result = (newTask, result.tracker)
             tasksViewController.appendTask(task: result.task, fileURL: url, subject: result.tracker)
-            mainSplitViewController?.present(tasksViewController, animated: true, completion: nil)
+            mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
         }
         catch {
             print(error)

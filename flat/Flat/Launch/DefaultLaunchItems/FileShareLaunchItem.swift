@@ -42,12 +42,12 @@ class FileShareLaunchItem: LaunchItem {
     
     func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) {
         UIApplication.shared.topViewController?.showCheckAlert(message: NSLocalizedString("Got New File Alert", comment: ""), completionHandler: {
-            guard let splitViewController = UIApplication.shared.topViewController?.mainSplitViewController else { return }
-            if let _ = splitViewController.presentedViewController {
-                splitViewController.dismiss(animated: false, completion: nil)
+            guard let mainContainer = UIApplication.shared.topViewController?.mainContainer else { return }
+            if let _ = mainContainer.concreteViewController.presentedViewController {
+                mainContainer.concreteViewController.dismiss(animated: false, completion: nil)
             }
             let vc = UploadHomeViewController()
-            splitViewController.show(vc)
+            mainContainer.push(vc)
             // TODO: The temp file does not deleted, in tmp dir
             vc.uploadFile(url: self.url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
         })

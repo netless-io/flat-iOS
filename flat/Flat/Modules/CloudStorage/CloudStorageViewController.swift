@@ -67,7 +67,7 @@ class CloudStorageViewController: UIViewController {
     // MARK: - Actions
     @objc func onClickAdd() {
         let vc = UploadHomeViewController()
-        splitViewController?.show(vc)
+        mainContainer?.push(vc)
     }
     
     @objc func loadFirstPageData() {
@@ -279,7 +279,7 @@ class CloudStorageViewController: UIViewController {
         guard let index = container.items.firstIndex(of: item) else { return }
         let cell = tableView.cellForRow(at: .init(row: index, section: 0))
         let vc = UIActivityViewController(activityItems: [item.fileURL], applicationActivities: nil)
-        mainSplitViewController?.popoverViewController(viewController: vc, fromSource: cell)
+        mainContainer?.concreteViewController.popoverViewController(viewController: vc, fromSource: cell)
     }
     
     func rename(_ item: StorageFileModel) {
@@ -315,7 +315,7 @@ class CloudStorageViewController: UIViewController {
     
     func preview(_ item: StorageFileModel) {
         if let _ = previewingController {
-            mainSplitViewController?.cleanSecondary()
+            mainContainer?.removeTop()
         }
         cleanPreviewResource()
         previewingUUID = item.fileUUID
@@ -329,7 +329,7 @@ class CloudStorageViewController: UIViewController {
             }
             vc.player = player
             player.play()
-            mainSplitViewController?.present(vc, animated: true, completion: nil)
+            mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
         case .img:
             showActivityIndicator()
             KingfisherManager.shared.retrieveImageDiskCachePath(fromURL: item.fileURL) { [weak self] result in
@@ -368,12 +368,7 @@ class CloudStorageViewController: UIViewController {
                     vc.delegate = self
                     vc.dismissButtonStyle = .close
                     vc.title = item.fileName
-                    guard let containerVC = mainSplitViewController else { return }
-                    if containerVC.canShowDetail {
-                        containerVC.show(vc)
-                    } else {
-                        containerVC.present(vc, animated: true, completion: nil)
-                    }
+                    mainContainer?.pushOnSplitPresentOnCompact(vc)
                     return
                 }
             }
@@ -546,12 +541,7 @@ extension CloudStorageViewController: UITableViewDelegate, UITableViewDataSource
             vc.clickBackHandler = { [weak self] in
                 self?.cleanPreviewResource()
             }
-            guard let containerVC = mainSplitViewController else { return }
-            if containerVC.canShowDetail {
-                containerVC.show(vc)
-            } else {
-                containerVC.present(vc, animated: true, completion: nil)
-            }
+            mainContainer?.pushOnSplitPresentOnCompact(vc)
         }
         catch {
             print(error)
@@ -616,7 +606,7 @@ extension CloudStorageViewController: QLPreviewControllerDataSource {
 
 extension CloudStorageViewController: SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        mainSplitViewController?.cleanSecondary()
+        mainContainer?.removeTop()
         previewingUUID = nil
     }
 }

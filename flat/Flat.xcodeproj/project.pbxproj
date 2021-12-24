@@ -195,6 +195,7 @@
 		8ACB64CD2775733200225621 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8ACB64CA2775733200225621 /* README.txt */; };
 		8ACB64CE2775733200225621 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ACB64CC2775733200225621 /* libWeChatSDK.a */; };
 		8ACB64D027758DAE00225621 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64CF27758DAE00225621 /* Region.swift */; };
+		8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64D12775B02D00225621 /* MainContainer.swift */; };
 		8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */; };
 		8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */; };
 		8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */; };
@@ -440,6 +441,7 @@
 		8ACB64CB2775733200225621 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
 		8ACB64CC2775733200225621 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		8ACB64CF27758DAE00225621 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		8ACB64D12775B02D00225621 /* MainContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainer.swift; sourceTree = "<group>"; };
 		8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopOver.swift"; sourceTree = "<group>"; };
 		8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySplitSecondaryViewController.swift; sourceTree = "<group>"; };
@@ -804,6 +806,7 @@
 				8A270B8A27192FEE00450DC6 /* BaseNavigationViewController.swift */,
 				8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */,
 				8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */,
+				8ACB64D12775B02D00225621 /* MainContainer.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1516,6 +1519,7 @@
 				8AC0535F274C72300064CF84 /* WhiteboardViewController.swift in Sources */,
 				8A05C33C2760411D009BCA79 /* MultipartFormData.swift in Sources */,
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
+				8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */,
 				8AD2EF6B27730A1800087280 /* FlatServerError.swift in Sources */,
 				8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */,
 				8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */,

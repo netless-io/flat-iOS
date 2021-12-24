@@ -192,7 +192,7 @@ class CreateClassRoomViewController: UIViewController {
         let createQuest = CreateRoomRequest(beginTime: startDate,
                           title: title,
                           type: currentRoomType)
-        
+
         sender.isEnabled = false
         ApiProvider.shared.request(fromApi: createQuest)
             .flatMap { info -> Observable<(RoomPlayInfo, RoomInfo)> in
@@ -212,14 +212,7 @@ class CreateClassRoomViewController: UIViewController {
                                                                      deviceStatus: deviceStatus)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
-                
-                let split = weakSelf.splitViewController
-                let navi = weakSelf.navigationController
-                let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: roomInfo, roomUUID: playInfo.roomUUID)
-                
-                split?.present(vc, animated: true, completion: nil)
-                navi?.popViewController(animated: false)
-                split?.showDetailViewController(detailVC, sender: nil)
+                weakSelf.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             }, onFailure: { weakSelf, error in
                 sender.isEnabled = true
                 weakSelf.showAlertWith(message: error.localizedDescription)

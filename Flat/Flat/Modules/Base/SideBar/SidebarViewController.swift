@@ -93,6 +93,6 @@ class SidebarViewController: UIViewController, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if mainSplitViewController?.viewController(for: .supplementary) == controllers[indexPath.row] { return }
         mainSplitViewController?.setViewController(controllers[indexPath.row], for: .supplementary)
-        mainSplitViewController?.cleanSecondary()
+        mainSplitViewController?.removeTop()
     }
 }
