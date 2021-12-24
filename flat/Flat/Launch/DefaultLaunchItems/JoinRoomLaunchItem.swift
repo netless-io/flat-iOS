@@ -75,7 +75,12 @@ class JoinRoomLaunchItem: LaunchItem {
             return
         }
         mainVC.concreteViewController.showActivityIndicator()
-        Observable.zip(RoomPlayInfo.fetchByJoinWith(uuid: id), RoomInfo.fetchInfoBy(uuid: id))
+
+        
+        RoomPlayInfo.fetchByJoinWith(uuid: id)
+            .concatMap { info in
+                return RoomInfo.fetchInfoBy(uuid: id).map { (info, $0) }
+            }
             .asSingle()
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { playInfo, roomInfo  in

@@ -17,13 +17,15 @@ class FileShareLaunchItem: LaunchItem {
         }
         var temp = FileManager.default.temporaryDirectory
         temp.appendPathComponent(url.lastPathComponent)
-        
+        let success = url.startAccessingSecurityScopedResource()
+        print("get \(url) access \(success)")
         do {
             if FileManager.default.fileExists(atPath: temp.path) {
                 try? FileManager.default.removeItem(at: temp)
             }
             try FileManager.default.copyItem(at: url, to: temp)
             self.url = temp
+            _ = url.stopAccessingSecurityScopedResource()
             return true
         }
         catch {
