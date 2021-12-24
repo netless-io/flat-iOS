@@ -14,4 +14,5 @@ enum Region: String, Codable {
     case SG = "sg"
     case IN_MUM = "in-mum"
     case GB_LON = "gb-lon"
+    case none = "none"
 }
