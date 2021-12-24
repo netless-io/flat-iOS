@@ -192,6 +192,8 @@
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
 		8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */; };
+		8ACB64CD2775733200225621 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8ACB64CA2775733200225621 /* README.txt */; };
+		8ACB64CE2775733200225621 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ACB64CC2775733200225621 /* libWeChatSDK.a */; };
 		8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */; };
 		8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */; };
 		8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */; };
@@ -431,6 +433,11 @@
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomUsersViewController.swift; sourceTree = "<group>"; };
+		8ACB64C82775733200225621 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		8ACB64C92775733200225621 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		8ACB64CA2775733200225621 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		8ACB64CB2775733200225621 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
+		8ACB64CC2775733200225621 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopOver.swift"; sourceTree = "<group>"; };
 		8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySplitSecondaryViewController.swift; sourceTree = "<group>"; };
@@ -480,6 +487,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8ACB64CE2775733200225621 /* libWeChatSDK.a in Frameworks */,
 				9AE3AF17B16B9CA81A411696 /* Pods_Flat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1174,6 +1182,26 @@
 			path = About;
 			sourceTree = "<group>";
 		};
+		8ACB64C62775733200225621 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				8ACB64C72775733200225621 /* OpenSDK1.9.2_NoPay */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		8ACB64C72775733200225621 /* OpenSDK1.9.2_NoPay */ = {
+			isa = PBXGroup;
+			children = (
+				8ACB64C82775733200225621 /* WXApi.h */,
+				8ACB64C92775733200225621 /* WXApiObject.h */,
+				8ACB64CA2775733200225621 /* README.txt */,
+				8ACB64CB2775733200225621 /* WechatAuthSDK.h */,
+				8ACB64CC2775733200225621 /* libWeChatSDK.a */,
+			);
+			path = OpenSDK1.9.2_NoPay;
+			sourceTree = "<group>";
+		};
 		8ACDD8A427293D6500007B46 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1252,6 +1280,7 @@
 				8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */,
 				8A05C2B02758BBBF009BCA79 /* FlatStage.entitlements */,
 				8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */,
+				8ACB64C62775733200225621 /* Vendor */,
 				8A11CBE0271FEBB1001D0B1F /* Components */,
 				8A9ACBF9271D602600E7E7CE /* Views */,
 				8A9ACBF4271D50F000E7E7CE /* EnvConfigs */,
@@ -1407,6 +1436,7 @@
 				8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */,
 				8A270B942719607700450DC6 /* LoginViewController.xib in Resources */,
 				8A05C3522760ADFC009BCA79 /* UploadTaskTableViewCell.xib in Resources */,
+				8ACB64CD2775733200225621 /* README.txt in Resources */,
 				8A270B9027195A1200450DC6 /* Localizable.strings in Resources */,
 				8AD7C6C927157EA7001C4AAD /* LaunchScreen.storyboard in Resources */,
 				8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */,
@@ -1812,7 +1842,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
+				);
 				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2062,7 +2095,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
+				);
 				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2189,7 +2225,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
+				);
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2291,7 +2330,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
+				);
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-STAGE";
