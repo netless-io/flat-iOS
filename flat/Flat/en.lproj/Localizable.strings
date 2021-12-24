@@ -53,10 +53,10 @@
 "Interacting" = "Interacting";
 "Stop All Interacting" = "Stop All Interacting";
 "inviteDescribe" = "invite you to join the Flat classroom";
-"Room Subject" = "Room Subject";
+"Room Subject" = "Subject";
 "Room Number" = "Room Number";
 "Room Number Input PlaceHolder" = "Please enter the room number";
-"Start Time" = "Start Time";
+"Start Time" = "Start";
 "Copy Invite Link" = "Copy Link";
 "Copy Success" = "Copy Success";
 "Join Link" = "Join Link";

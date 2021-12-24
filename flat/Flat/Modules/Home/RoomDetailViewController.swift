@@ -300,13 +300,9 @@ class RoomDetailViewController: UIViewController {
             }
             return
         }
-        
-        let vc = InviteViewController(roomTitle: detailInfo.title,
-                                      roomTime: detailInfo.beginTime,
-                                      roomEndTime: detailInfo.endTime,
-                                      roomNumber: info.formatterInviteCode,
-                                      roomUUID: info.roomUUID,
-                                      userName: AuthStore.shared.user?.name ?? "")
+        let vc = ShareManager.createShareActivityViewController(roomUUID: info.roomUUID,
+                                                                beginTime: detailInfo.beginTime,
+                                                                title: detailInfo.title)
         popoverViewController(viewController: vc, fromSource: sender)
     }
     

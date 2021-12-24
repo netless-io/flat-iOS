@@ -40,7 +40,7 @@ class ClassRoomViewController: UIViewController {
     let whiteboardViewController: WhiteboardViewController
     let rtcViewController: RtcViewController
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true)
-    let inviteViewController: InviteViewController
+    let inviteViewController: UIViewController
     let usersViewController: ClassRoomUsersViewController
     var chatVC: ChatViewController?
     
@@ -62,12 +62,9 @@ class ClassRoomViewController: UIViewController {
          userName: String) {
         self.usersViewController = ClassRoomUsersViewController(userUUID: userUUID,
                                                                 roomOwnerRtmUUID: roomOwnerRtmUUID)
-        self.inviteViewController = .init(roomTitle: roomTitle,
-                                          roomTime: beginTime,
-                                          roomEndTime: endTime,
-                                          roomNumber: roomNumber,
-                                          roomUUID: roomUUID,
-                                          userName: userName)
+        self.inviteViewController = ShareManager.createShareActivityViewController(roomUUID: roomUUID,
+                                                                                   beginTime: beginTime,
+                                                                                   title: roomTitle)
         self.rtcViewController = rtcViewController
         self.whiteboardViewController = whiteboardViewController
         super.init(nibName: nil, bundle: nil)
