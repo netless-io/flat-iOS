@@ -12,8 +12,9 @@ struct ConversionTaskProgressRequest: NetlessRequest {
     let uuid: String
     let type: ConversionTaskType
     let token: String
+    let region: Region
     
-    var header: [String : String] { ["token": token] }
+    var header: [String : String] { ["token": token, "region": region.rawValue] }
     var path: String { "/services/conversion/tasks/\(uuid)" }
     var task: Task { .requestURLEncodable(parameters: ["type": type.rawValue]) }
     let responseType = ConvertProgressDetail.self

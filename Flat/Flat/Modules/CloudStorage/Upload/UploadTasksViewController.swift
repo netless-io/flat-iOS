@@ -54,7 +54,10 @@ class UploadTasksViewController: UIViewController {
                 UploadService.shared.removeTask(fromURL: task.0.url)
                 tasks.remove(at: indexPath.row)
                 do {
-                    let result = try UploadService.shared.createUploadTaskFrom(fileURL: task.0.url, shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
+                    let result = try UploadService.shared
+                        .createUploadTaskFrom(fileURL: task.0.url,
+                                              region: .CN_HZ,
+                                              shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
                     appendTask(task: result.task, fileURL: task.0.url, subject: result.tracker)
                 }
                 catch {

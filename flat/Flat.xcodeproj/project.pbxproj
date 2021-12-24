@@ -194,6 +194,7 @@
 		8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */; };
 		8ACB64CD2775733200225621 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8ACB64CA2775733200225621 /* README.txt */; };
 		8ACB64CE2775733200225621 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ACB64CC2775733200225621 /* libWeChatSDK.a */; };
+		8ACB64D027758DAE00225621 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64CF27758DAE00225621 /* Region.swift */; };
 		8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */; };
 		8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */; };
 		8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */; };
@@ -438,6 +439,7 @@
 		8ACB64CA2775733200225621 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		8ACB64CB2775733200225621 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
 		8ACB64CC2775733200225621 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		8ACB64CF27758DAE00225621 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopOver.swift"; sourceTree = "<group>"; };
 		8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySplitSecondaryViewController.swift; sourceTree = "<group>"; };
@@ -1148,6 +1150,7 @@
 				8A97EBB02719993C00965185 /* JoinRoomInfo.swift */,
 				8A9FB394272154B800F6F06F /* Message.swift */,
 				8A05C32F275F5044009BCA79 /* UploadInfo.swift */,
+				8ACB64CF27758DAE00225621 /* Region.swift */,
 			);
 			path = Flat;
 			sourceTree = "<group>";
@@ -1685,6 +1688,7 @@
 				8A9ACC05271E726B00E7E7CE /* RoomStartStatus.swift in Sources */,
 				8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */,
 				8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */,
+				8ACB64D027758DAE00225621 /* Region.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
 				8A3460CF272952490066063E /* ClassRoomMode.swift in Sources */,

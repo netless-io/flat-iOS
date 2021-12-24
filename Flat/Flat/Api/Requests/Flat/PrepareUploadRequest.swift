@@ -11,7 +11,7 @@ import Foundation
 struct PrepareUploadRequest: FlatRequest, Codable {
     let fileName: String
     let fileSize: Int
-    var region: String = "cn-hz"
+    var region: Region
     var path: String { "/v1/cloud-storage/alibaba-cloud/upload/start" }
     var method: HttpMethod { .post }
     var task: Task { .requestJSONEncodable(encodable: self) }

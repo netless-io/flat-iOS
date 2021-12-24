@@ -71,9 +71,12 @@ class UploadHomeViewController: UIViewController {
         mainSplitViewController?.present(tasksViewController, animated: true, completion: nil)
     }
     
-    func uploadFile(url: URL, shouldAccessingSecurityScopedResource: Bool) {
+    func uploadFile(url: URL, region: Region, shouldAccessingSecurityScopedResource: Bool) {
         do {
-            var result = try UploadService.shared.createUploadTaskFrom(fileURL: url, shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
+            var result = try UploadService.shared
+                .createUploadTaskFrom(fileURL: url,               
+                                      region: region,
+                                      shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
             let newTask = result.task.do(onSuccess: { fillUUID in
                 if ConvertService.isFileConvertible(withFileURL: url) {
                     ConvertService.startConvert(fileUUID: fillUUID) { [weak self] result in
@@ -156,7 +159,7 @@ extension UploadHomeViewController: UIImagePickerControllerDelegate, UINavigatio
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         if let url = info[.imageURL] as? URL {
-            uploadFile(url: url, shouldAccessingSecurityScopedResource: false)
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
         } else if let url = info[.mediaURL] as? URL {
             let fileName = UUID().uuidString
             DispatchQueue.main.async {
@@ -177,7 +180,7 @@ extension UploadHomeViewController: UIImagePickerControllerDelegate, UINavigatio
                 case .failure(let error):
                     self.toast(error.localizedDescription)
                 case .success(let convertedUrl):
-                    self.uploadFile(url: convertedUrl, shouldAccessingSecurityScopedResource: false)
+                    self.uploadFile(url: convertedUrl, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
                 }
             }
             self.exportingTask = task
@@ -189,7 +192,7 @@ extension UploadHomeViewController: UIImagePickerControllerDelegate, UINavigatio
 extension UploadHomeViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
-        uploadFile(url: url, shouldAccessingSecurityScopedResource: true)
+        uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
     }
 }
 
@@ -224,7 +227,7 @@ extension UploadHomeViewController: PHPickerViewControllerDelegate {
                         self.toast("create temp image file error")
                         return
                     }
-                    self.uploadFile(url: path, shouldAccessingSecurityScopedResource: false)
+                    self.uploadFile(url: path, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
                 }
             }
             return
@@ -277,7 +280,7 @@ extension UploadHomeViewController: PHPickerViewControllerDelegate {
                     }
                     switch result {
                     case .success(let url):
-                        self.uploadFile(url: url, shouldAccessingSecurityScopedResource: false)
+                        self.uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
                     case .failure(let error):
                         self.toast(error.localizedDescription)
                     }

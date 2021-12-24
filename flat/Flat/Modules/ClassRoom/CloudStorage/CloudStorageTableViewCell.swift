@@ -36,12 +36,14 @@ class CloudStorageTableViewCell: UITableViewCell {
         }
         iconImage.snp.makeConstraints { $0.width.equalTo(32) }
         addImage.snp.makeConstraints { $0.width.equalTo(24) }
-        iconImage.addSubview(convertingIcon)
-        convertingIcon.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(2)
-            make.bottom.equalToSuperview().inset(6)
+        
+        contentView.addSubview(convertingActivityView)
+        convertingActivityView.snp.makeConstraints { make in
+            make.centerX.equalTo(iconImage.snp.right).inset(10)
+            make.centerY.equalTo(iconImage.snp.bottom).inset(13)
+            make.width.height.equalTo(10)
         }
-        convertingIcon.isHidden = true
+        convertingActivityView.transform = .init(scaleX: 0.7, y: 0.7)
         
         let line = UIView(frame: .zero)
         line.backgroundColor = .borderColor
@@ -55,18 +57,13 @@ class CloudStorageTableViewCell: UITableViewCell {
     }
     
     func stopConvertingAnimation() {
-        convertingIcon.isHidden = true
-        convertingIcon.layer.removeAnimation(forKey: "r")
+        convertingActivityView.isHidden = true
+        convertingActivityView.stopAnimating()
     }
     
     func startConvertingAnimation() {
-        convertingIcon.isHidden = false
-        let animation = CABasicAnimation(keyPath: "transform.rotation")
-        animation.fromValue = 0
-        animation.toValue = CGFloat.pi * 2
-        animation.duration = 1
-        animation.repeatCount = .infinity
-        convertingIcon.layer.add(animation, forKey: "r")
+        convertingActivityView.isHidden = false
+        convertingActivityView.startAnimating()
     }
     
     
@@ -84,8 +81,17 @@ class CloudStorageTableViewCell: UITableViewCell {
             activity.stopAnimating()
         }
     }
-    
-    lazy var convertingIcon = UIImageView(image: UIImage(named: "converting"))
+
+    lazy var convertingActivityView: UIActivityIndicatorView = {
+        let view: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            view = UIActivityIndicatorView(style: .medium)
+        } else {
+            view = UIActivityIndicatorView(style: .gray)
+        }
+        view.color = .brandColor
+        return view
+    }()
     
     lazy var activity: UIActivityIndicatorView = {
         if #available(iOS 13.0, *) {

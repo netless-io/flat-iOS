@@ -140,7 +140,7 @@ class CloudStorageListViewController: UIViewController {
             .map { [weak self] _ -> [Observable<Void>] in
                 let convertingItems = self?.convertingItems ?? []
                 return convertingItems
-                    .map { ConversionTaskProgressRequest(uuid: $0.taskUUID, type: $0.taskType!, token: $0.taskToken)}
+                    .map { ConversionTaskProgressRequest(uuid: $0.taskUUID, type: $0.taskType!, token: $0.taskToken, region: $0.region)}
                     .map {
                         ApiProvider.shared.request(fromApi: $0)
                             .do(onNext: { [weak self] info in
@@ -293,7 +293,8 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
             fileSelectTask = item
             let req = ConversionTaskProgressRequest(uuid: item.taskUUID,
                                                     type: taskType,
-                                                    token: item.taskToken)
+                                                    token: item.taskToken,
+                                                    region: item.region)
             ApiProvider.shared.request(fromApi: req) { [weak self] result in
                 guard let self = self else { return }
                 self.fileSelectTask = nil

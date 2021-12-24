@@ -233,7 +233,7 @@ class CloudStorageViewController: UIViewController {
             .map { [weak self] _ -> [Observable<Void>] in
                 let convertingItems = self?.convertingItems ?? []
                 return convertingItems
-                    .map { ConversionTaskProgressRequest(uuid: $0.taskUUID, type: $0.taskType!, token: $0.taskToken)}
+                    .map { ConversionTaskProgressRequest(uuid: $0.taskUUID, type: $0.taskType!, token: $0.taskToken, region: $0.region)}
                     .map {
                         ApiProvider.shared.request(fromApi: $0)
                             .do(onNext: { [weak self] info in
@@ -349,7 +349,7 @@ class CloudStorageViewController: UIViewController {
             // Preview dynamic with web preview
             if ConvertService.convertingTaskTypeFor(url: item.fileURL) == .dynamic {
                 let formatURL = item.fileURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
-                let link = Env().webBaseURL + "/preview/\(formatURL)/\(item.taskToken)/\(item.taskUUID)/\(item.region)/"
+                let link = Env().webBaseURL + "/preview/\(formatURL)/\(item.taskToken)/\(item.taskUUID)/\(item.region.rawValue)/"
                 if let url = URL(string: link) {
                     let config = SFSafariViewController.Configuration()
                     config.barCollapsingEnabled = true
@@ -568,6 +568,10 @@ extension CloudStorageViewController: UITableViewDelegate, UITableViewDataSource
         let cell = tableView.cellForRow(at: indexPath)
         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertVC.addAction(.init(title: NSLocalizedString("Preview", comment: ""), style: .default, handler: { [unowned self] _ in
+            if item.convertStep == .converting {
+                self.toast(NSLocalizedString("Video Converting", comment: ""))
+                return
+            }
             self.preview(item)
         }))
         alertVC.addAction(.init(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { [unowned self] _ in

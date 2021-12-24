@@ -49,7 +49,7 @@ class FileShareLaunchItem: LaunchItem {
             let vc = UploadHomeViewController()
             splitViewController.show(vc)
             // TODO: The temp file does not deleted, in tmp dir
-            vc.uploadFile(url: self.url, shouldAccessingSecurityScopedResource: false)
+            vc.uploadFile(url: self.url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
         })
     }
 }
