@@ -3,9 +3,17 @@
 
 ---
 
-
-
 # Flat-iOS 版本记录
+
+## [1.0.2] - 2021-12-24
+
+### 修复
+- 修复由于没有区分云盘Region导致的转码失败
+- 修复由于打开加入房间的链接请求没有顺序执行导致的加入失败
+
+### 优化
+- 分享视图由文本模式变为UIActivity样式
+- 由于15.1的UISplitViewController的手机端模态返回导致导航栏错位，现在在iOS端用UITabbarController取代了UISplitViewController
 
 ## [1.0.1] - 2021-12-23
 
