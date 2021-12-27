@@ -5,6 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    
 
 jobs:
   build:
@@ -44,6 +46,11 @@ jobs:
       - name: PodInstall
         run: |
           pod install
+      - name: BuildNumber
+        uses: yanamura/ios-bump-version@v1
+        with:
+          version: ''
+          build-number: ${{github.run_number}}
       - name: Archive
         run: |
           sh archive.sh
