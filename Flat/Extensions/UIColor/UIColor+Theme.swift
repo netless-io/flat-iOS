@@ -47,7 +47,7 @@ extension UIColor {
     }
     
     static var commonBG: UIColor {
-        UIColor(named: "CommonBGColor")!
+        UIColor(named: "GrayBGColor")!
     }
     
     static var blackBG: UIColor {
