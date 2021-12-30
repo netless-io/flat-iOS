@@ -549,7 +549,7 @@ extension CloudStorageViewController: UITableViewDelegate, UITableViewDataSource
         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertVC.addAction(.init(title: NSLocalizedString("Preview", comment: ""), style: .default, handler: { [unowned self] _ in
             if item.convertStep == .converting {
-                self.toast(NSLocalizedString("Video Converting", comment: ""))
+                self.toast(NSLocalizedString("FileIsConverting", comment: ""))
                 return
             }
             self.preview(item)
