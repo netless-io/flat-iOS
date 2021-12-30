@@ -17,8 +17,8 @@ class SideBarCell: UICollectionViewListCell {
         else {
             return
         }
-        config.imageProperties.tintColor = state.isSelected ? .whiteBG : .blackBG
-        config.textProperties.color = state.isSelected ? .whiteBG : .text
+        config.imageProperties.tintColor = state.isSelected ? .sideBarSelected: .sideBarNormal
+        config.textProperties.color = state.isSelected ? .sideBarTextSelected: .sideBarTextNormal
         self.contentConfiguration = config
         self.backgroundConfiguration?.backgroundColor = state.isSelected ? self.tintColor : .clear
     }
