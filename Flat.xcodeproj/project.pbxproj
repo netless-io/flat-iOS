@@ -156,6 +156,7 @@
 		8A9FB3CB2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CA2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift */; };
 		8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CC2722C0A100F6F06F /* HistoryMessageRequest.swift */; };
 		8A9FB3D02722C14B00F6F06F /* AgoraMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CF2722C14B00F6F06F /* AgoraMessage.swift */; };
+		8AA434E1277D8E9E003681E6 /* loading_without_bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */; };
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
 		8AA97EA02741F20300C3F92E /* ClassRoomState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97E9F2741F20300C3F92E /* ClassRoomState.swift */; };
 		8AA97EA22741F83A00C3F92E /* AnyChannelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* AnyChannelHandler.swift */; };
@@ -393,6 +394,7 @@
 		8A9FB3CA2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+AnyKeyDecodable.swift"; sourceTree = "<group>"; };
 		8A9FB3CC2722C0A100F6F06F /* HistoryMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryMessageRequest.swift; sourceTree = "<group>"; };
 		8A9FB3CF2722C14B00F6F06F /* AgoraMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraMessage.swift; sourceTree = "<group>"; };
+		8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_without_bg.gif; sourceTree = "<group>"; };
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		8AA97E9F2741F20300C3F92E /* ClassRoomState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomState.swift; sourceTree = "<group>"; };
 		8AA97EA12741F83A00C3F92E /* AnyChannelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyChannelHandler.swift; sourceTree = "<group>"; };
@@ -1266,6 +1268,7 @@
 				8A2D0B8F271587C000123207 /* Launch */,
 				8AD7C6C527157EA7001C4AAD /* Assets.xcassets */,
 				8ABF362E2747B355000D5003 /* loading.gif */,
+				8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */,
 				8AD7C6C727157EA7001C4AAD /* LaunchScreen.storyboard */,
 				8AD7C6CA27157EA7001C4AAD /* Info.plist */,
 				8A270B9227195A1200450DC6 /* Localizable.strings */,
@@ -1406,6 +1409,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AA434E1277D8E9E003681E6 /* loading_without_bg.gif in Resources */,
 				8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */,
 				8A270B942719607700450DC6 /* LoginViewController.xib in Resources */,
 				8A05C3522760ADFC009BCA79 /* UploadTaskTableViewCell.xib in Resources */,

@@ -12,9 +12,17 @@ import Kingfisher
 fileprivate class FlatLoadingView: UIView {
     var cancelHandler: (()->Void)?
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        let isDark = traitCollection.userInterfaceStyle == .dark
+        let path = Bundle.main.url(forResource:  isDark ? "loading_without_bg" : "loading", withExtension: "gif")!
+        let resource = LocalFileImageDataProvider(fileURL: path)
+        loadingView.kf.setImage(with: resource)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = .whiteBG
         addSubview(loadingView)
         loadingView.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -55,9 +63,11 @@ fileprivate class FlatLoadingView: UIView {
     lazy var cancelButton = UIButton(type: .custom)
     
     lazy var loadingView: AnimatedImageView = {
-        let path = Bundle.main.url(forResource: "loading", withExtension: "gif")!
+        let path = Bundle.main.url(forResource: "loading_without_bg", withExtension: "gif")!
         let resource = LocalFileImageDataProvider(fileURL: path)
         let loadingImageView = AnimatedImageView()
+        loadingImageView.framePreloadCount = 30
+        loadingImageView.backgroundDecode = true
         loadingImageView.kf.setImage(with: resource)
         loadingImageView.contentMode = .scaleAspectFit
         return loadingImageView
