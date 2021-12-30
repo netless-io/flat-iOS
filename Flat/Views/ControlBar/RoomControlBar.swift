@@ -131,6 +131,10 @@ class RoomControlBar: UIView {
     lazy var foldButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.addTarget(self, action: #selector(onClickScale), for: .touchUpInside)
+        btn.traitCollectionUpdateHandler = { [weak btn] _ in
+            btn?.setImage(UIImage(named: "small_arr_down")?.tintColor(.controlNormal), for: .selected) // narrow
+            btn?.setImage(UIImage(named: "small_arr_top")?.tintColor(.controlNormal), for: .normal) // expand
+        }
         btn.setImage(UIImage(named: "small_arr_down")?.tintColor(.controlNormal), for: .selected) // narrow
         btn.setImage(UIImage(named: "small_arr_top")?.tintColor(.controlNormal), for: .normal) // expand
         return btn
