@@ -19,9 +19,6 @@ class ClassRoomViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return traitCollection.hasCompact ? .landscapeRight : .landscape
     }
-    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        return .landscapeRight
-    }
     override var prefersStatusBarHidden: Bool { traitCollection.verticalSizeClass == .compact }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
