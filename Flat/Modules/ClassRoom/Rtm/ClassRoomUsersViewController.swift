@@ -12,7 +12,7 @@ import RxCocoa
 
 class ClassRoomUsersViewController: UIViewController {
     let cellIdentifier = "cellIdentifier"
-
+    
     let userUUID: String
     let roomOwnerRtmUUID: String
     let isTeacher: Bool
@@ -80,7 +80,6 @@ class ClassRoomUsersViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.contentInset = .init(top: topView.bounds.height, left: 0, bottom: 8, right: 0)
         preferredContentSize = .init(width: 360, height: UIScreen.main.bounds.height * 0.67)
     }
     
@@ -104,7 +103,8 @@ class ClassRoomUsersViewController: UIViewController {
             make.height.equalTo(34)
         }
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(topView.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
         }
     }
     
@@ -163,15 +163,6 @@ class ClassRoomUsersViewController: UIViewController {
         return view
     }()
     
-    lazy var tableView: UITableView = {
-        let view = UITableView(frame: .zero, style: .plain)
-        view.contentInsetAdjustmentBehavior = .never
-        view.separatorStyle = .none
-        view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        view.rowHeight = 55
-        return view
-    }()
-    
     lazy var teacherLabel: UILabel = {
         let label = UILabel()
         label.textColor = .text
@@ -198,8 +189,8 @@ class ClassRoomUsersViewController: UIViewController {
         return view
     }()
     
-    lazy var teacherHeaderView: UIView = {
-        let view = UIView()
+    lazy var teacherHeaderView: UITableViewHeaderFooterView = {
+        let view = UITableViewHeaderFooterView()
         view.backgroundColor = .whiteBG
         let line = UIView()
         line.backgroundColor = .borderColor
@@ -228,6 +219,20 @@ class ClassRoomUsersViewController: UIViewController {
             make.height.equalTo(28)
         }
         stopInteractingButton.layer.cornerRadius = 14
+        return view
+    }()
+    
+    lazy var tableView: UITableView = {
+        let view = UITableView(frame: .zero, style: .plain)
+        view.contentInsetAdjustmentBehavior = .never
+        view.separatorStyle = .none
+        view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        view.rowHeight = 55
+        if #available(iOS 15.0, *) {
+            // F apple
+            view.sectionHeaderTopPadding = 0
+        } else {
+        }
         return view
     }()
 }
