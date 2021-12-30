@@ -63,7 +63,8 @@ class ClassRoomViewController: UIViewController {
                                                                 roomOwnerRtmUUID: roomOwnerRtmUUID)
         self.inviteViewController = ShareManager.createShareActivityViewController(roomUUID: roomUUID,
                                                                                    beginTime: beginTime,
-                                                                                   title: roomTitle)
+                                                                                   title: roomTitle,
+                                                                                   roomNumber: roomNumber)
         self.rtcViewController = rtcViewController
         self.whiteboardViewController = whiteboardViewController
         super.init(nibName: nil, bundle: nil)
@@ -120,7 +121,11 @@ class ClassRoomViewController: UIViewController {
     
     func updateLayout() {
         let safeInset = UIEdgeInsets.zero
-        let contentSize = view.bounds.inset(by: safeInset).size
+        var contentSize = view.bounds.inset(by: safeInset).size
+        // Height should be greater than width, for sometimes, user enter with portait orientation
+        if contentSize.height > contentSize.width {
+            contentSize = .init(width: contentSize.height, height: contentSize.width)
+        }
         let layoutOutput = layout.update(rtcHide: !settingVC.videoAreaOn.value, contentSize: contentSize)
         let x = layoutOutput.inset.left
         let y = layoutOutput.inset.top
