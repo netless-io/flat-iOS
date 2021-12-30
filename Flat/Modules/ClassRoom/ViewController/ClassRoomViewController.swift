@@ -297,8 +297,12 @@ class ClassRoomViewController: UIViewController {
             .drive(with: self, onNext: { weakSelf, _ in
                 // Hide the error 'room ban'
                 weakSelf.whiteboardViewController.view.isHidden = true
-                weakSelf.showAlertWith(message: NSLocalizedString("Leaving room soon", comment: "")) {
-                    weakSelf.leaveUIHierarchyAndStopSubModule()
+                // Only Teacher can stop the class,
+                // So Teacher do not have to receive the alert
+                if !weakSelf.viewModel.isTeacher {
+                    weakSelf.showAlertWith(message: NSLocalizedString("Leaving room soon", comment: "")) {
+                        weakSelf.leaveUIHierarchyAndStopSubModule()
+                    }
                 }
             })
             .disposed(by: rx.disposeBag)

@@ -241,14 +241,9 @@ class ClassRoomViewModel {
             if model.style == .destructive {
                 return self
                     .stopOperation()
-                    .flatMap { [weak self] in
-                        guard let self = self else { return .just(()) }
-                        return self.leaveRoomProcess()
-                    }
                     .asDriver(onErrorJustReturn: ())
                     .map { _ -> Bool in
-                        // The dismiss process will be completed by room status turning to 'Stop'
-                        return false
+                        return true
                     }
             } else {
                 return self
