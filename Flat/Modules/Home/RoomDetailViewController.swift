@@ -287,7 +287,8 @@ class RoomDetailViewController: UIViewController {
         }
         let vc = ShareManager.createShareActivityViewController(roomUUID: info.roomUUID,
                                                                 beginTime: detailInfo.beginTime,
-                                                                title: detailInfo.title)
+                                                                title: detailInfo.title,
+                                                                roomNumber: detailInfo.inviteCode)
         popoverViewController(viewController: vc, fromSource: sender)
     }
     

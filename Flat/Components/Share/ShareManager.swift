@@ -12,7 +12,8 @@ struct ShareManager {
     static func createShareActivityViewController(
         roomUUID: String,
         beginTime: Date,
-        title: String
+        title: String,
+        roomNumber: String
     ) -> UIViewController {
         let link = Env().webBaseURL + "/join/\(roomUUID)"
         let linkURL = URL(string: link)!
@@ -23,8 +24,10 @@ struct ShareManager {
         
         let timeStr  = NSLocalizedString("Start Time", comment: "") + ": " + formatter.string(from: beginTime)
         let subStr = (NSLocalizedString("Room Subject", comment: "")) + ": " + title
-        let des = timeStr + "\n" + subStr
+        let numStr = NSLocalizedString("Room Number", comment: "") + ": " + roomNumber
+        let des = timeStr + "\n" + subStr + "\n" + numStr
         let vc = UIActivityViewController(activityItems: [linkURL, des], applicationActivities: nil)
+        
         vc.excludedActivityTypes = [
             .airDrop,
             .mail,
