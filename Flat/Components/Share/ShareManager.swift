@@ -25,7 +25,7 @@ struct ShareManager {
         let timeStr  = NSLocalizedString("Start Time", comment: "") + ": " + formatter.string(from: beginTime)
         let subStr = (NSLocalizedString("Room Subject", comment: "")) + ": " + title
         let numStr = NSLocalizedString("Room Number", comment: "") + ": " + roomNumber
-        let des = timeStr + "\n" + subStr + "\n" + numStr
+        let des =  numStr + "\n" + timeStr + "\n" + subStr
         let vc = UIActivityViewController(activityItems: [linkURL, des], applicationActivities: nil)
         
         vc.excludedActivityTypes = [
