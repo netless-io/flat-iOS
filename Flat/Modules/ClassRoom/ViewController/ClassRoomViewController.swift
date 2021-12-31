@@ -300,6 +300,7 @@ class ClassRoomViewController: UIViewController {
                 // Only Teacher can stop the class,
                 // So Teacher do not have to receive the alert
                 if !weakSelf.viewModel.isTeacher {
+                    if let _ = weakSelf.presentingViewController { weakSelf.dismiss(animated: false, completion: nil) }
                     weakSelf.showAlertWith(message: NSLocalizedString("Leaving room soon", comment: "")) {
                         weakSelf.leaveUIHierarchyAndStopSubModule()
                     }
