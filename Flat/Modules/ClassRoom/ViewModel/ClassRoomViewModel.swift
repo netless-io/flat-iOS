@@ -478,6 +478,9 @@ class ClassRoomViewModel {
                 return .error("can't turn off others not teacher")
             }
         }
+        if !status.camera, !state.isInteractable {
+            return .error("can't turn on camera in current mode")
+        }
         status.camera = !status.camera
         return sendCommand(.deviceState(.init(userUUID: userUUID,
                                               camera: status.camera,
@@ -503,6 +506,9 @@ class ClassRoomViewModel {
                 // Can't turn on mic
                 return .error("can't open mic")
             }
+        }
+        if !status.mic, !state.isInteractable {
+            return .error("can't turn on mic in current mode")
         }
         status.mic = !status.mic
         return sendCommand(.deviceState(.init(userUUID: userUUID,

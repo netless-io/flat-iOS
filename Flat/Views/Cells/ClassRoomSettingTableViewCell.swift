@@ -18,6 +18,7 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
     }
     @IBAction func switchValueChanged(_ sender: Any) {
         if let i = sender as? UISwitch {
+            i.isOn = !i.isOn
             switchValueChangedHandler?(i.isOn)
         }
     }

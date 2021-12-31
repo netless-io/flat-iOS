@@ -41,6 +41,18 @@ struct ClassRoomState {
         self.userUUID = userUUID
     }
     
+    var isInteractable: Bool {
+        if let status = userStatusFor(userUUID: userUUID), status.isSpeak {
+            return true
+        }
+        switch roomType.interactionStrategy {
+        case .enable:
+            return true
+        case .disable, .depending:
+            return mode.value.interactionEnable
+        }
+    }
+    
     func applyWithNoUser() {
         messageBan.accept(false)
         switch roomType.interactionStrategy {
