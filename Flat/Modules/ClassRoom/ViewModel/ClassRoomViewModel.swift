@@ -470,8 +470,13 @@ class ClassRoomViewModel {
         guard var status = state.userStatusFor(userUUID: userUUID) else {
             return .error("user not exist")
         }
-        if userUUID != self.userUUID, !status.camera {
-            return .error("can't open camera")
+        if userUUID != self.userUUID {
+            if !status.camera {
+                return .error("can't open camera")
+            } else if !isTeacher {
+                // Only teacher can turn off others
+                return .error("can't turn off others not teacher")
+            }
         }
         status.camera = !status.camera
         return sendCommand(.deviceState(.init(userUUID: userUUID,
@@ -488,8 +493,16 @@ class ClassRoomViewModel {
         guard var status = state.userStatusFor(userUUID: userUUID) else {
             return .error("user not exist")
         }
-        if userUUID != self.userUUID, !status.mic {
-            return .error("can't open mic")
+        if userUUID != self.userUUID {
+            if status.mic {
+                // Only teacher can turn off others
+                if !isTeacher {
+                    return .error("can't turn off others not teacher")
+                }
+            } else {
+                // Can't turn on mic
+                return .error("can't open mic")
+            }
         }
         status.mic = !status.mic
         return sendCommand(.deviceState(.init(userUUID: userUUID,
@@ -661,7 +674,7 @@ class ClassRoomViewModel {
                         guard let self = self else {
                             return .error("self not exist")
                         }
-                        return self.sendCommand(.requestChannelStatus(command), toTargetUID: randomId)
+                        return self.sendCommand(.requestChannelStatus(command), toTargetUID: nil)
                     }
                     .flatMap { firstStatusCommand }
                     .map { _ -> Void in return () }
