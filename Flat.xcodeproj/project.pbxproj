@@ -1825,7 +1825,7 @@
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2079,7 +2079,7 @@
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2210,7 +2210,7 @@
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "flat-release";
@@ -2316,7 +2316,7 @@
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-STAGE";
 				PROVISIONING_PROFILE_SPECIFIER = "";
