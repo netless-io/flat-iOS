@@ -119,16 +119,20 @@ class ClassRoomViewController: UIViewController {
         updateLayout()
     }
     
+    override func viewSafeAreaInsetsDidChange() {
+        updateLayout()
+    }
+    
     func updateLayout() {
-        let safeInset = UIEdgeInsets.zero
+        let safeInset = UIEdgeInsets(top: 0, left: view.safeAreaInsets.left, bottom: 0, right: 0)
         var contentSize = view.bounds.inset(by: safeInset).size
-        // Height should be greater than width, for sometimes, user enter with portait orientation
+        // Height should be greater than width, for sometimes, user enter with portrait orientation
         if contentSize.height > contentSize.width {
             contentSize = .init(width: contentSize.height, height: contentSize.width)
         }
         let layoutOutput = layout.update(rtcHide: !settingVC.videoAreaOn.value, contentSize: contentSize)
-        let x = layoutOutput.inset.left
-        let y = layoutOutput.inset.top
+        let x = layoutOutput.inset.left + safeInset.left
+        let y = layoutOutput.inset.top + safeInset.top
         rtcViewController.preferredMargin = layout.rtcMargin
                 
         switch layoutOutput.rtcDirection {
@@ -167,7 +171,7 @@ class ClassRoomViewController: UIViewController {
     
     // MARK: - Private Setup
     func setupViews() {
-        view.backgroundColor = .commonBG
+        view.backgroundColor = .whiteBG
         addChild(whiteboardViewController)
         addChild(rtcViewController)
         view.addSubview(rtcViewController.view)
