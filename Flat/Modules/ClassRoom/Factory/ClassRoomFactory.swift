@@ -42,6 +42,7 @@ struct ClassRoomFactory {
         let windowParams = WhiteWindowParams()
         windowParams.chessboard = false
         windowParams.containerSizeRatio = NSNumber(value: ClassRoomLayoutRatioConfig.whiteboardRatio)
+        windowParams.prefersColorScheme = .auto
         roomConfig.windowParams = windowParams
         let whiteboardViewController = WhiteboardViewController(sdkConfig: whiteSDkConfig, roomConfig: roomConfig)
         
