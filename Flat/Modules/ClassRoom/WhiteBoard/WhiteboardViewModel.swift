@@ -40,6 +40,7 @@ class WhiteboardViewModel: NSObject {
     let strokeColor: BehaviorSubject<UIColor> = .init(value: .white)
     let strokeWidth: BehaviorSubject<Float> = .init(value: 1)
     let status: BehaviorRelay<WhiteRoomPhase> = .init(value: WhiteRoomPhase.disconnecting)
+    let boxState: BehaviorRelay<WhiteWindowBoxState?> = .init(value: nil)
     let errorSignal = PublishRelay<Error>()
     fileprivate let scene: BehaviorRelay<WhiteSceneState> = .init(value: .init())
     
@@ -375,16 +376,13 @@ class WhiteboardViewModel: NSObject {
                     return
                 }
                 self.room = room
-                room.getStateWithResult { [weak self, weak room] state in
-                    if let sceneState = state.sceneState {
-                        self?.scene.accept(sceneState)
-                    }
-                    guard let room = room else {
-                        observer(.failure("room error"))
-                        return
-                    }
-                    observer(.success(room))
+                if let sceneState = room.state.sceneState {
+                    self.scene.accept(sceneState)
                 }
+                if let boxState = room.state.windowBoxState {
+                    self.boxState.accept(boxState)
+                }
+                observer(.success(room))
             }
             return Disposables.create()
         }.do(onSuccess: { [weak self] _ in
@@ -464,6 +462,10 @@ extension WhiteboardViewModel: WhiteRoomCallbackDelegate {
                 strokeWidth.on(.next(stokeWidth))
             }
             strokeColor.on(.next(UIColor(numberArray: memberState.strokeColor)))
+        }
+        
+        if let boxState = modifyState.windowBoxState {
+            self.boxState.accept(boxState)
         }
         
         if let scene = modifyState.sceneState {

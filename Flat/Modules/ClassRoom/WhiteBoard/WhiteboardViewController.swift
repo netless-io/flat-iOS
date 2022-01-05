@@ -16,6 +16,21 @@ import RxCocoa
 class WhiteboardViewController: UIViewController {
     var viewModel: WhiteboardViewModel!
     
+    func updateWithRoomBoxState(_ state: WhiteWindowBoxState?) {
+        // Only work for iPad
+        if traitCollection.hasCompact { return }
+        let views: [UIView] = [undoRedoOperationBar, sceneOperationBar]
+        if let state = state, state == .max {
+            UIView.animate(withDuration: 0.3) {
+                views.forEach { $0.alpha = 0 }
+            }
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                views.forEach { $0.alpha = 1 }
+            }
+        }
+    }
+    
     func updatePageOperationHide(_ hide: Bool) {
         sceneOperationBar.isHidden = hide
     }
@@ -155,6 +170,13 @@ class WhiteboardViewController: UIViewController {
         viewModel.redoEnable
             .asDriver()
             .drive(redoButton.rx.isEnabled)
+            .disposed(by: rx.disposeBag)
+        
+        viewModel.boxState
+            .asDriver()
+            .drive(with: self, onNext: { weakSelf, state in
+                weakSelf.updateWithRoomBoxState(state)
+            })
             .disposed(by: rx.disposeBag)
         
         viewModel.errorSignal
