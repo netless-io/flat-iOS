@@ -470,6 +470,8 @@ class ClassRoomViewModel {
         guard var status = state.userStatusFor(userUUID: userUUID) else {
             return .error("user not exist")
         }
+        
+        // For others
         if userUUID != self.userUUID {
             if !status.camera {
                 return .error("can't open camera")
@@ -477,9 +479,11 @@ class ClassRoomViewModel {
                 // Only teacher can turn off others
                 return .error("can't turn off others not teacher")
             }
-        }
-        if !status.camera, !state.isInteractable {
-            return .error("can't turn on camera in current mode")
+        } else {
+            // For self
+            if !status.camera, !state.isInteractable {
+                return .error("can't turn on camera in current mode")
+            }
         }
         status.camera = !status.camera
         return sendCommand(.deviceState(.init(userUUID: userUUID,
@@ -506,9 +510,10 @@ class ClassRoomViewModel {
                 // Can't turn on mic
                 return .error("can't open mic")
             }
-        }
-        if !status.mic, !state.isInteractable {
-            return .error("can't turn on mic in current mode")
+        } else {
+            if !status.mic, !state.isInteractable {
+                return .error("can't turn on mic in current mode")
+            }
         }
         status.mic = !status.mic
         return sendCommand(.deviceState(.init(userUUID: userUUID,

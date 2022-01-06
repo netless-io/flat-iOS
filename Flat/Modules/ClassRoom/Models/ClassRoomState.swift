@@ -42,6 +42,7 @@ struct ClassRoomState {
     }
     
     var isInteractable: Bool {
+        if isTeacher { return true }
         if let status = userStatusFor(userUUID: userUUID), status.isSpeak {
             return true
         }
