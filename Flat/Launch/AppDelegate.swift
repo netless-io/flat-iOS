@@ -91,5 +91,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let _ = launch?.start(withLaunchUserActivity: userActivity)
         return true
     }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        .all
+    }
 }
 

@@ -11,6 +11,12 @@ import Foundation
 import UIKit
 
 class MainTabBarController: UITabBarController {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        traitCollection.hasCompact ? .portrait : .all
+    }
+    
+    override var shouldAutorotate: Bool { true }
+    
     required init?(coder: NSCoder) {
         fatalError()
     }
