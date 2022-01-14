@@ -48,7 +48,7 @@ DEPENDENCIES:
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
   - EmptyDataSet-Swift
-  - "Fastboard (from `git@github.com:netless-io/fastboard-iOS.git`)"
+  - Fastboard (from `https://github.com/netless-io/fastboard-iOS.git`)
   - Hero
   - IQKeyboardManagerSwift
   - Kingfisher
@@ -80,12 +80,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Fastboard:
-    :git: "git@github.com:netless-io/fastboard-iOS.git"
+    :git: https://github.com/netless-io/fastboard-iOS.git
 
 CHECKOUT OPTIONS:
   Fastboard:
-    :commit: 93756c365e97561611bdc68f84e74b090217e244
-    :git: "git@github.com:netless-io/fastboard-iOS.git"
+    :commit: ff5c4e6ba0b15516fa1e9c46f3d34a5fa321fdfb
+    :git: https://github.com/netless-io/fastboard-iOS.git
 
 SPEC CHECKSUMS:
   AgoraRtcEngine_iOS: a5c32145692b996e67bd646ddde268c77b04ad71
@@ -106,6 +106,6 @@ SPEC CHECKSUMS:
   Whiteboard: 68d6bb3ba5161a4217c86e3a8f1dae9190cc0d37
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: dd63629ba0ba1cf01fff43107310e9c3595c5161
+PODFILE CHECKSUM: fc6cee881a3b84a9ea7546ea27a7dbb111f91a03
 
 COCOAPODS: 1.11.2
