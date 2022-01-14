@@ -85,3 +85,15 @@ Copyright © Agora Corporation. All rights reserved.
 Licensed under the MIT license.
 
 When using the Flat or other GitHub logos, be sure to follow the GitHub logo guidelines.
+
+[flat-homepage]: https://flat.whiteboard.agora.io/en/#download
+[flat-web]: https://flat-web.whiteboard.agora.io/
+[flat-server]: https://github.com/netless-io/flat-server
+[flat-android]: https://github.com/netless-io/flat-android
+[flat-storybook]: https://netless-io.github.io/flat/storybook/
+[open-wechat]: https://open.weixin.qq.com/
+[netless-auth]: https://docs.agora.io/en/whiteboard/generate_whiteboard_token_at_app_server?platform=RESTful
+[agora-app-id-auth]: https://docs.agora.io/en/Agora%20Platform/token#a-name--appidause-an-app-id-for-authentication
+[cloud-recording]: https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest?platform=RESTful#storageConfig
+[cloud-recording-background]: https://docs.agora.io/en/cloud-recording/cloud_recording_layout?platform=RESTful#background
+[electron-updater]: https://github.com/electron-userland/electron-builder/tree/master/packages/electron-updater
