@@ -150,7 +150,7 @@ class LoginViewController: UIViewController {
             let user = User(name: "常鲜",
                  avatar: URL(string: "https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83erv2VzvgqJoe40ic0JRYmasAjtJ3uKibIs1TUGfddFlabNOF9aeSVxiaK05tpeEzIwzgVOtZCVqzyvzw/132")!,
                  userUUID: "7f2a9895-f761-4e25-ad34-8e97f03f6fa5",
-                 token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6IjdmMmE5ODk1LWY3NjEtNGUyNS1hZDM0LThlOTdmMDNmNmZhNSIsImxvZ2luU291cmNlIjoiV2VDaGF0IiwiaWF0IjoxNjM5NTU4MTIwLCJleHAiOjE2NDIwNjM3MjAsImlzcyI6ImZsYXQtc2VydmVyIn0.ePfvssZOcvtpO3IzoalhHoglvFpSCqzRHbKUhdmbH1I")
+                 token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6IjdmMmE5ODk1LWY3NjEtNGUyNS1hZDM0LThlOTdmMDNmNmZhNSIsImxvZ2luU291cmNlIjoiV2VDaGF0IiwiaWF0IjoxNjQyMTI0ODA5LCJleHAiOjE2NDQ2MzA0MDksImlzcyI6ImZsYXQtc2VydmVyIn0.s_eyssD1VkJxQAGnaX8i91TMHpAbp_G3SZi_UuYBEpw")
             users = [user]
         }
         let alert = UIAlertController(title: "login", message: "debug", preferredStyle: .actionSheet)

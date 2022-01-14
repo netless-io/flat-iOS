@@ -9,6 +9,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import Kingfisher
+import Fastboard
 
 func configGlobalAppearanceWithWindow(_ window: UIWindow) {
     globalRoomControlBarItemWidth = window.traitCollection.hasCompact ? 40 : 48
@@ -63,6 +64,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
         UINavigationBar.appearance().tintColor = .subText
         configProgressHUDAppearance()
+        configFastboardAppearance()
+    }
+    
+    func configFastboardAppearance() {
+        let whiteboardAssets = WhiteboardAssets(whiteboardBackgroundColor: .whiteBG,
+                                                containerColor: .clear)
+        let controlAssets = ControlBarAssets(backgroundColor: .whiteBG,
+                                             borderColor: .borderColor,
+                                             effectStyle: nil)
+        let panelItemAssets = PanelItemAssets(normalIconColor: .controlNormal,
+                                              selectedIconColor: .controlSelected,
+                                              highlightBgColor: .controlSelectedBG,
+                                              subOpsIndicatorColor: .subText,
+                                              pageTextLabelColor: .text)
+        let flatThemeAssets = ThemeAsset(whiteboardAssets: whiteboardAssets,
+                                         controlBarAssets: controlAssets,
+                                         panelItemAssets: panelItemAssets)
+        ThemeManager.shared.apply(flatThemeAssets)
+        
+        // Update Appearance
+        ControlBar.appearance().itemWidth = globalRoomControlBarItemWidth
+        ControlBar.appearance().commonRadius = 10
     }
     
     func processMethodExchange() {

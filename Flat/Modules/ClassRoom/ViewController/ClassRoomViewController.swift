@@ -36,7 +36,7 @@ class ClassRoomViewController: UIViewController {
     var chatVCDisposeBag = RxSwift.DisposeBag()
     
     // MARK: - Child Controllers
-    let whiteboardViewController: WhiteboardViewController
+    let fastboardViewController: FastboardViewController
     let rtcViewController: RtcViewController
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true)
     let inviteViewController: UIViewController
@@ -44,7 +44,7 @@ class ClassRoomViewController: UIViewController {
     var chatVC: ChatViewController?
     
     // MARK: - LifeCycle
-    init(whiteboardViewController: WhiteboardViewController,
+    init(fastboardViewController: FastboardViewController,
          rtcViewController: RtcViewController,
          classRoomState: ClassRoomState,
          rtm: ClassRoomRtm,
@@ -66,7 +66,7 @@ class ClassRoomViewController: UIViewController {
                                                                                    title: roomTitle,
                                                                                    roomNumber: roomNumber)
         self.rtcViewController = rtcViewController
-        self.whiteboardViewController = whiteboardViewController
+        self.fastboardViewController = fastboardViewController
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .flipHorizontal
@@ -138,7 +138,7 @@ class ClassRoomViewController: UIViewController {
         switch layoutOutput.rtcDirection {
         case .top:
             if layoutOutput.rtcSize.height == 0 {
-                whiteboardViewController.view.snp.remakeConstraints { make in
+                fastboardViewController.view.snp.remakeConstraints { make in
                     make.left.equalTo(x)
                     make.top.equalTo(y)
                     make.size.equalTo(layoutOutput.whiteboardSize)
@@ -149,21 +149,21 @@ class ClassRoomViewController: UIViewController {
                     make.top.equalTo(y)
                     make.size.equalTo(layoutOutput.rtcSize)
                 }
-                whiteboardViewController.view.snp.remakeConstraints { make in
+                fastboardViewController.view.snp.remakeConstraints { make in
                     make.left.equalTo(rtcViewController.view)
                     make.top.equalTo(rtcViewController.view.snp.bottom)
                     make.size.equalTo(layoutOutput.whiteboardSize)
                 }
             }
         case .right:
-            whiteboardViewController.view.snp.remakeConstraints { make in
+            fastboardViewController.view.snp.remakeConstraints { make in
                 make.left.equalTo(x)
                 make.top.equalTo(y)
                 make.size.equalTo(layoutOutput.whiteboardSize)
             }
             rtcViewController.view.snp.remakeConstraints { make in
-                make.left.equalTo(whiteboardViewController.view.snp.right)
-                make.top.equalTo(whiteboardViewController.view)
+                make.left.equalTo(fastboardViewController.view.snp.right)
+                make.top.equalTo(fastboardViewController.view)
                 make.size.equalTo(layoutOutput.rtcSize)
             }
         }
@@ -172,11 +172,11 @@ class ClassRoomViewController: UIViewController {
     // MARK: - Private Setup
     func setupViews() {
         view.backgroundColor = .whiteBG
-        addChild(whiteboardViewController)
+        addChild(fastboardViewController)
         addChild(rtcViewController)
         view.addSubview(rtcViewController.view)
-        view.addSubview(whiteboardViewController.view)
-        whiteboardViewController.didMove(toParent: self)
+        view.addSubview(fastboardViewController.view)
+        fastboardViewController.didMove(toParent: self)
         rtcViewController.didMove(toParent: self)
         setupToolbar()
     }
@@ -184,8 +184,8 @@ class ClassRoomViewController: UIViewController {
     func setupToolbar() {
         view.addSubview(rightToolBar)
         rightToolBar.snp.makeConstraints { make in
-            make.right.equalTo(whiteboardViewController.view.snp.right)
-            make.centerY.equalTo(whiteboardViewController.view)
+            make.right.equalTo(fastboardViewController.view.snp.right)
+            make.centerY.equalTo(fastboardViewController.view)
         }
         
         if !viewModel.isTeacher {
@@ -300,7 +300,7 @@ class ClassRoomViewController: UIViewController {
         output.roomStopped
             .drive(with: self, onNext: { weakSelf, _ in
                 // Hide the error 'room ban'
-                weakSelf.whiteboardViewController.view.isHidden = true
+                weakSelf.fastboardViewController.view.isHidden = true
                 // Only Teacher can stop the class,
                 // So Teacher do not have to receive the alert
                 if !weakSelf.viewModel.isTeacher {
@@ -391,21 +391,15 @@ class ClassRoomViewController: UIViewController {
             .drive(raiseHandButton.rx.isHidden)
             .disposed(by: rx.disposeBag)
         
-        whiteboardViewController.viewModel.isRoomJoined
-            .asDriver(onErrorJustReturn: false)
-            .filter { $0 }
+        fastboardViewController.isRoomJoined
+            .asDriver()
             .flatMap { [weak self] _ -> Driver<Bool> in
                 guard let self = self else { return .just(false) }
                 return self.viewModel.isWhiteboardEnable
             }
             .drive(with: self, onNext: { weakSelf, enable in
-                weakSelf.whiteboardViewController.updateToolsHide(!enable)
-                weakSelf.whiteboardViewController.updatePageOperationHide(!enable)
-                weakSelf.whiteboardViewController.viewModel.room.setWritable(enable) { _, _ in
-                    if enable {
-                        weakSelf.whiteboardViewController.viewModel.room.disableSerialization(false)
-                    }
-                }
+                weakSelf.fastboardViewController.fastboard.setAllPanel(hide: !enable)
+                weakSelf.fastboardViewController.fastboard.updateWritable(enable, completion: nil)
                 weakSelf.rightToolBar.updateButtonHide(weakSelf.cloudStorageButton, hide: !enable)
             })
             .disposed(by: rx.disposeBag)
@@ -485,9 +479,7 @@ class ClassRoomViewController: UIViewController {
     }
     
     func leaveUIHierarchyAndStopSubModule() {
-        whiteboardViewController.viewModel.leave()
-            .subscribe()
-            .disposed(by: rx.disposeBag)
+        fastboardViewController.leave()
         rtcViewController.viewModel.rtc.leave()
             .subscribe()
             .disposed(by: rx.disposeBag)
@@ -534,16 +526,15 @@ class ClassRoomViewController: UIViewController {
         let vc = CloudStorageListViewController()
         vc.fileContentSelectedHandler = { [weak self] fileContent in
             guard let self = self else { return }
-            let whiteViewModel = self.whiteboardViewController.viewModel
             switch fileContent {
             case .image(url: let url, image: let image):
-                whiteViewModel?.insertImg(url, imgSize: image.size)
+                self.fastboardViewController.insertImg(url, imgSize: image.size)
             case .media(url: let url, title: let title):
-                whiteViewModel?.insertMedia(url, title: title)
+                self.fastboardViewController.insertMedia(url, title: title)
             case .multiPages(pages: let pages, title: let title):
-                whiteViewModel?.insertMultiPages(pages, title: title)
+                self.fastboardViewController.insertMultiPages(pages, title: title)
             case .pptx(pages: let pages, title: let title):
-                whiteViewModel?.insertPptx(pages, title: title)
+                self.fastboardViewController.insertPptx(pages, title: title)
             }
             self.dismiss(animated: true, completion: nil)
         }

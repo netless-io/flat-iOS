@@ -3,6 +3,8 @@ PODS:
   - AgoraRtm_iOS (1.4.8)
   - dsBridge (3.0.6)
   - EmptyDataSet-Swift (5.0.0)
+  - Fastboard (1.0.0-beta.1):
+    - Whiteboard (~> 2.15.20)
   - Hero (1.6.1)
   - IQKeyboardManagerSwift (6.5.6)
   - Kingfisher (7.1.0)
@@ -17,28 +19,28 @@ PODS:
   - RxSwift (6.2.0)
   - SnapKit (5.0.1)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.15.20):
-    - Whiteboard/Base (= 2.15.20)
-    - Whiteboard/Converter (= 2.15.20)
-    - Whiteboard/Model (= 2.15.20)
-    - Whiteboard/NativeReplayer (= 2.15.20)
-    - Whiteboard/Object (= 2.15.20)
-    - Whiteboard/Replayer (= 2.15.20)
-    - Whiteboard/Room (= 2.15.20)
-  - Whiteboard/Base (2.15.20):
+  - Whiteboard (2.15.22):
+    - Whiteboard/Base (= 2.15.22)
+    - Whiteboard/Converter (= 2.15.22)
+    - Whiteboard/Model (= 2.15.22)
+    - Whiteboard/NativeReplayer (= 2.15.22)
+    - Whiteboard/Object (= 2.15.22)
+    - Whiteboard/Replayer (= 2.15.22)
+    - Whiteboard/Room (= 2.15.22)
+  - Whiteboard/Base (2.15.22):
     - dsBridge (~> 3.0.2)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.15.20):
+  - Whiteboard/Converter (2.15.22):
     - Whiteboard/Object
-  - Whiteboard/Model (2.15.20):
+  - Whiteboard/Model (2.15.22):
     - YYModel (~> 1.0.4)
-  - Whiteboard/NativeReplayer (2.15.20):
+  - Whiteboard/NativeReplayer (2.15.22):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.15.20):
+  - Whiteboard/Object (2.15.22):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.15.20):
+  - Whiteboard/Replayer (2.15.22):
     - Whiteboard/Base
-  - Whiteboard/Room (2.15.20):
+  - Whiteboard/Room (2.15.22):
     - Whiteboard/Base
   - YYModel (1.0.4)
 
@@ -46,6 +48,7 @@ DEPENDENCIES:
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
   - EmptyDataSet-Swift
+  - "Fastboard (from `git@github.com:netless-io/fastboard-iOS.git`)"
   - Hero
   - IQKeyboardManagerSwift
   - Kingfisher
@@ -55,7 +58,6 @@ DEPENDENCIES:
   - RxSwift
   - SnapKit
   - WechatOpenSDK
-  - Whiteboard
 
 SPEC REPOS:
   trunk:
@@ -76,11 +78,21 @@ SPEC REPOS:
     - Whiteboard
     - YYModel
 
+EXTERNAL SOURCES:
+  Fastboard:
+    :git: "git@github.com:netless-io/fastboard-iOS.git"
+
+CHECKOUT OPTIONS:
+  Fastboard:
+    :commit: 93756c365e97561611bdc68f84e74b090217e244
+    :git: "git@github.com:netless-io/fastboard-iOS.git"
+
 SPEC CHECKSUMS:
   AgoraRtcEngine_iOS: a5c32145692b996e67bd646ddde268c77b04ad71
   AgoraRtm_iOS: 382a54763803dad098d3b31a2608ccd62972e00b
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
+  Fastboard: 6650edec6c2cc58595817e2fbe04d4d4540420b3
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
   Kingfisher: cdabaf49be7ee7cc124f0f276b355edf61903cf8
@@ -91,9 +103,9 @@ SPEC CHECKSUMS:
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: c76e38a220a0ebb867a40aeb847a4b4b7307bac8
+  Whiteboard: 68d6bb3ba5161a4217c86e3a8f1dae9190cc0d37
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: e7309aec85dcd2b15462c1d642f7feb4525e8df5
+PODFILE CHECKSUM: dd63629ba0ba1cf01fff43107310e9c3595c5161
 
 COCOAPODS: 1.11.2

@@ -11,6 +11,7 @@ import Foundation
 import Whiteboard
 import RxCocoa
 import AgoraRtcKit
+import Fastboard
 
 struct ClassRoomFactory {
     struct DeviceStatus {
@@ -21,30 +22,18 @@ struct ClassRoomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
                                             detailInfo: RoomInfo,
                                             deviceStatus: DeviceStatus) -> ClassRoomViewController {
-        // Config Whiteboard
+        let fastConfiguration = FastConfiguration(appIdentifier: Env().netlessAppId,
+                                                  roomUUID: playInfo.whiteboardRoomUUID,
+                                                  roomToken: playInfo.whiteboardRoomToken,
+                                                  region: .CN,
+                                                  userUID: AuthStore.shared.user?.userUUID ?? "")
+        fastConfiguration.whiteSdkConfiguration.userCursor = true
         let userName = AuthStore.shared.user?.name ?? ""
-        let whiteSDkConfig = WhiteSdkConfiguration(app: Env().netlessAppId)
-        whiteSDkConfig.renderEngine = .canvas
-        whiteSDkConfig.region = .CN
-        whiteSDkConfig.userCursor = true
-        whiteSDkConfig.useMultiViews = true
-        if #available(iOS 14.0, *) {
-            if ProcessInfo.processInfo.isiOSAppOnMac {
-                whiteSDkConfig.deviceType = .desktop
-            }
-        }
         let payload: [String: String] = ["cursorName": userName]
-        let roomConfig = WhiteRoomConfig(uuid: playInfo.whiteboardRoomUUID,
-                        roomToken: playInfo.whiteboardRoomToken,
-                        uid: AuthStore.shared.user?.userUUID ?? "",
-                        userPayload: payload)
-        roomConfig.disableNewPencil = false
-        let windowParams = WhiteWindowParams()
-        windowParams.chessboard = false
-        windowParams.containerSizeRatio = NSNumber(value: ClassRoomLayoutRatioConfig.whiteboardRatio)
-        windowParams.prefersColorScheme = .auto
-        roomConfig.windowParams = windowParams
-        let whiteboardViewController = WhiteboardViewController(sdkConfig: whiteSDkConfig, roomConfig: roomConfig)
+        fastConfiguration.whiteRoomConfig.userPayload = payload
+        fastConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
+        FastboardManager.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
+        let fastboardViewController = FastboardViewController(fastConfiguration: fastConfiguration)
         
         // Config init state
         let initUser: RoomUser = .init(rtmUUID: playInfo.rtmUID,
@@ -85,21 +74,21 @@ struct ClassRoomFactory {
             return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
         }))
         
-        let controller = ClassRoomViewController(whiteboardViewController: whiteboardViewController,
-                                                  rtcViewController: rtcViewController,
-                                                  classRoomState: state,
-                                                  rtm: rtm,
-                                                  chatChannelId: playInfo.roomUUID,
-                                                  commandChannelId: playInfo.roomUUID + "commands",
-                                                  roomOwnerRtmUUID: playInfo.ownerUUID,
-                                                  roomTitle: detailInfo.title,
-                                                  beginTime: detailInfo.beginTime,
+        let controller = ClassRoomViewController(fastboardViewController: fastboardViewController,
+                                                 rtcViewController: rtcViewController,
+                                                 classRoomState: state,
+                                                 rtm: rtm,
+                                                 chatChannelId: playInfo.roomUUID,
+                                                 commandChannelId: playInfo.roomUUID + "commands",
+                                                 roomOwnerRtmUUID: playInfo.ownerUUID,
+                                                 roomTitle: detailInfo.title,
+                                                 beginTime: detailInfo.beginTime,
                                                  endTime: detailInfo.endTime,
-                                                  roomNumber: detailInfo.formatterInviteCode,
-                                                  roomUUID: playInfo.roomUUID,
-                                                  isTeacher: detailInfo.ownerUUID == playInfo.rtmUID,
-                                                  userUUID: playInfo.rtmUID,
-                                                  userName: initUser.name)
+                                                 roomNumber: detailInfo.formatterInviteCode,
+                                                 roomUUID: playInfo.roomUUID,
+                                                 isTeacher: detailInfo.ownerUUID == playInfo.rtmUID,
+                                                 userUUID: playInfo.rtmUID,
+                                                 userName: initUser.name)
         return controller
     }
 }
