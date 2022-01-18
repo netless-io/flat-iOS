@@ -28,6 +28,11 @@ class FastboardViewController: UIViewController {
     
     func insertImg(_ src: URL, imgSize: CGSize) {
         let info = WhiteImageInformation(size: imgSize)
+        if let x = fastboard.room?.state.cameraState?.centerX,
+           let y = fastboard.room?.state.cameraState?.centerY {
+            info.centerX = CGFloat(x.floatValue)
+            info.centerY = CGFloat(y.floatValue)
+        }
         fastboard.room?.insertImage(info, src: src.absoluteString)
     }
     
