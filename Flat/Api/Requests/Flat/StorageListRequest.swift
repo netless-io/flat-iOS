@@ -18,6 +18,6 @@ struct StorageListRequest: FlatRequest {
     let page: Int
     
     var path: String { "/v1/cloud-storage/list" }
-    var task: Task { .requestURLEncodable(parameters: ["page": page])}
+    var task: Task { .requestURLEncodable(parameters: ["page": page, "order": "DESC"])}
     let responseType = StorageListResponse.self
 }
