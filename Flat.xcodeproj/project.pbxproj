@@ -37,12 +37,9 @@
 		8A0EB7BA272BD4E300003DF7 /* RoomUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */; };
 		8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C1272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift */; };
 		8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */; };
-		8A11CBDF271FBCC1001D0B1F /* StrokePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBDE271FBCC1001D0B1F /* StrokePickerViewController.swift */; };
-		8A11CBE3271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBE2271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift */; };
-		8A11CBE5271FF00F001D0B1F /* AppliancePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBE4271FF00F001D0B1F /* AppliancePickerViewController.swift */; };
-		8A11CBEB272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBEA272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift */; };
 		8A11CBF227201069001D0B1F /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBF127201069001D0B1F /* String+Error.swift */; };
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
+		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
 		8A270B6C271822BA00450DC6 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6B271822BA00450DC6 /* MainTabBarController.swift */; };
 		8A270B7227182A2B00450DC6 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7127182A2B00450DC6 /* CloudStorageViewController.swift */; };
 		8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7327182B9300450DC6 /* UIColor+Extension.swift */; };
@@ -184,11 +181,6 @@
 		8ABF362F2747B356000D5003 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8ABF362E2747B355000D5003 /* loading.gif */; };
 		8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+Loading.swift */; };
 		8AC05357274B8C160064CF84 /* RoomDetailFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05356274B8C160064CF84 /* RoomDetailFactory.swift */; };
-		8AC0535D274C72300064CF84 /* WhiteboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05359274C72300064CF84 /* WhiteboardViewModel.swift */; };
-		8AC0535E274C72300064CF84 /* WhitePanelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0535A274C72300064CF84 /* WhitePanelItem.swift */; };
-		8AC0535F274C72300064CF84 /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC0535B274C72300064CF84 /* WhiteboardViewController.swift */; };
-		8AC05362274CC47B0064CF84 /* WhiteboardMenuNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05361274CC47B0064CF84 /* WhiteboardMenuNavigator.swift */; };
-		8AC05364274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC05363274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
@@ -272,12 +264,9 @@
 		8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUserTableViewCell.swift; sourceTree = "<group>"; };
 		8A0EB7C1272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingTableViewCell.swift; sourceTree = "<group>"; };
 		8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassRoomSettingTableViewCell.xib; sourceTree = "<group>"; };
-		8A11CBDE271FBCC1001D0B1F /* StrokePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokePickerViewController.swift; sourceTree = "<group>"; };
-		8A11CBE2271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeColorCollectionViewCell.swift; sourceTree = "<group>"; };
-		8A11CBE4271FF00F001D0B1F /* AppliancePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppliancePickerViewController.swift; sourceTree = "<group>"; };
-		8A11CBEA272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppliancePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A11CBF127201069001D0B1F /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
+		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
 		8A270B6B271822BA00450DC6 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		8A270B6E271829AB00450DC6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8A270B7127182A2B00450DC6 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
@@ -424,11 +413,6 @@
 		8ABF362E2747B355000D5003 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		8ABF36302747B696000D5003 /* UIView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loading.swift"; sourceTree = "<group>"; };
 		8AC05356274B8C160064CF84 /* RoomDetailFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailFactory.swift; sourceTree = "<group>"; };
-		8AC05359274C72300064CF84 /* WhiteboardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteboardViewModel.swift; sourceTree = "<group>"; };
-		8AC0535A274C72300064CF84 /* WhitePanelItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhitePanelItem.swift; sourceTree = "<group>"; };
-		8AC0535B274C72300064CF84 /* WhiteboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteboardViewController.swift; sourceTree = "<group>"; };
-		8AC05361274CC47B0064CF84 /* WhiteboardMenuNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardMenuNavigator.swift; sourceTree = "<group>"; };
-		8AC05363274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardMenuNavigatorImp.swift; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingViewController.swift; sourceTree = "<group>"; };
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -680,24 +664,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		8A11CBE1271FEBB9001D0B1F /* StrokePicker */ = {
-			isa = PBXGroup;
-			children = (
-				8A11CBDE271FBCC1001D0B1F /* StrokePickerViewController.swift */,
-				8A11CBE2271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift */,
-			);
-			path = StrokePicker;
-			sourceTree = "<group>";
-		};
-		8A11CBE6271FF012001D0B1F /* AppliancePicker */ = {
-			isa = PBXGroup;
-			children = (
-				8A11CBE4271FF00F001D0B1F /* AppliancePickerViewController.swift */,
-				8A11CBEA272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift */,
-			);
-			path = AppliancePicker;
-			sourceTree = "<group>";
-		};
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
@@ -705,9 +671,6 @@
 				8ABD71C02768213F004FDC36 /* Config */,
 				8ABF362927464565000D5003 /* Factory */,
 				8A8020962757095B00F5691C /* CloudStorage */,
-				8AC05358274C72300064CF84 /* Whiteboard */,
-				8A11CBE1271FEBB9001D0B1F /* StrokePicker */,
-				8A11CBE6271FF012001D0B1F /* AppliancePicker */,
 				8A11CC2827202236001D0B1F /* Setting */,
 				8ABF362827464543000D5003 /* ViewController */,
 				8ABF362727464538000D5003 /* ViewModel */,
@@ -1153,18 +1116,6 @@
 			path = Flat;
 			sourceTree = "<group>";
 		};
-		8AC05358274C72300064CF84 /* Whiteboard */ = {
-			isa = PBXGroup;
-			children = (
-				8AC05359274C72300064CF84 /* WhiteboardViewModel.swift */,
-				8AC0535A274C72300064CF84 /* WhitePanelItem.swift */,
-				8AC0535B274C72300064CF84 /* WhiteboardViewController.swift */,
-				8AC05361274CC47B0064CF84 /* WhiteboardMenuNavigator.swift */,
-				8AC05363274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift */,
-			);
-			path = Whiteboard;
-			sourceTree = "<group>";
-		};
 		8AC376B1271D25BB003464B0 /* ContactUs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1230,6 +1181,7 @@
 				8A05C317275E03F6009BCA79 /* UIColor */,
 				8A05C316275E03EF009BCA79 /* UIView */,
 				8A05C321275E05BC009BCA79 /* MethodExchange.swift */,
+				8A20A3A52796918100024040 /* ImportExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1497,7 +1449,6 @@
 				8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */,
 				8ABD71E427683DB5004FDC36 /* ClassRoomLayout.swift in Sources */,
 				8ACE3A2C2730D15700BC37F7 /* ClassTypeCell.swift in Sources */,
-				8AC0535F274C72300064CF84 /* WhiteboardViewController.swift in Sources */,
 				8A05C33C2760411D009BCA79 /* MultipartFormData.swift in Sources */,
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
 				8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */,
@@ -1553,7 +1504,6 @@
 				8A7741DC2738BB06009FAADA /* ClassRoomFactory.swift in Sources */,
 				8AE893022727EFA3009C71DA /* RequestChannelStatusCommand.swift in Sources */,
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
-				8A11CBEB272001EA001D0B1F /* AppliancePickerCollectionViewCell.swift in Sources */,
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
 				8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
@@ -1575,7 +1525,6 @@
 				8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */,
 				8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */,
 				8AE892FE2727E9DB009C71DA /* SpeakCommand.swift in Sources */,
-				8A11CBDF271FBCC1001D0B1F /* StrokePickerViewController.swift in Sources */,
 				8A7741B9273287C2009FAADA /* RtcCellPopMenuView.swift in Sources */,
 				8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */,
 				8A9FB3C327229A7C00F6F06F /* Method.swift in Sources */,
@@ -1585,7 +1534,6 @@
 				8A2D0B9A27158FCD00123207 /* Request.swift in Sources */,
 				8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */,
 				8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */,
-				8AC0535E274C72300064CF84 /* WhitePanelItem.swift in Sources */,
 				8A05C313275DE279009BCA79 /* ProfileViewController.swift in Sources */,
 				8A9FB3BB2722981200F6F06F /* JSONEncoder+Extension.swift in Sources */,
 				8A8020912755B09000F5691C /* RtcViewController.swift in Sources */,
@@ -1594,7 +1542,6 @@
 				8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */,
 				8A9FB3AA272262D800F6F06F /* ResponseDataHandler.swift in Sources */,
 				8A9ACC11271EAE3700E7E7CE /* IndicatorMoreButton.swift in Sources */,
-				8AC0535D274C72300064CF84 /* WhiteboardViewModel.swift in Sources */,
 				8A8020A52757225400F5691C /* AgoraResponseDataHandler.swift in Sources */,
 				8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */,
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
@@ -1607,7 +1554,6 @@
 				8A270B8427192A0800450DC6 /* SettingViewController.swift in Sources */,
 				8AAE53D127311D7E00C35796 /* String+ReguarExpression.swift in Sources */,
 				8A9FB3C527229AB300F6F06F /* AgoraRequest.swift in Sources */,
-				8A11CBE3271FEBE4001D0B1F /* StrokeColorCollectionViewCell.swift in Sources */,
 				8A05C330275F5044009BCA79 /* UploadInfo.swift in Sources */,
 				8ADD9E0227701D05009A7050 /* UITraitCollection.swift in Sources */,
 				8AAB06262762F509006CAEF2 /* RenameFileRequest.swift in Sources */,
@@ -1643,7 +1589,6 @@
 				8A7741C42734CFAC009FAADA /* BorderLabelView.swift in Sources */,
 				8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */,
 				8AD2EF762775665300087280 /* ShareManager.swift in Sources */,
-				8AC05362274CC47B0064CF84 /* WhiteboardMenuNavigator.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,
 				8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */,
@@ -1656,14 +1601,12 @@
 				8A9ACC03271E71B100E7E7CE /* RoomListInfo.swift in Sources */,
 				8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */,
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,
-				8A11CBE5271FF00F001D0B1F /* AppliancePickerViewController.swift in Sources */,
 				8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */,
 				8A9FB3BD272298CD00F6F06F /* JSONDecoder+Extension.swift in Sources */,
 				8ACE3A24272FED7700BC37F7 /* RoomHistoryRequest.swift in Sources */,
 				8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */,
 				8A0EB7BA272BD4E300003DF7 /* RoomUserTableViewCell.swift in Sources */,
 				8A9FB3C927229E5E00F6F06F /* AnyEncodable.swift in Sources */,
-				8AC05364274CE3E20064CF84 /* WhiteboardMenuNavigatorImp.swift in Sources */,
 				8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */,
 				8A9FB3B72722949600F6F06F /* ParameterEncoder.swift in Sources */,
 				8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */,
@@ -1684,6 +1627,7 @@
 				8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */,
 				8A7741BD2733BF15009FAADA /* RoomStatusUpdateRequest.swift in Sources */,
 				8A7741BF2733D040009FAADA /* UIViewController+Toast.swift in Sources */,
+				8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */,
 				8A270B762718314200450DC6 /* TopViewController.swift in Sources */,
 				8ACE3A2A2730CD4600BC37F7 /* CreateClassRoomViewController.swift in Sources */,
 				8ABD71C227682214004FDC36 /* ClassRoomLayoutRatioConfig.swift in Sources */,
