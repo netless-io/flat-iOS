@@ -59,6 +59,12 @@ class SettingViewController: UITableViewController {
              LocaleManager.language?.name ?? "跟随系统",
              (self, #selector(self.onClickLanguage))),
             
+            (UIImage(named: "language")!,
+             NSLocalizedString("Theme", comment: ""),
+             (globalLaunchCoordinator?.themeManager.userPreferredStyle ?? .auto).description,
+             (self, #selector(self.onClickTheme))
+            ),
+            
             (UIImage(named: "update_version")!,
              NSLocalizedString("Version", comment: ""),
              displayVersion.description,
@@ -111,6 +117,25 @@ class SettingViewController: UITableViewController {
     @objc func onClickAbout() {
         navigationController?.pushViewController(AboutUsViewController(), animated: true)
     }
+
+    @objc func onClickTheme() {
+        let alertController = UIAlertController(title: NSLocalizedString("Select Theme", comment: ""), message: nil, preferredStyle: .actionSheet)
+        let manager = globalLaunchCoordinator?.themeManager
+        let current = manager?.userPreferredStyle ?? .auto
+        for i in ThemeStyle.allCases {
+            let selected = NSLocalizedString("selected", comment: "")
+            alertController.addAction(.init(title: i.description + ((current == i) ? selected : ""), style: .default, handler: { _ in
+                manager?.updateUserPreferredStyle(i)
+            }))
+        }
+        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        let popPresent = alertController.popoverPresentationController
+        if let cell = tableView.visibleCells.first {
+            popPresent?.sourceView = cell
+            popPresent?.sourceRect = cell.bounds
+        }
+        present(alertController, animated: true, completion: nil)
+    }
     
     @objc func onClickLanguage() {
         let alertController = UIAlertController(title: NSLocalizedString("Select Language", comment: ""), message: nil, preferredStyle: .actionSheet)
@@ -127,7 +152,7 @@ class SettingViewController: UITableViewController {
                 print("local update", LocaleManager.languageCode)
             }))
         }
-        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .destructive, handler: nil))
+        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
         let popPresent = alertController.popoverPresentationController
         if let cell = tableView.visibleCells.first {
             popPresent?.sourceView = cell

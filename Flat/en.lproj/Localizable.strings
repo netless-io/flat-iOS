@@ -1,163 +1,453 @@
+
+
+"About" = "About";
+
+
+"Alert" = "Alert";
+
+
+"All banned" = "All banned";
+
+
+"Back" = "Back";
+
+
+"BigClass" = "BigClass";
+
+
+"BigClass Description" = "For a large number of students";
+
+
+"Book Room" = "Book Room";
+
+
+"Camera" = "Camera";
+
+
+"Cancel" = "Cancel";
+
+
+"Cancel Room" = "Cancel Room";
+
+
+"Cancel Room Verbose" = "Sure to remove the room from the room list? Once removed, you can join the room again by using the room number.";
+
+
+"Chat" = "Chat";
+
+
+"Class end confirming detail" = "Once the lesson ends, all users exit the room and the lesson and recording (if any) are automatically ended and cannot continue live";
+
+
+"Class end confirming title" = "Confirming the end of classes?";
+
+
+"Class exit confirming detail" = "The class is continuing, make sure to exit the room";
+
+
+"Class exit confirming title" = "Confirming exit room?";
+
+
+"Close" = "Close";
+
+
+"Close options" = "Close options";
+
+
+"Cloud Storage" = "Cloud";
+
+
+"Confirm" = "Confirm";
+
+
+"Contact Us" = "Contact Us";
+
+
+"Copy Invite Link" = "Copy Link";
+
+
+"Copy Success" = "Copy Success";
+
+
+"Create" = "Create";
+
+
+"Created Room" = "Created Room";
+
+
+"CurrentProcessFailed" = "Current Request failed";
+
+
+"Delete" = "Delete";
+
+
+"Delete File Alert" = "Do you confirm the deletion of the selected courseware? You can't recover the deleted courseware";
+
+
+"Edit" = "Edit";
+
+
+"End the class" = "End the class";
+
+
+"Enter Room" = "Enter Room";
+
+
+"FileConvertFailed" = "File convert failed";
+
+
+"FileExists" = "File exists";
+
+
+"FileIsConvertWaiting" = "File is convert waiting";
+
+
+"FileIsConverted" = "File is converted";
+
+
+"FileIsConverting" = "File is converting";
+
+
+"FileNotFound" = "File not found";
+
+
+"FileSizeTooBig" = "File size too big";
+
+
+"Finish" = "Finish";
+
+
+"Got New File Alert" = "A new document is received, upload?";
+
+
+"Have read and agree" = "Have read and agree";
+
+
+"History" = "History";
+
+
+"Home" = "Home";
+
+
+"Idle" = "Idle";
+
+
+"Interacting" = "Interacting";
+
+
+"Invite" = "Invite";
+
+
+"JWTSignFailed" = "Authentication information verification failed, please log in again";
+
+
+"Join" = "Join";
+
+
+"Join Link" = "Join Link";
+
+
+"Join Options" = "Join Options";
+
+
+"Join Room" = "Join Room";
+
+
+"Language Setting" = "Language";
+
+
+"Leaving Classroom" = "Leaving Classroom";
+
+
+"Leaving for now" = "Leaving for now";
+
+
+"Leaving room soon" = "Leaving room soon";
+
+
+"LoginGithubAccessDenied" = "Login Github access denied";
+
+
+"LoginGithubSuspended" = "Login Github suspended";
+
+
+"LoginGithubURLMismatch" = "Login Github Mismatch";
+
+
+"Logout" = "Logout";
+
+
+"Mic" = "Mic";
+
+
+"Modify Room" = "Modify Room";
+
+
+"NeedLoginAgain" = "The credentials have expired, please log in again";
+
+
+"Nickname" = "Nickname";
+
+
+"No room at the moment" = "No room at the moment";
+
+
+"NotEnoughTotalUsage" = "Reaching capacity limit";
+
+
+"NotPermission" = "No permission to operate";
+
+
+"OneToOne" = "OneToOne";
+
+
+"OneToOne Description" = "Facing 1 student";
+
+
+"Online interaction Synchronize ideas" = "Online interaction Synchronize ideas";
+
+
+"Open Camera" = "Open Camera";
+
+
+"Open Mic" = "Open Mic";
+
+/* Flat Server Error */
+"ParamsCheckFailed" = "Parameter error";
+
+
+"Pause Class" = "Pause Class";
+
+
+"Paused" = "Paused";
+
+
+"PeriodicIsEnded" = "Periodic room has ended";
+
+
+"PeriodicNotFound" = "Periodic room does not exist";
+
+
+"PeriodicSubRoomHasRunning" = "Periodic sub-room does not exist";
+
+
+"Please agree to the Terms of Service first" = "Please agree to the Terms of Service first";
+
+
+"Preview" = "Preview";
+
+
+"Privacy Policy" = "Privacy Policy";
+
+
+"Profile" = "Profile";
+
+
+"Raised Hand" = "Raised Hand";
+
 /* 
   Localizable.strings
   flat
 
   Created by xuyunshi on 2021/10/15.
   Copyright © 2021 agora.io. All rights reserved.
-*/
-
+ */
 "Reconnect" = "Reconnect";
-"Back" = "Back";
-"Close" = "Close";
 
-"Alert" = "Alert";
+
+"RecordNotFound" = "Replay does not exist";
+
+
 "Remove From List" = "Remove From List";
-"Modify Room" = "Modify Room";
-"Cancel Room" = "Cancel Room";
+
+
 "Remove Room Verbose" = "Sure to cancel this room? Other members will not be able to join after cancellation.";
-"Cancel Room Verbose" = "Sure to remove the room from the room list? Once removed, you can join the room again by using the room number.";
 
-"Have read and agree" = "Have read and agree";
-"and" = "and";
-"Please agree to the Terms of Service first" = "Please agree to the Terms of Service first";
 
-"Home" = "Home";
-"Room" = "Room";
-"Profile" = "Profile";
-"Setting" = "Setting";
-"Language Setting" = "Language";
-"Version" = "Version";
-"Contact Us" = "Contact Us";
-"About" = "About";
-"Logout" = "Logout";
-"Cancel" = "Cancel";
-"Submit" = "Submit";
-"Confirm" = "Confirm";
-"Privacy Policy" = "Privacy Policy";
-"Service Agreement" = "Service Agreement";
-"Select Language" = "Select Language";
-"selected" = "(selected)";
-"Join Room" = "Join Room";
-"Start Now" = "Start Now";
-"Book Room" = "Book Room";
-"Room List" = "Room List";
-"History" = "History";
-"Online interaction Synchronize ideas" = "Online interaction Synchronize ideas";
-"No room at the moment" = "No room at the moment";
-"Leaving Classroom" = "Leaving Classroom";
-"Chat" = "Chat";
-"Say Something..." = "Say Something...";
-"User List" = "User List";
-"Teacher" = "Teacher";
-"Raised Hand" = "Raised Hand";
-"Interacting" = "Interacting";
-"Stop All Interacting" = "Stop All Interacting";
-"inviteDescribe" = "invite you to join the Flat classroom";
-"Room Subject" = "Subject";
-"Room Number" = "Room Number";
-"Room Number Input PlaceHolder" = "Please enter the room number";
-"Start Time" = "Start";
-"Copy Invite Link" = "Copy Link";
-"Copy Success" = "Copy Success";
-"Join Link" = "Join Link";
-"All banned" = "All banned";
-"Camera" = "Camera";
-"Mic" = "Mic";
-"Video Area" = "Video Area";
-"Room Type" = "Room Type";
-"Invite" = "Invite";
-"Enter Room" = "Enter Room";
-"Room Detail" = "Room Detail";
-"Idle" = "Idle";
-"Started" = "Started";
-"Paused" = "Paused";
-"Stopped" = "Stopped";
-"BigClass" = "BigClass";
-"SmallClass" = "SmallClass";
-"OneToOne" = "OneToOne";
-"BigClass Description" = "For a large number of students";
-"SmallClass Description" = "Up to 16 students";
-"OneToOne Description" = "Facing 1 student";
-"Today" = "Today";
-"Room Subject Placeholder" = "Please enter a room subject";
-"Join Options" = "Join Options";
-"Open Camera" = "Open Camera";
-"Open Mic" = "Open Mic";
-"Create" = "Create";
-"Created Room" = "Created Room";
-"Join" = "Join";
-"Start Class" = "Start";
-"Stop Class" = "End Class";
-"Pause Class" = "Pause Class";
+"Rename" = "Rename";
+
+
 "Resume Class" = "Resume Class";
-"Cloud Storage" = "Cloud";
-"Upload" = "Upload";
-"Uploading List" = "Uploading List";
-"Upload Image" = "Upload Image";
-"Upload Video" = "Upload Video";
-"Upload Audio" = "Upload Audio";
-"Upload Doc" = "Upload Doc";
+
+
+"Room" = "Room";
+
+
+"Room Detail" = "Room Detail";
+
+
+"Room List" = "Room List";
+
+
+"Room Number" = "Room Number";
+
+
+"Room Number Input PlaceHolder" = "Please enter the room number";
+
+
+"Room Subject" = "Subject";
+
+
+"Room Subject Placeholder" = "Please enter a room subject";
+
+
+"Room Type" = "Room Type";
+
+
+"RoomIsEnded" = "Room is over";
+
+
+"RoomIsRunning" = "The room is in progress";
+
+
+"RoomNotFound" = "Room does not exist";
+
+
+"RoomNotIsEnded" = "The room is not over yet";
+
+
+"RoomNotIsIdle" = "The room has not started yet";
+
+
+"RoomNotIsRunning" = "The room is not in progress";
 
 
 "Rtm abort tips" = "You are logged in on another device";
-"Class end confirming title" = "Confirming the end of classes?";
-"Class end confirming detail" = "Once the lesson ends, all users exit the room and the lesson and recording (if any) are automatically ended and cannot continue live";
-"Class exit confirming title" = "Confirming exit room?";
-"Class exit confirming detail" = "The class is continuing, make sure to exit the room";
-"Close options" = "Close options";
-"Teacher close class room alert detail" = "The class is continuing, will you leave for now or end the class?";
-"Leaving for now" = "Leaving for now";
-"End the class" = "End the class";
-"Nickname" = "Nickname";
-"Leaving room soon" = "Leaving room soon";
 
-"Edit" = "Edit";
-"Finish" = "Finish";
-"Used Capacity" = "Used Capacity";
-"Delete" = "Delete";
-"Delete File Alert" = "Do you confirm the deletion of the selected courseware? You can't recover the deleted courseware";
 
-"Preview" = "Preview";
-"Rename" = "Rename";
+"Say Something..." = "Say Something...";
+
+
+"Select Language" = "Select Language";
+
+
+"Select Theme" = "Select Theme";
+
+
+"ServerFail" = "Request failed";
+
+
+"Service Agreement" = "Service Agreement";
+
+
+"Setting" = "Setting";
+
+
 "Share" = "Share";
 
-"Upload Idle" = "Upload Idle";
-"Upload Preparing" = "Preparing";
-"Upload Success" = "Upload Success";
+
+"SmallClass" = "SmallClass";
+
+
+"SmallClass Description" = "Up to 16 students";
+
+
+"Start Class" = "Start";
+
+
+"Start Now" = "Start Now";
+
+
+"Start Time" = "Start";
+
+
+"Started" = "Started";
+
+
+"Stop All Interacting" = "Stop All Interacting";
+
+
+"Stop Class" = "End Class";
+
+
+"Stopped" = "Stopped";
+
+
+"Submit" = "Submit";
+
+
+"Teacher" = "Teacher";
+
+
+"Teacher close class room alert detail" = "The class is continuing, will you leave for now or end the class?";
+
+
+"Theme" = "Appearance";
+
+
+"Theme.auto" = "Follow System";
+
+
+"Theme.dark" = "Dark";
+
+
+"Theme.light" = "Ligh";
+
+
+"Today" = "Today";
+
+
+"UnsupportedPlatform" = "Unsupported login platform";
+
+
+"Upload" = "Upload";
+
+
+"Upload Audio" = "Upload Audio";
+
+
+"Upload Doc" = "Upload Doc";
+
+
 "Upload Fail" = "Upload Fail";
+
+
+"Upload Idle" = "Upload Idle";
+
+
+"Upload Image" = "Upload Image";
+
+
+"Upload Preparing" = "Preparing";
+
+
 "Upload Reporting" = "Upload Success Waiting";
+
+
+"Upload Success" = "Upload Success";
+
+
+"Upload Video" = "Upload Video";
+
+
+"UploadConcurrentLimit" = "Reaching the upload Concurrent Limit";
+
+
+"Uploading List" = "Uploading List";
+
+
+"Used Capacity" = "Used Capacity";
+
+
+"User List" = "User List";
+
+
+"UserNotFound" = "User does not exist";
+
+
+"Version" = "Version";
+
+
+"Video Area" = "Video Area";
+
+
 "Video Converting" = "Video Converting ...";
 
-"Got New File Alert" = "A new document is received, upload?";
 
-// Flat Server Error
-"ParamsCheckFailed" = "Parameter error";
-"ServerFail" = "Request failed";
-"CurrentProcessFailed" = "Current Request failed";
-"NotPermission" = "No permission to operate";
-"NeedLoginAgain" = "The credentials have expired, please log in again";
-"UnsupportedPlatform" = "Unsupported login platform";
-"JWTSignFailed" = "Authentication information verification failed, please log in again";
-"RoomNotFound" = "Room does not exist";
-"RoomIsEnded" = "Room is over";
-"RoomIsRunning" = "The room is in progress";
-"RoomNotIsRunning" = "The room is not in progress";
-"RoomNotIsEnded" = "The room is not over yet";
-"RoomNotIsIdle" = "The room has not started yet";
-"PeriodicNotFound" = "Periodic room does not exist";
-"PeriodicIsEnded" = "Periodic room has ended";
-"PeriodicSubRoomHasRunning" = "Periodic sub-room does not exist";
-"UserNotFound" = "User does not exist";
-"RecordNotFound" = "Replay does not exist";
-"UploadConcurrentLimit" = "Reaching the upload Concurrent Limit";
-"NotEnoughTotalUsage" = "Reaching capacity limit";
-"FileSizeTooBig" = "File size too big";
-"FileNotFound" = "File not found";
-"FileExists" = "File exists";
-"FileIsConverted" = "File is converted";
-"FileConvertFailed" = "File convert failed";
-"FileIsConverting" = "File is converting";
-"FileIsConvertWaiting" = "File is convert waiting";
-"LoginGithubSuspended" = "Login Github suspended";
-"LoginGithubURLMismatch" = "Login Github Mismatch";
-"LoginGithubAccessDenied" = "Login Github access denied";
+"and" = "and";
+
+
+"inviteDescribe" = "invite you to join the Flat classroom";
+
+
+"selected" = "(selected)";

@@ -1,162 +1,453 @@
+
+
+"About" = "关于我们";
+
+
+"Alert" = "提示";
+
+
+"All banned" = "全体禁言中";
+
+
+"Back" = "返回";
+
+
+"BigClass" = "大班课";
+
+
+"BigClass Description" = "面向大量学生";
+
+
+"Book Room" = "预定房间";
+
+
+"Camera" = "摄像头";
+
+
+"Cancel" = "取消";
+
+
+"Cancel Room" = "取消房间";
+
+
+"Cancel Room Verbose" = "确定取消该房间？取消后其他成员将无法加入。";
+
+
+"Chat" = "聊天";
+
+
+"Class end confirming detail" = "一旦结束上课，所有用户退出房间，并且自动结束课程和录制（如有），不能继续直播";
+
+
+"Class end confirming title" = "确认结束上课？";
+
+
+"Class exit confirming detail" = "课堂正在继续，确定退出房间";
+
+
+"Class exit confirming title" = "确认退出房间？";
+
+
+"Close" = "关闭";
+
+
+"Close options" = "关闭选项";
+
+
+"Cloud Storage" = "云盘";
+
+
+"Confirm" = "确认";
+
+
+"Contact Us" = "吐个槽";
+
+
+"Copy Invite Link" = "复制邀请链接";
+
+
+"Copy Success" = "复制成功";
+
+
+"Create" = "创建";
+
+
+"Created Room" = "创建的房间";
+
+
+"CurrentProcessFailed" = "当前请求失败";
+
+
+"Delete" = "删除";
+
+
+"Delete File Alert" = "确认删除所选课件？课件删除后不可恢复";
+
+
+"Edit" = "编辑";
+
+
+"End the class" = "结束上课";
+
+
+"Enter Room" = "进入房间";
+
+
+"FileConvertFailed" = "文件转码失败";
+
+
+"FileExists" = "文件已经存在";
+
+
+"FileIsConvertWaiting" = "文件等待转码中";
+
+
+"FileIsConverted" = "文件已被转码";
+
+
+"FileIsConverting" = "文件正在转码中";
+
+
+"FileNotFound" = "无法找到文件";
+
+
+"FileSizeTooBig" = "文件过大";
+
+
+"Finish" = "完成";
+
+
+"Got New File Alert" = "收到一份新的文件，是否上传？";
+
+
+"Have read and agree" = "已阅读并同意";
+
+
+"History" = "历史记录";
+
+
+"Home" = "首页";
+
+
+"Idle" = "待开始";
+
+
+"Interacting" = "互动中";
+
+
+"Invite" = "邀请";
+
+
+"JWTSignFailed" = "认证信息校验失败，请重新登录";
+
+
+"Join" = "加入";
+
+
+"Join Link" = "加入链接";
+
+
+"Join Options" = "加入选项";
+
+
+"Join Room" = "加入房间";
+
+
+"Language Setting" = "语言设置";
+
+
+"Leaving Classroom" = "退出教室";
+
+
+"Leaving for now" = "暂时离开";
+
+
+"Leaving room soon" = "即将离开房间";
+
+
+"LoginGithubAccessDenied" = "Github登录被拒绝";
+
+
+"LoginGithubSuspended" = "Github登录暂停";
+
+
+"LoginGithubURLMismatch" = "Github登录地址不正确";
+
+
+"Logout" = "退出登录";
+
+
+"Mic" = "麦克风";
+
+
+"Modify Room" = "修改房间";
+
+
+"NeedLoginAgain" = "凭证已过期，请重新登录";
+
+
+"Nickname" = "昵称";
+
+
+"No room at the moment" = "暂无房间";
+
+
+"NotEnoughTotalUsage" = "没有足够容量";
+
+
+"NotPermission" = "没有权限操作";
+
+
+"OneToOne" = "一对一";
+
+
+"OneToOne Description" = "面向1位学生";
+
+
+"Online interaction Synchronize ideas" = "在线互动，让想法同步";
+
+
+"Open Camera" = "开启摄像头";
+
+
+"Open Mic" = "开启麦克风";
+
+/* Flat Server Error */
+"ParamsCheckFailed" = "参数错误";
+
+
+"Pause Class" = "暂停上课";
+
+
+"Paused" = "暂停中";
+
+
+"PeriodicIsEnded" = "周期性房间已结束";
+
+
+"PeriodicNotFound" = "周期性房间不存在";
+
+
+"PeriodicSubRoomHasRunning" = "周期性子房间不存在";
+
+
+"Please agree to the Terms of Service first" = "请先同意服务条款";
+
+
+"Preview" = "预览";
+
+
+"Privacy Policy" = "隐私政策";
+
+
+"Profile" = "个人资料";
+
+
+"Raised Hand" = "已举手";
+
 /* 
   Localizable.strings
   flat
 
   Created by xuyunshi on 2021/10/15.
   Copyright © 2021 agora.io. All rights reserved.
-*/
-
+ */
 "Reconnect" = "重新连接";
-"Back" = "返回";
-"Close" = "关闭";
 
-"Alert" = "提示";
+
+"RecordNotFound" = "回放不存在";
+
+
 "Remove From List" = "移除房间";
-"Modify Room" = "修改房间";
-"Cancel Room" = "取消房间";
+
+
 "Remove Room Verbose" = "确定从房间列表移除该房间？移除后可通过房间号再次加入。";
-"Cancel Room Verbose" = "确定取消该房间？取消后其他成员将无法加入。";
 
-"Have read and agree" = "已阅读并同意";
-"and" = "和";
-"Please agree to the Terms of Service first" = "请先同意服务条款";
 
-"Home" = "首页";
-"Room" = "房间";
-"Profile" = "个人资料";
-"Setting" = "个人设置";
-"Language Setting" = "语言设置";
-"Version" = "当前版本";
-"Contact Us" = "吐个槽";
-"About" = "关于我们";
-"Logout" = "退出登录";
-"Cancel" = "取消";
-"Submit" = "提交";
-"Confirm" = "确认";
-"Privacy Policy" = "隐私政策";
-"Select Language" = "选择语言";
-"selected" = "（已选）";
-"Service Agreement" = "服务协议";
-"Join Room" = "加入房间";
-"Start Now" = "立即开始";
-"Book Room" = "预定房间";
-"Room List" = "房间列表";
-"History" = "历史记录";
-"Online interaction Synchronize ideas" = "在线互动，让想法同步";
-"No room at the moment" = "暂无房间";
-"Leaving Classroom" = "退出教室";
-"Chat" = "聊天";
-"Say Something..." = "说点什么吧...";
-"User List" = "用户列表";
-"Teacher" = "老师";
-"Raised Hand" = "已举手";
-"Interacting" = "互动中";
-"Stop All Interacting" = "停止所有互动";
-"inviteDescribe" = "邀请你参加 Flat 房间";
-"Room Subject" = "房间主题";
-"Room Number" = "房间号";
-"Room Number Input PlaceHolder" = "请输入房间号";
-"Start Time" = "开始时间";
-"Copy Invite Link" = "复制邀请链接";
-"Copy Success" = "复制成功";
-"Join Link" = "加入链接";
-"All banned" = "全体禁言中";
-"Camera" = "摄像头";
-"Mic" = "麦克风";
-"Video Area" = "视频区域";
-"Room Type" = "房间类型";
-"Invite" = "邀请";
-"Enter Room" = "进入房间";
-"Room Detail" = "房间详情";
-"Idle" = "待开始";
-"Started" = "进行中";
-"Paused" = "暂停中";
-"Stopped" = "已结束";
-"BigClass" = "大班课";
-"SmallClass" = "小班课";
-"OneToOne" = "一对一";
-"BigClass Description" = "面向大量学生";
-"SmallClass Description" = "最多16位学生";
-"OneToOne Description" = "面向1位学生";
-"Today" = "今天";
-"Room Subject Placeholder" = "请输入房间主题";
-"Join Options" = "加入选项";
-"Open Camera" = "开启摄像头";
-"Open Mic" = "开启麦克风";
-"Create" = "创建";
-"Created Room" = "创建的房间";
-"Join" = "加入";
-"Start Class" = "开始";
-"Stop Class" = "结束上课";
-"Pause Class" = "暂停上课";
+"Rename" = "重命名";
+
+
 "Resume Class" = "恢复上课";
-"Cloud Storage" = "云盘";
-"Upload" = "上传";
-"Uploading List" = "上传列表";
-"Upload Image" = "上传图片";
-"Upload Video" = "上传视频";
-"Upload Audio" = "上传音频";
-"Upload Doc" = "上传文档";
+
+
+"Room" = "房间";
+
+
+"Room Detail" = "房间详情";
+
+
+"Room List" = "房间列表";
+
+
+"Room Number" = "房间号";
+
+
+"Room Number Input PlaceHolder" = "请输入房间号";
+
+
+"Room Subject" = "房间主题";
+
+
+"Room Subject Placeholder" = "请输入房间主题";
+
+
+"Room Type" = "房间类型";
+
+
+"RoomIsEnded" = "房间已结束";
+
+
+"RoomIsRunning" = "房间正在进行中";
+
+
+"RoomNotFound" = "房间不存在";
+
+
+"RoomNotIsEnded" = "房间还未结束";
+
+
+"RoomNotIsIdle" = "房间还未开始";
+
+
+"RoomNotIsRunning" = "房间不在进行中";
+
 
 "Rtm abort tips" = "你已在另一台设备登录";
-"Class end confirming title" = "确认结束上课？";
-"Class end confirming detail" = "一旦结束上课，所有用户退出房间，并且自动结束课程和录制（如有），不能继续直播";
-"Class exit confirming title" = "确认退出房间？";
-"Class exit confirming detail" = "课堂正在继续，确定退出房间";
-"Close options" = "关闭选项";
-"Teacher close class room alert detail" = "课堂正在继续，你是暂时离开还是结束上课？";
-"Leaving for now" = "暂时离开";
-"End the class" = "结束上课";
-"Leaving room soon" = "即将离开房间";
 
-"Nickname" = "昵称";
-"Edit" = "编辑";
-"Finish" = "完成";
-"Used Capacity" = "已使用";
-"Delete" = "删除";
-"Delete File Alert" = "确认删除所选课件？课件删除后不可恢复";
 
-"Preview" = "预览";
-"Rename" = "重命名";
+"Say Something..." = "说点什么吧...";
+
+
+"Select Language" = "选择语言";
+
+
+"Select Theme" = "选择外观";
+
+
+"ServerFail" = "请求失败";
+
+
+"Service Agreement" = "服务协议";
+
+
+"Setting" = "个人设置";
+
+
 "Share" = "分享";
 
-"Upload Idle" = "等待上传";
-"Upload Preparing" = "上传准备中";
-"Upload Success" = "上传成功";
+
+"SmallClass" = "小班课";
+
+
+"SmallClass Description" = "最多16位学生";
+
+
+"Start Class" = "开始";
+
+
+"Start Now" = "立即开始";
+
+
+"Start Time" = "开始时间";
+
+
+"Started" = "进行中";
+
+
+"Stop All Interacting" = "停止所有互动";
+
+
+"Stop Class" = "结束上课";
+
+
+"Stopped" = "已结束";
+
+
+"Submit" = "提交";
+
+
+"Teacher" = "老师";
+
+
+"Teacher close class room alert detail" = "课堂正在继续，你是暂时离开还是结束上课？";
+
+
+"Theme" = "外观";
+
+
+"Theme.auto" = "自动";
+
+
+"Theme.dark" = "深色";
+
+
+"Theme.light" = "浅色";
+
+
+"Today" = "今天";
+
+
+"UnsupportedPlatform" = "不支持的登录平台";
+
+
+"Upload" = "上传";
+
+
+"Upload Audio" = "上传音频";
+
+
+"Upload Doc" = "上传文档";
+
+
 "Upload Fail" = "上传失败";
+
+
+"Upload Idle" = "等待上传";
+
+
+"Upload Image" = "上传图片";
+
+
+"Upload Preparing" = "上传准备中";
+
+
 "Upload Reporting" = "上传成功，等待中";
+
+
+"Upload Success" = "上传成功";
+
+
+"Upload Video" = "上传视频";
+
+
+"UploadConcurrentLimit" = "到达并发上限";
+
+
+"Uploading List" = "上传列表";
+
+
+"Used Capacity" = "已使用";
+
+
+"User List" = "用户列表";
+
+
+"UserNotFound" = "用户不存在";
+
+
+"Version" = "当前版本";
+
+
+"Video Area" = "视频区域";
+
+
 "Video Converting" = "视频转码中 ...";
 
-"Got New File Alert" = "收到一份新的文件，是否上传？";
 
-// Flat Server Error
-"ParamsCheckFailed" = "参数错误";
-"ServerFail" = "请求失败";
-"CurrentProcessFailed" = "当前请求失败";
-"NotPermission" = "没有权限操作";
-"NeedLoginAgain" = "凭证已过期，请重新登录";
-"UnsupportedPlatform" = "不支持的登录平台";
-"JWTSignFailed" = "认证信息校验失败，请重新登录";
-"RoomNotFound" = "房间不存在";
-"RoomIsEnded" = "房间已结束";
-"RoomIsRunning" = "房间正在进行中";
-"RoomNotIsRunning" = "房间不在进行中";
-"RoomNotIsEnded" = "房间还未结束";
-"RoomNotIsIdle" = "房间还未开始";
-"PeriodicNotFound" = "周期性房间不存在";
-"PeriodicIsEnded" = "周期性房间已结束";
-"PeriodicSubRoomHasRunning" = "周期性子房间不存在";
-"UserNotFound" = "用户不存在";
-"RecordNotFound" = "回放不存在";
-"UploadConcurrentLimit" = "到达并发上限";
-"NotEnoughTotalUsage" = "没有足够容量";
-"FileSizeTooBig" = "文件过大";
-"FileNotFound" = "无法找到文件";
-"FileExists" = "文件已经存在";
-"FileIsConverted" = "文件已被转码";
-"FileConvertFailed" = "文件转码失败";
-"FileIsConverting" = "文件正在转码中";
-"FileIsConvertWaiting" = "文件等待转码中";
-"LoginGithubSuspended" = "Github登录暂停";
-"LoginGithubURLMismatch" = "Github登录地址不正确";
-"LoginGithubAccessDenied" = "Github登录被拒绝";
+"and" = "和";
+
+
+"inviteDescribe" = "邀请你参加 Flat 房间";
+
+
+"selected" = "（已选）";
