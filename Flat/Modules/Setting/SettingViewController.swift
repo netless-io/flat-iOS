@@ -126,6 +126,7 @@ class SettingViewController: UITableViewController {
             let selected = NSLocalizedString("selected", comment: "")
             alertController.addAction(.init(title: i.description + ((current == i) ? selected : ""), style: .default, handler: { _ in
                 manager?.updateUserPreferredStyle(i)
+                self.updateItems()
             }))
         }
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))

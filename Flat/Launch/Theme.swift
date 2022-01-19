@@ -49,8 +49,9 @@ class Theme {
                 catch {
                     print(error)
                 }
+            } else {
+                UserDefaults.standard.setValue(nil, forKey: "userPreferredStyle")
             }
-            UserDefaults.standard.setValue(nil, forKey: "userPreferredStyle")
         }
     }
     weak var window: UIWindow?
