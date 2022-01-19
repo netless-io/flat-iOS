@@ -19,6 +19,7 @@ class ProfileViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Profile", comment: "")
+        tableView.backgroundColor = .whiteBG
         tableView.separatorStyle = .none
         tableView.rowHeight = 47
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -31,8 +32,12 @@ class ProfileViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: cellIdentifier)
+        cell.textLabel?.textColor = .text
         cell.textLabel?.text = NSLocalizedString("Nickname", comment: "")
         cell.detailTextLabel?.text = AuthStore.shared.user?.name ?? ""
+        cell.detailTextLabel?.textColor = .subText
+        cell.backgroundColor = .whiteBG
+        cell.contentView.backgroundColor = .whiteBG
         return cell
     }
 

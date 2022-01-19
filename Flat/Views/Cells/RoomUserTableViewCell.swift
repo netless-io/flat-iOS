@@ -28,6 +28,8 @@ class RoomUserTableViewCell: UITableViewCell {
     }
     
     func setupViews() {
+        contentView.backgroundColor = .whiteBG
+        
         let line = UIView()
         line.backgroundColor = .borderColor
 

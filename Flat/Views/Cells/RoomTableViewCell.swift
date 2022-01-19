@@ -16,27 +16,31 @@ class RoomTableViewCell: UITableViewCell {
     @IBOutlet weak var calendarView: UIView!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var mainTextView: UIView!
+    @IBOutlet weak var borderView: UIView!
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setSelected(isSelected, animated: false)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectedBackgroundView = UIImageView(image: UIImage.imageWith(color: .controlSelectedBG))
         separatorLineHeightConstraint.constant = 1 / UIScreen.main.scale
+        contentView.backgroundColor = .whiteBG
+        borderView.backgroundColor = .borderColor
+        calendarLabel.textColor = .text
+        roomTitleLabel.textColor = .text
+        roomTimeLabel.textColor = .subText
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
         if animated {
-            UIView.animate(withDuration: 0.3) {
-                self.mainTextView.layer.backgroundColor = selected ?  UIColor.controlSelectedBG.cgColor : UIColor.whiteBG.cgColor
-            }
+            contentView.layer.backgroundColor = selected ? UIColor.controlSelectedBG.cgColor : UIColor.whiteBG.cgColor
+            mainTextView.layer.backgroundColor = selected ?  UIColor.controlSelectedBG.cgColor : UIColor.whiteBG.cgColor
         } else {
+            contentView.backgroundColor = selected ?  .controlSelectedBG : .whiteBG
             mainTextView.backgroundColor = selected ?  .controlSelectedBG : .whiteBG
-        }
-    }
-    
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if animated {
-            mainTextView.layer.backgroundColor = highlighted ?  UIColor.controlSelectedBG.cgColor : UIColor.whiteBG.cgColor
-        } else {
-            mainTextView.backgroundColor = highlighted ?  .controlSelectedBG : .whiteBG
         }
     }
     

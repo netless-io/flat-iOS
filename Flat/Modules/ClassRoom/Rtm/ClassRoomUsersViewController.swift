@@ -224,6 +224,7 @@ class ClassRoomUsersViewController: UIViewController {
     
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
+        view.backgroundColor = .whiteBG
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)

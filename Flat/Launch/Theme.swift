@@ -7,15 +7,35 @@
 //
 
 import Foundation
+import Fastboard
 
 enum ThemeStyle: String, Codable, CaseIterable {
     case dark
     case light
-    /// Available iOS 13
+    @available(iOS 13, *)
     case auto
     
     var description: String {
         NSLocalizedString("Theme.\(rawValue)", comment: "")
+    }
+    
+    static var `default`: Self {
+        if #available(iOS 13.0, *) {
+            return .auto
+        } else {
+            return .light
+        }
+    }
+    
+    var userInterfaceStyle: UIUserInterfaceStyle {
+        switch self {
+        case .dark:
+            return .dark
+        case .light:
+            return .light
+        case .auto:
+            return .unspecified
+        }
     }
     
     static var allCases: [ThemeStyle] {
@@ -28,22 +48,43 @@ enum ThemeStyle: String, Codable, CaseIterable {
 }
 
 class Theme {
+    static let shared = Theme()
+    private init() {}
+    weak var window: UIWindow? = nil {
+        didSet {
+            apply(userPreferredStyle ?? .default)
+        }
+    }
+    
+    var isDarkBeforeIOS13: Bool {
+        if #available(iOS 13.0, *) {
+        } else if let style = userPreferredStyle, style == .dark {
+            return true
+        }
+        return false
+    }
+    
     private(set) var userPreferredStyle: ThemeStyle? {
         get {
             guard let data = UserDefaults.standard.value(forKey: "userPreferredStyle") as? Data
             else { return nil }
             do {
-                let style = try JSONDecoder().decode(ThemeStyle.self, from: data)
-                return style
+                let info = try JSONDecoder().decode([String: ThemeStyle].self, from: data)
+                if let style = info["style"] {
+                    return style
+                }
+                return nil
             }
             catch {
+                print(error)
                 return nil
             }
         }
         set {
             if let userPreferredStyle = newValue {
                 do {
-                    let data = try JSONEncoder().encode(userPreferredStyle)
+                    let encoder = JSONEncoder()
+                    let data = try encoder.encode(["style": userPreferredStyle])
                     UserDefaults.standard.setValue(data, forKey: "userPreferredStyle")
                 }
                 catch {
@@ -52,13 +93,6 @@ class Theme {
             } else {
                 UserDefaults.standard.setValue(nil, forKey: "userPreferredStyle")
             }
-        }
-    }
-    weak var window: UIWindow?
-    init(window: UIWindow) {
-        self.window = window
-        if let userPreferredStyle = userPreferredStyle {
-            apply(userPreferredStyle)
         }
     }
     
@@ -77,10 +111,48 @@ class Theme {
             case .auto:
                 window?.overrideUserInterfaceStyle = .unspecified
             }
-            window?.subviews.forEach {
-                $0.removeFromSuperview()
-                window?.addSubview($0)
-            }
+        } else {
+            
         }
+        applyNavigationBar()
+        configProgressHUDAppearance()
+        applyFastboardTheme()
+    }
+    
+    fileprivate func applyNavigationBar() {
+        let proxy = UINavigationBar.appearance()
+        proxy.tintColor = .subText
+        
+        if #available(iOS 13.0, *) {} else {
+            proxy.isTranslucent = false
+            proxy.barTintColor = .whiteBG
+            proxy.largeTitleTextAttributes = [
+                .foregroundColor: UIColor.text
+            ]
+            proxy.titleTextAttributes = [
+                .foregroundColor: UIColor.text
+            ]
+        }
+    }
+    
+    fileprivate func applyFastboardTheme() {
+        let whiteboardAssets = WhiteboardAssets(whiteboardBackgroundColor: .whiteBG,
+                                                containerColor: .clear)
+        let controlAssets = ControlBarAssets(backgroundColor: .whiteBG,
+                                             borderColor: .borderColor,
+                                             effectStyle: nil)
+        let panelItemAssets = PanelItemAssets(normalIconColor: .controlNormal,
+                                              selectedIconColor: .controlSelected,
+                                              highlightBgColor: .controlSelectedBG,
+                                              subOpsIndicatorColor: .text,
+                                              pageTextLabelColor: .text)
+        let flatThemeAssets = ThemeAsset(whiteboardAssets: whiteboardAssets,
+                                         controlBarAssets: controlAssets,
+                                         panelItemAssets: panelItemAssets)
+        
+        // Update Appearance
+        ControlBar.appearance().itemWidth = globalRoomControlBarItemWidth
+        ControlBar.appearance().commonRadius = 10
+        ThemeManager.shared.apply(flatThemeAssets)
     }
 }

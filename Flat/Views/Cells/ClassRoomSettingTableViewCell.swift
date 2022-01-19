@@ -14,6 +14,8 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        label.textColor = .subText
+        contentView.backgroundColor = .whiteBG
         lineHeightConstraint.constant = 1 / UIScreen.main.scale
     }
     @IBAction func switchValueChanged(_ sender: Any) {

@@ -12,11 +12,6 @@ import UIKit
 class BaseNavigationViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
-    }
-
-    func setup() {
-        navigationBar.tintColor = .subText
     }
     
     override func show(_ vc: UIViewController, sender: Any?) {

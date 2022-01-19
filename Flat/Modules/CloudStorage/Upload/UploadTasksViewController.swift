@@ -159,6 +159,7 @@ class UploadTasksViewController: UIViewController {
     // MARK: - Lazy
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
+        view.backgroundColor = .whiteBG
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(.init(nibName: String(describing: UploadTaskTableViewCell.self), bundle: nil),

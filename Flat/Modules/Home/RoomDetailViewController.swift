@@ -187,6 +187,24 @@ class RoomDetailViewController: UIViewController {
     
     func setupViews() {
         view.backgroundColor = .whiteBG
+        mainStackView.backgroundColor = .whiteBG
+        mainStackView.arrangedSubviews.forEach {
+            $0.backgroundColor = .whiteBG
+        }
+        startTimeLabel.textColor = .text
+        startDateLabel.textColor = .text
+        endDateLabel.textColor = .text
+        endTimeLabel.textColor = .text
+        durationLabel.textColor = .text
+        durationLabel.backgroundColor = .controlSelectedBG
+        statusLabel.textColor = .text
+        
+        roomTypeLabel.textColor = .text
+        roomNumberLabel.textColor = .text
+        
+        roomTypeTitleLabel.textColor = .subText
+        roomNumberTitleLabel.textColor = .subText
+        
         navigationItem.title = NSLocalizedString("Room Detail", comment: "")
         var j = 0
         for i in 1...mainStackView.arrangedSubviews.count - 1 {
@@ -324,6 +342,8 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var roomTypeTitleLabel: UILabel!
+    @IBOutlet weak var roomNumberTitleLabel: UILabel!
     @IBOutlet weak var enterRoomButton: UIButton!
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var roomTypeLabel: UILabel!

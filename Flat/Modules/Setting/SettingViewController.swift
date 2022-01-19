@@ -59,9 +59,9 @@ class SettingViewController: UITableViewController {
              LocaleManager.language?.name ?? "跟随系统",
              (self, #selector(self.onClickLanguage))),
             
-            (UIImage(named: "language")!,
+            (UIImage(named: "theme")!,
              NSLocalizedString("Theme", comment: ""),
-             (globalLaunchCoordinator?.themeManager.userPreferredStyle ?? .auto).description,
+             (Theme.shared.userPreferredStyle ?? ThemeStyle.default).description,
              (self, #selector(self.onClickTheme))
             ),
             
@@ -86,11 +86,13 @@ class SettingViewController: UITableViewController {
     func setupViews() {
         title = NSLocalizedString("Setting", comment: "")
         tableView.backgroundColor = .whiteBG
+        tableView.separatorColor = .borderColor
         tableView.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 0)
         tableView.separatorStyle = .singleLine
         tableView.register(UINib(nibName: String(describing: SettingTableViewCell.self), bundle: nil), forCellReuseIdentifier: cellIdentifier)
         
         let container = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 40)))
+        container.backgroundColor = .whiteBG
         container.addSubview(logoutButton)
         logoutButton.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
@@ -120,13 +122,17 @@ class SettingViewController: UITableViewController {
 
     @objc func onClickTheme() {
         let alertController = UIAlertController(title: NSLocalizedString("Select Theme", comment: ""), message: nil, preferredStyle: .actionSheet)
-        let manager = globalLaunchCoordinator?.themeManager
-        let current = manager?.userPreferredStyle ?? .auto
+        let manager = Theme.shared
+        let current = manager.userPreferredStyle ?? ThemeStyle.default
         for i in ThemeStyle.allCases {
             let selected = NSLocalizedString("selected", comment: "")
             alertController.addAction(.init(title: i.description + ((current == i) ? selected : ""), style: .default, handler: { _ in
-                manager?.updateUserPreferredStyle(i)
-                self.updateItems()
+                manager.updateUserPreferredStyle(i)
+                if #available(iOS 13.0, *) {
+                    self.updateItems()
+                } else {
+                    self.rebootAndTurnToSetting()
+                }
             }))
         }
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
@@ -144,12 +150,7 @@ class SettingViewController: UITableViewController {
         for l in Language.allCases {
             alertController.addAction(.init(title: l == currentLanguage ? "\(l.name)\(NSLocalizedString("selected", comment: ""))" : l.name, style: .default, handler: { _ in
                 Bundle.set(language: l)
-                if #available(iOS 13.0, *) {
-                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch?.reboot()
-                } else {
-                    (UIApplication.shared.delegate as? AppDelegate)?.launch?.reboot()
-                }
-                UIApplication.shared.topViewController?.mainContainer?.push(SettingViewController())
+                self.rebootAndTurnToSetting()
                 print("local update", LocaleManager.languageCode)
             }))
         }
@@ -160,6 +161,15 @@ class SettingViewController: UITableViewController {
             popPresent?.sourceRect = cell.bounds
         }
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func rebootAndTurnToSetting() {
+        if #available(iOS 13.0, *) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch?.reboot()
+        } else {
+            (UIApplication.shared.delegate as? AppDelegate)?.launch?.reboot()
+        }
+        UIApplication.shared.topViewController?.mainContainer?.push(SettingViewController())
     }
     
     @objc func onClickContactUs() {

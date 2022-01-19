@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,13 +28,13 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1" verticalHuggingPriority="251" text="SettingSettingSettingSettingSetting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kii-l4-55a">
                         <rect key="frame" x="44" y="23.5" width="229" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" name="Text"/>
+                        <color key="textColor" systemColor="systemOrangeColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QaV-KI-TuR">
                         <rect key="frame" x="273" y="24" width="52" height="19.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" name="SubText"/>
+                        <color key="textColor" systemColor="systemGreenColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -54,15 +54,15 @@
                 <outlet property="settingDetailLabel" destination="QaV-KI-TuR" id="MF2-6Y-qY5"/>
                 <outlet property="settingTitleLabel" destination="kii-l4-55a" id="Llc-0D-9mr"/>
             </connections>
-            <point key="canvasLocation" x="370" y="73"/>
+            <point key="canvasLocation" x="-65" y="53"/>
         </tableViewCell>
     </objects>
     <resources>
-        <namedColor name="SubText">
-            <color red="0.36470588235294116" green="0.36470588235294116" blue="0.36470588235294116" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="Text">
-            <color red="0.10196078431372549" green="0.11764705882352941" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

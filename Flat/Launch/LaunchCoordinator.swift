@@ -20,7 +20,6 @@ class LaunchCoordinator {
     var afterLoginImplementations: [((LaunchCoordinator)->Void)] = []
     
     var authStore: AuthStore
-    var themeManager: Theme
     // All the registerd launchItem will be stored here
     fileprivate var launchItems: [String: LaunchItem] = [:] {
         didSet {
@@ -33,13 +32,13 @@ class LaunchCoordinator {
     init(window: UIWindow, authStore: AuthStore, defaultLaunchItems: [LaunchItem]) {
         self.window = window
         self.authStore = authStore
-        self.themeManager = Theme(window: window)
         authStore.delegate = self
         defaultLaunchItems.forEach { registerLaunchItem($0, identifier: String(describing: $0)) }
         
         if authStore.isLogin {
             observeFirstJWTExpire()
         }
+        Theme.shared.window = window
     }
     
     func registerLaunchItem(_ item: LaunchItem, identifier: String) {

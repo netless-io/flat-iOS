@@ -18,6 +18,8 @@ class AboutUsViewController: UIViewController {
 
     func setupViews() {
         title = NSLocalizedString("About", comment: "")
+        view.backgroundColor = .whiteBG
+        flatLabel.textColor = .text
         versionLabel.text = "Version \(Env().version)"
     }
     
@@ -31,5 +33,6 @@ class AboutUsViewController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
+    @IBOutlet weak var flatLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
 }

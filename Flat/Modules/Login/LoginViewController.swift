@@ -14,6 +14,7 @@ import SafariServices
 class LoginViewController: UIViewController {
     var wechatLogin: WechatLogin?
     var githubLogin: GithubLogin?
+    @IBOutlet weak var flatLabel: UILabel!
     var appleLogin: Any?
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -40,6 +41,11 @@ class LoginViewController: UIViewController {
     
     // MARK: - Private
     func setupViews() {
+        stackView.arrangedSubviews.forEach {
+            $0.backgroundColor = .whiteBG
+        }
+        flatLabel.textColor = .text
+        
         // Hide wechat login when wechat not installed
         wechatLoginButton.isHidden = !WXApi.isWXAppInstalled()
         syncTraitCollection(traitCollection)

@@ -205,6 +205,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
     lazy var inputTextField: UITextField = {
         let inputTextField = UITextField.init(frame: .zero)
         inputTextField.backgroundColor = .whiteBG
+        inputTextField.textColor = .text
         inputTextField.clipsToBounds = true
         inputTextField.layer.borderWidth = 1 / UIScreen.main.scale
         inputTextField.layer.cornerRadius = 4
@@ -234,6 +235,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
+        view.backgroundColor = .whiteBG
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(ChatTableViewCell.self, forCellReuseIdentifier: cellIdentifier)

@@ -32,6 +32,7 @@ class ChatTableViewCell: UITableViewCell {
     
     func setupViews() {
         selectionStyle = .none
+        contentView.backgroundColor = .whiteBG
         contentView.addSubview(nickNameLabel)
         contentView.addSubview(bubbleView)
         bubbleView.addSubview(chatContentLabel)
@@ -40,9 +41,6 @@ class ChatTableViewCell: UITableViewCell {
             make.left.right.equalToSuperview().inset(ChatTableViewCell.textMargin)
         }
         chatContentLabel.snp.makeConstraints { make in
-//            make.top.equalToSuperview().inset(ChatTableViewCell.textEdge.top)
-//            make.bottom.equalToSuperview().inset(ChatTableViewCell.textEdge.bottom)
-//            make.
             make.edges.equalToSuperview().inset(ChatTableViewCell.textEdge)
             make.width.greaterThanOrEqualTo(10)
         }

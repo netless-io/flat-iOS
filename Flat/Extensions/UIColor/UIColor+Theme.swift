@@ -10,71 +10,75 @@
 import UIKit
 
 extension UIColor {
+    fileprivate static var nameSuffix: String {
+        Theme.shared.isDarkBeforeIOS13 ? "-dark" : ""
+    }
+    
     static var controlDisabled: UIColor {
-        UIColor(named:"ControlDisable")!
+        return UIColor(named: "ControlDisable" + nameSuffix)!
     }
     
     static var controlNormal: UIColor {
-        UIColor(named:"ControlNormal")!
+        return UIColor(named:"ControlNormal" + nameSuffix)!
     }
     
     static var controlSelected: UIColor {
-        UIColor(named:"ControlSelected")!
+        return UIColor(named:"ControlSelected" + nameSuffix)!
     }
     
     static var popoverBorder: UIColor {
-        UIColor(named:"PopoverBorder")!
+        return UIColor(named:"PopoverBorder" + nameSuffix)!
     }
     
     static var borderColor: UIColor {
-        UIColor(named:"BorderColor")!
+        return UIColor(named:"BorderColor" + nameSuffix)!
     }
     
     static var brandColor: UIColor {
-        UIColor(named:"BrandColor")!
+        return UIColor(named:"BrandColor" + nameSuffix)!
     }
     
     static var controlSelectedBG: UIColor {
-        UIColor(named:"ControlSelectedBG")!
+        return UIColor(named:"ControlSelectedBG" + nameSuffix)!
     }
     
     static var text: UIColor {
-        UIColor(named:"Text")!
+        return UIColor(named:"Text" + nameSuffix)!
     }
     
     static var subText: UIColor {
-        UIColor(named:"SubText")!
+        return UIColor(named:"SubText" + nameSuffix)!
     }
     
     static var commonBG: UIColor {
-        UIColor(named: "GrayBGColor")!
+        return UIColor(named: "GrayBGColor" + nameSuffix)!
     }
     
     static var blackBG: UIColor {
-        UIColor(named: "blackBG")!
+        return UIColor(named: "blackBG" + nameSuffix)!
     }
     
     static var whiteBG: UIColor {
-        UIColor(named: "whiteBG")!
+        return UIColor(named: "whiteBG" + nameSuffix)!
     }
     
     static var lightBlueBar: UIColor {
-        UIColor(named: "LightBlueBar")!
+        return UIColor(named: "LightBlueBar" + nameSuffix)!
     }
     
     static var sideBarNormal: UIColor {
-        UIColor(named: "SideBarNormal")!
+        return UIColor(named: "SideBarNormal" + nameSuffix)!
     }
     
     static var sideBarSelected: UIColor {
-        UIColor(named: "SideBarSelected")!
+        return UIColor(named: "SideBarSelected" + nameSuffix)!
     }
     
     static var sideBarTextNormal: UIColor {
-        UIColor(named: "SideBarTextNormal")!
+        return UIColor(named: "SideBarTextNormal" + nameSuffix)!
     }
     
     static var sideBarTextSelected: UIColor {
-        UIColor(named: "SideBarTextSelected")!
+        return UIColor(named: "SideBarTextSelected" + nameSuffix)!
     }
 }

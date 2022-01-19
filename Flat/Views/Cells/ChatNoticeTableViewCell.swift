@@ -21,6 +21,7 @@ class ChatNoticeTableViewCell: UITableViewCell {
     
     func setupViews() {
         selectionStyle = .none
+        contentView.backgroundColor = .whiteBG
         contentView.addSubview(labelView)
         labelView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
