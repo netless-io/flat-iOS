@@ -93,7 +93,7 @@ class LaunchCoordinator {
             let vc = MainSplitViewController(style: .tripleColumn)
             vc.preferredDisplayMode = .twoBesideSecondary
             vc.preferredSplitBehavior = .tile
-            vc.showsSecondaryOnlyButton = true
+            vc.showsSecondaryOnlyButton = false
             if #available(iOS 14.5, *) {
                 vc.displayModeButtonVisibility = .always
             }
