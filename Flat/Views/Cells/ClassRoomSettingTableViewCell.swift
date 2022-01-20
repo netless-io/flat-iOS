@@ -18,7 +18,8 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         contentView.backgroundColor = .whiteBG
         lineHeightConstraint.constant = 1 / UIScreen.main.scale
     }
-    @IBAction func switchValueChanged(_ sender: Any) {
+    
+    @IBAction func clickSwitch(_ sender: Any) {
         if let i = sender as? UISwitch {
             i.isOn = !i.isOn
             switchValueChangedHandler?(i.isOn)

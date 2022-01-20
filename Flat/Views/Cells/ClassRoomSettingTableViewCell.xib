@@ -29,7 +29,7 @@
                         <rect key="frame" x="263" y="6.5" width="51" height="31"/>
                         <color key="onTintColor" name="BrandColor"/>
                         <connections>
-                            <action selector="switchValueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="FQT-wB-SPf"/>
+                            <action selector="clickSwitch:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="zXZ-Wf-90M"/>
                         </connections>
                     </switch>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vjS-8p-I6h">
