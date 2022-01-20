@@ -37,13 +37,23 @@
                         <color key="textColor" systemColor="systemGreenColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="834-Gz-ws7">
+                        <rect key="frame" x="262" y="33" width="1" height="1"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="w0R-5o-KYS"/>
+                            <constraint firstAttribute="width" constant="1" id="wlL-Wi-J2S"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="QaV-KI-TuR" secondAttribute="trailing" constant="17" id="9D9-bb-WXt"/>
                     <constraint firstItem="QaV-KI-TuR" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="9oo-6D-bKc"/>
                     <constraint firstItem="QaV-KI-TuR" firstAttribute="leading" secondItem="kii-l4-55a" secondAttribute="trailing" id="E0M-xc-P25"/>
+                    <constraint firstItem="QaV-KI-TuR" firstAttribute="leading" secondItem="834-Gz-ws7" secondAttribute="trailing" constant="10" id="R51-hr-cAx"/>
                     <constraint firstItem="kii-l4-55a" firstAttribute="leading" secondItem="YXl-bd-eGe" secondAttribute="trailing" constant="4" id="Vrl-Rv-rab"/>
                     <constraint firstItem="YXl-bd-eGe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dMR-M2-LND"/>
+                    <constraint firstItem="834-Gz-ws7" firstAttribute="centerY" secondItem="QaV-KI-TuR" secondAttribute="centerY" id="rzR-J6-eK0"/>
                     <constraint firstItem="kii-l4-55a" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xuk-6c-9uo"/>
                     <constraint firstItem="YXl-bd-eGe" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="yw7-1C-XDS"/>
                 </constraints>
@@ -51,10 +61,11 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="iconImageView" destination="YXl-bd-eGe" id="76P-3a-GWH"/>
+                <outlet property="popOverAnchorView" destination="834-Gz-ws7" id="u7R-qT-L9s"/>
                 <outlet property="settingDetailLabel" destination="QaV-KI-TuR" id="MF2-6Y-qY5"/>
                 <outlet property="settingTitleLabel" destination="kii-l4-55a" id="Llc-0D-9mr"/>
             </connections>
-            <point key="canvasLocation" x="-65" y="53"/>
+            <point key="canvasLocation" x="-65.217391304347828" y="52.566964285714285"/>
         </tableViewCell>
     </objects>
     <resources>

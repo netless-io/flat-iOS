@@ -57,28 +57,28 @@ class SettingViewController: UITableViewController {
             (UIImage(named: "language")!,
              NSLocalizedString("Language Setting", comment: ""),
              LocaleManager.language?.name ?? "跟随系统",
-             (self, #selector(self.onClickLanguage))),
+             (self, #selector(self.onClickLanguage(sender:)))),
             
             (UIImage(named: "theme")!,
              NSLocalizedString("Theme", comment: ""),
              (Theme.shared.userPreferredStyle ?? ThemeStyle.default).description,
-             (self, #selector(self.onClickTheme))
+             (self, #selector(self.onClickTheme(sender:)))
             ),
             
             (UIImage(named: "update_version")!,
              NSLocalizedString("Version", comment: ""),
              displayVersion.description,
-             (self, #selector(onVersion))),
+             (self, #selector(onVersion(sender:)))),
             
-            (UIImage(named: "message")!,
-             NSLocalizedString("Contact Us", comment: ""),
-             "",
-             (self, #selector(self.onClickContactUs))),
+//            (UIImage(named: "message")!,
+//             NSLocalizedString("Contact Us", comment: ""),
+//             "",
+//             (self, #selector(self.onClickContactUs))),
             
             (UIImage(named: "info")!,
              NSLocalizedString("About", comment: ""),
              "",
-             (self, #selector(self.onClickAbout)))
+             (self, #selector(self.onClickAbout(sender:))))
         ]
         tableView.reloadData()
     }
@@ -106,7 +106,7 @@ class SettingViewController: UITableViewController {
         AuthStore.shared.logout()
     }
     
-    @objc func onVersion() {
+    @objc func onVersion(sender: Any?) {
         guard let i = DisplayVersion.allCases.firstIndex(of: displayVersion) else { return }
         let nextIndex = DisplayVersion.allCases.index(after: i)
         if nextIndex == DisplayVersion.allCases.endIndex {
@@ -116,11 +116,11 @@ class SettingViewController: UITableViewController {
         }
     }
     
-    @objc func onClickAbout() {
+    @objc func onClickAbout(sender: Any?) {
         navigationController?.pushViewController(AboutUsViewController(), animated: true)
     }
 
-    @objc func onClickTheme() {
+    @objc func onClickTheme(sender: Any?) {
         let alertController = UIAlertController(title: NSLocalizedString("Select Theme", comment: ""), message: nil, preferredStyle: .actionSheet)
         let manager = Theme.shared
         let current = manager.userPreferredStyle ?? ThemeStyle.default
@@ -137,14 +137,13 @@ class SettingViewController: UITableViewController {
         }
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
         let popPresent = alertController.popoverPresentationController
-        if let cell = tableView.visibleCells.first {
-            popPresent?.sourceView = cell
-            popPresent?.sourceRect = cell.bounds
+        if let cell = sender as? SettingTableViewCell {
+            popPresent?.sourceView = cell.popOverAnchorView
         }
         present(alertController, animated: true, completion: nil)
     }
     
-    @objc func onClickLanguage() {
+    @objc func onClickLanguage(sender: Any?) {
         let alertController = UIAlertController(title: NSLocalizedString("Select Language", comment: ""), message: nil, preferredStyle: .actionSheet)
         let currentLanguage = LocaleManager.language
         for l in Language.allCases {
@@ -156,9 +155,8 @@ class SettingViewController: UITableViewController {
         }
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
         let popPresent = alertController.popoverPresentationController
-        if let cell = tableView.visibleCells.first {
-            popPresent?.sourceView = cell
-            popPresent?.sourceRect = cell.bounds
+        if let cell = sender as? SettingTableViewCell {
+            popPresent?.sourceView = cell.popOverAnchorView
         }
         present(alertController, animated: true, completion: nil)
     }
@@ -201,9 +199,9 @@ class SettingViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
         if let pairs = items[indexPath.row].3 {
-            pairs.0.perform(pairs.1)
+            pairs.0.performSelector(onMainThread: pairs.1, with: cell, waitUntilDone: true)
         }
     }
     
