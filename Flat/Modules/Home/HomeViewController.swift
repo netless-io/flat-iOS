@@ -402,6 +402,7 @@ class HomeViewController: UIViewController {
         table.separatorStyle = .none
         table.backgroundColor = .whiteBG
         table.tableHeaderView = tableHeader
+        table.showsVerticalScrollIndicator = false
         table.delegate = self
         table.dataSource = self
         table.emptyDataSetDelegate = self
