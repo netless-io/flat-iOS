@@ -118,7 +118,7 @@
 		8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB22719999000965185 /* JoinRoomRequest.swift */; };
 		8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB427199AB600965185 /* RoomPlayInfo.swift */; };
 		8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB627199AC700965185 /* ClassRoomType.swift */; };
-		8A97EBB927199AD300965185 /* RTCShareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB827199AD300965185 /* RTCShareScreen.swift */; };
+		8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB827199AD300965185 /* ShareScreenInfo.swift */; };
 		8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACBFB271D603E00E7E7CE /* HomeTabBar.swift */; };
 		8A9ACC01271E712100E7E7CE /* RoomListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC00271E712100E7E7CE /* RoomListRequest.swift */; };
 		8A9ACC03271E71B100E7E7CE /* RoomListInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC02271E71B100E7E7CE /* RoomListInfo.swift */; };
@@ -348,7 +348,7 @@
 		8A97EBB22719999000965185 /* JoinRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomRequest.swift; sourceTree = "<group>"; };
 		8A97EBB427199AB600965185 /* RoomPlayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPlayInfo.swift; sourceTree = "<group>"; };
 		8A97EBB627199AC700965185 /* ClassRoomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomType.swift; sourceTree = "<group>"; };
-		8A97EBB827199AD300965185 /* RTCShareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCShareScreen.swift; sourceTree = "<group>"; };
+		8A97EBB827199AD300965185 /* ShareScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareScreenInfo.swift; sourceTree = "<group>"; };
 		8A9ACBEA271D4F5600E7E7CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A9ACBF8271D5D2700E7E7CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginViewController.xib; sourceTree = "<group>"; };
 		8A9ACBFB271D603E00E7E7CE /* HomeTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBar.swift; sourceTree = "<group>"; };
@@ -1109,7 +1109,7 @@
 				8A9ACC02271E71B100E7E7CE /* RoomListInfo.swift */,
 				8A97EBB627199AC700965185 /* ClassRoomType.swift */,
 				8A80208E2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift */,
-				8A97EBB827199AD300965185 /* RTCShareScreen.swift */,
+				8A97EBB827199AD300965185 /* ShareScreenInfo.swift */,
 				8AAC69B22717E3EB00F9A3B4 /* User.swift */,
 				8A97EBB02719993C00965185 /* JoinRoomInfo.swift */,
 				8A9FB394272154B800F6F06F /* Message.swift */,
@@ -1445,7 +1445,7 @@
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
 				8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */,
 				8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */,
-				8A97EBB927199AD300965185 /* RTCShareScreen.swift in Sources */,
+				8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */,
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
 				8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */,

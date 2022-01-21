@@ -9,7 +9,7 @@
 
 import Foundation
 
-struct RTCShareScreen: Codable {
+struct ShareScreenInfo: Codable {
     let uid: Int
     let token: String
 }

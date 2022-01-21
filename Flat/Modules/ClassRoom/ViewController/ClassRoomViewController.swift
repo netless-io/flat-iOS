@@ -476,6 +476,19 @@ class ClassRoomViewController: UIViewController {
         rtcViewController.bindLocalUser(viewModel.userSelf)
         
         rtcViewController.bindUsers(viewModel.rtcUsers, withTeacherRtmUUID: viewModel.state.roomOwnerRtmUUID)
+        
+        rtcViewController.viewModel.rtc.screenShareJoinBehavior
+            .asDriver(onErrorJustReturn: false)
+            .distinctUntilChanged()
+            .drive(with: self, onNext: { weakSelf, isOn in
+                // If the room is not joined, it usually means user is still loading
+                // Do not toast when loading
+                if weakSelf.fastboardViewController.isRoomJoined.value {
+                    weakSelf.toast(NSLocalizedString(isOn ? "ScreenShare-On" : "ScreenShare-Off", comment: ""))
+                }
+                weakSelf.turnScreenShare(on: isOn)
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     func leaveUIHierarchyAndStopSubModule() {
@@ -493,6 +506,24 @@ class ClassRoomViewController: UIViewController {
         NotificationCenter.default.post(name: classRoomLeavingNotificationName,
                                         object: nil,
                                         userInfo: ["state": state])
+    }
+    
+    func turnScreenShare(on: Bool) {
+        let canvas = rtcViewController.viewModel.rtc.screenShareCanvas
+        canvas.view = on ? screenShareView : nil
+        rtcViewController.viewModel.rtc.agoraKit.setupRemoteVideo(canvas)
+        if on {
+            if screenShareView.superview == nil {
+                view.insertSubview(screenShareView, belowSubview: rightToolBar)
+                screenShareView.snp.makeConstraints { make in
+                    make.edges.equalTo(fastboardViewController.view)
+                }
+            }
+        } else {
+            if screenShareView.superview != nil {
+                screenShareView.removeFromSuperview()
+            }
+        }
     }
     
     // MARK: - Lazy
@@ -559,5 +590,11 @@ class ClassRoomViewController: UIViewController {
                                  narrowStyle: .narrowMoreThan(count: 1))
         bar.updateButtonHide(cloudStorageButton, hide: true)
         return bar
+    }()
+    
+    lazy var screenShareView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .whiteBG
+        return view
     }()
 }

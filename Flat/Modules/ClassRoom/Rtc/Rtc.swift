@@ -9,9 +9,12 @@
 import Foundation
 import AgoraRtcKit
 import RxSwift
+import RxRelay
 
 class Rtc: NSObject {
     var agoraKit: AgoraRtcEngineKit!
+    let screenShareInfo: ShareScreenInfo?
+    let screenShareJoinBehavior: PublishRelay<Bool> = .init()
     private var joinChannelBlock: (()->Void)?
     
     // MARK: - Public
@@ -84,12 +87,20 @@ class Rtc: NSObject {
     }
     
     var remoteCanvas: [UInt: AgoraRtcVideoCanvas] = [:]
+    lazy var screenShareCanvas: AgoraRtcVideoCanvas = {
+        let canvas = AgoraRtcVideoCanvas()
+        canvas.uid = UInt(screenShareInfo?.uid ?? 0)
+        canvas.renderMode = AgoraVideoRenderMode.fit
+        return canvas
+    }()
     var localVideoCanvas: AgoraRtcVideoCanvas!
     
     init(appId: String,
          channelId: String,
          token: String,
-         uid: UInt) {
+         uid: UInt,
+         screenShareInfo: ShareScreenInfo?) {
+        self.screenShareInfo = screenShareInfo
         super.init()
         agoraKit = .sharedEngine(withAppId: appId, delegate: self)
         
@@ -140,8 +151,23 @@ extension Rtc: AgoraRtcEngineDelegate {
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didLeaveChannelWith stats: AgoraChannelStats) {
+        
+    }
+    
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
+        if isScreenShareUid(uid: uid) {
+            screenShareJoinBehavior.accept(false)
+        }
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+        if isScreenShareUid(uid: uid) {
+            screenShareJoinBehavior.accept(true)
+        }
+    }
+    
+    func isScreenShareUid(uid: UInt) -> Bool {
+        if let id = screenShareInfo?.uid, id == uid { return true }
+        return false
     }
 }

@@ -18,7 +18,7 @@ struct RoomPlayInfo: Codable {
     let whiteboardRoomUUID: String
     let rtcUID: UInt
     let rtcToken: String
-    let rtcShareScreen: RTCShareScreen
+    let rtcShareScreen: ShareScreenInfo
     let rtmToken: String
     let region: String
 }
