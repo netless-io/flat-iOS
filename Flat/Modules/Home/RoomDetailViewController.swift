@@ -95,6 +95,7 @@ class RoomDetailViewController: UIViewController {
         let roomUUID: String
         let isOwner: Bool
         let formatterInviteCode: String
+        let hasRecord: Bool
     }
     
     var info: RoomDetailDisplayInfo
@@ -216,6 +217,11 @@ class RoomDetailViewController: UIViewController {
             }
             j += 1
         }
+        
+        view.addSubview(replayButton)
+        replayButton.snp.makeConstraints { make in
+            make.top.bottom.right.equalTo(roomOperationStackView)
+        }
     }
     
     func updateEnterRoomButtonTitle() {
@@ -285,10 +291,28 @@ class RoomDetailViewController: UIViewController {
         
         if status == .Stopped {
             roomOperationStackView.arrangedSubviews.forEach { $0.isHidden = true }
+            replayButton.isEnabled = info.hasRecord
+        } else {
+            replayButton.isHidden = true
         }
     }
     
     // MARK: - Action
+    @objc func onClickReplay() {
+        showActivityIndicator()
+        ApiProvider.shared.request(fromApi: RecordDetailRequest(uuid: info.roomUUID)) { [weak self] result in
+            guard let self = self else { return }
+            self.stopActivityIndicator()
+            switch result {
+            case .success(let recordInfo):
+                let vc = ReplayViewController(info: recordInfo)
+                self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
+            case .failure(let error):
+                self.toast(error.localizedDescription)
+            }
+        }
+    }
+    
     @IBAction func onClickInvite(_ sender: UIButton) {
         guard let detailInfo = detailInfo else {
             showActivityIndicator()
@@ -357,4 +381,11 @@ class RoomDetailViewController: UIViewController {
     @IBOutlet weak var bottomView: UIView!
     
     @IBOutlet weak var roomOperationStackView: UIStackView!
+    
+    lazy var replayButton: FlatGeneralButton = {
+        let btn = FlatGeneralButton(type: .custom)
+        btn.setTitle(NSLocalizedString("Replay", comment: ""), for: .normal)
+        btn.addTarget(self, action: #selector(onClickReplay), for: .touchUpInside)
+        return btn
+    }()
 }

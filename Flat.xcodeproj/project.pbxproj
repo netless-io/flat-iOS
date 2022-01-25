@@ -41,6 +41,10 @@
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
 		8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A92797AB3E00024040 /* Theme.swift */; };
+		8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAB279E58F80060E25D /* ReplayViewController.swift */; };
+		8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */; };
+		8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */; };
+		8A21DAB2279F86A00060E25D /* ReplayOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */; };
 		8A270B6C271822BA00450DC6 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6B271822BA00450DC6 /* MainTabBarController.swift */; };
 		8A270B7227182A2B00450DC6 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7127182A2B00450DC6 /* CloudStorageViewController.swift */; };
 		8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7327182B9300450DC6 /* UIColor+Extension.swift */; };
@@ -269,6 +273,10 @@
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
 		8A20A3A92797AB3E00024040 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		8A21DAAB279E58F80060E25D /* ReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayViewController.swift; sourceTree = "<group>"; };
+		8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailInfo.swift; sourceTree = "<group>"; };
+		8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailRequest.swift; sourceTree = "<group>"; };
+		8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayOverlay.swift; sourceTree = "<group>"; };
 		8A270B6B271822BA00450DC6 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		8A270B6E271829AB00450DC6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8A270B7127182A2B00450DC6 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
@@ -705,6 +713,15 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
+		8A21DAAA279E58E70060E25D /* Replay */ = {
+			isa = PBXGroup;
+			children = (
+				8A21DAAB279E58F80060E25D /* ReplayViewController.swift */,
+				8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */,
+			);
+			path = Replay;
+			sourceTree = "<group>";
+		};
 		8A270B6D2718299B00450DC6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -852,6 +869,7 @@
 		8A97EBBB271D180600965185 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8A21DAAA279E58E70060E25D /* Replay */,
 				8A11CC22272019C9001D0B1F /* ClassRoom */,
 				8A2D0BA62716859700123207 /* Login */,
 				8A270B6D2718299B00450DC6 /* Home */,
@@ -945,6 +963,7 @@
 				8A97EBB22719999000965185 /* JoinRoomRequest.swift */,
 				8A9FB39C2721783B00F6F06F /* MemberRequest.swift */,
 				8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */,
+				8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */,
 				8A9ACC00271E712100E7E7CE /* RoomListRequest.swift */,
 				8A7741BC2733BF15009FAADA /* RoomStatusUpdateRequest.swift */,
 				8A7741E6273A6FA2009FAADA /* RoomCancelRequest.swift */,
@@ -1109,6 +1128,7 @@
 				8A9ACC02271E71B100E7E7CE /* RoomListInfo.swift */,
 				8A97EBB627199AC700965185 /* ClassRoomType.swift */,
 				8A80208E2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift */,
+				8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */,
 				8A97EBB827199AD300965185 /* ShareScreenInfo.swift */,
 				8AAC69B22717E3EB00F9A3B4 /* User.swift */,
 				8A97EBB02719993C00965185 /* JoinRoomInfo.swift */,
@@ -1445,6 +1465,7 @@
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
 				8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */,
 				8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */,
+				8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */,
 				8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */,
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
@@ -1502,6 +1523,7 @@
 				8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */,
 				8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */,
 				8A5DCF9B273B6E6B0068D5DF /* ClassRoomViewController.swift in Sources */,
+				8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */,
 				8AD3CDF92716B53D008BD904 /* UIViewController+Alert.swift in Sources */,
 				8AA97EA22741F83A00C3F92E /* AnyChannelHandler.swift in Sources */,
 				8A7741DC2738BB06009FAADA /* ClassRoomFactory.swift in Sources */,
@@ -1570,7 +1592,9 @@
 				8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */,
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
+				8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */,
 				8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */,
+				8A21DAB2279F86A00060E25D /* ReplayOverlay.swift in Sources */,
 				8A8020AB27574D7D00F5691C /* ConvertProgressDetail.swift in Sources */,
 				8AD2EF71277461C900087280 /* CustomAVPlayerViewController.swift in Sources */,
 				8A9FB39F2721806B00F6F06F /* AnyCodingKey.swift in Sources */,

@@ -16,7 +16,8 @@ struct RoomDetailViewControllerFactory {
                                              roomType: info.roomType,
                                              roomUUID: info.roomUUID,
                                              isOwner: info.ownerUUID == AuthStore.shared.user?.userUUID ?? "",
-                                             formatterInviteCode: info.formatterInviteCode))
+                                             formatterInviteCode: info.formatterInviteCode,
+                                             hasRecord: info.hasRecord))
     }
     
     static func getRoomDetail(withInfo info: RoomInfo, roomUUID: String) -> RoomDetailViewController {
@@ -26,6 +27,7 @@ struct RoomDetailViewControllerFactory {
                                              roomType: info.roomType,
                                              roomUUID: roomUUID,
                                              isOwner: info.ownerUUID == AuthStore.shared.user?.userUUID ?? "",
-                                             formatterInviteCode: info.formatterInviteCode))
+                                             formatterInviteCode: info.formatterInviteCode,
+                                             hasRecord: info.hasRecord))
     }
 }
