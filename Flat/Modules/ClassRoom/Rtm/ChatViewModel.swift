@@ -147,7 +147,7 @@ class ChatViewModel {
                     if path.hasPrefix("~") {
                         path.removeFirst()
                     }
-                    ApiProvider.shared.request(fromApi: HistoryMessageRequest(path: path)) { result in
+                    ApiProvider.shared.request(fromApi: HistoryMessageRequest(messagePath: path)) { result in
                         switch result {
                         case .success(let historyResult):
                             let historyMessages: [Message] = historyResult.result

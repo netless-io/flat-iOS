@@ -90,6 +90,9 @@
 "End the class" = "结束上课";
 
 
+"EndRecording" = "结束录制";
+
+
 "Enter Room" = "进入房间";
 
 
@@ -258,6 +261,12 @@
 "RecordNotFound" = "回放不存在";
 
 
+"RecordingEndTips" = "录制已结束，课堂结束后你可以在历史里查看回放";
+
+
+"RecordingStartTips" = "录制开始";
+
+
 "Remove From List" = "移除房间";
 
 
@@ -358,6 +367,9 @@
 
 
 "Start Time" = "开始时间";
+
+
+"StartRecording" = "开始录制";
 
 
 "Started" = "进行中";

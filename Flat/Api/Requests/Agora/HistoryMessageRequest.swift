@@ -10,7 +10,8 @@
 import Foundation
 
 struct HistoryMessageRequest: AgoraRequest {
-    let path: String
+    let messagePath: String
+    var path: String { "/dev/v2/project\(messagePath)" }
     
     var task: Task { .requestPlain }
     var method: HttpMethod { .get }

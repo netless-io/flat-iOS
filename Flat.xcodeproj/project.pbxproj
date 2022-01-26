@@ -45,6 +45,13 @@
 		8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */; };
 		8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */; };
 		8A21DAB2279F86A00060E25D /* ReplayOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */; };
+		8A21DAB6279F9EEF0060E25D /* RecordAcquireRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB5279F9EEF0060E25D /* RecordAcquireRequest.swift */; };
+		8A21DAB8279FA5020060E25D /* StartRecordReqeust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB7279FA5020060E25D /* StartRecordReqeust.swift */; };
+		8A21DABA279FA90D0060E25D /* UpdateLayoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB9279FA90D0060E25D /* UpdateLayoutRequest.swift */; };
+		8A21DABC279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DABB279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift */; };
+		8A21DABE279FAAC20060E25D /* StopRecordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DABD279FAAC20060E25D /* StopRecordRequest.swift */; };
+		8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAC0279FBE810060E25D /* RecordModel.swift */; };
+		8A21DAC4279FD2CF0060E25D /* RecordingFlagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAC3279FD2CF0060E25D /* RecordingFlagView.swift */; };
 		8A270B6C271822BA00450DC6 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6B271822BA00450DC6 /* MainTabBarController.swift */; };
 		8A270B7227182A2B00450DC6 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7127182A2B00450DC6 /* CloudStorageViewController.swift */; };
 		8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7327182B9300450DC6 /* UIColor+Extension.swift */; };
@@ -277,6 +284,13 @@
 		8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailInfo.swift; sourceTree = "<group>"; };
 		8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailRequest.swift; sourceTree = "<group>"; };
 		8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayOverlay.swift; sourceTree = "<group>"; };
+		8A21DAB5279F9EEF0060E25D /* RecordAcquireRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAcquireRequest.swift; sourceTree = "<group>"; };
+		8A21DAB7279FA5020060E25D /* StartRecordReqeust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartRecordReqeust.swift; sourceTree = "<group>"; };
+		8A21DAB9279FA90D0060E25D /* UpdateLayoutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLayoutRequest.swift; sourceTree = "<group>"; };
+		8A21DABB279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRecordEndTimeRequest.swift; sourceTree = "<group>"; };
+		8A21DABD279FAAC20060E25D /* StopRecordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopRecordRequest.swift; sourceTree = "<group>"; };
+		8A21DAC0279FBE810060E25D /* RecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordModel.swift; sourceTree = "<group>"; };
+		8A21DAC3279FD2CF0060E25D /* RecordingFlagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingFlagView.swift; sourceTree = "<group>"; };
 		8A270B6B271822BA00450DC6 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		8A270B6E271829AB00450DC6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8A270B7127182A2B00450DC6 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
@@ -677,6 +691,7 @@
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
+				8A21DAC2279FCB5D0060E25D /* Recording */,
 				8AFA91F3278EA77800E0CA61 /* Fastboard */,
 				8ABD71C02768213F004FDC36 /* Config */,
 				8ABF362927464565000D5003 /* Factory */,
@@ -720,6 +735,27 @@
 				8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */,
 			);
 			path = Replay;
+			sourceTree = "<group>";
+		};
+		8A21DABF279FAB220060E25D /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				8A21DAB5279F9EEF0060E25D /* RecordAcquireRequest.swift */,
+				8A21DAB7279FA5020060E25D /* StartRecordReqeust.swift */,
+				8A21DABB279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift */,
+				8A21DABD279FAAC20060E25D /* StopRecordRequest.swift */,
+				8A21DAB9279FA90D0060E25D /* UpdateLayoutRequest.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
+		8A21DAC2279FCB5D0060E25D /* Recording */ = {
+			isa = PBXGroup;
+			children = (
+				8A21DAC0279FBE810060E25D /* RecordModel.swift */,
+				8A21DAC3279FD2CF0060E25D /* RecordingFlagView.swift */,
+			);
+			path = Recording;
 			sourceTree = "<group>";
 		};
 		8A270B6D2718299B00450DC6 /* Home */ = {
@@ -949,6 +985,7 @@
 		8A9FB3A027224E3F00F6F06F /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8A21DABF279FAB220060E25D /* Record */,
 				8ACE3A23272FED7700BC37F7 /* RoomHistoryRequest.swift */,
 				8A80209D27570EAA00F5691C /* StorageListRequest.swift */,
 				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
@@ -1460,6 +1497,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A21DAC4279FD2CF0060E25D /* RecordingFlagView.swift in Sources */,
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
@@ -1480,6 +1518,7 @@
 				8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */,
 				8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */,
 				8A80208B2754699300F5691C /* Rtc.swift in Sources */,
+				8A21DABE279FAAC20060E25D /* StopRecordRequest.swift in Sources */,
 				8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */,
 				8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */,
 				8A05C34B2760A6FD009BCA79 /* RemoveFilesRequest.swift in Sources */,
@@ -1502,6 +1541,7 @@
 				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
 				8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */,
 				8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */,
+				8A21DABA279FA90D0060E25D /* UpdateLayoutRequest.swift in Sources */,
 				8A05C35B2761E9AD009BCA79 /* CancelUploadRequest.swift in Sources */,
 				8A3460D1272962D70066063E /* RoomStatus.swift in Sources */,
 				8A8020982757097600F5691C /* CloudStorageListViewController.swift in Sources */,
@@ -1512,11 +1552,13 @@
 				8A05C324275E06C3009BCA79 /* TraitUpdateHandler.swift in Sources */,
 				8AAC69B02717E32E00F9A3B4 /* AuthProcessRequest.swift in Sources */,
 				8A270B6C271822BA00450DC6 /* MainTabBarController.swift in Sources */,
+				8A21DAB8279FA5020060E25D /* StartRecordReqeust.swift in Sources */,
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
 				8A05C322275E05BC009BCA79 /* MethodExchange.swift in Sources */,
 				8A9FB3AF2722676400F6F06F /* NetlessResponseDataHandler.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,
+				8A21DABC279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift in Sources */,
 				8AAC69B32717E3EB00F9A3B4 /* User.swift in Sources */,
 				8A80209A27570A4A00F5691C /* CloudStorageTableViewCell.swift in Sources */,
 				8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */,
@@ -1547,6 +1589,7 @@
 				8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */,
 				8A05C34227604576009BCA79 /* UploadFinishRequest.swift in Sources */,
 				8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */,
+				8A21DAB6279F9EEF0060E25D /* RecordAcquireRequest.swift in Sources */,
 				8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */,
 				8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */,
 				8AE892FE2727E9DB009C71DA /* SpeakCommand.swift in Sources */,
@@ -1649,6 +1692,7 @@
 				8ACB64D027758DAE00225621 /* Region.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
+				8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */,
 				8A3460CF272952490066063E /* ClassRoomMode.swift in Sources */,
 				8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */,
 				8A8020A3275721ED00F5691C /* NetlessRequest.swift in Sources */,

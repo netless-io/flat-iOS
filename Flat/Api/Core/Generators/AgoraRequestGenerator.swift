@@ -14,7 +14,7 @@ class AgoraRequestGenerator: Generator {
     var agoraUserId: String = ""
     let agoraAppId: String
     let timeoutInterval: TimeInterval
-    let agoraApi: String = "https://api.agora.io/dev/v2/project"
+    let agoraApi: String = "https://api.agora.io"
     
     init(agoraAppId: String,
         timeoutInterval: TimeInterval

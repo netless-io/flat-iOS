@@ -26,7 +26,7 @@ struct HistoryMessageSourceRequest: AgoraRequest, Encodable {
     let filter: Filter
     let offSet: Int
     let limit: Int = 100
-    var path: String { "/rtm/message/history/query" }
+    var path: String { "/dev/v2/project/rtm/message/history/query" }
     let responseType = AnyKeyDecodable<String>.self
     let order: Order = .desc
 

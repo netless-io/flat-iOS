@@ -8,10 +8,13 @@
 
 import Foundation
 import Whiteboard
+import CoreMedia
 
 class ReplayViewController: UIViewController {
+    override var prefersStatusBarHidden: Bool { true }
+    
     let info: RecordDetailInfo
-
+    
     init(info: RecordDetailInfo) {
         self.info = info
         super.init(nibName: nil, bundle: nil)
@@ -63,6 +66,10 @@ class ReplayViewController: UIViewController {
         config.duration = NSNumber(value: interval)
         overlay.updateDuration(interval)
         sdk.createReplayer(with: config, callbacks: self) { [weak self] success, player, error in
+            if let error = error {
+                self?.toast(error.localizedDescription)
+                return
+            }
             self?.combinePlayer.whitePlayer = player
             self?.whitePlayer = player
             self?.whitePlayer.seek(toScheduleTime: 0)
@@ -109,6 +116,25 @@ extension ReplayViewController: ReplayOverlayDelegate {
         } else {
             combinePlayer.pause()
             overlay.update(isPause: true)
+        }
+        overlay.show()
+    }
+    
+    func replayOverlayDidClickBackward(_ overlay: ReplayOverlay) {
+        guard let item = combinePlayer.nativePlayer.currentItem else { return }
+        let time = item.currentTime()
+        let seconds = max(time.seconds - 15, 0)
+        combinePlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: time.timescale)) { _ in
+            
+        }
+        overlay.show()
+    }
+    
+    func replayOverlayDidClickForward(_ overlay: ReplayOverlay) {
+        guard let item = combinePlayer.nativePlayer.currentItem else { return }
+        let time = item.currentTime()
+        let seconds = min(time.seconds + 15, item.duration.seconds)
+        combinePlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: time.timescale)) { _ in
         }
         overlay.show()
     }

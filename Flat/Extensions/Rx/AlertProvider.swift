@@ -87,7 +87,9 @@ struct DefaultAlertProvider: AlertProvider {
             return Disposables.create()
         }
         
-        return root.rx.isPresenting.asObservable().asSingle()
+        return root.rx.isPresenting
+            .asObservable()
+            .asSingle()
             .flatMap { [weak root] presenting -> Single<AlertModel.ActionModel> in
                 guard let root = root else { return .just(.empty) }
                 if !presenting { return task }
@@ -122,6 +124,6 @@ extension UIButton: TapSource {}
 
 extension Reactive where Base: UIButton {
     var sourceTap: ControlEvent<TapSource> {
-        ControlEvent(events: controlEvent(.touchUpInside).map { self.base as TapSource })
+        return ControlEvent(events: controlEvent(.touchUpInside).map { self.base as TapSource })
     }
 }

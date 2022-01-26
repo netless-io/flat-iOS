@@ -90,6 +90,9 @@
 "End the class" = "End the class";
 
 
+"EndRecording" = "End Recording";
+
+
 "Enter Room" = "Enter Room";
 
 
@@ -258,6 +261,12 @@
 "RecordNotFound" = "Replay does not exist";
 
 
+"RecordingEndTips" = "The recording has ended and you can view the replay in the history after the class is over";
+
+
+"RecordingStartTips" = "Recording stared";
+
+
 "Remove From List" = "Remove From List";
 
 
@@ -358,6 +367,9 @@
 
 
 "Start Time" = "Start";
+
+
+"StartRecording" = "Start Recording";
 
 
 "Started" = "Started";

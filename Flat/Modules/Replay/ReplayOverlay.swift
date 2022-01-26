@@ -12,6 +12,10 @@ protocol ReplayOverlayDelegate: AnyObject {
     func replayOverlayDidClickClose(_ overlay: ReplayOverlay)
     
     func replayOverlayDidClickPlayOrPause(_ overlay: ReplayOverlay)
+    
+    func replayOverlayDidClickForward(_ overlay: ReplayOverlay)
+    
+    func replayOverlayDidClickBackward(_ overlay: ReplayOverlay)
 }
 
 class ReplayOverlay: NSObject {
@@ -57,44 +61,14 @@ class ReplayOverlay: NSObject {
     func attachTo(parent: UIView) {
         parent.addSubview(toolBar)
         parent.addSubview(closeToolBar)
-        
-        toolBar.addSubview(currentTimeLabel)
-        toolBar.addSubview(progressView)
-        toolBar.addSubview(totalTimeLabel)
-        toolBar.addSubview(playPauseButton)
-        toolBar.addSubview(indicator)
-        
         closeToolBar.addSubview(closeButton)
-        
-        indicator.isHidden = true
-        indicator.snp.makeConstraints { make in
-            make.edges.equalTo(playPauseButton)
+        closeToolBar.snp.makeConstraints { make in
+            make.leading.top.equalToSuperview().inset(44)
+            make.width.height.equalTo(44)
         }
         
-        let playWidth: CGFloat = 44
-        playPauseButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(toolBarHeight - playWidth)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(playWidth)
-        }
-        
-        currentTimeLabel.snp.makeConstraints { make in
-            make.left.equalTo(playPauseButton.snp.right)
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(labelWidth)
-        }
-        
-        progressView.snp.makeConstraints { make in
-            make.left.equalTo(currentTimeLabel.snp.right)
-            make.right.equalTo(totalTimeLabel.snp.left)
-            make.height.equalTo(4)
-            make.centerY.equalTo(currentTimeLabel)
-        }
-        
-        totalTimeLabel.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.right.equalToSuperview()
-            make.width.equalTo(currentTimeLabel)
+        closeButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
         toolBar.snp.makeConstraints { make in
@@ -104,14 +78,33 @@ class ReplayOverlay: NSObject {
             make.centerX.equalToSuperview()
         }
         
-        closeToolBar.snp.makeConstraints { make in
-            make.trailing.top.equalToSuperview().inset(44)
-            make.width.height.equalTo(44)
+        toolBar.addSubview(toolStackView)
+        toolStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
-        closeButton.addTarget(self, action: #selector(onClose), for: .touchUpInside)
-        closeButton.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        backwardButton.snp.makeConstraints { make in
+            make.width.equalTo(44)
+        }
+        
+        forwardButton.snp.makeConstraints { make in
+            make.width.equalTo(44)
+        }
+        
+        playPauseButton.snp.makeConstraints { make in
+            make.width.equalTo(playPauseButton.snp.height)
+        }
+        
+        currentTimeLabel.snp.makeConstraints { make in
+            make.width.equalTo(labelWidth)
+        }
+        
+        progressView.snp.makeConstraints { make in
+            make.height.equalTo(4)
+        }
+        
+        totalTimeLabel.snp.makeConstraints { make in
+            make.width.equalTo(currentTimeLabel)
         }
         show()
         
@@ -134,7 +127,7 @@ class ReplayOverlay: NSObject {
     }
     
     func updateIsBuffering(_ buffering: Bool) {
-        playPauseButton.isHidden = buffering
+        playPauseButton.imageView?.isHidden = buffering
         if buffering {
             indicator.isHidden = false
             indicator.startAnimating()
@@ -200,6 +193,16 @@ class ReplayOverlay: NSObject {
     }
     
     @objc
+    func onForward() {
+        delegate?.replayOverlayDidClickForward(self)
+    }
+    
+    @objc
+    func onBackward() {
+        delegate?.replayOverlayDidClickBackward(self)
+    }
+    
+    @objc
     func hideAlways() {
         displayState = .hideAlways
     }
@@ -210,7 +213,7 @@ class ReplayOverlay: NSObject {
     }
     
     var subviews: [UIView] {
-        return [toolBar, closeToolBar]
+        return [toolBar, closeToolBar, closeButton]
     }
     
     // MARK: - Lazy
@@ -222,6 +225,18 @@ class ReplayOverlay: NSObject {
         label.textColor = .white
         return label
     }()
+    
+    lazy var progressContainer: UIView = {
+        let view = UIView()
+        view.addSubview(progressView)
+        progressView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.height.equalTo(4)
+            make.centerY.equalToSuperview()
+        }
+        return view
+    }()
+    
     lazy var progressView: UIProgressView = {
         let view = UIProgressView()
         view.tintColor = .white
@@ -254,11 +269,48 @@ class ReplayOverlay: NSObject {
         return bar
     }()
     
+    lazy var toolStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [backwardButton, playPauseButton, forwardButton, currentTimeLabel, progressContainer, totalTimeLabel])
+        view.distribution = .fill
+        view.axis = .horizontal
+        return view
+    }()
+    
     lazy var closeToolBar: UIToolbar = {
         let bar = UIToolbar()
         bar.clipsToBounds = true
-        bar.layer.cornerRadius = 10
+        if #available(iOS 13.0, *) {
+            bar.layer.cornerRadius = 22
+        } else {
+            bar.layer.cornerRadius = 10
+        }
         return bar
+    }()
+    
+    lazy var forwardButton: UIButton = {
+        let btn = UIButton(type: .system)
+        if #available(iOS 13.0, *) {
+            let img = UIImage(systemName: "goforward.15", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
+            btn.setImage(img, for: .normal)
+        } else {
+            btn.setTitle("+15s", for: .normal)
+        }
+        btn.tintColor = .white
+        btn.addTarget(self, action: #selector(onForward), for: .touchUpInside)
+        return btn
+    }()
+    
+    lazy var backwardButton: UIButton = {
+        let btn = UIButton(type: .system)
+        if #available(iOS 13.0, *) {
+            let img = UIImage(systemName: "gobackward.15", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
+            btn.setImage(img, for: .normal)
+        } else {
+            btn.setTitle("-15s", for: .normal)
+        }
+        btn.tintColor = .white
+        btn.addTarget(self, action: #selector(onBackward), for: .touchUpInside)
+        return btn
     }()
     
     lazy var playPauseButton: UIButton = {
@@ -266,12 +318,25 @@ class ReplayOverlay: NSObject {
         btn.tintColor = .white
         btn.setImage(UIImage(named: isPause ? "play" : "pause"), for: .normal)
         btn.addTarget(self, action: #selector(onPlayOrPause), for: .touchUpInside)
+        
+        btn.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        indicator.isHidden = true
         return btn
     }()
     
     lazy var closeButton: UIButton = {
+        if #available(iOS 13.0, *) {
+            let btn = UIButton(type: .close)
+            btn.tintColor = .white
+            btn.addTarget(self, action: #selector(onClose), for: .touchUpInside)
+            return btn
+        }
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "close"), for: .normal)
+        btn.addTarget(self, action: #selector(onClose), for: .touchUpInside)
         return btn
     }()
 }

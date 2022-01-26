@@ -24,7 +24,7 @@ extension Reactive where Base: UIViewController {
     var isPresenting: Driver<Bool> {
         Single<Bool>.create { ob in
             let vc = self.base
-            if vc.presentingViewController != nil {
+            if vc.presentedViewController != nil {
                 ob(.success(true))
             } else {
                 ob(.success(false))

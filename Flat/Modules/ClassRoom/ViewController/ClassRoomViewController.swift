@@ -110,6 +110,7 @@ class ClassRoomViewController: UIViewController {
         bindUserList()
         bindSetting()
         bindInteracting()
+        bindRecording()
         postingClassStatusUpdateNotification()
         updateLayout()
     }
@@ -179,6 +180,13 @@ class ClassRoomViewController: UIViewController {
         fastboardViewController.didMove(toParent: self)
         rtcViewController.didMove(toParent: self)
         setupToolbar()
+        
+        recordingFlagView.isHidden = true
+        view.addSubview(recordingFlagView)
+        recordingFlagView.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(14)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     func setupToolbar() {
@@ -447,7 +455,9 @@ class ClassRoomViewController: UIViewController {
                 .disposed(by: rx.disposeBag)
         
         let output = viewModel.transformSetting(.init(
-            leaveTap: settingVC.logoutButton.rx.sourceTap.asDriver().map { [unowned self] _ in self.settingButton },
+            leaveTap: settingVC.logoutButton.rx.sourceTap.map { [unowned self] _ in
+                self.settingButton
+            },
             cameraTap: settingVC.cameraPublish.asDriver(onErrorJustReturn: ()),
             micTap: settingVC.micPublish.asDriver(onErrorJustReturn: ())))
         
@@ -455,7 +465,7 @@ class ClassRoomViewController: UIViewController {
             .drive()
             .disposed(by: rx.disposeBag)
         
-        output.dismiss.asObservable()
+        output.dismiss
             .filter { $0 }
             .asDriver(onErrorJustReturn: false)
             .drive(with: self, onNext: { weakSelf, _ in
@@ -488,6 +498,50 @@ class ClassRoomViewController: UIViewController {
                 }
                 weakSelf.turnScreenShare(on: isOn)
             })
+            .disposed(by: rx.disposeBag)
+    }
+    
+    func bindRecording() {
+        let output = viewModel.transformMoreTap(moreTap: moreButton.rx.sourceTap,
+                                   topRecordingTap: recordingFlagView.endRecordingButton.rx.tap)
+        
+        output.isRecording
+            .debug()
+            .asDriver(onErrorJustReturn: false)
+            .map { !($0)}
+            .do(onNext: { [weak self] hide in
+                guard let view = self?.recordingFlagView else { return }
+                self?.toast(NSLocalizedString(hide ? "RecordingEndTips" : "RecordingStartTips", comment: ""),
+                            timeInterval: 3)
+                if !hide {
+                    view.transform = .init(translationX: 0, y: -view.bounds.height)
+                    UIView.animate(withDuration: 0.3) {
+                        view.transform = .identity
+                    }
+                }
+            })
+            .drive(recordingFlagView.rx.isHidden)
+            .disposed(by: rx.disposeBag)
+
+        output.recordingDuration
+            .map { i -> String in
+                let min = Int(i) / 60
+                let sec = Int(i) % 60
+                return String(format: "%02d : %02d", min, sec)
+            }
+            .asDriver(onErrorJustReturn: "")
+            .drive(recordingFlagView.durationLabel.rx.text)
+            .disposed(by: rx.disposeBag)
+
+        viewModel.state.users
+            .distinctUntilChanged()
+            .filter { [weak self] _ in
+                return self?.viewModel.recordModel != nil
+            }
+            .flatMap { [unowned self] _ in
+                self.viewModel.recordModel!.updateLayout(roomState: self.viewModel.state)
+            }
+            .subscribe()
             .disposed(by: rx.disposeBag)
     }
     
@@ -529,6 +583,11 @@ class ClassRoomViewController: UIViewController {
     // MARK: - Lazy
     lazy var settingButton: UIButton = {
         let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "classroom_setting")!)
+        return button
+    }()
+    
+    lazy var moreButton: UIButton = {
+        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "classroom_more")!)
         return button
     }()
 
@@ -583,14 +642,27 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
+    
     lazy var rightToolBar: RoomControlBar = {
-        let bar = RoomControlBar(direction: .vertical,
-                                 borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                 buttons: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton],
-                                 narrowStyle: .narrowMoreThan(count: 1))
-        bar.updateButtonHide(cloudStorageButton, hide: true)
-        return bar
+        if traitCollection.hasCompact {
+            let bar = RoomControlBar(direction: .vertical,
+                                     borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
+                                     buttons: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton],
+                                     narrowStyle: .narrowMoreThan(count: 1))
+            bar.updateButtonHide(cloudStorageButton, hide: true)
+            return bar
+        } else {
+            let bar = RoomControlBar(direction: .vertical,
+                                     borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
+                                     buttons: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton, moreButton],
+                                     narrowStyle: .none)
+            bar.updateButtonHide(cloudStorageButton, hide: true)
+            bar.updateButtonHide(moreButton, hide: !viewModel.isTeacher)
+            return bar
+        }
     }()
+
+    lazy var recordingFlagView = RecordingFlagView(frame: .zero)
     
     lazy var screenShareView: UIView = {
         let view = UIView()
