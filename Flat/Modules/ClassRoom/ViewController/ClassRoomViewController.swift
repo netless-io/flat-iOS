@@ -506,7 +506,6 @@ class ClassRoomViewController: UIViewController {
                                    topRecordingTap: recordingFlagView.endRecordingButton.rx.tap)
         
         output.isRecording
-            .debug()
             .asDriver(onErrorJustReturn: false)
             .map { !($0)}
             .do(onNext: { [weak self] hide in
