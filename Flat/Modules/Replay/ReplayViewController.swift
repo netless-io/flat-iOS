@@ -9,6 +9,7 @@
 import Foundation
 import Whiteboard
 import CoreMedia
+import Fastboard
 
 class ReplayViewController: UIViewController {
     override var prefersStatusBarHidden: Bool { true }
@@ -26,6 +27,11 @@ class ReplayViewController: UIViewController {
     }
     
     // MARK: - LifeCycle
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        combinePlayer.pause()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPlayer()
@@ -91,7 +97,12 @@ class ReplayViewController: UIViewController {
     lazy var combinePlayer = WhiteCombinePlayer(mediaUrl: info.recordInfo.first!.videoURL)
     
     lazy var sdk: WhiteSDK = {
-        let sdkConfig = WhiteSdkConfiguration(app: Env().netlessAppId)
+        let sdkConfig = FastConfiguration(appIdentifier: Env().netlessAppId,
+                          roomUUID: "",
+                          roomToken: "",
+                          region: .CN,
+                          userUID: "").whiteSdkConfiguration
+//        let sdkConfig = WhiteSdkConfiguration(app: Env().netlessAppId)
         return WhiteSDK(whiteBoardView: whiteboardView,
                        config: sdkConfig,
                        commonCallbackDelegate: self)
@@ -137,6 +148,14 @@ extension ReplayViewController: ReplayOverlayDelegate {
         combinePlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: time.timescale)) { _ in
         }
         overlay.show()
+    }
+    
+    func replayOverlayDidClickSeekToPercent(_ overlay: ReplayOverlay, percent: Float) {
+        guard let item = combinePlayer.nativePlayer.currentItem else { return }
+        let seconds = item.duration.seconds * Double(percent)
+        combinePlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: item.duration.timescale)) { _ in
+            
+        }
     }
 }
 
