@@ -14,6 +14,10 @@ extension UIColor {
         Theme.shared.isDarkBeforeIOS13 ? "-dark" : ""
     }
     
+    static var cellSelectedBG: UIColor {
+        return UIColor(named: "CellSelectedBG" + nameSuffix)!
+    }
+    
     static var controlDisabled: UIColor {
         return UIColor(named: "ControlDisable" + nameSuffix)!
     }

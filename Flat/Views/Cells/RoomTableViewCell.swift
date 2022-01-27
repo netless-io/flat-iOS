@@ -24,7 +24,7 @@ class RoomTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        selectedBackgroundView = UIImageView(image: UIImage.imageWith(color: .controlSelectedBG))
+        selectedBackgroundView = UIImageView(image: UIImage.imageWith(color: .cellSelectedBG))
         separatorLineHeightConstraint.constant = 1 / UIScreen.main.scale
         contentView.backgroundColor = .whiteBG
         borderView.backgroundColor = .borderColor
@@ -36,11 +36,11 @@ class RoomTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if animated {
-            contentView.layer.backgroundColor = selected ? UIColor.controlSelectedBG.cgColor : UIColor.whiteBG.cgColor
-            mainTextView.layer.backgroundColor = selected ?  UIColor.controlSelectedBG.cgColor : UIColor.whiteBG.cgColor
+            contentView.layer.backgroundColor = selected ? UIColor.cellSelectedBG.cgColor : UIColor.whiteBG.cgColor
+            mainTextView.layer.backgroundColor = selected ?  UIColor.cellSelectedBG.cgColor : UIColor.whiteBG.cgColor
         } else {
-            contentView.backgroundColor = selected ?  .controlSelectedBG : .whiteBG
-            mainTextView.backgroundColor = selected ?  .controlSelectedBG : .whiteBG
+            contentView.backgroundColor = selected ?  .cellSelectedBG : .whiteBG
+            mainTextView.backgroundColor = selected ?  .cellSelectedBG : .whiteBG
         }
     }
     
