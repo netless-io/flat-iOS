@@ -29,8 +29,9 @@ struct RecordModel {
         let backgroundConfig: [UpdateLayoutRequest.BackgroundConfig] = joinedUsers.map {
             .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
         }
-        let layoutConfig: [UpdateLayoutRequest.LayoutConfig] = joinedUsers.enumerated().map { index, _ in
-                .init(x_axis:  (Float(index + 1) * marginRatio) + (Float(index) * singleUserRatio), y_axis: 0, width: singleUserRatio, height: 1)
+        let layoutConfig: [UpdateLayoutRequest.LayoutConfig] = joinedUsers.enumerated().map { index, _ -> UpdateLayoutRequest.LayoutConfig in
+            let x = (Float(index + 1) * marginRatio) + (Float(index) * singleUserRatio)
+            return .init(x_axis: x, y_axis: 0, width: singleUserRatio, height: 1)
         }
         let clientRequest = UpdateLayoutRequest.ClientRequest(mixedVideoLayout: .custom,
                                                               backgroundColor: "#F3F6F9",
@@ -84,8 +85,9 @@ struct RecordModel {
         let backgroundConfig: [StartRecordRequest.BackgroundConfig] = joinedUsers.map {
             .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
         }
-        let layoutConfig: [StartRecordRequest.LayoutConfig] = joinedUsers.enumerated().map { index, _ in
-                .init(x_axis:  (Float(index + 1) * marginRatio) + (Float(index) * singleUserRatio), y_axis: 0, width: singleUserRatio, height: 1)
+        let layoutConfig: [StartRecordRequest.LayoutConfig] = joinedUsers.enumerated().map { index, _ -> StartRecordRequest.LayoutConfig in
+            let x = (Float(index + 1) * marginRatio) + (Float(index) * singleUserRatio)
+            return .init(x_axis: x, y_axis: 0, width: singleUserRatio, height: 1)
         }
         let transcodeConfig = StartRecordRequest.TranscodingConfig(width: videoWidth,
                                                                    height: singleHeight,

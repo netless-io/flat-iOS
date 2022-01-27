@@ -13,6 +13,8 @@ protocol ReplayOverlayDelegate: AnyObject {
     
     func replayOverlayDidClickPlayOrPause(_ overlay: ReplayOverlay)
     
+    func replayOverlayDidClickSeekToPercent(_ overlay: ReplayOverlay, percent: Float)
+    
     func replayOverlayDidClickForward(_ overlay: ReplayOverlay)
     
     func replayOverlayDidClickBackward(_ overlay: ReplayOverlay)
@@ -193,6 +195,15 @@ class ReplayOverlay: NSObject {
     }
     
     @objc
+    func onProgressTapGesture(_ tap: UITapGestureRecognizer) {
+        guard let view = tap.view else { return }
+        let x = tap.location(in: view).x
+        let width = view.bounds.width
+        let progress = x / width
+        delegate?.replayOverlayDidClickSeekToPercent(self, percent: Float(progress))
+    }
+    
+    @objc
     func onForward() {
         delegate?.replayOverlayDidClickForward(self)
     }
@@ -234,6 +245,8 @@ class ReplayOverlay: NSObject {
             make.height.equalTo(4)
             make.centerY.equalToSuperview()
         }
+        let progressGesture = UITapGestureRecognizer(target: self, action: #selector(onProgressTapGesture(_:)))
+        view.addGestureRecognizer(progressGesture)
         return view
     }()
     
