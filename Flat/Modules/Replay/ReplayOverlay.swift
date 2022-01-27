@@ -264,6 +264,7 @@ class ReplayOverlay: NSObject {
     
     lazy var toolBar: UIToolbar = {
         let bar = UIToolbar()
+        bar.barStyle = .black
         bar.clipsToBounds = true
         bar.layer.cornerRadius = 10
         return bar
@@ -278,6 +279,7 @@ class ReplayOverlay: NSObject {
     
     lazy var closeToolBar: UIToolbar = {
         let bar = UIToolbar()
+        bar.barStyle = .black
         bar.clipsToBounds = true
         if #available(iOS 13.0, *) {
             bar.layer.cornerRadius = 22
