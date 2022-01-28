@@ -156,7 +156,8 @@ class CloudStorageViewController: UIViewController {
         }
         tableView.snp.makeConstraints { make in
             make.top.equalTo(headView.snp.bottom)
-            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.left.right.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
         }
         let refreshControl = UIRefreshControl(frame: .zero)
         refreshControl.addTarget(self, action: #selector(loadFirstPageData), for: .valueChanged)

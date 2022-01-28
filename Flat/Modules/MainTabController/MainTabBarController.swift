@@ -33,8 +33,8 @@ class MainTabBarController: UITabBarController {
     }
     
     func setup() {
-        tabBar.barTintColor = .brandColor
         tabBar.tintColor = .brandColor
+        tabBar.isTranslucent = true
         let home = makeSubController(fromViewController: HomeViewController(),
                                      image: UIImage(named: "tab_room")!,
                                      title: NSLocalizedString("Home", comment: ""))
