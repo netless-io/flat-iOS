@@ -56,10 +56,6 @@ class ReplayViewController: UIViewController {
     }
     
     func setupPlayer() {
-        initWhitePlayer()
-    }
-    
-    func initWhitePlayer() {
         // Set up video player
         combinePlayer.delegate = self
         whiteVideoView.setAVPlayer(combinePlayer.nativePlayer)
@@ -156,6 +152,7 @@ extension ReplayViewController: ReplayOverlayDelegate {
         combinePlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: item.duration.timescale)) { _ in
             
         }
+        overlay.show()
     }
 }
 

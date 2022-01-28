@@ -204,6 +204,17 @@ class ReplayOverlay: NSObject {
     }
     
     @objc
+    func onDrag(_ sender: UIPanGestureRecognizer) {
+        if sender.state == .ended {
+            guard let view = sender.view else { return }
+            let x = sender.location(in: view).x
+            let width = view.bounds.width
+            let progress = x / width
+            delegate?.replayOverlayDidClickSeekToPercent(self, percent: Float(progress))
+        }
+    }
+    
+    @objc
     func onForward() {
         delegate?.replayOverlayDidClickForward(self)
     }
@@ -247,6 +258,9 @@ class ReplayOverlay: NSObject {
         }
         let progressGesture = UITapGestureRecognizer(target: self, action: #selector(onProgressTapGesture(_:)))
         view.addGestureRecognizer(progressGesture)
+        
+        let drag = UIPanGestureRecognizer(target: self, action: #selector(onDrag(_:)))
+        view.addGestureRecognizer(drag)
         return view
     }()
     
