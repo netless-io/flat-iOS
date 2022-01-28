@@ -20,6 +20,7 @@ class RoomTableViewCell: UITableViewCell {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         setSelected(isSelected, animated: false)
+        selectedBackgroundView = UIImageView(image: UIImage.imageWith(color: .cellSelectedBG))
     }
     
     override func awakeFromNib() {
