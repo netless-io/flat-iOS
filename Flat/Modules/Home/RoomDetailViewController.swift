@@ -197,7 +197,7 @@ class RoomDetailViewController: UIViewController {
         endDateLabel.textColor = .text
         endTimeLabel.textColor = .text
         durationLabel.textColor = .text
-        durationLabel.backgroundColor = .controlSelectedBG
+        durationLabel.backgroundColor = .cellSelectedBG
         statusLabel.textColor = .text
         
         roomTypeLabel.textColor = .text
