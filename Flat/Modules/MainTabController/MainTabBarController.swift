@@ -32,17 +32,9 @@ class MainTabBarController: UITabBarController {
         }
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        tabBar.backgroundImage = UIImage.imageWith(color: .blackBG)
-    }
-    
     func setup() {
-        tabBar.backgroundImage = UIImage.imageWith(color: .blackBG)
-        tabBar.isTranslucent = true
-        tabBar.backgroundColor = .blackBG
-        tabBar.barTintColor = .blackBG
-        tabBar.tintColor = .blackBG
+        tabBar.barTintColor = .brandColor
+        tabBar.tintColor = .brandColor
         let home = makeSubController(fromViewController: HomeViewController(),
                                      image: UIImage(named: "tab_room")!,
                                      title: NSLocalizedString("Home", comment: ""))
@@ -58,13 +50,8 @@ class MainTabBarController: UITabBarController {
         image: UIImage,
         title: String
     ) -> UIViewController {
-        controller.tabBarItem.image = image.tintColor(.subText)
-        controller.tabBarItem.selectedImage = image.tintColor(.white)
+        controller.tabBarItem.image = image
         controller.tabBarItem.title = title
-        controller.tabBarItem.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 12),
-                                                      .foregroundColor: UIColor.init(hexString: "#7A7B7C")], for: .normal)
-        controller.tabBarItem.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 12),
-                                                      .foregroundColor: UIColor.white], for: .selected)
         let navi = BaseNavigationViewController(rootViewController: controller)
         return navi
     }
