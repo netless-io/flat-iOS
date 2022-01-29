@@ -71,7 +71,7 @@ iOS 最低版本 | Xcode版本 | Swift 版本
 2. 按 ⌘R 启动 app.
 
 # 免责声明
-你可以将 Flat 用于商业用途但请注意我们不接受商业化需求定制与部署支持以及其它客户服务。如有相关需求请前往灵动课堂。
+你可以将 Flat 用于商业用途但请注意我们不接受商业化需求定制与部署支持以及其它客户服务。如有相关需求请前往[灵动课堂][Flexible Classroom]。
 
 本项目仅用于学习和交流使用，请遵守所在国的法律法规，切勿用于涉及政治、宗教、色情、犯罪等领域，一切违法后果请自负。
 
@@ -94,3 +94,4 @@ iOS 最低版本 | Xcode版本 | Swift 版本
 [cloud-recording]: https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest?platform=RESTful#storageConfig
 [cloud-recording-background]: https://docs.agora.io/en/cloud-recording/cloud_recording_layout?platform=RESTful#background
 [electron-updater]: https://github.com/electron-userland/electron-builder/tree/master/packages/electron-updater
+[Flexible Classroom]: https://www.agora.io/cn/agora-flexible-classroom

@@ -76,7 +76,7 @@ You may use Flat for commercial purposes but please note that we do not accept c
 
 commercial requirements and deployment supports. Nor do we offer customer supports for commercial 
 
-usage. Please head to Flexible Classroom for such requirements.
+usage. Please head to [Flexible Classroom] for such requirements.
 
 
 This project is only for learning and communication use, please comply with the laws and 
@@ -103,3 +103,4 @@ When using the Flat or other GitHub logos, be sure to follow the GitHub logo gui
 [cloud-recording]: https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest?platform=RESTful#storageConfig
 [cloud-recording-background]: https://docs.agora.io/en/cloud-recording/cloud_recording_layout?platform=RESTful#background
 [electron-updater]: https://github.com/electron-userland/electron-builder/tree/master/packages/electron-updater
+[Flexible Classroom]: https://www.agora.io/en/products/flexible-classroom/
