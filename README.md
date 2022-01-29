@@ -72,6 +72,12 @@ iOS Deployment Target | Xcode Version | Swift Language Version
 2. Run ⌘R the app.
 
 # Disclaimer
+You may use Flat for commercial purposes but please note that we do not accept customizational 
+
+commercial requirements and deployment supports. Nor do we offer customer supports for commercial 
+
+usage. Please head to Flexible Classroom for such requirements.
+
 
 This project is only for learning and communication use, please comply with the laws and 
 
