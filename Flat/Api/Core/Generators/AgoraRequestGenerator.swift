@@ -24,7 +24,7 @@ class AgoraRequestGenerator: Generator {
     }
     
     func generateRequest<T: Request>(fromApi api: T) throws -> URLRequest {
-        let fullPath = "\(agoraApi)/\(agoraAppId)\(api.path)"
+        let fullPath = "\(agoraApi)\(api.path)"
         let url = URL(string: fullPath)!
         var request = URLRequest(url: url, timeoutInterval: timeoutInterval)
         request.httpMethod = api.method.rawValue
