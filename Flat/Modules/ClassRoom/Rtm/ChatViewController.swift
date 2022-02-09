@@ -198,6 +198,10 @@ class ChatViewController: PopOverDismissDetectableViewController {
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "message_ban")?.tintColor(.controlNormal), for: .normal)
         btn.setImage(UIImage(named: "message_ban")?.tintColor(.controlSelected), for: .selected)
+        btn.traitCollectionUpdateHandler = { [weak btn] _ in
+            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.controlNormal), for: .normal)
+            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.controlSelected), for: .selected)
+        }
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
     }()
