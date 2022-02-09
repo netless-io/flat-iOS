@@ -35,4 +35,17 @@ extension UIViewController {
         present(alertController, animated: true, completion: nil)
         return alertController
     }
+    
+    @discardableResult
+    func showDeleteAlertWith(title: String = NSLocalizedString("Alert", comment: ""),
+                       message: String,
+                       completionHandler: (()->Void)? = nil) -> UIAlertController {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(.init(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
+            completionHandler?()
+        })
+        present(alertController, animated: true, completion: nil)
+        return alertController
+    }
 }

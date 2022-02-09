@@ -157,7 +157,21 @@ class HomeViewController: UIViewController {
         }
     }
     
-    // MARK: - Date
+    // MARK: - Data
+    func removeAt(indexPath: IndexPath) {
+        let item = list[indexPath.row]
+        
+        tableView.beginUpdates()
+        list.remove(at: indexPath.row)
+        cachedList[style]?.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .right)
+        tableView.endUpdates()
+        
+        if let vc = currentDetailVC, vc.info.roomUUID == item.roomUUID {
+            mainSplitViewController?.cleanSecondary()
+        }
+    }
+    
     func loadRooms(_ sender: Any?, completion: @escaping ((Error?)->Void) = { _ in }) {
         func handleResult(_ result: Result<[RoomListInfo], ApiError>) {
             switch result {
@@ -170,13 +184,22 @@ class HomeViewController: UIViewController {
             }
         }
         
-        switch style {
+        let loadingStyle = style
+        switch loadingStyle {
         case .exist:
-            ApiProvider.shared.request(fromApi: RoomListRequest(page: 1)) { result in
+            ApiProvider.shared.request(fromApi: RoomListRequest(page: 1)) { [weak self] result in
+                guard let self = self else { return }
+                if self.style != loadingStyle, case .success(let list) = result {
+                    self.cachedList[loadingStyle] = list
+                }
                 handleResult(result)
             }
         case .history:
-            ApiProvider.shared.request(fromApi: RoomHistoryRequest(page: 1)) { result in
+            ApiProvider.shared.request(fromApi: RoomHistoryRequest(page: 1)) { [weak self] result in
+                guard let self = self else { return }
+                if self.style != loadingStyle, case .success(let list) = result {
+                    self.cachedList[loadingStyle] = list
+                }
                 handleResult(result)
             }
         }
@@ -441,6 +464,36 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         list.count
     }
     
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        switch style {
+        case .history:
+            return .delete
+        case .exist:
+            return .none
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let item = list[indexPath.row]
+        switch style {
+        case .history:
+            showDeleteAlertWith(message: NSLocalizedString("Delete room record alert", comment: "")) {
+                self.showActivityIndicator()
+                ApiProvider.shared.request(fromApi: CancelRoomHistoryRequest(roomUUID: item.roomUUID)) { result in
+                    self.stopActivityIndicator()
+                    switch result {
+                    case .failure(let error):
+                        self.toast(error.localizedDescription)
+                    case .success:
+                        self.removeAt(indexPath: indexPath)
+                    }
+                }
+            }
+        case .exist:
+            return
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         shouldShowCalendarAt(indexPath: indexPath) ? 105 : 72
     }
@@ -504,6 +557,16 @@ extension HomeViewController: UITabBarDelegate {
 }
 
 extension HomeViewController: MainSplitViewControllerDetailUpdateDelegate {
+    /// If it was in splitVC, take top
+    var currentDetailVC: RoomDetailViewController? {
+        guard let split = mainSplitViewController else { return nil }
+        if #available(iOS 14.0, *) {
+            return (split.viewController(for: .secondary) as? UINavigationController)?.topViewController as? RoomDetailViewController
+        } else {
+            return (split.viewControllers.last as? UINavigationController)?.topViewController as? RoomDetailViewController
+        }
+    }
+    
     func mainSplitViewControllerDidUpdateDetail(_ vc: UIViewController, sender: Any?) {
         // If select a vc is not the room detail, deselect the tableview
         if let selectedItem = tableView.indexPathForSelectedRow {

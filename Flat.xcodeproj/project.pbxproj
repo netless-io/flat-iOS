@@ -28,6 +28,7 @@
 		8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C34F2760ADFC009BCA79 /* UploadTaskTableViewCell.swift */; };
 		8A05C3522760ADFC009BCA79 /* UploadTaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A05C3502760ADFC009BCA79 /* UploadTaskTableViewCell.xib */; };
 		8A05C35B2761E9AD009BCA79 /* CancelUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C35A2761E9AD009BCA79 /* CancelUploadRequest.swift */; };
+		8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */; };
 		8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
@@ -267,6 +268,7 @@
 		8A05C34F2760ADFC009BCA79 /* UploadTaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTaskTableViewCell.swift; sourceTree = "<group>"; };
 		8A05C3502760ADFC009BCA79 /* UploadTaskTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadTaskTableViewCell.xib; sourceTree = "<group>"; };
 		8A05C35A2761E9AD009BCA79 /* CancelUploadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelUploadRequest.swift; sourceTree = "<group>"; };
+		8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelRoomHistoryRequest.swift; sourceTree = "<group>"; };
 		8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralButton.swift; sourceTree = "<group>"; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
@@ -1007,6 +1009,7 @@
 				8A05C32D275F5017009BCA79 /* PrepareUploadRequest.swift */,
 				8A05C34127604576009BCA79 /* UploadFinishRequest.swift */,
 				8A05C35A2761E9AD009BCA79 /* CancelUploadRequest.swift */,
+				8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */,
 			);
 			path = Flat;
 			sourceTree = "<group>";
@@ -1555,6 +1558,7 @@
 				8A21DAB8279FA5020060E25D /* StartRecordReqeust.swift in Sources */,
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
 				8A05C322275E05BC009BCA79 /* MethodExchange.swift in Sources */,
+				8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */,
 				8A9FB3AF2722676400F6F06F /* NetlessResponseDataHandler.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,

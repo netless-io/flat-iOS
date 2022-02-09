@@ -84,6 +84,9 @@
 "Delete File Alert" = "Do you confirm the deletion of the selected courseware? You can't recover the deleted courseware";
 
 
+"Delete room record alert" = "Are you sure to delete the current room record";
+
+
 "Edit" = "Edit";
 
 
