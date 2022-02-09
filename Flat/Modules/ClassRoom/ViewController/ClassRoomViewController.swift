@@ -283,14 +283,14 @@ class ClassRoomViewController: UIViewController {
                 self?.view.endFlatLoading()
             }, onSubscribed: { [weak self] in
                 self?.view.startFlatLoading(showCancelDelay: 7, cancelCompletion: {
-                    self?.leaveUIHierarchyAndStopSubModule()
+                    self?.stopSubModulesAndLeaveUIHierarchy()
                 })
             })
             .subscribe(with: self, onNext: { weakSelf, _ in
                 weakSelf.rightToolBar.isHidden = false
                 weakSelf.setupChatViewController()
             }, onError: { weakSelf, error in
-                weakSelf.leaveUIHierarchyAndStopSubModule()
+                weakSelf.stopSubModulesAndLeaveUIHierarchy()
             })
             .disposed(by: rx.disposeBag)
         
@@ -314,7 +314,7 @@ class ClassRoomViewController: UIViewController {
                 if !weakSelf.viewModel.isTeacher {
                     if let _ = weakSelf.presentedViewController { weakSelf.dismiss(animated: false, completion: nil) }
                     weakSelf.showAlertWith(message: NSLocalizedString("Leaving room soon", comment: "")) {
-                        weakSelf.leaveUIHierarchyAndStopSubModule()
+                        weakSelf.stopSubModulesAndLeaveUIHierarchy()
                     }
                 }
             })
@@ -323,8 +323,9 @@ class ClassRoomViewController: UIViewController {
         output.roomError
                 .asDriver(onErrorJustReturn: "unknown reason")
                 .drive(with: self, onNext: { weakSelf, reason in
+                    weakSelf.stopSubModules()
                     weakSelf.showAlertWith(message: reason) {
-                        weakSelf.leaveUIHierarchyAndStopSubModule()
+                        weakSelf.leaveUIHierarchy()
                     }
                 })
                 .disposed(by: rx.disposeBag)
@@ -469,7 +470,7 @@ class ClassRoomViewController: UIViewController {
             .filter { $0 }
             .asDriver(onErrorJustReturn: false)
             .drive(with: self, onNext: { weakSelf, _ in
-                weakSelf.leaveUIHierarchyAndStopSubModule()
+                weakSelf.stopSubModulesAndLeaveUIHierarchy()
             })
             .disposed(by: rx.disposeBag)
     }
@@ -544,12 +545,14 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
     
-    func leaveUIHierarchyAndStopSubModule() {
+    func stopSubModules() {
         fastboardViewController.leave()
         rtcViewController.viewModel.rtc.leave()
             .subscribe()
             .disposed(by: rx.disposeBag)
-        
+    }
+    
+    func leaveUIHierarchy() {
         let state = viewModel.state
         if let presenting = presentingViewController {
             presenting.dismiss(animated: true, completion: nil)
@@ -559,6 +562,11 @@ class ClassRoomViewController: UIViewController {
         NotificationCenter.default.post(name: classRoomLeavingNotificationName,
                                         object: nil,
                                         userInfo: ["state": state])
+    }
+    
+    func stopSubModulesAndLeaveUIHierarchy() {
+        stopSubModules()
+        leaveUIHierarchy()
     }
     
     func turnScreenShare(on: Bool) {
