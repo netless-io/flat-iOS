@@ -58,7 +58,7 @@ DEPENDENCIES:
   - RxSwift
   - SnapKit
   - WechatOpenSDK
-  - Whiteboard (from `https://github.com/vince-hz/Whiteboard-iOS`, branch `2.16`)
+  - Whiteboard (from `https://github.com/netless-io/Whiteboard-iOS`)
 
 SPEC REPOS:
   trunk:
@@ -82,16 +82,15 @@ EXTERNAL SOURCES:
   Fastboard:
     :git: https://github.com/netless-io/fastboard-iOS.git
   Whiteboard:
-    :branch: '2.16'
-    :git: https://github.com/vince-hz/Whiteboard-iOS
+    :git: https://github.com/netless-io/Whiteboard-iOS
 
 CHECKOUT OPTIONS:
   Fastboard:
     :commit: 245bab02389c133ab9e1e85893cf0f5a645598ef
     :git: https://github.com/netless-io/fastboard-iOS.git
   Whiteboard:
-    :commit: b04a0488bc295cd731d60f0bbb0ad393d6d3aaff
-    :git: https://github.com/vince-hz/Whiteboard-iOS
+    :commit: 4f98a0d7ccbb82bb97055423dcc94f412422f648
+    :git: https://github.com/netless-io/Whiteboard-iOS
 
 SPEC CHECKSUMS:
   AgoraRtcEngine_iOS: a5c32145692b996e67bd646ddde268c77b04ad71
@@ -112,6 +111,6 @@ SPEC CHECKSUMS:
   Whiteboard: 16568e7e14f7f451d2aad2536f5fab9c06119934
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: de170209b9e02a5c012d8ca7f3298bced6cb3ba4
+PODFILE CHECKSUM: 829a5ae8ae4f7bf580099699afe52ab40d12fb48
 
 COCOAPODS: 1.11.2
