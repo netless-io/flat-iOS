@@ -90,6 +90,9 @@
 "Edit" = "Edit";
 
 
+"EmptyCloudTip" = "No file";
+
+
 "End the class" = "End the class";
 
 
@@ -196,6 +199,9 @@
 
 
 "No room at the moment" = "No room at the moment";
+
+
+"NoHistoryTip" = "No history item";
 
 
 "NotEnoughTotalUsage" = "Reaching capacity limit";

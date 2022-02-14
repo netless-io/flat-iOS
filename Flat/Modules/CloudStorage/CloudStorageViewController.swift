@@ -14,6 +14,7 @@ import AVKit
 import RxCocoa
 import RxSwift
 import SafariServices
+import EmptyDataSet_Swift
 
 let cloudStorageShouldUpdateNotificationName = Notification.Name("cloudStorageShouldUpdateNotificationName")
 
@@ -62,6 +63,11 @@ class CloudStorageViewController: UIViewController {
             self.tableView.reloadData()
         }
         observe()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        tableView.reloadEmptyDataSet()
     }
     
     // MARK: - Actions
@@ -413,6 +419,8 @@ class CloudStorageViewController: UIViewController {
         view.rowHeight = 68
         view.showsVerticalScrollIndicator = false
         view.allowsMultipleSelectionDuringEditing = true
+        view.emptyDataSetSource = self
+        view.emptyDataSetDelegate = self
         return view
     }()
     
@@ -599,5 +607,27 @@ extension CloudStorageViewController: SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         mainContainer?.removeTop()
         previewingUUID = nil
+    }
+}
+
+// MARK: - EmptyData
+extension CloudStorageViewController: EmptyDataSetDelegate, EmptyDataSetSource {
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        .init(string: NSLocalizedString("EmptyCloudTip", comment: ""), attributes: [
+            .foregroundColor: UIColor.subText,
+            .font: UIFont.systemFont(ofSize: 14)
+        ])
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        UIImage(named: "cloud_empty")
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        true
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        0
     }
 }

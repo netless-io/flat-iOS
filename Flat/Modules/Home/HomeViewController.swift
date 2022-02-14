@@ -95,6 +95,11 @@ class HomeViewController: UIViewController {
         avatarButton.isHidden = true
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        tableView.reloadEmptyDataSet()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -532,16 +537,18 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+// MARK: - EmptyData
 extension HomeViewController: EmptyDataSetDelegate, EmptyDataSetSource {
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
-        .init(string: NSLocalizedString("No room at the moment", comment: ""), attributes: [
-            .foregroundColor: UIColor.subText,
-            .font: UIFont.systemFont(ofSize: 14)
-        ])
+        .init(string: NSLocalizedString(style == .exist ? "No room at the moment" : "NoHistoryTip", comment: ""),
+              attributes: [
+                .foregroundColor: UIColor.subText,
+                    .font: UIFont.systemFont(ofSize: 14)
+              ])
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        UIImage(named: "room_empty")
+        UIImage(named: style == .exist ? "room_empty" : "history_empty")
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
