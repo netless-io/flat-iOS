@@ -12,7 +12,7 @@
 			<key>CFBundleTypeName</key>
 			<string>MP3</string>
 			<key>LSHandlerRank</key>
-			<string>Owner</string>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.mp3</string>
@@ -22,7 +22,7 @@
 			<key>CFBundleTypeName</key>
 			<string>PDF</string>
 			<key>LSHandlerRank</key>
-			<string>Owner</string>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.adobe.pdf</string>
@@ -54,7 +54,7 @@
 			<key>CFBundleTypeName</key>
 			<string>IMAGE</string>
 			<key>LSHandlerRank</key>
-			<string>Owner</string>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.image</string>
@@ -64,7 +64,7 @@
 			<key>CFBundleTypeName</key>
 			<string>MPEG-4</string>
 			<key>LSHandlerRank</key>
-			<string>Owner</string>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.mpeg-4</string>
