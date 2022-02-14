@@ -7,7 +7,6 @@
 //
 
 
-import Foundation
 import UIKit
 
 class MainTabBarController: UITabBarController {
@@ -35,6 +34,15 @@ class MainTabBarController: UITabBarController {
     func setup() {
         tabBar.tintColor = .brandColor
         tabBar.isTranslucent = true
+        if #available(iOS 13.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithDefaultBackground()
+            tabBar.standardAppearance = appearance
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = appearance
+            }
+        }
+        
         let home = makeSubController(fromViewController: HomeViewController(),
                                      image: UIImage(named: "tab_room")!,
                                      title: NSLocalizedString("Home", comment: ""))
