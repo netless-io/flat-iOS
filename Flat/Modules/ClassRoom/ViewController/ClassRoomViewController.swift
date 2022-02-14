@@ -39,7 +39,7 @@ class ClassRoomViewController: UIViewController {
     let fastboardViewController: FastboardViewController
     let rtcViewController: RtcViewController
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true)
-    let inviteViewController: UIViewController
+    let inviteViewController: () -> UIViewController
     let usersViewController: ClassRoomUsersViewController
     var chatVC: ChatViewController?
     
@@ -61,10 +61,12 @@ class ClassRoomViewController: UIViewController {
          userName: String) {
         self.usersViewController = ClassRoomUsersViewController(userUUID: userUUID,
                                                                 roomOwnerRtmUUID: roomOwnerRtmUUID)
-        self.inviteViewController = ShareManager.createShareActivityViewController(roomUUID: roomUUID,
+        self.inviteViewController = {
+            ShareManager.createShareActivityViewController(roomUUID: roomUUID,
                                                                                    beginTime: beginTime,
                                                                                    title: roomTitle,
                                                                                    roomNumber: roomNumber)
+        }
         self.rtcViewController = rtcViewController
         self.fastboardViewController = fastboardViewController
         super.init(nibName: nil, bundle: nil)
@@ -367,7 +369,8 @@ class ClassRoomViewController: UIViewController {
         
         inviteButton.rx.tap.asDriver()
             .drive(with: self, onNext: { weakSelf, _ in
-                weakSelf.popoverViewController(viewController: weakSelf.inviteViewController, fromSource: weakSelf.inviteButton)
+                let vc = weakSelf.inviteViewController()
+                weakSelf.popoverViewController(viewController: vc, fromSource: weakSelf.inviteButton)
             })
             .disposed(by: rx.disposeBag)
     }
