@@ -98,8 +98,11 @@ class JoinRoomViewController: UIViewController {
                 let url = URL(string: r) {
                 let id = url.lastPathComponent
                 subjectTextField.text = id
+            } else if let num = try? str.matchExpressionPattern("(\\d ?){10}") {
+                let r = num.replacingOccurrences(of: " ", with: "")
+                subjectTextField.text = r
             } else {
-                subjectTextField.text = str
+                return
             }
             subjectTextField.sendActions(for: .valueChanged)
         }
