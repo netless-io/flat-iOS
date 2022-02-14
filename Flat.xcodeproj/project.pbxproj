@@ -96,6 +96,7 @@
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
 		8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */; };
 		8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */; };
+		8A716F3627B9FFF800DB408F /* LoginViewController+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */; };
 		8A7741B9273287C2009FAADA /* RtcCellPopMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741B8273287C2009FAADA /* RtcCellPopMenuView.swift */; };
 		8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741BA27328AEA009FAADA /* PopMenuView.swift */; };
 		8A7741BD2733BF15009FAADA /* RoomStatusUpdateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741BC2733BF15009FAADA /* RoomStatusUpdateRequest.swift */; };
@@ -339,6 +340,7 @@
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
 		8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcPreviewViewController.swift; sourceTree = "<group>"; };
 		8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverPresentationStyleAdaptor.swift; sourceTree = "<group>"; };
+		8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Debug.swift"; sourceTree = "<group>"; };
 		8A7741B8273287C2009FAADA /* RtcCellPopMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcCellPopMenuView.swift; sourceTree = "<group>"; };
 		8A7741BA27328AEA009FAADA /* PopMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopMenuView.swift; sourceTree = "<group>"; };
 		8A7741BC2733BF15009FAADA /* RoomStatusUpdateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomStatusUpdateRequest.swift; sourceTree = "<group>"; };
@@ -864,6 +866,7 @@
 			children = (
 				8A270B962719607700450DC6 /* LoginViewController.xib */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
+				8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */,
 				8AEF069E276973E40009904A /* AppleLogin.swift */,
 				8AD3CDF1271693EC008BD904 /* GithubLogin.swift */,
 				8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */,
@@ -1672,6 +1675,7 @@
 				8A270B9F2719681F00450DC6 /* Bundle+Language.swift in Sources */,
 				8A9FB3C127229A6200F6F06F /* FlatRequest.swift in Sources */,
 				8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */,
+				8A716F3627B9FFF800DB408F /* LoginViewController+Debug.swift in Sources */,
 				8A9ACC03271E71B100E7E7CE /* RoomListInfo.swift in Sources */,
 				8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */,
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,
