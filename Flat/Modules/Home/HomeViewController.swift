@@ -78,8 +78,16 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
         mainSplitViewController?.detailUpdateDelegate = self
-        avatarButton.isHidden = false
         loadRooms(nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.avatarButton.isHidden = false
+        self.avatarButton.alpha = 0
+        UIView.animate(withDuration: 0.3) {
+            self.avatarButton.alpha = 1
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
