@@ -55,16 +55,18 @@ class CreateClassRoomViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let width = view.bounds.width
-        let normalWidth: CGFloat = 210
-        let count = CGFloat(typesStackView.arrangedSubviews.count)
-        let averageDivideWidh = (width - (2 * margin) - ((count - 1) * typesStackView.spacing)) / count
-        let preferredWidth = max(normalWidth, averageDivideWidh)
-        
-        if let fw = typeViews.first?.bounds.width, fw != preferredWidth {
-            typeViews.first?.snp.remakeConstraints({
-                $0.width.equalTo(preferredWidth)
-            })
+        if !traitCollection.hasCompact {
+            let width = view.bounds.width
+            let normalWidth: CGFloat = 210
+            let count = CGFloat(typesStackView.arrangedSubviews.count)
+            let averageDivideWidh = (width - (2 * margin) - ((count - 1) * typesStackView.spacing)) / count
+            let preferredWidth = max(normalWidth, averageDivideWidh)
+
+            if let fw = typeViews.first?.bounds.width, fw != preferredWidth {
+                typeViews.first?.snp.remakeConstraints({
+                    $0.width.equalTo(preferredWidth)
+                })
+            }
         }
     }
     
@@ -119,24 +121,40 @@ class CreateClassRoomViewController: UIViewController {
             make.top.equalTo(subjectTextField.snp.bottom).offset(16)
             make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
         }
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.height.equalTo(96)
-        }
-        scrollView.snp.makeConstraints { make in
-            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(140)
-            make.height.equalTo(96)
+        let itemHeight = CGFloat(96)
+        if traitCollection.hasCompact {
+            let verticalHeight = itemHeight * CGFloat(stackView.arrangedSubviews.count) + CGFloat(stackView.arrangedSubviews.count - 1) * margin
+            stackView.axis = .vertical
+            stackView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+                make.height.equalTo(verticalHeight)
+                make.width.equalTo(scrollView)
+            }
+            scrollView.snp.makeConstraints { make in
+                make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
+                make.top.equalTo(view.safeAreaLayoutGuide).inset(140)
+                make.height.equalTo(verticalHeight)
+            }
+        } else {
+            stackView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+                make.height.equalTo(itemHeight)
+            }
+            scrollView.snp.makeConstraints { make in
+                make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
+                make.top.equalTo(view.safeAreaLayoutGuide).inset(140)
+                make.height.equalTo(itemHeight)
+            }
         }
         
         joinOptionsLabel.snp.makeConstraints { make in
             make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(252)
+            make.top.equalTo(scrollView.snp.bottom).offset(14)
         }
         
         cameraButton.snp.makeConstraints { make in
             make.left.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(274)
+            make.top.equalTo(scrollView.snp.bottom).offset(36)
         }
         
         micButton.snp.makeConstraints { make in
@@ -155,7 +173,7 @@ class CreateClassRoomViewController: UIViewController {
         let view = ClassTypeCell()
         view.typeImageView.image = UIImage(named: type.rawValue)
         view.typeLabel.text = NSLocalizedString(type.rawValue, comment: "")
-        view.typeDescriptionLaebl.text = NSLocalizedString(type.rawValue + " Description", comment: "")
+        view.typeDescriptionLabel.text = NSLocalizedString(type.rawValue + " Description", comment: "")
         view.addTarget(self, action: #selector(onClickType(_:)), for: .touchUpInside)
         return view
     }
@@ -165,10 +183,6 @@ class CreateClassRoomViewController: UIViewController {
         if let index = availableTypes.firstIndex(of: currentRoomType) {
             let selectedTypeView = typeViews[index]
             selectedTypeView.isSelected = true
-            
-            if let scrollView = selectedTypeView.searchSuperViewForType(UIScrollView.self) {
-                scrollView.centerize(selectedTypeView, animated: true)
-            }
         }
     }
     
