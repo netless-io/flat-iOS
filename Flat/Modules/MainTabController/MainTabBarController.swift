@@ -45,10 +45,12 @@ class MainTabBarController: UITabBarController {
         
         let home = makeSubController(fromViewController: HomeViewController(),
                                      image: UIImage(named: "tab_room")!,
+                                     selectedImage: UIImage(named: "tab_room_sel")!,
                                      title: NSLocalizedString("Home", comment: ""))
         addChild(home)
         let cloudStorage = makeSubController(fromViewController: CloudStorageViewController(),
                                              image: UIImage(named: "tab_cloud_storage")!,
+                                             selectedImage: UIImage(named: "tab_cloud_storage_sel")!,
                                              title: NSLocalizedString("Cloud Storage", comment: ""))
         addChild(cloudStorage)
     }
@@ -56,9 +58,11 @@ class MainTabBarController: UITabBarController {
     func makeSubController(
         fromViewController controller: UIViewController,
         image: UIImage,
+        selectedImage: UIImage,
         title: String
     ) -> UIViewController {
         controller.tabBarItem.image = image
+        controller.tabBarItem.selectedImage = selectedImage
         controller.tabBarItem.title = title
         let navi = BaseNavigationViewController(rootViewController: controller)
         return navi

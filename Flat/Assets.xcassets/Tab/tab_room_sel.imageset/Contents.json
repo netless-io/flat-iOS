@@ -5,12 +5,12 @@
       "scale" : "1x"
     },
     {
-      "filename" : "homeOutlined@2x.png",
+      "filename" : "homeFilled@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "homeOutlined@3x.png",
+      "filename" : "homeFilled@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
