@@ -14,6 +14,16 @@ extension UIColor {
         Theme.shared.isDarkBeforeIOS13 ? "-dark" : ""
     }
     
+    static var emptyViewIconTintColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor { trait in
+                return trait.userInterfaceStyle == .dark ? .init(hexString: "#747474") : .init(hexString: "#F3F6F9")
+            }
+        } else {
+            return nameSuffix.isEmpty ? .init(hexString: "#747474") : .init(hexString: "#F3F6F9")
+        }
+    }
+    
     static var cellSelectedBG: UIColor {
         return UIColor(named: "CellSelectedBG" + nameSuffix)!
     }

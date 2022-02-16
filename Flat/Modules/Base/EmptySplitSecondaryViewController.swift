@@ -27,10 +27,11 @@ class EmptySplitSecondaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .whiteBG
-        let imgView = UIImageView(image: UIImage(named: "split_empty"))
-        imgView.contentMode = .scaleAspectFit
-        view.addSubview(imgView)
-        imgView.snp.makeConstraints({
+        let iconView = UIImageView(image: UIImage(named: "split_empty"))
+        view.addSubview(iconView)
+        iconView.tintColor = .emptyViewIconTintColor
+        iconView.contentMode = .scaleAspectFit
+        iconView.snp.makeConstraints({
             $0.center.equalTo(view.safeAreaLayoutGuide)
             $0.width.lessThanOrEqualTo(view.safeAreaLayoutGuide.snp.width)
         })
