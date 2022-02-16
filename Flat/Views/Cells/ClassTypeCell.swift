@@ -10,23 +10,62 @@
 import UIKit
 
 class ClassTypeCell: UIControl {
+    var oldState: State?
+    
+    override var isSelected: Bool {
+        didSet {
+            if let oldState = oldState, oldState == state {
+                return
+            }
+            syncState(state)
+            oldState = state
+        }
+    }
+    
+    override var isHighlighted: Bool {
+        didSet {
+            if let oldState = oldState, oldState == state {
+                return
+            }
+            syncState(state)
+            oldState = state
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
-        syncSelected()
+        syncState(.normal)
     }
     
     required init?(coder: NSCoder) {
         fatalError()
     }
     
-    func syncSelected() {
-        layer.borderColor = isSelected ? UIColor.brandColor.cgColor : UIColor.borderColor.cgColor
-        layer.borderWidth = isSelected ? 2 : 1
-        
+    lazy var selectedImage = UIImage.filledCircleImage(radius: 16)
+    
+    func syncState(_ state: ClassTypeCell.State) {
         let circle = UIImage(named: "circle")!
-        let selectedImg = UIImage.filledCircleImage(radius: circle.size.width / 2)
-        selectedIndicatorImageVIew.image = isSelected ? selectedImg : UIImage(named: "circle")
+        switch state {
+        case .normal:
+            layer.borderColor = UIColor.borderColor.cgColor
+            layer.borderWidth = 1
+            selectedIndicatorImageView.image = circle
+        case .highlighted:
+            layer.borderColor = UIColor.brandColor.cgColor
+            layer.borderWidth = 1
+            typeImageView.transform = .init(scaleX: 0.95, y: 0.95)
+            UIView.animate(withDuration: 0.2) {
+                self.typeImageView.transform = .identity
+            }
+            print(#function, self)
+        case .selected:
+            layer.borderColor = UIColor.brandColor.cgColor
+            layer.borderWidth = 2
+            selectedIndicatorImageView.image = selectedImage
+        default:
+            return
+        }
     }
     
     func setup() {
@@ -45,14 +84,8 @@ class ClassTypeCell: UIControl {
         }
     }
     
-    override var isSelected: Bool {
-        didSet {
-            syncSelected()
-        }
-    }
-    
     // MARK: - Lazy
-    lazy var typeDescriptionLaebl: UILabel = {
+    lazy var typeDescriptionLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = .subText
@@ -69,15 +102,15 @@ class ClassTypeCell: UIControl {
     
     lazy var selectedIndicatorImageVIewContainer: UIView = {
         let view = UIView()
-        view.addSubview(selectedIndicatorImageVIew)
-        selectedIndicatorImageVIew.snp.makeConstraints { make in
+        view.addSubview(selectedIndicatorImageView)
+        selectedIndicatorImageView.snp.makeConstraints { make in
             make.right.bottom.top.equalToSuperview()
-            make.width.equalTo(selectedIndicatorImageVIew.snp.height)
+            make.width.equalTo(selectedIndicatorImageView.snp.height)
         }
         return view
     }()
     
-    lazy var selectedIndicatorImageVIew: UIImageView = {
+    lazy var selectedIndicatorImageView: UIImageView = {
         let view = UIImageView()
         view.tintColor = .borderColor
         view.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -85,7 +118,7 @@ class ClassTypeCell: UIControl {
     }()
     
     lazy var rightItemsStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [typeLabel, typeDescriptionLaebl, selectedIndicatorImageVIewContainer])
+        let view = UIStackView(arrangedSubviews: [typeLabel, typeDescriptionLabel, selectedIndicatorImageVIewContainer])
         view.isUserInteractionEnabled = false
         view.distribution = .fill
         view.axis = .vertical
