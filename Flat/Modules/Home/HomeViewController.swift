@@ -83,6 +83,10 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        guard let main = mainContainer,
+              !(main.concreteViewController is MainSplitViewController)
+        else { return }
         self.avatarButton.isHidden = false
         self.avatarButton.alpha = 0
         UIView.animate(withDuration: 0.3) {
@@ -92,6 +96,10 @@ class HomeViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        guard let main = mainContainer,
+              !(main.concreteViewController is MainSplitViewController)
+        else { return }
         avatarButton.isHidden = true
     }
     
