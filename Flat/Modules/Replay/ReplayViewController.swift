@@ -82,6 +82,7 @@ class ReplayViewController: UIViewController {
     lazy var videoScrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsHorizontalScrollIndicator = false
+        view.backgroundColor = .whiteBG
         return view
     }()
     lazy var whiteboardView: WhiteBoardView = {
@@ -162,6 +163,10 @@ extension ReplayViewController: WhiteCombineDelegate {
            let size = track.assetTrack?.naturalSize {
             let ratio = videoScrollView.frame.height / size.height
             let width = ratio * size.width
+            if width.isNaN {
+                toast("Can't load video info, please try again later")
+                return
+            }
             whiteVideoView.frame = .init(origin: .zero, size: .init(width: width, height: videoScrollView.frame.height))
             videoScrollView.contentSize = whiteVideoView.bounds.size
         }
