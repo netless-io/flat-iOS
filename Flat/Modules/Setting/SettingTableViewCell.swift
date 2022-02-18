@@ -14,6 +14,7 @@ class SettingTableViewCell: UITableViewCell {
     @IBOutlet weak var settingTitleLabel: UILabel!
     @IBOutlet weak var popOverAnchorView: UIView!
     @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var `switch`: UISwitch!
     
     override func awakeFromNib() {
         super.awakeFromNib()

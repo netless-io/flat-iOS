@@ -1,10 +1,13 @@
 PODS:
+  - AgoraFPA_iOS (1.0.0)
   - AgoraRtcEngine_iOS (3.5.0.4)
   - AgoraRtm_iOS (1.4.8)
   - dsBridge (3.0.6)
   - EmptyDataSet-Swift (5.0.0)
-  - Fastboard (1.0.0-beta.6):
-    - Whiteboard (~> 2.15)
+  - Fastboard/core (1.0.0-beta.7)
+  - Fastboard/fpa (1.0.0-beta.7):
+    - Fastboard/core
+    - Whiteboard/fpa
   - Hero (1.6.1)
   - IQKeyboardManagerSwift (6.5.6)
   - Kingfisher (7.1.0)
@@ -19,28 +22,28 @@ PODS:
   - RxSwift (6.2.0)
   - SnapKit (5.0.1)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.16.0):
-    - Whiteboard/Base (= 2.16.0)
-    - Whiteboard/Converter (= 2.16.0)
-    - Whiteboard/Model (= 2.16.0)
-    - Whiteboard/NativeReplayer (= 2.16.0)
-    - Whiteboard/Object (= 2.16.0)
-    - Whiteboard/Replayer (= 2.16.0)
-    - Whiteboard/Room (= 2.16.0)
-  - Whiteboard/Base (2.16.0):
+  - Whiteboard (2.16.1):
+    - Whiteboard/Converter (= 2.16.1)
+    - Whiteboard/NativeReplayer (= 2.16.1)
+    - Whiteboard/Replayer (= 2.16.1)
+    - Whiteboard/Room (= 2.16.1)
+  - Whiteboard/Base (2.16.1):
     - dsBridge (~> 3.0.2)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.16.0):
+  - Whiteboard/Converter (2.16.1):
     - Whiteboard/Object
-  - Whiteboard/Model (2.16.0):
+  - Whiteboard/fpa (2.16.1):
+    - AgoraFPA_iOS (~> 1.0.0)
+    - Whiteboard/Room
+  - Whiteboard/Model (2.16.1):
     - YYModel (~> 1.0.4)
-  - Whiteboard/NativeReplayer (2.16.0):
+  - Whiteboard/NativeReplayer (2.16.1):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.16.0):
+  - Whiteboard/Object (2.16.1):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.16.0):
+  - Whiteboard/Replayer (2.16.1):
     - Whiteboard/Base
-  - Whiteboard/Room (2.16.0):
+  - Whiteboard/Room (2.16.1):
     - Whiteboard/Base
   - YYModel (1.0.4)
 
@@ -48,7 +51,7 @@ DEPENDENCIES:
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
   - EmptyDataSet-Swift
-  - Fastboard (from `https://github.com/netless-io/fastboard-iOS.git`)
+  - Fastboard/fpa (from `https://github.com/vince-hz/Fastboard-iOS.git`)
   - Hero
   - IQKeyboardManagerSwift
   - Kingfisher
@@ -58,10 +61,12 @@ DEPENDENCIES:
   - RxSwift
   - SnapKit
   - WechatOpenSDK
-  - Whiteboard (from `https://github.com/netless-io/Whiteboard-iOS`)
+  - Whiteboard (from `https://github.com/vince-hz/Whiteboard-iOS.git`, branch `feature/fpa`)
+  - Whiteboard/fpa (from `https://github.com/vince-hz/Whiteboard-iOS.git`, branch `feature/fpa`)
 
 SPEC REPOS:
   trunk:
+    - AgoraFPA_iOS
     - AgoraRtcEngine_iOS
     - AgoraRtm_iOS
     - dsBridge
@@ -80,24 +85,26 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Fastboard:
-    :git: https://github.com/netless-io/fastboard-iOS.git
+    :git: https://github.com/vince-hz/Fastboard-iOS.git
   Whiteboard:
-    :git: https://github.com/netless-io/Whiteboard-iOS
+    :branch: feature/fpa
+    :git: https://github.com/vince-hz/Whiteboard-iOS.git
 
 CHECKOUT OPTIONS:
   Fastboard:
-    :commit: 245bab02389c133ab9e1e85893cf0f5a645598ef
-    :git: https://github.com/netless-io/fastboard-iOS.git
+    :commit: 2b90a2ca2a91829f9148d2a45b11e611ba31bebe
+    :git: https://github.com/vince-hz/Fastboard-iOS.git
   Whiteboard:
-    :commit: 4f98a0d7ccbb82bb97055423dcc94f412422f648
-    :git: https://github.com/netless-io/Whiteboard-iOS
+    :commit: e9e01a65097450f7d0023eb8d4c10ca0b5efd41b
+    :git: https://github.com/vince-hz/Whiteboard-iOS.git
 
 SPEC CHECKSUMS:
+  AgoraFPA_iOS: 2202f574e6832567e368d5e69ad6da121a18ee4a
   AgoraRtcEngine_iOS: a5c32145692b996e67bd646ddde268c77b04ad71
   AgoraRtm_iOS: 382a54763803dad098d3b31a2608ccd62972e00b
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
-  Fastboard: ebcadf83337237bab407dd98b7f4eccc9d97f871
+  Fastboard: bc1fe67310e9b6f854f647d30dcf0f1c9e47ff66
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
   Kingfisher: cdabaf49be7ee7cc124f0f276b355edf61903cf8
@@ -108,9 +115,9 @@ SPEC CHECKSUMS:
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 16568e7e14f7f451d2aad2536f5fab9c06119934
+  Whiteboard: 0a17f352bbea3f67e0f3ac63780a42c96800b64e
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 829a5ae8ae4f7bf580099699afe52ab40d12fb48
+PODFILE CHECKSUM: 50525c913a1de175c517513f5973ea94c6f61908
 
 COCOAPODS: 1.11.2

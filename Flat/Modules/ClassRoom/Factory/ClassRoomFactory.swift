@@ -22,11 +22,21 @@ struct ClassRoomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
                                             detailInfo: RoomInfo,
                                             deviceStatus: DeviceStatus) -> ClassRoomViewController {
-        let fastConfiguration = FastConfiguration(appIdentifier: Env().netlessAppId,
-                                                  roomUUID: playInfo.whiteboardRoomUUID,
-                                                  roomToken: playInfo.whiteboardRoomToken,
-                                                  region: .CN,
-                                                  userUID: AuthStore.shared.user?.userUUID ?? "")
+        let fastConfiguration: FastConfiguration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+        if #available(iOS 13.0, *) {
+            fastConfiguration = FastConfiguration(appIdentifier: Env().netlessAppId,
+                                                      roomUUID: playInfo.whiteboardRoomUUID,
+                                                      roomToken: playInfo.whiteboardRoomToken,
+                                                      region: .CN,
+                                                      userUID: AuthStore.shared.user?.userUUID ?? "",
+                                                      useFPA: userUseFPA)
+        } else {
+            fastConfiguration = FastConfiguration(appIdentifier: Env().netlessAppId,
+                                                      roomUUID: playInfo.whiteboardRoomUUID,
+                                                      roomToken: playInfo.whiteboardRoomToken,
+                                                      region: .CN,
+                                                      userUID: AuthStore.shared.user?.userUUID ?? "")
+        }
         fastConfiguration.whiteSdkConfiguration.userCursor = true
         let userName = AuthStore.shared.user?.name ?? ""
         let payload: [String: String] = ["cursorName": userName]

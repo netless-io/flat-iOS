@@ -14,8 +14,10 @@ target 'Flat' do
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
   pod 'WechatOpenSDK'
-  pod 'Fastboard', :git => 'https://github.com/netless-io/fastboard-iOS.git'
-  pod 'Whiteboard', :git => 'https://github.com/netless-io/Whiteboard-iOS'
+  pod 'Fastboard/fpa', :git => 'https://github.com/vince-hz/Fastboard-iOS.git'
+  pod 'Whiteboard', :git => 'https://github.com/vince-hz/Whiteboard-iOS.git', :branch => 'feature/fpa'
+  pod 'Whiteboard/fpa', :git => 'https://github.com/vince-hz/Whiteboard-iOS.git', :branch => 'feature/fpa'
+#  pod 'Whiteboard/fpa', :path => '/Users/xuyunshi/Desktop/Whteboard/Whiteboard-iOS'
   
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|

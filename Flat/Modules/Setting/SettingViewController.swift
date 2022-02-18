@@ -10,6 +10,29 @@
 import UIKit
 import Whiteboard
 
+private var fpaKey: String? {
+    guard let uid = AuthStore.shared.user?.userUUID else { return nil }
+    let key = uid + "useFPA"
+    return key
+}
+
+/// Global value for user
+var userUseFPA: Bool {
+    get {
+        guard let fpaKey = fpaKey else { return false }
+        return (UserDefaults.standard.value(forKey: fpaKey) as? Bool) ?? false
+    }
+    set {
+        guard let fpaKey = fpaKey else { return }
+        UserDefaults.standard.setValue(newValue, forKey: fpaKey)
+        if !newValue {
+            if #available(iOS 13.0, *) {
+                FpaProxyService.shared().stop()
+            }
+        }
+    }
+}
+
 class SettingViewController: UITableViewController {
     enum DisplayVersion: CaseIterable {
         case flat
@@ -26,7 +49,7 @@ class SettingViewController: UITableViewController {
     }
     
     let cellIdentifier = "cellIdentifier"
-    var items: [(UIImage, String, String, (NSObject, Selector)?)] = []
+    var items: [Item] = []
     var displayVersion: DisplayVersion = DisplayVersion.flat {
         didSet {
             updateItems()
@@ -52,34 +75,39 @@ class SettingViewController: UITableViewController {
         updateItems()
     }
     
+    struct Item {
+        let image: UIImage
+        let title: String
+        let detail: Any
+        let targetAction: (NSObject, Selector)?
+    }
+    
     func updateItems() {
         items = [
-            (UIImage(named: "language")!,
-             NSLocalizedString("Language Setting", comment: ""),
-             LocaleManager.language?.name ?? "跟随系统",
-             (self, #selector(self.onClickLanguage(sender:)))),
-            
-            (UIImage(named: "theme")!,
-             NSLocalizedString("Theme", comment: ""),
-             (Theme.shared.userPreferredStyle ?? ThemeStyle.default).description,
-             (self, #selector(self.onClickTheme(sender:)))
-            ),
-            
-            (UIImage(named: "update_version")!,
-             NSLocalizedString("Version", comment: ""),
-             displayVersion.description,
-             (self, #selector(onVersion(sender:)))),
-            
-//            (UIImage(named: "message")!,
-//             NSLocalizedString("Contact Us", comment: ""),
-//             "",
-//             (self, #selector(self.onClickContactUs))),
-            
-            (UIImage(named: "info")!,
-             NSLocalizedString("About", comment: ""),
-             "",
-             (self, #selector(self.onClickAbout(sender:))))
+            .init(image: UIImage(named: "language")!,
+                  title: NSLocalizedString("Language Setting", comment: ""),
+                  detail: LocaleManager.language?.name ?? "跟随系统",
+                  targetAction: (self, #selector(self.onClickLanguage(sender:)))),
+            .init(image: UIImage(named: "theme")!,
+                  title: NSLocalizedString("Theme", comment: ""),
+                  detail: (Theme.shared.userPreferredStyle ?? ThemeStyle.default).description,
+                  targetAction: (self, #selector(self.onClickTheme(sender:)))),
+            .init(image: UIImage(named: "update_version")!,
+                  title: NSLocalizedString("Version", comment: ""),
+                  detail: displayVersion.description,
+                  targetAction: (self, #selector(onVersion(sender:)))),
+            .init(image: UIImage(named: "info")!,
+                  title: NSLocalizedString("About", comment: ""),
+                  detail: "",
+                  targetAction: (self, #selector(self.onClickAbout(sender:))))
         ]
+        if #available(iOS 13.0, *) {
+            items.insert(.init(image: UIImage(named: "info")!,
+                               title: NSLocalizedString("FPA", comment: ""),
+                               detail: userUseFPA ? true : false,
+                               targetAction: (self, #selector(self.onClickFPA(sender:)))),
+                         at: 2)
+        }
         tableView.reloadData()
     }
     
@@ -119,7 +147,12 @@ class SettingViewController: UITableViewController {
     @objc func onClickAbout(sender: Any?) {
         navigationController?.pushViewController(AboutUsViewController(), animated: true)
     }
-
+    
+    @objc func onClickFPA(sender: Any?) {
+        guard let sender = sender as? UISwitch else { return }
+        userUseFPA = sender.isOn
+    }
+    
     @objc func onClickTheme(sender: Any?) {
         let alertController = UIAlertController(title: NSLocalizedString("Select Theme", comment: ""), message: nil, preferredStyle: .actionSheet)
         let manager = Theme.shared
@@ -200,7 +233,8 @@ class SettingViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        if let pairs = items[indexPath.row].3 {
+        let item = items[indexPath.row]
+        if item.detail is String, let pairs = item.targetAction {
             pairs.0.performSelector(onMainThread: pairs.1, with: cell, waitUntilDone: true)
         }
     }
@@ -208,10 +242,24 @@ class SettingViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SettingTableViewCell
-        cell.iconImageView.image = item.0
+        cell.iconImageView.image = item.image
         cell.iconImageView.tintColor = .text
-        cell.settingTitleLabel.text = item.1
-        cell.settingDetailLabel.text = item.2
+        cell.settingTitleLabel.text = item.title
+        if let bool = item.detail as? Bool {
+            cell.settingDetailLabel.isHidden = true
+            cell.switch.isHidden = false
+            cell.switch.isOn = bool
+            cell.accessoryType = .none
+            if let pair = item.targetAction {
+                cell.switch.addTarget(pair.0, action: pair.1, for: .valueChanged)
+                    }
+        }
+        if let description = item.detail as? String {
+            cell.accessoryType = .disclosureIndicator
+            cell.settingDetailLabel.isHidden = false
+            cell.switch.isHidden = true
+            cell.settingDetailLabel.text = description
+        }
         return cell
     }
 }

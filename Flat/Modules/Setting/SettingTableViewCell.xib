@@ -45,6 +45,9 @@
                             <constraint firstAttribute="width" constant="1" id="wlL-Wi-J2S"/>
                         </constraints>
                     </view>
+                    <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aRJ-TP-bUG">
+                        <rect key="frame" x="276" y="18" width="51" height="31"/>
+                    </switch>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="QaV-KI-TuR" secondAttribute="trailing" constant="17" id="9D9-bb-WXt"/>
@@ -52,8 +55,10 @@
                     <constraint firstItem="QaV-KI-TuR" firstAttribute="leading" secondItem="kii-l4-55a" secondAttribute="trailing" id="E0M-xc-P25"/>
                     <constraint firstItem="QaV-KI-TuR" firstAttribute="leading" secondItem="834-Gz-ws7" secondAttribute="trailing" constant="10" id="R51-hr-cAx"/>
                     <constraint firstItem="kii-l4-55a" firstAttribute="leading" secondItem="YXl-bd-eGe" secondAttribute="trailing" constant="4" id="Vrl-Rv-rab"/>
+                    <constraint firstItem="aRJ-TP-bUG" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="cAw-rC-Oy4"/>
                     <constraint firstItem="YXl-bd-eGe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dMR-M2-LND"/>
                     <constraint firstItem="834-Gz-ws7" firstAttribute="centerY" secondItem="QaV-KI-TuR" secondAttribute="centerY" id="rzR-J6-eK0"/>
+                    <constraint firstItem="aRJ-TP-bUG" firstAttribute="trailing" secondItem="QaV-KI-TuR" secondAttribute="trailing" id="w8m-1u-bgY"/>
                     <constraint firstItem="kii-l4-55a" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xuk-6c-9uo"/>
                     <constraint firstItem="YXl-bd-eGe" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="yw7-1C-XDS"/>
                 </constraints>
@@ -64,8 +69,9 @@
                 <outlet property="popOverAnchorView" destination="834-Gz-ws7" id="u7R-qT-L9s"/>
                 <outlet property="settingDetailLabel" destination="QaV-KI-TuR" id="MF2-6Y-qY5"/>
                 <outlet property="settingTitleLabel" destination="kii-l4-55a" id="Llc-0D-9mr"/>
+                <outlet property="switch" destination="aRJ-TP-bUG" id="76Z-Ng-arY"/>
             </connections>
-            <point key="canvasLocation" x="-65.217391304347828" y="52.566964285714285"/>
+            <point key="canvasLocation" x="-155" y="47"/>
         </tableViewCell>
     </objects>
     <resources>
