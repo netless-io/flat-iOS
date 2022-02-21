@@ -127,14 +127,6 @@ class ClassRoomViewModel {
     let commandEncoder = CommandEncoder()
     let commandDecoder = CommandDecoder()
     
-    struct TeacherOperationOutPut {
-        let taps: Driver<Void>
-        let starting: Driver<Bool>
-        let pausing: Driver<Bool>
-        let resuming: Driver<Bool>
-        let stopping: Driver<Bool>
-    }
-    
     // MARK: - Public
     func transform(_ input: Input) -> Output {
         let initRoom = Driver.of(input.trigger, input.enterForeground)
@@ -473,7 +465,7 @@ class ClassRoomViewModel {
                     self?.state.startStatus.accept(.Stopped)
                 }
             })
-                }
+    }
     
     func resumeOperation() -> Single<Void> { startOperation() }
     

@@ -164,7 +164,8 @@ class FastboardViewController: UIViewController {
 
 extension FastboardViewController: FastboardDelegate {
     func fastboardUserKickedOut(_ fastboard: Fastboard, reason: String) {
-        showErrorView(error: reason)
+        // For this error is caused by server closing, it should be noticed by teacher.
+        // showErrorView(error: reason)
     }
     
     func fastboardPhaseDidUpdate(_ fastboard: Fastboard, phase: FastRoomPhase) {
