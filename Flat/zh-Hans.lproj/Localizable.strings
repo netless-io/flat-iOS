@@ -78,6 +78,9 @@
 "CurrentProcessFailed" = "当前请求失败";
 
 
+"Decode error" = "解码错误";
+
+
 "Delete" = "删除";
 
 
@@ -91,6 +94,9 @@
 
 
 "EmptyCloudTip" = "暂无文件";
+
+
+"Encode error" = "编码错误";
 
 
 "End the class" = "结束上课";
@@ -418,6 +424,9 @@
 
 
 "Today" = "今天";
+
+
+"Unknown error" = "未知错误";
 
 
 "UnsupportedPlatform" = "不支持的登录平台";

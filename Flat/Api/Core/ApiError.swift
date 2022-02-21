@@ -30,11 +30,11 @@ enum ApiError: LocalizedError {
         case .message(let message):
             return message
         case .unknown:
-            return "unknown error"
+            return NSLocalizedString("Unknown error", comment: "")
         case .encode(let message):
-            return "encode error \(message)"
+            return NSLocalizedString("Encode error", comment: "") + " " + message
         case .decode(let message):
-            return "decode error \(message)"
+            return NSLocalizedString("Decode error", comment: "") + " " + message
         }
     }
 }
