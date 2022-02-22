@@ -71,7 +71,6 @@ class ClassRoomViewController: UIViewController {
         self.fastboardViewController = fastboardViewController
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
-        modalTransitionStyle = .flipHorizontal
         
         let alertProvider = DefaultAlertProvider(root: self)
         
