@@ -1799,6 +1799,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1817,7 +1818,7 @@
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.5.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2053,6 +2054,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -2071,7 +2073,7 @@
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.5.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2184,6 +2186,7 @@
 				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -2202,7 +2205,7 @@
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "flat-release";
@@ -2290,6 +2293,7 @@
 				DEVELOPMENT_TEAM = 3QTDRHG63K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -2308,7 +2312,7 @@
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2_NoPay",
 					"$(PROJECT_DIR)/Flat/Vendor/OpenSDK1.9.2",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(TARGET_NAME)-STAGE";
 				PROVISIONING_PROFILE_SPECIFIER = "";
