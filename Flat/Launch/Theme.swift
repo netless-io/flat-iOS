@@ -136,23 +136,22 @@ class Theme {
     }
     
     fileprivate func applyFastboardTheme() {
-        let whiteboardAssets = WhiteboardAssets(whiteboardBackgroundColor: .whiteBG,
-                                                containerColor: .clear)
-        let controlAssets = ControlBarAssets(backgroundColor: .whiteBG,
-                                             borderColor: .borderColor,
-                                             effectStyle: nil)
-        let panelItemAssets = PanelItemAssets(normalIconColor: .controlNormal,
-                                              selectedIconColor: .controlSelected,
-                                              highlightBgColor: .controlSelectedBG,
-                                              subOpsIndicatorColor: .text,
-                                              pageTextLabelColor: .text)
-        let flatThemeAssets = ThemeAsset(whiteboardAssets: whiteboardAssets,
-                                         controlBarAssets: controlAssets,
-                                         panelItemAssets: panelItemAssets)
-        
+//        let whiteboardAssets = WhiteboardAssets(whiteboardBackgroundColor: .whiteBG,
+//                                                containerColor: .clear)
+//        let controlAssets = ControlBarAssets(backgroundColor: .whiteBG,
+//                                             borderColor: .borderColor,
+//                                             effectStyle: nil)
+//        let panelItemAssets = PanelItemAssets(normalIconColor: .controlNormal,
+//                                              selectedIconColor: .controlSelected,
+//                                              highlightBgColor: .controlSelectedBG,
+//                                              subOpsIndicatorColor: .text,
+//                                              pageTextLabelColor: .text)
+//        let flatThemeAssets = ThemeAsset(whiteboardAssets: whiteboardAssets,
+//                                         controlBarAssets: controlAssets,
+//                                         panelItemAssets: panelItemAssets)
+//
         // Update Appearance
-        ControlBar.appearance().itemWidth = globalRoomControlBarItemWidth
-        ControlBar.appearance().commonRadius = 10
-        ThemeManager.shared.apply(flatThemeAssets)
+//        ControlBar.appearance().commonRadius = 10
+//        ThemeManager.shared.apply(flatThemeAssets)
     }
 }

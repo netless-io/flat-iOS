@@ -33,7 +33,6 @@
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
-		8A0EB7B3272BCDC200003DF7 /* UIButton+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */; };
 		8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */; };
 		8A0EB7BA272BD4E300003DF7 /* RoomUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */; };
 		8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C1272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift */; };
@@ -135,7 +134,6 @@
 		8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC06271E969100E7E7CE /* Date+Extension.swift */; };
 		8A9ACC0A271E98DB00E7E7CE /* RoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC08271E98DB00E7E7CE /* RoomTableViewCell.swift */; };
 		8A9ACC0B271E98DB00E7E7CE /* RoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A9ACC09271E98DB00E7E7CE /* RoomTableViewCell.xib */; };
-		8A9ACC0E271EA6F400E7E7CE /* RoomControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC0D271EA6F400E7E7CE /* RoomControlBar.swift */; };
 		8A9ACC11271EAE3700E7E7CE /* IndicatorMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC10271EAE3700E7E7CE /* IndicatorMoreButton.swift */; };
 		8A9ACC17271EBD9300E7E7CE /* UIImage+Appliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC16271EBD9300E7E7CE /* UIImage+Appliance.swift */; };
 		8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC18271EBE2300E7E7CE /* UIButton+Appliance.swift */; };
@@ -269,7 +267,6 @@
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
-		8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Appearance.swift"; sourceTree = "<group>"; };
 		8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverDismissDetectableViewController.swift; sourceTree = "<group>"; };
 		8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUserTableViewCell.swift; sourceTree = "<group>"; };
 		8A0EB7C1272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -375,7 +372,6 @@
 		8A9ACC06271E969100E7E7CE /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		8A9ACC08271E98DB00E7E7CE /* RoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTableViewCell.swift; sourceTree = "<group>"; };
 		8A9ACC09271E98DB00E7E7CE /* RoomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomTableViewCell.xib; sourceTree = "<group>"; };
-		8A9ACC0D271EA6F400E7E7CE /* RoomControlBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomControlBar.swift; sourceTree = "<group>"; };
 		8A9ACC10271EAE3700E7E7CE /* IndicatorMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorMoreButton.swift; sourceTree = "<group>"; };
 		8A9ACC16271EBD9300E7E7CE /* UIImage+Appliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Appliance.swift"; sourceTree = "<group>"; };
 		8A9ACC18271EBE2300E7E7CE /* UIButton+Appliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Appliance.swift"; sourceTree = "<group>"; };
@@ -920,7 +916,6 @@
 			isa = PBXGroup;
 			children = (
 				8A9ACC0F271EAE2800E7E7CE /* Button */,
-				8A9ACC0C271EA6D600E7E7CE /* ControlBar */,
 				8A9ACBFD271D689800E7E7CE /* Cells */,
 				8A9ACBFA271D602C00E7E7CE /* Tabbar */,
 			);
@@ -950,18 +945,9 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		8A9ACC0C271EA6D600E7E7CE /* ControlBar */ = {
-			isa = PBXGroup;
-			children = (
-				8A9ACC0D271EA6F400E7E7CE /* RoomControlBar.swift */,
-			);
-			path = ControlBar;
-			sourceTree = "<group>";
-		};
 		8A9ACC0F271EAE2800E7E7CE /* Button */ = {
 			isa = PBXGroup;
 			children = (
-				8A0EB7B2272BCDC200003DF7 /* UIButton+Appearance.swift */,
 				8A9ACC10271EAE3700E7E7CE /* IndicatorMoreButton.swift */,
 				8A9ACC18271EBE2300E7E7CE /* UIButton+Appliance.swift */,
 				8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */,
@@ -1599,7 +1585,6 @@
 				8A05C326275EF6B0009BCA79 /* SidebarViewController.swift in Sources */,
 				8A05C329275F399E009BCA79 /* UploadHomeViewController.swift in Sources */,
 				8A9ACC0A271E98DB00E7E7CE /* RoomTableViewCell.swift in Sources */,
-				8A9ACC0E271EA6F400E7E7CE /* RoomControlBar.swift in Sources */,
 				8A9FB395272154B800F6F06F /* Message.swift in Sources */,
 				8A270B8427192A0800450DC6 /* SettingViewController.swift in Sources */,
 				8AAE53D127311D7E00C35796 /* String+ReguarExpression.swift in Sources */,
@@ -1664,7 +1649,6 @@
 				8A9FB3B72722949600F6F06F /* ParameterEncoder.swift in Sources */,
 				8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */,
 				8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */,
-				8A0EB7B3272BCDC200003DF7 /* UIButton+Appearance.swift in Sources */,
 				8A9ACC01271E712100E7E7CE /* RoomListRequest.swift in Sources */,
 				8A5DCF9D273B6E7A0068D5DF /* ClassRoomViewModel.swift in Sources */,
 				8AA97EA42741F97B00C3F92E /* ClassRoomRtm.swift in Sources */,

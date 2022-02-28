@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import RxCocoa
+import Fastboard
 
 let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
 
@@ -411,7 +412,7 @@ class ClassRoomViewController: UIViewController {
             .drive(with: self, onNext: { weakSelf, enable in
                 weakSelf.fastboardViewController.fastboard.setAllPanel(hide: !enable)
                 weakSelf.fastboardViewController.fastboard.updateWritable(enable, completion: nil)
-                weakSelf.rightToolBar.updateButtonHide(weakSelf.cloudStorageButton, hide: !enable)
+                weakSelf.rightToolBar.forceButtonHide(weakSelf.cloudStorageButton, hide: !enable)
             })
             .disposed(by: rx.disposeBag)
     }
@@ -590,13 +591,15 @@ class ClassRoomViewController: UIViewController {
     }
     
     // MARK: - Lazy
-    lazy var settingButton: UIButton = {
-        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "classroom_setting")!)
+    lazy var settingButton: PanelItemButton = {
+        let button = PanelItemButton(type: .custom)
+        button.rawImage = UIImage(named: "classroom_setting")!
         return button
     }()
     
-    lazy var moreButton: UIButton = {
-        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "classroom_more")!)
+    lazy var moreButton: PanelItemButton = {
+        let button = PanelItemButton(type: .custom)
+        button.rawImage = UIImage(named: "classroom_more")!
         return button
     }()
 
@@ -605,14 +608,16 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
-    lazy var chatButton: UIButton = {
-        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "chat")!)
+    lazy var chatButton: PanelItemButton = {
+        let button = PanelItemButton(type: .custom)
+        button.rawImage = UIImage(named: "chat")!
         button.setupBadgeView(rightInset: 5, topInset: 5)
         return button
     }()
     
-    lazy var usersButton: UIButton = {
-        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "users")!)
+    lazy var usersButton: PanelItemButton = {
+        let button = PanelItemButton(type: .custom)
+        button.rawImage = UIImage(named: "users")!
         button.setupBadgeView(rightInset: 5, topInset: 5)
         return button
     }()
@@ -640,33 +645,34 @@ class ClassRoomViewController: UIViewController {
         return vc
     }()
      
-    lazy var cloudStorageButton: UIButton = {
-        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "classroom_cloud")!)
+    lazy var cloudStorageButton: PanelItemButton = {
+        let button = PanelItemButton(type: .custom)
+        button.rawImage = UIImage(named: "classroom_cloud")!
         button.addTarget(self, action: #selector(onClickStorage(_:)), for: .touchUpInside)
         return button
     }()
     
-    lazy var inviteButton: UIButton = {
-        let button = UIButton.buttonWithClassRoomStyle(withImage: UIImage(named: "invite")!)
+    lazy var inviteButton: PanelItemButton = {
+        let button = PanelItemButton(type: .custom)
+        button.rawImage = UIImage(named: "invite")!
         return button
     }()
 
     
-    lazy var rightToolBar: RoomControlBar = {
+    lazy var rightToolBar: ControlBar = {
         if traitCollection.hasCompact {
-            let bar = RoomControlBar(direction: .vertical,
-                                     borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                     buttons: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton],
-                                     narrowStyle: .narrowMoreThan(count: 1))
-            bar.updateButtonHide(cloudStorageButton, hide: true)
+            let bar = ControlBar(direction: .vertical,
+                                 borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
+                                 views: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton])
+            bar.forceButtonHide(cloudStorageButton, hide: true)
+            bar.narrowStyle = .narrowMoreThan(count: 1)
             return bar
         } else {
-            let bar = RoomControlBar(direction: .vertical,
-                                     borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                     buttons: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton, moreButton],
-                                     narrowStyle: .none)
-            bar.updateButtonHide(cloudStorageButton, hide: true)
-            bar.updateButtonHide(moreButton, hide: !viewModel.isTeacher)
+            let bar = ControlBar(direction: .vertical,
+                                 borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
+                                 views: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton, moreButton])
+            bar.forceButtonHide(cloudStorageButton, hide: true)
+            bar.forceButtonHide(moreButton, hide: !viewModel.isTeacher)
             return bar
         }
     }()
