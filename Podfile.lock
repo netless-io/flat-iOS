@@ -4,11 +4,11 @@ PODS:
   - AgoraRtm_iOS (1.4.8)
   - dsBridge (3.0.6)
   - EmptyDataSet-Swift (5.0.0)
-  - Fastboard (1.0.0-beta.10):
-    - Fastboard/core (= 1.0.0-beta.10)
-  - Fastboard/core (1.0.0-beta.10):
+  - Fastboard (1.0.0-beta.11):
+    - Fastboard/core (= 1.0.0-beta.11)
+  - Fastboard/core (1.0.0-beta.11):
     - Whiteboard (~> 2.16.4)
-  - Fastboard/fpa (1.0.0-beta.10):
+  - Fastboard/fpa (1.0.0-beta.11):
     - Fastboard/core
     - Whiteboard/fpa
   - Hero (1.6.1)
@@ -92,7 +92,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Fastboard:
-    :commit: c47a367484908a3f6579bb18b766762df0830de7
+    :commit: 97da5decab285e63734fd9c2f55bd42e59e6f0da
     :git: https://github.com/netless-io/Fastboard-iOS.git
 
 SPEC CHECKSUMS:
@@ -101,7 +101,7 @@ SPEC CHECKSUMS:
   AgoraRtm_iOS: 382a54763803dad098d3b31a2608ccd62972e00b
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
-  Fastboard: 0441be7444aef9c689892d942144c3e18562109b
+  Fastboard: 4dcd27adb4cbf2605a364aa1cd9f774e8f7f04ed
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
   Kingfisher: cdabaf49be7ee7cc124f0f276b355edf61903cf8
