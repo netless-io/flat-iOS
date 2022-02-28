@@ -102,7 +102,9 @@ class SettingViewController: UITableViewController {
                   targetAction: (self, #selector(self.onClickAbout(sender:))))
         ]
         if #available(iOS 13.0, *) {
-            items.insert(.init(image: UIImage(named: "info")!,
+            let config = UIImage.SymbolConfiguration(pointSize: 10, weight: .light, scale: .small)
+            let image = UIImage(systemName: "bolt", withConfiguration: config)!
+            items.insert(.init(image: image,
                                title: NSLocalizedString("FPA", comment: ""),
                                detail: userUseFPA ? true : false,
                                targetAction: (self, #selector(self.onClickFPA(sender:)))),
