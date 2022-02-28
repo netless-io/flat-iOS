@@ -15,6 +15,7 @@ import RxCocoa
 import RxSwift
 import SafariServices
 import EmptyDataSet_Swift
+import Whiteboard
 
 let cloudStorageShouldUpdateNotificationName = Notification.Name("cloudStorageShouldUpdateNotificationName")
 
@@ -42,6 +43,12 @@ class CloudStorageViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
+        taskProgressPolling.startPolling()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        taskProgressPolling.pausePolling()
     }
     
     deinit {
@@ -192,7 +199,6 @@ class CloudStorageViewController: UIViewController {
                     }
                 }
             }
-        
         configPollingTaskWith(newItems: items)
     }
     
@@ -201,17 +207,27 @@ class CloudStorageViewController: UIViewController {
             $0.convertStep == .converting && $0.taskType != nil
         }
         guard !itemsShouldPolling.isEmpty else { return }
-        startPollingConvertingTasks(fromItems: itemsShouldPolling)
+        itemsShouldPolling.forEach {
+            self.taskProgressPolling.insertPollingTask(withTaskUUID: $0.taskUUID,
+                                                       token: $0.taskToken,
+                                                       region: .init(rawValue: $0.region.rawValue),
+                                                       taskType: $0.taskType!) { progress, info in
+                print("task \(info?.uuid ?? "") progress \(progress)")
+            } result: { [weak self] success, info, error in
+                if let error = error {
+                    self?.toast(error.localizedDescription)
+                    return
+                }
+                guard let info = info else { return }
+                self?.removeConvertingTask(fromTaskUUID: info.uuid, status: info.status)
+            }
+        }
         tableView.reloadData()
     }
     
-    var pollingDisposable: Disposable?
-    var convertingItems: [StorageFileModel] = []
-    func removeConvertingTask(fromTaskUUID uuid: String, status: ConvertProgressDetail.ConversionTaskStatus) {
-        print("remove item \(uuid)")
-        convertingItems.removeAll(where: { c in
-            return uuid == c.taskUUID
-        })
+    func removeConvertingTask(fromTaskUUID uuid: String, status: WhiteConvertStatusV5) {
+        taskProgressPolling.cancelPollingTask(withTaskUUID: uuid)
+        
         let isConvertSuccess = status == .finished
         if let index = container.items.firstIndex(where: { $0.taskUUID == uuid }) {
             let item = container.items[index]
@@ -232,31 +248,6 @@ class CloudStorageViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    func startPollingConvertingTasks(fromItems items: [StorageFileModel]) {
-        convertingItems = items
-        pollingDisposable = Observable<Int>.interval(.milliseconds(5000), scheduler: ConcurrentDispatchQueueScheduler.init(queue: .global()))
-            .map { [weak self] _ -> [Observable<Void>] in
-                let convertingItems = self?.convertingItems ?? []
-                return convertingItems
-                    .map { ConversionTaskProgressRequest(uuid: $0.taskUUID, type: $0.taskType!, token: $0.taskToken, region: $0.region)}
-                    .map {
-                        ApiProvider.shared.request(fromApi: $0)
-                            .do(onNext: { [weak self] info in
-                                if info.status == .finished || info.status == .fail {
-                                    self?.removeConvertingTask(fromTaskUUID: info.uuid, status: info.status)
-                                }
-                            }).mapToVoid()
-                    }
-            }
-            .take(until: { $0.isEmpty })
-            .flatMapLatest { requests -> Observable<Void> in
-                return requests.reduce(Observable<Void>.just(())) { partialResult, i in
-                    return partialResult.flatMapLatest { i }
-                }
-            }
-            .subscribe()
     }
     
     func observe() {
@@ -477,6 +468,8 @@ class CloudStorageViewController: UIViewController {
         }
         return view
     }()
+    
+    lazy var taskProgressPolling = WhiteConverterV5()
 }
 
 extension CloudStorageViewController: UITableViewDelegate, UITableViewDataSource {

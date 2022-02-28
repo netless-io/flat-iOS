@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Whiteboard
 
 fileprivate struct ConvertConfig {
     static let staticConvertPathExtensions: [String] = ["pdf", "ppt", "doc", "docx"]
@@ -19,7 +20,7 @@ fileprivate struct ConvertConfig {
 }
 
 struct ConvertService {
-    static func convertingTaskTypeFor(url: URL) -> ConversionTaskType? {
+    static func convertingTaskTypeFor(url: URL) -> WhiteConvertTypeV5? {
         let ext = url.pathExtension.lowercased()
         if ConvertConfig.staticConvertPathExtensions.contains(ext) {
             return .static

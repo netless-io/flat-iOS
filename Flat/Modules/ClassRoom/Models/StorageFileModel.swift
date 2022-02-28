@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Whiteboard
 
 enum StorageCovertStep: String, Codable {
     case none = "None"
@@ -85,7 +86,7 @@ struct StorageFileModel: Codable, Equatable {
         String(format: "%.2fMB", Float(fileSize) / 1024 / 1024)
     }
     
-    var taskType: ConversionTaskType? {
+    var taskType: WhiteConvertTypeV5? {
         ConvertService.convertingTaskTypeFor(url: fileURL)
     }
     

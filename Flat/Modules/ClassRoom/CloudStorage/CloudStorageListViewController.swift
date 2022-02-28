@@ -42,6 +42,16 @@ class CloudStorageListViewController: UIViewController {
     var pollingDisposable: Disposable?
     var convertingItems: [StorageFileModel] = []
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        taskProgressPolling.startPolling()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        taskProgressPolling.pausePolling()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -103,11 +113,25 @@ class CloudStorageListViewController: UIViewController {
             $0.convertStep == .converting && $0.taskType != nil
         }
         guard !itemsShouldPolling.isEmpty else { return }
-        startPollingConvertingTasks(fromItems: itemsShouldPolling)
+        itemsShouldPolling.forEach {
+            self.taskProgressPolling.insertPollingTask(withTaskUUID: $0.taskUUID,
+                                                       token: $0.taskToken,
+                                                       region: .init(rawValue: $0.region.rawValue),
+                                                       taskType: $0.taskType!) { progress, info in
+                print("task \(info?.uuid ?? "") progress \(progress)")
+            } result: { [weak self] success, info, error in
+                if let error = error {
+                    self?.toast(error.localizedDescription)
+                    return
+                }
+                guard let info = info else { return }
+                self?.removeConvertingTask(fromTaskUUID: info.uuid, status: info.status)
+            }
+        }
         tableView.reloadData()
     }
     
-    func removeConvertingTask(fromTaskUUID uuid: String, status: ConvertProgressDetail.ConversionTaskStatus) {
+    func removeConvertingTask(fromTaskUUID uuid: String, status: WhiteConvertStatusV5) {
         print("remove item \(uuid)")
         convertingItems.removeAll(where: { c in
             return uuid == c.taskUUID
@@ -132,31 +156,6 @@ class CloudStorageListViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    func startPollingConvertingTasks(fromItems items: [StorageFileModel]) {
-        convertingItems = items
-        pollingDisposable = Observable<Int>.interval(.milliseconds(5000), scheduler: ConcurrentDispatchQueueScheduler.init(queue: .global()))
-            .map { [weak self] _ -> [Observable<Void>] in
-                let convertingItems = self?.convertingItems ?? []
-                return convertingItems
-                    .map { ConversionTaskProgressRequest(uuid: $0.taskUUID, type: $0.taskType!, token: $0.taskToken, region: $0.region)}
-                    .map {
-                        ApiProvider.shared.request(fromApi: $0)
-                            .do(onNext: { [weak self] info in
-                                if info.status == .finished || info.status == .fail {
-                                    self?.removeConvertingTask(fromTaskUUID: info.uuid, status: info.status)
-                                }
-                            }).mapToVoid()
-                    }
-            }
-            .take(until: { $0.isEmpty })
-            .flatMapLatest { requests -> Observable<Void> in
-                return requests.reduce(Observable<Void>.just(())) { partialResult, i in
-                    return partialResult.flatMapLatest { i }
-                }
-            }
-            .subscribe()
     }
     
     @objc func onRefreshControl() {
@@ -211,6 +210,8 @@ class CloudStorageListViewController: UIViewController {
         view.showsVerticalScrollIndicator = false
         return view
     }()
+    
+    lazy var taskProgressPolling = WhiteConverterV5()
 }
 
 extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -292,32 +293,36 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
                 return
             }
             fileSelectTask = item
-            let req = ConversionTaskProgressRequest(uuid: item.taskUUID,
-                                                    type: taskType,
-                                                    token: item.taskToken,
-                                                    region: item.region)
-            ApiProvider.shared.request(fromApi: req) { [weak self] result in
-                guard let self = self else { return }
-                self.fileSelectTask = nil
-                switch result {
-                case .success(let detail):
-                    switch detail.status {
-                    case .finished:
-                        let pages: [(URL, URL, CGSize)] = detail.progress.convertedFileList.map { item -> (URL, URL, CGSize) in
-                            return (item.conversionFileUrl, item.preview ?? item.conversionFileUrl, CGSize(width: item.width, height: item.height))
-                        }
-                        if item.fileName.hasSuffix("pptx") {
-                            self.fileContentSelectedHandler?(.pptx(pages: pages, title: item.fileName))
-                        } else {
-                            self.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
-                        }
-                    default:
-                        self.toast("file not ready")
+            WhiteConverterV5.checkProgress(withTaskUUID: item.taskUUID,
+                                           token: item.taskToken,
+                                           region: .init(rawValue: item.region.rawValue),
+                                           taskType: taskType) { [weak self] info, error in
+                self?.fileSelectTask = nil
+                if let error = error {
+                    self?.toast(error.localizedDescription)
+                    return
+                }
+                guard let info = info else { return }
+                switch info.status {
+                case .finished:
+                    let pages = info.progress?.convertedFileList.compactMap { item -> (URL, URL, CGSize)? in
+                        guard let url = URL(string: item.src)
+                        else { return nil }
+                        let preview = URL(string: item.previewURL) ?? url
+                        return (url, preview, CGSize(width: item.width, height: item.height))
                     }
-                case .failure(let error):
-                    self.toast(error.localizedDescription)
+                    if let pages = pages {
+                        if item.fileName.hasSuffix("pptx") {
+                            self?.fileContentSelectedHandler?(.pptx(pages: pages, title: item.fileName))
+                        } else {
+                            self?.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
+                        }
+                    }
+                default:
+                    self?.toast(NSLocalizedString("File not ready", comment: ""))
                 }
             }
+            return
         case .unknown:
             toast("file type not defined")
         }
