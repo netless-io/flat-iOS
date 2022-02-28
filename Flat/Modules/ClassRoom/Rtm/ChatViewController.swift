@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import RxCocoa
+import EmptyDataSet_Swift
 
 class ChatViewController: PopOverDismissDetectableViewController {
     let noticeCellIdentifier = "noticeCellIdentifier"
@@ -63,6 +64,11 @@ class ChatViewController: PopOverDismissDetectableViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.contentInset = .init(top: topView.bounds.height, left: 0, bottom: inputStackView.bounds.height, right: 0)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        tableView.reloadEmptyDataSet()
     }
     
     // MARK: - Private
@@ -246,6 +252,8 @@ class ChatViewController: PopOverDismissDetectableViewController {
         view.register(ChatNoticeTableViewCell.self, forCellReuseIdentifier: noticeCellIdentifier)
         view.delegate = self
         view.dataSource = self
+        view.emptyDataSetDelegate = self
+        view.emptyDataSetSource = self
         return view
     }()
 }
@@ -295,5 +303,24 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         case .notice:
             return 26.5 + ChatTableViewCell.bottomMargin
         }
+    }
+}
+
+// MARK: - EmptyData
+extension ChatViewController: EmptyDataSetDelegate, EmptyDataSetSource {
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        nil
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        UIImage(named: "message_empty")
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        true
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        0
     }
 }
