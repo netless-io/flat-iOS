@@ -10,6 +10,7 @@ import UIKit
 import Whiteboard
 import Kingfisher
 import RxSwift
+import EmptyDataSet_Swift
 
 class CloudStorageListViewController: UIViewController {
     enum CloudStorageFileContent {
@@ -50,6 +51,11 @@ class CloudStorageListViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         taskProgressPolling.pausePolling()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        tableView.reloadEmptyDataSet()
     }
     
     override func viewDidLoad() {
@@ -208,6 +214,8 @@ class CloudStorageListViewController: UIViewController {
         view.dataSource = self
         view.rowHeight = 68
         view.showsVerticalScrollIndicator = false
+        view.emptyDataSetSource = self
+        view.emptyDataSetDelegate = self
         return view
     }()
     
@@ -326,5 +334,27 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
         case .unknown:
             toast("file type not defined")
         }
+    }
+}
+
+// MARK: - EmptyData
+extension CloudStorageListViewController: EmptyDataSetDelegate, EmptyDataSetSource {
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        .init(string: NSLocalizedString("EmptyCloudTip", comment: ""), attributes: [
+            .foregroundColor: UIColor.subText,
+            .font: UIFont.systemFont(ofSize: 14)
+        ])
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        UIImage(named: "cloud_empty")
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        true
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        0
     }
 }
