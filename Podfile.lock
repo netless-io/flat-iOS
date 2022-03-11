@@ -1,52 +1,74 @@
 PODS:
   - AgoraFPA_iOS (1.0.0)
-  - AgoraRtcEngine_iOS (3.5.0.4)
-  - AgoraRtm_iOS (1.4.8)
+  - AgoraRtcEngine_iOS (3.6.2):
+    - AgoraRtcEngine_iOS/AINS (= 3.6.2)
+    - AgoraRtcEngine_iOS/AV1Dec (= 3.6.2)
+    - AgoraRtcEngine_iOS/ContentInspect (= 3.6.2)
+    - AgoraRtcEngine_iOS/FullAudioFormat (= 3.6.2)
+    - AgoraRtcEngine_iOS/JND (= 3.6.2)
+    - AgoraRtcEngine_iOS/ReplayKit (= 3.6.2)
+    - AgoraRtcEngine_iOS/ROIEnc (= 3.6.2)
+    - AgoraRtcEngine_iOS/RtcBasic (= 3.6.2)
+    - AgoraRtcEngine_iOS/SuperResolution (= 3.6.2)
+    - AgoraRtcEngine_iOS/VideoPreprocess (= 3.6.2)
+    - AgoraRtcEngine_iOS/VirtualBackground (= 3.6.2)
+  - AgoraRtcEngine_iOS/AINS (3.6.2)
+  - AgoraRtcEngine_iOS/AV1Dec (3.6.2)
+  - AgoraRtcEngine_iOS/ContentInspect (3.6.2)
+  - AgoraRtcEngine_iOS/FullAudioFormat (3.6.2)
+  - AgoraRtcEngine_iOS/JND (3.6.2)
+  - AgoraRtcEngine_iOS/ReplayKit (3.6.2)
+  - AgoraRtcEngine_iOS/ROIEnc (3.6.2)
+  - AgoraRtcEngine_iOS/RtcBasic (3.6.2)
+  - AgoraRtcEngine_iOS/SuperResolution (3.6.2)
+  - AgoraRtcEngine_iOS/VideoPreprocess (3.6.2)
+  - AgoraRtcEngine_iOS/VirtualBackground (3.6.2)
+  - AgoraRtm_iOS (1.4.10)
   - dsBridge (3.0.6)
   - EmptyDataSet-Swift (5.0.0)
-  - Fastboard (1.0.0-beta.11):
-    - Fastboard/core (= 1.0.0-beta.11)
-  - Fastboard/core (1.0.0-beta.11):
-    - Whiteboard (~> 2.16.4)
-  - Fastboard/fpa (1.0.0-beta.11):
+  - Fastboard (1.0.1):
+    - Fastboard/core (= 1.0.1)
+  - Fastboard/core (1.0.1):
+    - Whiteboard (~> 2.16.6)
+  - Fastboard/fpa (1.0.1):
     - Fastboard/core
     - Whiteboard/fpa
   - Hero (1.6.1)
-  - IQKeyboardManagerSwift (6.5.6)
-  - Kingfisher (7.1.0)
+  - IQKeyboardManagerSwift (6.5.9)
+  - Kingfisher (7.2.0)
   - MBProgressHUD (1.2.0)
   - "NSObject+Rx (5.2.2)":
     - RxSwift (~> 6.2)
-  - RxCocoa (6.2.0):
-    - RxRelay (= 6.2.0)
-    - RxSwift (= 6.2.0)
-  - RxRelay (6.2.0):
-    - RxSwift (= 6.2.0)
-  - RxSwift (6.2.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
   - SnapKit (5.0.1)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.16.4):
-    - Whiteboard/Converter (= 2.16.4)
-    - Whiteboard/NativeReplayer (= 2.16.4)
-    - Whiteboard/Replayer (= 2.16.4)
-    - Whiteboard/Room (= 2.16.4)
-  - Whiteboard/Base (2.16.4):
+  - Whiteboard (2.16.6):
+    - Whiteboard/Converter (= 2.16.6)
+    - Whiteboard/NativeReplayer (= 2.16.6)
+    - Whiteboard/Replayer (= 2.16.6)
+    - Whiteboard/Room (= 2.16.6)
+  - Whiteboard/Base (2.16.6):
     - dsBridge (~> 3.0.2)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.16.4):
+  - Whiteboard/Converter (2.16.6):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.16.4):
+  - Whiteboard/fpa (2.16.6):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.16.4):
+  - Whiteboard/Model (2.16.6):
     - YYModel (~> 1.0.4)
-  - Whiteboard/NativeReplayer (2.16.4):
+  - Whiteboard/NativeReplayer (2.16.6):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.16.4):
+  - Whiteboard/Object (2.16.6):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.16.4):
+  - Whiteboard/Replayer (2.16.6):
     - Whiteboard/Base
-  - Whiteboard/Room (2.16.4):
+  - Whiteboard/Room (2.16.6):
     - Whiteboard/Base
   - YYModel (1.0.4)
 
@@ -54,8 +76,8 @@ DEPENDENCIES:
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
   - EmptyDataSet-Swift
-  - Fastboard (from `https://github.com/netless-io/Fastboard-iOS.git`)
-  - Fastboard/fpa (from `https://github.com/netless-io/Fastboard-iOS.git`)
+  - Fastboard
+  - Fastboard/fpa
   - Hero
   - IQKeyboardManagerSwift
   - Kingfisher
@@ -73,6 +95,7 @@ SPEC REPOS:
     - AgoraRtm_iOS
     - dsBridge
     - EmptyDataSet-Swift
+    - Fastboard
     - Hero
     - IQKeyboardManagerSwift
     - Kingfisher
@@ -86,35 +109,26 @@ SPEC REPOS:
     - Whiteboard
     - YYModel
 
-EXTERNAL SOURCES:
-  Fastboard:
-    :git: https://github.com/netless-io/Fastboard-iOS.git
-
-CHECKOUT OPTIONS:
-  Fastboard:
-    :commit: 97da5decab285e63734fd9c2f55bd42e59e6f0da
-    :git: https://github.com/netless-io/Fastboard-iOS.git
-
 SPEC CHECKSUMS:
   AgoraFPA_iOS: 2202f574e6832567e368d5e69ad6da121a18ee4a
-  AgoraRtcEngine_iOS: a5c32145692b996e67bd646ddde268c77b04ad71
-  AgoraRtm_iOS: 382a54763803dad098d3b31a2608ccd62972e00b
+  AgoraRtcEngine_iOS: 5bf5d2bb6669a6f3606716a02f3fb3ac58708f25
+  AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
-  Fastboard: 4dcd27adb4cbf2605a364aa1cd9f774e8f7f04ed
+  Fastboard: eec4d3939884ecee3e98ca2b493d73f442efc1b0
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
-  IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
-  Kingfisher: cdabaf49be7ee7cc124f0f276b355edf61903cf8
+  IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
+  Kingfisher: 3ac0b75b155cabc0e544877d1a4deea29feece92
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
-  RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
-  RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
-  RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 4171412993d6c8cef3fd66377654e9ff960e0388
+  Whiteboard: b3e0310b09b3c34fe53e66e91a759bc7aa278d93
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 051d070fbf4a5fe3a10f0c28346f83e276c851d2
+PODFILE CHECKSUM: a6913bf153ec1a934540acc059be99eede0cadde
 
 COCOAPODS: 1.11.2
