@@ -556,7 +556,8 @@ extension HomeViewController: EmptyDataSetDelegate, EmptyDataSetSource {
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        UIImage(named: style == .exist ? "room_empty" : "history_empty")
+        let imageName = style == .exist ? "room_empty" : "history_empty"
+        return UIImage(named: imageName, in: nil, compatibleWith: traitCollection)
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {

@@ -116,7 +116,15 @@ class Theme {
         }
         applyNavigationBar()
         configProgressHUDAppearance()
-        applyFastboardTheme()
+        commitUpdate()
+    }
+    
+    fileprivate func commitUpdate() {
+        let window = UIApplication.shared.keyWindow
+        window?.subviews.forEach {
+            $0.removeFromSuperview()
+            window?.addSubview($0)
+        }
     }
     
     fileprivate func applyNavigationBar() {
@@ -133,25 +141,5 @@ class Theme {
                 .foregroundColor: UIColor.text
             ]
         }
-    }
-    
-    fileprivate func applyFastboardTheme() {
-//        let whiteboardAssets = WhiteboardAssets(whiteboardBackgroundColor: .whiteBG,
-//                                                containerColor: .clear)
-//        let controlAssets = ControlBarAssets(backgroundColor: .whiteBG,
-//                                             borderColor: .borderColor,
-//                                             effectStyle: nil)
-//        let panelItemAssets = PanelItemAssets(normalIconColor: .controlNormal,
-//                                              selectedIconColor: .controlSelected,
-//                                              highlightBgColor: .controlSelectedBG,
-//                                              subOpsIndicatorColor: .text,
-//                                              pageTextLabelColor: .text)
-//        let flatThemeAssets = ThemeAsset(whiteboardAssets: whiteboardAssets,
-//                                         controlBarAssets: controlAssets,
-//                                         panelItemAssets: panelItemAssets)
-//
-        // Update Appearance
-//        ControlBar.appearance().commonRadius = 10
-//        ThemeManager.shared.apply(flatThemeAssets)
     }
 }

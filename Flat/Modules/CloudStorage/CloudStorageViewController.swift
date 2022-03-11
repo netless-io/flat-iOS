@@ -613,7 +613,7 @@ extension CloudStorageViewController: EmptyDataSetDelegate, EmptyDataSetSource {
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        UIImage(named: "cloud_empty")
+        UIImage(named: "cloud_empty", in: nil, compatibleWith: traitCollection)
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
