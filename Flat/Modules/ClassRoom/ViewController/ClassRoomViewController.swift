@@ -206,14 +206,6 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
-    func destroyChatViewController() {
-        print("destroy chatVC")
-        chatVC?.dismiss(animated: false, completion: nil)
-        chatButton.isHidden = false
-        chatVC = nil
-        chatVCDisposeBag = RxSwift.DisposeBag()
-    }
-    
     func setupChatViewController() {
         print("setup chatVC")
         chatButton.isHidden = true
@@ -274,9 +266,7 @@ class ClassRoomViewController: UIViewController {
     
     // MARK: - Private
     func bindGeneral() {
-        let input = ClassRoomViewModel.Input(trigger: .just(()),
-                                             enterBackground: UIApplication.rx.didEnterBackground.asDriver(),
-                                             enterForeground: UIApplication.rx.willEnterForeground.asDriver())
+        let input = ClassRoomViewModel.Input(trigger: .just(()))
         let output = viewModel.transform(input)
         
         output.initRoom
@@ -295,13 +285,6 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.stopSubModulesAndLeaveUIHierarchy()
             })
             .disposed(by: rx.disposeBag)
-        
-        output.leaveRoomTemporary
-                .subscribe(on: MainScheduler.instance)
-                .subscribe(onNext: { [weak self] in
-                    self?.destroyChatViewController()
-                })
-                .disposed(by: rx.disposeBag)
                 
         output.memberLeft
             .subscribe()

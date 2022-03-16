@@ -16,13 +16,10 @@ let classStatusUpdateNotification = Notification.Name("classStatusUpdateNotifica
 class ClassRoomViewModel {
     struct Input {
         let trigger: Driver<Void>
-        let enterBackground: Driver<Void>
-        let enterForeground: Driver<Void>
     }
     
     struct Output {
         let initRoom: Observable<Void>
-        let leaveRoomTemporary: Observable<Void>
         let newCommand: Observable<RtmCommand>
         let memberLeft: Observable<String>
         let roomStopped: Driver<Void>
@@ -129,21 +126,12 @@ class ClassRoomViewModel {
     
     // MARK: - Public
     func transform(_ input: Input) -> Output {
-        let initRoom = Driver.of(input.trigger, input.enterForeground)
+        let initRoom = Driver.of(input.trigger)
             .merge()
             .asObservable()
             .flatMapLatest({ [unowned self] _ -> Observable<Void> in
-                print("start init room")
                 return self.initialRoomStatus().asObservable()
             })
-            .share(replay: 1, scope: .whileConnected)
-        
-        let leaveRoomTemporary = input.enterBackground
-            .asObservable()
-            .flatMap { [unowned self] _ -> Observable<Void> in
-                print("leave room temp")
-                return self.leaveRoomProcess().asObservable()
-            }
             .share(replay: 1, scope: .whileConnected)
         
         // Process member left
@@ -181,7 +169,6 @@ class ClassRoomViewModel {
             .asDriverOnErrorJustComplete()
         
         return .init(initRoom: initRoom,
-                     leaveRoomTemporary: leaveRoomTemporary,
                      newCommand: newCommand,
                      memberLeft: memberLeft,
                      roomStopped: roomStopped,
