@@ -21,45 +21,6 @@ class FastboardViewController: UIViewController {
         fastboard.disconnectRoom()
     }
     
-    func insertMedia(_ src: URL, title: String) {
-        let appParam = WhiteAppParam.createMediaPlayerApp(src.absoluteString, title: title)
-        fastboard.room?.addApp(appParam) { msg in }
-    }
-    
-    func insertImg(_ src: URL, imgSize: CGSize) {
-        let info = WhiteImageInformation(size: imgSize)
-        if let x = fastboard.room?.state.cameraState?.centerX,
-           let y = fastboard.room?.state.cameraState?.centerY {
-            info.centerX = CGFloat(x.floatValue)
-            info.centerY = CGFloat(y.floatValue)
-        }
-        fastboard.room?.insertImage(info, src: src.absoluteString)
-    }
-    
-    func insertPptx(_ pages: [(url: URL, preview: URL, size: CGSize)], title: String) {
-        let scenes = pages.enumerated().map { (index, item) -> WhiteScene in
-            let pptPage = WhitePptPage(src: item.url.absoluteString,
-                                       preview: item.preview.absoluteString,
-                                       size: item.size)
-            return WhiteScene(name: (index + 1).description,
-                                   ppt: pptPage)
-        }
-        let appParam = WhiteAppParam.createSlideApp("/" + UUID().uuidString, scenes: scenes, title: title)
-        fastboard.room?.addApp(appParam) { _ in }
-    }
-    
-    func insertMultiPages(_ pages: [(url: URL, preview: URL, size: CGSize)], title: String) {
-        let scenes = pages.enumerated().map { (index, item) -> WhiteScene in
-            let pptPage = WhitePptPage(src: item.url.absoluteString,
-                                       preview: item.preview.absoluteString,
-                                       size: item.size)
-            return WhiteScene(name: (index + 1).description,
-                                   ppt: pptPage)
-        }
-        let appParam = WhiteAppParam.createDocsViewerApp("/" + UUID().uuidString, scenes: scenes, title: title)
-        fastboard.room?.addApp(appParam) { _ in }
-    }
-    
     init(fastConfiguration: FastConfiguration) {
         self.fastboard = Fastboard(configuration: fastConfiguration)
         super.init(nibName: nil, bundle: nil)

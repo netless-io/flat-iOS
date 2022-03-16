@@ -615,13 +615,13 @@ class ClassRoomViewController: UIViewController {
             guard let self = self else { return }
             switch fileContent {
             case .image(url: let url, image: let image):
-                self.fastboardViewController.insertImg(url, imgSize: image.size)
+                self.fastboardViewController.fastboard.insertImg(url, imageSize: image.size)
             case .media(url: let url, title: let title):
-                self.fastboardViewController.insertMedia(url, title: title)
+                self.fastboardViewController.fastboard.insertMedia(url, title: title, completionHandler: nil)
             case .multiPages(pages: let pages, title: let title):
-                self.fastboardViewController.insertMultiPages(pages, title: title)
+                self.fastboardViewController.fastboard.insertStaticDocument(pages, title: title, completionHandler: nil)
             case .pptx(pages: let pages, title: let title):
-                self.fastboardViewController.insertPptx(pages, title: title)
+                self.fastboardViewController.fastboard.insertPptx(pages, title: title, completionHandler: nil)
             }
             self.dismiss(animated: true, completion: nil)
         }

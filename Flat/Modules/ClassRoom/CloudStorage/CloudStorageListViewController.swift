@@ -18,9 +18,9 @@ class CloudStorageListViewController: UIViewController {
         /// video or music
         case media(url: URL, title: String)
         /// pdf, doc or ppt
-        case multiPages(pages: [(url: URL, preview: URL, size: CGSize)], title: String)
+        case multiPages(pages: [WhitePptPage], title: String)
         /// pptx
-        case pptx(pages: [(url: URL, preview: URL, size: CGSize)], title: String)
+        case pptx(pages: [WhitePptPage], title: String)
     }
     
     var fileSelectTask: StorageFileModel? {
@@ -313,18 +313,11 @@ extension CloudStorageListViewController: UITableViewDelegate, UITableViewDataSo
                 guard let info = info else { return }
                 switch info.status {
                 case .finished:
-                    let pages = info.progress?.convertedFileList.compactMap { item -> (URL, URL, CGSize)? in
-                        guard let url = URL(string: item.src)
-                        else { return nil }
-                        let preview = URL(string: item.previewURL) ?? url
-                        return (url, preview, CGSize(width: item.width, height: item.height))
-                    }
-                    if let pages = pages {
-                        if item.fileName.hasSuffix("pptx") {
-                            self?.fileContentSelectedHandler?(.pptx(pages: pages, title: item.fileName))
-                        } else {
-                            self?.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
-                        }
+                    let pages = info.progress?.convertedFileList.compactMap { return $0 } ?? []
+                    if item.fileName.hasSuffix("pptx") {
+                        self?.fileContentSelectedHandler?(.pptx(pages: pages, title: item.fileName))
+                    } else {
+                        self?.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
                     }
                 default:
                     self?.toast(NSLocalizedString("File not ready", comment: ""))
