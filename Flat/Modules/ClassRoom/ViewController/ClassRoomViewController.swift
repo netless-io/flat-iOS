@@ -609,8 +609,8 @@ class ClassRoomViewController: UIViewController {
         popoverViewController(viewController: cloudStorageListViewController, fromSource: sender)
     }
     
-    lazy var cloudStorageListViewController: CloudStorageListViewController = {
-        let vc = CloudStorageListViewController()
+    lazy var cloudStorageListViewController: CloudStorageInClassViewController = {
+        let vc = CloudStorageInClassViewController()
         vc.fileContentSelectedHandler = { [weak self] fileContent in
             guard let self = self else { return }
             switch fileContent {
