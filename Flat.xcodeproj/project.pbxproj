@@ -666,7 +666,7 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
-		8A11CBE0271FEBB1001D0B1F /* Components */ = {
+		8A11CBE0271FEBB1001D0B1F /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
 				8AD2EF742775664C00087280 /* Share */,
@@ -675,7 +675,7 @@
 				8A7741C22734CF8E009FAADA /* Label */,
 				8AEA34F227279CB500EA4009 /* Popover */,
 			);
-			path = Components;
+			path = UIComponents;
 			sourceTree = "<group>";
 		};
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
@@ -1198,6 +1198,7 @@
 		8AD3CDF72716B524008BD904 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8A05C316275E03EF009BCA79 /* UIView */,
 				8ADD9E0027701CFB009A7050 /* UITraitCollection */,
 				8A05C320275E046D009BCA79 /* Array */,
 				8A05C31E275E0450009BCA79 /* UIScrollView */,
@@ -1208,7 +1209,6 @@
 				8A05C319275E0414009BCA79 /* String */,
 				8A05C318275E03FC009BCA79 /* UIImage */,
 				8A05C317275E03F6009BCA79 /* UIColor */,
-				8A05C316275E03EF009BCA79 /* UIView */,
 				8A05C321275E05BC009BCA79 /* MethodExchange.swift */,
 				8A20A3A52796918100024040 /* ImportExtensions.swift */,
 			);
@@ -1240,7 +1240,7 @@
 				8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */,
 				8A05C2B02758BBBF009BCA79 /* FlatStage.entitlements */,
 				8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */,
-				8A11CBE0271FEBB1001D0B1F /* Components */,
+				8A11CBE0271FEBB1001D0B1F /* UIComponents */,
 				8A9ACBF9271D602600E7E7CE /* Views */,
 				8A9ACBF4271D50F000E7E7CE /* EnvConfigs */,
 				8A97EBBB271D180600965185 /* Modules */,
