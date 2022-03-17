@@ -18,14 +18,8 @@ class RoomTableViewCell: UITableViewCell {
     @IBOutlet weak var mainTextView: UIView!
     @IBOutlet weak var borderView: UIView!
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        setSelected(isSelected, animated: false)
-        selectedBackgroundView = UIImageView(image: UIImage.imageWith(color: .cellSelectedBG))
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-        selectedBackgroundView = UIImageView(image: UIImage.imageWith(color: .cellSelectedBG))
         separatorLineHeightConstraint.constant = 1 / UIScreen.main.scale
         contentView.backgroundColor = .whiteBG
         borderView.backgroundColor = .borderColor
