@@ -124,7 +124,10 @@ class LoginViewController: UIViewController {
         self.wechatLogin?.startLogin(withAuthStore: AuthStore.shared,
                                  launchCoordinator: launchCoordinator) { [weak self] result in
             switch result {
-            case .success:
+            case .success(let user):
+                #if DEBUG
+                print("wechat login user: \(user)")
+                #endif
                 return
             case .failure(let error):
                 self?.showAlertWith(message: error.localizedDescription.isEmpty ? "Login fail" : error.localizedDescription)

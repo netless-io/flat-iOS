@@ -26,7 +26,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         textStack.distribution = .fillEqually
         textStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
-        let stackView = UIStackView(arrangedSubviews: [iconImage, textStack, addImage])
+        let stackView = UIStackView(arrangedSubviews: [iconImage, textStack])
         stackView.spacing = 8
         stackView.axis = .horizontal
         stackView.distribution = .fill
@@ -35,7 +35,6 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.edges.equalToSuperview().inset(12)
         }
         iconImage.snp.makeConstraints { $0.width.equalTo(32) }
-        addImage.snp.makeConstraints { $0.width.equalTo(24) }
         
         contentView.addSubview(convertingActivityView)
         convertingActivityView.snp.makeConstraints { make in
@@ -103,12 +102,6 @@ class CloudStorageTableViewCell: UITableViewCell {
     
     lazy var iconImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    lazy var addImage: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "storage_add"))
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()

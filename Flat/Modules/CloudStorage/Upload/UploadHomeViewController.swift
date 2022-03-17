@@ -13,6 +13,12 @@ import PhotosUI
 #endif
 
 class UploadHomeViewController: UIViewController {
+    enum PresentStyle {
+        case main
+        case popOver(parent: UIViewController, source: UIView)
+    }
+    
+    var presentStyle: PresentStyle = .main
     let itemHeight: CGFloat = 114
     var exportingTask: AVAssetExportSession?
     
@@ -37,19 +43,20 @@ class UploadHomeViewController: UIViewController {
                 config.filter = .images
                 let vc = PHPickerViewController.init(configuration: config)
                 vc.delegate = self
-                present(vc, animated: true, completion: nil)
+                presentPicker(vc)
                 return
             case .video:
                 var config = PHPickerConfiguration()
                 config.filter = .videos
                 let vc = PHPickerViewController.init(configuration: config)
                 vc.delegate = self
-                present(vc, animated: true, completion: nil)
+                presentPicker(vc)
                 return
             case .audio, .doc:
                 let vc = UIDocumentPickerViewController(forOpeningContentTypes: type.utTypes)
                 vc.delegate = self
-                mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
+                presentPicker(vc)
+                return
             }
         } else {
             switch type {
@@ -58,17 +65,40 @@ class UploadHomeViewController: UIViewController {
                 vc.mediaTypes = type.allowedUTStrings
                 vc.videoExportPreset = AVAssetExportPresetPassthrough
                 vc.delegate = self
-                mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
+                presentPicker(vc)
             case .audio, .doc:
                 let vc = UIDocumentPickerViewController(documentTypes: type.allowedUTStrings, in: .open)
                 vc.delegate = self
-                mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
+                presentPicker(vc)
+            }
+        }
+    }
+    
+    func presentPicker(_ picker: UIViewController) {
+        switch presentStyle {
+        case .main:
+            mainContainer?.concreteViewController.present(picker, animated: true, completion: nil)
+        case .popOver(let parent, let source):
+            dismiss(animated: false) {
+                parent.popoverViewController(viewController: picker, fromSource: source)
+            }
+        }
+    }
+    
+    func presentTask() {
+        switch presentStyle {
+        case .main:
+            mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
+        case .popOver(let parent, let source):
+            dismiss(animated: false) {
+                parent.popoverViewController(viewController: self.tasksViewController,
+                                             fromSource: source)
             }
         }
     }
     
     @objc func onClickUploadList() {
-        mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
+        presentTask()
     }
     
     func uploadFile(url: URL, region: Region, shouldAccessingSecurityScopedResource: Bool) {
@@ -93,7 +123,7 @@ class UploadHomeViewController: UIViewController {
             })
             result = (newTask, result.tracker)
             tasksViewController.appendTask(task: result.task, fileURL: url, subject: result.tracker)
-            mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
+            presentTask()
         }
         catch {
             print(error)
@@ -139,6 +169,8 @@ class UploadHomeViewController: UIViewController {
         button.setImage(img, for: .normal)
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.titleLabel?.minimumScaleFactor = 0.5
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.setTitleColor(.text, for: .normal)
         button.verticalCenterImageAndTitleWith(8)
         button.tag = tag

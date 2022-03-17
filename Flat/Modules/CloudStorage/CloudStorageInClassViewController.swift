@@ -35,8 +35,14 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     
     var fileContentSelectedHandler: ((CloudStorageFileContent)->Void)?
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        addButton.setImage(UIImage(named: "storage_add"), for: .normal)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         mainStackView.insertArrangedSubview(topView, at: 0)
         topView.snp.makeConstraints { make in
             make.height.equalTo(34)
@@ -53,12 +59,24 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         }
     }
     
+    @objc func onClickAdd() {
+        guard
+            let parent = presentingViewController,
+            let source = popoverPresentationController?.sourceView
+        else { return }
+        
+        uploadHomeViewController.presentStyle = .popOver(parent: parent, source: source)
+        let navi = UINavigationController(rootViewController: uploadHomeViewController)
+        parent.dismiss(animated: false) {
+            parent.popoverViewController(viewController: navi, fromSource: source)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = super.tableView(tableView, cellForRowAt: indexPath) as?
                 CloudStorageTableViewCell
         else { fatalError() }
         
-        cell.addImage.isHidden = false
         let item = container.items[indexPath.row]
         let isProcessing = item == fileSelectTask
         if isProcessing {
@@ -155,6 +173,24 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
             make.left.equalToSuperview().offset(8)
             make.centerY.equalToSuperview()
         }
+        view.addSubview(addButton)
+        addButton.snp.makeConstraints { make in
+            make.right.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(66)
+        }
         return view
+    }()
+    
+    lazy var addButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "storage_add"), for: .normal)
+        button.addTarget(self, action: #selector(onClickAdd), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var uploadHomeViewController: UploadHomeViewController = {
+        let vc = UploadHomeViewController()
+        return vc
     }()
 }

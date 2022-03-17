@@ -402,7 +402,6 @@ class CloudStorageDisplayViewController: UIViewController,
         formatter.timeStyle = .short
         let dateStr = formatter.string(from: item.createAt)
         cell.sizeAndTimeLabel.text = dateStr + "   " + item.fileSizeDescription
-        cell.addImage.isHidden = true
         let selBgView = UIView()
         selBgView.backgroundColor = .whiteBG
         cell.selectedBackgroundView = selBgView
