@@ -9,6 +9,7 @@
 
 import UIKit
 import SafariServices
+import AcknowList
 
 class AboutUsViewController: UIViewController {
     override func viewDidLoad() {
@@ -31,6 +32,13 @@ class AboutUsViewController: UIViewController {
     @IBAction func onClickServiceAgreement(_ sender: Any) {
         let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/service.html")!)
         present(controller, animated: true, completion: nil)
+    }
+    
+    @IBAction func onClickAcknowledgement(_ sender: Any) {
+        guard let path = Bundle.main.path(forResource: "Pods-Flat-acknowledgements", ofType: "plist")
+        else { return }
+        let vc = AcknowListViewController(plistPath: path)
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
     
     @IBOutlet weak var flatLabel: UILabel!

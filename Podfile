@@ -2,6 +2,7 @@ platform :ios, '12.0'
 target 'Flat' do
   use_frameworks!
   
+  pod 'AcknowList'
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'NSObject+Rx'

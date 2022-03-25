@@ -1,4 +1,5 @@
 PODS:
+  - AcknowList (2.0.3)
   - AgoraFPA_iOS (1.0.0)
   - AgoraRtcEngine_iOS (3.6.2):
     - AgoraRtcEngine_iOS/AINS (= 3.6.2)
@@ -73,6 +74,7 @@ PODS:
   - YYModel (1.0.4)
 
 DEPENDENCIES:
+  - AcknowList
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
   - EmptyDataSet-Swift
@@ -90,6 +92,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AcknowList
     - AgoraFPA_iOS
     - AgoraRtcEngine_iOS
     - AgoraRtm_iOS
@@ -110,6 +113,7 @@ SPEC REPOS:
     - YYModel
 
 SPEC CHECKSUMS:
+  AcknowList: 6d4faca4c3e0173377fe5649e086d627cd60b003
   AgoraFPA_iOS: 2202f574e6832567e368d5e69ad6da121a18ee4a
   AgoraRtcEngine_iOS: 5bf5d2bb6669a6f3606716a02f3fb3ac58708f25
   AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
@@ -129,6 +133,6 @@ SPEC CHECKSUMS:
   Whiteboard: 2856a9441ae192ba8091167d4a219916e246588c
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: a6913bf153ec1a934540acc059be99eede0cadde
+PODFILE CHECKSUM: 8aa53caf3bbc77b3aca8f151342c3a6b6c23191a
 
 COCOAPODS: 1.11.2
