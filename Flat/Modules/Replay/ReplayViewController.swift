@@ -94,7 +94,7 @@ class ReplayViewController: UIViewController {
     lazy var combinePlayer = WhiteCombinePlayer(mediaUrl: info.recordInfo.first!.videoURL)
     
     lazy var sdk: WhiteSDK = {
-        let sdkConfig = FastConfiguration(appIdentifier: Env().netlessAppId,
+        let sdkConfig = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
                           roomUUID: "",
                           roomToken: "",
                           region: .CN,

@@ -13,18 +13,18 @@ import RxSwift
 import RxRelay
 
 class FastboardViewController: UIViewController {
-    let fastboard: Fastboard
+    let fastRoom: FastRoom
     let isRoomJoined: BehaviorRelay<Bool> = .init(value: false)
     
     // MARK: Public
     func leave() {
-        fastboard.disconnectRoom()
+        fastRoom.disconnectRoom()
     }
     
-    init(fastConfiguration: FastConfiguration) {
-        self.fastboard = Fastboard(configuration: fastConfiguration)
+    init(fastRoomConfiguration: FastRoomConfiguration) {
+        self.fastRoom = Fastboard.createFastRoom(withFastRoomConfig: fastRoomConfiguration)
         super.init(nibName: nil, bundle: nil)
-        self.fastboard.delegate = self
+        self.fastRoom.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -46,7 +46,7 @@ class FastboardViewController: UIViewController {
     // MARK: - Private
     func joinRoom() {
         showActivityIndicator()
-        fastboard.joinRoom { [weak self] result in
+        fastRoom.joinRoom { [weak self] result in
             self?.stopActivityIndicator()
             switch result {
             case .success:
@@ -58,8 +58,8 @@ class FastboardViewController: UIViewController {
     }
     
     func setupViews() {
-        view.addSubview(fastboard.view)
-        fastboard.view.snp.makeConstraints { $0.edges.equalToSuperview() }
+        view.addSubview(fastRoom.view)
+        fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
     func hideErrorView() {
@@ -70,7 +70,7 @@ class FastboardViewController: UIViewController {
         if errorView.superview == nil {
             view.addSubview(errorView)
             errorView.snp.makeConstraints { make in
-                make.edges.equalTo(fastboard.view.whiteboardView)
+                make.edges.equalTo(fastRoom.view.whiteboardView)
             }
         }
         view.bringSubviewToFront(errorView)
@@ -123,16 +123,17 @@ class FastboardViewController: UIViewController {
     }()
 }
 
-extension FastboardViewController: FastboardDelegate {
-    func fastboardDidJoinRoomSuccess(_ fastboard: Fastboard, room: WhiteRoom) {
+extension FastboardViewController: FastRoomDelegate {
+    func fastboardDidJoinRoomSuccess(_ fastboard: FastRoom, room: WhiteRoom) {
+        return
     }
     
-    func fastboardUserKickedOut(_ fastboard: Fastboard, reason: String) {
+    func fastboardUserKickedOut(_ fastboard: FastRoom, reason: String) {
         // For this error is caused by server closing, it should be noticed by teacher.
         // showErrorView(error: reason)
     }
     
-    func fastboardPhaseDidUpdate(_ fastboard: Fastboard, phase: FastRoomPhase) {
+    func fastboardPhaseDidUpdate(_ fastboard: FastRoom, phase: FastRoomPhase) {
         switch phase {
         case .connecting:
             isRoomJoined.accept(false)
@@ -149,17 +150,17 @@ extension FastboardViewController: FastboardDelegate {
         }
     }
     
-    func fastboardDidOccurError(_ fastboard: Fastboard, error: FastError) {
+    func fastboardDidOccurError(_ fastboard: FastRoom, error: FastRoomError) {
         showErrorView(error: error)
     }
-    
-    func fastboardDidSetupOverlay(_ fastboard: Fastboard, overlay: FastboardOverlay?) {
-        if let overlay = overlay as? RegularFastboardOverlay {
+
+    func fastboardDidSetupOverlay(_ fastboard: FastRoom, overlay: FastRoomOverlay?) {
+        if let overlay = overlay as? RegularFastRoomOverlay {
             overlay.deleteSelectionPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
             overlay.operationPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
             overlay.undoRedoPanel.view?.borderMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             overlay.scenePanel.view?.borderMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            
+
             overlay.invalidAllLayout()
             overlay.operationPanel.view?.snp.makeConstraints { make in
                 make.centerY.equalTo(fastboard.view.whiteboardView)
@@ -178,35 +179,35 @@ extension FastboardViewController: FastboardDelegate {
                 make.bottom.equalTo(fastboard.view.whiteboardView)
             }
         }
-        if let overlay = overlay as? CompactFastboardOverlay {
+        if let overlay = overlay as? CompactFastRoomOverlay {
             overlay.operationPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
             overlay.colorAndStrokePanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
             overlay.deleteSelectionPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
             overlay.undoRedoPanel.view?.direction = .vertical
             overlay.undoRedoPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-            
+
             overlay.setPanelItemHide(item: .operationType(.previousPage)!, hide: true)
             overlay.setPanelItemHide(item: .operationType(.pageIndicator)!, hide: true)
             overlay.setPanelItemHide(item: .operationType(.nextPage)!, hide: true)
             overlay.setPanelItemHide(item: .operationType(.newPage)!, hide: true)
-            
+
             overlay.invalidAllLayout()
-            
+
             overlay.operationPanel.view?.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.left.equalToSuperview()
             }
-            
+
             overlay.colorAndStrokePanel.view?.snp.makeConstraints { make in
                 make.bottom.equalTo(overlay.operationPanel.view!.snp.top).offset(-8)
                 make.left.equalToSuperview()
             }
-            
+
             overlay.deleteSelectionPanel.view?.snp.makeConstraints { make in
                 make.bottom.equalTo(overlay.operationPanel.view!.snp.top).offset(-8)
                 make.left.equalToSuperview()
             }
-            
+
             overlay.undoRedoPanel.view?.snp.makeConstraints { make in
                 make.left.equalToSuperview()
                 make.top.equalTo(overlay.operationPanel.view!.snp.bottom).offset(8)

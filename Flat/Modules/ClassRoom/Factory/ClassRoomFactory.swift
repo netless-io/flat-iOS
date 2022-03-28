@@ -22,28 +22,28 @@ struct ClassRoomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
                                             detailInfo: RoomInfo,
                                             deviceStatus: DeviceStatus) -> ClassRoomViewController {
-        let fastConfiguration: FastConfiguration
+        let fastRoomConfiguration: FastRoomConfiguration
         if #available(iOS 13.0, *) {
-            fastConfiguration = FastConfiguration(appIdentifier: Env().netlessAppId,
-                                                      roomUUID: playInfo.whiteboardRoomUUID,
-                                                      roomToken: playInfo.whiteboardRoomToken,
-                                                      region: .CN,
-                                                      userUID: AuthStore.shared.user?.userUUID ?? "",
-                                                      useFPA: userUseFPA)
+            fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
+                                                          roomUUID: playInfo.whiteboardRoomUUID,
+                                                          roomToken: playInfo.whiteboardRoomToken,
+                                                          region: .CN,
+                                                          userUID: AuthStore.shared.user?.userUUID ?? "",
+                                                          useFPA: userUseFPA)
         } else {
-            fastConfiguration = FastConfiguration(appIdentifier: Env().netlessAppId,
+            fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
                                                       roomUUID: playInfo.whiteboardRoomUUID,
                                                       roomToken: playInfo.whiteboardRoomToken,
                                                       region: .CN,
                                                       userUID: AuthStore.shared.user?.userUUID ?? "")
         }
-        fastConfiguration.whiteSdkConfiguration.userCursor = true
+        fastRoomConfiguration.whiteSdkConfiguration.userCursor = true
         let userName = AuthStore.shared.user?.name ?? ""
         let payload: [String: String] = ["cursorName": userName]
-        fastConfiguration.whiteRoomConfig.userPayload = payload
-        fastConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
-        FastboardManager.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
-        let fastboardViewController = FastboardViewController(fastConfiguration: fastConfiguration)
+        fastRoomConfiguration.whiteRoomConfig.userPayload = payload
+        fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
+        Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
+        let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
         
         // Config init state
         let initUser: RoomUser = .init(rtmUUID: playInfo.rtmUID,

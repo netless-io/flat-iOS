@@ -393,8 +393,8 @@ class ClassRoomViewController: UIViewController {
                 return self.viewModel.isWhiteboardEnable
             }
             .drive(with: self, onNext: { weakSelf, enable in
-                weakSelf.fastboardViewController.fastboard.setAllPanel(hide: !enable)
-                weakSelf.fastboardViewController.fastboard.updateWritable(enable, completion: nil)
+                weakSelf.fastboardViewController.fastRoom.setAllPanel(hide: !enable)
+                weakSelf.fastboardViewController.fastRoom.updateWritable(enable, completion: nil)
                 weakSelf.rightToolBar.forceButtonHide(weakSelf.cloudStorageButton, hide: !enable)
             })
             .disposed(by: rx.disposeBag)
@@ -574,14 +574,14 @@ class ClassRoomViewController: UIViewController {
     }
     
     // MARK: - Lazy
-    lazy var settingButton: PanelItemButton = {
-        let button = PanelItemButton(type: .custom)
+    lazy var settingButton: FastRoomPanelItemButton = {
+        let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "classroom_setting")!
         return button
     }()
     
-    lazy var moreButton: PanelItemButton = {
-        let button = PanelItemButton(type: .custom)
+    lazy var moreButton: FastRoomPanelItemButton = {
+        let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "classroom_more")!
         return button
     }()
@@ -591,15 +591,15 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
-    lazy var chatButton: PanelItemButton = {
-        let button = PanelItemButton(type: .custom)
+    lazy var chatButton: FastRoomPanelItemButton = {
+        let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "chat")!
         button.setupBadgeView(rightInset: 5, topInset: 5)
         return button
     }()
     
-    lazy var usersButton: PanelItemButton = {
-        let button = PanelItemButton(type: .custom)
+    lazy var usersButton: FastRoomPanelItemButton = {
+        let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "users")!
         button.setupBadgeView(rightInset: 5, topInset: 5)
         return button
@@ -615,45 +615,45 @@ class ClassRoomViewController: UIViewController {
             guard let self = self else { return }
             switch fileContent {
             case .image(url: let url, image: let image):
-                self.fastboardViewController.fastboard.insertImg(url, imageSize: image.size)
+                self.fastboardViewController.fastRoom.insertImg(url, imageSize: image.size)
             case .media(url: let url, title: let title):
-                self.fastboardViewController.fastboard.insertMedia(url, title: title, completionHandler: nil)
+                self.fastboardViewController.fastRoom.insertMedia(url, title: title, completionHandler: nil)
             case .multiPages(pages: let pages, title: let title):
-                self.fastboardViewController.fastboard.insertStaticDocument(pages, title: title, completionHandler: nil)
+                self.fastboardViewController.fastRoom.insertStaticDocument(pages, title: title, completionHandler: nil)
             case .pptx(pages: let pages, title: let title):
-                self.fastboardViewController.fastboard.insertPptx(pages, title: title, completionHandler: nil)
+                self.fastboardViewController.fastRoom.insertPptx(pages, title: title, completionHandler: nil)
             }
             self.dismiss(animated: true, completion: nil)
         }
         return vc
     }()
      
-    lazy var cloudStorageButton: PanelItemButton = {
-        let button = PanelItemButton(type: .custom)
+    lazy var cloudStorageButton: FastRoomPanelItemButton = {
+        let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "classroom_cloud")!
         button.addTarget(self, action: #selector(onClickStorage(_:)), for: .touchUpInside)
         return button
     }()
     
-    lazy var inviteButton: PanelItemButton = {
-        let button = PanelItemButton(type: .custom)
+    lazy var inviteButton: FastRoomPanelItemButton = {
+        let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "invite")!
         return button
     }()
 
     
-    lazy var rightToolBar: ControlBar = {
+    lazy var rightToolBar: FastRoomControlBar = {
         if traitCollection.hasCompact {
-            let bar = ControlBar(direction: .vertical,
-                                 borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                 views: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton])
+            let bar = FastRoomControlBar(direction: .vertical,
+                                         borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
+                                         views: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton])
             bar.forceButtonHide(cloudStorageButton, hide: true)
             bar.narrowStyle = .narrowMoreThan(count: 1)
             return bar
         } else {
-            let bar = ControlBar(direction: .vertical,
-                                 borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                 views: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton, moreButton])
+            let bar = FastRoomControlBar(direction: .vertical,
+                                         borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
+                                         views: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton, moreButton])
             bar.forceButtonHide(cloudStorageButton, hide: true)
             bar.forceButtonHide(moreButton, hide: !viewModel.isTeacher)
             return bar

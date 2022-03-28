@@ -27,11 +27,11 @@ PODS:
   - AgoraRtm_iOS (1.4.10)
   - dsBridge (3.0.6)
   - EmptyDataSet-Swift (5.0.0)
-  - Fastboard (1.0.1):
-    - Fastboard/core (= 1.0.1)
-  - Fastboard/core (1.0.1):
-    - Whiteboard (~> 2.16.6)
-  - Fastboard/fpa (1.0.1):
+  - Fastboard (1.0.3):
+    - Fastboard/core (= 1.0.3)
+  - Fastboard/core (1.0.3):
+    - Whiteboard (~> 2.16.7)
+  - Fastboard/fpa (1.0.3):
     - Fastboard/core
     - Whiteboard/fpa
   - Hero (1.6.1)
@@ -48,28 +48,28 @@ PODS:
   - RxSwift (6.5.0)
   - SnapKit (5.0.1)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.16.7):
-    - Whiteboard/Converter (= 2.16.7)
-    - Whiteboard/NativeReplayer (= 2.16.7)
-    - Whiteboard/Replayer (= 2.16.7)
-    - Whiteboard/Room (= 2.16.7)
-  - Whiteboard/Base (2.16.7):
+  - Whiteboard (2.16.11):
+    - Whiteboard/Converter (= 2.16.11)
+    - Whiteboard/NativeReplayer (= 2.16.11)
+    - Whiteboard/Replayer (= 2.16.11)
+    - Whiteboard/Room (= 2.16.11)
+  - Whiteboard/Base (2.16.11):
     - dsBridge (~> 3.0.2)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.16.7):
+  - Whiteboard/Converter (2.16.11):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.16.7):
+  - Whiteboard/fpa (2.16.11):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.16.7):
+  - Whiteboard/Model (2.16.11):
     - YYModel (~> 1.0.4)
-  - Whiteboard/NativeReplayer (2.16.7):
+  - Whiteboard/NativeReplayer (2.16.11):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.16.7):
+  - Whiteboard/Object (2.16.11):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.16.7):
+  - Whiteboard/Replayer (2.16.11):
     - Whiteboard/Base
-  - Whiteboard/Room (2.16.7):
+  - Whiteboard/Room (2.16.11):
     - Whiteboard/Base
   - YYModel (1.0.4)
 
@@ -119,7 +119,7 @@ SPEC CHECKSUMS:
   AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
-  Fastboard: eec4d3939884ecee3e98ca2b493d73f442efc1b0
+  Fastboard: 30fee2b928b932e76e8982319a7085f7fe6ed019
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
   Kingfisher: 3ac0b75b155cabc0e544877d1a4deea29feece92
@@ -130,7 +130,7 @@ SPEC CHECKSUMS:
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 2856a9441ae192ba8091167d4a219916e246588c
+  Whiteboard: 5fa01dba39a19564f61061462d36fae350942ebb
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
 PODFILE CHECKSUM: 8aa53caf3bbc77b3aca8f151342c3a6b6c23191a
