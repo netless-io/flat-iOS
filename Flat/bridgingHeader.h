@@ -13,5 +13,7 @@
 
 #endif /* bridgingHeader_h */
 
+#if __has_include("WXApi.h")
 #import "WXApi.h"
-//#import <WeChatOpenSDK/WechatAuthSDK.h>
+#else
+#endif

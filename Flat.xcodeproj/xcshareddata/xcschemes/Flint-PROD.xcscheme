@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8AD7C6B827157EA7001C4AAD"
-               BuildableName = ".app"
+               BuildableName = "Flat.app"
                BlueprintName = "Flat"
                ReferencedContainer = "container:Flat.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8AD7C6B827157EA7001C4AAD"
-            BuildableName = ".app"
+            BuildableName = "Flat.app"
             BlueprintName = "Flat"
             ReferencedContainer = "container:Flat.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8AD7C6B827157EA7001C4AAD"
-            BuildableName = ".app"
+            BuildableName = "Flat.app"
             BlueprintName = "Flat"
             ReferencedContainer = "container:Flat.xcodeproj">
          </BuildableReference>
