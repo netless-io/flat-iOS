@@ -7,9 +7,6 @@
 		<string>Default</string>
 	</array>
 	<key>com.apple.developer.associated-domains</key>
-	<array>
-		<string>applinks:flat-api-dev.whiteboard.agora.io</string>
-		<string>applinks:flat-web-dev.whiteboard.agora.io</string>
-	</array>
+	<array/>
 </dict>
 </plist>

@@ -48,28 +48,28 @@ PODS:
   - RxSwift (6.5.0)
   - SnapKit (5.0.1)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.16.11):
-    - Whiteboard/Converter (= 2.16.11)
-    - Whiteboard/NativeReplayer (= 2.16.11)
-    - Whiteboard/Replayer (= 2.16.11)
-    - Whiteboard/Room (= 2.16.11)
-  - Whiteboard/Base (2.16.11):
+  - Whiteboard (2.16.13):
+    - Whiteboard/Converter (= 2.16.13)
+    - Whiteboard/NativeReplayer (= 2.16.13)
+    - Whiteboard/Replayer (= 2.16.13)
+    - Whiteboard/Room (= 2.16.13)
+  - Whiteboard/Base (2.16.13):
     - dsBridge (~> 3.0.2)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.16.11):
+  - Whiteboard/Converter (2.16.13):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.16.11):
+  - Whiteboard/fpa (2.16.13):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.16.11):
+  - Whiteboard/Model (2.16.13):
     - YYModel (~> 1.0.4)
-  - Whiteboard/NativeReplayer (2.16.11):
+  - Whiteboard/NativeReplayer (2.16.13):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.16.11):
+  - Whiteboard/Object (2.16.13):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.16.11):
+  - Whiteboard/Replayer (2.16.13):
     - Whiteboard/Base
-  - Whiteboard/Room (2.16.11):
+  - Whiteboard/Room (2.16.13):
     - Whiteboard/Base
   - YYModel (1.0.4)
 
@@ -130,9 +130,9 @@ SPEC CHECKSUMS:
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 5fa01dba39a19564f61061462d36fae350942ebb
+  Whiteboard: a94f5c0c1a80cc10b9115dd6d423ea24e823a0c8
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 8aa53caf3bbc77b3aca8f151342c3a6b6c23191a
+PODFILE CHECKSUM: 2488568bf1a9e6cebbee1e02bb62d6165f0657fa
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
