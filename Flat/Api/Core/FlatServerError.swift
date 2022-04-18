@@ -17,6 +17,8 @@ enum FlatApiError: Int, LocalizedError {
     case UnsupportedPlatform
     case JWTSignFailed
     
+    case PhoneRegistered = 110002
+    
     case RoomNotFound = 200000
     case RoomIsEnded
     case RoomIsRunning

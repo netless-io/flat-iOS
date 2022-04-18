@@ -282,6 +282,9 @@
 "PhoneNumber" = "Phone";
 
 
+"PhoneRegistered" = "The phone has already been tied";
+
+
 "Please agree to the Terms of Service first" = "Please agree to the Terms of Service first";
 
 
