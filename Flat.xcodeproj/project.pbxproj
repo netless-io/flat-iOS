@@ -96,6 +96,7 @@
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
 		8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */; };
+		8A6E89E12807B48D00908771 /* FlatGeneralCrossButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E89E02807B48D00908771 /* FlatGeneralCrossButton.swift */; };
 		8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */; };
 		8A716F3627B9FFF800DB408F /* LoginViewController+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */; };
 		8A7741B9273287C2009FAADA /* RtcCellPopMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741B8273287C2009FAADA /* RtcCellPopMenuView.swift */; };
@@ -125,6 +126,7 @@
 		8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507EC27E178790072AF49 /* CloudStorageDisplayViewController.swift */; };
 		8A8507EF27E180A00072AF49 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */; };
 		8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */; };
+		8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */; };
 		8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBAE2719983700965185 /* CreateRoomRequest.swift */; };
 		8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB02719993C00965185 /* JoinRoomInfo.swift */; };
 		8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB22719999000965185 /* JoinRoomRequest.swift */; };
@@ -337,6 +339,7 @@
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
 		8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcPreviewViewController.swift; sourceTree = "<group>"; };
+		8A6E89E02807B48D00908771 /* FlatGeneralCrossButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralCrossButton.swift; sourceTree = "<group>"; };
 		8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverPresentationStyleAdaptor.swift; sourceTree = "<group>"; };
 		8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Debug.swift"; sourceTree = "<group>"; };
 		8A7741B8273287C2009FAADA /* RtcCellPopMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcCellPopMenuView.swift; sourceTree = "<group>"; };
@@ -365,6 +368,7 @@
 		8A8507EC27E178790072AF49 /* CloudStorageDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageDisplayViewController.swift; sourceTree = "<group>"; };
 		8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
 		8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageInClassViewController.swift; sourceTree = "<group>"; };
+		8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSAuthView.swift; sourceTree = "<group>"; };
 		8A97EBAE2719983700965185 /* CreateRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomRequest.swift; sourceTree = "<group>"; };
 		8A97EBB02719993C00965185 /* JoinRoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInfo.swift; sourceTree = "<group>"; };
 		8A97EBB22719999000965185 /* JoinRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomRequest.swift; sourceTree = "<group>"; };
@@ -671,6 +675,7 @@
 			isa = PBXGroup;
 			children = (
 				8A0BD7AF274B345600383E9D /* FlatGeneralButton.swift */,
+				8A6E89E02807B48D00908771 /* FlatGeneralCrossButton.swift */,
 				8AEF06A0276980590009904A /* UIButton+CheckBox.swift */,
 			);
 			path = Button;
@@ -876,6 +881,7 @@
 			isa = PBXGroup;
 			children = (
 				8A270B962719607700450DC6 /* LoginViewController.xib */,
+				8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
 				8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */,
 				8AEF069E276973E40009904A /* AppleLogin.swift */,
@@ -1630,6 +1636,7 @@
 				8AAB06242762E514006CAEF2 /* ExportService.swift in Sources */,
 				8A270B9D271967D800450DC6 /* Language.swift in Sources */,
 				8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */,
+				8A6E89E12807B48D00908771 /* FlatGeneralCrossButton.swift in Sources */,
 				8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */,
 				8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */,
 				8A270BA4271972F100450DC6 /* ContactUsViewController.swift in Sources */,
@@ -1649,6 +1656,7 @@
 				8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */,
 				8AFCCDDF276AE051008BD0FC /* SideBarCell.swift in Sources */,
 				8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */,
+				8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */,
 				8A270B9F2719681F00450DC6 /* Bundle+Language.swift in Sources */,
 				8A9FB3C127229A6200F6F06F /* FlatRequest.swift in Sources */,
 				8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */,
@@ -1916,8 +1924,6 @@
 					"\"Whiteboard\"",
 					"-framework",
 					"\"YYModel\"",
-					"-framework",
-					"\"dsBridge\"",
 					"-weak_framework",
 					"\"Combine\"",
 					"-weak_framework",
@@ -2213,8 +2219,6 @@
 					"\"Whiteboard\"",
 					"-framework",
 					"\"YYModel\"",
-					"-framework",
-					"\"dsBridge\"",
 					"-weak_framework",
 					"\"Combine\"",
 					"-weak_framework",
@@ -2510,8 +2514,6 @@
 					"\"Whiteboard\"",
 					"-framework",
 					"\"YYModel\"",
-					"-framework",
-					"\"dsBridge\"",
 					"-weak_framework",
 					"\"Combine\"",
 					"-weak_framework",
@@ -2764,8 +2766,6 @@
 					"\"Whiteboard\"",
 					"-framework",
 					"\"YYModel\"",
-					"-framework",
-					"\"dsBridge\"",
 					"-weak_framework",
 					"\"Combine\"",
 					"-weak_framework",

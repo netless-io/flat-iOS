@@ -60,6 +60,9 @@
 "Cloud Storage" = "Cloud";
 
 
+"CodeSend" = "Verification code has been sent";
+
+
 "Confirm" = "Confirm";
 
 
@@ -159,6 +162,12 @@
 "Interacting" = "Interacting";
 
 
+"InvalidCode" = "Please fill in the correct verification code";
+
+
+"InvalidPhone" = "Please fill in the correct cell phone number";
+
+
 "Invite" = "Invite";
 
 
@@ -196,6 +205,9 @@
 
 
 "LoginGithubURLMismatch" = "Login Github Mismatch";
+
+
+"LoginOrRegister" = "Login";
 
 
 "Logout" = "Logout";
@@ -239,6 +251,9 @@
 
 "Open Mic" = "Open Mic";
 
+
+"OtherLoginTips" = "You can also log in directly through";
+
 /* Flat Server Error */
 "ParamsCheckFailed" = "Parameter error";
 
@@ -256,6 +271,12 @@
 
 
 "PeriodicSubRoomHasRunning" = "Periodic sub-room does not exist";
+
+
+"PhoneInputPlaceholder" = "Enter your phone number";
+
+
+"PhoneNumber" = "Phone";
 
 
 "Please agree to the Terms of Service first" = "Please agree to the Terms of Service first";
@@ -364,6 +385,9 @@
 
 
 "Select Theme" = "Select Theme";
+
+
+"SendSMS" = "Send Code";
 
 
 "ServerFail" = "Request failed";
@@ -483,6 +507,12 @@
 "UserNotFound" = "User does not exist";
 
 
+"VerificationCode" = "VerificationCode";
+
+
+"VerificationCodePlaceholder" = "Enter the code";
+
+
 "Version" = "Version";
 
 
@@ -490,6 +520,9 @@
 
 
 "Video Converting" = "Video Converting ...";
+
+
+"WelcomeFlat" = "Welcome to Flat";
 
 
 "and" = "and";

@@ -60,6 +60,9 @@
 "Cloud Storage" = "云盘";
 
 
+"CodeSend" = "验证码已发送";
+
+
 "Confirm" = "确认";
 
 
@@ -159,6 +162,12 @@
 "Interacting" = "互动中";
 
 
+"InvalidCode" = "请填写正确验证码";
+
+
+"InvalidPhone" = "请填写正确手机号";
+
+
 "Invite" = "邀请";
 
 
@@ -196,6 +205,9 @@
 
 
 "LoginGithubURLMismatch" = "Github登录地址不正确";
+
+
+"LoginOrRegister" = "注册或登录";
 
 
 "Logout" = "退出登录";
@@ -239,6 +251,9 @@
 
 "Open Mic" = "开启麦克风";
 
+
+"OtherLoginTips" = "也可通过以下方式直接登录";
+
 /* Flat Server Error */
 "ParamsCheckFailed" = "参数错误";
 
@@ -256,6 +271,12 @@
 
 
 "PeriodicSubRoomHasRunning" = "周期性子房间不存在";
+
+
+"PhoneInputPlaceholder" = "请输入手机号";
+
+
+"PhoneNumber" = "手机号";
 
 
 "Please agree to the Terms of Service first" = "请先同意服务条款";
@@ -364,6 +385,9 @@
 
 
 "Select Theme" = "选择外观";
+
+
+"SendSMS" = "发送验证码";
 
 
 "ServerFail" = "请求失败";
@@ -483,6 +507,12 @@
 "UserNotFound" = "用户不存在";
 
 
+"VerificationCode" = "验证码";
+
+
+"VerificationCodePlaceholder" = "请输入验证码";
+
+
 "Version" = "当前版本";
 
 
@@ -490,6 +520,9 @@
 
 
 "Video Converting" = "视频转码中 ...";
+
+
+"WelcomeFlat" = "欢迎使用Flat";
 
 
 "and" = "和";

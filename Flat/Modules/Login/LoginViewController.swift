@@ -12,10 +12,20 @@ import AuthenticationServices
 import SafariServices
 
 class LoginViewController: UIViewController {
+    @IBOutlet weak var smsAuthView: SMSAuthView!
+    @IBOutlet weak var loginButton: FlatGeneralCrossButton!
     var wechatLogin: WechatLogin?
     var githubLogin: GithubLogin?
     @IBOutlet weak var flatLabel: UILabel!
     var appleLogin: Any?
+    var lastLoginPhone: String? {
+        get {
+            UserDefaults.standard.value(forKey: "lastLoginPhone") as? String
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "lastLoginPhone")
+        }
+    }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact {
@@ -32,6 +42,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        loadHistory()
+        bind()
         #if DEBUG
         let sel = Selector(("debugLogin"))
         if responds(to: sel) {
@@ -40,6 +52,69 @@ class LoginViewController: UIViewController {
             view.addGestureRecognizer(doubleTap)
         }
         #endif
+    }
+    
+    // MARK: - Valid
+    var phoneValid: Bool {
+        guard let text = smsAuthView.phoneTextfield.text,
+              (try? text.matchExpressionPattern("1[3456789]\\d{9}$")) != nil
+        else { return false }
+        return true
+    }
+    
+    var codeValid: Bool { smsAuthView.codeText.count > 0 }
+    
+    // MARK: - Action
+    @objc
+    func onClickSendSMS() {
+        guard checkAgreementDidAgree() else {
+            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            return
+        }
+        guard phoneValid else {
+            toast(NSLocalizedString("InvalidPhone", comment: ""))
+            return
+        }
+        let activity = showActivityIndicator()
+        let request = SMSRequest(phone: smsAuthView.fullPhoneText)
+        ApiProvider.shared.request(fromApi: request) { [weak self] result in
+            activity.stopAnimating()
+            switch result {
+            case .success(_):
+                self?.toast(NSLocalizedString("CodeSend", comment: ""))
+                self?.smsAuthView.startTimer()
+            case .failure(let error):
+                self?.toast(NSLocalizedString(error.localizedDescription, comment: ""))
+            }
+        }
+    }
+    
+    @objc
+    func onClickLogin() {
+        guard checkAgreementDidAgree() else {
+            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            return
+        }
+        guard phoneValid else {
+            toast(NSLocalizedString("InvalidPhone", comment: ""))
+            return
+        }
+        guard codeValid else {
+            toast(NSLocalizedString("InvalidCode", comment: ""))
+            return
+        }
+        let request = PhoneLoginRequest(phone: smsAuthView.fullPhoneText, code: smsAuthView.codeText)
+        let activity = showActivityIndicator()
+        ApiProvider.shared.request(fromApi: request) { [weak self] result in
+            activity.stopAnimating()
+            switch result {
+            case .success(let user):
+                self?.lastLoginPhone = self?.smsAuthView.phoneTextfield.text
+                AuthStore.shared.processLoginSuccessUserInfo(user)
+            case .failure(let error):
+                self?.toast(error.localizedDescription)
+            }
+        }
     }
     
     // MARK: - Private
@@ -58,8 +133,17 @@ class LoginViewController: UIViewController {
         view.addSubview(agreementCheckStackView)
         agreementCheckStackView.snp.makeConstraints { make in
             make.centerX.equalTo(verticalLoginTypesStackView)
-            make.top.equalTo(verticalLoginTypesStackView.snp.bottom).offset(34)
+            make.top.equalTo(loginButton.snp.bottom).offset(16)
         }
+    }
+    
+    func loadHistory() {
+        smsAuthView.phoneTextfield.text = lastLoginPhone
+    }
+    
+    func bind() {
+        smsAuthView.smsButton.addTarget(self, action: #selector(onClickSendSMS), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(onClickLogin), for: .touchUpInside)
     }
     
     func checkAgreementDidAgree() -> Bool {
