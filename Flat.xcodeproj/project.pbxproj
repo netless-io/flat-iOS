@@ -40,6 +40,8 @@
 		8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */; };
 		8A11CBF227201069001D0B1F /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBF127201069001D0B1F /* String+Error.swift */; };
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
+		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
+		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
 		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
 		8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A92797AB3E00024040 /* Theme.swift */; };
 		8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAB279E58F80060E25D /* ReplayViewController.swift */; };
@@ -272,6 +274,8 @@
 		8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassRoomSettingTableViewCell.xib; sourceTree = "<group>"; };
 		8A11CBF127201069001D0B1F /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
+		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
+		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
 		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
 		8A20A3A92797AB3E00024040 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		8A21DAAB279E58F80060E25D /* ReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayViewController.swift; sourceTree = "<group>"; };
@@ -723,6 +727,19 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
+		8A1BF0BD280D0AF400D76F22 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */,
+				8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */,
+				8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */,
+				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
+				8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */,
+				8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		8A21DAAA279E58E70060E25D /* Replay */ = {
 			isa = PBXGroup;
 			children = (
@@ -958,16 +975,13 @@
 		8A9FB3A027224E3F00F6F06F /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8A1BF0BD280D0AF400D76F22 /* Auth */,
 				8A21DABF279FAB220060E25D /* Record */,
 				8ACE3A23272FED7700BC37F7 /* RoomHistoryRequest.swift */,
 				8A80209D27570EAA00F5691C /* StorageListRequest.swift */,
-				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
-				8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */,
 				8A05C34A2760A6FD009BCA79 /* RemoveFilesRequest.swift */,
 				8AAB06272762FD06006CAEF2 /* StartConvertRequest.swift */,
 				8ABD71BA27634986004FDC36 /* FinishConvertRequest.swift */,
-				8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */,
-				8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */,
 				8A97EBAE2719983700965185 /* CreateRoomRequest.swift */,
 				8AAB06252762F509006CAEF2 /* RenameFileRequest.swift */,
 				8A97EBB22719999000965185 /* JoinRoomRequest.swift */,
@@ -1509,6 +1523,7 @@
 				8A8507EF27E180A00072AF49 /* CloudStorageViewController.swift in Sources */,
 				8AEF069F276973E40009904A /* AppleLogin.swift in Sources */,
 				8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */,
+				8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */,
 				8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */,
 				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
 				8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */,
@@ -1639,6 +1654,7 @@
 				8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */,
 				8A716F3627B9FFF800DB408F /* LoginViewController+Debug.swift in Sources */,
 				8A9ACC03271E71B100E7E7CE /* RoomListInfo.swift in Sources */,
+				8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */,
 				8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */,
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,
 				8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */,
