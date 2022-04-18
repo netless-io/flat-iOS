@@ -12,6 +12,7 @@ import AuthenticationServices
 import SafariServices
 
 class LoginViewController: UIViewController {
+    @IBOutlet weak var tipsLabel: UILabel!
     @IBOutlet weak var smsAuthView: SMSAuthView!
     @IBOutlet weak var loginButton: FlatGeneralCrossButton!
     var wechatLogin: WechatLogin?
@@ -54,53 +55,12 @@ class LoginViewController: UIViewController {
         #endif
     }
     
-    // MARK: - Valid
-    var phoneValid: Bool {
-        guard let text = smsAuthView.phoneTextfield.text,
-              (try? text.matchExpressionPattern("1[3456789]\\d{9}$")) != nil
-        else { return false }
-        return true
-    }
-    
-    var codeValid: Bool { smsAuthView.codeText.count > 0 }
-    
     // MARK: - Action
-    @objc
-    func onClickSendSMS() {
-        guard checkAgreementDidAgree() else {
-            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
-            return
-        }
-        guard phoneValid else {
-            toast(NSLocalizedString("InvalidPhone", comment: ""))
-            return
-        }
-        let activity = showActivityIndicator()
-        let request = SMSRequest(phone: smsAuthView.fullPhoneText)
-        ApiProvider.shared.request(fromApi: request) { [weak self] result in
-            activity.stopAnimating()
-            switch result {
-            case .success(_):
-                self?.toast(NSLocalizedString("CodeSend", comment: ""))
-                self?.smsAuthView.startTimer()
-            case .failure(let error):
-                self?.toast(NSLocalizedString(error.localizedDescription, comment: ""))
-            }
-        }
-    }
     
     @objc
     func onClickLogin() {
-        guard checkAgreementDidAgree() else {
-            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
-            return
-        }
-        guard phoneValid else {
-            toast(NSLocalizedString("InvalidPhone", comment: ""))
-            return
-        }
-        guard codeValid else {
-            toast(NSLocalizedString("InvalidCode", comment: ""))
+        if case .failure(let errStr) = smsAuthView.allValidCheck() {
+            toast(errStr)
             return
         }
         let request = PhoneLoginRequest(phone: smsAuthView.fullPhoneText, code: smsAuthView.codeText)
@@ -135,6 +95,9 @@ class LoginViewController: UIViewController {
             make.centerX.equalTo(verticalLoginTypesStackView)
             make.top.equalTo(loginButton.snp.bottom).offset(16)
         }
+        
+        tipsLabel.adjustsFontSizeToFitWidth = true
+        tipsLabel.minimumScaleFactor = 0.7
     }
     
     func loadHistory() {
@@ -142,7 +105,17 @@ class LoginViewController: UIViewController {
     }
     
     func bind() {
-        smsAuthView.smsButton.addTarget(self, action: #selector(onClickSendSMS), for: .touchUpInside)
+        smsAuthView.additionalCheck = { [weak self] in
+            guard let self = self else { return .failure("") }
+            let agree = self.checkAgreementDidAgree()
+            if agree { return .success(())}
+            return .failure(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+        }
+        
+        smsAuthView.smsRequestMaker = { phone in
+            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .login, phone: phone))
+        }
+        
         loginButton.addTarget(self, action: #selector(onClickLogin), for: .touchUpInside)
     }
     

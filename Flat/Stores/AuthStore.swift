@@ -40,6 +40,14 @@ class AuthStore {
         delegate?.authStoreDidLogout(self)
     }
     
+    func processBindPhoneSuccess() {
+        guard var newUser = user else {
+            return
+        }
+        newUser.hasPhone = true
+        processLoginSuccessUserInfo(newUser)
+    }
+    
     func processLoginSuccessUserInfo(_ user: User) {
         do {
             let data = try JSONEncoder().encode(user)

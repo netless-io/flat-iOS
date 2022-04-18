@@ -42,6 +42,8 @@
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
 		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
+		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
+		8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */; };
 		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
 		8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A92797AB3E00024040 /* Theme.swift */; };
 		8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAB279E58F80060E25D /* ReplayViewController.swift */; };
@@ -278,6 +280,8 @@
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
+		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
+		8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingPhoneRequest.swift; sourceTree = "<group>"; };
 		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
 		8A20A3A92797AB3E00024040 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		8A21DAAB279E58F80060E25D /* ReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayViewController.swift; sourceTree = "<group>"; };
@@ -737,6 +741,7 @@
 			children = (
 				8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */,
 				8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */,
+				8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */,
 				8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */,
 				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
 				8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */,
@@ -883,6 +888,7 @@
 				8A270B962719607700450DC6 /* LoginViewController.xib */,
 				8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
+				8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */,
 				8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */,
 				8AEF069E276973E40009904A /* AppleLogin.swift */,
 				8AD3CDF1271693EC008BD904 /* GithubLogin.swift */,
@@ -1606,6 +1612,7 @@
 				8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */,
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
 				8A9FB3AD2722674F00F6F06F /* FlatResponseDataHandler.swift in Sources */,
+				8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */,
 				8A05C326275EF6B0009BCA79 /* SidebarViewController.swift in Sources */,
 				8A05C329275F399E009BCA79 /* UploadHomeViewController.swift in Sources */,
 				8A9ACC0A271E98DB00E7E7CE /* RoomTableViewCell.swift in Sources */,
@@ -1687,6 +1694,7 @@
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
 				8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */,
+				8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */,
 				8A3460CF272952490066063E /* ClassRoomMode.swift in Sources */,
 				8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */,
 				8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */,

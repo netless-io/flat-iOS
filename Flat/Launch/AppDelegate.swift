@@ -38,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             launch?.start(withLaunchUrl: url)
         }
 #if DEBUG
+        Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             guard AuthStore.shared.isLogin else { return }
             // Cancel all the previous upload task, for old task will block the new upload

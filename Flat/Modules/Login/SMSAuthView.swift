@@ -17,10 +17,55 @@ class SMSAuthView: UIView {
             countryCodeSelectBtn.setTitle("+\(countryCode)", for: .normal)
         }
     }
+    var smsRequestMaker: ((String)->Observable<Dictionary<String, String>>)?
+    var additionalCheck: (()->Result<Void, String>)?
+    var phoneRegex: String = "1[3456789]\\d{9}$"
+    var phoneValid: Bool { (try? phoneTextfield.text?.matchExpressionPattern(phoneRegex) != nil) ?? false }
     var fullPhoneText: String { "+\(countryCode)\(phoneTextfield.text ?? "")"}
     var codeText: String { verificationCodeTextfield.text ?? "" }
+    var codeValid: Bool { !codeText.isEmpty }
     
-    @objc func onClickCountryCode() {
+    func allValidCheck() -> Result<Void, String> {
+        if let additionalCheck = additionalCheck {
+            switch additionalCheck() {
+            case .success: break
+            case .failure(let errorStr):
+                return .failure(errorStr)
+            }
+        }
+        if !phoneValid { return .failure(NSLocalizedString("InvalidPhone", comment: "")) }
+        if !codeValid { return .failure(NSLocalizedString("InvalidCode", comment: "")) }
+        return .success(())
+    }
+    
+    @objc
+    func onClickCountryCode() {
+    }
+    
+    @objc
+    func onClickSendSMS() {
+        let top = UIApplication.shared.topViewController
+        if case .failure(let errStr) = additionalCheck?() {
+            top?.toast(errStr)
+            return
+        }
+        guard phoneValid else {
+            top?.toast(NSLocalizedString("InvalidPhone", comment: ""))
+            return
+        }
+        top?.showActivityIndicator()
+        smsRequestMaker?(fullPhoneText)
+            .asSingle()
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(with: self, onSuccess: { weakSelf, _ in
+                top?.stopActivityIndicator()
+                top?.toast(NSLocalizedString("CodeSend", comment: ""))
+                weakSelf.startTimer()
+            }, onFailure: { weakSelf, err in
+                top?.stopActivityIndicator()
+                top?.toast(err.localizedDescription)
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     override init(frame: CGRect) {
@@ -63,7 +108,7 @@ class SMSAuthView: UIView {
     
     @objc
     func startTimer() {
-        let count = 3
+        let count = 60
         smsButton.setTitle("\(count) S", for: .disabled)
         smsButton.isEnabled = false
         Observable<Int>
@@ -176,6 +221,7 @@ class SMSAuthView: UIView {
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.brandColor, for: .normal)
         btn.setTitleColor(.subText, for: .disabled)
+        btn.addTarget(self, action: #selector(onClickSendSMS), for: .touchUpInside)
         return btn
     }()
 }

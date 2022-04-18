@@ -50,7 +50,10 @@ class LaunchCoordinator {
     }
     
     func start(withLaunchUserActivity userActivity: NSUserActivity) -> Bool {
-        configRootWith(isLogin: authStore.isLogin)
+        // If window never configured, set a root vc
+        if window.rootViewController == nil {
+            configRootWith(user: authStore.user)
+        }
         hitItems = launchItems.map { $0.value }.filter { $0.shouldHandle(userActivity: userActivity) }
         hitItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
         if authStore.isLogin, let user = authStore.user {
@@ -61,7 +64,10 @@ class LaunchCoordinator {
     }
     
     func start(withLaunchUrl launchUrl: URL? = nil) {
-        configRootWith(isLogin: authStore.isLogin)
+        // If window never configured, set a root vc
+        if window.rootViewController == nil {
+            configRootWith(user: authStore.user)
+        }
         hitItems = launchItems.map { $0.value }.filter { $0.shouldHandle(url: launchUrl) }
         hitItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
         if authStore.isLogin, let user = authStore.user {
@@ -111,19 +117,39 @@ class LaunchCoordinator {
     }
     
     // MARK: - Private
-    fileprivate func configRootWith(isLogin: Bool) {
-        flatGenerator.token = authStore.user?.token
-        if isLogin {
-            guard let _ = window.rootViewController as? MainContainer else {
-                window.rootViewController = createMainContainer()
-                window.makeKeyAndVisible()
-                return
+    fileprivate func configRootWith(user: User?) {
+        flatGenerator.token = user?.token
+        
+        if let user = user {
+            if user.hasPhone {
+                guard let _ = window.rootViewController as? MainContainer else {
+                    window.rootViewController = createMainContainer()
+                    window.makeKeyAndVisible()
+                    return
+                }
+            } else {
+                guard let root = window.rootViewController else {
+                    // Just start from unbind user
+                    // Show nothing.
+                    window.rootViewController = LoginViewController()
+                    window.makeKeyAndVisible()
+                    return
+                }
+                if let _ = root.presentedViewController {
+                    root.dismiss(animated: false)
+                    root.present(BindPhoneViewController(), animated: true)
+                } else {
+                    root.present(BindPhoneViewController(), animated: true)
+                }
             }
         } else {
-            guard let _ = window.rootViewController as? LoginViewController else {
+            guard let login = window.rootViewController as? LoginViewController else {
                 window.rootViewController = LoginViewController()
                 window.makeKeyAndVisible()
                 return
+            }
+            if let _ = login.presentedViewController {
+                login.dismiss(animated: true)
             }
         }
     }
@@ -147,14 +173,13 @@ class LaunchCoordinator {
 
 extension LaunchCoordinator: AuthStoreDelegate {
     func authStoreDidLoginSuccess(_ authStore: AuthStore, user: User) {
-        configRootWith(isLogin: true)
+        configRootWith(user: user)
         hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
         hitItems = []
-        
         observeFirstJWTExpire()
     }
     
     func authStoreDidLogout(_ authStore: AuthStore) {
-        configRootWith(isLogin: false)
+        configRootWith(user: nil)
     }
 }
