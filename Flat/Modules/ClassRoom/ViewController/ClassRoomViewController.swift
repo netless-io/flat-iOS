@@ -34,7 +34,7 @@ class ClassRoomViewController: UIViewController {
     
     var viewModel: ClassRoomViewModel!
     
-    var chatVCDisposeBag = RxSwift.DisposeBag()
+//    var chatVCDisposeBag = RxSwift.DisposeBag()
     
     // MARK: - Child Controllers
     let fastboardViewController: FastboardViewController
@@ -42,7 +42,7 @@ class ClassRoomViewController: UIViewController {
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true)
     let inviteViewController: () -> UIViewController
     let usersViewController: ClassRoomUsersViewController
-    var chatVC: ChatViewController?
+//    var chatVC: ChatViewController?
     
     // MARK: - LifeCycle
     init(fastboardViewController: FastboardViewController,
@@ -206,63 +206,63 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
-    func setupChatViewController() {
-        print("setup chatVC")
-        chatButton.isHidden = true
-        let banNotice = viewModel.state.messageBan
-            .skip(1)
-            .map { return $0 ? "已禁言" : "已解除禁言" }
-        
-        // Is chat been banning, not include user self
-        let banning = viewModel.state.messageBan.asDriver()
-        
-        // Is user banned
-        let baned = viewModel.state.messageBan.map { [ weak self] in
-            (self?.viewModel.isTeacher ?? false) ? false : $0
-        }.asDriver(onErrorJustReturn: true)
-        
-        let showRedPoint = viewModel.rtm.joinChannelId(viewModel.chatChannelId)
-            // TODO: onError
-            .do(onSuccess: { [weak self] handler in
-                guard let self = self else { return }
-                let pairs = self.viewModel.state.users.value.map {
-                    ($0.rtmUUID, $0.name)
-                }
-                let existUserDic = [String: String](uniqueKeysWithValues: pairs)
-                let viewModel = ChatViewModel(roomUUID: self.viewModel.state.roomUUID,
-                                              cachedUserName: existUserDic,
-                                              rtm: handler,
-                                              notice: banNotice,
-                                              banning: banning,
-                                              banned: baned)
-                let vc = ChatViewController(viewModel: viewModel, userRtmId: self.viewModel.userUUID)
-                self.viewModel.tranform(banTap: vc.banTextButton.rx.tap
-                                            .asDriver())
-                    .drive()
-                    .disposed(by: self.rx.disposeBag)
-                self.chatVC = vc
-                self.chatButton.isHidden = false
-            })
-            .asObservable()
-            .flatMap { handler -> Observable<Void> in
-                return handler.newMessagePublish.asObservable().map { _ -> Void in return () }
-            }.flatMap { [weak self] _ -> Observable<Bool> in
-                guard let vc = self?.chatVC else {
-                    return Observable.just(false)
-                }
-                return vc.rx.isPresented.asObservable()
-            }.map {
-                !$0
-            }.asDriver(onErrorJustReturn: false)
-        
-        let tapChatShouldShowRed = chatButton.rx.tap.asDriver().map { _ -> Bool in return false }
-        
-        Driver.of(tapChatShouldShowRed, showRedPoint).merge()
-            .drive(onNext: { [weak self] show in
-                self?.chatButton.updateBadgeHide(!show)
-            })
-            .disposed(by: chatVCDisposeBag)
-    }
+//    func setupChatViewController() {
+//        print("setup chatVC")
+//        chatButton.isHidden = true
+//        let banNotice = viewModel.state.messageBan
+//            .skip(1)
+//            .map { return $0 ? "已禁言" : "已解除禁言" }
+//
+//        // Is chat been banning, not include user self
+//        let banning = viewModel.state.messageBan.asDriver()
+//
+//        // Is user banned
+//        let baned = viewModel.state.messageBan.map { [ weak self] in
+//            (self?.viewModel.isTeacher ?? false) ? false : $0
+//        }.asDriver(onErrorJustReturn: true)
+//
+//        let showRedPoint = viewModel.rtm.joinChannelId(viewModel.chatChannelId)
+//            // TODO: onError
+//            .do(onSuccess: { [weak self] handler in
+//                guard let self = self else { return }
+//                let pairs = self.viewModel.state.users.value.map {
+//                    ($0.rtmUUID, $0.name)
+//                }
+//                let existUserDic = [String: String](uniqueKeysWithValues: pairs)
+//                let viewModel = ChatViewModel(roomUUID: self.viewModel.state.roomUUID,
+//                                              cachedUserName: existUserDic,
+//                                              rtm: handler,
+//                                              notice: banNotice,
+//                                              banning: banning,
+//                                              banned: baned)
+//                let vc = ChatViewController(viewModel: viewModel, userRtmId: self.viewModel.userUUID)
+//                self.viewModel.tranform(banTap: vc.banTextButton.rx.tap
+//                                            .asDriver())
+//                    .drive()
+//                    .disposed(by: self.rx.disposeBag)
+//                self.chatVC = vc
+//                self.chatButton.isHidden = false
+//            })
+//            .asObservable()
+//            .flatMap { handler -> Observable<Void> in
+//                return handler.newMessagePublish.asObservable().map { _ -> Void in return () }
+//            }.flatMap { [weak self] _ -> Observable<Bool> in
+//                guard let vc = self?.chatVC else {
+//                    return Observable.just(false)
+//                }
+//                return vc.rx.isPresented.asObservable()
+//            }.map {
+//                !$0
+//            }.asDriver(onErrorJustReturn: false)
+//
+//        let tapChatShouldShowRed = chatButton.rx.tap.asDriver().map { _ -> Bool in return false }
+//
+//        Driver.of(tapChatShouldShowRed, showRedPoint).merge()
+//            .drive(onNext: { [weak self] show in
+//                self?.chatButton.updateBadgeHide(!show)
+//            })
+//            .disposed(by: chatVCDisposeBag)
+//    }
     
     // MARK: - Private
     func bindGeneral() {
@@ -280,7 +280,7 @@ class ClassRoomViewController: UIViewController {
             })
             .subscribe(with: self, onNext: { weakSelf, _ in
                 weakSelf.rightToolBar.isHidden = false
-                weakSelf.setupChatViewController()
+//                weakSelf.setupChatViewController()
             }, onError: { weakSelf, error in
                 weakSelf.stopSubModulesAndLeaveUIHierarchy()
             })
@@ -342,13 +342,13 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
         
         // Some tap to pop
-        chatButton.rx.tap.asDriver()
-            .drive(with: self, onNext: { weakSelf, _ in
-                guard let vc = weakSelf.chatVC else { return }
-                weakSelf.popoverViewController(viewController: vc, fromSource: weakSelf.chatButton)
-                vc.updateBanTextButtonEnable(weakSelf.viewModel.isTeacher)
-            })
-            .disposed(by: rx.disposeBag)
+//        chatButton.rx.tap.asDriver()
+//            .drive(with: self, onNext: { weakSelf, _ in
+//                guard let vc = weakSelf.chatVC else { return }
+//                weakSelf.popoverViewController(viewController: vc, fromSource: weakSelf.chatButton)
+//                vc.updateBanTextButtonEnable(weakSelf.viewModel.isTeacher)
+//            })
+//            .disposed(by: rx.disposeBag)
         
         inviteButton.rx.tap.asDriver()
             .drive(with: self, onNext: { weakSelf, _ in
@@ -591,12 +591,12 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
-    lazy var chatButton: FastRoomPanelItemButton = {
-        let button = FastRoomPanelItemButton(type: .custom)
-        button.rawImage = UIImage(named: "chat")!
-        button.setupBadgeView(rightInset: 5, topInset: 5)
-        return button
-    }()
+//    lazy var chatButton: FastRoomPanelItemButton = {
+//        let button = FastRoomPanelItemButton(type: .custom)
+//        button.rawImage = UIImage(named: "chat")!
+//        button.setupBadgeView(rightInset: 5, topInset: 5)
+//        return button
+//    }()
     
     lazy var usersButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
@@ -646,14 +646,14 @@ class ClassRoomViewController: UIViewController {
         if traitCollection.hasCompact {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                         views: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton])
+                                         views: [cloudStorageButton, usersButton, inviteButton, settingButton])
             bar.forceButtonHide(cloudStorageButton, hide: true)
-            bar.narrowStyle = .narrowMoreThan(count: 1)
+            bar.narrowStyle = .none
             return bar
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                         views: [chatButton, cloudStorageButton, usersButton, inviteButton, settingButton, moreButton])
+                                         views: [cloudStorageButton, usersButton, inviteButton, settingButton, moreButton])
             bar.forceButtonHide(cloudStorageButton, hide: true)
             bar.forceButtonHide(moreButton, hide: !viewModel.isTeacher)
             return bar
