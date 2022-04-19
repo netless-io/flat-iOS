@@ -3,6 +3,15 @@
 "About" = "About";
 
 
+"AccountCancelationInfo" = "You are in the process of Flat account cancellation, in order to protect your account and property security, please read and understand fully and agree to the following matters before canceling your account, and operate with caution.\n\nIf the Flat account you apply for cancellation also meets the following conditions, the platform will complete the verification and account cancellation for you.\n\n\n1. the account is in a normal state and is not involved in any disputes (including complaints or reported by complaints).\n\n2. if there are incomplete courses, in order to avoid affecting your rights or disputes, you are advised to contact the relevant teachers and students to properly handle the incomplete courses before canceling your account.\n\n3. there are no other outstanding rights or obligations in the account or disputes arising from the cancellation of the account\n\n4. there are no other circumstances that may affect the account cancellation.\n\n\nThe cancellation of a Flat account is irreversible. After a successful cancellation of a Flat account, we will stop providing you with products or services and no longer collect your personal information, and we will delete your personal information or anonymize it.\n\nAfter a successful Flat account cancellation, you will no longer be able to use the Flat account and will not be able to retrieve any content or information associated with the account (even if you register and use Flat again using the same method), including but not limited to.\n\n\n1. all course and class session records will be deleted.\n\n2. all chat data (text, images, video, audio, etc.) will be erased.\n\n3. cloud data will be deleted.\n\n4. all playback will be cleared.\n\n\nAfter you cancel your account, we will stop providing products or services to you and delete or anonymize your personal information, except as otherwise provided by laws and regulations.\n\nBy clicking on the button below to proceed with the cancellation, you acknowledge that you are fully aware of and agree to the above instructions.\n\nTranslated with www.DeepL.com/Translator (free version)";
+
+
+"AccountCancelationInfoTitle" = "Agora Flat account cancellation important tips";
+
+
+"AccountCancellation" = "Account Cancellation";
+
+
 "Acknowledgement" = "Libraries We Use";
 
 
@@ -37,6 +46,9 @@
 
 
 "Cancel Room Verbose" = "Sure to remove the room from the room list? Once removed, you can join the room again by using the room number.";
+
+
+"CancelationAndLogout" = "Cancel account and log out";
 
 
 "Chat" = "Chat";

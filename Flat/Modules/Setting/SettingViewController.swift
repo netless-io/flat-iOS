@@ -99,7 +99,11 @@ class SettingViewController: UITableViewController {
             .init(image: UIImage(named: "info")!,
                   title: NSLocalizedString("About", comment: ""),
                   detail: "",
-                  targetAction: (self, #selector(self.onClickAbout(sender:))))
+                  targetAction: (self, #selector(self.onClickAbout(sender:)))),
+            .init(image: UIImage(named: "cancellation")!,
+                  title: NSLocalizedString("AccountCancellation", comment: ""),
+                  detail: "",
+                  targetAction: (self, #selector(self.onClickCancellation(sender:))))
         ]
         if #available(iOS 13.0, *) {
             let config = UIImage.SymbolConfiguration(pointSize: 10, weight: .light, scale: .small)
@@ -144,6 +148,11 @@ class SettingViewController: UITableViewController {
         } else {
             displayVersion = DisplayVersion.allCases[nextIndex]
         }
+    }
+    
+    @objc func onClickCancellation(sender: Any?) {
+        let vc = CancellationViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func onClickAbout(sender: Any?) {

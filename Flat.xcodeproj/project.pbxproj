@@ -44,6 +44,7 @@
 		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
 		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
 		8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */; };
+		8A1BF0C7280E563A00D76F22 /* CancellationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */; };
 		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
 		8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A92797AB3E00024040 /* Theme.swift */; };
 		8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAB279E58F80060E25D /* ReplayViewController.swift */; };
@@ -282,6 +283,7 @@
 		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
 		8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingPhoneRequest.swift; sourceTree = "<group>"; };
+		8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationViewController.swift; sourceTree = "<group>"; };
 		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
 		8A20A3A92797AB3E00024040 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		8A21DAAB279E58F80060E25D /* ReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayViewController.swift; sourceTree = "<group>"; };
@@ -830,6 +832,7 @@
 				8AC376B2271D25CD003464B0 /* About */,
 				8AC376B1271D25BB003464B0 /* ContactUs */,
 				8A270B8327192A0800450DC6 /* SettingViewController.swift */,
+				8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */,
 				8A270B8527192A6600450DC6 /* SettingTableViewCell.swift */,
 				8A270B8627192A6600450DC6 /* SettingTableViewCell.xib */,
 			);
@@ -1532,6 +1535,7 @@
 				8A270B8727192A6600450DC6 /* SettingTableViewCell.swift in Sources */,
 				8A7741E7273A6FA2009FAADA /* RoomCancelRequest.swift in Sources */,
 				8A80209E27570EAA00F5691C /* StorageListRequest.swift in Sources */,
+				8A1BF0C7280E563A00D76F22 /* CancellationViewController.swift in Sources */,
 				8A8507EF27E180A00072AF49 /* CloudStorageViewController.swift in Sources */,
 				8AEF069F276973E40009904A /* AppleLogin.swift in Sources */,
 				8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */,
