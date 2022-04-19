@@ -378,6 +378,12 @@
 "Rtm abort tips" = "你已在另一台设备登录";
 
 
+"SMSAlreadyExist" = "已经绑定过手机号";
+
+
+"SMSVerificationCodeInvalid" = "验证码无效";
+
+
 "Say Something..." = "说点什么吧...";
 
 

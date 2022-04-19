@@ -17,6 +17,10 @@ enum FlatApiError: Int, LocalizedError {
     case UnsupportedPlatform
     case JWTSignFailed
     
+    case SMSVerificationCodeInvalid = 110000
+    // Bind when binding already
+    case SMSAlreadyExist = 110001
+    // Bind a phone has registered
     case PhoneRegistered = 110002
     
     case RoomNotFound = 200000

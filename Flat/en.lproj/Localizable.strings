@@ -378,6 +378,12 @@
 "Rtm abort tips" = "You are logged in on another device";
 
 
+"SMSAlreadyExist" = "Phone Already Exist";
+
+
+"SMSVerificationCodeInvalid" = "Invalid Code";
+
+
 "Say Something..." = "Say Something...";
 
 
