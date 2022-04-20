@@ -34,7 +34,8 @@ enum ApiError: LocalizedError {
         case .encode(let message):
             return NSLocalizedString("Encode error", comment: "") + " " + message
         case .decode(let message):
-            return NSLocalizedString("Decode error", comment: "") + " " + message
+            if message.isEmpty { return NSLocalizedString("Decode error", comment: "") }
+            return message
         }
     }
 }

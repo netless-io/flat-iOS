@@ -25,7 +25,7 @@ class CancellationViewController: UIViewController {
         
         confirmButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
-                weakSelf.showCheckAlert(title: NSLocalizedString("Cancel account and log out", comment: ""), message: "") {
+                weakSelf.showCheckAlert(title: NSLocalizedString("CancelationAndLogout", comment: ""), message: "") {
                     // TODO: api
                     AuthStore.shared.logout()
                 }
