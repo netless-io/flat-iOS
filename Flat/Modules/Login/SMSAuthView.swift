@@ -18,16 +18,16 @@ class SMSAuthView: UIView {
         }
     }
     var smsRequestMaker: ((String)->Observable<Dictionary<String, String>>)?
-    var additionalCheck: (()->Result<Void, String>)?
+    var additionalCheck: ((_ sender: UIView)->Result<Void, String>)?
     var phoneRegex: String = "1[3456789]\\d{9}$"
     var phoneValid: Bool { (try? phoneTextfield.text?.matchExpressionPattern(phoneRegex) != nil) ?? false }
     var fullPhoneText: String { "+\(countryCode)\(phoneTextfield.text ?? "")"}
     var codeText: String { verificationCodeTextfield.text ?? "" }
     var codeValid: Bool { !codeText.isEmpty }
     
-    func allValidCheck() -> Result<Void, String> {
+    func allValidCheck(sender: UIView?) -> Result<Void, String> {
         if let additionalCheck = additionalCheck {
-            switch additionalCheck() {
+            switch additionalCheck(sender ?? self) {
             case .success: break
             case .failure(let errorStr):
                 return .failure(errorStr)
@@ -43,9 +43,9 @@ class SMSAuthView: UIView {
     }
     
     @objc
-    func onClickSendSMS() {
+    func onClickSendSMS(sender: UIButton) {
         let top = UIApplication.shared.topViewController
-        if case .failure(let errStr) = additionalCheck?() {
+        if case .failure(let errStr) = additionalCheck?(sender) {
             top?.toast(errStr)
             return
         }
@@ -221,7 +221,7 @@ class SMSAuthView: UIView {
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.brandColor, for: .normal)
         btn.setTitleColor(.subText, for: .disabled)
-        btn.addTarget(self, action: #selector(onClickSendSMS), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(onClickSendSMS(sender:)), for: .touchUpInside)
         return btn
     }()
 }

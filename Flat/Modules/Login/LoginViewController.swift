@@ -58,8 +58,8 @@ class LoginViewController: UIViewController {
     // MARK: - Action
     
     @objc
-    func onClickLogin() {
-        if case .failure(let errStr) = smsAuthView.allValidCheck() {
+    func onClickLogin(sender: UIButton) {
+        if case .failure(let errStr) = smsAuthView.allValidCheck(sender: sender) {
             toast(errStr)
             return
         }
@@ -105,18 +105,33 @@ class LoginViewController: UIViewController {
     }
     
     func bind() {
-        smsAuthView.additionalCheck = { [weak self] in
+        smsAuthView.additionalCheck = { [weak self] sender in
             guard let self = self else { return .failure("") }
             let agree = self.checkAgreementDidAgree()
             if agree { return .success(())}
-            return .failure(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            
+            let alertVC = UIAlertController(title: NSLocalizedString("Alert", comment: ""), message: NSLocalizedString("Please agree to the Terms of Service first", comment: ""), preferredStyle: .actionSheet)
+            alertVC.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+            alertVC.addAction(.init(title: NSLocalizedString("Privacy Policy", comment: ""), style: .default) { _ in
+                self.onClickPrivacy()
+            })
+            alertVC.addAction(.init(title: NSLocalizedString("Service Agreement", comment: ""), style: .default) { _ in
+                self.onClickServiceAgreement()
+            })
+            alertVC.addAction(.init(title: NSLocalizedString("Have read and agree", comment: ""), style: .default) { _ in
+                self.agreementCheckButton.isSelected = true
+            })
+            
+            self.popoverViewController(viewController: alertVC, fromSource: sender)
+            
+            return .failure("")
         }
         
         smsAuthView.smsRequestMaker = { phone in
             return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .login, phone: phone))
         }
         
-        loginButton.addTarget(self, action: #selector(onClickLogin), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(onClickLogin(sender:)), for: .touchUpInside)
     }
     
     func checkAgreementDidAgree() -> Bool {

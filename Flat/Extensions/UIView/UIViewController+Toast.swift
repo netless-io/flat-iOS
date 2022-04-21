@@ -19,6 +19,7 @@ extension UIViewController {
     func toast(_ text: String,
                timeInterval: TimeInterval = 1.5,
                preventTouching: Bool = false) {
+        guard !text.isEmpty else { return }
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.bezelView.style = .solidColor
         hud.bezelView.color = UIColor.black.withAlphaComponent(0.45)

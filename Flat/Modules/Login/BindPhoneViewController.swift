@@ -73,8 +73,8 @@ class BindPhoneViewController: UIViewController {
     }
     
     @objc
-    func onLogin() {
-        if case .failure(let errStr) = smsAuthView.allValidCheck() {
+    func onLogin(sender: UIButton) {
+        if case .failure(let errStr) = smsAuthView.allValidCheck(sender: sender) {
             toast(errStr)
             return
         }

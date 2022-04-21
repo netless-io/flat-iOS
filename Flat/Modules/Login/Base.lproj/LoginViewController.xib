@@ -97,18 +97,21 @@
                                     <rect key="frame" x="0.0" y="748" width="512" height="128"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i5C-AW-IRd">
-                                            <rect key="frame" x="0.0" y="0.0" width="61" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="57.5" height="128"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" image="dash_line" translatesAutoresizingMaskIntoConstraints="NO" id="uA5-XE-vQ9">
-                                            <rect key="frame" x="61" y="0.0" width="0.0" height="128"/>
+                                            <rect key="frame" x="57.5" y="0.0" width="44" height="128"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="nHj-to-dlA"/>
+                                            </constraints>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9rN-mb-JPk">
-                                            <rect key="frame" x="61" y="0.0" width="61.5" height="128"/>
+                                            <rect key="frame" x="101.5" y="0.0" width="57.5" height="128"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AAAAAAAAAAAAAAAAAAAAAAAA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTh-jI-o8u">
-                                            <rect key="frame" x="122.5" y="0.0" width="194.5" height="128"/>
+                                            <rect key="frame" x="159" y="0.0" width="194.5" height="128"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" name="7A7B7C"/>
                                             <nil key="highlightedColor"/>
@@ -117,21 +120,21 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aCn-QO-NWM">
-                                            <rect key="frame" x="317" y="0.0" width="61" height="128"/>
+                                            <rect key="frame" x="353.5" y="0.0" width="57" height="128"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" image="dash_line" translatesAutoresizingMaskIntoConstraints="NO" id="lPw-et-94K">
-                                            <rect key="frame" x="378" y="0.0" width="0.0" height="128"/>
+                                            <rect key="frame" x="410.5" y="0.0" width="44" height="128"/>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K3A-Pi-zpc">
-                                            <rect key="frame" x="378" y="0.0" width="134" height="128"/>
+                                            <rect key="frame" x="454.5" y="0.0" width="57.5" height="128"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="i5C-AW-IRd" firstAttribute="width" secondItem="aCn-QO-NWM" secondAttribute="width" id="AZD-A6-amH"/>
                                         <constraint firstItem="uA5-XE-vQ9" firstAttribute="width" secondItem="lPw-et-94K" secondAttribute="width" id="T7o-nc-xl0"/>
-                                        <constraint firstItem="i5C-AW-IRd" firstAttribute="width" secondItem="K3A-Pi-zpc" secondAttribute="width" multiplier="0.456621" id="TTa-kS-J5N"/>
+                                        <constraint firstItem="i5C-AW-IRd" firstAttribute="width" secondItem="K3A-Pi-zpc" secondAttribute="width" id="TTa-kS-J5N"/>
                                         <constraint firstItem="i5C-AW-IRd" firstAttribute="width" secondItem="9rN-mb-JPk" secondAttribute="width" id="egj-nt-Rx1"/>
                                     </constraints>
                                 </stackView>
@@ -198,7 +201,7 @@
                 <constraint firstItem="Eu9-lO-dxG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="seR-HU-CLV"/>
                 <constraint firstItem="Eu9-lO-dxG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="wps-e6-ir8"/>
             </constraints>
-            <point key="canvasLocation" x="-562.22547584187407" y="180.46875"/>
+            <point key="canvasLocation" x="-444" y="149"/>
         </view>
     </objects>
     <resources>
