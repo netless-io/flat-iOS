@@ -15,8 +15,8 @@ target 'Flat' do
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
   pod 'WechatOpenSDK'
-  pod 'Fastboard'
-  pod 'Fastboard/fpa'
+  pod 'Fastboard', :git => 'https://github.com/netless-io/fastboard-iOS'
+  pod 'Fastboard/fpa', :git => 'https://github.com/netless-io/fastboard-iOS'
   
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|
