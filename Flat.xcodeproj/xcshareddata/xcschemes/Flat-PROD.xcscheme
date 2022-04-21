@@ -72,7 +72,7 @@
       buildConfiguration = "Flat_Release">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Flat_Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
