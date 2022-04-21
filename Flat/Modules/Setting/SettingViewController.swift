@@ -151,8 +151,22 @@ class SettingViewController: UITableViewController {
     }
     
     @objc func onClickCancellation(sender: Any?) {
-        let vc = CancellationViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        showActivityIndicator()
+        ApiProvider.shared.request(fromApi: AccountCancelationValidateRequest()) { [weak self] result in
+            guard let self = self else { return }
+            self.stopActivityIndicator()
+            switch result {
+            case .failure(let error):
+                self.toast(error.localizedDescription)
+            case .success(let r):
+                if r.alreadyJoinedRoomCount > 0 {
+                    self.showAlertWith(title: NSLocalizedString("ClassesStillLeftTips", comment: "") + r.alreadyJoinedRoomCount.description, message: "", completionHandler: nil)
+                } else {
+                    let vc = CancellationViewController()
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+        }
     }
     
     @objc func onClickAbout(sender: Any?) {

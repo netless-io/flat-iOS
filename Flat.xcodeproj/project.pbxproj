@@ -233,6 +233,8 @@
 		8AE8930A2727FAE9009C71DA /* ChannelStatusCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE893092727FAE9009C71DA /* ChannelStatusCommand.swift */; };
 		8AE8F5642721386200D2E0F5 /* RoomInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */; };
 		8AE8F56627213ACD00D2E0F5 /* RoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */; };
+		8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */; };
+		8AED087928113840001DEFDC /* AccountCancelationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED087728113741001DEFDC /* AccountCancelationRequest.swift */; };
 		8AEF069F276973E40009904A /* AppleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF069E276973E40009904A /* AppleLogin.swift */; };
 		8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF06A0276980590009904A /* UIButton+CheckBox.swift */; };
 		8AFA91F5278EA78900E0CA61 /* FastboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */; };
@@ -487,6 +489,8 @@
 		8AE8F5632721386200D2E0F5 /* RoomInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoRequest.swift; sourceTree = "<group>"; };
 		8AE8F56527213ACD00D2E0F5 /* RoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfo.swift; sourceTree = "<group>"; };
 		8AEA34F327279D0C00EA4009 /* BorderPopoverBackgrounView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderPopoverBackgrounView.swift; sourceTree = "<group>"; };
+		8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationValidateRequest.swift; sourceTree = "<group>"; };
+		8AED087728113741001DEFDC /* AccountCancelationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationRequest.swift; sourceTree = "<group>"; };
 		8AEF069E276973E40009904A /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
 		8AEF06A0276980590009904A /* UIButton+CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+CheckBox.swift"; sourceTree = "<group>"; };
 		8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastboardViewController.swift; sourceTree = "<group>"; };
@@ -990,6 +994,7 @@
 		8A9FB3A027224E3F00F6F06F /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8AED087528113608001DEFDC /* Cancelation */,
 				8A1BF0BD280D0AF400D76F22 /* Auth */,
 				8A21DABF279FAB220060E25D /* Record */,
 				8ACE3A23272FED7700BC37F7 /* RoomHistoryRequest.swift */,
@@ -1344,6 +1349,15 @@
 			path = Popover;
 			sourceTree = "<group>";
 		};
+		8AED087528113608001DEFDC /* Cancelation */ = {
+			isa = PBXGroup;
+			children = (
+				8AED087728113741001DEFDC /* AccountCancelationRequest.swift */,
+				8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */,
+			);
+			path = Cancelation;
+			sourceTree = "<group>";
+		};
 		8AFA91F3278EA77800E0CA61 /* Fastboard */ = {
 			isa = PBXGroup;
 			children = (
@@ -1661,6 +1675,7 @@
 				8A7741C42734CFAC009FAADA /* BorderLabelView.swift in Sources */,
 				8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */,
 				8AD2EF762775665300087280 /* ShareManager.swift in Sources */,
+				8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,
 				8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */,
@@ -1673,6 +1688,7 @@
 				8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */,
 				8A716F3627B9FFF800DB408F /* LoginViewController+Debug.swift in Sources */,
 				8A9ACC03271E71B100E7E7CE /* RoomListInfo.swift in Sources */,
+				8AED087928113840001DEFDC /* AccountCancelationRequest.swift in Sources */,
 				8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */,
 				8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */,
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,

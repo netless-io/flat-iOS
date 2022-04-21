@@ -66,6 +66,9 @@
 "Class exit confirming title" = "确认退出房间？";
 
 
+"ClassesStillLeftTips" = "你有尚未结束或退出的房间，处理完毕后才可以申请注销账号, 剩余数量: ";
+
+
 "Close" = "关闭";
 
 

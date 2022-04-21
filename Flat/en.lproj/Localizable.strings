@@ -66,6 +66,9 @@
 "Class exit confirming title" = "Confirming exit room?";
 
 
+"ClassesStillLeftTips" = "You have rooms that have not been closed or withdrawn from, and you can only request to cancel your account after processing, the number remaining: ";
+
+
 "Close" = "Close";
 
 
