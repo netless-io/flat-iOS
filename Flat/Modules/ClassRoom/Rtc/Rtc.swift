@@ -10,11 +10,13 @@ import Foundation
 import AgoraRtcKit
 import RxSwift
 import RxRelay
+import RxCocoa
 
 class Rtc: NSObject {
     var agoraKit: AgoraRtcEngineKit!
     let screenShareInfo: ShareScreenInfo?
     let screenShareJoinBehavior: PublishRelay<Bool> = .init()
+    let pornSig = PublishRelay<Void>()
     private var joinChannelBlock: (()->Void)?
     
     // MARK: - Public
@@ -108,6 +110,14 @@ class Rtc: NSObject {
             })
         }
         joinChannel()
+
+        // 鉴黄
+        let inspectConfig = AgoraContentInspectConfig()
+        let inspectModule = AgoraContentInspectModule()
+        inspectModule.type = .moderation
+        inspectModule.interval = 60
+        inspectConfig.modules = [inspectModule]
+        agoraKit.enableContentInspect(true, config: inspectConfig)
     }
 }
 
@@ -144,5 +154,10 @@ extension Rtc: AgoraRtcEngineDelegate {
     func isScreenShareUid(uid: UInt) -> Bool {
         if let id = screenShareInfo?.uid, id == uid { return true }
         return false
+    }
+    
+    func rtcEngine(_ engine: AgoraRtcEngineKit, contentInspectResult result: AgoraContentInspectResult) {
+        let porn = result.rawValue == AgoraContentInspectResult.porn.rawValue
+        if porn { pornSig.accept(()) }
     }
 }
