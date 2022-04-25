@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: Export iPa
-    runs-on: macos-12
+    runs-on: self-hosted
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
