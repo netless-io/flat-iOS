@@ -59,6 +59,13 @@ jobs:
         run: |
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+      - name: Upload to appstore
+        env: 
+          APPSTOREACCOUNT: ${{ secrets.APPSTOREACCOUNT }}
+          APPSTOREPASSWORD: ${{ secrets.APPSTOREPASSWORD }}
+        run: |
+          # upload to appstore using altool
+          sh upload.sh "$APPSTOREACCOUNT" "$APPSTOREPASSWORD"
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
