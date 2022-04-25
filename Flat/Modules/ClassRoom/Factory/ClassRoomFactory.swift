@@ -37,6 +37,13 @@ struct ClassRoomFactory {
                                                       region: .CN,
                                                       userUID: AuthStore.shared.user?.userUUID ?? "")
         }
+        if var ua = fastRoomConfiguration.whiteSdkConfiguration.value(forKey: "netlessUA") as? [String] {
+            let isFlat = Bundle.main.bundleIdentifier == "io.agora.flat"
+            let str: String
+            str = isFlat ? "agora-flat/\(Env().version)" : "flat/\(Env().version)"
+            ua.append(str)
+            fastRoomConfiguration.whiteSdkConfiguration.setValue(ua, forKey: "netlessUA")
+        }
         fastRoomConfiguration.whiteSdkConfiguration.userCursor = true
         let userName = AuthStore.shared.user?.name ?? ""
         let payload: [String: String] = ["cursorName": userName]
