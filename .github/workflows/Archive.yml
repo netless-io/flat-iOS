@@ -70,6 +70,15 @@ jobs:
         env:
           BLACK_DUCK_TOKEN: ${{ secrets.BLACK_DUCK_TOKEN }}
         run: sh blackduck.sh
+      - name: AgoraScan
+        env:
+          AGORA_SCAN_TOKEN: ${{ secrets.AGORA_SCAN_TOKEN }}
+        run: |
+            cd iPa
+            NAME=$(find *.ipa)
+            IPAPATH=$(greadlink -f $NAME)
+            cd ..
+            ./AgoraScan $IPAPATH $AGORA_SCAN_TOKEN
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
