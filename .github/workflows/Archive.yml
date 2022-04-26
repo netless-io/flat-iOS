@@ -51,6 +51,13 @@ jobs:
         with:
           version: ''
           build-number: ${{github.run_number}}
+      - name: Create action log
+        env:
+          RUN_ID: ${{github.run_id}}
+          RUN_NUMBER: ${{github.run_number}}
+        run: |
+          touch "archive_$RUN_NUMBER.log"
+          echo "url: https://github.com/netless-io/flat-ios/actions/runs/$RUN_ID" >> archive_$RUN_NUMBER.log
       - name: Archive
         run: |
           sh archive.sh
@@ -63,24 +70,39 @@ jobs:
         env: 
           APPSTOREACCOUNT: ${{ secrets.APPSTOREACCOUNT }}
           APPSTOREPASSWORD: ${{ secrets.APPSTOREPASSWORD }}
+          RUN_NUMBER: ${{github.run_number}}
         run: |
           # upload to appstore using altool
           sh upload.sh "$APPSTOREACCOUNT" "$APPSTOREPASSWORD"
+          IPA=$(find . -name '*.ipa')
+          SHA=$(shasum -a 256 $IPA)
+          echo "sha: $SHA" >> archive_$RUN_NUMBER.log
       - name: BlackDuck
         env:
           BLACK_DUCK_TOKEN: ${{ secrets.BLACK_DUCK_TOKEN }}
-        run: sh blackduck.sh
+          BD_HOST: ${{ secrets.BD_HOST }}
+          RUN_NUMBER: ${{github.run_number}}
+        run: | 
+          sh blackduck.sh
+          echo "blackduck: $BD_HOST/api/projects/888fe533-a493-45d1-adfd-9e4765793731/versions/ae27340f-0807-4fb0-93a4-5ee322ece657/components" >> archive_$RUN_NUMBER.log
       - name: AgoraScan
         env:
           AGORA_SCAN_TOKEN: ${{ secrets.AGORA_SCAN_TOKEN }}
+          RUN_NUMBER: ${{github.run_number}}
         run: |
             cd iPa
             NAME=$(find *.ipa)
             IPAPATH=$(greadlink -f $NAME)
             cd ..
-            ./AgoraScan $IPAPATH $AGORA_SCAN_TOKEN
+            AGORA_SCAN=$(./AgoraScan $IPAPATH $AGORA_SCAN_TOKEN)
+            echo "agora_scan: $AGORA_SCAN" >> archive_$RUN_NUMBER.log
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: output
           path: iPa/
+      - name: Upload Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: report
+          path: archive_${{github.run_number}}.log
