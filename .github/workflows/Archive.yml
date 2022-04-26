@@ -66,6 +66,10 @@ jobs:
         run: |
           # upload to appstore using altool
           sh upload.sh "$APPSTOREACCOUNT" "$APPSTOREPASSWORD"
+      - name: BlackDuck
+        env:
+          BLACK_DUCK_TOKEN: ${{ secrets.BLACK_DUCK_TOKEN }}
+        run: sh blackduck.sh
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
