@@ -39,7 +39,8 @@ class JoinRoomViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fillTextfieldWithPasterBoard()
+        // Remove reading paste board to reduce legal risk
+//        fillTextfieldWithPasteBoard()
     }
     
     override func viewDidLoad() {
@@ -91,22 +92,22 @@ class JoinRoomViewController: UIViewController {
     }
     
     // MARK: - Private
-    func fillTextfieldWithPasterBoard() {
-        guard (subjectTextField.text ?? "").isEmpty else { return }
-        if let str = UIPasteboard.general.string, !str.isEmpty {
-            if let r = try? str.matchExpressionPattern("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"),
-                let url = URL(string: r) {
-                let id = url.lastPathComponent
-                subjectTextField.text = id
-            } else if let num = try? str.matchExpressionPattern("(\\d ?){10}") {
-                let r = num.replacingOccurrences(of: " ", with: "")
-                subjectTextField.text = r
-            } else {
-                return
-            }
-            subjectTextField.sendActions(for: .valueChanged)
-        }
-    }
+//    func fillTextfieldWithPasteBoard() {
+//        guard (subjectTextField.text ?? "").isEmpty else { return }
+//        if let str = UIPasteboard.general.string, !str.isEmpty {
+//            if let r = try? str.matchExpressionPattern("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"),
+//                let url = URL(string: r) {
+//                let id = url.lastPathComponent
+//                subjectTextField.text = id
+//            } else if let num = try? str.matchExpressionPattern("(\\d ?){10}") {
+//                let r = num.replacingOccurrences(of: " ", with: "")
+//                subjectTextField.text = r
+//            } else {
+//                return
+//            }
+//            subjectTextField.sendActions(for: .valueChanged)
+//        }
+//    }
     
     func bindJoinEnable() {
         subjectTextField.rx.text.orEmpty.asDriver()
