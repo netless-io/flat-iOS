@@ -82,8 +82,9 @@ jobs:
           BLACK_DUCK_TOKEN: ${{ secrets.BLACK_DUCK_TOKEN }}
           BD_HOST: ${{ secrets.BD_HOST }}
           RUN_NUMBER: ${{github.run_number}}
-        run: | 
-          sh blackduck.sh
+          BD_COMMAND: ${{secrets.BLACK_DUCK_COMMAND}}
+        run: |
+          sh blackduck.sh "$BLACK_DUCK_TOKEN" "$BD_COMMAND"
           echo "blackduck: $BD_HOST/api/projects/888fe533-a493-45d1-adfd-9e4765793731/versions/ae27340f-0807-4fb0-93a4-5ee322ece657/components" >> archive_$RUN_NUMBER.log
       - name: AgoraScan
         env:
