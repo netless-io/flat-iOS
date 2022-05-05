@@ -486,17 +486,6 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.turnScreenShare(on: isOn)
             })
             .disposed(by: rx.disposeBag)
-        
-        rtcViewController.viewModel.rtc.pornSig
-            .asDriverOnErrorJustComplete()
-            .drive(with: self, onNext: { weakSelf, _ in
-                if let _ = weakSelf.presentedViewController { weakSelf.dismiss(animated: false, completion: nil) }
-                let str = NSLocalizedString("PornDetected", comment: "") + ", " + NSLocalizedString("Leaving room soon", comment: "")
-                weakSelf.showAlertWith(message: str) {
-                    weakSelf.stopSubModulesAndLeaveUIHierarchy()
-                }
-            })
-            .disposed(by: rx.disposeBag)
     }
     
     func bindRecording() {
