@@ -42,6 +42,10 @@ struct Env {
         "https://\(value(for: "API_URL") as String)"
     }
     
+    var name: String {
+        Bundle.main.infoDictionary?["CFBundleName"] as? String ?? ""
+    }
+    
     var version: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
