@@ -38,9 +38,11 @@ struct ClassRoomFactory {
                                                       userUID: AuthStore.shared.user?.userUUID ?? "")
         }
         if var ua = fastRoomConfiguration.whiteSdkConfiguration.value(forKey: "netlessUA") as? [String] {
+            let env = Env()
             let isFlat = Bundle.main.bundleIdentifier == "io.agora.flat"
+            let productName = env.name.replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: " ", with: "_")
             let str: String
-            str = isFlat ? "agora-flat/\(Env().version)" : "flat/\(Env().version)"
+            str = isFlat ? "FLAT/NETLESS_\(env.region)@\(env.version)" : "FLAT/\(productName)_\(env.region)@\(env.version)"
             ua.append(str)
             fastRoomConfiguration.whiteSdkConfiguration.setValue(ua, forKey: "netlessUA")
         }
