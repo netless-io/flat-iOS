@@ -28,6 +28,15 @@ class LoginViewController: UIViewController {
         }
     }
     
+    var deviceAgreementAgree: Bool {
+        get {
+            UserDefaults.standard.value(forKey: "deviceAgreementAgree") as? Bool ?? false
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "deviceAgreementAgree")
+        }
+    }
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if traitCollection.verticalSizeClass == .compact || traitCollection.horizontalSizeClass == .compact {
             return .portrait
@@ -40,19 +49,26 @@ class LoginViewController: UIViewController {
         print(self, "deinit")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !deviceAgreementAgree {
+            showDeviceAgreeAlert()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         loadHistory()
         bind()
-        #if DEBUG
+#if DEBUG
         let sel = Selector(("debugLogin"))
         if responds(to: sel) {
             let doubleTap = UITapGestureRecognizer(target: self, action: sel)
             doubleTap.numberOfTapsRequired = 2
             view.addGestureRecognizer(doubleTap)
         }
-        #endif
+#endif
     }
     
     // MARK: - Action
@@ -104,27 +120,29 @@ class LoginViewController: UIViewController {
         smsAuthView.phoneTextfield.text = lastLoginPhone
     }
     
+    func showDeviceAgreeAlert() {
+        let vc = PrivacyAlertViewController(
+            agreeClick: { [unowned self] in
+                self.dismiss(animated: false)
+                self.deviceAgreementAgree = true
+            },
+            cancelClick: {
+                exit(0)
+            },
+            alertTitle: NSLocalizedString("Service and privacy", comment: ""),
+            agreeTitle: NSLocalizedString("Agree and continue", comment: ""),
+            rejectTitle: NSLocalizedString("Disagree and exit", comment: ""),
+            attributedString: agreementAttributedString())
+        vc.clickEmptyToCancel = false
+        present(vc, animated: true)
+    }
+    
     func bind() {
         smsAuthView.additionalCheck = { [weak self] sender in
             guard let self = self else { return .failure("") }
             let agree = self.checkAgreementDidAgree()
             if agree { return .success(())}
-            
-            let vc = PrivacyAlertViewController { [unowned self] in
-                self.dismiss(animated: false)
-                self.onClickPrivacy()
-            } agreementClick: { [unowned self] in
-                self.dismiss(animated: false)
-                self.onClickServiceAgreement()
-            } agreeClick: { [unowned self] in
-                self.dismiss(animated: false)
-                self.agreementCheckButton.isSelected = true
-            } cancelClick: {
-                self.dismiss(animated: false)
-            }
-            
-            self.present(vc, animated: true)
-            
+            self.showAgreementCheckAlert()
             return .failure("")
         }
         
@@ -133,6 +151,22 @@ class LoginViewController: UIViewController {
         }
         
         loginButton.addTarget(self, action: #selector(onClickLogin(sender:)), for: .touchUpInside)
+    }
+    
+    func showAgreementCheckAlert() {
+        let vc = PrivacyAlertViewController(
+            agreeClick: { [unowned self] in
+                self.dismiss(animated: false)
+                self.agreementCheckButton.isSelected = true
+            },
+            cancelClick: { [unowned self] in
+                self.dismiss(animated: false)
+            },
+            alertTitle: NSLocalizedString("Service and privacy", comment: ""),
+            agreeTitle: NSLocalizedString("Have read and agree", comment: ""),
+            rejectTitle: NSLocalizedString("Reject", comment: ""),
+            attributedString: agreementAttributedString1())
+        present(vc, animated: true)
     }
     
     func checkAgreementDidAgree() -> Bool {
@@ -168,7 +202,7 @@ class LoginViewController: UIViewController {
     @available(iOS 13.0, *)
     @objc func onClickAppleLogin() {
         guard checkAgreementDidAgree() else {
-            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            showAgreementCheckAlert()
             return
         }
         guard let launchCoordinator = globalLaunchCoordinator else { return }
@@ -187,7 +221,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func onClickWechatButton(_ sender: Any) {
         guard checkAgreementDidAgree() else {
-            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            showAgreementCheckAlert()
             return
         }
         guard let launchCoordinator = globalLaunchCoordinator else { return }
@@ -195,12 +229,12 @@ class LoginViewController: UIViewController {
         self.wechatLogin?.removeLaunchItemFromLaunchCoordinator?()
         self.wechatLogin = WechatLogin()
         self.wechatLogin?.startLogin(withAuthStore: AuthStore.shared,
-                                 launchCoordinator: launchCoordinator) { [weak self] result in
+                                     launchCoordinator: launchCoordinator) { [weak self] result in
             switch result {
             case .success(let user):
-                #if DEBUG
+#if DEBUG
                 print("wechat login user: \(user)")
-                #endif
+#endif
                 return
             case .failure(let error):
                 self?.showAlertWith(message: error.localizedDescription.isEmpty ? "Login fail" : error.localizedDescription)
@@ -210,7 +244,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func onClickGithubButton(_ sender: Any) {
         guard checkAgreementDidAgree() else {
-            toast(NSLocalizedString("Please agree to the Terms of Service first", comment: ""))
+            showAgreementCheckAlert()
             return
         }
         guard let coordinator = globalLaunchCoordinator else { return }
@@ -227,7 +261,7 @@ class LoginViewController: UIViewController {
             }
         })
     }
-
+    
     
     @objc func onClickAgreement(sender: UIButton) {
         sender.isSelected = !sender.isSelected

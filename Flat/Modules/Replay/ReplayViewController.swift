@@ -58,7 +58,7 @@ class ReplayViewController: UIViewController {
     func setupPlayer() {
         // Set up video player
         combinePlayer.delegate = self
-        whiteVideoView.setAVPlayer(combinePlayer.nativePlayer)
+        whiteVideoView.setAVPlayer(combinePlayer.nativePlayer!)
         
         let videoSlice = info.recordInfo.first!
         let config = WhitePlayerConfig(room: info.whiteboardRoomUUID,
@@ -129,7 +129,7 @@ extension ReplayViewController: ReplayOverlayDelegate {
     }
     
     func replayOverlayDidClickBackward(_ overlay: ReplayOverlay) {
-        guard let item = combinePlayer.nativePlayer.currentItem else { return }
+        guard let item = combinePlayer.nativePlayer?.currentItem else { return }
         let time = item.currentTime()
         let seconds = max(time.seconds - 15, 0)
         combinePlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: time.timescale)) { _ in
@@ -139,7 +139,7 @@ extension ReplayViewController: ReplayOverlayDelegate {
     }
     
     func replayOverlayDidClickForward(_ overlay: ReplayOverlay) {
-        guard let item = combinePlayer.nativePlayer.currentItem else { return }
+        guard let item = combinePlayer.nativePlayer?.currentItem else { return }
         let time = item.currentTime()
         let seconds = min(time.seconds + 15, item.duration.seconds)
         combinePlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: time.timescale)) { _ in
@@ -148,7 +148,7 @@ extension ReplayViewController: ReplayOverlayDelegate {
     }
     
     func replayOverlayDidClickSeekToPercent(_ overlay: ReplayOverlay, percent: Float) {
-        guard let item = combinePlayer.nativePlayer.currentItem else { return }
+        guard let item = combinePlayer.nativePlayer?.currentItem else { return }
         let seconds = item.duration.seconds * Double(percent)
         combinePlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: item.duration.timescale)) { _ in
             
@@ -159,7 +159,7 @@ extension ReplayViewController: ReplayOverlayDelegate {
 
 extension ReplayViewController: WhiteCombineDelegate {
     func combinePlayerEndBuffering() {
-        if let track = combinePlayer.nativePlayer.currentItem?.tracks.first,
+        if let track = combinePlayer.nativePlayer?.currentItem?.tracks.first,
            let size = track.assetTrack?.naturalSize {
             let ratio = videoScrollView.frame.height / size.height
             let width = ratio * size.width

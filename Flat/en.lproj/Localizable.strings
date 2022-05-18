@@ -15,6 +15,18 @@
 "Acknowledgement" = "Libraries We Use";
 
 
+"Agree" = "Agree";
+
+
+"Agree and continue" = "Agree and continue";
+
+
+"AgreementText" = "Thank you for trusting and using Flat.\nWe will rely on the Service Agreement and Privacy Policy to help you understand how we collect, use, store, and use your information.\nPolicy to help you understand how we collect, use, and store your personal information\nand storage of your personal information and your rights with respect to them.\nYour rights.\nWhen you use Flat, we will collect information about your device, logs and browsing history.\nWhen you use Flat, we will collect information about your device, logs and browsing history, and to\nYou may grant Flat access to your device's camera, microphone, etc. in order to ensure your class experience.\nTo ensure your class experience, you can grant Flat access to your device's camera, microphone, and other information.\nYou can find out more by reading the full Service Agreement and Privacy Policy for more information.";
+
+
+"AgreementText1" = "In order to better ensure your legal rights and interests, please read and\nagree to the following agreement Service Agreement & Privacy Policy";
+
+
 "Alert" = "Alert";
 
 
@@ -87,6 +99,9 @@
 "Contact Us" = "Contact Us";
 
 
+"Continue" = "Continue";
+
+
 "Copy Invite Link" = "Copy Link";
 
 
@@ -117,6 +132,9 @@
 "Disagree" = "Disagree";
 
 
+"Disagree and exit" = "Disagree and exit";
+
+
 "Edit" = "Edit";
 
 
@@ -133,6 +151,9 @@
 
 
 "Enter Room" = "Enter Room";
+
+
+"Exit" = "Exit";
 
 
 "FPA" = "Network Acceleration";
@@ -336,6 +357,9 @@
 "RecordingStartTips" = "Recording stared";
 
 
+"Reject" = "Reject";
+
+
 "Remove From List" = "Remove From List";
 
 
@@ -424,6 +448,9 @@
 
 
 "Service Agreement" = "Service Agreement";
+
+
+"Service and privacy" = "User Agreement and Privacy Policy";
 
 
 "Setting" = "Setting";

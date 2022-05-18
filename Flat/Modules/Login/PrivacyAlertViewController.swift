@@ -9,68 +9,73 @@
 import UIKit
 
 class PrivacyAlertViewController: UIViewController {
-    internal init(privacyClick: @escaping (() -> Void),
-                  agreementClick: @escaping (() -> Void),
-                  agreeClick: @escaping (() -> Void),
-                  cancelClick: @escaping (() -> Void)) {
-        self.privacyClick = privacyClick
-        self.agreementClick = agreementClick
+    internal init(agreeClick: @escaping (() -> Void),
+                  cancelClick: @escaping (() -> Void),
+                  alertTitle: String,
+                  agreeTitle: String,
+                  rejectTitle: String,
+                  attributedString: NSAttributedString) {
         self.agreeClick = agreeClick
         self.cancelClick = cancelClick
+        self.alertTitle = alertTitle
+        self.agreeTitle = agreeTitle
+        self.rejectTitle = rejectTitle
+        self.attributedString = attributedString
         super.init(nibName: nil, bundle: nil)
         modalTransitionStyle = .crossDissolve
         modalPresentationStyle = .overCurrentContext
     }
     
+    let agreeClick: (()->Void)
+    let cancelClick: (()->Void)
+    let alertTitle: String
+    let agreeTitle: String
+    let rejectTitle: String
+    let attributedString: NSAttributedString
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let privacyClick: (()->Void)
-    let agreementClick: (()->Void)
-    let agreeClick: (()->Void)
-    let cancelClick: (()->Void)
-    
-    @IBOutlet weak var buttonStack: UIStackView!
-    lazy var serviceBtn: UIButton = UIButton(type: .system)
-    lazy var privacyBtn: UIButton = UIButton(type: .system)
+    var clickEmptyToCancel = true
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var attributedStringTextView: UITextView!
     @IBOutlet weak var mainBgView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
-    
+    @IBOutlet weak var cancelBtn: UIButton!
+    @IBOutlet weak var agreeBtn: FlatGeneralCrossButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        titleLabel.text = alertTitle
+        agreeBtn.setTitle(agreeTitle, for: .normal)
+        cancelBtn.setTitle(rejectTitle, for: .normal)
+        cancelBtn.layer.borderWidth = 1 / UIScreen.main.scale
+        
         titleLabel.textColor = .text
         mainBgView.backgroundColor = .whiteBG
-        buttonStack.addArrangedSubview(privacyBtn)
-        buttonStack.addArrangedSubview(serviceBtn)
-        privacyBtn.setTitle(pretty(agreementTitle: NSLocalizedString("Privacy Policy", comment: "")), for: .normal)
-        serviceBtn.setTitle(pretty(agreementTitle: NSLocalizedString("Service Agreement", comment: "")), for: .normal)
-        privacyBtn.addTarget(self, action: #selector(onClickPrivacy(_:)), for: .touchUpInside)
-        serviceBtn.addTarget(self, action: #selector(onClickService(_:)), for: .touchUpInside)
-        privacyBtn.titleLabel?.font = .systemFont(ofSize: 14)
-        serviceBtn.titleLabel?.font = .systemFont(ofSize: 14)
+        
+        let maxHeight: CGFloat = 280
+        let b = attributedString.boundingRect(with: .init(width: maxHeight, height: .infinity), options: .usesLineFragmentOrigin, context: nil)
+        textViewHeightConstraint.constant = min(b.height + 14, 340)
+        attributedStringTextView.attributedText = attributedString
+        attributedStringTextView.linkTextAttributes = [.foregroundColor: UIColor.brandColor, .underlineColor: UIColor.clear]
         
         let btn = UIButton(type: .custom)
+        btn.tag = 1
         view.insertSubview(btn, at: 0)
         btn.addTarget(self, action: #selector(onClickReject(_:)), for: .touchUpInside)
         btn.snp.makeConstraints { $0.edges.equalToSuperview() }
-    }
-    
-    func pretty(agreementTitle: String)-> String { return "《\(agreementTitle)》" }
-    
-    @objc func onClickPrivacy(_ sender: Any) {
-        privacyClick()
-    }
-    
-    @objc func onClickService(_ sender: Any) {
-        agreementClick()
     }
     
     @IBAction func onClickAgree(_ sender: Any) {
         agreeClick()
     }
     
-    @IBAction func onClickReject(_ sender: Any) {
+    @IBAction func onClickReject(_ sender: UIButton) {
+        if sender.tag == 1, !clickEmptyToCancel {
+            return
+        }
         cancelClick()
     }
 }
