@@ -395,7 +395,7 @@ class ClassRoomViewController: UIViewController {
             .drive(with: self, onNext: { weakSelf, enable in
                 weakSelf.fastboardViewController.fastRoom.setAllPanel(hide: !enable)
                 weakSelf.fastboardViewController.fastRoom.updateWritable(enable, completion: nil)
-                weakSelf.rightToolBar.forceButtonHide(weakSelf.cloudStorageButton, hide: !enable)
+                weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: enable)
             })
             .disposed(by: rx.disposeBag)
     }
@@ -647,15 +647,15 @@ class ClassRoomViewController: UIViewController {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
                                          views: [cloudStorageButton, usersButton, inviteButton, settingButton])
-            bar.forceButtonHide(cloudStorageButton, hide: true)
+            bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.narrowStyle = .none
             return bar
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
                                          views: [cloudStorageButton, usersButton, inviteButton, settingButton, moreButton])
-            bar.forceButtonHide(cloudStorageButton, hide: true)
-            bar.forceButtonHide(moreButton, hide: !viewModel.isTeacher)
+            bar.forceUpdate(button: cloudStorageButton, visible: false)
+            bar.forceUpdate(button: moreButton, visible: viewModel.isTeacher)
             return bar
         }
     }()

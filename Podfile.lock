@@ -120,7 +120,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Fastboard:
-    :commit: 041afaacbd6e626205f44c93a1faa01f2883908e
+    :commit: ce193d001a622c90a4b1c0502a23ede6f57fdc91
     :git: https://github.com/netless-io/fastboard-iOS
 
 SPEC CHECKSUMS:
