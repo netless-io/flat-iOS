@@ -110,19 +110,20 @@ class LoginViewController: UIViewController {
             let agree = self.checkAgreementDidAgree()
             if agree { return .success(())}
             
-            let alertVC = UIAlertController(title: NSLocalizedString("Alert", comment: ""), message: NSLocalizedString("Please agree to the Terms of Service first", comment: ""), preferredStyle: .actionSheet)
-            alertVC.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-            alertVC.addAction(.init(title: NSLocalizedString("Privacy Policy", comment: ""), style: .default) { _ in
+            let vc = PrivacyAlertViewController { [unowned self] in
+                self.dismiss(animated: false)
                 self.onClickPrivacy()
-            })
-            alertVC.addAction(.init(title: NSLocalizedString("Service Agreement", comment: ""), style: .default) { _ in
+            } agreementClick: { [unowned self] in
+                self.dismiss(animated: false)
                 self.onClickServiceAgreement()
-            })
-            alertVC.addAction(.init(title: NSLocalizedString("Have read and agree", comment: ""), style: .default) { _ in
+            } agreeClick: { [unowned self] in
+                self.dismiss(animated: false)
                 self.agreementCheckButton.isSelected = true
-            })
+            } cancelClick: {
+                self.dismiss(animated: false)
+            }
             
-            self.popoverViewController(viewController: alertVC, fromSource: sender)
+            self.present(vc, animated: true)
             
             return .failure("")
         }
