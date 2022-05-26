@@ -206,7 +206,10 @@ class ClassRoomViewController: UIViewController {
         }
     }
     
-//    func setupChatViewController() {
+    func setupChatViewController() {
+        viewModel.rtm.joinChannelId(viewModel.chatChannelId)
+            .subscribe()
+            .disposed(by: rx.disposeBag)
 //        print("setup chatVC")
 //        chatButton.isHidden = true
 //        let banNotice = viewModel.state.messageBan
@@ -262,7 +265,7 @@ class ClassRoomViewController: UIViewController {
 //                self?.chatButton.updateBadgeHide(!show)
 //            })
 //            .disposed(by: chatVCDisposeBag)
-//    }
+    }
     
     // MARK: - Private
     func bindGeneral() {
@@ -280,7 +283,7 @@ class ClassRoomViewController: UIViewController {
             })
             .subscribe(with: self, onNext: { weakSelf, _ in
                 weakSelf.rightToolBar.isHidden = false
-//                weakSelf.setupChatViewController()
+                weakSelf.setupChatViewController()
             }, onError: { weakSelf, error in
                 weakSelf.stopSubModulesAndLeaveUIHierarchy()
             })
