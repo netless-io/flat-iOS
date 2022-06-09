@@ -16,6 +16,14 @@ enum StorageCovertStep: String, Codable {
     case failed = "Failed"
 }
 
+enum ResourceType: String, Codable {
+    case white = "WhiteboardConvert"
+    case projector = "WhiteboardProjector"
+    case local = "LocalCourseware"
+    case online = "OnlineCourseware"
+    case normal = "NormalResources"
+}
+
 struct StorageFileModel: Codable, Equatable {
     enum FileType: CaseIterable {
         case img
@@ -82,6 +90,7 @@ struct StorageFileModel: Codable, Equatable {
     var fileName: String
     let fileSize: Int
     var fileType: FileType { .init(fileName: fileName) }
+    let resourceType: ResourceType
     var fileSizeDescription: String {
         String(format: "%.2fMB", Float(fileSize) / 1024 / 1024)
     }

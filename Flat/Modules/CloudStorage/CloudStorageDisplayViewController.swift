@@ -27,12 +27,12 @@ class CloudStorageDisplayViewController: UIViewController,
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        taskProgressPolling.startPolling()
+        taskProgressPolling.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        taskProgressPolling.pausePolling()
+        taskProgressPolling.pause()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -215,7 +215,7 @@ class CloudStorageDisplayViewController: UIViewController,
             }
             .forEach {
                 let uuid = $0.fileUUID
-                ConvertService.startConvert(fileUUID: uuid) { [weak self] r in
+                ConvertService.startConvert(fileUUID: uuid, isWhiteboardProjector: ConvertService.isDynamicPpt(url: $0.fileURL)) { [weak self] r in
                     switch r {
                     case .success(let model):
                         guard let self = self else { return }
@@ -239,34 +239,49 @@ class CloudStorageDisplayViewController: UIViewController,
         }
         guard !itemsShouldPolling.isEmpty else { return }
         itemsShouldPolling.forEach {
-            self.taskProgressPolling.insertPollingTask(withTaskUUID: $0.taskUUID,
-                                                       token: $0.taskToken,
-                                                       region: .init(rawValue: $0.region.rawValue),
-                                                       taskType: $0.taskType!) { progress, info in
-                print("task \(info?.uuid ?? "") progress \(progress)")
-            } result: { [weak self] success, info, error in
-                if let error = error {
-                    self?.toast(error.localizedDescription)
-                    return
+            let id = $0.taskUUID
+            switch $0.resourceType {
+            case .projector:
+                self.taskProgressPolling.insertProjectorPollingTask(withTaskUUID: id,
+                                                                    token: $0.taskToken,
+                                                                    region: .init(rawValue: $0.region.rawValue)) { progress in
+                    print("task projector \(id) progress \(progress)")
+                } result: { [weak self] success, info, error in
+                    if let error = error {
+                        self?.toast(error.localizedDescription)
+                        return
+                    }
+                    self?.removeConvertingTask(uuid: id, isFinished: info?.status == .finished)
                 }
-                guard let info = info else { return }
-                self?.removeConvertingTask(fromTaskUUID: info.uuid, status: info.status)
+            case .white:
+                self.taskProgressPolling.insertV5PollingTask(withTaskUUID: id,
+                                                             token: $0.taskToken,
+                                                             region: .init(rawValue: $0.region.rawValue),
+                                                             taskType: $0.taskType!) { progress in
+                    print("task v5 \(id) progress \(progress)")
+                } result: { [weak self] success, info, error in
+                    if let error = error {
+                        self?.toast(error.localizedDescription)
+                        return
+                    }
+                    self?.removeConvertingTask(uuid: id, isFinished: info?.status == .finished)
+                }
+            default:
+                return
             }
         }
         tableView.reloadData()
     }
     
-    func removeConvertingTask(fromTaskUUID uuid: String, status: WhiteConvertStatusV5) {
-        taskProgressPolling.cancelPollingTask(withTaskUUID: uuid)
-        
-        let isConvertSuccess = status == .finished
+    func removeConvertingTask(uuid: String, isFinished: Bool) {
+        taskProgressPolling.cancelTask(withTaskUUID: uuid)
         if let index = container.items.firstIndex(where: { $0.taskUUID == uuid }) {
             let item = container.items[index]
             ApiProvider.shared.request(fromApi: FinishConvertRequest(fileUUID: item.fileUUID, region: item.region)) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success:
-                    if isConvertSuccess {
+                    if isFinished {
                         if let index = self.container.items.firstIndex(where: { $0.taskUUID == uuid }){
                             var new = self.container.items[index]
                             new.convertStep = .done
@@ -368,7 +383,7 @@ class CloudStorageDisplayViewController: UIViewController,
         return refreshControl
     }()
     
-    lazy var taskProgressPolling = WhiteConverterV5()
+    lazy var taskProgressPolling = WhiteAdvanceConvertProgressPolling()
     
     // MARK: - TableViewDelegate
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

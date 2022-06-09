@@ -20,6 +20,10 @@ fileprivate struct ConvertConfig {
 }
 
 struct ConvertService {
+    static func isDynamicPpt(url: URL) -> Bool {
+        ConvertConfig.dynamicConvertPathExtensions.contains(url.pathExtension.lowercased())
+    }
+    
     static func convertingTaskTypeFor(url: URL) -> WhiteConvertTypeV5? {
         let ext = url.pathExtension.lowercased()
         if ConvertConfig.staticConvertPathExtensions.contains(ext) {
@@ -43,8 +47,9 @@ struct ConvertService {
     }
     
     static func startConvert(fileUUID: String,
+                             isWhiteboardProjector: Bool,
                              completion: @escaping ((Result<StartConvertResponse, Error>)->Void)) {
-        ApiProvider.shared.request(fromApi: StartConvertRequest(fileUUID: fileUUID)) { result in
+        ApiProvider.shared.request(fromApi: StartConvertRequest(fileUUID: fileUUID, isWhiteboardProjector: isWhiteboardProjector)) { result in
             switch result {
             case .success(let item):
                 print("submit convert task success")

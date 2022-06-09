@@ -8,10 +8,11 @@
 
 import Foundation
 
-struct UploadFinishRequest: FlatRequest {
+struct UploadFinishRequest: FlatRequest, Encodable {
     let fileUUID: String
     let region: Region
+    let isWhiteboardProjector: Bool
     var path: String { "/v1/cloud-storage/alibaba-cloud/upload/finish" }
-    var task: Task { .requestJSONEncodable(encodable: ["fileUUID": fileUUID, "region": region.rawValue])}
-    let responseType = EmptyResponse.self
+    var task: Task { .requestJSONEncodable(encodable: self) }
+    var responseType: EmptyResponse.Type { EmptyResponse.self }
 }

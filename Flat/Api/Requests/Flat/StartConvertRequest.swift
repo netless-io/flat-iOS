@@ -13,10 +13,11 @@ struct StartConvertResponse: Decodable {
     let taskUUID: String
 }
 
-struct StartConvertRequest: FlatRequest {
+struct StartConvertRequest: FlatRequest, Encodable {
     let fileUUID: String
+    let isWhiteboardProjector: Bool
     
     var path: String { "/v1/cloud-storage/convert/start" }
-    var task: Task { .requestJSONEncodable(encodable: ["fileUUID": fileUUID]) }
-    let responseType = StartConvertResponse.self
+    var task: Task { .requestJSONEncodable(encodable: self) }
+    var responseType: StartConvertResponse.Type { StartConvertResponse.self }
 }

@@ -19,6 +19,8 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         case multiPages(pages: [WhitePptPage], title: String)
         /// pptx
         case pptx(pages: [WhitePptPage], title: String)
+        /// project
+        case projectorPptx(uuid: String, prefix: String, title: String)
     }
     
     var fileSelectTask: StorageFileModel? {
@@ -127,34 +129,52 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         case .video, .music:
             fileContentSelectedHandler?(.media(url: item.fileURL, title: item.fileName))
         case .pdf, .ppt, .word:
+            
             guard let taskType = item.taskType else {
                 toast("can't get the task type")
                 return
             }
             fileSelectTask = item
-            WhiteConverterV5.checkProgress(withTaskUUID: item.taskUUID,
-                                           token: item.taskToken,
-                                           region: .init(rawValue: item.region.rawValue),
-                                           taskType: taskType) { [weak self] info, error in
-                self?.fileSelectTask = nil
-                if let error = error {
-                    self?.toast(error.localizedDescription)
-                    return
-                }
-                guard let info = info else { return }
-                switch info.status {
-                case .finished:
-                    let pages = info.progress?.convertedFileList.compactMap { return $0 } ?? []
-                    if item.fileName.hasSuffix("pptx") {
-                        self?.fileContentSelectedHandler?(.pptx(pages: pages, title: item.fileName))
-                    } else {
-                        self?.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
+            
+            if item.resourceType == .projector {
+                WhiteProjectorPolling.checkProgress(withTaskUUID: item.taskUUID, token: item.taskToken, region: .init(rawValue: item.region.rawValue)) { [weak self] info, error in
+                    self?.fileSelectTask = nil
+                    if let error = error {
+                        self?.toast(error.localizedDescription)
+                        return
                     }
-                default:
-                    self?.toast(NSLocalizedString("File not ready", comment: ""))
+                    guard let info = info else { return }
+                    switch info.status {
+                    case .finished:
+                        self?.fileContentSelectedHandler?(.projectorPptx(uuid: info.uuid, prefix: info.prefix, title: item.fileName))
+                    default:
+                        self?.toast(NSLocalizedString("File not ready", comment: ""))
+                    }
+                }
+            } else {
+                WhiteConverterV5.checkProgress(withTaskUUID: item.taskUUID,
+                                               token: item.taskToken,
+                                               region: .init(rawValue: item.region.rawValue),
+                                               taskType: taskType) { [weak self] info, error in
+                    self?.fileSelectTask = nil
+                    if let error = error {
+                        self?.toast(error.localizedDescription)
+                        return
+                    }
+                    guard let info = info else { return }
+                    switch info.status {
+                    case .finished:
+                        let pages = info.progress?.convertedFileList.compactMap { return $0 } ?? []
+                        if item.fileName.hasSuffix("pptx") {
+                            self?.fileContentSelectedHandler?(.pptx(pages: pages, title: item.fileName))
+                        } else {
+                            self?.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
+                        }
+                    default:
+                        self?.toast(NSLocalizedString("File not ready", comment: ""))
+                    }
                 }
             }
-            return
         case .unknown:
             toast("file type not defined")
         }

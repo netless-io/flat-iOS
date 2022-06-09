@@ -109,7 +109,7 @@ class UploadHomeViewController: UIViewController {
                                       shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
             let newTask = result.task.do(onSuccess: { fillUUID in
                 if ConvertService.isFileConvertible(withFileURL: url) {
-                    ConvertService.startConvert(fileUUID: fillUUID) { [weak self] result in
+                    ConvertService.startConvert(fileUUID: fillUUID, isWhiteboardProjector: ConvertService.isDynamicPpt(url: url)) { [weak self] result in
                         switch result {
                         case .success:
                             NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)

@@ -117,7 +117,6 @@ class UploadService {
         trackers.removeValue(forKey: fromURL)
     }
     
-    
     ///   - shouldAccessingSecurityScopedResource: If the file is outside of the app, it should be 'true'
     func createUploadTaskFrom(fileURL: URL, region: Region, shouldAccessingSecurityScopedResource: Bool) throws -> (task: Single<String>,  tracker: BehaviorRelay<UploadStatus>)  {
         if shouldAccessingSecurityScopedResource {
@@ -148,7 +147,7 @@ class UploadService {
                 }
             })
             .flatMap { [unowned self] _ -> Observable<String> in
-                return self.reportFinish(fileUUID: fileUUID!, region: region)
+                return self.reportFinish(fileUUID: fileUUID!, region: region, isWhiteboardProjector: ConvertService.isDynamicPpt(url: fileURL))
                     .do(onSubscribed: {
                         tracker.accept(.reporting)
                     }).map { _ in return fileUUID! }}
@@ -196,8 +195,8 @@ class UploadService {
         }
     }
     
-    fileprivate func reportFinish(fileUUID: String, region: Region) -> Observable<Void> {
-        ApiProvider.shared.request(fromApi: UploadFinishRequest(fileUUID: fileUUID, region: region)).mapToVoid()
+    fileprivate func reportFinish(fileUUID: String, region: Region, isWhiteboardProjector: Bool) -> Observable<Void> {
+        ApiProvider.shared.request(fromApi: UploadFinishRequest(fileUUID: fileUUID, region: region, isWhiteboardProjector: isWhiteboardProjector)).mapToVoid()
     }
     
     fileprivate func upload(fileURL: URL, info: UploadInfo) throws -> Observable<Void> {

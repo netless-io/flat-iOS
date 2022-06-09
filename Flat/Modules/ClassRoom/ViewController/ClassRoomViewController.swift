@@ -625,6 +625,8 @@ class ClassRoomViewController: UIViewController {
                 self.fastboardViewController.fastRoom.insertStaticDocument(pages, title: title, completionHandler: nil)
             case .pptx(pages: let pages, title: let title):
                 self.fastboardViewController.fastRoom.insertPptx(pages, title: title, completionHandler: nil)
+            case .projectorPptx(uuid: let uuid, prefix: let prefix, title: let title):
+                self.fastboardViewController.fastRoom.insertPptx(uuid: uuid, url: prefix, title: title)
             }
             self.dismiss(animated: true, completion: nil)
         }
