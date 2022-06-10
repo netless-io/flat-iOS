@@ -130,10 +130,11 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
                 }
             }
         default:
+            let isProjector = item.resourceType == .projector
             // Preview dynamic with web preview
             if ConvertService.convertingTaskTypeFor(url: item.fileURL) == .dynamic {
                 let formatURL = item.fileURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
-                let link = Env().webBaseURL + "/preview/\(formatURL)/\(item.taskToken)/\(item.taskUUID)/\(item.region.rawValue)/"
+                let link = Env().webBaseURL + "/preview/\(formatURL)/\(item.taskToken)/\(item.taskUUID)/\(item.region.rawValue)/\(isProjector ? "projector/" : "")"
                 if let url = URL(string: link) {
                     let config = SFSafariViewController.Configuration()
                     config.barCollapsingEnabled = true
