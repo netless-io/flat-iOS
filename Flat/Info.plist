@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>REGION</key>
-	<string>$(REGION)</string>
 	<key>AGORA_APP_ID</key>
 	<string>$(AGORA_APP_ID)</string>
 	<key>API_URL</key>
@@ -119,6 +117,8 @@
 	<string>$(NETLESS_APP_ID)</string>
 	<key>OSS_ACCESS_KEY_ID</key>
 	<string>$(OSS_ACCESS_KEY_ID)</string>
+	<key>REGION</key>
+	<string>$(REGION)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

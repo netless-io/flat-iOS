@@ -36,41 +36,71 @@ class UploadHomeViewController: UIViewController {
     // MARK: - Action
     @objc func onClick(_ button: UIButton) {
         let type = UploadType.allCases[button.tag]
-        if #available(iOS 14.0, *) {
-            switch type {
-            case .image:
-                var config = PHPickerConfiguration()
-                config.filter = .images
-                let vc = PHPickerViewController.init(configuration: config)
-                vc.delegate = self
-                presentPicker(vc)
-                return
-            case .video:
-                var config = PHPickerConfiguration()
-                config.filter = .videos
-                let vc = PHPickerViewController.init(configuration: config)
-                vc.delegate = self
-                presentPicker(vc)
-                return
-            case .audio, .doc:
-                let vc = UIDocumentPickerViewController(forOpeningContentTypes: type.utTypes)
-                vc.delegate = self
-                presentPicker(vc)
-                return
+        func present() {
+            if #available(iOS 14.0, *) {
+                switch type {
+                case .image:
+                    var config = PHPickerConfiguration()
+                    config.filter = .images
+                    let vc = PHPickerViewController.init(configuration: config)
+                    vc.delegate = self
+                    presentPicker(vc)
+                    return
+                case .video:
+                    var config = PHPickerConfiguration()
+                    config.filter = .videos
+                    let vc = PHPickerViewController.init(configuration: config)
+                    vc.delegate = self
+                    presentPicker(vc)
+                    return
+                case .audio, .doc:
+                    let vc = UIDocumentPickerViewController(forOpeningContentTypes: type.utTypes)
+                    vc.delegate = self
+                    presentPicker(vc)
+                    return
+                }
+            } else {
+                switch type {
+                case .image, .video:
+                    let vc = UIImagePickerController()
+                    vc.mediaTypes = type.allowedUTStrings
+                    vc.videoExportPreset = AVAssetExportPresetPassthrough
+                    vc.delegate = self
+                    presentPicker(vc)
+                case .audio, .doc:
+                    let vc = UIDocumentPickerViewController(documentTypes: type.allowedUTStrings, in: .open)
+                    vc.delegate = self
+                    presentPicker(vc)
+                }
             }
-        } else {
-            switch type {
-            case .image, .video:
-                let vc = UIImagePickerController()
-                vc.mediaTypes = type.allowedUTStrings
-                vc.videoExportPreset = AVAssetExportPresetPassthrough
-                vc.delegate = self
-                presentPicker(vc)
-            case .audio, .doc:
-                let vc = UIDocumentPickerViewController(documentTypes: type.allowedUTStrings, in: .open)
-                vc.delegate = self
-                presentPicker(vc)
+        }
+        
+
+        func presentImage() {
+            switch PHPhotoLibrary.authorizationStatus() {
+            case .notDetermined:
+                PHPhotoLibrary.requestAuthorization { [weak self] s in
+                    DispatchQueue.main.async {
+                        if s == .denied {
+                            self?.toast("permission denied")
+                            return
+                        }
+                        present()
+                    }
+                }
+                return
+            case .denied:
+                toast("permission denied")
+            default:
+                present()
             }
+        }
+        
+        switch type {
+        case .image, .video:
+            presentImage()
+        case .audio, .doc:
+            present()
         }
     }
     
