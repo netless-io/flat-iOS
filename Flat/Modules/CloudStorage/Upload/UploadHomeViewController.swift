@@ -209,7 +209,7 @@ class UploadHomeViewController: UIViewController {
     }
     
     // MARK: - Lazy
-    var tasksViewController: UploadTasksViewController = {
+    lazy var tasksViewController: UploadTasksViewController = {
         let vc = UploadTasksViewController()
         vc.modalPresentationStyle = .pageSheet
         return vc
@@ -263,11 +263,11 @@ extension UploadHomeViewController: UIDocumentPickerDelegate {
 extension UploadHomeViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         guard let item = results.first else {
-            dismiss(animated: true, completion: nil)
+            picker.dismiss(animated: true, completion: nil)
             return
         }
         guard let typeIdentifier = item.itemProvider.registeredTypeIdentifiers.first else { return }
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
         
         if picker.configuration.filter == .images {
             item.itemProvider.loadObject(ofClass: UIImage.self) { data, error in
