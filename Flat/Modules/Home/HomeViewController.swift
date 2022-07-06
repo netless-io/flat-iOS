@@ -51,7 +51,7 @@ class HomeViewController: UIViewController {
     
     let roomTableViewCellIdentifier = "roomTableViewCellIdentifier"
     
-    var cachedList: [ListStyle: [RoomListInfo]] = [:]
+    var cachedList: [ListStyle: [RoomBasicInfo]] = [:]
     
     var style: ListStyle = .exist {
         didSet {
@@ -66,7 +66,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    lazy var list: [RoomListInfo] = [] {
+    lazy var list: [RoomBasicInfo] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -194,7 +194,7 @@ class HomeViewController: UIViewController {
     }
     
     func loadRooms(_ sender: Any?, completion: @escaping ((Error?)->Void) = { _ in }) {
-        func handleResult(_ result: Result<[RoomListInfo], ApiError>) {
+        func handleResult(_ result: Result<[RoomBasicInfo], ApiError>) {
             switch result {
             case .success(let list):
                 self.list = list
@@ -226,8 +226,8 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc func onClassLeavingNotification(_ noti: Notification) {
-        guard let state = noti.userInfo?["state"] as? ClassRoomState else { return }
+    @objc func onClassLeavingNotification(_ notification: Notification) {
+        guard let state = notification.userInfo?["state"] as? ClassRoomState else { return }
         guard let vc = mainContainer?.concreteViewController else { return }
         let isStop = state.startStatus.value == .Stopped
         if let vc = vc as? MainSplitViewController {
@@ -237,11 +237,10 @@ class HomeViewController: UIViewController {
                 if !vc.viewControllers
                     .map ({ ($0 as? UINavigationController)?.topViewController ?? $0 })
                     .contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == state.roomUUID }) {
-                    ApiProvider.shared.request(fromApi: RoomInfoRequest(uuid: state.roomUUID)) { result in
+                    RoomBasicInfo.fetchInfoBy(uuid: state.roomUUID, periodicUUID: nil) { result in
                         switch result {
                         case .success(let r):
-                            let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: r.roomInfo, roomUUID: state.roomUUID)
-                            vc.push(detailVC)
+                            vc.push(RoomDetailViewController(info: r))
                         case .failure: return
                         }
                     }
@@ -258,14 +257,12 @@ class HomeViewController: UIViewController {
             if !isStop {
                 if !vcs.contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == state.roomUUID }) {
                     if let info = list.first(where: { $0.roomUUID == state.roomUUID }) {
-                        let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withListinfo: info)
-                        vcs.append(detailVC)
+                        vcs.append(RoomDetailViewController(info: info))
                     } else {
-                        ApiProvider.shared.request(fromApi: RoomInfoRequest(uuid: state.roomUUID)) { result in
+                        RoomBasicInfo.fetchInfoBy(uuid: state.roomUUID, periodicUUID: nil) { result in
                             switch result {
                             case .success(let r):
-                                let detailVC = RoomDetailViewControllerFactory.getRoomDetail(withInfo: r.roomInfo, roomUUID: state.roomUUID)
-                                vcs.append(detailVC)
+                                vcs.append(RoomDetailViewController(info: r))
                                 navi.setViewControllers(vcs, animated: false)
                             case .failure: return
                             }
@@ -326,7 +323,7 @@ class HomeViewController: UIViewController {
         return !list[indexPath.row].beginTime.isSameDayTo(list[lastIndex].beginTime)
     }
     
-    func config(cell: RoomTableViewCell, with room: RoomListInfo, indexPath: IndexPath) {
+    func config(cell: RoomTableViewCell, with room: RoomBasicInfo, indexPath: IndexPath) {
         cell.calendarView.isHidden = !shouldShowCalendarAt(indexPath: indexPath)
         
         let formatter = DateFormatter()
@@ -528,7 +525,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
-        let vc = RoomDetailViewControllerFactory.getRoomDetail(withListinfo: item)
+        let vc = RoomDetailViewController(info: item)
         mainContainer?.push(vc)
     }
     

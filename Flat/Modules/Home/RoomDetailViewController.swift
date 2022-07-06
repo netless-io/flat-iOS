@@ -87,19 +87,7 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
-    struct RoomDetailDisplayInfo {
-        let beginTime: Date
-        let endTime: Date
-        var roomStatus: RoomStartStatus
-        let roomType: ClassRoomType
-        let roomUUID: String
-        let isOwner: Bool
-        let formatterInviteCode: String
-        let hasRecord: Bool
-    }
-    
-    var info: RoomDetailDisplayInfo
-    var detailInfo: RoomInfo?
+    var info: RoomBasicInfo
     var availableOperations: [RoomOperation] = []
     
     let deviceStatusStore: UserDevicePreferredStatusStore
@@ -110,13 +98,12 @@ class RoomDetailViewController: UIViewController {
     
     func updateStatus(_ status: RoomStartStatus) {
         info.roomStatus = status
-        detailInfo?.roomStatus = status
         if isViewLoaded {
             updateEnterRoomButtonTitle()
         }
     }
     
-    init(info: RoomDetailDisplayInfo) {
+    init(info: RoomBasicInfo) {
         self.info = info
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
         self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
@@ -147,11 +134,11 @@ class RoomDetailViewController: UIViewController {
     }
     
     // MARK: - Private
-    func loadData(completion: @escaping ((Result<RoomInfo, ApiError>)->Void)) {
-        RoomInfo.fetchInfoBy(uuid: info.roomUUID) { result in
+    func loadData(completion: @escaping ((Result<RoomBasicInfo, ApiError>)->Void)) {
+        RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: info.periodicUUID) { result in
             switch result {
             case .success(let detail):
-                self.detailInfo = detail
+                self.info = detail
                 completion(.success(detail))
             case .failure(let error):
                 completion(.failure(error))
@@ -225,14 +212,6 @@ class RoomDetailViewController: UIViewController {
     }
     
     func updateEnterRoomButtonTitle() {
-        if let detailInfo = detailInfo {
-            if self.info.isOwner, detailInfo.roomStatus == .Idle {
-                self.enterRoomButton.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
-            } else {
-                self.enterRoomButton.setTitle(NSLocalizedString("Enter Room", comment: ""), for: .normal)
-            }
-            return
-        }
         if self.info.isOwner, info.roomStatus == .Idle {
             self.enterRoomButton.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
         } else {
@@ -245,17 +224,10 @@ class RoomDetailViewController: UIViewController {
         let endTime: Date
         let status: RoomStartStatus
         let roomType: ClassRoomType
-        if let detailInfo = detailInfo {
-            beginTime = detailInfo.beginTime
-            endTime = detailInfo.endTime
-            status = detailInfo.roomStatus
-            roomType = detailInfo.roomType
-        } else {
-            beginTime = info.beginTime
-            endTime = info.endTime
-            status = info.roomStatus
-            roomType = info.roomType
-        }
+        beginTime = info.beginTime
+        endTime = info.endTime
+        status = info.roomStatus
+        roomType = info.roomType
         
         let formatter = DateFormatter()
         formatter.timeStyle = .short
@@ -314,51 +286,25 @@ class RoomDetailViewController: UIViewController {
     }
     
     @IBAction func onClickInvite(_ sender: UIButton) {
-        guard let detailInfo = detailInfo else {
-            showActivityIndicator()
-            loadData { result in
-                self.stopActivityIndicator()
-                switch result {
-                case .success:
-                    self.onClickInvite(sender)
-                case .failure(let error):
-                    self.showAlertWith(message: error.localizedDescription)
-                }
-            }
-            return
-        }
         let vc = ShareManager.createShareActivityViewController(roomUUID: info.roomUUID,
-                                                                beginTime: detailInfo.beginTime,
-                                                                title: detailInfo.title,
-                                                                roomNumber: detailInfo.inviteCode)
+                                                                beginTime: info.beginTime,
+                                                                title: info.title,
+                                                                roomNumber: info.inviteCode)
         popoverViewController(viewController: vc, fromSource: sender)
     }
     
     @IBAction func onClickEnterRoom(_ sender: Any) {
         enterRoomButton.isEnabled = false
-        // Fetch detail
-        guard let detailInfo = detailInfo else {
-            loadData { result in
-                switch result {
-                case .success:
-                    self.onClickEnterRoom(sender)
-                case .failure(let error):
-                    self.showAlertWith(message: error.localizedDescription)
-                    self.enterRoomButton.isEnabled = true
-                }
-            }
-            return
-        }
         
         // Join room
-        RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID) { [weak self] result in
+        RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID) { [weak self] result in
             guard let self = self else { return }
             self.enterRoomButton.isEnabled = true
             switch result {
             case .success(let playInfo):
-                let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo, detailInfo:
-                                                                        detailInfo, deviceStatus: .init(mic: self.micOn,
-                                                                                                        camera: self.cameraOn))
+                let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo,
+                                                                     detailInfo: self.info,
+                                                                     deviceStatus: .init(mic: self.micOn, camera: self.cameraOn))
                 self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             case .failure(let error):
                 self.showAlertWith(message: error.localizedDescription)

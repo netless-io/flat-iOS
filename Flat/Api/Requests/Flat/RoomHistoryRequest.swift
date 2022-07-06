@@ -14,5 +14,5 @@ struct RoomHistoryRequest: FlatRequest {
     
     var path: String { "/v1/room/list/history" }
     var task: Task { .requestURLEncodable(parameters: ["page": page])}
-    let responseType = [RoomListInfo].self
+    let responseType = [RoomBasicInfo].self
 }

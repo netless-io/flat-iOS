@@ -11,5 +11,6 @@ import Foundation
 
 struct JoinRoomInfo: Decodable {
     let roomUUID: String
+    let periodicUUID: String?
     let inviteCode: String
 }

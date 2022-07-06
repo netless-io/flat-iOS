@@ -77,9 +77,9 @@ class JoinRoomLaunchItem: LaunchItem {
         mainVC.concreteViewController.showActivityIndicator()
 
         
-        RoomPlayInfo.fetchByJoinWith(uuid: id)
+        RoomPlayInfo.fetchByJoinWith(uuid: id, periodicUUID: nil)
             .concatMap { info in
-                return RoomInfo.fetchInfoBy(uuid: id).map { (info, $0) }
+                return RoomBasicInfo.fetchInfoBy(uuid: id, periodicUUID: nil).map { (info, $0) }
             }
             .asSingle()
             .observe(on: MainScheduler.instance)

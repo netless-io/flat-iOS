@@ -34,13 +34,13 @@ extension RoomPlayInfo {
 }
 
 extension RoomPlayInfo {
-    static func fetchByJoinWith(uuid: String) -> Observable<Self> {
-        let request = JoinRoomRequest(info: .init(roomUUID: uuid, inviteCode: ""))
+    static func fetchByJoinWith(uuid: String, periodicUUID: String?) -> Observable<Self> {
+        let request = JoinRoomRequest(info: .init(roomUUID: uuid, periodicUUID: periodicUUID, inviteCode: ""))
         return ApiProvider.shared.request(fromApi: request)
     }
     
-    static func fetchByJoinWith(uuid: String, completion: @escaping ((Result<Self, ApiError>)->Void)) {
-        let request = JoinRoomRequest(info: .init(roomUUID: uuid, inviteCode: ""))
+    static func fetchByJoinWith(uuid: String, periodicUUID: String?, completion: @escaping ((Result<Self, ApiError>)->Void)) {
+        let request = JoinRoomRequest(info: .init(roomUUID: uuid, periodicUUID: periodicUUID, inviteCode: ""))
         ApiProvider.shared.request(fromApi: request, completionHandler: completion)
     }
 }

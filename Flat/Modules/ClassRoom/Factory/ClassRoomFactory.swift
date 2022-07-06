@@ -20,7 +20,7 @@ struct ClassRoomFactory {
     }
     
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
-                                            detailInfo: RoomInfo,
+                                            detailInfo: RoomBasicInfo,
                                             deviceStatus: DeviceStatus) -> ClassRoomViewController {
         let fastRoomConfiguration: FastRoomConfiguration
         if #available(iOS 13.0, *) {

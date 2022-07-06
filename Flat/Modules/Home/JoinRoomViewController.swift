@@ -58,15 +58,15 @@ class JoinRoomViewController: UIViewController {
         micOn = !micOn
     }
     
-    @objc func onJoin(_ sender: UIButton) {
+    @objc func onClickJoin(_ sender: UIButton) {
         guard let uuid = subjectTextField.text, !uuid.isEmpty else {
             return
         }
         
         sender.isEnabled = false
-        let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: uuid).share(replay: 1, scope: .whileConnected)
+        let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: uuid, periodicUUID: nil).share(replay: 1, scope: .whileConnected)
         let roomInfo = playInfo.flatMap { info in
-            return RoomInfo.fetchInfoBy(uuid: info.roomUUID)
+            return RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil)
         }
         Observable.zip(playInfo, roomInfo)
             .asSingle()
@@ -189,7 +189,7 @@ class JoinRoomViewController: UIViewController {
     lazy var joinButton: UIButton = {
         let btn = FlatGeneralButton(type: .custom)
         btn.setTitle(NSLocalizedString("Join", comment: ""), for: .normal)
-        btn.addTarget(self, action: #selector(onJoin(_:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(onClickJoin(_:)), for: .touchUpInside)
         return btn
     }()
     

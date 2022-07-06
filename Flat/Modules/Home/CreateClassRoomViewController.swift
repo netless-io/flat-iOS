@@ -209,9 +209,9 @@ class CreateClassRoomViewController: UIViewController {
 
         sender.isEnabled = false
         ApiProvider.shared.request(fromApi: createQuest)
-            .flatMap { info -> Observable<(RoomPlayInfo, RoomInfo)> in
-                let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID)
-                let roomInfo = RoomInfo.fetchInfoBy(uuid: info.roomUUID)
+            .flatMap { info -> Observable<(RoomPlayInfo, RoomBasicInfo)> in
+                let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID)
+                let roomInfo = RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil)
                 return Observable.zip(playInfo, roomInfo)
             }
             .asSingle()
@@ -237,10 +237,10 @@ class CreateClassRoomViewController: UIViewController {
     }
     
     func joinRoom(withUUID UUID: String, completion: ((Result<ClassRoomViewController, Error>)->Void)?) {
-        RoomPlayInfo.fetchByJoinWith(uuid: UUID) { playInfoResult in
+        RoomPlayInfo.fetchByJoinWith(uuid: UUID, periodicUUID: nil) { playInfoResult in
             switch playInfoResult {
             case .success(let playInfo):
-                RoomInfo.fetchInfoBy(uuid: UUID) { result in
+                RoomBasicInfo.fetchInfoBy(uuid: UUID, periodicUUID: nil) { result in
                     switch result {
                     case .success(let roomInfo):
                         let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo,
