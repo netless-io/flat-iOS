@@ -38,6 +38,7 @@ struct RoomBasicInfo: Decodable {
 
 extension RoomBasicInfo {
     /// This method can't get periodicUUID
+    /// Periodic room info can be fetched either periodicUUID or a inviteUUID
     static func fetchInfoBy(uuid: String, periodicUUID: String?) -> Observable<Self> {
         let request = RoomInfoRequest(uuid: uuid)
         return ApiProvider.shared.request(fromApi: request).map {
@@ -58,6 +59,7 @@ extension RoomBasicInfo {
     }
     
     /// This method can't get periodicUUID
+    /// Periodic room info can be fetched either periodicUUID or a inviteUUID
     static func fetchInfoBy(uuid: String, periodicUUID: String?, completion: @escaping ((Result<Self, ApiError>)->Void)) {
         let request = RoomInfoRequest(uuid: uuid)
         ApiProvider.shared.request(fromApi: request) { result in
