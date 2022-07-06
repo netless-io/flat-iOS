@@ -34,8 +34,8 @@ class ReplayViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupPlayer()
         setupViews()
+        setupPlayer()
     }
     
     // MARK: - Private
