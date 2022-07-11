@@ -10,18 +10,24 @@
 import UIKit
 import SafariServices
 import AcknowList
+import Whiteboard
 
 class AboutUsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTap)))
+    }
+    
+    @objc func onTap() {
+        versionLabel.text = versionLabel.text == "v\(Env().version) (\(Env().build))" ? "Whiteboard v\(WhiteSDK.version())" : "v\(Env().version) (\(Env().build))"
     }
 
     func setupViews() {
         title = NSLocalizedString("About", comment: "")
         view.backgroundColor = .whiteBG
         flatLabel.textColor = .text
-        versionLabel.text = "Version \(Env().version)"
+        versionLabel.text = "v\(Env().version) (\(Env().build))"
     }
     
     @IBAction func onClickPrivacyPolicy(_ sender: Any) {

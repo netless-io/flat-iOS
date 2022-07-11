@@ -9,6 +9,7 @@
 
 import UIKit
 import Whiteboard
+import Siren
 
 private var fpaKey: String? {
     guard let uid = AuthStore.shared.user?.userUUID else { return nil }
@@ -34,27 +35,8 @@ var userUseFPA: Bool {
 }
 
 class SettingViewController: UITableViewController {
-    enum DisplayVersion: CaseIterable {
-        case flat
-        case whiteboard
-        
-        var description: String {
-            switch self {
-            case .flat:
-                return "Flat v\(Env().version) (\(Env().build))"
-            case .whiteboard:
-                return "Whiteboard v\(WhiteSDK.version())"
-            }
-        }
-    }
-    
     let cellIdentifier = "cellIdentifier"
     var items: [Item] = []
-    var displayVersion: DisplayVersion = DisplayVersion.flat {
-        didSet {
-            updateItems()
-        }
-    }
     
     init() {
         super.init(style: .grouped)
@@ -94,7 +76,7 @@ class SettingViewController: UITableViewController {
                   targetAction: (self, #selector(self.onClickTheme(sender:)))),
             .init(image: UIImage(named: "update_version")!,
                   title: NSLocalizedString("Version", comment: ""),
-                  detail: displayVersion.description,
+                  detail: "Flat v\(Env().version) (\(Env().build))",
                   targetAction: (self, #selector(onVersion(sender:)))),
             .init(image: UIImage(named: "info")!,
                   title: NSLocalizedString("About", comment: ""),
@@ -141,13 +123,8 @@ class SettingViewController: UITableViewController {
     }
     
     @objc func onVersion(sender: Any?) {
-        guard let i = DisplayVersion.allCases.firstIndex(of: displayVersion) else { return }
-        let nextIndex = DisplayVersion.allCases.index(after: i)
-        if nextIndex == DisplayVersion.allCases.endIndex {
-            displayVersion = .allCases.first!
-        } else {
-            displayVersion = DisplayVersion.allCases[nextIndex]
-        }
+        let url = URL(string: "https://itunes.apple.com/app/id1598891661")!
+        UIApplication.shared.open(url)
     }
     
     @objc func onClickCancellation(sender: Any?) {
