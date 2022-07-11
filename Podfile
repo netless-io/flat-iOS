@@ -17,6 +17,7 @@ target 'Flat' do
   pod 'WechatOpenSDK'
   pod 'Fastboard'
   pod 'Fastboard/fpa'
+  pod 'Siren'
   
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|

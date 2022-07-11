@@ -10,6 +10,7 @@ import UIKit
 import IQKeyboardManagerSwift
 import Kingfisher
 import Fastboard
+import Siren
 
 var globalLaunchCoordinator: LaunchCoordinator? {
     if #available(iOS 13.0, *) {
@@ -23,6 +24,7 @@ var globalLaunchCoordinator: LaunchCoordinator? {
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var launch: LaunchCoordinator?
+    var checkOSSVersionObserver: NSObjectProtocol?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
@@ -46,6 +48,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
 #endif
+        
+        Siren.shared.apiManager = .init(country: .china)
+        Siren.shared.rulesManager = .init(globalRules: .relaxed)
+        checkOSSVersionObserver = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
+            let url = URL(string: "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/versions/latest/stable/iOS/ios_latest.json")!
+            let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 30)
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                URLCache.shared.removeCachedResponse(for: request)
+                if let data = data,
+                   let obj = try? JSONSerialization.jsonObject(with: data) as? [String: String],
+                   let force_min_version = obj["force_min_version"],
+                   let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
+                   currentVersion.compare(force_min_version, options: .numeric) == .orderedAscending {
+                    Siren.shared.rulesManager = .init(globalRules: .critical)
+                    Siren.shared.wail(performCheck: .onDemand)
+                } else {
+                    Siren.shared.wail()
+                }
+            }.resume()
+        }
+
         return true
     }
     
