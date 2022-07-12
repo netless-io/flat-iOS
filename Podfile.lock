@@ -25,6 +25,7 @@ PODS:
   - AgoraRtcEngine_iOS/VideoPreprocess (3.6.2)
   - AgoraRtcEngine_iOS/VirtualBackground (3.6.2)
   - AgoraRtm_iOS (1.4.10)
+  - CropViewController (2.6.1)
   - EmptyDataSet-Swift (5.0.0)
   - Fastboard (1.0.7):
     - Fastboard/core (= 1.0.7)
@@ -81,6 +82,7 @@ DEPENDENCIES:
   - AcknowList
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
+  - CropViewController
   - EmptyDataSet-Swift
   - Fastboard
   - Fastboard/fpa
@@ -101,6 +103,7 @@ SPEC REPOS:
     - AgoraFPA_iOS
     - AgoraRtcEngine_iOS
     - AgoraRtm_iOS
+    - CropViewController
     - EmptyDataSet-Swift
     - Fastboard
     - Hero
@@ -123,6 +126,7 @@ SPEC CHECKSUMS:
   AgoraFPA_iOS: 2202f574e6832567e368d5e69ad6da121a18ee4a
   AgoraRtcEngine_iOS: 5bf5d2bb6669a6f3606716a02f3fb3ac58708f25
   AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
+  CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
   Fastboard: 4269b1f75ab609c1911c35bf33cd2f00323f4777
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
@@ -140,6 +144,6 @@ SPEC CHECKSUMS:
   Whiteboard: 30994cee57483ae36b489c09dd64bba7217cff18
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 7ae62e7ff02a51496dccfe20e7c07f7c0baddf70
+PODFILE CHECKSUM: 11a8f1877f95eb51deef1e913ccc049ed24c6588
 
 COCOAPODS: 1.11.3

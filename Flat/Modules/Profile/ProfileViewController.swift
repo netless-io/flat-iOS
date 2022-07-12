@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import CropViewController
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let cellIdentifier = "profileCellIdentifier"
@@ -71,7 +72,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func onClickAvatar() {
         let vc = UIImagePickerController()
         vc.delegate = self
-        vc.allowsEditing = true
         mainContainer?.concreteViewController.present(vc, animated: true)
     }
     
@@ -147,6 +147,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.contentView.backgroundColor = .whiteBG
         cell.textLabel?.text = NSLocalizedString("Binding \(type.identifierString)", comment: "")
         cell.accessoryView = nil
+        cell.selectionStyle = .none
         if let bindInfo = bindInfo {
             let binded = bindInfo[type] ?? false
             cell.detailTextLabel?.text = NSLocalizedString(binded ? "Binded" : "Unbound", comment: "")
@@ -206,6 +207,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.detailTextLabel?.textColor = .subText
             cell.backgroundColor = .whiteBG
             cell.contentView.backgroundColor = .whiteBG
+            cell.selectionStyle = .none
             cell.accessoryView = nil
             if indexPath.row == 0 {
                 cell.textLabel?.text = NSLocalizedString("Nickname", comment: "")
@@ -227,7 +229,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 onClickNickName()
@@ -241,11 +242,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 }
 
-extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[.editedImage] as? UIImage,
-              let data = image.jpegData(compressionQuality: 1)
-        else { return }
+extension ProfileViewController: CropViewControllerDelegate {
+    func cropViewController(_ cropViewController: CropViewController, didCropToCircularImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
+        let data = image.jpegData(compressionQuality: 1)
         let path = NSTemporaryDirectory() + UUID().uuidString + ".jpg"
         FileManager.default.createFile(atPath: path, contents: data)
         let fileURL = URL(fileURLWithPath: path)
@@ -277,8 +276,18 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         catch {
             toast(error.localizedDescription)
         }
-        
         dismiss(animated: true)
+    }
+}
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else { return }
+        let vc = CropViewController(croppingStyle: .circular, image: image)
+        vc.delegate = self
+        dismiss(animated: false) {
+            self.mainContainer?.concreteViewController.present(vc, animated: true)
+        }
     }
     
     private func upload(info: UploadInfo, fileURL: URL) throws -> Observable<Void> {

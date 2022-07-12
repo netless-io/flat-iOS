@@ -18,6 +18,7 @@ target 'Flat' do
   pod 'Fastboard'
   pod 'Fastboard/fpa'
   pod 'Siren'
+  pod 'CropViewController'
   
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|
