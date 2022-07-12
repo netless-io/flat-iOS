@@ -10,7 +10,17 @@
 import Foundation
 import UIKit
 
+let avatarUpdateNotificationName: Notification.Name = .init(rawValue: "avatarUpdateNotificationName")
+
 typealias LoginHandler = (Result<User, ApiError>) -> Void
+
+enum BindingType: Int, CaseIterable, Codable {
+    case WeChat = 0
+    case Apple
+    case Github
+    
+    var identifierString: String { String(describing: self) }
+}
 
 class AuthStore {
     private let userDefaultKey = "AuthStore_user"
@@ -23,6 +33,7 @@ class AuthStore {
         if let data = UserDefaults.standard.data(forKey: userDefaultKey) {
             do {
                 user = try JSONDecoder().decode(User.self, from: data)
+                flatGenerator.token = user?.token
             }
             catch {
                 print("decode user error \(error)")
@@ -33,7 +44,7 @@ class AuthStore {
     var isLogin: Bool { user != nil }
     
     var user: User?
-
+     
     func logout() {
         user = nil
         UserDefaults.standard.removeObject(forKey: userDefaultKey)
@@ -58,17 +69,29 @@ class AuthStore {
         }
         self.user = user
         delegate?.authStoreDidLoginSuccess(self, user: user)
-        
-        #if DEBUG
-        var debugUsers = (try? JSONDecoder().decode([User].self, from: UserDefaults.standard.data(forKey: "debugUsers") ?? Data())) ?? []
-        if let index = debugUsers.firstIndex(where: { $0.userUUID == user.userUUID }) {
-            debugUsers[index] = user
-        } else {
-            debugUsers.append(user)
+    }
+    
+    // MARK: - Update info
+    func updateName(_ name: String) {
+        self.user?.name = name
+        if let user = user {
+            processLoginSuccessUserInfo(user)
         }
-        if let newData = try? JSONEncoder().encode(debugUsers) {
-            UserDefaults.standard.set(newData, forKey: "debugUsers")
+    }
+    
+    func updateAvatar(_ url: URL) {
+        self.user?.avatar = url
+        if let user = user {
+            processLoginSuccessUserInfo(user)
         }
-        #endif
+        NotificationCenter.default.post(name: avatarUpdateNotificationName, object: nil)
+    }
+    
+    func updateToken(_ token: String) {
+        user?.token = token
+        flatGenerator.token = token
+        if let user = user {
+            processLoginSuccessUserInfo(user)
+        }
     }
 }

@@ -137,7 +137,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc func onClickProfile() {
-        mainContainer?.push(ProfileViewController(style: .grouped))
+        mainContainer?.push(ProfileViewController())
     }
     
     @objc func onClickCreate() {
@@ -284,6 +284,12 @@ class HomeViewController: UIViewController {
                                                selector: #selector(onHomeShouldUpdateNotification(_:)),
                                                name: .init(rawValue: "homeShouldUpdateListNotification"),
                                                object: nil)
+        NotificationCenter.default.rx
+            .notification(avatarUpdateNotificationName)
+            .subscribe(with: self, onNext: { ws, _ in
+                ws.avatarButton.kf.setBackgroundImage(with: AuthStore.shared.user?.avatar, for: .normal)
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     func observeClassLeavingNotification() {

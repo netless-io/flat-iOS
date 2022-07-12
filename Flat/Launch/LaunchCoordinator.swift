@@ -118,8 +118,6 @@ class LaunchCoordinator {
     
     // MARK: - Private
     fileprivate func configRootWith(user: User?) {
-        flatGenerator.token = user?.token
-        
         if let user = user {
             if user.hasPhone {
                 guard let _ = window.rootViewController as? MainContainer else {

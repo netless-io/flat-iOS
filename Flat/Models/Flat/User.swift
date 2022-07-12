@@ -10,9 +10,9 @@
 import Foundation
 
 struct User: Codable {
-    let name: String
-    let avatar: URL
+    var name: String
+    var avatar: URL
     let userUUID: String
-    let token: String
+    var token: String
     var hasPhone: Bool
 }

@@ -191,6 +191,10 @@
 		8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */; };
 		8AAE53D127311D7E00C35796 /* String+ReguarExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */; };
 		8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */; };
+		8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */; };
+		8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */; };
+		8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */; };
+		8AB1A739287D4141000AE9A1 /* UploadAvatarFinishRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A738287D4141000AE9A1 /* UploadAvatarFinishRequest.swift */; };
 		8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BA27634986004FDC36 /* FinishConvertRequest.swift */; };
 		8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */; };
 		8ABD71BF276716AA004FDC36 /* UploadType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BE276716AA004FDC36 /* UploadType.swift */; };
@@ -239,6 +243,10 @@
 		8AED087928113840001DEFDC /* AccountCancelationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED087728113741001DEFDC /* AccountCancelationRequest.swift */; };
 		8AEF069F276973E40009904A /* AppleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF069E276973E40009904A /* AppleLogin.swift */; };
 		8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF06A0276980590009904A /* UIButton+CheckBox.swift */; };
+		8AF244D8287C17D900E6B2AF /* BindListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF244D7287C17D900E6B2AF /* BindListRequest.swift */; };
+		8AF244DA287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF244D9287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift */; };
+		8AF244DC287C243C00E6B2AF /* WechatBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF244DB287C243C00E6B2AF /* WechatBinding.swift */; };
+		8AF244DE287C2AFD00E6B2AF /* WechatBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF244DD287C2AFC00E6B2AF /* WechatBindingRequest.swift */; };
 		8AFA91F5278EA78900E0CA61 /* FastboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */; };
 		8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */; };
 		8AFCCDDF276AE051008BD0FC /* SideBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCCDDE276AE051008BD0FC /* SideBarCell.swift */; };
@@ -443,6 +451,10 @@
 		8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
 		8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ReguarExpression.swift"; sourceTree = "<group>"; };
 		8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandButton.swift; sourceTree = "<group>"; };
+		8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveBindingRequest.swift; sourceTree = "<group>"; };
+		8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRenameRequest.swift; sourceTree = "<group>"; };
+		8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareAvatarUploadRequest.swift; sourceTree = "<group>"; };
+		8AB1A738287D4141000AE9A1 /* UploadAvatarFinishRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadAvatarFinishRequest.swift; sourceTree = "<group>"; };
 		8ABD71BA27634986004FDC36 /* FinishConvertRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishConvertRequest.swift; sourceTree = "<group>"; };
 		8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileShareLaunchItem.swift; sourceTree = "<group>"; };
 		8ABD71BE276716AA004FDC36 /* UploadType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadType.swift; sourceTree = "<group>"; };
@@ -497,6 +509,10 @@
 		8AED087728113741001DEFDC /* AccountCancelationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationRequest.swift; sourceTree = "<group>"; };
 		8AEF069E276973E40009904A /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
 		8AEF06A0276980590009904A /* UIButton+CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+CheckBox.swift"; sourceTree = "<group>"; };
+		8AF244D7287C17D900E6B2AF /* BindListRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindListRequest.swift; sourceTree = "<group>"; };
+		8AF244D9287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetBindingAuthUUIDRequest.swift; sourceTree = "<group>"; };
+		8AF244DB287C243C00E6B2AF /* WechatBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatBinding.swift; sourceTree = "<group>"; };
+		8AF244DD287C2AFC00E6B2AF /* WechatBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatBindingRequest.swift; sourceTree = "<group>"; };
 		8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastboardViewController.swift; sourceTree = "<group>"; };
 		8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
 		8AFCCDDE276AE051008BD0FC /* SideBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarCell.swift; sourceTree = "<group>"; };
@@ -756,8 +772,15 @@
 				8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */,
 				8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */,
 				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
+				8AF244DD287C2AFC00E6B2AF /* WechatBindingRequest.swift */,
+				8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */,
+				8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */,
+				8AB1A738287D4141000AE9A1 /* UploadAvatarFinishRequest.swift */,
+				8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */,
+				8AF244D9287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift */,
 				8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */,
 				8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */,
+				8AF244D7287C17D900E6B2AF /* BindListRequest.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -831,6 +854,7 @@
 			isa = PBXGroup;
 			children = (
 				8A05C312275DE279009BCA79 /* ProfileViewController.swift */,
+				8AF244DB287C243C00E6B2AF /* WechatBinding.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1521,8 +1545,10 @@
 			files = (
 				8A05A1582834EA99002DE9B9 /* Agreement.swift in Sources */,
 				8A21DAC4279FD2CF0060E25D /* RecordingFlagView.swift in Sources */,
+				8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */,
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
+				8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */,
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
 				8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */,
 				8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */,
@@ -1536,6 +1562,7 @@
 				8ACE3A2C2730D15700BC37F7 /* ClassTypeCell.swift in Sources */,
 				8A05C33C2760411D009BCA79 /* MultipartFormData.swift in Sources */,
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
+				8AF244DE287C2AFD00E6B2AF /* WechatBindingRequest.swift in Sources */,
 				8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */,
 				8AD2EF6B27730A1800087280 /* FlatServerError.swift in Sources */,
 				8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */,
@@ -1564,6 +1591,7 @@
 				8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */,
 				8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */,
 				8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */,
+				8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */,
 				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
 				8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */,
 				8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */,
@@ -1580,6 +1608,7 @@
 				8A21DAB8279FA5020060E25D /* StartRecordReqeust.swift in Sources */,
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
 				8A05C322275E05BC009BCA79 /* MethodExchange.swift in Sources */,
+				8AF244DC287C243C00E6B2AF /* WechatBinding.swift in Sources */,
 				8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,
@@ -1620,6 +1649,7 @@
 				8A7741B9273287C2009FAADA /* RtcCellPopMenuView.swift in Sources */,
 				8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */,
 				8A9FB3C327229A7C00F6F06F /* Method.swift in Sources */,
+				8AF244DA287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift in Sources */,
 				8A05C2AF2758B98F009BCA79 /* WechatLogin.swift in Sources */,
 				8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
@@ -1675,6 +1705,7 @@
 				8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */,
 				8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */,
 				8A270BA4271972F100450DC6 /* ContactUsViewController.swift in Sources */,
+				8AF244D8287C17D900E6B2AF /* BindListRequest.swift in Sources */,
 				8AA97EA02741F20300C3F92E /* ClassRoomState.swift in Sources */,
 				8A2975212726A6810095F9F0 /* UIColor+Theme.swift in Sources */,
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
@@ -1707,6 +1738,7 @@
 				8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */,
 				8A0EB7BA272BD4E300003DF7 /* RoomUserTableViewCell.swift in Sources */,
 				8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */,
+				8AB1A739287D4141000AE9A1 /* UploadAvatarFinishRequest.swift in Sources */,
 				8A9FB3C927229E5E00F6F06F /* AnyEncodable.swift in Sources */,
 				8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */,
 				8A9FB3B72722949600F6F06F /* ParameterEncoder.swift in Sources */,

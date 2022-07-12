@@ -35,6 +35,7 @@ enum FlatApiError: Int, LocalizedError {
     case PeriodicSubRoomHasRunning
     
     case UserNotFound = 400000
+    case UserAlreadyBinding = 400002
     
     case RecordNotFound = 50000
     
