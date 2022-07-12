@@ -34,17 +34,9 @@ var userUseFPA: Bool {
     }
 }
 
-class SettingViewController: UITableViewController {
+class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let cellIdentifier = "cellIdentifier"
     var items: [Item] = []
-    
-    init() {
-        super.init(style: .grouped)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -101,20 +93,10 @@ class SettingViewController: UITableViewController {
     
     func setupViews() {
         title = NSLocalizedString("Setting", comment: "")
-        tableView.backgroundColor = .whiteBG
-        tableView.separatorColor = .borderColor
-        tableView.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 0)
-        tableView.separatorStyle = .singleLine
-        tableView.register(UINib(nibName: String(describing: SettingTableViewCell.self), bundle: nil), forCellReuseIdentifier: cellIdentifier)
-        
-        let container = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 40)))
-        container.backgroundColor = .whiteBG
-        container.addSubview(logoutButton)
-        logoutButton.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.centerX.equalToSuperview()
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
-        tableView.tableFooterView = container
     }
     
     // MARK: - Action
@@ -224,16 +206,37 @@ class SettingViewController: UITableViewController {
         return button
     }()
     
+    
+    lazy var tableView: UITableView = {
+        let view = UITableView(frame: .zero, style: .grouped)
+        view.backgroundColor = .whiteBG
+        view.separatorColor = .borderColor
+        view.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 0)
+        view.separatorStyle = .singleLine
+        view.register(UINib(nibName: String(describing: SettingTableViewCell.self), bundle: nil), forCellReuseIdentifier: cellIdentifier)
+        let container = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 40)))
+        container.backgroundColor = .whiteBG
+        container.addSubview(logoutButton)
+        logoutButton.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        view.delegate = self
+        view.dataSource = self
+        view.tableFooterView = container
+        return view
+    }()
+    
     // MARK: - Tableview
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         48
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items.count
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         let item = items[indexPath.row]
         if item.detail is String, let pairs = item.targetAction {
@@ -241,7 +244,7 @@ class SettingViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SettingTableViewCell
         cell.iconImageView.image = item.image
