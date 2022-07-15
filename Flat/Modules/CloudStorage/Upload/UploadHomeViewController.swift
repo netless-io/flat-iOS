@@ -7,20 +7,9 @@
 //
 
 import UIKit
-import UniformTypeIdentifiers
-#if canImport(PhotosUI)
-import PhotosUI
-#endif
 
 class UploadHomeViewController: UIViewController {
-    enum PresentStyle {
-        case main
-        case popOver(parent: UIViewController, source: UIView)
-    }
-    
-    var presentStyle: PresentStyle = .main
     let itemHeight: CGFloat = 114
-    var exportingTask: AVAssetExportSession?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -36,95 +25,14 @@ class UploadHomeViewController: UIViewController {
     // MARK: - Action
     @objc func onClick(_ button: UIButton) {
         let type = UploadType.allCases[button.tag]
-        func present() {
-            if #available(iOS 14.0, *) {
-                switch type {
-                case .image:
-                    var config = PHPickerConfiguration()
-                    config.filter = .images
-                    let vc = PHPickerViewController.init(configuration: config)
-                    vc.delegate = self
-                    presentPicker(vc)
-                    return
-                case .video:
-                    var config = PHPickerConfiguration()
-                    config.filter = .videos
-                    let vc = PHPickerViewController.init(configuration: config)
-                    vc.delegate = self
-                    presentPicker(vc)
-                    return
-                case .audio, .doc:
-                    let vc = UIDocumentPickerViewController(forOpeningContentTypes: type.utTypes)
-                    vc.delegate = self
-                    presentPicker(vc)
-                    return
-                }
-            } else {
-                switch type {
-                case .image, .video:
-                    let vc = UIImagePickerController()
-                    vc.mediaTypes = type.allowedUTStrings
-                    vc.videoExportPreset = AVAssetExportPresetPassthrough
-                    vc.delegate = self
-                    presentPicker(vc)
-                case .audio, .doc:
-                    let vc = UIDocumentPickerViewController(documentTypes: type.allowedUTStrings, in: .open)
-                    vc.delegate = self
-                    presentPicker(vc)
-                }
-            }
-        }
-        
-
-        func presentImage() {
-            switch PHPhotoLibrary.authorizationStatus() {
-            case .notDetermined:
-                PHPhotoLibrary.requestAuthorization { [weak self] s in
-                    DispatchQueue.main.async {
-                        if s == .denied {
-                            self?.toast("permission denied")
-                            return
-                        }
-                        present()
-                    }
-                }
-                return
-            case .denied:
-                toast("permission denied")
-            default:
-                present()
-            }
-        }
-        
-        switch type {
-        case .image, .video:
-            presentImage()
-        case .audio, .doc:
-            present()
-        }
-    }
-    
-    func presentPicker(_ picker: UIViewController) {
-        switch presentStyle {
-        case .main:
-            mainContainer?.concreteViewController.present(picker, animated: true, completion: nil)
-        case .popOver(let parent, let source):
-            dismiss(animated: false) {
-                parent.popoverViewController(viewController: picker, fromSource: source)
-            }
-        }
+        UploadUtility.shared.start(uploadType: type,
+                                   fromViewController: self,
+                                   delegate: self,
+                                   presentStyle: .main)
     }
     
     func presentTask() {
-        switch presentStyle {
-        case .main:
-            mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
-        case .popOver(let parent, let source):
-            dismiss(animated: false) {
-                parent.popoverViewController(viewController: self.tasksViewController,
-                                             fromSource: source)
-            }
-        }
+        mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
     }
     
     @objc func onClickUploadList() {
@@ -216,147 +124,35 @@ class UploadHomeViewController: UIViewController {
     }()
 }
 
-// MARK: - Image
-extension UploadHomeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        picker.dismiss(animated: true, completion: nil)
-        if let url = info[.imageURL] as? URL {
+
+extension UploadHomeViewController: UploadUtilityDelegate {
+    func uploadUtilityDidCompletePick(type: UploadType, url: URL) {
+        switch type {
+        case .image:
             uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
-        } else if let url = info[.mediaURL] as? URL {
-            let fileName = UUID().uuidString
-            DispatchQueue.main.async {
-                self.showActivityIndicator(text: NSLocalizedString("Video Converting", comment: ""))
-            }
-            let task = VideoConvertService.convert(url: url, convertedFileName: fileName) { [weak self] result in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.stopActivityIndicator()
-                }
-                do {
-                    try FileManager.default.removeItem(at: url)
-                }
-                catch {
-                    print("clean temp video file error \(error)")
-                }
-                switch result {
-                case .failure(let error):
-                    self.toast(error.localizedDescription)
-                case .success(let convertedUrl):
-                    self.uploadFile(url: convertedUrl, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
-                }
-            }
-            self.exportingTask = task
+        case .video:
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
+        case .audio:
+            // It from file
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
+        case .doc:
+            // It from file
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
         }
     }
-}
-
-// MARK: - Document
-extension UploadHomeViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let url = urls.first else { return }
-        uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
+    
+    func uploadUtilityDidStartVideoConverting() {
+        showActivityIndicator()
     }
-}
-
-// MARK: - PHPicker
-@available(iOS 14, *)
-extension UploadHomeViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        guard let item = results.first else {
-            picker.dismiss(animated: true, completion: nil)
-            return
+    
+    func uploadUtilityDidFinishVideoConverting(error: Error?) {
+        stopActivityIndicator()
+        if let error = error {
+            toast(error.localizedDescription)
         }
-        guard let typeIdentifier = item.itemProvider.registeredTypeIdentifiers.first else { return }
-        picker.dismiss(animated: true, completion: nil)
-        
-        if picker.configuration.filter == .images {
-            item.itemProvider.loadObject(ofClass: UIImage.self) { data, error in
-                DispatchQueue.main.async {
-                    guard let image = data as? UIImage else {
-                        self.toast("load image fail")
-                        return
-                    }
-                    if let error = error {
-                        self.toast(error.localizedDescription)
-                    }
-                    guard let jpegData = image.jpegData(compressionQuality: 1) else {
-                        self.toast("compress image fail")
-                        return
-                    }
-                    
-                    var path = FileManager.default.temporaryDirectory
-                    let fileName = (item.itemProvider.suggestedName ?? UUID().uuidString) + ".jpeg"
-                    path.appendPathComponent(fileName)
-                    let createSuccess = FileManager.default.createFile(atPath: path.path, contents: jpegData, attributes: nil)
-                    guard createSuccess else {
-                        self.toast("create temp image file error")
-                        return
-                    }
-                    self.uploadFile(url: path, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
-                }
-            }
-            return
-        }
-        
-        item.itemProvider.loadFileRepresentation(forTypeIdentifier: typeIdentifier) { [weak self] url, error in
-            guard let self = self else { return }
-            guard let url = url else {
-                DispatchQueue.main.async {
-                    self.toast("load url fail")
-                }
-                return
-            }
-            if let error = error {
-                DispatchQueue.main.async {
-                    self.toast(error.localizedDescription)
-                }
-                return
-            }
-            
-            // Upload video
-            do {
-                var cp = FileManager.default.temporaryDirectory
-                cp.appendPathComponent(url.lastPathComponent)
-                if FileManager.default.fileExists(atPath: cp.path) {
-                    try FileManager.default.removeItem(at: cp)
-                }
-                try FileManager.default.copyItem(at: url, to: cp)
-                DispatchQueue.main.async {
-                    self.showActivityIndicator(text: NSLocalizedString("Video Converting", comment: ""))
-                }
-                
-                let ext =  url.pathExtension
-                let fileName: String
-                if let name = item.itemProvider.suggestedName {
-                    fileName = name + ".\(ext)"
-                } else {
-                    fileName = url.lastPathComponent
-                }
-                let task = VideoConvertService.convert(url: cp, convertedFileName: fileName) { [weak self] result in
-                    guard let self = self else { return }
-                    DispatchQueue.main.async {
-                        self.stopActivityIndicator()
-                    }
-                    do {
-                        try FileManager.default.removeItem(at: cp)
-                    }
-                    catch {
-                        print("clean temp video file error \(error)")
-                    }
-                    switch result {
-                    case .success(let url):
-                        self.uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
-                    case .failure(let error):
-                        self.toast(error.localizedDescription)
-                    }
-                }
-                self.exportingTask = task
-            }
-            catch {
-                DispatchQueue.main.async {
-                    self.toast(error.localizedDescription)
-                }
-            }
-        }
+    }
+    
+    func uploadUtilityDidMeet(error: Error) {
+        toast(error.localizedDescription)
     }
 }
