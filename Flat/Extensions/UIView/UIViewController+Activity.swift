@@ -9,6 +9,52 @@
 
 import UIKit
 
+extension UIView {
+    @discardableResult
+    func showActivityIndicator(text: String? = nil,
+                               forSeconds seconds: TimeInterval = 0) -> CustomActivityIndicatorView {
+        activityView.textLabel.text = text
+        activityView.startAnimating()
+        activityView.setNeedsLayout()
+        if seconds > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+                self.stopActivityIndicator()
+            }
+        }
+        return activityView
+    }
+    
+    func stopActivityIndicator() {
+        activityView.stopAnimating()
+    }
+    
+    fileprivate var activityView: CustomActivityIndicatorView {
+        let activityViewTag = 999
+        let activityView: CustomActivityIndicatorView
+        if let view = viewWithTag(activityViewTag) as? CustomActivityIndicatorView {
+            activityView = view
+        } else {
+            let view: CustomActivityIndicatorView
+            if #available(iOS 13.0, *) {
+                view = CustomActivityIndicatorView(style: .large)
+                view.color = .white
+            } else {
+                view = CustomActivityIndicatorView(style: .gray)
+            }
+            activityView =  view
+            addSubview(activityView)
+            activityView.center = center
+            activityView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+            activityView.snp.makeConstraints({
+                $0.edges.equalToSuperview()
+            })
+            activityView.tag = activityViewTag
+        }
+        bringSubviewToFront(activityView)
+        return activityView
+    }
+}
+
 extension UIViewController {
     @discardableResult
     func showActivityIndicator(text: String? = nil,
