@@ -54,24 +54,39 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         editButton.isHidden = true
         storageUsageLabel.font = .systemFont(ofSize: 12)
         storageUsageLabel.snp.updateConstraints { make in
-            make.left.equalToSuperview().inset(8)
+            make.left.equalToSuperview().inset(14)
         }
         headView.snp.remakeConstraints { make in
             make.height.equalTo(34)
         }
+        setupAddButton()
     }
     
-    @objc func onClickAdd() {
-        guard
-            let parent = presentingViewController,
-            let source = popoverPresentationController?.sourceView
-        else { return }
-        
-        uploadHomeViewController.presentStyle = .popOver(parent: parent, source: source)
-        let navi = UINavigationController(rootViewController: uploadHomeViewController)
-        parent.dismiss(animated: false) {
-            parent.popoverViewController(viewController: navi, fromSource: source)
+    func uploadActionFor(type: UploadType) {
+        UploadUtility.shared.start(uploadType: type, fromViewController: self, delegate: self, presentStyle: .popOver(parent: self, source: self.addButton))
+    }
+    
+    func setupAddButton() {
+        if #available(iOS 14.0, *) {
+            let actions = UploadType.allCases.map { type in
+                UIAction(title: type.title, image: UIImage(named: type.imageName)?.withTintColor(.blackBG, renderingMode: .alwaysOriginal)) { _ in
+                    self.uploadActionFor(type: type)
+                }
+            }
+            addButton.menu = .init(title: "", children: actions)
+            addButton.showsMenuAsPrimaryAction = true
+        } else {
+            addButton.addTarget(self, action: #selector(onClickAdd(_:)), for: .touchUpInside)
         }
+    }
+    
+    @objc func onClickAdd(_ sender: UIButton) {
+        let alert = UIAlertController(title: NSLocalizedString("Upload", comment: ""), message: nil, preferredStyle: .actionSheet)
+        UploadType.allCases.forEach { type in
+            alert.addAction(.init(title: type.title, style: .default, handler: { [weak self] _ in self?.uploadActionFor(type: type)}))
+        }
+        alert.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+        popoverViewController(viewController: alert, fromSource: sender)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -190,27 +205,146 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         topLabel.font = .systemFont(ofSize: 12, weight: .medium)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(8)
+            make.left.equalToSuperview().offset(14)
             make.centerY.equalToSuperview()
         }
-        view.addSubview(addButton)
-        addButton.snp.makeConstraints { make in
+        view.addSubview(addFileStackView)
+        addFileStackView.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.top.bottom.equalToSuperview()
+        }
+        return view
+    }()
+    
+    lazy var addFileStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [self.uploadingActivity, self.addButton])
+        view.axis = .horizontal
+        addButton.snp.makeConstraints { make in
             make.width.equalTo(66)
         }
+        uploadingActivity.transform = .init(translationX: 18, y: 0)
         return view
     }()
     
     lazy var addButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "storage_add"), for: .normal)
-        button.addTarget(self, action: #selector(onClickAdd), for: .touchUpInside)
         return button
     }()
     
-    lazy var uploadHomeViewController: UploadHomeViewController = {
-        let vc = UploadHomeViewController()
-        return vc
+    lazy var uploadingActivity: UIActivityIndicatorView = {
+        let view: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            view = UIActivityIndicatorView(style: .medium)
+        } else {
+            view = UIActivityIndicatorView(style: .gray)
+        }
+        view.hidesWhenStopped = true
+        return view
     }()
+    
+    func update(isUploading: Bool) {
+        addButton.isEnabled = !isUploading
+        if isUploading {
+            uploadingActivity.startAnimating()
+        } else {
+            uploadingActivity.stopAnimating()
+        }
+    }
+    
+    func uploadFile(url: URL, region: Region, shouldAccessingSecurityScopedResource: Bool) {
+        do {
+            let result = try UploadService.shared
+                .createUploadTaskFrom(fileURL: url,
+                                      region: region,
+                                      shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
+            result.task.do(onSuccess: { fillUUID in
+                if ConvertService.isFileConvertible(withFileURL: url) {
+                    ConvertService.startConvert(fileUUID: fillUUID, isWhiteboardProjector: ConvertService.isDynamicPpt(url: url)) { [weak self] result in
+                        switch result {
+                        case .success:
+                            NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
+                        case .failure(let error):
+                            self?.toast(error.localizedDescription)
+                        }
+                    }
+                } else {
+                    NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
+                }
+            }).subscribe().disposed(by: rx.disposeBag)
+                
+            
+            result.tracker
+                .subscribe(with: self) { weakSelf,status in
+                    switch status {
+                    case .error(let error):
+                        weakSelf.update(isUploading: false)
+                        weakSelf.toast(error.localizedDescription)
+                    case .cancel:
+                        weakSelf.update(isUploading: false)
+                    case .idle:
+                        return
+                    case .preparing:
+                        return
+                    case .prepareFinish:
+                        return
+                    case .uploading:
+                        return
+                    case .uploadFinish:
+                        return
+                    case .reporting:
+                        return
+                    case .reportFinish:
+                        return
+                    case .finish:
+                        weakSelf.update(isUploading: false)
+                    }
+                } onError: { weakSelf,error in
+                    weakSelf.update(isUploading: false)
+                    weakSelf.toast(error.localizedDescription)
+                } onCompleted: { weakSelf in
+                    weakSelf.update(isUploading: false)
+                } onDisposed: { _ in
+                    return
+                }
+                .disposed(by: rx.disposeBag)
+        }
+        catch {
+            print(error)
+            toast("error create task \(error.localizedDescription)", timeInterval: 3)
+        }
+    }
+}
+
+extension CloudStorageInClassViewController: UploadUtilityDelegate {
+    func uploadUtilityDidCompletePick(type: UploadType, url: URL) {
+        update(isUploading: true)
+        switch type {
+        case .image:
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
+        case .video:
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
+        case .audio:
+            // It from file
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
+        case .doc:
+            // It from file
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
+        }
+    }
+    
+    func uploadUtilityDidStartVideoConverting() {
+        update(isUploading: true)
+    }
+    
+    func uploadUtilityDidFinishVideoConverting(error: Error?) {
+        if let error = error {
+            update(isUploading: false)
+            toast(error.localizedDescription)
+        }
+    }
+    
+    func uploadUtilityDidMeet(error: Error) {
+        toast(error.localizedDescription)
+    }
 }

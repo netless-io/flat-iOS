@@ -28,9 +28,9 @@ class UploadUtility: NSObject {
     static let shared = UploadUtility()
     private override init() {}
     
-    var exportingTask: AVAssetExportSession?
+    fileprivate var exportingTask: AVAssetExportSession?
     fileprivate var uploadType: UploadType?
-    weak var delegate: UploadUtilityDelegate?
+    fileprivate weak var delegate: UploadUtilityDelegate?
     
     func start(uploadType type: UploadType, fromViewController: UIViewController, delegate: UploadUtilityDelegate, presentStyle: PresentStyle) {
         self.uploadType = type
@@ -41,9 +41,7 @@ class UploadUtility: NSObject {
             case .main:
                 fromViewController.mainContainer?.concreteViewController.present(picker, animated: true, completion: nil)
             case .popOver(let parent, let source):
-                fromViewController.dismiss(animated: false) {
-                    parent.popoverViewController(viewController: picker, fromSource: source)
-                }
+                parent.popoverViewController(viewController: picker, fromSource: source)
             }
         }
         
@@ -233,20 +231,21 @@ extension UploadUtility: PHPickerViewControllerDelegate {
                     }
                     let task = VideoConvertService.convert(url: cp, convertedFileName: fileName) { [weak self] result in
                         guard let self = self else { return }
-                        DispatchQueue.main.async {
-                            self.delegate?.uploadUtilityDidFinishVideoConverting(error: nil)
-                        }
                         do {
                             try FileManager.default.removeItem(at: cp)
                         }
                         catch {
                             print("clean temp video file error \(error)")
                         }
-                        switch result {
-                        case .success(let url):
-                            self.delegate?.uploadUtilityDidCompletePick(type: .video, url: url)
-                        case .failure(let error):
-                            self.delegate?.uploadUtilityDidMeet(error: error)
+                        
+                        DispatchQueue.main.async {
+                            switch result {
+                            case .success(let url):
+                                self.delegate?.uploadUtilityDidFinishVideoConverting(error: nil)
+                                self.delegate?.uploadUtilityDidCompletePick(type: .video, url: url)
+                            case .failure(let error):
+                                self.delegate?.uploadUtilityDidMeet(error: error)
+                            }
                         }
                     }
                     self.exportingTask = task

@@ -195,6 +195,7 @@
 		8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */; };
 		8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */; };
 		8AB1A739287D4141000AE9A1 /* UploadAvatarFinishRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A738287D4141000AE9A1 /* UploadAvatarFinishRequest.swift */; };
+		8AB1A796288145D4000AE9A1 /* UploadUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A795288145D4000AE9A1 /* UploadUtility.swift */; };
 		8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BA27634986004FDC36 /* FinishConvertRequest.swift */; };
 		8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */; };
 		8ABD71BF276716AA004FDC36 /* UploadType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BE276716AA004FDC36 /* UploadType.swift */; };
@@ -455,6 +456,7 @@
 		8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRenameRequest.swift; sourceTree = "<group>"; };
 		8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareAvatarUploadRequest.swift; sourceTree = "<group>"; };
 		8AB1A738287D4141000AE9A1 /* UploadAvatarFinishRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadAvatarFinishRequest.swift; sourceTree = "<group>"; };
+		8AB1A795288145D4000AE9A1 /* UploadUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadUtility.swift; sourceTree = "<group>"; };
 		8ABD71BA27634986004FDC36 /* FinishConvertRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishConvertRequest.swift; sourceTree = "<group>"; };
 		8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileShareLaunchItem.swift; sourceTree = "<group>"; };
 		8ABD71BE276716AA004FDC36 /* UploadType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadType.swift; sourceTree = "<group>"; };
@@ -699,6 +701,7 @@
 				8A05C34F2760ADFC009BCA79 /* UploadTaskTableViewCell.swift */,
 				8A05C3502760ADFC009BCA79 /* UploadTaskTableViewCell.xib */,
 				8A05C32B275F4E7E009BCA79 /* UploadService.swift */,
+				8AB1A795288145D4000AE9A1 /* UploadUtility.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -1687,6 +1690,7 @@
 				8A9FB3B227226B4000F6F06F /* AnyKeyDecodable.swift in Sources */,
 				8A0BD7B0274B345600383E9D /* FlatGeneralButton.swift in Sources */,
 				8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */,
+				8AB1A796288145D4000AE9A1 /* UploadUtility.swift in Sources */,
 				8A05C32E275F5017009BCA79 /* PrepareUploadRequest.swift in Sources */,
 				8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */,
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
