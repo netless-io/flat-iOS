@@ -43,7 +43,11 @@ class AuthStore {
     
     var isLogin: Bool { user != nil }
     
-    var user: User?
+    var user: User? {
+        didSet {
+            flatGenerator.token = user?.token
+        }
+    }
      
     func logout() {
         user = nil
@@ -89,7 +93,6 @@ class AuthStore {
     
     func updateToken(_ token: String) {
         user?.token = token
-        flatGenerator.token = token
         if let user = user {
             processLoginSuccessUserInfo(user)
         }
