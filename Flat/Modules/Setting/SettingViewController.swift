@@ -21,7 +21,7 @@ private var fpaKey: String? {
 var userUseFPA: Bool {
     get {
         guard let fpaKey = fpaKey else { return false }
-        return (UserDefaults.standard.value(forKey: fpaKey) as? Bool) ?? false
+        return (UserDefaults.standard.value(forKey: fpaKey) as? Bool) ?? true
     }
     set {
         guard let fpaKey = fpaKey else { return }
