@@ -51,6 +51,7 @@ struct ClassRoomFactory {
         let payload: [String: String] = ["cursorName": userName]
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
+        fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
         
