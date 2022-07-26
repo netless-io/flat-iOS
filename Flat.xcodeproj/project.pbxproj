@@ -45,6 +45,7 @@
 		8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */; };
 		8A11CBF227201069001D0B1F /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBF127201069001D0B1F /* String+Error.swift */; };
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
+		8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A133529288FA21000C825DE /* MessageCensorRequest.swift */; };
 		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
 		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
 		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
@@ -297,6 +298,7 @@
 		8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassRoomSettingTableViewCell.xib; sourceTree = "<group>"; };
 		8A11CBF127201069001D0B1F /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
+		8A133529288FA21000C825DE /* MessageCensorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCensorRequest.swift; sourceTree = "<group>"; };
 		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
@@ -1048,6 +1050,7 @@
 				8A05C32D275F5017009BCA79 /* PrepareUploadRequest.swift */,
 				8A05C34127604576009BCA79 /* UploadFinishRequest.swift */,
 				8A05C35A2761E9AD009BCA79 /* CancelUploadRequest.swift */,
+				8A133529288FA21000C825DE /* MessageCensorRequest.swift */,
 				8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */,
 			);
 			path = Flat;
@@ -1665,6 +1668,7 @@
 				8A9FB3BB2722981200F6F06F /* JSONEncoder+Extension.swift in Sources */,
 				8A8020912755B09000F5691C /* RtcViewController.swift in Sources */,
 				8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */,
+				8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */,
 				8A270BA72719759E00450DC6 /* UIView+NibProperty.swift in Sources */,
 				8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */,
 				8A9FB3AA272262D800F6F06F /* ResponseDataHandler.swift in Sources */,

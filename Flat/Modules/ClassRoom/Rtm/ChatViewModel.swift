@@ -52,7 +52,7 @@ class ChatViewModel {
         let send = input.sendTap.withLatestFrom(input.textInput)
             .filter { $0.isNotEmptyOrAllSpacing }
             .flatMapLatest { [unowned self] text in
-                self.rtm.sendMessage(text, appendToNewMessage: true)
+                self.rtm.sendMessage(text, censor: true, appendToNewMessage: true)
                     .asDriver(onErrorJustReturn: ())
             }
         

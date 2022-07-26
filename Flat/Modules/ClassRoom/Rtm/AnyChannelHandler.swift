@@ -24,12 +24,13 @@ class AnyChannelHandler: NSObject, AgoraRtmChannelDelegate {
         print(self, channelId ?? "", "deinit")
     }
     
-    func sendMessage(_ text: String, appendToNewMessage: Bool = false) -> Single<Void> {
-        .create { [weak self] observer in
+    func sendMessage(_ text: String, censor: Bool = false, appendToNewMessage: Bool = false) -> Single<Void> {
+        let send = Single<Void>.create { [weak self] observer in
             guard let self = self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
+            
             self.channel.send(.init(text: text)) { error in
                 if error == .errorOk {
                     observer(.success(()))
@@ -44,6 +45,13 @@ class AnyChannelHandler: NSObject, AgoraRtmChannelDelegate {
                 self.newMessagePublish.accept((text, self.userUUID))
             }
         })
+        if censor {
+            return ApiProvider.shared.request(fromApi: MessageCensorRequest(text: text))
+                .asSingle()
+                .flatMap { r in return r.valid ? send : .just(()) }
+        } else {
+            return send
+        }
     }
     
     func getMembers() -> Single<[String]> {

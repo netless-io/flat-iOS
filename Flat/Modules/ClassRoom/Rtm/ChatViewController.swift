@@ -267,7 +267,6 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             cell.update(nickName: name,
                         text: message.text,
                         style: message.userId == userRtmId ? .self : .other)
-            print("chat", message.userId, userRtmId)
             return cell
         case .notice(let notice):
             let cell = tableView.dequeueReusableCell(withIdentifier: noticeCellIdentifier, for: indexPath) as! ChatNoticeTableViewCell
