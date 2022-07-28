@@ -68,6 +68,7 @@ struct ClassRoomFactory {
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
+        fastRoomConfiguration.whiteRoomConfig.isWritable = detailInfo.isOwner || detailInfo.roomType.interactionStrategy == .enable
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
         
