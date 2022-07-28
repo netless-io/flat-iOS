@@ -59,10 +59,9 @@ class JoinRoomViewController: UIViewController {
     }
     
     @objc func onClickJoin(_ sender: UIButton) {
-        guard let uuid = subjectTextField.text, !uuid.isEmpty else {
+        guard let uuid = subjectTextField.text?.replacingOccurrences(of: " ", with: ""), !uuid.isEmpty else {
             return
         }
-        
         sender.isEnabled = false
         let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: uuid, periodicUUID: nil).share(replay: 1, scope: .whileConnected)
         let roomInfo = playInfo.flatMap { info in
