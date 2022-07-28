@@ -280,7 +280,9 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.rightToolBar.isHidden = false
                 weakSelf.setupChatViewController()
             }, onError: { weakSelf, error in
-                weakSelf.stopSubModulesAndLeaveUIHierarchy()
+                weakSelf.showAlertWith(message: NSLocalizedString("Init room error", comment: "") + error.localizedDescription) {
+                    weakSelf.stopSubModulesAndLeaveUIHierarchy()
+                }
             })
             .disposed(by: rx.disposeBag)
                 

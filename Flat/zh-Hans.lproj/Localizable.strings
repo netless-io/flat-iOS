@@ -222,6 +222,9 @@
 "Illegal words" = "非法词汇，请更换后重试";
 
 
+"Init room error" = "初始化房间出错，原因: ";
+
+
 "Interacting" = "互动中";
 
 
