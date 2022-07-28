@@ -387,15 +387,19 @@ class ClassRoomViewController: UIViewController {
             .drive(raiseHandButton.rx.isHidden)
             .disposed(by: rx.disposeBag)
         
-        fastboardViewController.isRoomJoined
-            .asDriver()
-            .flatMap { [weak self] _ -> Driver<Bool> in
-                guard let self = self else { return .just(false) }
-                return self.viewModel.isWhiteboardEnable
-            }
-            .drive(with: self, onNext: { weakSelf, enable in
-                weakSelf.fastboardViewController.fastRoom.setAllPanel(hide: !enable)
-                weakSelf.fastboardViewController.fastRoom.updateWritable(enable, completion: nil)
+        // Pair whiteboardEnable and fastboard
+        // Update fastboard UI only when joined
+        Driver.combineLatest(viewModel.isWhiteboardEnable, fastboardViewController.isRoomJoined.asDriver()) { ($0, $1) }
+            .drive(with: self, onNext: { weakSelf, tuple in
+                let (enable, isJoined)  = tuple
+                if isJoined {
+                    weakSelf.fastboardViewController.fastRoom.setAllPanel(hide: !enable)
+                    if let isWritable = weakSelf.fastboardViewController.fastRoom.room?.isWritable,
+                       isWritable != enable {
+                        weakSelf.fastboardViewController.fastRoom.updateWritable(enable, completion: nil)
+                    }
+                }
+                // Hide buttons
                 weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: enable)
             })
             .disposed(by: rx.disposeBag)
