@@ -13,7 +13,7 @@ struct UploadAvatarFinishRequest: FlatRequest {
         let avatarURL: URL
     }
     let fileUUID: String
-    let region: Region
+    let region: FlatRegion
     var path: String { "/v1/user/upload-avatar/finish" }
     var task: Task { .requestJSONEncodable(encodable: ["fileUUID": fileUUID, "region": region.rawValue]) }
     let responseType = Response.self

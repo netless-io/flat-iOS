@@ -23,18 +23,34 @@ struct ClassRoomFactory {
                                             detailInfo: RoomBasicInfo,
                                             deviceStatus: DeviceStatus) -> ClassRoomViewController {
         let fastRoomConfiguration: FastRoomConfiguration
+        let region: Region
+        switch FlatRegion(rawValue: detailInfo.region) ?? .CN_HZ {
+        case .CN_HZ:
+            region = .CN
+        case .US_SV:
+            region = .US
+        case .SG:
+            region = .SG
+        case .IN_MUM:
+            region = .IN
+        case .GB_LON:
+            region = .GB
+        case .none:
+            region = .CN
+        }
+        
         if #available(iOS 13.0, *) {
             fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
                                                           roomUUID: playInfo.whiteboardRoomUUID,
                                                           roomToken: playInfo.whiteboardRoomToken,
-                                                          region: .CN,
+                                                          region: region,
                                                           userUID: AuthStore.shared.user?.userUUID ?? "",
                                                           useFPA: userUseFPA)
         } else {
             fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
                                                       roomUUID: playInfo.whiteboardRoomUUID,
                                                       roomToken: playInfo.whiteboardRoomToken,
-                                                      region: .CN,
+                                                      region: region,
                                                       userUID: AuthStore.shared.user?.userUUID ?? "")
         }
         if var ua = fastRoomConfiguration.whiteSdkConfiguration.value(forKey: "netlessUA") as? [String] {

@@ -9,6 +9,7 @@
 
 import Foundation
 import RxSwift
+import Fastboard
 
 /// Get from list or by 'ordinary' request
 struct RoomBasicInfo: Decodable {

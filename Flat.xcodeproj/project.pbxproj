@@ -211,7 +211,7 @@
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
 		8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */; };
-		8ACB64D027758DAE00225621 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64CF27758DAE00225621 /* Region.swift */; };
+		8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64CF27758DAE00225621 /* FlatRegion.swift */; };
 		8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64D12775B02D00225621 /* MainContainer.swift */; };
 		8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */; };
 		8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */; };
@@ -474,7 +474,7 @@
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomUsersViewController.swift; sourceTree = "<group>"; };
-		8ACB64CF27758DAE00225621 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		8ACB64CF27758DAE00225621 /* FlatRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatRegion.swift; sourceTree = "<group>"; };
 		8ACB64D12775B02D00225621 /* MainContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainer.swift; sourceTree = "<group>"; };
 		8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopOver.swift"; sourceTree = "<group>"; };
 		8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
@@ -1213,7 +1213,7 @@
 				8A97EBB02719993C00965185 /* JoinRoomInfo.swift */,
 				8A9FB394272154B800F6F06F /* Message.swift */,
 				8A05C32F275F5044009BCA79 /* UploadInfo.swift */,
-				8ACB64CF27758DAE00225621 /* Region.swift */,
+				8ACB64CF27758DAE00225621 /* FlatRegion.swift */,
 			);
 			path = Flat;
 			sourceTree = "<group>";
@@ -1758,7 +1758,7 @@
 				8A9ACC05271E726B00E7E7CE /* RoomStartStatus.swift in Sources */,
 				8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */,
 				8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */,
-				8ACB64D027758DAE00225621 /* Region.swift in Sources */,
+				8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
 				8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */,

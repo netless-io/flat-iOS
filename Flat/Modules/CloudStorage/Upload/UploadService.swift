@@ -118,7 +118,7 @@ class UploadService {
     }
     
     ///   - shouldAccessingSecurityScopedResource: If the file is outside of the app, it should be 'true'
-    func createUploadTaskFrom(fileURL: URL, region: Region, shouldAccessingSecurityScopedResource: Bool) throws -> (task: Single<String>,  tracker: BehaviorRelay<UploadStatus>)  {
+    func createUploadTaskFrom(fileURL: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool) throws -> (task: Single<String>,  tracker: BehaviorRelay<UploadStatus>)  {
         if shouldAccessingSecurityScopedResource {
             let accessing = fileURL.startAccessingSecurityScopedResource()
             guard accessing else { throw "access file error, \(fileURL)" }
@@ -183,7 +183,7 @@ class UploadService {
             return (task, tracker)
     }
     
-    fileprivate func prepare(fileURL: URL, region: Region) -> Observable<UploadInfo> {
+    fileprivate func prepare(fileURL: URL, region: FlatRegion) -> Observable<UploadInfo> {
         do {
             let attribute = try FileManager.default.attributesOfItem(atPath: fileURL.path)
             let name = fileURL.lastPathComponent
@@ -195,7 +195,7 @@ class UploadService {
         }
     }
     
-    fileprivate func reportFinish(fileUUID: String, region: Region, isWhiteboardProjector: Bool) -> Observable<Void> {
+    fileprivate func reportFinish(fileUUID: String, region: FlatRegion, isWhiteboardProjector: Bool) -> Observable<Void> {
         ApiProvider.shared.request(fromApi: UploadFinishRequest(fileUUID: fileUUID, region: region, isWhiteboardProjector: isWhiteboardProjector)).mapToVoid()
     }
     

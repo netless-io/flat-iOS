@@ -252,7 +252,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         }
     }
     
-    func uploadFile(url: URL, region: Region, shouldAccessingSecurityScopedResource: Bool) {
+    func uploadFile(url: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool) {
         do {
             let result = try UploadService.shared
                 .createUploadTaskFrom(fileURL: url,

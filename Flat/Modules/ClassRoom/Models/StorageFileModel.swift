@@ -104,7 +104,7 @@ struct StorageFileModel: Codable, Equatable {
     }
     let fileURL: URL
     let fileUUID: String
-    let region: Region
+    let region: FlatRegion
     var taskToken: String
     var taskUUID: String
 }

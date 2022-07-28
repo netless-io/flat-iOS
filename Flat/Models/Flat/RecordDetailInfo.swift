@@ -18,7 +18,7 @@ struct RecordDetailInfo: Codable {
     let title: String
     let ownerUUID: String
     let recordInfo: [RecordItem]
-    let region: Region
+    let region: FlatRegion
     let roomType: ClassRoomType
     let rtmToken: String
     let whiteboardRoomToken: String

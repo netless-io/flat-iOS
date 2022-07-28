@@ -39,7 +39,7 @@ class UploadHomeViewController: UIViewController {
         presentTask()
     }
     
-    func uploadFile(url: URL, region: Region, shouldAccessingSecurityScopedResource: Bool) {
+    func uploadFile(url: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool) {
         do {
             var result = try UploadService.shared
                 .createUploadTaskFrom(fileURL: url,               

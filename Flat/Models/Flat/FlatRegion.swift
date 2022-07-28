@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Region: String, Codable {
+enum FlatRegion: String, Codable {
     case CN_HZ = "cn-hz"
     case US_SV = "us-sv"
     case SG = "sg"
