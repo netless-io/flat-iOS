@@ -23,6 +23,7 @@ enum RtmCommand {
     case raiseHand(Bool)
     case acceptRaiseHand(AcceptRaiseHandCommand)
     case cancelRaiseHand(Bool)
+    case allOffStage(Bool)
 }
 
 struct CommandType: RawRepresentable, Codable, Equatable {
@@ -37,6 +38,7 @@ struct CommandType: RawRepresentable, Codable, Equatable {
     static let acceptRaiseHand = CommandType(rawValue: "AcceptRaiseHand")
     static let raiseHand = CommandType(rawValue: "RaiseHand")
     static let notice = CommandType(rawValue: "Notice")
+    static let allOffStage = CommandType(rawValue: "AllOffStage")
     
     var rawValue: String
     init(rawValue: String) {

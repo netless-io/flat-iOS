@@ -92,17 +92,17 @@ class ClassRoomViewModel {
                              state.messageBan.asDriver()) { [weak self] mode, user, isBan -> Bool in
             guard let self = self else { return true }
             if self.isTeacher { return true }
-            let canSpeak: Bool
+            let hide: Bool
             if self.state.roomType.interactionStrategy == .enable {
-                canSpeak = true
+                hide = true
             } else if mode.interactionEnable {
-                canSpeak = true
+                hide = true
             } else if isBan {
-                canSpeak = false
+                hide = true
             } else {
-                canSpeak = user.status.isSpeak
+                hide = user.status.isSpeak
             }
-            return canSpeak
+            return hide
         }
     }()
     
@@ -505,7 +505,21 @@ class ClassRoomViewModel {
             status.camera = false
             self?.state.updateUserStatusFor(userRtmUID: UUID, status: status)
         })
+    }
+    
+    /// raise hand / isSpeak / camera and mic
+    func cancelAllOnStageStudents() {
+        for user in state.users.value {
+            if user.rtmUUID != state.roomOwnerRtmUUID {
+                var newStatus = user.status
+                newStatus.camera = false
+                newStatus.mic = false
+                newStatus.isRaisingHand = false
+                newStatus.isSpeak = false
+                state.updateUserStatusFor(userRtmUID: user.rtmUUID, status: newStatus)
             }
+        }
+    }
     
     func oppositeRaisingHand() -> Single<Void> {
         guard let user = currentUser(), !isTeacher else {
@@ -530,7 +544,7 @@ class ClassRoomViewModel {
                 status.mic = true
                 self?.state.updateUserStatusFor(userRtmUID: UUID, status: status)
             })
-                }
+    }
     
     func oppositeCameraFor(_ userUUID: String) -> Single<Void> {
         guard var status = state.userStatusFor(userUUID: userUUID) else {
@@ -596,6 +610,9 @@ class ClassRoomViewModel {
         do {
             let command = try self.commandDecoder.decode(text)
             switch command {
+            case .allOffStage:
+                cancelAllOnStageStudents()
+                return .just(command)
             case .deviceState(let deviceStateCommand):
                 guard var newStatus = state.userStatusFor(userUUID: deviceStateCommand.userUUID) else {
                     return .just(command)
@@ -642,6 +659,10 @@ class ClassRoomViewModel {
                 state.users.accept(newUsers)
                 return .just(command)
             case .banText(let ban):
+                // Temp function
+                if ban {
+                    cancelAllOnStageStudents()
+                }
                 state.messageBan.accept(ban)
                 return .just(command)
             case .speak(let speakCommand):

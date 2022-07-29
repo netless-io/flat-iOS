@@ -18,6 +18,9 @@ struct CommandDecoder {
         let commandType = try decode.decode(AnyKeyDecodable<CommandType>.self, from: data).result
         decode.setAnyCodingKey("v")
         switch commandType {
+        case .allOffStage:
+            let value = try decode.decode(AnyKeyDecodable<Bool>.self, from: data).result
+            return .allOffStage(value)
         case .deviceState:
             let value = try decode.decode(AnyKeyDecodable<DeviceStateCommand>.self, from: data).result
             return .deviceState(value)
@@ -31,7 +34,7 @@ struct CommandDecoder {
             let value = try decode.decode(AnyKeyDecodable<Bool>.self, from: data).result
             return .raiseHand(value)
         case .acceptRaiseHand:
-            let value = try decode.decode(AnyKeyDecodable<AccpetRaiseHandCommand>.self, from: data).result
+            let value = try decode.decode(AnyKeyDecodable<AcceptRaiseHandCommand>.self, from: data).result
             return .acceptRaiseHand(value)
         case .cancelHandRaising:
             let value = try decode.decode(AnyKeyDecodable<Bool>.self, from: data).result

@@ -15,6 +15,9 @@ struct CommandEncoder {
             let t: CommandType
             let v: Encodable
             switch command {
+            case .allOffStage(let b):
+                t = .allOffStage
+                v = b
             case .deviceState(let deviceStateCommand):
                 t = .deviceState
                 v = deviceStateCommand
