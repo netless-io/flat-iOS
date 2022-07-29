@@ -207,6 +207,7 @@ class ClassRoomViewController: UIViewController {
     }
     
     func setupChatViewController() {
+        // Skip init ban message
         let banNotice = viewModel.state.messageBan
             .skip(1)
             .map { return $0 ? "已禁言" : "已解除禁言" }
@@ -215,7 +216,7 @@ class ClassRoomViewController: UIViewController {
         let banning = viewModel.state.messageBan.asDriver()
 
         // Is user banned
-        let baned = viewModel.state.messageBan.map { [ weak self] in
+        let banned = viewModel.state.messageBan.map { [ weak self] in
             (self?.viewModel.isTeacher ?? false) ? false : $0
         }.asDriver(onErrorJustReturn: true)
 
@@ -232,7 +233,7 @@ class ClassRoomViewController: UIViewController {
                                               rtm: handler,
                                               notice: banNotice,
                                               banning: banning,
-                                              banned: baned)
+                                              banned: banned)
                 let vc = ChatViewController(viewModel: viewModel, userRtmId: self.viewModel.userUUID)
                 self.viewModel.tranform(banTap: vc.banTextButton.rx.tap
                                             .asDriver())

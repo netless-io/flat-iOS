@@ -85,18 +85,20 @@ class ClassRoomViewModel {
         }
     }()
     
+    // Ban status will hide raiseHand button
     lazy var raiseHandHide: Driver<Bool> = {
         Driver.combineLatest(state.mode.asDriver(),
-                             userSelf) { [weak self] mode, user -> Bool in
-            guard let self = self else {
-                return true
-            }
+                             userSelf,
+                             state.messageBan.asDriver()) { [weak self] mode, user, isBan -> Bool in
+            guard let self = self else { return true }
             if self.isTeacher { return true }
             let canSpeak: Bool
             if self.state.roomType.interactionStrategy == .enable {
                 canSpeak = true
             } else if mode.interactionEnable {
                 canSpeak = true
+            } else if isBan {
+                canSpeak = false
             } else {
                 canSpeak = user.status.isSpeak
             }
@@ -367,7 +369,7 @@ class ClassRoomViewModel {
                 .do(onNext: { [weak self] in
                     self?.state.messageBan.accept(ban)
                 })
-                    }
+        }
     }
     
     // MARK: - Teacher Operations

@@ -18,7 +18,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
     let viewModel: ChatViewModel
     
     let userRtmId: String
-    /// If message is baning now
+    /// If message is banning now
     var isInMessageBan = false {
         didSet {
             banTextButton.isSelected = isInMessageBan
