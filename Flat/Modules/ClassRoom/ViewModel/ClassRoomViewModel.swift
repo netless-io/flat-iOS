@@ -661,7 +661,9 @@ class ClassRoomViewModel {
             case .banText(let ban):
                 // Temp function
                 if ban {
-                    cancelAllOnStageStudents()
+                    if state.roomType == .bigClass {
+                        cancelAllOnStageStudents()
+                    }
                 }
                 state.messageBan.accept(ban)
                 return .just(command)
