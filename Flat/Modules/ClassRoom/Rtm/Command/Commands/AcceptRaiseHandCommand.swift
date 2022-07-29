@@ -9,7 +9,7 @@
 
 import Foundation
 
-struct AccpetRaiseHandCommand: Codable {
+struct AcceptRaiseHandCommand: Codable {
     let userUUID: String
     let accept: Bool
 }

@@ -30,9 +30,9 @@ struct CommandEncoder {
             case .raiseHand(let bool):
                 t = .raiseHand
                 v = bool
-            case .acceptRaiseHand(let accpetRaiseHandCommand):
+            case .acceptRaiseHand(let acceptRaiseHandCommand):
                 t = .acceptRaiseHand
-                v = accpetRaiseHandCommand
+                v = acceptRaiseHandCommand
             case .cancelRaiseHand(let bool):
                 t = .cancelHandRaising
                 v = bool
