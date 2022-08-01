@@ -14,7 +14,8 @@ import Kingfisher
 struct RoomUserInfo: Decodable, Hashable {
     let name: String
     let rtcUID: UInt
-    let avatarURL: URL?
+    // Empty sometimes. Do not use URL type
+    let avatarURL: String
 }
 
 struct MemberResponse: Decodable {

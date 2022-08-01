@@ -735,7 +735,7 @@ class ClassRoomViewModel {
                             return RoomUser(rtmUUID: $0.key,
                                             rtcUID: $0.value.rtcUID,
                                             name: $0.value.name,
-                                            avatarURL: $0.value.avatarURL)
+                                            avatarURL: URL(string: $0.value.avatarURL))
                         }
                         return users
                     }
@@ -803,7 +803,7 @@ class ClassRoomViewModel {
                 return RoomUser(rtmUUID: uid,
                                 rtcUID: user.rtcUID,
                                 name: user.name,
-                                avatarURL: user.avatarURL,
+                                avatarURL: URL(string: user.avatarURL),
                                 status: userStatus)
             }
             .do(onNext: { [weak self] user in
