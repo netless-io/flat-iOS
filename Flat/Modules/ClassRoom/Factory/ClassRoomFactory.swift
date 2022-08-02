@@ -79,8 +79,8 @@ struct ClassRoomFactory {
                              avatarURL: AuthStore.shared.user?.avatar,
                              status: .init(isSpeak: false,
                                            isRaisingHand: false,
-                                           camera: deviceStatus.camera,
-                                           mic: deviceStatus.mic))
+                                           camera: detailInfo.roomType == .bigClass ? false : deviceStatus.camera,
+                                           mic: detailInfo.roomType == .bigClass ? false : deviceStatus.mic))
         
         let state = ClassRoomState(roomType: detailInfo.roomType,
                                    roomOwnerRtmUUID: playInfo.ownerUUID,
