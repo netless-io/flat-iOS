@@ -77,7 +77,10 @@ class ClassRoomViewModel {
     
     lazy var isWhiteboardEnable: Driver<Bool> = {
         if self.isTeacher { return .just(true) }
-        if state.roomType.interactionStrategy == .enable { return .just(true) }
+        // Big class ignore interactionStrategy
+        if state.roomType != .bigClass {
+            if state.roomType.interactionStrategy == .enable { return .just(true) }
+        }
         return Driver.combineLatest(state.mode.asDriver(),
                                     userSelf) { mode, user -> Bool in
             if user.status.isSpeak { return true }
