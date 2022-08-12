@@ -302,7 +302,7 @@ class RoomDetailViewController: UIViewController {
             self.enterRoomButton.isEnabled = true
             switch result {
             case .success(let playInfo):
-                let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo,
+                let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: self.info,
                                                                      deviceStatus: .init(mic: self.micOn, camera: self.cameraOn))
                 self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)

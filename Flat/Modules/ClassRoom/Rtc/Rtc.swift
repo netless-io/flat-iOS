@@ -14,8 +14,11 @@ import RxRelay
 class Rtc: NSObject {
     var agoraKit: AgoraRtcEngineKit!
     let screenShareInfo: ShareScreenInfo?
-    let screenShareJoinBehavior: PublishRelay<Bool> = .init()
+    let screenShareJoinBehavior: BehaviorRelay<Bool> = .init(value: false)
     private var joinChannelBlock: (()->Void)?
+    let isJoined = BehaviorRelay<Bool>.init(value: false)
+    var targetLocalMic: Bool? = false
+    var targetLocalCamera: Bool? = false
     
     // MARK: - Public
     func joinChannel() { joinChannelBlock?() }
@@ -25,6 +28,7 @@ class Rtc: NSObject {
         agoraKit.leaveChannel(nil)
         agoraKit.stopPreview()
         AgoraRtcEngineKit.destroy()
+        isJoined.accept(false)
         return .just(())
     }
     
@@ -38,15 +42,27 @@ class Rtc: NSObject {
     }
     
     func updateLocalUser(cameraOn: Bool) {
-        agoraKit.enableLocalVideo(cameraOn)
-        agoraKit.muteLocalVideoStream(!cameraOn)
-        print("update local user status camera: \(cameraOn)")
+        if isJoined.value {
+            targetLocalCamera = nil
+            agoraKit.enableLocalVideo(cameraOn)
+            agoraKit.muteLocalVideoStream(!cameraOn)
+            log(module: .rtc, level: .info, log: "update local user status camera: \(cameraOn)")
+        } else {
+            targetLocalCamera = cameraOn
+            log(module: .rtc, level: .verbose, log: "update local user status camera: \(cameraOn) to target")
+        }
     }
     
     func updateLocalUser(micOn: Bool) {
-        agoraKit.enableLocalAudio(micOn)
-        agoraKit.muteLocalAudioStream(!micOn)
-        print("update local user status mic: \(micOn)")
+        if isJoined.value {
+            targetLocalMic = nil
+            agoraKit.enableLocalAudio(micOn)
+            agoraKit.muteLocalAudioStream(!micOn)
+            log(module: .rtc, level: .info, log: "update local user status mic: \(micOn)")
+        } else {
+            targetLocalMic = micOn
+            log(module: .rtc, level: .verbose, log: "update local user status mic: \(micOn) to target")
+        }
     }
     
     func createOrFetchFromCacheCanvas(for uid: UInt) -> AgoraRtcVideoCanvas {
@@ -99,35 +115,44 @@ class Rtc: NSObject {
             canvas.uid = uid
             canvas.renderMode = .hidden
             self?.localVideoCanvas = canvas
-            
+
+            log(module: .rtc, level: .info, log: "start join channel: \(channelId) uid: \(uid)")
             self?.agoraKit.joinChannel(byToken: token,
                                        channelId: channelId,
                                        info: nil,
-                                       uid: uid, joinSuccess: { msg, uid, elapsed in
-                return
+                                       uid: uid, joinSuccess: { [weak self] msg, uid, elapsed in
+                log(module: .rtc, level: .info, log: "end join \(msg), elapsed \(elapsed)")
+                self?.isJoined.accept(true)
             })
         }
         joinChannel()
+
+        isJoined
+            .filter { $0 }
+            .subscribe(with: self, onNext: { weakSelf, _ in
+                if let targetLocalMic = weakSelf.targetLocalMic {
+                    weakSelf.updateLocalUser(micOn: targetLocalMic)
+                }
+                if let targetLocalCamera = weakSelf.targetLocalCamera {
+                    weakSelf.updateLocalUser(cameraOn: targetLocalCamera)
+                }
+            })
+            .disposed(by: rx.disposeBag)
     }
 }
 
 extension Rtc: AgoraRtcEngineDelegate {
     func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurWarning warningCode: AgoraWarningCode) {
+        log(module: .rtc, level: .warning, log: "didOccurWarning \(warningCode)")
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurError errorCode: AgoraErrorCode) {
-        print("rtc error \(errorCode.rawValue)")
+        log(module: .rtc, level: .error, log: "didOccurWarning \(errorCode)")
     }
     
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didApiCallExecute error: Int, api: String, result: String) {
-    }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
-    }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didLeaveChannelWith stats: AgoraChannelStats) {
-        
-    }
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didApiCallExecute error: Int, api: String, result: String) {}
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {}
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didLeaveChannelWith stats: AgoraChannelStats) {}
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
         if isScreenShareUid(uid: uid) {

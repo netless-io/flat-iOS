@@ -9,14 +9,22 @@
 
 import Foundation
 
-struct RoomUser: Hashable {
+struct RoomUser: Hashable, CustomStringConvertible {
+    var description: String {
+        let maxLength = 8
+        let truncateName = { return name.count > maxLength ? String(name[name.startIndex...name.index(name.startIndex, offsetBy: maxLength - 1)]) : name}
+        let fixedName = { return  truncateName() + (0..<(maxLength - name.count)).map { _ in return " " }.joined(separator: "") }
+        let formattedName = name.count > maxLength ? truncateName() : fixedName()
+        return String(format: "\n  rtc: %d, rtm: %@, %@, name: %@", rtcUID, rtmUUID, status.description, formattedName)
+    }
+    
     let rtmUUID: String
     let rtcUID: UInt
     let name: String
     let avatarURL: URL?
     var status: RoomUserStatus
     
-    static let emtpy: Self = .init(rtmUUID: "", rtcUID: 0, name: "", avatarURL: nil)
+    static let empty: Self = .init(rtmUUID: "", rtcUID: 0, name: "", avatarURL: nil)
     
     init(rtmUUID: String,
          rtcUID: UInt,
@@ -31,44 +39,26 @@ struct RoomUser: Hashable {
     }
 }
 
-struct RoomUserStatus: Hashable {
+struct RoomUserStatus: Hashable, CustomStringConvertible {
     var isSpeak: Bool
     var isRaisingHand: Bool
     var camera: Bool
     var mic: Bool
     
+    var deviceState: DeviceState { .init(mic: mic, camera: camera)}
+    
     static let `default` = RoomUserStatus(isSpeak: false, isRaisingHand: false, camera: false, mic: false)
+    
+    var description: String {
+        let r: String = "✅"
+        let f: String = "❌"
+        return "⬆️: \(isSpeak ? r : f) 🙋‍♂️: \(isRaisingHand ? r : f) 📷: \(camera ? r : f) 🎤: \(mic ? r : f)"
+    }
     
     init(isSpeak: Bool, isRaisingHand: Bool, camera: Bool, mic: Bool) {
         self.isSpeak = isSpeak
         self.isRaisingHand = isRaisingHand
         self.camera = camera
         self.mic = mic
-    }
-    
-    // Some string like 'SRCM'
-    init(string: String) {
-        isSpeak = string.contains("S")
-        isRaisingHand = string.contains("R")
-        camera = string.contains("C")
-        mic = string.contains("M")
-    }
-    
-    func toString() -> String {
-        var r = ""
-        if isSpeak {
-            r.append("S")
-        }
-        if isRaisingHand {
-            r.append("R")
-        }
-        if
-            camera {
-            r.append("C")
-        }
-        if mic {
-            r.append("M")
-        }
-        return r
     }
 }

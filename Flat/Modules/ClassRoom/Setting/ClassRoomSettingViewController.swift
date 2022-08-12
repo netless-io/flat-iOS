@@ -34,19 +34,22 @@ class ClassRoomSettingViewController: UIViewController {
     
     let cellIdentifier = "cellIdentifier"
     
+    let deviceUpdateEnable: BehaviorRelay<Bool>
     let cameraOn: BehaviorRelay<Bool>
-    var micOn: BehaviorRelay<Bool>
-    var videoAreaOn: BehaviorRelay<Bool>
+    let micOn: BehaviorRelay<Bool>
+    let videoAreaOn: BehaviorRelay<Bool>
     
     var models: [SettingControlType] = [.camera, .mic, .videoArea]
     
     // MARK: - LifeCycle
     init(cameraOn: Bool,
          micOn: Bool,
-         videoAreaOn: Bool) {
+         videoAreaOn: Bool,
+         deviceUpdateEnable: Bool) {
         self.cameraOn = .init(value: cameraOn)
         self.micOn = .init(value: micOn)
         self.videoAreaOn = .init(value: videoAreaOn)
+        self.deviceUpdateEnable = .init(value: deviceUpdateEnable)
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
     }
@@ -103,18 +106,26 @@ class ClassRoomSettingViewController: UIViewController {
     
     func config(cell: ClassRoomSettingTableViewCell, type: SettingControlType) {
         cell.label.text = type.description
+        cell.selectionStyle = .none
         switch type {
         case .camera:
-            cell.switch.isOn = cameraOn.value
+            if cell.switch.isOn != cameraOn.value {
+                cell.switch.isOn = cameraOn.value
+            }
+            cell.setEnable(deviceUpdateEnable.value)
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.cameraPublish.accept(())
             }
         case .mic:
-            cell.switch.isOn = micOn.value
+            if cell.switch.isOn != micOn.value {
+                cell.switch.isOn = micOn.value
+            }
+            cell.setEnable(deviceUpdateEnable.value)
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.micPublish.accept(())
             }
         case .videoArea:
+            cell.setEnable(true)
             cell.switch.isOn = videoAreaOn.value
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.videoAreaPublish.accept(())

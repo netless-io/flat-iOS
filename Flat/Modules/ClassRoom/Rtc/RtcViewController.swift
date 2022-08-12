@@ -76,18 +76,19 @@ class RtcViewController: UIViewController {
         
         output.user
             .drive(with: self, onNext: { weakSelf, user in
-                weakSelf.localMicOn = user.status.mic
-                weakSelf.localCameraOn = user.status.camera
+                weakSelf.localMicOn = user.status.isSpeak && user.status.mic
+                weakSelf.localCameraOn = user.status.isSpeak && user.status.camera
                 if !weakSelf.localVideoItemView.containsUserValue {
                     weakSelf.update(itemView: weakSelf.localVideoItemView, user: user)
                 }
+                weakSelf.cellMenuView.update(cameraOn: user.status.camera, micOn: user.status.mic)
             })
             .disposed(by: rx.disposeBag)
 
         output.mic
             .drive(localVideoItemView.silenceImageView.rx.isHidden)
             .disposed(by: rx.disposeBag)
-        
+
         output.camera
             .drive(with: self, onNext: { weakSelf, value in
                 weakSelf.localVideoItemView.showAvatar(!value.0)
@@ -111,6 +112,16 @@ class RtcViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        
+        viewModel.rtc.isJoined.asDriver()
+            .drive(with: self, onNext: { weakSelf, joined in
+                if joined {
+                    weakSelf.stopActivityIndicator()
+                } else {
+                    weakSelf.showActivityIndicator()
+                }
+            })
+            .disposed(by: rx.disposeBag)
     }
     
     override func viewDidLayoutSubviews() {
@@ -277,7 +288,7 @@ class RtcViewController: UIViewController {
         let uid = view.uid
         guard let user = viewModel.userFetch(uid) else { return }
         previewingUser = user
-        print("start preview \(uid)")
+        log(module: .rtc, level: .verbose, log: "start preview \(uid)")
         view.nameLabel.isHidden = true
         let heroId = uid.description
         view.heroID = heroId

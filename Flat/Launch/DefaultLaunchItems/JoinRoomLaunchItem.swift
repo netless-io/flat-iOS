@@ -71,7 +71,7 @@ class JoinRoomLaunchItem: LaunchItem {
             return
         }
         if let existRoomVC = mainVC.concreteViewController.presentedViewController as? ClassRoomViewController,
-           existRoomVC.viewModel.state.roomUUID == id {
+           existRoomVC.viewModel.roomUUID == id {
             return
         }
         mainVC.concreteViewController.showActivityIndicator()
@@ -84,8 +84,8 @@ class JoinRoomLaunchItem: LaunchItem {
             .asSingle()
             .observe(on: MainScheduler.instance)
             .subscribe(onSuccess: { playInfo, roomInfo  in
-                let deviceStatus = ClassRoomFactory.DeviceStatus(mic: micOn, camera: cameraOn)
-                let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo,
+                let deviceStatus = DeviceState(mic: micOn, camera: cameraOn)
+                let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: roomInfo,
                                                                      deviceStatus: deviceStatus)
                 mainVC.concreteViewController.present(vc, animated: true, completion: nil)

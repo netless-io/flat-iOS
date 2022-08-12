@@ -16,6 +16,8 @@ enum DisplayMessage {
     case notice(String)
 }
 
+typealias UsernameQueryProvider = (([String]) -> Observable<[String: String]>)
+
 class ChatViewModel {
     struct Input {
         let sendTap: Driver<Void>
@@ -28,27 +30,30 @@ class ChatViewModel {
     }
     
     let roomUUID: String
-    var cachedUserName: [String: String]
-    let rtm: AnyChannelHandler
+    let userNameProvider: UsernameQueryProvider
+    let rtm: RtmChannel
     let notice: Observable<String>
-    let isBanning: Driver<Bool>
+    let isOwner: Bool
     let isBanned: Driver<Bool>
+    let banMessagePublisher: PublishRelay<Bool>
     
     init(roomUUID: String,
-         cachedUserName: [String : String],
-         rtm: AnyChannelHandler,
+         userNameProvider: @escaping UsernameQueryProvider,
+         rtm: RtmChannel,
          notice: Observable<String>,
-         banning: Driver<Bool>,
-         banned: Driver<Bool>) {
+         isBanned: Driver<Bool>,
+         isOwner: Bool,
+         banMessagePublisher: PublishRelay<Bool>) {
         self.rtm = rtm
         self.notice = notice
+        self.userNameProvider = userNameProvider
         self.roomUUID = roomUUID
-        self.cachedUserName = cachedUserName
-        self.isBanned = banned
-        self.isBanning = banning
+        self.isBanned = isBanned
+        self.isOwner = isOwner
+        self.banMessagePublisher = banMessagePublisher
     }
     
-    func tranform(input: Input) -> Output {
+    func transform(input: Input) -> Output {
         let send = input.sendTap.withLatestFrom(input.textInput)
             .filter { $0.isNotEmptyOrAllSpacing }
             .flatMapLatest { [unowned self] text in
@@ -56,17 +61,25 @@ class ChatViewModel {
                     .asDriver(onErrorJustReturn: ())
             }
         
-        let sendMessageEnable = input.textInput.map {
-            $0.isNotEmptyOrAllSpacing
-        }.withLatestFrom(isBanned) { inputEnable, baned in
-            return inputEnable && !baned
+        let sendMessageEnable: Driver<Bool>
+        
+        if isOwner {
+            sendMessageEnable = input.textInput.map { $0.isNotEmptyOrAllSpacing }
+        } else {
+            sendMessageEnable = input.textInput
+                .map { $0.isNotEmptyOrAllSpacing }
+                .withLatestFrom(isBanned) { inputEnable, banned in
+                    return inputEnable && !banned
+                }
         }
         
         let history = requestHistory(channelId: rtm.channelId).asObservable().share(replay: 1, scope: .whileConnected)
         let newMessage = rtm.newMessagePublish.map { [Message.user(UserMessage.init(userId: $0.sender, text: $0.text))] }
         let noticeMessage = notice.map { [Message.notice($0)]}
+        let banMessage   = banMessagePublisher.map { [Message.notice(NSLocalizedString($0 ? "All banned" : "The ban was lifted", comment: ""))]}
         
-        let rawMessages = Observable.of(history, newMessage, noticeMessage).merge()
+        let rawMessages = Observable.of(history, newMessage, noticeMessage,banMessage)
+            .merge()
             .scan([Message](), accumulator: {
                 var r = $0
                 r.append(contentsOf: $1)
@@ -85,48 +98,15 @@ class ChatViewModel {
                 case .user(let user): return .user(message: user, name: dic[user.userId]!)
                 }
             }
-        }
+        }.debug("msg:: ", trimOutput: false)
         
         return .init(message: result, sendMessage: send, sendMessageEnable: sendMessageEnable)
     }
     
     func userName(userIds: [String]) -> Observable<[String: String]> {
-        guard !userIds.isEmpty else {
-            return .just([:])
-        }
+        guard !userIds.isEmpty else { return .just([:]) }
         let ids = userIds.removeDuplicate()
-        let cachedName = ids.compactMap { id -> (String, String)? in
-            if let name = self.cachedUserName[id] {
-                return (id, name)
-            }
-            return nil
-        }
-        let cachedDic = Dictionary(uniqueKeysWithValues: cachedName)
-        let unCachedIds = ids.filter {
-            !cachedUserName.keys.contains($0)
-        }
-        if unCachedIds.isEmpty {
-            return .just(cachedDic)
-        } else {
-            return queryUserName(userIds: unCachedIds)
-                .map { values -> [String: String] in
-                    return values.merging(cachedName, uniquingKeysWith: { i, j in return i })
-                }
-        }
-    }
-    
-    func queryUserName(userIds: [String]) -> Observable<[String: String]> {
-        ApiProvider.shared.request(fromApi: MemberRequest(roomUUID: roomUUID, usersUUID: userIds))
-            .map { result -> [String: String] in
-                return result.response.mapValues {
-                    $0.name
-                }
-            }
-            .do(onNext: { [weak self] users in
-                self?.cachedUserName.merge(users, uniquingKeysWith: { i, j in
-                    return i
-                })
-            }).asObservable()
+        return userNameProvider(ids)
     }
     
     func requestHistory(channelId: String) -> Single<[Message]> {
@@ -140,7 +120,7 @@ class ChatViewModel {
             ApiProvider.shared.request(fromApi: request) { result in
                 switch result {
                 case .failure(let error):
-                    print("request history source error", error)
+                    log(module: .rtm, level: .error, log: "request history source error \(error)")
                     observer(.failure(error))
                 case .success(let value):
                     var path = value.result
@@ -156,7 +136,7 @@ class ChatViewModel {
                                 .reversed()
                             observer(.success(historyMessages))
                         case .failure(let error):
-                            print("request history error", error)
+                            log(module: .rtm, level: .error, log: "request history source error \(error)")
                             observer(.failure(error))
                         }
                     }

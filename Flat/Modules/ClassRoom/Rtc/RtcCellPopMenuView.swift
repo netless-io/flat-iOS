@@ -20,9 +20,15 @@ class RtcCellPopMenuView: PopMenuView {
     
     var clickHandler: ((ClickType) ->Void)?
     
+    lazy var cameraOnImage = UIImage(named: "camera_on")!
+    lazy var cameraOffImage = UIImage(named: "camera_off")!
+    
+    lazy var micOnImage = UIImage(named: "mic_on")!
+    lazy var micOffImage = UIImage(named: "mic_off")!
+    
     func update(cameraOn: Bool, micOn: Bool) {
-        cameraButton.isSelected = cameraOn
-        micButton.isSelected = micOn
+        cameraButton.setImage(cameraOn ? cameraOnImage : cameraOffImage, for: .normal)
+        micButton.setImage(micOn ? micOnImage : micOffImage, for: .normal)
     }
     
     override var intrinsicContentSize: CGSize {
@@ -82,8 +88,6 @@ class RtcCellPopMenuView: PopMenuView {
     
     lazy var cameraButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "camera_off"), for: .normal)
-        btn.setImage(UIImage(named: "camera_on"), for: .selected)
         btn.tintColor = .controlNormal
         btn.tag = 0
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
@@ -92,8 +96,6 @@ class RtcCellPopMenuView: PopMenuView {
     
     lazy var micButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "mic_off"), for: .normal)
-        btn.setImage(UIImage(named: "mic_on"), for: .selected)
         btn.tintColor = .controlNormal
         btn.tag = 1
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)

@@ -13,7 +13,7 @@ import Foundation
 struct ChannelStatusCommand: Codable {
     let banMessage: Bool
     let roomStartStatus: RoomStartStatus
-    let classRoomMode: ClassRoomMode
+    let classRoomMode: ClassroomMode
     let userStates: [String: String]
     
     enum CodingKeys: String, CodingKey {

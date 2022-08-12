@@ -34,12 +34,12 @@ class ClassRoomUsersViewController: UIViewController {
             guard let users = users else {
                 return
             }
-            let ownderId = roomOwnerRtmUUID
+            let ownerId = roomOwnerRtmUUID
             let displayUsers = users
                 .do(onNext: { [weak self] users in
-                    self?.teacher = users.first(where: { $0.rtmUUID == ownderId })
+                    self?.teacher = users.first(where: { $0.rtmUUID == ownerId })
                 })
-                .map { $0.filter { user in user.rtmUUID != ownderId } }
+                .map { $0.filter { user in user.rtmUUID != ownerId } }
                 .asDriver(onErrorJustReturn: [])
             
             displayUsers.drive(tableView.rx.items(cellIdentifier: cellIdentifier, cellType: RoomUserTableViewCell.self)) { [weak self] index, item, cell in
@@ -51,7 +51,9 @@ class ClassRoomUsersViewController: UIViewController {
                 stopInteractingButton.isHidden = true
             } else {
                 users.map {
-                    !($0.contains(where: { $0.status.isRaisingHand || $0.status.isSpeak }))
+                    $0.first(where: {
+                        $0.rtmUUID != ownerId && ($0.status.isSpeak || $0.status.isRaisingHand )
+                    }).map { _ in false } ?? true
                 }.asDriver(onErrorJustReturn: true)
                     .drive(stopInteractingButton.rx.isHidden)
                     .disposed(by: rx.disposeBag)
@@ -109,10 +111,13 @@ class ClassRoomUsersViewController: UIViewController {
     }
     
     func config(cell: RoomUserTableViewCell, user: RoomUser) {
-        let isTeacher = user.rtmUUID == roomOwnerRtmUUID
+        cell.cameraButton.isHidden = true
+        cell.micButton.isHidden = true
+        
+        let isCellUserTeacher = user.rtmUUID == roomOwnerRtmUUID
         cell.disconnectButton.isHidden = true
         cell.raiseHandButton.isHidden = true
-        if isTeacher {
+        if isCellUserTeacher {
             cell.nameLabel.text = user.name + "(\(NSLocalizedString("Teach", comment: "")))"
             cell.statusLabel.text = nil
         } else {
@@ -120,11 +125,14 @@ class ClassRoomUsersViewController: UIViewController {
             if user.status.isRaisingHand {
                 cell.statusLabel.text = "(\(NSLocalizedString("Raised Hand", comment: "")))"
                 cell.statusLabel.textColor = .controlSelected
-                cell.raiseHandButton.isHidden = false
+                cell.raiseHandButton.isHidden = !isTeacher
             } else if user.status.isSpeak {
                 cell.statusLabel.text = "(\(NSLocalizedString("Interacting", comment: "")))"
                 cell.statusLabel.textColor = .init(hexString: "#9FDF76")
-                cell.disconnectButton.isHidden = false
+                let showDisconnect = isTeacher || user.rtmUUID == userUUID
+                cell.disconnectButton.isHidden = !showDisconnect
+                cell.cameraButton.isHidden = false
+                cell.micButton.isHidden = false
             } else {
                 cell.statusLabel.text = nil
             }
@@ -132,6 +140,10 @@ class ClassRoomUsersViewController: UIViewController {
         cell.avatarImageView.kf.setImage(with: user.avatarURL)
         cell.cameraButton.isSelected = user.status.camera
         cell.micButton.isSelected = user.status.mic
+        
+        let isUserSelf = user.rtmUUID == userUUID
+        cell.cameraButton.isEnabled = user.status.camera || isUserSelf
+        cell.micButton.isEnabled = user.status.mic || isUserSelf
         cell.clickHandler = { [weak self] type in
             guard let self = self else { return }
             switch type {

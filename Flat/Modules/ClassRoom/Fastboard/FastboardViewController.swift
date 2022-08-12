@@ -15,31 +15,71 @@ import RxRelay
 class FastboardViewController: UIViewController {
     let fastRoom: FastRoom
     let isRoomJoined: BehaviorRelay<Bool> = .init(value: false)
+    let isRoomBanned: BehaviorRelay<Bool> = .init(value: false)
+    let roomError: PublishRelay<FastRoomError> = .init()
+    
+    /// Setup this store after whiteboard joined
+    weak var bindStore: ClassRoomSyncedStore?
     
     // MARK: Public
     func leave() {
         fastRoom.disconnectRoom()
     }
     
+    func updateWritable(_ writable: Bool) -> Single<Bool> {
+        guard let w = fastRoom.room?.isWritable else { return .just(writable) }
+        if w != writable {
+            return .create { [weak self] ob in
+                guard let self = self else {
+                    ob(.failure("self not exist"))
+                    return Disposables.create()
+                }
+                log(module: .whiteboard, level: .info, log: "update writable \(writable)")
+                self.fastRoom.updateWritable(writable) { error in
+                    if let error = error {
+                        ob(.failure(error))
+                    } else {
+                        ob(.success(writable))
+                    }
+                }
+                return Disposables.create()
+            }
+        } else {
+            return .just(writable)
+        }
+    }
+    
+    func bind(observableWritable: Observable<Bool>) -> Observable<Bool> {
+        Observable.combineLatest(observableWritable, isRoomJoined)
+            .filter { $0.1 }
+            .map { $0.0 }
+            .distinctUntilChanged()
+            .concatMap { [weak self]  writable -> Observable<Bool> in
+                guard let self = self else { return .error("self not exist")}
+                return self.updateWritable(writable).asObservable()
+            }.do(onNext: { [weak self] writable in
+                self?.fastRoom.setAllPanel(hide: !writable)
+            })
+    }
+    
     init(fastRoomConfiguration: FastRoomConfiguration) {
         self.fastRoom = Fastboard.createFastRoom(withFastRoomConfig: fastRoomConfiguration)
         super.init(nibName: nil, bundle: nil)
         self.fastRoom.delegate = self
+        log(module: .alloc, level: .verbose, log: "\(self)")
     }
     
     required init?(coder: NSCoder) {
         fatalError()
     }
     
+    deinit {
+        log(module: .alloc, level: .verbose, log: "\(self), deinit")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        joinRoom()
-    }
-    
-    // MARK: - Action
-    @objc func rebindFromError() {
-        hideErrorView()
         joinRoom()
     }
     
@@ -49,8 +89,11 @@ class FastboardViewController: UIViewController {
         fastRoom.joinRoom { [weak self] result in
             self?.stopActivityIndicator()
             switch result {
-            case .success:
+            case .success(let room):
                 self?.isRoomJoined.accept(true)
+                if let relatedStore = self?.bindStore {
+                    relatedStore.setup(with: room)
+                }
             case .failure:
                 return
             }
@@ -61,66 +104,6 @@ class FastboardViewController: UIViewController {
         view.addSubview(fastRoom.view)
         fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
-    
-    func hideErrorView() {
-        errorView.removeFromSuperview()
-    }
-    
-    func showErrorView(error: Error) {
-        if errorView.superview == nil {
-            view.addSubview(errorView)
-            errorView.snp.makeConstraints { make in
-                make.edges.equalTo(fastRoom.view.whiteboardView)
-            }
-        }
-        view.bringSubviewToFront(errorView)
-        errorViewLabel.text = error.localizedDescription
-        errorView.isHidden = false
-        errorView.alpha = 0.3
-        UIView.animate(withDuration: 0.3) {
-            self.errorView.alpha = 1
-        }
-    }
-    
-    // MARK: - Lazy
-    lazy var errorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .whiteBG
-        view.addSubview(errorViewLabel)
-        errorViewLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        view.addSubview(errorReconnectButton)
-        errorReconnectButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(errorViewLabel.snp.bottom).offset(20)
-        }
-        
-        if #available(iOS 13.0, *) {
-            let warningImage = UIImage(systemName: "icloud.slash.fill", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
-            let imageView = UIImageView(image: warningImage)
-            view.addSubview(imageView)
-            imageView.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.bottom.equalTo(errorViewLabel.snp.top).offset(-20)
-            }
-        }
-        return view
-    }()
-    
-    lazy var errorReconnectButton: FlatGeneralButton = {
-        let reconnectButton = FlatGeneralButton(type: .custom)
-        reconnectButton.setTitle(NSLocalizedString("Reconnect", comment: ""), for: .normal)
-        reconnectButton.addTarget(self, action: #selector(rebindFromError), for: .touchUpInside)
-        return reconnectButton
-    }()
-    
-    lazy var errorViewLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 14)
-        return label
-    }()
 }
 
 extension FastboardViewController: FastRoomDelegate {
@@ -130,7 +113,7 @@ extension FastboardViewController: FastRoomDelegate {
     
     func fastboardUserKickedOut(_ fastboard: FastRoom, reason: String) {
         // For this error is caused by server closing, it should be noticed by teacher.
-        // showErrorView(error: reason)
+        isRoomBanned.accept(true)
     }
     
     func fastboardPhaseDidUpdate(_ fastboard: FastRoom, phase: FastRoomPhase) {
@@ -138,7 +121,7 @@ extension FastboardViewController: FastRoomDelegate {
         case .connecting:
             isRoomJoined.accept(false)
         case .connected:
-            return
+            isRoomJoined.accept(true)
         case .reconnecting:
             isRoomJoined.accept(false)
         case .disconnecting:
@@ -151,7 +134,7 @@ extension FastboardViewController: FastRoomDelegate {
     }
     
     func fastboardDidOccurError(_ fastboard: FastRoom, error: FastRoomError) {
-        showErrorView(error: error)
+        roomError.accept(error)
     }
 
     func fastboardDidSetupOverlay(_ fastboard: FastRoom, overlay: FastRoomOverlay?) {

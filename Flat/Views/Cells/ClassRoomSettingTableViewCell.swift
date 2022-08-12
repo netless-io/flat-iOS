@@ -19,11 +19,13 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         lineHeightConstraint.constant = 1 / UIScreen.main.scale
     }
     
-    @IBAction func clickSwitch(_ sender: Any) {
-        if let i = sender as? UISwitch {
-            i.isOn = !i.isOn
-            switchValueChangedHandler?(i.isOn)
-        }
+    @IBAction func valueChanged(_ sender: UISwitch) {
+        switchValueChangedHandler?(sender.isOn)
+    }
+    
+    func setEnable(_ enable: Bool) {
+        `switch`.isEnabled = enable
+        label.textColor = enable ? .subText : UIColor.subText.withAlphaComponent(0.5)
     }
     
     @IBOutlet weak var lineHeightConstraint: NSLayoutConstraint!

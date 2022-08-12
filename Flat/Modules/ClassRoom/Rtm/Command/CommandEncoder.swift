@@ -10,60 +10,29 @@
 import Foundation
 
 struct CommandEncoder {
-    func encode(
-        _ command: RtmCommand, withChannelId channelId: String? = nil) throws -> String {
-            let t: CommandType
-            let v: Encodable
+    func encode(_ command: RtmCommand) throws -> String {
+            let t: RtmCommandType
+            let v: NSDictionary
             switch command {
-            case .allOffStage(let b):
-                t = .allOffStage
-                v = b
-            case .deviceState(let deviceStateCommand):
-                t = .deviceState
-                v = deviceStateCommand
-            case .requestChannelStatus(let requestChannelStatusCommand):
-                t = .requestChannelStatus
-                v = requestChannelStatusCommand
-            case .roomStartStatus(let roomStartStatus):
-                t = .classRoomStartStatus
-                v = roomStartStatus
-            case .channelStatus(let channelStatusCommand):
-                t = .channelStatus
-                v = channelStatusCommand
-            case .raiseHand(let bool):
+            case .raiseHand(roomUUID: let roomUUID, raiseHand: let raiseHand):
                 t = .raiseHand
-                v = bool
-            case .acceptRaiseHand(let acceptRaiseHandCommand):
-                t = .acceptRaiseHand
-                v = acceptRaiseHandCommand
-            case .cancelRaiseHand(let bool):
-                t = .cancelHandRaising
-                v = bool
-            case .banText(let bool):
-                t = .banText
-                v = bool
-            case .speak(let array):
-                t = .speak
-                v = array
-            case .classRoomMode(let classRoomMode):
-                t = .classRoomMode
-                v = classRoomMode
-            case .notice(let string):
+                v = ["roomUUID": roomUUID, "raiseHand": raiseHand]
+            case .ban(roomUUID: let roomUUID, status: let status):
+                t = .ban
+                v = ["roomUUID": roomUUID, "status": status]
+            case .notice(roomUUID: let roomUUID, text: let text):
                 t = .notice
-                v = string
-            case .undefined(let string):
-                t = .init(rawValue: "undefined")
-                v = string
+                v = ["roomUUID": roomUUID, "text": text]
+            case .undefined(reason: let reason):
+                t = .undefine
+                v = ["reason": reason]
+            case .updateRoomStatus(roomUUID: let roomUUID, status: let status):
+                t = .updateRoomStatus
+                v = ["roomUUID": roomUUID, "status": status.rawValue]
             }
-            var output: [String: AnyEncodable] = ["t": .init(t),
-                                                  "v": .init(v)]
-            if let channelId = channelId {
-                output["r"] = AnyEncodable(channelId)
-            }
-            let data = try encoder.encode(output)
+            let dic: NSDictionary = ["t": t.rawValue, "v": v]
+            let data = try JSONSerialization.data(withJSONObject: dic)
             let str = String(data: data, encoding: .utf8)
             return str ?? ""
     }
-    
-    let encoder = JSONEncoder()
 }

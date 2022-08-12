@@ -9,9 +9,9 @@
 
 import Foundation
 
-struct ClassRoomMode: RawRepresentable, Codable, Equatable {
-    static let lecture = ClassRoomMode(rawValue: "Lecture")
-    static let interaction = ClassRoomMode(rawValue: "Interaction")
+struct ClassroomMode: RawRepresentable, Codable, Equatable {
+    static let lecture = ClassroomMode(rawValue: "Lecture")
+    static let interaction = ClassroomMode(rawValue: "Interaction")
     
     var interactionEnable: Bool {
         return self == .interaction

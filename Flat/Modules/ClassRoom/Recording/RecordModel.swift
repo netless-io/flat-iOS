@@ -24,8 +24,8 @@ struct RecordModel {
     let roomUUID: String
     let startDate: Date
     
-    func updateLayout(roomState: ClassRoomState) -> Observable<Void> {
-        let joinedUsers = Array(roomState.users.value.prefix(maxUserCount))
+    func updateLayout(joinedUsers: [RoomUser]) -> Observable<Void> {
+        let joinedUsers = Array(joinedUsers.prefix(maxUserCount))
         let backgroundConfig: [UpdateLayoutRequest.BackgroundConfig] = joinedUsers.map {
             .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
         }
@@ -60,15 +60,16 @@ struct RecordModel {
     
     static func create(
         fromRoomUUID uuid: String,
-        roomState: ClassRoomState
+        joinedUsers: [RoomUser]
     ) -> Observable<RecordModel>
     {
+        let joinedUsers = Array(joinedUsers.prefix(maxUserCount))
         let clientRequest = RecordAcquireRequest.ClientRequest.default
-        let acqurireAgoraData = RecordAcquireRequest.AgoraData(clientRequest: clientRequest)
+        let acquireAgoraData = RecordAcquireRequest.AgoraData(clientRequest: clientRequest)
         return ApiProvider.shared
-            .request(fromApi: RecordAcquireRequest(agoraData: acqurireAgoraData, roomUUID: uuid))
+            .request(fromApi: RecordAcquireRequest(agoraData: acquireAgoraData, roomUUID: uuid))
             .flatMap {
-                start(fromRoomUUID: uuid, roomState: roomState, resourceId: $0.resourceId)
+                start(fromRoomUUID: uuid, joinedUsers: joinedUsers, resourceId: $0.resourceId)
             }
             .map {
                 RecordModel(resourceId: $0.resourceId, sid: $0.sid, roomUUID: uuid, startDate: Date())
@@ -77,11 +78,11 @@ struct RecordModel {
     
     fileprivate static func start(
         fromRoomUUID uuid: String,
-        roomState: ClassRoomState,
+        joinedUsers: [RoomUser],
         resourceId: String
     ) -> Observable<StartRecordResponse>
     {
-        let joinedUsers = Array(roomState.users.value.prefix(maxUserCount))
+        let joinedUsers = Array(joinedUsers.prefix(maxUserCount))
         let backgroundConfig: [StartRecordRequest.BackgroundConfig] = joinedUsers.map {
             .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
         }

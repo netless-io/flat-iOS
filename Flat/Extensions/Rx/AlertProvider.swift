@@ -47,7 +47,7 @@ protocol AlertProvider {
     func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel>
 }
 
-struct DefaultAlertProvider: AlertProvider {
+class DefaultAlertProvider: AlertProvider {
     weak var root: UIViewController?
     
     var customPopOverSourceProvider: ((AlertModel) -> (UIView, CGRect))?
@@ -70,7 +70,7 @@ struct DefaultAlertProvider: AlertProvider {
             newModel.actionModels = models
             let vc = AlertBuilder.buildAlertController(for: newModel)
             vc.modalPresentationStyle = .popover
-            if let customPopOverSourceProvider = customPopOverSourceProvider {
+            if let customPopOverSourceProvider = self.customPopOverSourceProvider {
                 let i = customPopOverSourceProvider(model)
                 vc.popoverPresentationController?.sourceView = i.0
                 vc.popoverPresentationController?.sourceRect = i.1

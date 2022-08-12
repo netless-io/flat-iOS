@@ -21,6 +21,9 @@ struct RoomPlayInfo: Codable {
     let rtcShareScreen: ShareScreenInfo
     let rtmToken: String
     let region: String
+    
+    var chatChannelId: String { roomUUID }
+    var commandChannelId: String { chatChannelId + "commands" }
 }
 
 extension RoomPlayInfo {

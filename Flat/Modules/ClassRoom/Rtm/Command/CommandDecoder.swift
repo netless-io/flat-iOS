@@ -14,48 +14,28 @@ struct CommandDecoder {
         guard let data = text.data(using: .utf8) else {
             throw "text2data error"
         }
-        decode.setAnyCodingKey("t")
-        let commandType = try decode.decode(AnyKeyDecodable<CommandType>.self, from: data).result
-        decode.setAnyCodingKey("v")
-        switch commandType {
-        case .allOffStage:
-            let value = try decode.decode(AnyKeyDecodable<Bool>.self, from: data).result
-            return .allOffStage(value)
-        case .deviceState:
-            let value = try decode.decode(AnyKeyDecodable<DeviceStateCommand>.self, from: data).result
-            return .deviceState(value)
-        case .channelStatus:
-            let value = try decode.decode(AnyKeyDecodable<ChannelStatusCommand>.self, from: data).result
-            return .channelStatus(value)
-        case .requestChannelStatus:
-            let value = try decode.decode(AnyKeyDecodable<RequestChannelStatusCommand>.self, from: data).result
-            return .requestChannelStatus(value)
+        let dic = try JSONSerialization.jsonObject(with: data) as? NSDictionary
+        guard let dic = dic else { return .undefined(reason: "decode command error") }
+        guard let title = dic["t"] as? String else { return .undefined(reason: "decode command title error") }
+        let type = RtmCommandType(rawValue: title)
+        guard let info = dic["v"] as? NSDictionary else { return .undefined(reason: "decode command info error") }
+        guard let roomUUID = info["roomUUID"] as? String else { return .undefined(reason: "decode command roomUUID error") }
+        switch type {
         case .raiseHand:
-            let value = try decode.decode(AnyKeyDecodable<Bool>.self, from: data).result
-            return .raiseHand(value)
-        case .acceptRaiseHand:
-            let value = try decode.decode(AnyKeyDecodable<AcceptRaiseHandCommand>.self, from: data).result
-            return .acceptRaiseHand(value)
-        case .cancelHandRaising:
-            let value = try decode.decode(AnyKeyDecodable<Bool>.self, from: data).result
-            return .cancelRaiseHand(value)
-        case .banText:
-            let value = try decode.decode(AnyKeyDecodable<Bool>.self, from: data).result
-            return .banText(value)
-        case .speak:
-            let items = try decode.decode(AnyKeyDecodable<[SpeakCommand]>.self, from: data).result
-            return .speak(items)
-        case .classRoomMode:
-            let value = try decode.decode(AnyKeyDecodable<ClassRoomMode>.self, from: data).result
-            return .classRoomMode(value)
-        case .notice:
-            let value = try decode.decode(AnyKeyDecodable<String>.self, from: data).result
-            return .notice(value)
-        case .classRoomStartStatus:
-            let value = try decode.decode(AnyKeyDecodable<RoomStartStatus>.self, from: data).result
-            return .roomStartStatus(value)
+            guard let raiseHand = info["raiseHand"] as? Bool else { return .undefined(reason: "decode command raiseHand error") }
+            return .raiseHand(roomUUID: roomUUID, raiseHand: raiseHand)
+        case .ban:
+            guard let isBan = info["status"] as? Bool else { return .undefined(reason: "decode command ban error") }
+            return .ban(roomUUID: roomUUID, status: isBan)
+        case.notice:
+            guard let text = info["text"] as? String else { return .undefined(reason: "decode command notice error") }
+            return .notice(roomUUID: roomUUID, text: text)
+        case .updateRoomStatus:
+            guard let statusStr = info["status"] as? String else { return .undefined(reason: "decode command update status error")}
+            let status = RoomStartStatus(rawValue: statusStr)
+            return .updateRoomStatus(roomUUID: roomUUID, status: status)
         default:
-            return .undefined(text)
+            return .undefined(reason: "won't happen")
         }
     }
     

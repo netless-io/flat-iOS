@@ -227,17 +227,20 @@ class HomeViewController: UIViewController {
     }
     
     @objc func onClassLeavingNotification(_ notification: Notification) {
-        guard let state = notification.userInfo?["state"] as? ClassRoomState else { return }
+        guard
+            let startStatus = notification.userInfo?["startStatus"] as? RoomStartStatus,
+            let roomUUID = notification.userInfo?["roomUUID"] as? String
+        else { return }
         guard let vc = mainContainer?.concreteViewController else { return }
-        let isStop = state.startStatus.value == .Stopped
+        let isStop = startStatus == .Stopped
         if let vc = vc as? MainSplitViewController {
             if isStop {
                 vc.show(vc.emptyDetailController)
             } else {
                 if !vc.viewControllers
                     .map ({ ($0 as? UINavigationController)?.topViewController ?? $0 })
-                    .contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == state.roomUUID }) {
-                    RoomBasicInfo.fetchInfoBy(uuid: state.roomUUID, periodicUUID: nil) { result in
+                    .contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == roomUUID }) {
+                    RoomBasicInfo.fetchInfoBy(uuid: roomUUID, periodicUUID: nil) { result in
                         switch result {
                         case .success(let r):
                             vc.push(RoomDetailViewController(info: r))
@@ -255,11 +258,11 @@ class HomeViewController: UIViewController {
                 return true
             }
             if !isStop {
-                if !vcs.contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == state.roomUUID }) {
-                    if let info = list.first(where: { $0.roomUUID == state.roomUUID }) {
+                if !vcs.contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == roomUUID }) {
+                    if let info = list.first(where: { $0.roomUUID == roomUUID }) {
                         vcs.append(RoomDetailViewController(info: info))
                     } else {
-                        RoomBasicInfo.fetchInfoBy(uuid: state.roomUUID, periodicUUID: nil) { result in
+                        RoomBasicInfo.fetchInfoBy(uuid: roomUUID, periodicUUID: nil) { result in
                             switch result {
                             case .success(let r):
                                 vcs.append(RoomDetailViewController(info: r))

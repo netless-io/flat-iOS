@@ -25,7 +25,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
         }
     }
     
-    /// Is message been baned
+    /// Is message been banned
     var isMessageBaned = false {
         didSet {
             updateDidMessageBan(isMessageBaned)
@@ -78,7 +78,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
                              sendButton.rx.tap.asDriver())
             .merge()
         
-        let output = viewModel.tranform(input: .init(sendTap: send,
+        let output = viewModel.transform(input: .init(sendTap: send,
                                                      textInput: inputTextField.rx.text.orEmpty.asDriver()))
         
         output.sendMessageEnable
@@ -103,21 +103,32 @@ class ChatViewController: PopOverDismissDetectableViewController {
             })
             .disposed(by: rx.disposeBag)
         
+                
         // Outside
-        viewModel.isBanning
-            .drive(banTextButton.rx.isSelected)
-            .disposed(by: rx.disposeBag)
-        
-        viewModel.isBanned
-            .drive(with: self, onNext: { weakSelf, ban in
-                weakSelf.inputTextField.isEnabled = !ban
-                if ban {
-                    weakSelf.inputTextField.text = nil
-                    weakSelf.inputTextField.sendActions(for: .valueChanged)
+                
+                viewModel.isBanned
+                .drive(banTextButton.rx.isSelected)
+                .disposed(by: rx.disposeBag)
+                
+                viewModel.isBanned
+                .map { [weak self] ban -> Bool in
+                    if let isOwner = self?.viewModel.isOwner, isOwner {
+                        return false
+                    } else {
+                        return ban
+                    }
                 }
-                weakSelf.inputTextField.placeholder = ban ? NSLocalizedString("All banned", comment: ""): NSLocalizedString("Say Something...", comment: "")
-            })
-            .disposed(by: rx.disposeBag)
+                .drive(with: self, onNext: { weakSelf, ban in
+                    weakSelf.inputTextField.isEnabled = !ban
+                    if ban {
+                        weakSelf.inputTextField.text = nil
+                        weakSelf.inputTextField.sendActions(for: .valueChanged)
+                    }
+                    weakSelf.inputTextField.placeholder = ban ? NSLocalizedString("All banned", comment: ""): NSLocalizedString("Say Something...", comment: "")
+                })
+                .disposed(by: rx.disposeBag)
+        
+        updateBanTextButtonEnable(viewModel.isOwner)
     }
     
     func setupViews() {

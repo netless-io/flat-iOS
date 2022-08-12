@@ -12,7 +12,10 @@ import RxCocoa
 import AgoraRtcKit
 
 class RtcViewModel {
-    internal init(rtc: Rtc, localUserRegular: @escaping (UInt) -> Bool, userFetch: @escaping (UInt) -> RoomUser?, userThumbnailStream: @escaping ((UInt) -> AgoraVideoStreamType)) {
+    internal init(rtc: Rtc,
+                  localUserRegular: @escaping (UInt) -> Bool,
+                  userFetch: @escaping (UInt) -> RoomUser?,
+                  userThumbnailStream: @escaping ((UInt) -> AgoraVideoStreamType)) {
         self.rtc = rtc
         self.localUserRegular = localUserRegular
         self.userFetch = userFetch
@@ -75,7 +78,7 @@ class RtcViewModel {
     // Process local user status
     func transformLocalUser(user: Driver<RoomUser>) -> LocalUserOutput {
         let camera = user
-            .map { $0.status.camera }
+            .map { $0.status.camera && $0.status.isSpeak }
             .distinctUntilChanged()
             .do(onNext: { [weak self] camera in
                 self?.rtc.updateLocalUser(cameraOn: camera)
@@ -87,7 +90,7 @@ class RtcViewModel {
             }
         
         let mic = user
-                .map { $0.status.mic }
+                .map { $0.status.mic && $0.status.isSpeak }
                 .distinctUntilChanged()
                 .do(onNext: { [weak self] mic in
                     self?.rtc.updateLocalUser(micOn: mic)

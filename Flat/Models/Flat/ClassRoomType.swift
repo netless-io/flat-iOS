@@ -29,6 +29,16 @@ struct ClassRoomType: RawRepresentable, Codable, Equatable {
         }
     }
     
+    var maxOnstageUserCount: Int {
+        switch self {
+        case .bigClass: return 1
+        case .oneToOne: return .max
+        case .smallClass: return .max
+        default:
+            return .max
+        }
+    }
+    
     var interactionStrategy: InteractionStrategy {
         switch self {
         case .bigClass: return .disable

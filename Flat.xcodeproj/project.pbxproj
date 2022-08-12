@@ -181,7 +181,6 @@
 		8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */; };
 		8AA434E1277D8E9E003681E6 /* loading_without_bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */; };
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
-		8AA97EA02741F20300C3F92E /* ClassroomState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97E9F2741F20300C3F92E /* ClassroomState.swift */; };
 		8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* RtmChannel.swift */; };
 		8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* Rtm.swift */; };
 		8AAB06242762E514006CAEF2 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06232762E514006CAEF2 /* ExportService.swift */; };
@@ -447,7 +446,6 @@
 		8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateHandlerImp.swift; sourceTree = "<group>"; };
 		8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_without_bg.gif; sourceTree = "<group>"; };
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
-		8AA97E9F2741F20300C3F92E /* ClassroomState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomState.swift; sourceTree = "<group>"; };
 		8AA97EA12741F83A00C3F92E /* RtmChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmChannel.swift; sourceTree = "<group>"; };
 		8AA97EA32741F97B00C3F92E /* Rtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rtm.swift; sourceTree = "<group>"; };
 		8AAB06232762E514006CAEF2 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
@@ -1261,7 +1259,6 @@
 			isa = PBXGroup;
 			children = (
 				8A80209B27570CC700F5691C /* StorageFileModel.swift */,
-				8AA97E9F2741F20300C3F92E /* ClassroomState.swift */,
 				8AA97EA32741F97B00C3F92E /* Rtm.swift */,
 				8A3460CC27293E3F0066063E /* RoomUser.swift */,
 				8A3460D0272962D70066063E /* RoomStatus.swift */,
@@ -1742,7 +1739,6 @@
 				8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */,
 				8A270BA4271972F100450DC6 /* ContactUsViewController.swift in Sources */,
 				8AF244D8287C17D900E6B2AF /* BindListRequest.swift in Sources */,
-				8AA97EA02741F20300C3F92E /* ClassroomState.swift in Sources */,
 				8A2975212726A6810095F9F0 /* UIColor+Theme.swift in Sources */,
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,

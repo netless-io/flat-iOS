@@ -2,197 +2,308 @@
 //  ClassRoomViewModel.swift
 //  Flat
 //
-//  Created by xuyunshi on 2021/11/10.
-//  Copyright © 2021 agora.io. All rights reserved.
+//  Created by xuyunshi on 2022/8/3.
+//  Copyright © 2022 agora.io. All rights reserved.
 //
 
-
 import Foundation
-import RxCocoa
 import RxSwift
-
-let classStatusUpdateNotification = Notification.Name("classStatusUpdateNotification")
+import RxCocoa
 
 class ClassRoomViewModel {
-    struct Input {
-        let trigger: Driver<Void>
+    fileprivate var stateHandler: ClassroomStateHandler!
+    
+    let alertProvider: AlertProvider
+    let rtm: Rtm
+    let chatChannelId: String
+    let userUUID: String
+    let roomUUID: String
+    let isOwner: Bool
+    let roomType: ClassRoomType
+    let initDeviceState: DeviceState
+    var banState: Observable<Bool> { stateHandler.banState.asObservable() }
+    var members: Observable<[RoomUser]> { stateHandler.members() }
+    var rtcUsers: Observable<[RoomUser]> {
+        members
+            .map { users in
+                users.filter { $0.status.isSpeak }
+            }
+    }
+    var currentUser: Observable<RoomUser> {
+        members
+            .map { [weak self] m in
+                guard let self = self else { throw "self not exist" }
+                return m.first(where: { $0.rtmUUID == self.userUUID}) ?? .empty
+            }
+            .distinctUntilChanged()
     }
     
-    struct Output {
-        let initRoom: Observable<Void>
-        let newCommand: Observable<RtmCommand>
-        let memberLeft: Observable<String>
-        let roomStopped: Driver<Void>
-        let roomError: Observable<String>
+    var raiseHandHide: Observable<Bool> {
+        Observable.combineLatest(stateHandler.classroomModeState,
+                                 currentUser,
+                                 banState) { [weak self] mode, currentUser, ban in
+            guard let self = self else { return true }
+            if self.isOwner { return true }
+            if self.roomType.interactionStrategy == .enable { return true }
+            if mode.interactionEnable { return true }
+            if ban { return true }
+            return currentUser.status.isSpeak
+        }
     }
     
-    struct SettingInput {
-        let leaveTap: Observable<TapSource>
-        let cameraTap: Driver<Void>
-        let micTap: Driver<Void>
+    var whiteboardEnable: Observable<Bool> {
+        if isOwner { return .just(true) }
+        switch roomType {
+        case .bigClass:
+            return currentUser.map { $0.status.isSpeak }
+        case .oneToOne, .smallClass:
+            return .combineLatest(stateHandler.classroomModeState,
+                                  currentUser) { mode, user in
+                if user.status.isSpeak { return true }
+                return mode.interactionEnable
+            }
+        default:
+            return .just(isOwner)
+        }
     }
     
-    struct SettingOutput {
-        let deviceTask: Driver<Void>
-        let dismiss: Observable<Bool>
+    var isRaisingHand: Observable<Bool> {
+        currentUser.map { $0.status.isRaisingHand }
     }
     
-    struct UserListInput {
-        let stopInteractingTap: Driver<Void>
-        let disconnectTap: Driver<RoomUser>
-        let tapSomeUserRaiseHand: Driver<RoomUser>
-        let tapSomeUserCamera: Driver<RoomUser>
-        let tapSomeUserMic: Driver<RoomUser>
+    var roomStoped: Observable<Void> {
+        stateHandler.roomStartStatus
+            .filter { $0 == .Stopped }
+            .mapToVoid()
+            .asObservable()
     }
     
-    deinit {
-        print(self, "deinit")
+    var showUsersResPoint: Observable<Bool> {
+        members
+            .map { users -> Bool in
+                users.contains(where: { $0.status.isRaisingHand })
+            }
     }
     
-    internal init(isTeacher: Bool,
-                  chatChannelId: String,
-                  commandChannelId: String,
-                  userUUID: String,
-                  state: ClassRoomState,
-                  rtm: ClassRoomRtm,
-                  alertProvider: AlertProvider) {
-        self.isTeacher = isTeacher
-        self.chatChannelId = chatChannelId
-        self.commandChannelId = commandChannelId
-        self.state = state
-        self.rtm = rtm
+    init(stateHandler: ClassroomStateHandler,
+         initDeviceState: DeviceState,
+         isOwner: Bool,
+         userUUID: String,
+         roomUUID: String,
+         roomType: ClassRoomType,
+         chatChannelId: String,
+         rtm: Rtm,
+         alertProvider: AlertProvider) {
+        self.stateHandler = stateHandler
+        self.initDeviceState = initDeviceState
+        self.isOwner = isOwner
         self.userUUID = userUUID
+        self.roomUUID = roomUUID
+        self.roomType = roomType
+        self.chatChannelId = chatChannelId
+        self.rtm = rtm
         self.alertProvider = alertProvider
     }
     
-    var commandHandler: AnyChannelHandler!
-    
-    let userUUID: String
-    let isTeacher: Bool
-    let chatChannelId: String
-    let commandChannelId: String
-    let state: ClassRoomState
-    let rtm: ClassRoomRtm
-    let alertProvider: AlertProvider
-    
-    lazy var isWhiteboardEnable: Driver<Bool> = {
-        if self.isTeacher { return .just(true) }
-        // Big class ignore interactionStrategy
-        if state.roomType != .bigClass {
-            if state.roomType.interactionStrategy == .enable { return .just(true) }
-        }
-        return Driver.combineLatest(state.mode.asDriver(),
-                                    userSelf) { mode, user -> Bool in
-            if user.status.isSpeak { return true }
-            return mode.interactionEnable
-        }
-    }()
-    
-    // Ban status will hide raiseHand button
-    lazy var raiseHandHide: Driver<Bool> = {
-        Driver.combineLatest(state.mode.asDriver(),
-                             userSelf,
-                             state.messageBan.asDriver()) { [weak self] mode, user, isBan -> Bool in
-            guard let self = self else { return true }
-            if self.isTeacher { return true }
-            let hide: Bool
-            if self.state.roomType.interactionStrategy == .enable {
-                hide = true
-            } else if mode.interactionEnable {
-                hide = true
-            } else if isBan {
-                hide = true
-            } else {
-                hide = user.status.isSpeak
+    func initialRoomStatus() -> (Single<Void>, Observable<ClassroomStateError>) {
+        let initRoom =  stateHandler.setup()
+            .flatMap { [weak self] _ -> Single<Void> in
+                guard let self = self else { return .error("self not exist") }
+                // Owner broadcast state when join room
+                if self.isOwner {
+                    return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: self.initDeviceState))
+                } else {
+                    return .just(())
+                }
             }
-            return hide
-        }
-    }()
-    
-    lazy var raiseHandSelected: Driver<Bool> = userSelf.map { $0.status.isRaisingHand }
-    
-    lazy var userSelf: Driver<RoomUser> = {
-        let userId = userUUID
-        let userSelf =  state.users.asDriver()
-            .map { $0.first(where: { $0.rtmUUID == userId })! }
-        return userSelf
-    }()
-    
-    lazy var rtcUsers: Driver<[RoomUser]> = {
-        let type = state.roomType
-        let ownerRtmUUID = state.roomOwnerRtmUUID
-        return state.users
-            .map { type.rtcStrategy.displayingUsers(with: $0, ownerRtmUUID: ownerRtmUUID) }
-            .asDriver(onErrorJustReturn: [])
-    }()
-    
-    let commandEncoder = CommandEncoder()
-    let commandDecoder = CommandDecoder()
-    
-    // MARK: - Public
-    func transform(_ input: Input) -> Output {
-        let initRoom = Driver.of(input.trigger)
-            .merge()
-            .asObservable()
-            .flatMapLatest({ [unowned self] _ -> Observable<Void> in
-                return self.initialRoomStatus().asObservable()
-            })
-            .share(replay: 1, scope: .whileConnected)
         
-        // Process member left
-        let memberLeft = initRoom.flatMap { [weak self] _ -> Observable<String> in
-            guard let self = self else { return .error("self not exist") }
-            return self.commandHandler.memberLeftPublisher.asObservable()
-        }.do(onNext: { [weak self] uuid in
-            self?.state.removeUser(forUUID: uuid)
-        })
+        let error = stateHandler.error.asObservable()
         
-        // Process command, include p2p command && channel command
-        let newCommand = initRoom.flatMap { [weak self] _ -> Observable<(text: String, sender: String)> in
-            guard let self = self else { return .error("self not exist") }
-            let p2p = self.rtm.p2pMessage.asObservable()
-            let channel = self.commandHandler.newMessagePublish.asObservable()
-            return Observable.of(p2p, channel).merge()
-        }.flatMap { [weak self] (text, sender) -> Single<RtmCommand> in
-            guard let self = self else {
-                return .error("self not exist")
-            }
-            print("receive command", text, sender)
-            return self.processCommandMessage(text: text, senderId: sender)
-        }.asObservable()
-        
-        // Do not have do any leave process for rtm is in error
-        let roomError = rtm.error.map {
-            $0.localizedDescription
-        }
-            .share(replay: 1, scope: .whileConnected)
-        
-        let roomStopped = state.startStatus
-            .filter { $0 == .Stopped }
-            .take(1)
-            .mapToVoid()
-            .asDriverOnErrorJustComplete()
-        
-        return .init(initRoom: initRoom,
-                     newCommand: newCommand,
-                     memberLeft: memberLeft,
-                     roomStopped: roomStopped,
-                     roomError: roomError)
+        return (initRoom, error)
     }
     
-    func transformRaiseHand(_ raiseHandTap: Driver<Void>) -> Driver<Void> {
-        let raiseHandTap = raiseHandTap.flatMap { [unowned self] _ -> Driver<Void> in
-            return self.oppositeRaisingHand().asDriver(onErrorJustReturn: ())
-        }
+    struct ChatChannelInitValue {
+        let channel: RtmChannel
+        let userNameProvider: UsernameQueryProvider
+        let notice: Observable<String>
+        let isBanned: Driver<Bool>
+        let banMessagePublisher: PublishRelay<Bool>
+        let chatButtonShowRedPoint: Driver<Bool>
+    }
+    struct ChatInput {
+        let chatButtonTap: ControlEvent<Void>
+        let chatControllerPresentedFetch: (()->Driver<Bool>)
+    }
+    func initChatChannel(_ input: ChatInput) -> Single<ChatChannelInitValue> {
+        let channel = rtm.joinChannelId(chatChannelId)
+            .asObservable()
+            .share(replay: 1, scope: .forever)
         
-        return raiseHandTap
+        let provider = stateHandler.memberNameQueryProvider()
+        let isBanned = banState.asDriver(onErrorJustReturn: true)
+        let notice = stateHandler.noticePublisher.asObservable()
+        let banMessagePublisher = stateHandler.banMessagePublisher
+        
+        let newMessageWhenChatControllerHide = channel
+            .flatMap { channel -> Observable<Void> in
+                channel.newMessagePublish.asObservable().mapToVoid()
+            }
+            .flatMap { _ -> Observable<Bool> in
+                input.chatControllerPresentedFetch().asObservable()
+            }
+            .map { !$0 }
+            .asDriver(onErrorJustReturn: false)
+        let tapChat = input.chatButtonTap.map { false }.asDriver(onErrorJustReturn: false)
+        
+        let chatButtonShowRedPoint = Driver.of(newMessageWhenChatControllerHide, tapChat)
+            .merge()
+        
+        return channel.asSingle()
+            .map { channel -> ChatChannelInitValue in
+                return .init(channel: channel,
+                             userNameProvider: provider,
+                             notice: notice,
+                             isBanned: isBanned,
+                             banMessagePublisher: banMessagePublisher,
+                             chatButtonShowRedPoint: chatButtonShowRedPoint)
+            }
+    }
+    
+    enum RtcInputType {
+        case camera
+        case mic
+    }
+    func transformLocalRtcClick(_ input: Observable<RtcInputType>) ->  Driver<DeviceState> {
+        input.withLatestFrom(currentUser, resultSelector: { a, b in return (a,b) })
+            .flatMap { [weak self] click, user -> Observable<DeviceState> in
+                guard let self = self else { return .just(.init(mic: user.status.mic, camera: user.status.camera)) }
+                var state: DeviceState
+                switch click {
+                case .camera:
+                    state = .init(mic: user.status.mic, camera: !user.status.camera)
+                case .mic:
+                    state = .init(mic: !user.status.mic, camera: user.status.camera)
+                }
+                return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: state))
+                    .asObservable()
+                    .map { state }
+            }
+            .asDriver(onErrorJustReturn: .init(mic: false, camera: false))
+    }
+    
+    func transformBanClick(_ input: ControlEvent<Void>) -> Observable<Bool> {
+        input
+            .withLatestFrom(stateHandler.banState, resultSelector: { _, ban in return !ban })
+            .flatMap { [weak self] ban -> Observable<Bool> in
+                guard let self = self else { return .error("self not exist") }
+                return self.stateHandler.send(command: .ban(ban))
+                    .asObservable()
+                    .map { ban }
+            }
+    }
+    
+    func transformRaiseHandClick(_ input: ControlEvent<Void>) -> Driver<Bool> {
+        guard !isOwner else { return .just(false) }
+        return input.throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .withLatestFrom(currentUser) { _, user in
+            return user.status
+        }
+        .asDriver(onErrorJustReturn: .default)
+        .flatMap { [weak self] status -> Driver<Bool> in
+            guard let self = self else { return .just(false) }
+            if status.isSpeak { return .just(false) }
+            return self.stateHandler
+                .send(command: .updateRaiseHand(!status.isRaisingHand))
+                .asDriver(onErrorJustReturn: ())
+                .map { !status.isRaisingHand }
+        }
+    }
+    
+    struct UserListInput {
+        let stopInteractingTap: Observable<Void>
+        let disconnectTap: Observable<RoomUser>
+        let tapSomeUserRaiseHand: Observable<RoomUser>
+        let tapSomeUserCamera: Observable<RoomUser>
+        let tapSomeUserMic: Observable<RoomUser>
+    }
+    func transformUserListInput(_ input: UserListInput) -> Driver<Void> {
+        let stopTask = input.stopInteractingTap
+            .flatMap { [unowned self] _ -> Single<Void> in
+                guard self.isOwner else { return .just(()) }
+                return self.stateHandler.send(command: .stopInteraction)
+            }.asDriver(onErrorJustReturn: ())
+        
+        let acceptRaiseHandTask = input.tapSomeUserRaiseHand
+            .flatMap { [unowned self] user -> Single<Void> in
+                guard self.isOwner else { return .just(()) }
+                return self.stateHandler.send(command: .acceptRaiseHand(user.rtmUUID))
+            }.asDriver(onErrorJustReturn: ())
+        
+        let disconnectTask = input.disconnectTap
+            .flatMap { [unowned self] user in
+                self.stateHandler.send(command: .disconnectUser(user.rtmUUID))
+            }.asDriver(onErrorJustReturn: ())
+        
+        let cameraTask = input.tapSomeUserCamera
+            .flatMap { [unowned self] user -> Single<Void> in
+                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(())}
+                return self.stateHandler.send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera))) }
+            .asDriver(onErrorJustReturn: ())
+        
+        let micTask = input.tapSomeUserMic
+            .flatMap { [unowned self] user -> Single<Void> in
+                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(())}
+                return self.stateHandler.send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: !user.status.mic, camera: user.status.camera))) }
+            .asDriver(onErrorJustReturn: ())
+        
+        return Driver.of(stopTask, acceptRaiseHandTask, disconnectTask, cameraTask, micTask).merge()
+    }
+    
+    /// Return should dismiss
+    func transformLogoutTap(_ tap: Observable<TapSource>) -> Observable<Bool> {
+        tap
+            .flatMap { [unowned self] source -> Observable<AlertModel.ActionModel> in
+                if self.isOwner {
+                    let teacherStartAlert = AlertModel(title: NSLocalizedString("Close options", comment: ""),
+                                                       message: NSLocalizedString("Teacher close class room alert detail", comment: ""),
+                                                       preferredStyle: .actionSheet, actionModels: [
+                                                        .init(title: NSLocalizedString("Leaving for now", comment: ""), style: .default, handler: nil),
+                                                        .init(title: NSLocalizedString("End the class", comment: ""), style: .destructive, handler: nil),
+                                                        .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)])
+                    return self.alertProvider
+                        .showActionSheet(with: teacherStartAlert, source: source)
+                        .asObservable()
+                    
+                } else {
+                    let studentAlert = AlertModel(title: NSLocalizedString("Class exit confirming title", comment: ""),
+                                                  message: NSLocalizedString("Class exit confirming detail", comment: ""),
+                                                  preferredStyle: .actionSheet,
+                                                  actionModels: [
+                                                    .init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: nil),
+                                                    .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)]
+                    )
+                    return self.alertProvider
+                        .showActionSheet(with: studentAlert, source: source)
+                        .asObservable()
+                }
+            }
+            .flatMap { [unowned self] model -> Observable<Bool> in
+                // destructive only show when teacher can stop classroom
+                if model.style == .cancel { return .just(false) }
+                if model.style == .destructive {
+                    return self.stateHandler.send(command: .updateRoomStartStatus(.Stopped))
+                        .asObservable().map { true }
+                } else {
+                    
+                    return .just(true)
+                }
+            }
     }
     
     struct RecordOutput {
         let isRecording: Observable<Bool>
         let recordingDuration: Observable<TimeInterval>
     }
-    
     var recordModel: RecordModel?
     func transformMoreTap(moreTap: ControlEvent<TapSource>, topRecordingTap: ControlEvent<Void>) -> RecordOutput {
         let topManualEnding = topRecordingTap
@@ -223,16 +334,19 @@ class ClassRoomViewModel {
                 return alert.map { model in return (model, r) }
             }
             .filter { $0.0.style != .cancel }
-            .flatMap { [weak self] _, r -> Observable<Bool> in
+            .flatMap { [unowned self] source, recording -> Observable<(Bool, [RoomUser])> in
+                return self.members.map { (recording, $0) }
+            }
+            .flatMap { [weak self] recording, members -> Observable<Bool> in
                 guard let self = self else { throw "self not exist" }
-                if r {
+                if recording {
                     return self.recordModel!.endRecord()
                         .do(onNext: { [weak self] in
                             self?.recordModel = nil
                         }).map { false }
                 } else {
                     return RecordModel
-                        .create(fromRoomUUID: self.state.roomUUID, roomState: self.state)
+                        .create(fromRoomUUID: self.roomUUID, joinedUsers: members)
                         .do(onNext: { [weak self] model in
                             self?.recordModel = model
                         }).map { _ in return true }
@@ -266,603 +380,11 @@ class ClassRoomViewModel {
         return RecordOutput(isRecording: recording, recordingDuration: recordingDuration)
     }
     
-    func transformSetting(_ input: SettingInput) -> SettingOutput {
-        let selfCameraTap = input.cameraTap.flatMapLatest { [unowned self] in
-            self.oppositeCameraFor(self.userUUID).asDriver(onErrorJustReturn: ())
-        }
-        
-        let selfMicTap = input.micTap.flatMapLatest { [unowned self] in
-            self.oppositeMicFor(self.userUUID).asDriver(onErrorJustReturn: ())
-        }
-        
-        
-        let studentAlert = AlertModel(title: NSLocalizedString("Class exit confirming title", comment: ""),
-                                      message: NSLocalizedString("Class exit confirming detail", comment: ""),
-                                      preferredStyle: .actionSheet, actionModels: [
-                                        .init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: nil),
-                                        .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)])
-        
-        let teacherStartAlert = AlertModel(title: NSLocalizedString("Close options", comment: ""),
-                                           message: NSLocalizedString("Teacher close class room alert detail", comment: ""),
-                                           preferredStyle: .actionSheet, actionModels: [
-                                            .init(title: NSLocalizedString("Leaving for now", comment: ""), style: .default, handler: nil),
-                                            .init(title: NSLocalizedString("End the class", comment: ""), style: .destructive, handler: nil),
-                                            .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)])
-        
-        let dismiss = input.leaveTap.flatMap { [unowned self] source -> Driver<AlertModel.ActionModel> in
-            let status = self.state.startStatus.value
-            if status == .Idle {
-                return .just(.empty)
-            }
-            if !self.isTeacher {
-                return self.alertProvider.showActionSheet(with: studentAlert, source: source).asDriver(onErrorJustReturn: .empty)
-            }
-            return self.alertProvider.showActionSheet(with: teacherStartAlert, source: source).asDriver(onErrorJustReturn: .empty)
-        }.flatMap { model -> Driver<Bool> in
-            if model.style == .cancel { return .just(false) }
-            if model.style == .destructive {
-                return self
-                    .stopOperation()
-                    .asDriver(onErrorJustReturn: ())
-                    .map { _ -> Bool in
-                        return true
-                    }
-            } else {
-                return self
-                    .leaveRoomProcess()
-                    .asDriver(onErrorJustReturn: ())
-                    .map { _ -> Bool
-                        in return true
-                    }
-            }
-        }
-        
-        let deviceTask = Driver.of(selfCameraTap, selfMicTap)
-            .merge()
-        return .init(deviceTask: deviceTask,
-                     dismiss: dismiss)
-    }
-    
-    func transformUserListInput(_ input: UserListInput) -> Driver<Void> {
-        let stopInteractingTask = input.stopInteractingTap.flatMapLatest { [unowned self] in
-            self.stopInteracting().asDriver(onErrorJustReturn: ())
-        }
-        
-        let someUserCameraTap = input.tapSomeUserCamera.flatMapLatest { [unowned self] user in
-            self.oppositeCameraFor(user.rtmUUID).asDriver(onErrorJustReturn: ())
-        }
-        
-        let someUserMicTap = input.tapSomeUserMic.flatMapLatest { [unowned self] user in
-            self.oppositeMicFor(user.rtmUUID).asDriver(onErrorJustReturn: ())
-        }
-        
-        let someUserRaiseHandTap = input.tapSomeUserRaiseHand.flatMapLatest { [unowned self] user in
-            self.acceptRaiseHand(forUUID: user.rtmUUID).asDriver(onErrorJustReturn: ())
-        }
-        
-        let someUserDisconnectTap = input.disconnectTap.flatMapLatest { [unowned self] user in
-            self.disconnect(user.rtmUUID).asDriver(onErrorJustReturn: ())
-        }
-        
-        return Driver.of(stopInteractingTask,
-                         someUserMicTap,
-                         someUserCameraTap,
-                         someUserRaiseHandTap,
-                         someUserDisconnectTap)
-            .merge()
-    }
-    
-    func transform(localUserCameraTap: Driver<Void>,
-                   localUserMicTap: Driver<Void>) -> Driver<Void> {
-        let uuid = self.userUUID
-        let camera = localUserCameraTap.flatMap {
-            self.oppositeCameraFor(uuid).asDriver(onErrorJustReturn: ())
-        }
-        let mic = localUserMicTap.flatMap {
-            self.oppositeMicFor(uuid).asDriver(onErrorJustReturn: ())
-        }
-        return Driver.of(camera, mic).merge()
-    }
-    
-    func tranform(banTap: Driver<Void>) -> Driver<Void> {
-        banTap.flatMap { [unowned self] _ -> Driver<Void> in
-            let ban = !self.state.messageBan.value
-            return self.sendCommand(.banText(ban), toTargetUID: nil)
-                .asDriver(onErrorJustReturn: ())
-                .do(onNext: { [weak self] in
-                    self?.state.messageBan.accept(ban)
-                })
-        }
-    }
-    
-    // MARK: - Teacher Operations
-    func startOperation() -> Single<Void> {
-        let api = RoomStatusUpdateRequest(newStatus: .Started, roomUUID: state.roomUUID)
-        return ApiProvider.shared.request(fromApi: api)
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
-                return self.sendCommand(.roomStartStatus(.Started), toTargetUID: nil)
-            }
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
-                return self.sendCommand(.classRoomMode(.lecture), toTargetUID: nil)
-            }
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self, let user = self.currentUser() else {
-                    return .error("self not exist")
-                }
-                if !user.status.mic {
-                    return self.oppositeMicFor(user.rtmUUID)
-                } else {
-                    return .just(())
-                }
-            }.asSingle()
-            .do(onSuccess: { [weak self] in
-                self?.state.startStatus.accept(.Started)
-            })
-                }
-    
-    func pauseOperation() -> Single<Void> {
-        let api = RoomStatusUpdateRequest(newStatus: .Paused, roomUUID: state.roomUUID)
-        return ApiProvider.shared.request(fromApi: api)
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
-                return self.sendCommand(.roomStartStatus(.Paused), toTargetUID: nil)
-            }
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self, let user = self.currentUser() else {
-                    return .error("self not exist")
-                }
-                if user.status.mic {
-                    return self.oppositeMicFor(user.rtmUUID)
-                } else {
-                    return .just(())
-                }
-            }.asSingle()
-            .do(onSuccess: { [weak self] in
-                self?.state.startStatus.accept(.Paused)
-            })
-                }
-    
-    func stopOperation() -> Single<Void> {
-        let api = RoomStatusUpdateRequest(newStatus: .Stopped, roomUUID: state.roomUUID)
-        return ApiProvider.shared.request(fromApi: api)
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
-                return self.sendCommand(.roomStartStatus(.Stopped), toTargetUID: nil)
-            }
-            .flatMap({ [weak self] _ -> Single<Void> in
-                if let model = self?.recordModel {
-                    return model.endRecord().asSingle()
-                } else {
-                    return .just(())
-                }
-            })
-            .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self, let user = self.currentUser() else {
-                    return .error("self not exist")
-                }
-                if user.status.mic {
-                    return self.oppositeMicFor(user.rtmUUID)
-                } else {
-                    return .just(())
-                }
-            }.asSingle()
-            .do(onSuccess: { [weak self] in
-                self?.state.startStatus.accept(.Stopped)
-            }, onError: { [weak self] error in
-                print("stop room error, \(error)")
-                // Re trigger the stop operation
-                if let status = self?.state.startStatus.value, status == .Stopped {
-                    self?.state.startStatus.accept(.Stopped)
-                }
-            })
-    }
-    
-    func resumeOperation() -> Single<Void> { startOperation() }
-    
-    // MARK: - Actions
-    func stopInteracting() -> Single<Void> {
-        guard isTeacher else {
-            return .just(())
-        }
-        let users = state.users.value
-        let speakingUsers = users.filter{ $0.status.isSpeak }
-        let raisingHandUsers = users.filter{ $0.status.isRaisingHand }
-        var task: Single<Void>!
-        
-        if !raisingHandUsers.isEmpty {
-            task = self.sendCommand(.cancelRaiseHand(true), toTargetUID: nil)
-        }
-        if !speakingUsers.isEmpty {
-            let commands = speakingUsers.map { SpeakCommand.init(userUUID: $0.rtmUUID, speak: false)}
-            let speakTask = sendCommand(.speak(commands), toTargetUID: nil)
-            if let existTask = task {
-                task = existTask.flatMap { speakTask }
-            } else {
-                task = speakTask
-            }
-        }
-        
-        return task.do(onSuccess: { [weak self] in
-            var processUsers: [RoomUser] = .init(raisingHandUsers)
-            processUsers.append(contentsOf: speakingUsers)
-            processUsers = processUsers.removeDuplicate()
-            if !processUsers.isEmpty {
-                for user in processUsers {
-                    var status = user.status
-                    status.isSpeak = false
-                    status.isRaisingHand = false
-                    self?.state.updateUserStatusFor(userRtmUID: user.rtmUUID, status: status)
-                }
-            }
-        })
-            }
-    
-    func disconnect(_ UUID: String) -> Single<Void> {
-        let task = sendCommand(.speak([.init(userUUID: UUID, speak: false)]), toTargetUID: nil)
-        return task.do(onSuccess: { [weak self] in
-            guard var status = self?.state.userStatusFor(userUUID: UUID) else { return }
-            status.isSpeak = false
-            status.mic = false
-            status.camera = false
-            self?.state.updateUserStatusFor(userRtmUID: UUID, status: status)
-        })
-    }
-    
-    /// raise hand / isSpeak / camera and mic
-    func cancelAllOnStageStudents() {
-        for user in state.users.value {
-            if user.rtmUUID != state.roomOwnerRtmUUID {
-                var newStatus = user.status
-                newStatus.camera = false
-                newStatus.mic = false
-                newStatus.isRaisingHand = false
-                newStatus.isSpeak = false
-                state.updateUserStatusFor(userRtmUID: user.rtmUUID, status: newStatus)
-            }
-        }
-    }
-    
-    func oppositeRaisingHand() -> Single<Void> {
-        guard let user = currentUser(), !isTeacher else {
-            return .just(())
-        }
-        let raiseHand = !user.status.isRaisingHand
-        return sendCommand(.raiseHand(raiseHand), toTargetUID: nil)
-            .do(onSuccess: { [weak self] in
-                guard var newStatus = self?.state.userStatusFor(userUUID: user.rtmUUID) else { return }
-                newStatus.isRaisingHand = raiseHand
-                self?.state.updateUserStatusFor(userRtmUID: user.rtmUUID, status: newStatus)
-            })
-                }
-    
-    func acceptRaiseHand(forUUID UUID: String) -> Single<Void> {
-        guard isTeacher else { return .just(())}
-        return sendCommand(.acceptRaiseHand(.init(userUUID: UUID, accept: true)), toTargetUID: nil)
-            .do(onSuccess: { [weak self] in
-                guard var status = self?.state.userStatusFor(userUUID: UUID) else { return }
-                status.isRaisingHand = false
-                status.isSpeak = true
-                status.mic = true
-                self?.state.updateUserStatusFor(userRtmUID: UUID, status: status)
-            })
-    }
-    
-    func oppositeCameraFor(_ userUUID: String) -> Single<Void> {
-        guard var status = state.userStatusFor(userUUID: userUUID) else {
-            return .error("user not exist")
-        }
-        
-        // For others
-        if userUUID != self.userUUID {
-            if !status.camera {
-                return .error("can't open camera")
-            } else if !isTeacher {
-                // Only teacher can turn off others
-                return .error("can't turn off others not teacher")
-            }
-        } else {
-            // For self
-            if !status.camera, !state.isInteractable {
-                return .error("can't turn on camera in current mode")
-            }
-        }
-        status.camera = !status.camera
-        return sendCommand(.deviceState(.init(userUUID: userUUID,
-                                              camera: status.camera,
-                                              mic: status.mic)),
-                           toTargetUID: nil)
-            .do(onSuccess: { [weak self] in
-                self?.state.updateUserStatusFor(userRtmUID: userUUID,
-                                                status: status)
-            })
-                }
-    
-    func oppositeMicFor(_ userUUID: String) -> Single<Void> {
-        guard var status = state.userStatusFor(userUUID: userUUID) else {
-            return .error("user not exist")
-        }
-        if userUUID != self.userUUID {
-            if status.mic {
-                // Only teacher can turn off others
-                if !isTeacher {
-                    return .error("can't turn off others not teacher")
-                }
-            } else {
-                // Can't turn on mic
-                return .error("can't open mic")
-            }
-        } else {
-            if !status.mic, !state.isInteractable {
-                return .error("can't turn on mic in current mode")
-            }
-        }
-        status.mic = !status.mic
-        return sendCommand(.deviceState(.init(userUUID: userUUID,
-                                              camera: status.camera,
-                                              mic: status.mic)),
-                           toTargetUID: nil)
-            .do(onSuccess: { [weak self] in
-                self?.state.updateUserStatusFor(userRtmUID: userUUID,
-                                                status: status)
-            })
-                }
-    
-    func processCommandMessage(text: String, senderId: String) -> Single<RtmCommand> {
-        do {
-            let command = try self.commandDecoder.decode(text)
-            switch command {
-            case .allOffStage:
-                cancelAllOnStageStudents()
-                return .just(command)
-            case .deviceState(let deviceStateCommand):
-                guard var newStatus = state.userStatusFor(userUUID: deviceStateCommand.userUUID) else {
-                    return .just(command)
-                }
-                newStatus.camera = deviceStateCommand.camera
-                newStatus.mic = deviceStateCommand.mic
-                state.updateUserStatusFor(userRtmUID: deviceStateCommand.userUUID, status: newStatus)
-                return .just(command)
-            case .requestChannelStatus(let requestChannelStatusCommand):
-                // TODO: response is not reliable, should depend on the current status
-                return respondToRequestChannelStatusCommand(requestChannelStatusCommand, fromUID: senderId).map { _ ->  RtmCommand in
-                    return command
-                }
-            case .roomStartStatus(let status):
-                state.startStatus.accept(status)
-                return .just(command)
-            case .channelStatus:
-                // Process by initRoom
-                return .just(command)
-            case .raiseHand(let raiseHand):
-                guard var status = state.userStatusFor(userUUID: senderId) else {
-                    return .just(command)
-                }
-                status.isRaisingHand = raiseHand
-                state.updateUserStatusFor(userRtmUID: senderId, status: status)
-                return .just(command)
-            case .acceptRaiseHand(let acceptCommand):
-                guard var status = state.userStatusFor(userUUID: acceptCommand.userUUID) else {
-                    return .just(command)
-                }
-                if acceptCommand.accept {
-                    status.isRaisingHand = false
-                    status.mic = true
-                    status.isSpeak = true
-                    state.updateUserStatusFor(userRtmUID: acceptCommand.userUUID, status: status)
-                }
-                return .just(command)
-            case .cancelRaiseHand:
-                let newUsers = state.users.value.map { user -> RoomUser in
-                    var new = user
-                    new.status.isRaisingHand = false
-                    return new
-                }
-                state.users.accept(newUsers)
-                return .just(command)
-            case .banText(let ban):
-                // Temp function
-                if ban {
-                    if state.roomType == .bigClass {
-                        cancelAllOnStageStudents()
-                    }
-                }
-                state.messageBan.accept(ban)
-                return .just(command)
-            case .speak(let speakCommand):
-                for command in speakCommand {
-                    if var status = state.userStatusFor(userUUID: command.userUUID) {
-                        status.isSpeak = command.speak
-                        status.mic = command.speak
-                        status.camera = command.speak
-                        state.updateUserStatusFor(userRtmUID: command.userUUID, status: status)
-                    }
-                }
-                return .just(command)
-            case .classRoomMode(let mode):
-                state.mode.accept(mode)
-                return .just(command)
-            case .notice(let notice), .undefined(let notice):
-                print("notice \(notice)")
-                return .just(command)
-            }
-        }
-        catch {
-            let e = "decode command error \(error)"
-            print(e)
-            return .error(e)
-        }
-    }
-    
-    // MARK: - Private
-    func initialRoomStatus() -> Single<Void> {
-        rtm.login()
-            .flatMap { [weak self] _ -> Single<AnyChannelHandler> in
-                guard let self = self else{
-                    return .error("self not exist")
-                }
-                return self.rtm.joinChannelId(self.commandChannelId)
-            }.do(onSuccess: { [weak self] handler in self?.commandHandler = handler })
-                .flatMap { [weak self] _ -> Single<Void> in
-                    guard let self = self else{
-                        return .error("self not exist")
-                    }
-                    return self.requestRoomStatus()
-                }.flatMap { [weak self] _ -> Single<Void> in
-                    guard let self = self else { return .error("self not exist") }
-                    if self.isTeacher, self.state.startStatus.value == .Idle {
-                        return self.startOperation()
-                    } else {
-                        return .just(())
-                    }
-                }
-    }
-    
-    func requestRoomStatus() -> Single<Void> {
-        let userId = self.userUUID
-        let roomId = self.state.roomUUID
-        
-        return commandHandler.getMembers()
-            .flatMap { [weak self] memberIds -> Single<Void> in
-                guard let self = self else {
-                    return .error("self not exist")
-                }
-                guard let randomId = memberIds.filter({ $0 != userId }).randomElement() else {
-                    self.state.applyWithNoUser()
-                    return .just(())
-                }
-                let users = ApiProvider.shared.request(fromApi: MemberRequest(roomUUID: roomId, usersUUID: memberIds))
-                    .map { result -> [RoomUser] in
-                        let users = result.response.map {
-                            return RoomUser(rtmUUID: $0.key,
-                                            rtcUID: $0.value.rtcUID,
-                                            name: $0.value.name,
-                                            avatarURL: URL(string: $0.value.avatarURL))
-                        }
-                        return users
-                    }
-                    .do(onNext: { [weak self] users in
-                        self?.state.appendUser(fromContentsOf: users)
-                    }).asObservable()
-                        
-                        // TODO: Fix for somebody not response
-                        let firstStatusCommand = self.rtm.p2pMessage
-                        .map { (str, userId) -> ChannelStatusCommand? in
-                            let command = try self.commandDecoder.decode(str)
-                            if case .channelStatus(let status) = command {
-                                return status
-                            } else {
-                                return nil
-                            }
-                        }
-                        .skip(while: { $0 == nil })
-                        .take(1)
-                        .map { $0! }
-                        .do(onNext: { [weak self] status in
-                            let userStatus: [String: RoomUserStatus] = status.userStates.mapValues { str in
-                                RoomUserStatus(string: str)
-                            }
-                            // Init room status
-                            self?.state.initRoomStateFromOtherState(messageBan: status.banMessage,
-                                                                    startStatus: status.roomStartStatus,
-                                                                    roomMode: status.classRoomMode,
-                                                                    userStatus: userStatus)
-                        })
-                            
-                            let command = self.generateRequestStatusCommand(fromUUID: randomId)
-                            
-                            return users
-                            .flatMap { [weak self] _ -> Single<Void> in
-                                guard let self = self else {
-                                    return .error("self not exist")
-                                }
-                                return self.sendCommand(.requestChannelStatus(command), toTargetUID: nil)
-                            }
-                            .flatMap { firstStatusCommand }
-                            .map { _ -> Void in return () }
-                            .asSingle()
-            }
-    }
-    
-    func leaveRoomProcess() -> Single<Void> {
-        rtm.leave()
-    }
-    
-    // TODO: Update Mic / Camera before request
-    func currentUser() -> RoomUser? {
-        state.users.value.first(where: { $0.rtmUUID == userUUID })
-    }
-    
-    func respondToRequestChannelStatusCommand(_ command: RequestChannelStatusCommand, fromUID uid: String) -> Single<Void> {
-        let userValue = ApiProvider.shared.request(fromApi: MemberRequest(roomUUID: state.roomUUID,
-                                                                          usersUUID: [uid]))
-            .map {
-                let user = ($0.response.first?.value)!
-                let userStatus = RoomUserStatus(isSpeak: command.user.isSpeak,
-                                                isRaisingHand: false,
-                                                camera: command.user.camera,
-                                                mic: command.user.mic)
-                return RoomUser(rtmUUID: uid,
-                                rtcUID: user.rtcUID,
-                                name: user.name,
-                                avatarURL: URL(string: user.avatarURL),
-                                status: userStatus)
-            }
-            .do(onNext: { [weak self] user in
-                self?.state.appendUser(user)
-            })
-                
-                let result = userValue.flatMap { [weak self] user -> Single<Void> in
-                    guard let self = self else {
-                        return .error("self not exist")
-                    }
-                    // Respond channel status when userUUID list contains self
-                    guard command.userUUIDs.contains(self.userUUID) else {
-                        return .just(())
-                    }
-                    // Send the recent user list to the new coming
-                    var userStates: [String: String] = [:]
-                    for user in self.state.users.value {
-                        let uuid = user.rtmUUID
-                        let statusString = user.status.toString()
-                        userStates[uuid] = statusString
-                    }
-                    // Generate the response
-                    let statusCommands = ChannelStatusCommand(banMessage: self.state.messageBan.value,
-                                                              roomStartStatus: self.state.startStatus.value,
-                                                              classRoomMode: self.state.mode.value,
-                                                              userStates: userStates)
-                    return self.sendCommand(.channelStatus(statusCommands), toTargetUID: uid)
-                }
-                return result.asSingle()
-                }
-    
-    func generateRequestStatusCommand(fromUUID UUID: String) -> RequestChannelStatusCommand {
-        let currentUser = currentUser()!
-        return RequestChannelStatusCommand(roomUUID: state.roomUUID,
-                                           userUUIDs: [UUID],
-                                           user: .init(name: currentUser.name,
-                                                       camera: currentUser.status.camera,
-                                                       mic: currentUser.status.mic,
-                                                       isSpeak: currentUser.status.isSpeak))
-    }
-    
-    func sendCommand(_ command: RtmCommand,
-                     toTargetUID targetId: String?) -> Single<Void> {
-        let channelId = self.commandHandler.channelId
-        do {
-            if let targetId = targetId {
-                let str = try commandEncoder.encode(command, withChannelId: channelId)
-                print("send command \(str), to \(targetId)")
-                return self.rtm.sendMessage(text: str, toUUID: targetId)
-            } else {
-                let str = try commandEncoder.encode(command, withChannelId: nil)
-                return commandHandler.sendMessage(str)
-            }
-        }
-        catch {
-            return .error("create command error \(error)")
-        }
+    func destroy() {
+        stateHandler.destroy()
+        let startStatus = stateHandler.roomStartStatus.value
+        NotificationCenter.default.post(name: classRoomLeavingNotificationName,
+                                        object: nil,
+                                        userInfo: ["roomUUID": roomUUID, "startStatus": startStatus])
     }
 }

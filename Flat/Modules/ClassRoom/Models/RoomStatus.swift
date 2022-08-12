@@ -12,5 +12,5 @@ import Foundation
 struct RoomStatus {
     var banMessage: Bool
     var roomStartStatus: RoomStartStatus
-    var classRoomType: ClassRoomMode
+    var classRoomType: ClassroomMode
 }

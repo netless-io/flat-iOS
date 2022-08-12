@@ -13,15 +13,10 @@ import RxCocoa
 import AgoraRtcKit
 import Fastboard
 
-struct ClassRoomFactory {
-    struct DeviceStatus {
-        let mic: Bool
-        let camera: Bool
-    }
-    
+struct ClassroomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
                                             detailInfo: RoomBasicInfo,
-                                            deviceStatus: DeviceStatus) -> ClassRoomViewController {
+                                            deviceStatus: DeviceState) -> ClassRoomViewController {
         let fastRoomConfiguration: FastRoomConfiguration
         let region: Region
         switch FlatRegion(rawValue: detailInfo.region) ?? .CN_HZ {
@@ -63,6 +58,7 @@ struct ClassRoomFactory {
             fastRoomConfiguration.whiteSdkConfiguration.setValue(ua, forKey: "netlessUA")
         }
         fastRoomConfiguration.whiteSdkConfiguration.userCursor = true
+        fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
         let userName = AuthStore.shared.user?.name ?? ""
         let payload: [String: String] = ["cursorName": userName]
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
@@ -72,29 +68,29 @@ struct ClassRoomFactory {
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
         
-        // Config init state
-        let initUser: RoomUser = .init(rtmUUID: playInfo.rtmUID,
-                             rtcUID: playInfo.rtcUID,
-                             name: AuthStore.shared.user?.name ?? "",
-                             avatarURL: AuthStore.shared.user?.avatar,
-                             status: .init(isSpeak: false,
-                                           isRaisingHand: false,
-                                           camera: detailInfo.roomType == .bigClass ? false : deviceStatus.camera,
-                                           mic: detailInfo.roomType == .bigClass ? false : deviceStatus.mic))
-        
-        let state = ClassRoomState(roomType: detailInfo.roomType,
-                                   roomOwnerRtmUUID: playInfo.ownerUUID,
-                                   roomUUID: playInfo.roomUUID,
-                                   messageBan: true,
-                                   status: detailInfo.roomStatus,
-                                   mode: .lecture,
-                                   users: [initUser],
-                                   userUUID: initUser.rtmUUID)
+        let camera = detailInfo.isOwner ? deviceStatus.camera : detailInfo.roomType != .bigClass
+        let mic = detailInfo.isOwner ? deviceStatus.mic : detailInfo.roomType != .bigClass
+        let initDeviceState = DeviceState(mic: mic, camera: camera)
         
         // Config Rtm
-        let rtm = ClassRoomRtm(rtmToken: playInfo.rtmToken,
+        let rtm = Rtm(rtmToken: playInfo.rtmToken,
                                 rtmUserUUID: playInfo.rtmUID,
                                 agoraAppId: Env().agoraAppId)
+        
+        // Config State imp
+        let syncedStore = ClassRoomSyncedStore()
+        fastboardViewController.bindStore = syncedStore
+        
+        let imp = ClassroomStateHandlerImp(syncedStore: syncedStore,
+                                           rtm: rtm,
+                                           commandChannelId: playInfo.commandChannelId,
+                                           roomUUID: playInfo.roomUUID,
+                                           ownerUUID: playInfo.ownerUUID,
+                                           isOwner: playInfo.rtmUID == playInfo.ownerUUID,
+                                           maxOnstageUserCount: detailInfo.roomType.maxOnstageUserCount,
+                                           roomStartStatus: detailInfo.roomStatus,
+                                           whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
+                                           whiteboardRoomError: fastboardViewController.roomError.asObservable())
         
         // Config Rtc
         let rtc = Rtc(appId: Env().agoraAppId,
@@ -102,32 +98,44 @@ struct ClassRoomFactory {
                       token: playInfo.rtcToken,
                       uid: playInfo.rtcUID,
                       screenShareInfo: playInfo.rtcShareScreen)
+        
         let rtcViewController = RtcViewController(viewModel: .init(rtc: rtc,
                                                                    localUserRegular: { $0 == 0 || $0 == playInfo.rtcUID },
                                                                    userFetch: { rtcId -> RoomUser? in
-            if rtcId == 0 { return state.users.value.first(where: { $0.rtcUID == playInfo.rtcUID })}
-            return state.users.value.first(where: { $0.rtcUID == rtcId }) },
+            fatalError()
+        },
+//            if rtcId == 0 { return state.users.value.first(where: { $0.rtcUID == playInfo.rtcUID })}
+//            return state.users.value.first(where: { $0.rtcUID == rtcId }) },
                                                                    userThumbnailStream: { uid -> AgoraVideoStreamType in
-            guard let user = state.users.value.first(where: { $0.rtcUID == uid }) else { return .low }
-            let isTeacher = user.rtmUUID == playInfo.ownerUUID
-            return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
+//            guard let user = state.users.value.first(where: { $0.rtcUID == uid }) else { return .low }
+//            let isTeacher = user.rtmUUID == playInfo.ownerUUID
+//            return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
+            fatalError()
         }))
         
-        let controller = ClassRoomViewController(fastboardViewController: fastboardViewController,
-                                                 rtcViewController: rtcViewController,
-                                                 classRoomState: state,
-                                                 rtm: rtm,
-                                                 chatChannelId: playInfo.roomUUID,
-                                                 commandChannelId: playInfo.roomUUID + "commands",
-                                                 roomOwnerRtmUUID: playInfo.ownerUUID,
-                                                 roomTitle: detailInfo.title,
-                                                 beginTime: detailInfo.beginTime,
-                                                 endTime: detailInfo.endTime,
-                                                 roomNumber: detailInfo.formatterInviteCode,
-                                                 roomUUID: playInfo.roomUUID,
-                                                 isTeacher: detailInfo.ownerUUID == playInfo.rtmUID,
-                                                 userUUID: playInfo.rtmUID,
-                                                 userName: initUser.name)
+        
+        let alertProvider = DefaultAlertProvider()
+        let vm = ClassRoomViewModel(stateHandler: imp,
+                                     initDeviceState: initDeviceState,
+                                     isOwner: detailInfo.isOwner,
+                                     userUUID: playInfo.rtmUID,
+                                     roomUUID: playInfo.roomUUID,
+                                     roomType: detailInfo.roomType,
+                                     chatChannelId: playInfo.chatChannelId,
+                                     rtm: rtm,
+                                     alertProvider: alertProvider)
+        let controller = ClassRoomViewController(viewModel: vm,
+                                                   fastboardViewController: fastboardViewController,
+                                                   rtcListViewController: rtcViewController,
+                                                   userListViewController: .init(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID),
+                                                   inviteViewController: ShareManager.createShareActivityViewController(roomUUID: playInfo.roomUUID,
+                                                                                                                        beginTime: detailInfo.beginTime,
+                                                                                                                        title: detailInfo.title,
+                                                                                                                        roomNumber: detailInfo.formatterInviteCode),
+                                                   isOwner: detailInfo.isOwner,
+                                                   ownerUUID: playInfo.ownerUUID)
+        alertProvider.root = controller
+        log(log: "joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller
     }
 }

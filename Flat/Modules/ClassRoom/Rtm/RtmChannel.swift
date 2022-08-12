@@ -11,7 +11,7 @@ import AgoraRtmKit
 import RxSwift
 import RxCocoa
 
-class AnyChannelHandler: NSObject, AgoraRtmChannelDelegate {
+class RtmChannel: NSObject, AgoraRtmChannelDelegate {
     let newMemberPublisher: PublishRelay<String> = .init()
     let memberLeftPublisher: PublishRelay<String> = .init()
     let newMessagePublish: PublishRelay<(text: String, sender: String)> = .init()
@@ -21,7 +21,7 @@ class AnyChannelHandler: NSObject, AgoraRtmChannelDelegate {
     weak var channel: AgoraRtmChannel!
     
     deinit {
-        print(self, channelId ?? "", "deinit")
+        log(module: .alloc, level: .verbose, log: "\(self), channelId \(channelId ?? "") deinit")
     }
     
     func sendMessage(_ text: String, censor: Bool = false, appendToNewMessage: Bool = false) -> Single<Void> {
@@ -73,17 +73,17 @@ class AnyChannelHandler: NSObject, AgoraRtmChannelDelegate {
     }
     
     func channel(_ channel: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
-        print(#function, member.userId)
+        log(module: .rtm, level: .info, log: "memberJoined \(member.userId)")
         newMemberPublisher.accept(member.userId)
     }
     
     func channel(_ channel: AgoraRtmChannel, memberLeft member: AgoraRtmMember) {
-        print(#function, member.userId)
+        log(module: .rtm, level: .info, log: "memberLeft \(member.userId)")
         memberLeftPublisher.accept(member.userId)
     }
     
     func channel(_ channel: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
-        print(#function, message.text)
+        log(module: .rtm, level: .info, log: "messageReceived \(message.text)")
         newMessagePublish.accept((message.text, member.userId))
     }
 }

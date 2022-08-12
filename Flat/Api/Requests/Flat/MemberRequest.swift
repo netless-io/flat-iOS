@@ -16,6 +16,13 @@ struct RoomUserInfo: Decodable, Hashable {
     let rtcUID: UInt
     // Empty sometimes. Do not use URL type
     let avatarURL: String
+    
+    func toRoomUser(uid: String) -> RoomUser {
+        .init(rtmUUID: uid,
+              rtcUID: rtcUID,
+              name: name,
+              avatarURL: URL(string: avatarURL))
+    }
 }
 
 struct MemberResponse: Decodable {

@@ -220,8 +220,8 @@ class CreateClassRoomViewController: UIViewController {
                 sender.isEnabled = true
                 let playInfo = tuple.0
                 let roomInfo = tuple.1
-                let deviceStatus = ClassRoomFactory.DeviceStatus(mic: weakSelf.micOn, camera: weakSelf.cameraOn)
-                let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo,
+                let deviceStatus = DeviceState(mic: weakSelf.micOn, camera: weakSelf.cameraOn)
+                let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: roomInfo,
                                                                      deviceStatus: deviceStatus)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
@@ -243,7 +243,7 @@ class CreateClassRoomViewController: UIViewController {
                 RoomBasicInfo.fetchInfoBy(uuid: UUID, periodicUUID: nil) { result in
                     switch result {
                     case .success(let roomInfo):
-                        let vc = ClassRoomFactory.getClassRoomViewController(withPlayInfo: playInfo,
+                        let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                              detailInfo: roomInfo,
                                                                              deviceStatus: .init(mic: self.micOn,
                                                                                                  camera: self.cameraOn))
