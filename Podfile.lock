@@ -50,28 +50,28 @@ PODS:
   - Siren (5.7.1)
   - SnapKit (5.0.1)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.16.31):
-    - Whiteboard/Whiteboard-YYModel (= 2.16.31)
-  - Whiteboard/Base (2.16.31):
+  - Whiteboard (2.16.34):
+    - Whiteboard/Whiteboard-YYModel (= 2.16.34)
+  - Whiteboard/Base (2.16.34):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.16.31):
+  - Whiteboard/Converter (2.16.34):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.16.31):
+  - Whiteboard/fpa (2.16.34):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.16.31):
+  - Whiteboard/Model (2.16.34):
     - YYModel
-  - Whiteboard/NativeReplayer (2.16.31):
+  - Whiteboard/NativeReplayer (2.16.34):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.16.31):
+  - Whiteboard/Object (2.16.34):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.16.31):
+  - Whiteboard/Replayer (2.16.34):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.16.31)
-  - Whiteboard/Room (2.16.31):
+  - Whiteboard/Resource (2.16.34)
+  - Whiteboard/Room (2.16.34):
     - Whiteboard/Base
-  - Whiteboard/Whiteboard-YYModel (2.16.31):
+  - Whiteboard/Whiteboard-YYModel (2.16.34):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -96,6 +96,7 @@ DEPENDENCIES:
   - Siren
   - SnapKit
   - WechatOpenSDK
+  - Whiteboard
 
 SPEC REPOS:
   trunk:
@@ -141,9 +142,9 @@ SPEC CHECKSUMS:
   Siren: 76ac728f4f2f4a3576c322272e94a0e37955664f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: b745f01ea19d3de576ff8ad5ec7b405e0507c783
+  Whiteboard: 2eba76f6853ff0fe7db2218fa650e54224cb2688
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 11a8f1877f95eb51deef1e913ccc049ed24c6588
+PODFILE CHECKSUM: ac8316535944f59cfac171139962ff837080ee22
 
 COCOAPODS: 1.11.3

@@ -17,6 +17,7 @@ target 'Flat' do
   pod 'WechatOpenSDK'
   pod 'Fastboard'
   pod 'Fastboard/fpa'
+  pod 'Whiteboard'
   pod 'Siren'
   pod 'CropViewController'
   
