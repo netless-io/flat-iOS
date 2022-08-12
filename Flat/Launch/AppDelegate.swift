@@ -40,17 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             launch?.start(withLaunchUrl: url)
         }
 #if DEBUG
-        do {
-            let injectionBundle = Bundle.init(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")
-            if let bundle = injectionBundle {
-                try bundle.loadAndReturnError()
-            } else {
-                debugPrint("Injection注入失败,未能检测到Injection")
-            }
-            
-        } catch {
-            debugPrint("Injection注入失败\(error)")
-        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             guard AuthStore.shared.isLogin else { return }
             // Cancel all the previous upload task, for old task will block the new upload
