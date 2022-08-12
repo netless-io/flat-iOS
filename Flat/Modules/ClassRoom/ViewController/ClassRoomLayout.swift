@@ -37,9 +37,9 @@ class ClassRoomLayout {
     let whiteboardRatio: CGFloat = CGFloat(ClassRoomLayoutRatioConfig.whiteboardRatio)
     
     func update(rtcHide: Bool, contentSize: CGSize) -> OutPut {
-        print("ClassRoomLayout update from \(rtcHide), \(contentSize)")
+//        print("ClassRoomLayout update from \(rtcHide), \(contentSize)")
         let value = resize(preferredStyle: .fixedWidth(contentSize.width), isRtcHide: rtcHide, contentSize: contentSize)
-        print("ClassRoomLayout \(value.0), \(value.1)")
+//        print("ClassRoomLayout \(value.0), \(value.1)")
         return value.0
     }
     

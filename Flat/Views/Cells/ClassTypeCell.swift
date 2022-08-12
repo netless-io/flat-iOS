@@ -58,7 +58,6 @@ class ClassTypeCell: UIControl {
             UIView.animate(withDuration: 0.2) {
                 self.typeImageView.transform = .identity
             }
-            print(#function, self)
         case .selected:
             layer.borderColor = UIColor.brandColor.cgColor
             layer.borderWidth = 2

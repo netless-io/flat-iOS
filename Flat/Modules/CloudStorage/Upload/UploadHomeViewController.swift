@@ -64,7 +64,6 @@ class UploadHomeViewController: UIViewController {
             presentTask()
         }
         catch {
-            print(error)
             toast("error create task \(error.localizedDescription)", timeInterval: 3)
         }
     }

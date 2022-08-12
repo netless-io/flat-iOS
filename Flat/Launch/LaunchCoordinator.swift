@@ -20,12 +20,10 @@ class LaunchCoordinator {
     var afterLoginImplementations: [((LaunchCoordinator)->Void)] = []
     
     var authStore: AuthStore
-    // All the registerd launchItem will be stored here
+    // All the registered launchItem will be stored here
     fileprivate var launchItems: [String: LaunchItem] = [:] {
         didSet {
-            #if DEBUG
-            print("launchItems update", launchItems)
-            #endif
+            log(log: "launchItems update, \(launchItems)")
         }
     }
     

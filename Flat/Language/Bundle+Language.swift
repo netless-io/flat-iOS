@@ -28,7 +28,6 @@ extension Bundle {
         UserDefaults.standard.synchronize()
 
         guard let path = Bundle.main.path(forResource: language.code, ofType: "lproj") else {
-            print("Failed to get a bundle path.")
             return
         }
         objc_setAssociatedObject(Bundle.main, &bundleKey, Bundle(path: path), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC);
