@@ -261,7 +261,7 @@
 "Leaving for now" = "暂时离开";
 
 
-"Leaving room soon" = "即将离开房间";
+"Leaving room soon" = "房间已经结束，你即将退出房间...";
 
 
 "Loading" = "加载中";
@@ -529,6 +529,9 @@
 
 
 "Teacher close class room alert detail" = "课堂正在继续，你是暂时离开还是结束上课？";
+
+
+"The ban was lifted" = "禁言已解除";
 
 
 "Theme" = "外观";

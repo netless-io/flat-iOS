@@ -261,7 +261,7 @@
 "Leaving for now" = "Leaving for now";
 
 
-"Leaving room soon" = "Leaving room soon";
+"Leaving room soon" = "The room has ended and you are about to exit the room...";
 
 
 "Loading" = "Loading";
@@ -529,6 +529,9 @@
 
 
 "Teacher close class room alert detail" = "The class is continuing, will you leave for now or end the class?";
+
+
+"The ban was lifted" = "The ban was lifted";
 
 
 "Theme" = "Appearance";
