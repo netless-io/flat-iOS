@@ -46,6 +46,7 @@
 		8A11CBF227201069001D0B1F /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBF127201069001D0B1F /* String+Error.swift */; };
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A133529288FA21000C825DE /* MessageCensorRequest.swift */; };
+		8A14EE6C28A6321D00C0CB89 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14EE6B28A6321D00C0CB89 /* Log.swift */; };
 		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
 		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
 		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
@@ -94,13 +95,11 @@
 		8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9D27159F4C00123207 /* ApiError.swift */; };
 		8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0BA82716859700123207 /* LoginViewController.swift */; };
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
-		8A3460CF272952490066063E /* ClassRoomMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CE272952490066063E /* ClassRoomMode.swift */; };
+		8A3460CF272952490066063E /* ClassroomMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CE272952490066063E /* ClassroomMode.swift */; };
 		8A3460D1272962D70066063E /* RoomStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460D0272962D70066063E /* RoomStatus.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
 		8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55F1B1273A710000D4DA0F /* AnyRequest.swift */; };
-		8A5DCF9B273B6E6B0068D5DF /* ClassRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCF9A273B6E6B0068D5DF /* ClassRoomViewController.swift */; };
-		8A5DCF9D273B6E7A0068D5DF /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCF9C273B6E7A0068D5DF /* ClassRoomViewModel.swift */; };
 		8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */; };
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
@@ -116,7 +115,7 @@
 		8A7741C42734CFAC009FAADA /* BorderLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741C32734CFAC009FAADA /* BorderLabelView.swift */; };
 		8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6E271829AB00450DC6 /* HomeViewController.swift */; };
 		8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */; };
-		8A7741DC2738BB06009FAADA /* ClassRoomFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741DB2738BB06009FAADA /* ClassRoomFactory.swift */; };
+		8A7741DC2738BB06009FAADA /* ClassroomFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */; };
 		8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E2273A47C2009FAADA /* Array+Extension.swift */; };
 		8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E4273A542F009FAADA /* UIView+Badge.swift */; };
 		8A7741E7273A6FA2009FAADA /* RoomCancelRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7741E6273A6FA2009FAADA /* RoomCancelRequest.swift */; };
@@ -175,11 +174,16 @@
 		8A9FB3CB2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CA2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift */; };
 		8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CC2722C0A100F6F06F /* HistoryMessageRequest.swift */; };
 		8A9FB3D02722C14B00F6F06F /* AgoraMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CF2722C14B00F6F06F /* AgoraMessage.swift */; };
+		8AA242F6289A6ABD00C306F0 /* ClassroomStateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242F5289A6ABD00C306F0 /* ClassroomStateHandler.swift */; };
+		8AA242F8289A6D7C00C306F0 /* DeviceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242F7289A6D7C00C306F0 /* DeviceState.swift */; };
+		8AA242FA289A7DDC00C306F0 /* ClassRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */; };
+		8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */; };
+		8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */; };
 		8AA434E1277D8E9E003681E6 /* loading_without_bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */; };
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
-		8AA97EA02741F20300C3F92E /* ClassRoomState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97E9F2741F20300C3F92E /* ClassRoomState.swift */; };
-		8AA97EA22741F83A00C3F92E /* AnyChannelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* AnyChannelHandler.swift */; };
-		8AA97EA42741F97B00C3F92E /* ClassRoomRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* ClassRoomRtm.swift */; };
+		8AA97EA02741F20300C3F92E /* ClassroomState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97E9F2741F20300C3F92E /* ClassroomState.swift */; };
+		8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* RtmChannel.swift */; };
+		8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* Rtm.swift */; };
 		8AAB06242762E514006CAEF2 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06232762E514006CAEF2 /* ExportService.swift */; };
 		8AAB06262762F509006CAEF2 /* RenameFileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06252762F509006CAEF2 /* RenameFileRequest.swift */; };
 		8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06272762FD06006CAEF2 /* StartConvertRequest.swift */; };
@@ -207,7 +211,7 @@
 		8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362B27464E63000D5003 /* String+Empty.swift */; };
 		8ABF362F2747B356000D5003 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8ABF362E2747B355000D5003 /* loading.gif */; };
 		8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+Loading.swift */; };
-		8AC1FF4A2892736900624E8B /* TempLogRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1FF492892736900624E8B /* TempLogRequest.swift */; };
+		8AC1FF3528912BAA00624E8B /* ClassRoomSyncedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
@@ -236,7 +240,7 @@
 		8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AD7C6C527157EA7001C4AAD /* Assets.xcassets */; };
 		8AD7C6C927157EA7001C4AAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AD7C6C727157EA7001C4AAD /* LaunchScreen.storyboard */; };
 		8ADD9E0227701D05009A7050 /* UITraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD9E0127701D05009A7050 /* UITraitCollection.swift */; };
-		8AE892FB2727E99D009C71DA /* CommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* CommandType.swift */; };
+		8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* RtmCommandType.swift */; };
 		8AE892FE2727E9DB009C71DA /* SpeakCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FD2727E9DB009C71DA /* SpeakCommand.swift */; };
 		8AE893022727EFA3009C71DA /* RequestChannelStatusCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE893012727EFA3009C71DA /* RequestChannelStatusCommand.swift */; };
 		8AE893042727F2F1009C71DA /* AcceptRaiseHandCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE893032727F2F1009C71DA /* AcceptRaiseHandCommand.swift */; };
@@ -300,6 +304,7 @@
 		8A11CBF127201069001D0B1F /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A133529288FA21000C825DE /* MessageCensorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCensorRequest.swift; sourceTree = "<group>"; };
+		8A14EE6B28A6321D00C0CB89 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
@@ -351,7 +356,7 @@
 		8A2D0B9D27159F4C00123207 /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
 		8A2D0BA82716859700123207 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
-		8A3460CE272952490066063E /* ClassRoomMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomMode.swift; sourceTree = "<group>"; };
+		8A3460CE272952490066063E /* ClassroomMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomMode.swift; sourceTree = "<group>"; };
 		8A3460D0272962D70066063E /* RoomStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomStatus.swift; sourceTree = "<group>"; };
 		8A48A9C82716D734003719DB /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
 		8A48A9CA2716D795003719DB /* FlatResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatResponse.swift; sourceTree = "<group>"; };
@@ -360,8 +365,6 @@
 		8A4C7A7527F2E53B006988C6 /* Flint_Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Develop.xcconfig; sourceTree = "<group>"; };
 		8A4C7A7627F2E544006988C6 /* Flint_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Release.xcconfig; sourceTree = "<group>"; };
 		8A55F1B1273A710000D4DA0F /* AnyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequest.swift; sourceTree = "<group>"; };
-		8A5DCF9A273B6E6B0068D5DF /* ClassRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewController.swift; sourceTree = "<group>"; };
-		8A5DCF9C273B6E7A0068D5DF /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
 		8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevicePreferredStatusStore.swift; sourceTree = "<group>"; };
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
@@ -375,7 +378,7 @@
 		8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Toast.swift"; sourceTree = "<group>"; };
 		8A7741C02734CEFE009FAADA /* ChatNoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNoticeTableViewCell.swift; sourceTree = "<group>"; };
 		8A7741C32734CFAC009FAADA /* BorderLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderLabelView.swift; sourceTree = "<group>"; };
-		8A7741DB2738BB06009FAADA /* ClassRoomFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomFactory.swift; sourceTree = "<group>"; };
+		8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomFactory.swift; sourceTree = "<group>"; };
 		8A7741E2273A47C2009FAADA /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		8A7741E4273A542F009FAADA /* UIView+Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Badge.swift"; sourceTree = "<group>"; };
 		8A7741E6273A6FA2009FAADA /* RoomCancelRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCancelRequest.swift; sourceTree = "<group>"; };
@@ -437,11 +440,16 @@
 		8A9FB3CA2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+AnyKeyDecodable.swift"; sourceTree = "<group>"; };
 		8A9FB3CC2722C0A100F6F06F /* HistoryMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryMessageRequest.swift; sourceTree = "<group>"; };
 		8A9FB3CF2722C14B00F6F06F /* AgoraMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraMessage.swift; sourceTree = "<group>"; };
+		8AA242F5289A6ABD00C306F0 /* ClassroomStateHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateHandler.swift; sourceTree = "<group>"; };
+		8AA242F7289A6D7C00C306F0 /* DeviceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceState.swift; sourceTree = "<group>"; };
+		8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewController.swift; sourceTree = "<group>"; };
+		8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
+		8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateHandlerImp.swift; sourceTree = "<group>"; };
 		8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_without_bg.gif; sourceTree = "<group>"; };
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
-		8AA97E9F2741F20300C3F92E /* ClassRoomState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomState.swift; sourceTree = "<group>"; };
-		8AA97EA12741F83A00C3F92E /* AnyChannelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyChannelHandler.swift; sourceTree = "<group>"; };
-		8AA97EA32741F97B00C3F92E /* ClassRoomRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomRtm.swift; sourceTree = "<group>"; };
+		8AA97E9F2741F20300C3F92E /* ClassroomState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomState.swift; sourceTree = "<group>"; };
+		8AA97EA12741F83A00C3F92E /* RtmChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmChannel.swift; sourceTree = "<group>"; };
+		8AA97EA32741F97B00C3F92E /* Rtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rtm.swift; sourceTree = "<group>"; };
 		8AAB06232762E514006CAEF2 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
 		8AAB06252762F509006CAEF2 /* RenameFileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameFileRequest.swift; sourceTree = "<group>"; };
 		8AAB06272762FD06006CAEF2 /* StartConvertRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartConvertRequest.swift; sourceTree = "<group>"; };
@@ -470,7 +478,7 @@
 		8ABF362B27464E63000D5003 /* String+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Empty.swift"; sourceTree = "<group>"; };
 		8ABF362E2747B355000D5003 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		8ABF36302747B696000D5003 /* UIView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loading.swift"; sourceTree = "<group>"; };
-		8AC1FF492892736900624E8B /* TempLogRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempLogRequest.swift; sourceTree = "<group>"; };
+		8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSyncedStore.swift; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingViewController.swift; sourceTree = "<group>"; };
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -504,7 +512,7 @@
 		8AD7C6C527157EA7001C4AAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AD7C6CA27157EA7001C4AAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8ADD9E0127701D05009A7050 /* UITraitCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitCollection.swift; sourceTree = "<group>"; };
-		8AE892FA2727E99D009C71DA /* CommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandType.swift; sourceTree = "<group>"; };
+		8AE892FA2727E99D009C71DA /* RtmCommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmCommandType.swift; sourceTree = "<group>"; };
 		8AE892FD2727E9DB009C71DA /* SpeakCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakCommand.swift; sourceTree = "<group>"; };
 		8AE893012727EFA3009C71DA /* RequestChannelStatusCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestChannelStatusCommand.swift; sourceTree = "<group>"; };
 		8AE893032727F2F1009C71DA /* AcceptRaiseHandCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRaiseHandCommand.swift; sourceTree = "<group>"; };
@@ -771,6 +779,14 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
+		8A14EE6A28A6321500C0CB89 /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				8A14EE6B28A6321D00C0CB89 /* Log.swift */,
+			);
+			path = Log;
+			sourceTree = "<group>";
+		};
 		8A1BF0BD280D0AF400D76F22 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
@@ -962,6 +978,7 @@
 		8A97EBBB271D180600965185 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8A14EE6A28A6321500C0CB89 /* Log */,
 				8A21DAAA279E58E70060E25D /* Replay */,
 				8A11CC22272019C9001D0B1F /* ClassRoom */,
 				8A2D0BA62716859700123207 /* Login */,
@@ -1053,7 +1070,6 @@
 				8A05C34127604576009BCA79 /* UploadFinishRequest.swift */,
 				8A05C35A2761E9AD009BCA79 /* CancelUploadRequest.swift */,
 				8A133529288FA21000C825DE /* MessageCensorRequest.swift */,
-				8AC1FF492892736900624E8B /* TempLogRequest.swift */,
 				8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */,
 			);
 			path = Flat;
@@ -1180,7 +1196,9 @@
 		8ABF362727464538000D5003 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				8A5DCF9C273B6E7A0068D5DF /* ClassRoomViewModel.swift */,
+				8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */,
+				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
+				8AA242F5289A6ABD00C306F0 /* ClassroomStateHandler.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1188,7 +1206,7 @@
 		8ABF362827464543000D5003 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				8A5DCF9A273B6E6B0068D5DF /* ClassRoomViewController.swift */,
+				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
 				8ABD71E327683DB5004FDC36 /* ClassRoomLayout.swift */,
 			);
 			path = ViewController;
@@ -1197,7 +1215,7 @@
 		8ABF362927464565000D5003 /* Factory */ = {
 			isa = PBXGroup;
 			children = (
-				8A7741DB2738BB06009FAADA /* ClassRoomFactory.swift */,
+				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -1243,10 +1261,11 @@
 			isa = PBXGroup;
 			children = (
 				8A80209B27570CC700F5691C /* StorageFileModel.swift */,
-				8AA97E9F2741F20300C3F92E /* ClassRoomState.swift */,
-				8AA97EA32741F97B00C3F92E /* ClassRoomRtm.swift */,
+				8AA97E9F2741F20300C3F92E /* ClassroomState.swift */,
+				8AA97EA32741F97B00C3F92E /* Rtm.swift */,
 				8A3460CC27293E3F0066063E /* RoomUser.swift */,
 				8A3460D0272962D70066063E /* RoomStatus.swift */,
+				8AA242F7289A6D7C00C306F0 /* DeviceState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1347,7 +1366,7 @@
 		8AE892F92727E98B009C71DA /* Command */ = {
 			isa = PBXGroup;
 			children = (
-				8AE892FA2727E99D009C71DA /* CommandType.swift */,
+				8AE892FA2727E99D009C71DA /* RtmCommandType.swift */,
 				8A5DDC87272A74FB006216AD /* CommandEncoder.swift */,
 				8A5DDC89272A7502006216AD /* CommandDecoder.swift */,
 				8AE892FC2727E9BD009C71DA /* Commands */,
@@ -1372,9 +1391,9 @@
 			children = (
 				8AE892F92727E98B009C71DA /* Command */,
 				8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */,
-				8AA97EA12741F83A00C3F92E /* AnyChannelHandler.swift */,
+				8AA97EA12741F83A00C3F92E /* RtmChannel.swift */,
 				8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */,
-				8A3460CE272952490066063E /* ClassRoomMode.swift */,
+				8A3460CE272952490066063E /* ClassroomMode.swift */,
 				8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */,
 			);
 			path = Rtm;
@@ -1401,6 +1420,7 @@
 			isa = PBXGroup;
 			children = (
 				8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */,
+				8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */,
 			);
 			path = Fastboard;
 			sourceTree = "<group>";
@@ -1560,9 +1580,9 @@
 				8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */,
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
 				8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */,
+				8A14EE6C28A6321D00C0CB89 /* Log.swift in Sources */,
 				8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */,
 				8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */,
-				8AC1FF4A2892736900624E8B /* TempLogRequest.swift in Sources */,
 				8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */,
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
@@ -1608,6 +1628,7 @@
 				8A21DABA279FA90D0060E25D /* UpdateLayoutRequest.swift in Sources */,
 				8A05C35B2761E9AD009BCA79 /* CancelUploadRequest.swift in Sources */,
 				8A3460D1272962D70066063E /* RoomStatus.swift in Sources */,
+				8AA242F6289A6ABD00C306F0 /* ClassroomStateHandler.swift in Sources */,
 				8A9FB39D2721783B00F6F06F /* MemberRequest.swift in Sources */,
 				8A2D0B9727158C9000123207 /* ApiProvider.swift in Sources */,
 				8AFA91F5278EA78900E0CA61 /* FastboardViewController.swift in Sources */,
@@ -1627,12 +1648,12 @@
 				8A80209A27570A4A00F5691C /* CloudStorageTableViewCell.swift in Sources */,
 				8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */,
 				8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */,
+				8AC1FF3528912BAA00624E8B /* ClassRoomSyncedStore.swift in Sources */,
 				8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */,
-				8A5DCF9B273B6E6B0068D5DF /* ClassRoomViewController.swift in Sources */,
 				8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */,
 				8AD3CDF92716B53D008BD904 /* UIViewController+Alert.swift in Sources */,
-				8AA97EA22741F83A00C3F92E /* AnyChannelHandler.swift in Sources */,
-				8A7741DC2738BB06009FAADA /* ClassRoomFactory.swift in Sources */,
+				8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */,
+				8A7741DC2738BB06009FAADA /* ClassroomFactory.swift in Sources */,
 				8AE893022727EFA3009C71DA /* RequestChannelStatusCommand.swift in Sources */,
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
@@ -1658,12 +1679,13 @@
 				8AE892FE2727E9DB009C71DA /* SpeakCommand.swift in Sources */,
 				8A7741B9273287C2009FAADA /* RtcCellPopMenuView.swift in Sources */,
 				8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */,
+				8AA242FA289A7DDC00C306F0 /* ClassRoomViewController.swift in Sources */,
 				8A9FB3C327229A7C00F6F06F /* Method.swift in Sources */,
 				8AF244DA287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift in Sources */,
 				8A05C2AF2758B98F009BCA79 /* WechatLogin.swift in Sources */,
 				8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
-				8AE892FB2727E99D009C71DA /* CommandType.swift in Sources */,
+				8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */,
 				8A2D0B9A27158FCD00123207 /* Request.swift in Sources */,
 				8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */,
 				8A05A15A2834EC04002DE9B9 /* StringLocalize.swift in Sources */,
@@ -1703,6 +1725,7 @@
 				8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */,
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
+				8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */,
 				8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */,
 				8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */,
 				8A05A1562834EA7A002DE9B9 /* AttributedString.swift in Sources */,
@@ -1710,6 +1733,7 @@
 				8AD2EF71277461C900087280 /* CustomAVPlayerViewController.swift in Sources */,
 				8A9FB39F2721806B00F6F06F /* AnyCodingKey.swift in Sources */,
 				8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */,
+				8AA242F8289A6D7C00C306F0 /* DeviceState.swift in Sources */,
 				8AAB06242762E514006CAEF2 /* ExportService.swift in Sources */,
 				8A270B9D271967D800450DC6 /* Language.swift in Sources */,
 				8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */,
@@ -1718,7 +1742,7 @@
 				8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */,
 				8A270BA4271972F100450DC6 /* ContactUsViewController.swift in Sources */,
 				8AF244D8287C17D900E6B2AF /* BindListRequest.swift in Sources */,
-				8AA97EA02741F20300C3F92E /* ClassRoomState.swift in Sources */,
+				8AA97EA02741F20300C3F92E /* ClassroomState.swift in Sources */,
 				8A2975212726A6810095F9F0 /* UIColor+Theme.swift in Sources */,
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
@@ -1754,11 +1778,11 @@
 				8A9FB3C927229E5E00F6F06F /* AnyEncodable.swift in Sources */,
 				8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */,
 				8A9FB3B72722949600F6F06F /* ParameterEncoder.swift in Sources */,
+				8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */,
 				8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */,
 				8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */,
 				8A9ACC01271E712100E7E7CE /* RoomListRequest.swift in Sources */,
-				8A5DCF9D273B6E7A0068D5DF /* ClassRoomViewModel.swift in Sources */,
-				8AA97EA42741F97B00C3F92E /* ClassRoomRtm.swift in Sources */,
+				8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */,
 				8A9ACC05271E726B00E7E7CE /* RoomStartStatus.swift in Sources */,
 				8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */,
 				8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */,
@@ -1767,7 +1791,7 @@
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
 				8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */,
 				8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */,
-				8A3460CF272952490066063E /* ClassRoomMode.swift in Sources */,
+				8A3460CF272952490066063E /* ClassroomMode.swift in Sources */,
 				8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */,
 				8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */,
 				8A7741BD2733BF15009FAADA /* RoomStatusUpdateRequest.swift in Sources */,
