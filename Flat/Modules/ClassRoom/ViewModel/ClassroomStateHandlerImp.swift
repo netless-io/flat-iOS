@@ -273,6 +273,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         }
     }
     
+    var currentOnStageUsers: [String : RoomUser] = [:]
     // Get members from initMembers / newMember / leftMember
     // Get member basic info (id, name, avatar)
     // Mix deviceState / raisingHand / onStage
@@ -354,7 +355,13 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     return newUser
                 }
                 return updatedUsers
-        }.debug()
+        }
+        .debug()
+        .do(onNext: { [weak self] users in
+            users.filter { $0.status.isSpeak }.forEach { user in
+                self?.currentOnStageUsers[user.rtmUUID] = user
+            }
+        })
         observableMembers = result.share(replay: 1, scope: .forever)
         return observableMembers!
     }

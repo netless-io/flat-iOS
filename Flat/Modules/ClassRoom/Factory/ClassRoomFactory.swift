@@ -102,15 +102,13 @@ struct ClassroomFactory {
         let rtcViewController = RtcViewController(viewModel: .init(rtc: rtc,
                                                                    localUserRegular: { $0 == 0 || $0 == playInfo.rtcUID },
                                                                    userFetch: { rtcId -> RoomUser? in
-            fatalError()
+            if rtcId == 0 { return imp.currentOnStageUsers[playInfo.rtmUID] }
+            return imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value
         },
-//            if rtcId == 0 { return state.users.value.first(where: { $0.rtcUID == playInfo.rtcUID })}
-//            return state.users.value.first(where: { $0.rtcUID == rtcId }) },
-                                                                   userThumbnailStream: { uid -> AgoraVideoStreamType in
-//            guard let user = state.users.value.first(where: { $0.rtcUID == uid }) else { return .low }
-//            let isTeacher = user.rtmUUID == playInfo.ownerUUID
-//            return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
-            fatalError()
+                                                                   userThumbnailStream: { rtcId -> AgoraVideoStreamType in
+            guard let user = imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value else { return .low }
+            let isTeacher = user.rtmUUID == playInfo.ownerUUID
+            return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
         }))
         
         

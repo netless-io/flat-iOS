@@ -41,6 +41,7 @@ protocol ClassroomStateHandler {
     var classroomModeState: BehaviorRelay<ClassroomMode> { get }
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }
     var error: PublishRelay<ClassroomStateError> { get }
+    var currentOnStageUsers: [String: RoomUser] { get }
     
     func setup() -> Single<Void>
     func send(command: ClassroomCommand) -> Single<Void>
