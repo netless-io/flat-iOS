@@ -450,6 +450,9 @@
 "RoomNotIsRunning" = "房间不在进行中";
 
 
+"Rtc connect lost tips" = "音视频连接中断，请检查网络后重新连接";
+
+
 "Rtm abort tips" = "你已在另一台设备登录";
 
 

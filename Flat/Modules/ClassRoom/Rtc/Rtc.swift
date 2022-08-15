@@ -11,10 +11,15 @@ import AgoraRtcKit
 import RxSwift
 import RxRelay
 
+enum RtcError {
+    case connectionLost
+}
+
 class Rtc: NSObject {
     var agoraKit: AgoraRtcEngineKit!
     let screenShareInfo: ShareScreenInfo?
     let screenShareJoinBehavior: BehaviorRelay<Bool> = .init(value: false)
+    let errorPublisher = PublishRelay<RtcError>.init()
     private var joinChannelBlock: (()->Void)?
     let isJoined = BehaviorRelay<Bool>.init(value: false)
     var targetLocalMic: Bool? = false
@@ -147,7 +152,23 @@ extension Rtc: AgoraRtcEngineDelegate {
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurError errorCode: AgoraErrorCode) {
-        Log.error(module: .rtc, "didOccurWarning \(errorCode)")
+        Log.error(module: .rtc, "didOccurError \(errorCode)")
+    }
+    
+    func rtcEngineConnectionDidLost(_ engine: AgoraRtcEngineKit) {
+        Log.error(module: .rtc, "lost connection")
+        errorPublisher.accept(.connectionLost)
+    }
+    
+    func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionStateType, reason: AgoraConnectionChangedReason) {
+        switch state {
+        case .disconnected, .connecting, .reconnecting, .failed:
+            isJoined.accept(false)
+        case .connected:
+            isJoined.accept(true)
+        @unknown default: break
+        }
+        Log.info(module: .rtc, "connectionChangedTo \(state) \(reason)")
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didApiCallExecute error: Int, api: String, result: String) {}
@@ -169,5 +190,48 @@ extension Rtc: AgoraRtcEngineDelegate {
     func isScreenShareUid(uid: UInt) -> Bool {
         if let id = screenShareInfo?.uid, id == uid { return true }
         return false
+    }
+}
+
+extension AgoraConnectionStateType: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .disconnected:
+            return "disconnected"
+        case .connecting:
+            return "connecting"
+        case .connected:
+            return "connected"
+        case .reconnecting:
+            return "reconnecting"
+        case .failed:
+            return "failed"
+        @unknown default: return "unknown \(rawValue)"
+        }
+    }
+}
+
+extension AgoraConnectionChangedReason: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .connecting: return "connecting"
+        case .joinSuccess: return "joinSuccess"
+        case .interrupted: return "interrupted"
+        case .bannedByServer: return "bannedByServer"
+        case .joinFailed: return "joinFailed"
+        case .leaveChannel: return "leaveChannel"
+        case .invalidAppId: return "invalidAppId"
+        case .invalidChannelName: return "invalidChannelName"
+        case .invalidToken: return "invalidToken"
+        case .tokenExpired: return "tokenExpired"
+        case .rejectedByServer: return "rejectedByServer"
+        case .settingProxyServer: return "settingProxyServer"
+        case .renewToken: return "renewToken"
+        case .clientIpAddressChanged: return "clientIpAddressChanged"
+        case .keepAliveTimeout: return "keepAliveTimeout"
+        case .sameUidLogin: return "sameUidLogin"
+        case .tooManyBroadcasters: return "tooManyBroadcasters"
+        @unknown default: return "unknown \(rawValue)"
+        }
     }
 }

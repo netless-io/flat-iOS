@@ -450,6 +450,9 @@
 "RoomNotIsRunning" = "The room is not in progress";
 
 
+"Rtc connect lost tips" = "Audio and video connection is interrupted, please check the network and reconnect";
+
+
 "Rtm abort tips" = "You are logged in on another device";
 
 

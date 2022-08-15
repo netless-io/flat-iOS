@@ -72,6 +72,13 @@ struct ClassroomFactory {
         let mic = detailInfo.isOwner ? deviceStatus.mic : detailInfo.roomType != .bigClass
         let initDeviceState = DeviceState(mic: mic, camera: camera)
         
+        // Config Rtc
+        let rtc = Rtc(appId: Env().agoraAppId,
+                      channelId: playInfo.roomUUID,
+                      token: playInfo.rtcToken,
+                      uid: playInfo.rtcUID,
+                      screenShareInfo: playInfo.rtcShareScreen)
+        
         // Config Rtm
         let rtm = Rtm(rtmToken: playInfo.rtmToken,
                                 rtmUserUUID: playInfo.rtmUID,
@@ -90,14 +97,8 @@ struct ClassroomFactory {
                                            maxOnstageUserCount: detailInfo.roomType.maxOnstageUserCount,
                                            roomStartStatus: detailInfo.roomStatus,
                                            whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
-                                           whiteboardRoomError: fastboardViewController.roomError.asObservable())
-        
-        // Config Rtc
-        let rtc = Rtc(appId: Env().agoraAppId,
-                      channelId: playInfo.roomUUID,
-                      token: playInfo.rtcToken,
-                      uid: playInfo.rtcUID,
-                      screenShareInfo: playInfo.rtcShareScreen)
+                                           whiteboardRoomError: fastboardViewController.roomError.asObservable(),
+                                           rtcError: rtc.errorPublisher.asObservable())
         
         let rtcViewController = RtcViewController(viewModel: .init(rtc: rtc,
                                                                    localUserRegular: { $0 == 0 || $0 == playInfo.rtcUID },

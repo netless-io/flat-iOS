@@ -13,10 +13,13 @@ import Fastboard
 enum ClassroomStateError {
     case rtmRemoteLogin
     case rtmReconnectingTimeout
+    case rtcConnectLost
     case whiteboardError(FastRoomError)
     
     var uiAlertString: String {
         switch self {
+        case .rtcConnectLost:
+            return localizeStrings("Rtc connect lost tips")
         case .rtmReconnectingTimeout:
             return localizeStrings("Rtm reconnecting timeout tips")
         case .rtmRemoteLogin:

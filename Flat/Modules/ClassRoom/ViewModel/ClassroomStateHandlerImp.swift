@@ -45,7 +45,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
          maxOnstageUserCount: Int,
          roomStartStatus: RoomStartStatus,
          whiteboardBannedAction: Observable<Void>,
-         whiteboardRoomError: Observable<FastRoomError>) {
+         whiteboardRoomError: Observable<FastRoomError>,
+         rtcError: Observable<RtcError>) {
         self.syncedStore = syncedStore
         self.rtm = rtm
         self.commandChannelId = commandChannelId
@@ -68,8 +69,14 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             case .remoteLogin: return .rtmRemoteLogin
             }
         }
-        let w = whiteboardRoomError.map { error -> ClassroomStateError in .whiteboardError(error) }
-        Observable.merge(r, w)
+        let wE = whiteboardRoomError.map { error -> ClassroomStateError in .whiteboardError(error) }
+        let rE = rtcError.map { error -> ClassroomStateError in
+            switch error {
+            case .connectionLost:
+                return .rtcConnectLost
+            }
+        }
+        Observable.merge(r, wE, rE)
             .bind(to: error)
             .disposed(by: bag)
     }
