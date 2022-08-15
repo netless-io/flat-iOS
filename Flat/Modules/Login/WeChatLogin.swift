@@ -8,7 +8,7 @@
 
 import Foundation
 
-class WechatLogin: NSObject, LaunchItem {
+class WeChatLogin: NSObject, LaunchItem {
     var handler: LoginHandler?
     weak var authStore: AuthStore?
     var removeLaunchItemFromLaunchCoordinator: (()->Void)?
@@ -71,7 +71,7 @@ class WechatLogin: NSObject, LaunchItem {
     }
 }
 
-extension WechatLogin: WXApiDelegate {
+extension WeChatLogin: WXApiDelegate {
     func onReq(_ req: BaseReq) {}
     
     func onResp(_ resp: BaseResp) {

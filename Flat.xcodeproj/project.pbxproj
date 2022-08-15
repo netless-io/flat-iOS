@@ -12,7 +12,7 @@
 		8A05A1562834EA7A002DE9B9 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05A1552834EA7A002DE9B9 /* AttributedString.swift */; };
 		8A05A1582834EA99002DE9B9 /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05A1572834EA99002DE9B9 /* Agreement.swift */; };
 		8A05A15A2834EC04002DE9B9 /* StringLocalize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05A1592834EC04002DE9B9 /* StringLocalize.swift */; };
-		8A05C2AF2758B98F009BCA79 /* WechatLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */; };
+		8A05C2AF2758B98F009BCA79 /* WeChatLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2AE2758B98F009BCA79 /* WeChatLogin.swift */; };
 		8A05C2B32758C78E009BCA79 /* WechatAuthCallbackRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */; };
 		8A05C2B62759B722009BCA79 /* JoinRoomLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C2B52759B722009BCA79 /* JoinRoomLaunchItem.swift */; };
 		8A05C313275DE279009BCA79 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C312275DE279009BCA79 /* ProfileViewController.swift */; };
@@ -268,7 +268,7 @@
 		8A05A1552834EA7A002DE9B9 /* AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedString.swift; sourceTree = "<group>"; };
 		8A05A1572834EA99002DE9B9 /* Agreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agreement.swift; sourceTree = "<group>"; };
 		8A05A1592834EC04002DE9B9 /* StringLocalize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLocalize.swift; sourceTree = "<group>"; };
-		8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatLogin.swift; sourceTree = "<group>"; };
+		8A05C2AE2758B98F009BCA79 /* WeChatLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatLogin.swift; sourceTree = "<group>"; };
 		8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatRelease.entitlements; sourceTree = "<group>"; };
 		8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatAuthCallbackRequest.swift; sourceTree = "<group>"; };
 		8A05C2B52759B722009BCA79 /* JoinRoomLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomLaunchItem.swift; sourceTree = "<group>"; };
@@ -952,7 +952,7 @@
 				8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */,
 				8AEF069E276973E40009904A /* AppleLogin.swift */,
 				8AD3CDF1271693EC008BD904 /* GithubLogin.swift */,
-				8A05C2AE2758B98F009BCA79 /* WechatLogin.swift */,
+				8A05C2AE2758B98F009BCA79 /* WeChatLogin.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1679,7 +1679,7 @@
 				8AA242FA289A7DDC00C306F0 /* ClassRoomViewController.swift in Sources */,
 				8A9FB3C327229A7C00F6F06F /* Method.swift in Sources */,
 				8AF244DA287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift in Sources */,
-				8A05C2AF2758B98F009BCA79 /* WechatLogin.swift in Sources */,
+				8A05C2AF2758B98F009BCA79 /* WeChatLogin.swift in Sources */,
 				8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
 				8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */,

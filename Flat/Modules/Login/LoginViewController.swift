@@ -15,7 +15,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var tipsLabel: UILabel!
     @IBOutlet weak var smsAuthView: SMSAuthView!
     @IBOutlet weak var loginButton: FlatGeneralCrossButton!
-    var wechatLogin: WechatLogin?
+    var weChatLogin: WeChatLogin?
     var githubLogin: GithubLogin?
     @IBOutlet weak var flatLabel: UILabel!
     var appleLogin: Any?
@@ -101,7 +101,7 @@ class LoginViewController: UIViewController {
         flatLabel.textColor = .text
         
         // Hide wechat login when wechat not installed
-        wechatLoginButton.isHidden = !WXApi.isWXAppInstalled()
+        weChatLoginButton.isHidden = !WXApi.isWXAppInstalled()
         syncTraitCollection(traitCollection)
         if #available(iOS 13.0, *) {
             setupAppleLogin()
@@ -219,16 +219,16 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @IBAction func onClickWechatButton(_ sender: Any) {
+    @IBAction func onClickWeChatButton(_ sender: Any) {
         guard checkAgreementDidAgree() else {
             showAgreementCheckAlert()
             return
         }
         guard let launchCoordinator = globalLaunchCoordinator else { return }
         showActivityIndicator(forSeconds: 1)
-        self.wechatLogin?.removeLaunchItemFromLaunchCoordinator?()
-        self.wechatLogin = WechatLogin()
-        self.wechatLogin?.startLogin(withAuthStore: AuthStore.shared,
+        self.weChatLogin?.removeLaunchItemFromLaunchCoordinator?()
+        self.weChatLogin = WeChatLogin()
+        self.weChatLogin?.startLogin(withAuthStore: AuthStore.shared,
                                      launchCoordinator: launchCoordinator) { [weak self] result in
             switch result {
             case .success(let user):
@@ -280,7 +280,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginBg: UIView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var githubLoginButton: UIButton!
-    @IBOutlet weak var wechatLoginButton: UIButton!
+    @IBOutlet weak var weChatLoginButton: UIButton!
     
     // MARK: Lazy
     lazy var agreementCheckButton: UIButton = {
