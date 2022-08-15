@@ -26,7 +26,7 @@ PODS:
   - AgoraRtcEngine_iOS/VirtualBackground (3.6.2)
   - AgoraRtm_iOS (1.4.10)
   - CropViewController (2.6.1)
-  - EmptyDataSet-Swift (5.0.0)
+  - DZNEmptyDataSet (1.8.1)
   - Fastboard (1.0.8):
     - Fastboard/core (= 1.0.8)
   - Fastboard/core (1.0.8):
@@ -83,7 +83,7 @@ DEPENDENCIES:
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
   - CropViewController
-  - EmptyDataSet-Swift
+  - DZNEmptyDataSet
   - Fastboard
   - Fastboard/fpa
   - Hero
@@ -105,7 +105,7 @@ SPEC REPOS:
     - AgoraRtcEngine_iOS
     - AgoraRtm_iOS
     - CropViewController
-    - EmptyDataSet-Swift
+    - DZNEmptyDataSet
     - Fastboard
     - Hero
     - IQKeyboardManagerSwift
@@ -128,7 +128,7 @@ SPEC CHECKSUMS:
   AgoraRtcEngine_iOS: 5bf5d2bb6669a6f3606716a02f3fb3ac58708f25
   AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
-  EmptyDataSet-Swift: eb382c0c87a2d9c678077385a595cec52da38171
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fastboard: 06013d1514b3974e51d9126253df420e1a8a7a3b
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
@@ -145,6 +145,6 @@ SPEC CHECKSUMS:
   Whiteboard: 2eba76f6853ff0fe7db2218fa650e54224cb2688
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: ac8316535944f59cfac171139962ff837080ee22
+PODFILE CHECKSUM: 548967a409ecedb484f18eac922ee531b5482e8a
 
 COCOAPODS: 1.11.3

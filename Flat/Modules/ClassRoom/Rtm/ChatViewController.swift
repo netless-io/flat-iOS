@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import RxCocoa
-import EmptyDataSet_Swift
+import DZNEmptyDataSet
 
 class ChatViewController: PopOverDismissDetectableViewController {
     let noticeCellIdentifier = "noticeCellIdentifier"
@@ -317,7 +317,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - EmptyData
-extension ChatViewController: EmptyDataSetDelegate, EmptyDataSetSource {
+extension ChatViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         nil
     }

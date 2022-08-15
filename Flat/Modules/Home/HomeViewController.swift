@@ -10,7 +10,7 @@
 import UIKit
 import SnapKit
 import Kingfisher
-import EmptyDataSet_Swift
+import DZNEmptyDataSet
 
 let homeShouldUpdateListNotification = "homeShouldUpdateListNotification"
 
@@ -552,7 +552,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - EmptyData
-extension HomeViewController: EmptyDataSetDelegate, EmptyDataSetSource {
+extension HomeViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         .init(string: NSLocalizedString(style == .exist ? "No room at the moment" : "NoHistoryTip", comment: ""),
               attributes: [

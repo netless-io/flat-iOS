@@ -9,7 +9,7 @@
 import UIKit
 import Fastboard
 import Whiteboard
-import EmptyDataSet_Swift
+import DZNEmptyDataSet
 import RxSwift
 import RxCocoa
 
@@ -18,8 +18,8 @@ let cloudStorageShouldUpdateNotificationName = Notification.Name("cloudStorageSh
 class CloudStorageDisplayViewController: UIViewController,
                                          UITableViewDelegate,
                                          UITableViewDataSource,
-                                         EmptyDataSetDelegate,
-                                         EmptyDataSetSource {
+                                         DZNEmptyDataSetSource,
+                                         DZNEmptyDataSetDelegate {
     let cellIdentifier = "CloudStorageTableViewCell"
     let container = PageListContainer<StorageFileModel>()
     var loadingMoreRequest: URLSessionDataTask?

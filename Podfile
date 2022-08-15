@@ -10,7 +10,7 @@ target 'Flat' do
   pod 'Kingfisher'
   pod 'Hero'
   pod 'SnapKit'
-  pod 'EmptyDataSet-Swift'
+  pod 'DZNEmptyDataSet'
   pod 'IQKeyboardManagerSwift'
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
