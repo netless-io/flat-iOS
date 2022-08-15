@@ -288,7 +288,7 @@ class RtcViewController: UIViewController {
         let uid = view.uid
         guard let user = viewModel.userFetch(uid) else { return }
         previewingUser = user
-        Log.verbose(module: .rtc, "start preview \(uid)")
+        log.verbose(module: .rtc, "start preview \(uid)")
         view.nameLabel.isHidden = true
         let heroId = uid.description
         view.heroID = heroId

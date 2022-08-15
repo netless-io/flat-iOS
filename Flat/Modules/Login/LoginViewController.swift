@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
     }
     
     deinit {
-        Log.verbose(module: .alloc, "\(self) deinit")
+        log.verbose(module: .alloc, "\(self) deinit")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -237,7 +237,7 @@ class LoginViewController: UIViewController {
                                      launchCoordinator: launchCoordinator) { [weak self] result in
             switch result {
             case .success(let user):
-                Log.info("weChat login user: \(user.name) \(user.userUUID)")
+                log.info("weChat login user: \(user.name) \(user.userUUID)")
                 return
             case .failure(let error):
                 self?.showAlertWith(message: error.localizedDescription.isEmpty ? NSLocalizedString("Login fail", comment: "") : error.localizedDescription)

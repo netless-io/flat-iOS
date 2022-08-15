@@ -35,33 +35,35 @@ enum LogLevel {
     }
 }
 
+let log = Log()
+
 struct Log {
-    private init() {}
-    private static func msg(_ items: Any...) -> String {
+    fileprivate init() {}
+    private func msg(_ items: Any...) -> String {
         items.reduce(into: "") { partialResult, i in
             partialResult += " \(i)"
         }
     }
     
-    static func verbose(module: LogModuleType = .flat, _ items: Any...) {
+    func verbose(module: LogModuleType = .flat, _ items: Any...) {
         logQueue.async {
             log(module: module, level: .verbose, log: msg(items))
         }
     }
     
-    static func info(module: LogModuleType = .flat, _ items: Any...) {
+    func info(module: LogModuleType = .flat, _ items: Any...) {
         logQueue.async {
             log(module: module, level: .info, log: msg(items))
         }
     }
     
-    static func warning(module: LogModuleType = .flat, _ items: Any...) {
+    func warning(module: LogModuleType = .flat, _ items: Any...) {
         logQueue.async {
             log(module: module, level: .warning, log: msg(items))
         }
     }
     
-    static func error(module: LogModuleType = .flat, _ items: Any...) {
+    func error(module: LogModuleType = .flat, _ items: Any...) {
         logQueue.async {
             log(module: module, level: .error, log: msg(items))
         }

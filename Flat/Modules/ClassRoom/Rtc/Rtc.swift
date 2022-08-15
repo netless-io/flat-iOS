@@ -51,10 +51,10 @@ class Rtc: NSObject {
             targetLocalCamera = nil
             agoraKit.enableLocalVideo(cameraOn)
             agoraKit.muteLocalVideoStream(!cameraOn)
-            Log.info(module: .rtc, "update local user status camera: \(cameraOn)")
+            log.info(module: .rtc, "update local user status camera: \(cameraOn)")
         } else {
             targetLocalCamera = cameraOn
-            Log.verbose(module: .rtc, "update local user status camera: \(cameraOn) to target")
+            log.verbose(module: .rtc, "update local user status camera: \(cameraOn) to target")
         }
     }
     
@@ -63,10 +63,10 @@ class Rtc: NSObject {
             targetLocalMic = nil
             agoraKit.enableLocalAudio(micOn)
             agoraKit.muteLocalAudioStream(!micOn)
-            Log.info(module: .rtc, "update local user status mic: \(micOn)")
+            log.info(module: .rtc, "update local user status mic: \(micOn)")
         } else {
             targetLocalMic = micOn
-            Log.verbose(module: .rtc, "update local user status mic: \(micOn) to target")
+            log.verbose(module: .rtc, "update local user status mic: \(micOn) to target")
         }
     }
     
@@ -121,12 +121,12 @@ class Rtc: NSObject {
             canvas.renderMode = .hidden
             self?.localVideoCanvas = canvas
 
-            Log.info(module: .rtc, "start join channel: \(channelId) uid: \(uid)")
+            log.info(module: .rtc, "start join channel: \(channelId) uid: \(uid)")
             self?.agoraKit.joinChannel(byToken: token,
                                        channelId: channelId,
                                        info: nil,
                                        uid: uid, joinSuccess: { [weak self] msg, uid, elapsed in
-                Log.info(module: .rtc, "end join \(msg), elapsed \(elapsed)")
+                log.info(module: .rtc, "end join \(msg), elapsed \(elapsed)")
                 self?.isJoined.accept(true)
             })
         }
@@ -148,15 +148,15 @@ class Rtc: NSObject {
 
 extension Rtc: AgoraRtcEngineDelegate {
     func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurWarning warningCode: AgoraWarningCode) {
-        Log.warning(module: .rtc, "didOccurWarning \(warningCode)")
+        log.warning(module: .rtc, "didOccurWarning \(warningCode)")
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurError errorCode: AgoraErrorCode) {
-        Log.error(module: .rtc, "didOccurError \(errorCode)")
+        log.error(module: .rtc, "didOccurError \(errorCode)")
     }
     
     func rtcEngineConnectionDidLost(_ engine: AgoraRtcEngineKit) {
-        Log.error(module: .rtc, "lost connection")
+        log.error(module: .rtc, "lost connection")
         errorPublisher.accept(.connectionLost)
     }
     
@@ -168,7 +168,7 @@ extension Rtc: AgoraRtcEngineDelegate {
             isJoined.accept(true)
         @unknown default: break
         }
-        Log.info(module: .rtc, "connectionChangedTo \(state) \(reason)")
+        log.info(module: .rtc, "connectionChangedTo \(state) \(reason)")
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didApiCallExecute error: Int, api: String, result: String) {}

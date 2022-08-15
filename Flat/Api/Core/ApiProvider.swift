@@ -129,7 +129,7 @@ class ApiProvider: NSObject {
                 }
                 catch {
                     callBackQueue.async {
-                        Log.error(module: .api,"decode error \(error)")
+                        log.error(module: .api,"decode error \(error)")
                         completionHandler(.failure(.decode(message: error.localizedDescription)))
                     }
                 }
@@ -137,7 +137,7 @@ class ApiProvider: NSObject {
             return task
         }
         catch {
-            Log.info(module: .api, error)
+            log.info(module: .api, error)
             completionHandler(.failure((error as? ApiError) ?? .unknown))
             return nil
         }

@@ -204,7 +204,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             mainContainer?.pushOnSplitPresentOnCompact(vc)
         }
         catch {
-            Log.error("previewLocalFileUrlPath", error)
+            log.error("previewLocalFileUrlPath", error)
             toast(error.localizedDescription)
         }
     }
@@ -216,7 +216,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
                 try FileManager.default.removeItem(at: url)
             }
             catch {
-                Log.error("remove preview item fail")
+                log.error("remove preview item fail")
             }
         }
         currentPreview = nil

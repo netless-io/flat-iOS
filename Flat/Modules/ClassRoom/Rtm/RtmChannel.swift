@@ -21,7 +21,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
     weak var channel: AgoraRtmChannel!
     
     deinit {
-        Log.verbose(module: .alloc, "\(self), channelId \(channelId ?? "") deinit")
+        log.verbose(module: .alloc, "\(self), channelId \(channelId ?? "") deinit")
     }
     
     func sendMessage(_ text: String, censor: Bool = false, appendToNewMessage: Bool = false) -> Single<Void> {
@@ -73,17 +73,17 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
     }
     
     func channel(_ channel: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
-        Log.info(module: .rtm, "memberJoined \(member.userId)")
+        log.info(module: .rtm, "memberJoined \(member.userId)")
         newMemberPublisher.accept(member.userId)
     }
     
     func channel(_ channel: AgoraRtmChannel, memberLeft member: AgoraRtmMember) {
-        Log.info(module: .rtm, "memberLeft \(member.userId)")
+        log.info(module: .rtm, "memberLeft \(member.userId)")
         memberLeftPublisher.accept(member.userId)
     }
     
     func channel(_ channel: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
-        Log.info(module: .rtm, "messageReceived \(message.text)")
+        log.info(module: .rtm, "messageReceived \(message.text)")
         newMessagePublish.accept((message.text, member.userId))
     }
 }

@@ -137,7 +137,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         classroomModeState.accept(result.roomState.classMode)
         raisingHandIds.accept(result.roomState.raiseHandUsers)
         onStageIds.accept(result.roomState.onStageUsers.filter { $0.value }.map { $0.key })
-        Log.info("initialize state from synced store \(result)")
+        log.info("initialize state from synced store \(result)")
     }
     
     fileprivate func processCommandMessage(text: String, senderId: String) -> Observable<RtmCommand?> {
@@ -177,13 +177,13 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             return .just(command)
         }
         catch {
-            Log.error(module: .rtm, "process rtm command error \(error)")
+            log.error(module: .rtm, "process rtm command error \(error)")
             return .just(nil)
         }
     }
     
     func send(command: ClassroomCommand) -> Single<Void> {
-        Log.info("try send command \(command)")
+        log.info("try send command \(command)")
         do {
             switch command {
             case .updateRoomStartStatus(let status):
@@ -247,7 +247,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             }
         }
         catch {
-            Log.error("classroomStateImp send command", command)
+            log.error("classroomStateImp send command", command)
             return .error(error)
         }
     }

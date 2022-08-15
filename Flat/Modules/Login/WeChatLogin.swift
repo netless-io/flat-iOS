@@ -21,7 +21,7 @@ class WeChatLogin: NSObject, LaunchItem {
     }
     
     deinit {
-        Log.verbose(module: .alloc, "\(self), deinit")
+        log.verbose(module: .alloc, "\(self), deinit")
     }
     
     func shouldHandle(url: URL?) -> Bool {

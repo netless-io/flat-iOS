@@ -56,7 +56,7 @@ class ClassRoomViewController: UIViewController {
         self.ownerUUID = ownerUUID
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
-        Log.verbose(module: .alloc, "\(self) init")
+        log.verbose(module: .alloc, "\(self) init")
     }
     
     required init?(coder: NSCoder) {
@@ -83,7 +83,7 @@ class ClassRoomViewController: UIViewController {
     }
     
     deinit {
-        Log.verbose(module: .alloc, "\(self) deinit")
+        log.verbose(module: .alloc, "\(self) deinit")
     }
     
     override func viewDidLoad() {
@@ -124,7 +124,7 @@ class ClassRoomViewController: UIViewController {
             .subscribe(with: self, onNext: { weakSelf, error in
                 func loopToAlert() {
                     if let _ = weakSelf.presentedViewController {
-                        Log.verbose("delay room error alert \(error)")
+                        log.verbose("delay room error alert \(error)")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             loopToAlert()
                         }
@@ -219,7 +219,7 @@ class ClassRoomViewController: UIViewController {
     func bindTerminate() {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
-                Log.info("device terminate")
+                log.info("device terminate")
                 weakSelf.viewModel.destroy()
             })
             .disposed(by: rx.disposeBag)

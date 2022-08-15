@@ -76,7 +76,7 @@ class Theme {
                 return nil
             }
             catch {
-                Log.error("get userPreferredStyle", error)
+                log.error("get userPreferredStyle", error)
                 return nil
             }
         }
@@ -88,7 +88,7 @@ class Theme {
                     UserDefaults.standard.setValue(data, forKey: "userPreferredStyle")
                 }
                 catch {
-                    Log.error("set userPreferredStyle", error)
+                    log.error("set userPreferredStyle", error)
                 }
             } else {
                 UserDefaults.standard.setValue(nil, forKey: "userPreferredStyle")

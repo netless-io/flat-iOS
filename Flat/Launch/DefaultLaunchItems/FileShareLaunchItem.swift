@@ -18,7 +18,7 @@ class FileShareLaunchItem: LaunchItem {
         var temp = FileManager.default.temporaryDirectory
         temp.appendPathComponent(url.lastPathComponent)
         let success = url.startAccessingSecurityScopedResource()
-        Log.info("get \(url) access \(success)")
+        log.info("get \(url) access \(success)")
         do {
             if FileManager.default.fileExists(atPath: temp.path) {
                 try? FileManager.default.removeItem(at: temp)
@@ -29,7 +29,7 @@ class FileShareLaunchItem: LaunchItem {
             return true
         }
         catch {
-            Log.error("process share file error", error)
+            log.error("process share file error", error)
             return false
         }
     }
