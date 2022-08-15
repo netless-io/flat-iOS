@@ -122,9 +122,19 @@ class ClassRoomViewController: UIViewController {
                 
         result.roomError
             .subscribe(with: self, onNext: { weakSelf, error in
-            weakSelf.showAlertWith(message: error.uiAlertString) {
-                weakSelf.stopSubModulesAndLeaveUIHierarchy()
-            }
+                func loopToAlert() {
+                    if let _ = weakSelf.presentedViewController {
+                        Log.verbose("delay room error alert \(error)")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            loopToAlert()
+                        }
+                    }  else {
+                        weakSelf.showAlertWith(message: error.uiAlertString) {
+                            weakSelf.stopSubModulesAndLeaveUIHierarchy()
+                        }
+                    }
+                }
+                loopToAlert()
         }).disposed(by: rx.disposeBag)
     }
     

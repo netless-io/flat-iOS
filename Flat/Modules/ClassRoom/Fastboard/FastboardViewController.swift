@@ -81,13 +81,12 @@ class FastboardViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         joinRoom()
+        bindConnecting()
     }
     
     // MARK: - Private
     func joinRoom() {
-        showActivityIndicator()
         fastRoom.joinRoom { [weak self] result in
-            self?.stopActivityIndicator()
             switch result {
             case .success(let room):
                 self?.isRoomJoined.accept(true)
@@ -100,6 +99,20 @@ class FastboardViewController: UIViewController {
         }
     }
     
+    func bindConnecting() {
+        isRoomJoined
+            .asDriver()
+            .distinctUntilChanged()
+            .drive(with: self, onNext: { weakSelf, isJoin in
+                if isJoin {
+                    weakSelf.stopActivityIndicator()
+                } else {
+                    weakSelf.showActivityIndicator()
+                }
+            })
+            .disposed(by: rx.disposeBag)
+    }
+    
     func setupViews() {
         view.addSubview(fastRoom.view)
         fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }
@@ -107,9 +120,7 @@ class FastboardViewController: UIViewController {
 }
 
 extension FastboardViewController: FastRoomDelegate {
-    func fastboardDidJoinRoomSuccess(_ fastboard: FastRoom, room: WhiteRoom) {
-        return
-    }
+    func fastboardDidJoinRoomSuccess(_ fastboard: FastRoom, room: WhiteRoom) {}
     
     func fastboardUserKickedOut(_ fastboard: FastRoom, reason: String) {
         // For this error is caused by server closing, it should be noticed by teacher.
@@ -117,17 +128,12 @@ extension FastboardViewController: FastRoomDelegate {
     }
     
     func fastboardPhaseDidUpdate(_ fastboard: FastRoom, phase: FastRoomPhase) {
+        Log.info(module: .whiteboard, "phase update \(phase)")
         switch phase {
-        case .connecting:
+        case .connecting, .reconnecting, .disconnecting, .disconnected:
             isRoomJoined.accept(false)
         case .connected:
             isRoomJoined.accept(true)
-        case .reconnecting:
-            isRoomJoined.accept(false)
-        case .disconnecting:
-            isRoomJoined.accept(false)
-        case .disconnected:
-            isRoomJoined.accept(false)
         case .unknown:
             return
         }
@@ -195,6 +201,25 @@ extension FastboardViewController: FastRoomDelegate {
                 make.left.equalToSuperview()
                 make.top.equalTo(overlay.operationPanel.view!.snp.bottom).offset(8)
             }
+        }
+    }
+}
+
+extension FastRoomPhase: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .connecting:
+            return "connecting"
+        case .connected:
+            return "connected"
+        case .reconnecting:
+            return "reconnecting"
+        case .disconnecting:
+            return "disconnecting"
+        case .disconnected:
+            return "disconnected"
+        case .unknown:
+            return "unknown \(rawValue)"
         }
     }
 }

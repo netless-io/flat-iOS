@@ -12,6 +12,7 @@ import RxRelay
 import Fastboard
 
 // The classroom state combined from syncedStore and rtm
+// But rtc connection can also fire error
 class ClassroomStateHandlerImp: ClassroomStateHandler {
     let maxOnstageUserCount: Int
     let roomUUID: String
