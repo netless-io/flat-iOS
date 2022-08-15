@@ -167,7 +167,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             alertController.addAction(.init(title: l == currentLanguage ? "\(l.name)\(NSLocalizedString("selected", comment: ""))" : l.name, style: .default, handler: { _ in
                 Bundle.set(language: l)
                 self.rebootAndTurnToSetting()
-                log(log: "local update \(LocaleManager.languageCode ?? "")")
+                Log.info("local update \(LocaleManager.languageCode ?? "")")
             }))
         }
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))

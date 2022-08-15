@@ -99,7 +99,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             let data = try JSONEncoder().encode(encodable)
             return try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
         }
-        log(module: .syncedStore, level: .info, log: "syncedStore try send command \(command)")
+        Log.info(module: .syncedStore, "syncedStore try send command \(command)")
         switch command {
         case .classroomModeUpdate(let classroomMode):
             try syncStore.setStorageState(classroomStateName, partialState: [RoomState.Keys.classMode.rawValue: dicFromEncodable(classroomMode)])
@@ -200,7 +200,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
     }
     
     func syncedStoreDidUpdateStoreName(_ name: String, partialValue: [AnyHashable : Any]) {
-        log(module: .syncedStore, level: .verbose, log: "receive partial update \(name), \(partialValue)")
+        Log.verbose(module: .syncedStore, "receive partial update \(name), \(partialValue)")
         if name == deviceStateName {
             syncStore.getStorageState(name) { [weak self] value in
                 guard let self = self else { return }
@@ -212,7 +212,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                             return state
                         }
                         catch {
-                            log(module: .syncedStore, level: .error, log: "device state synced store update error: \(error)")
+                            Log.error(module: .syncedStore, "device state synced store update error: \(error)")
                         }
                     }
                     return nil

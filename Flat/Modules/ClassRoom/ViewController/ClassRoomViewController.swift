@@ -57,7 +57,7 @@ class ClassRoomViewController: UIViewController {
         self.ownerUUID = ownerUUID
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
-        log(module: .alloc, level: .verbose, log: "\(self) init")
+        Log.verbose(module: .alloc, "\(self) init")
     }
     
     required init?(coder: NSCoder) {
@@ -84,7 +84,7 @@ class ClassRoomViewController: UIViewController {
     }
     
     deinit {
-        log(module: .alloc, level: .verbose, log: "\(self) deinit")
+        Log.verbose(module: .alloc, "\(self) deinit")
     }
     
     override func viewDidLoad() {
@@ -240,7 +240,7 @@ class ClassRoomViewController: UIViewController {
     func bindTerminate() {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
-                log(level: .info, log: "device terminate")
+                Log.info("device terminate")
                 weakSelf.viewModel.destroy()
             })
             .disposed(by: rx.disposeBag)

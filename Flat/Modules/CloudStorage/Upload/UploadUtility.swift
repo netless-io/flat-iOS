@@ -128,7 +128,7 @@ extension UploadUtility: UIImagePickerControllerDelegate, UINavigationController
                     try FileManager.default.removeItem(at: url)
                 }
                 catch {
-                    log(level: .error, log: "clean temp video file error \(error)")
+                    Log.error("clean temp video file error", error)
                 }
                 switch result {
                 case .failure(let error):
@@ -235,7 +235,7 @@ extension UploadUtility: PHPickerViewControllerDelegate {
                             try FileManager.default.removeItem(at: cp)
                         }
                         catch {
-                            log(level: .error, log: "clean temp video file error \(error)")
+                            Log.error("clean temp video file error", error)
                         }
                         
                         DispatchQueue.main.async {

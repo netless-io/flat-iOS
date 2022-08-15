@@ -52,10 +52,10 @@ struct ConvertService {
         ApiProvider.shared.request(fromApi: StartConvertRequest(fileUUID: fileUUID, isWhiteboardProjector: isWhiteboardProjector)) { result in
             switch result {
             case .success(let item):
-                log(log: "submit convert task success \(item.taskUUID)")
+                Log.info("submit convert task success \(item.taskUUID)")
                 completion(.success(item))
             case .failure(let error):
-                log(log: "submit convert task error \(error)")
+                Log.info("submit convert task error \(error)")
                 completion(.failure(error))
             }
         }

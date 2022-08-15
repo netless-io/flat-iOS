@@ -8,6 +8,8 @@
 
 import Foundation
 
+let logQueue = DispatchQueue(label: "log.flat")
+
 enum LogModuleType {
     case rtc
     case rtm
@@ -15,6 +17,7 @@ enum LogModuleType {
     case alloc
     case syncedStore
     case api
+    case flat
     
     var prefix: String {
         "[\(String(describing: self).uppercased())]"
@@ -32,10 +35,39 @@ enum LogLevel {
     }
 }
 
-func log(module: LogModuleType? = nil, level: LogLevel = .info, log: String) {
-    if let module = module {
-        print("\(module.prefix) \(level.prefix) \(log)")
-    } else {
-        print("[FLAT] \(level.prefix) \(log)")
+struct Log {
+    private init() {}
+    private static func msg(_ items: Any...) -> String {
+        items.reduce(into: "") { partialResult, i in
+            partialResult += " \(i)"
+        }
     }
+    
+    static func verbose(module: LogModuleType = .flat, _ items: Any...) {
+        logQueue.async {
+            log(module: module, level: .verbose, log: msg(items))
+        }
+    }
+    
+    static func info(module: LogModuleType = .flat, _ items: Any...) {
+        logQueue.async {
+            log(module: module, level: .info, log: msg(items))
+        }
+    }
+    
+    static func warning(module: LogModuleType = .flat, _ items: Any...) {
+        logQueue.async {
+            log(module: module, level: .warning, log: msg(items))
+        }
+    }
+    
+    static func error(module: LogModuleType = .flat, _ items: Any...) {
+        logQueue.async {
+            log(module: module, level: .error, log: msg(items))
+        }
+    }
+}
+
+fileprivate func log(module: LogModuleType, level: LogLevel = .info, log: String) {
+    print("\(module.prefix) \(level.prefix) \(log)")
 }

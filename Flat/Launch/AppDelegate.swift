@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         processMethodExchange()
         configAppearance()
         registerThirdPartSDK()
+        
         if #available(iOS 13, *) {
             // SceneDelegate
         } else {

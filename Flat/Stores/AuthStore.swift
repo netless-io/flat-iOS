@@ -36,7 +36,7 @@ class AuthStore {
                 flatGenerator.token = user?.token
             }
             catch {
-                log(level: .error, log: "decode user error \(error)")
+                Log.error("decode user error", error)
             }
         }
     }
@@ -69,7 +69,7 @@ class AuthStore {
             UserDefaults.standard.setValue(data, forKey: userDefaultKey)
         }
         catch {
-            log(level: .error, log: "encode user error \(error.localizedDescription)")
+            Log.error("encode user error", error.localizedDescription)
         }
         self.user = user
         delegate?.authStoreDidLoginSuccess(self, user: user)
