@@ -28,7 +28,7 @@ class Rtm: NSObject {
     let p2pMessage: PublishRelay<(text: String, sender: String)> = .init()
     let error: PublishRelay<RtmError> = .init()
     let state: BehaviorRelay<State> = .init(value: .idle)
-    let reconnectTimeoutInterval: DispatchTimeInterval = .seconds(3)
+    let reconnectTimeoutInterval: DispatchTimeInterval = .seconds(5)
     
     init(rtmToken: String,
          rtmUserUUID: String,
