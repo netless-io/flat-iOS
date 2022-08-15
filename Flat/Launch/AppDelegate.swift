@@ -12,6 +12,14 @@ import Kingfisher
 import Fastboard
 import Siren
 
+var isFirstTimeLaunch: Bool {
+    UserDefaults.standard.value(forKey: "isFirstTimeLaunch") != nil
+}
+
+func setDidFirstTimeLaunch() {
+    UserDefaults.standard.setValue(true, forKey: "isFirstTimeLaunch")
+}
+
 var globalLaunchCoordinator: LaunchCoordinator? {
     if #available(iOS 13.0, *) {
         return (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch
@@ -27,7 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var checkOSSVersionObserver: NSObjectProtocol?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
+        if isFirstTimeLaunch {
+            ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
+            setDidFirstTimeLaunch()
+        }
         processMethodExchange()
         configAppearance()
         registerThirdPartSDK()
@@ -73,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func registerThirdPartSDK() {
-        WXApi.registerApp(Env().wechatAppId, universalLink: "https://flat-api.whiteboard.agora.io")
+        WXApi.registerApp(Env().weChatAppId, universalLink: "https://flat-api.whiteboard.agora.io")
     }
     
     func configAppearance() {

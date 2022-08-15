@@ -35,8 +35,7 @@ class ApiProvider: NSObject {
     }
     
     func startEmptyRequestForWakingUpNetworkAlert() {
-        var request = URLRequest(url: URL(string: Env().baseURL)!)
-        request.timeoutInterval = 0.01
+        var request = URLRequest(url: URL(string: "https://www.agora.io/")!)
         request.httpMethod = "HEADER"
         session.dataTask(with: request).resume()
     }

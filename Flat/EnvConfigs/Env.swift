@@ -26,7 +26,7 @@ struct Env {
         Region(rawValue: value(for: "REGION")) ?? .US
     }
     
-    var wechatAppId: String {
+    var weChatAppId: String {
         value(for: "WECHAT_APP_ID") as String
     }
     

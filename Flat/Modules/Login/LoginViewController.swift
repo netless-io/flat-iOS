@@ -62,9 +62,9 @@ class LoginViewController: UIViewController {
         loadHistory()
         bind()
 #if DEBUG
-        let sel = Selector(("debugLogin"))
-        if responds(to: sel) {
-            let doubleTap = UITapGestureRecognizer(target: self, action: sel)
+        let debugSelector = Selector(("debugLogin"))
+        if responds(to: debugSelector) {
+            let doubleTap = UITapGestureRecognizer(target: self, action: debugSelector)
             doubleTap.numberOfTapsRequired = 2
             view.addGestureRecognizer(doubleTap)
         }
@@ -72,7 +72,6 @@ class LoginViewController: UIViewController {
     }
     
     // MARK: - Action
-    
     @objc
     func onClickLogin(sender: UIButton) {
         if case .failure(let errStr) = smsAuthView.allValidCheck(sender: sender) {
@@ -100,7 +99,7 @@ class LoginViewController: UIViewController {
         }
         flatLabel.textColor = .text
         
-        // Hide wechat login when wechat not installed
+        // Hide weChat login when weChat not installed
         weChatLoginButton.isHidden = !WXApi.isWXAppInstalled()
         syncTraitCollection(traitCollection)
         if #available(iOS 13.0, *) {
@@ -142,7 +141,12 @@ class LoginViewController: UIViewController {
             guard let self = self else { return .failure("") }
             let agree = self.checkAgreementDidAgree()
             if agree { return .success(())}
-            self.showAgreementCheckAlert()
+            self.showAgreementCheckAlert() { [weak self, weak sender] in
+                guard let self = self,
+                      let sender = sender as? UIButton
+                else { return }
+                self.smsAuthView.onClickSendSMS(sender: sender)
+            }
             return .failure("")
         }
         
@@ -153,11 +157,12 @@ class LoginViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(onClickLogin(sender:)), for: .touchUpInside)
     }
     
-    func showAgreementCheckAlert() {
+    func showAgreementCheckAlert(agreeAction: (()->Void)? = nil) {
         let vc = PrivacyAlertViewController(
             agreeClick: { [unowned self] in
                 self.dismiss(animated: false)
                 self.agreementCheckButton.isSelected = true
+                agreeAction?()
             },
             cancelClick: { [unowned self] in
                 self.dismiss(animated: false)
