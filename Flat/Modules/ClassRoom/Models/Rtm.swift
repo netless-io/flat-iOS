@@ -15,17 +15,20 @@ import RxRelay
 class Rtm: NSObject {
     enum RtmError {
         case remoteLogin
+        case reconnectingTimeout
     }
     
     enum State {
         case idle
         case connecting
+        case reconnecting
         case connected
     }
     
     let p2pMessage: PublishRelay<(text: String, sender: String)> = .init()
     let error: PublishRelay<RtmError> = .init()
-    var state: BehaviorRelay<State> = .init(value: .idle)
+    let state: BehaviorRelay<State> = .init(value: .idle)
+    let reconnectTimeoutInterval: DispatchTimeInterval = .seconds(3)
     
     init(rtmToken: String,
          rtmUserUUID: String,
@@ -42,7 +45,7 @@ class Rtm: NSObject {
     func sendP2PMessage(text: String, toUUID UUID: String) -> Single<Void> {
         Log.info(module: .rtm, "send p2p message \(text), to \(UUID)")
         switch state.value {
-        case .connecting, .idle: return .just(())
+        case .connecting, .idle, .reconnecting: return .just(())
         case .connected:
             return .create { [weak self] observer in
                 guard let self = self else {
@@ -83,7 +86,7 @@ class Rtm: NSObject {
             }
         }
         switch state.value {
-        case .connected: return .just(())
+        case .connected, .reconnecting: return .just(())
         case .connecting: return createLoginObserver()
         case .idle:
             self.agoraKit.login(byToken: agoraGenerator.agoraToken,
@@ -99,8 +102,7 @@ class Rtm: NSObject {
     
     func leave() -> Single<Void> {
         switch state.value {
-        case .idle: return .just(())
-        case .connecting: return .just(())
+        case .idle, .connecting, .reconnecting: return .just(())
         case .connected:
             return Single<Void>.create { [weak self] observer in
                 self?.agoraKit.logout(completion: { error in
@@ -191,6 +193,20 @@ extension Rtm: AgoraRtmDelegate {
     func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
         Log.info(module: .rtm, "state \(state), reason \(reason)")
         switch state {
+        case .connected:
+            self.state.accept(.connected)
+        case .connecting:
+            self.state.accept(.connecting)
+        case .reconnecting:
+            self.state.accept(.reconnecting)
+            DispatchQueue.global().asyncAfter(deadline: .now() + reconnectTimeoutInterval) { [weak self] in
+                guard let self = self else { return }
+                if self.state.value == .reconnecting {
+                    DispatchQueue.main.async {
+                        self.error.accept(.reconnectingTimeout)
+                    }
+                }
+            }
         case .aborted:
             Log.error(module: .rtm, "remote login")
             error.accept(.remoteLogin)

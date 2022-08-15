@@ -12,10 +12,13 @@ import Fastboard
 
 enum ClassroomStateError {
     case rtmRemoteLogin
+    case rtmReconnectingTimeout
     case whiteboardError(FastRoomError)
     
     var uiAlertString: String {
         switch self {
+        case .rtmReconnectingTimeout:
+            return localizeStrings("Rtm reconnecting timeout tips")
         case .rtmRemoteLogin:
             return localizeStrings("Rtm abort tips")
         case .whiteboardError(let error):
@@ -40,13 +43,14 @@ protocol ClassroomStateHandler {
     var banState: BehaviorRelay<Bool> { get }
     var classroomModeState: BehaviorRelay<ClassroomMode> { get }
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }
-    var error: PublishRelay<ClassroomStateError> { get }
-    var currentOnStageUsers: [String: RoomUser] { get }
     
-    func setup() -> Single<Void>
     func send(command: ClassroomCommand) -> Single<Void>
     func members() -> Observable<[RoomUser]>
     func memberNameQueryProvider() -> UsernameQueryProvider
-    
+    var currentOnStageUsers: [String: RoomUser] { get }
+
+    func setup() -> Single<Void>
     func destroy()
+    
+    var error: PublishRelay<ClassroomStateError> { get }
 }

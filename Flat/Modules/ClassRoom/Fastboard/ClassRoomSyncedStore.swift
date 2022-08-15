@@ -90,8 +90,10 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
     }
     
     func destroy() {
-        syncStore.disconnectStorage(deviceStateName)
-        syncStore.disconnectStorage(classroomStateName)
+        if isConnected {
+            syncStore.disconnectStorage(deviceStateName)
+            syncStore.disconnectStorage(classroomStateName)
+        }
     }
     
     func sendCommand(_ command: Command) throws {

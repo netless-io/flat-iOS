@@ -33,7 +33,6 @@ class ClassRoomViewController: UIViewController {
     // MARK: - Child Controllers
     let fastboardViewController: FastboardViewController
     let rtcListViewController: RtcViewController
-    // TBD:
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true, deviceUpdateEnable: false)
     let inviteViewController: UIViewController
     let userListViewController: ClassRoomUsersViewController
@@ -99,7 +98,7 @@ class ClassRoomViewController: UIViewController {
         // Other service can join later
         let result = viewModel.initialRoomStatus()
         
-        result.0
+        result.initRoomResult
             .do(
                 onSuccess: { [weak self] in
                     self?.view.endFlatLoading()
@@ -121,7 +120,8 @@ class ClassRoomViewController: UIViewController {
             )
             .disposed(by: rx.disposeBag)
                 
-        result.1.subscribe(with: self, onNext: { weakSelf, error in
+        result.roomError
+            .subscribe(with: self, onNext: { weakSelf, error in
             weakSelf.showAlertWith(message: error.uiAlertString) {
                 weakSelf.stopSubModulesAndLeaveUIHierarchy()
             }
@@ -135,6 +135,7 @@ class ClassRoomViewController: UIViewController {
         bindSetting()
         bindChat()
         bindTerminate()
+        bindInvite()
         
         if isOwner {
             bindRecording()
@@ -144,41 +145,8 @@ class ClassRoomViewController: UIViewController {
         // So Teacher do not have to receive the alert
         if !isOwner {
             bindStoped()
-            
+            bindRaiseHand()
         }
-        
-        viewModel.transformUserListInput(.init(stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
-                                               disconnectTap: userListViewController.disconnectTap.asObservable(),
-                                               tapSomeUserRaiseHand: userListViewController.raiseHandTap.asObservable(),
-                                               tapSomeUserCamera: userListViewController.cameraTap.asObservable(),
-                                               tapSomeUserMic: userListViewController.micTap.asObservable()))
-            .drive()
-            .disposed(by: rx.disposeBag)
-        
-        viewModel.transformRaiseHandClick(raiseHandButton.rx.tap)
-            .drive()
-            .disposed(by: rx.disposeBag)
-        
-        viewModel.raiseHandHide
-            .asDriver(onErrorJustReturn: true)
-            .drive(raiseHandButton.rx.isHidden)
-            .disposed(by: rx.disposeBag)
-        
-        viewModel.isRaisingHand.asDriver(onErrorJustReturn: false)
-            .drive(raiseHandButton.rx.isSelected)
-            .disposed(by: rx.disposeBag)
-        
-        usersButton.rx.tap
-            .subscribe(with: self, onNext: { weakSelf, source in
-                weakSelf.popoverViewController(viewController: weakSelf.userListViewController, fromSource: weakSelf.usersButton)
-            })
-            .disposed(by: rx.disposeBag)
-        
-        inviteButton.rx.tap
-            .subscribe(with: self, onNext: { weakSelf, _ in
-                weakSelf.popoverViewController(viewController: weakSelf.inviteViewController, fromSource: weakSelf.inviteButton)
-            })
-            .disposed(by: rx.disposeBag)
     }
     
     func bindStoped() {
@@ -237,11 +205,35 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
     
+    
     func bindTerminate() {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
                 Log.info("device terminate")
                 weakSelf.viewModel.destroy()
+            })
+            .disposed(by: rx.disposeBag)
+    }
+    
+    func bindRaiseHand() {
+        viewModel.transformRaiseHandClick(raiseHandButton.rx.tap)
+            .drive()
+            .disposed(by: rx.disposeBag)
+        
+        viewModel.raiseHandHide
+            .asDriver(onErrorJustReturn: true)
+            .drive(raiseHandButton.rx.isHidden)
+            .disposed(by: rx.disposeBag)
+        
+        viewModel.isRaisingHand.asDriver(onErrorJustReturn: false)
+            .drive(raiseHandButton.rx.isSelected)
+            .disposed(by: rx.disposeBag)
+    }
+    
+    func bindInvite() {
+        inviteButton.rx.tap
+            .subscribe(with: self, onNext: { weakSelf, _ in
+                weakSelf.popoverViewController(viewController: weakSelf.inviteViewController, fromSource: weakSelf.inviteButton)
             })
             .disposed(by: rx.disposeBag)
     }
@@ -287,12 +279,26 @@ class ClassRoomViewController: UIViewController {
     }
     
     func bindUsersList() {
+        usersButton.rx.tap
+            .subscribe(with: self, onNext: { weakSelf, source in
+                weakSelf.popoverViewController(viewController: weakSelf.userListViewController, fromSource: weakSelf.usersButton)
+            })
+            .disposed(by: rx.disposeBag)
+        
         userListViewController.users = viewModel.members
         
         viewModel.showUsersResPoint
             .subscribe(with: self, onNext: { weakSelf, show in
                 weakSelf.usersButton.updateBadgeHide(!show)
             })
+            .disposed(by: rx.disposeBag)
+        
+        viewModel.transformUserListInput(.init(stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
+                                               disconnectTap: userListViewController.disconnectTap.asObservable(),
+                                               tapSomeUserRaiseHand: userListViewController.raiseHandTap.asObservable(),
+                                               tapSomeUserCamera: userListViewController.cameraTap.asObservable(),
+                                               tapSomeUserMic: userListViewController.micTap.asObservable()))
+            .drive()
             .disposed(by: rx.disposeBag)
     }
     
@@ -435,6 +441,7 @@ class ClassRoomViewController: UIViewController {
             .subscribe()
             .disposed(by: rx.disposeBag)
     }
+    
     func leaveUIHierarchy() {
         if let presenting = presentingViewController {
             presenting.dismiss(animated: true, completion: nil)
@@ -442,6 +449,7 @@ class ClassRoomViewController: UIViewController {
             navigationController?.popViewController(animated: true)
         }
     }
+    
     func stopSubModulesAndLeaveUIHierarchy() {
         stopSubModules()
         leaveUIHierarchy()

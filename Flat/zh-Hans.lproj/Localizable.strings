@@ -453,6 +453,9 @@
 "Rtm abort tips" = "你已在另一台设备登录";
 
 
+"Rtm reconnecting timeout tips" = "网络连接失败，请检查网络后重试";
+
+
 "SMSAlreadyExist" = "已经绑定过手机号";
 
 

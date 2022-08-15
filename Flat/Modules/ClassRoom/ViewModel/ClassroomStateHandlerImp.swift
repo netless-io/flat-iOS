@@ -11,6 +11,7 @@ import Whiteboard
 import RxRelay
 import Fastboard
 
+// The classroom state combined from syncedStore and rtm
 class ClassroomStateHandlerImp: ClassroomStateHandler {
     let maxOnstageUserCount: Int
     let roomUUID: String
@@ -61,7 +62,12 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             })
             .disposed(by: bag)
         
-        let r = rtm.error.map { _ ->  ClassroomStateError in .rtmRemoteLogin }
+        let r = rtm.error.map { error ->  ClassroomStateError in
+            switch error {
+            case .reconnectingTimeout: return .rtmReconnectingTimeout
+            case .remoteLogin: return .rtmRemoteLogin
+            }
+        }
         let w = whiteboardRoomError.map { error -> ClassroomStateError in .whiteboardError(error) }
         Observable.merge(r, w)
             .bind(to: error)

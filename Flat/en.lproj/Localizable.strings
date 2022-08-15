@@ -453,6 +453,9 @@
 "Rtm abort tips" = "You are logged in on another device";
 
 
+"Rtm reconnecting timeout tips" = "Network connection failed, please check the network and try again";
+
+
 "SMSAlreadyExist" = "Phone Already Exist";
 
 

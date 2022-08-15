@@ -105,7 +105,11 @@ class ClassRoomViewModel {
         self.alertProvider = alertProvider
     }
     
-    func initialRoomStatus() -> (Single<Void>, Observable<ClassroomStateError>) {
+    struct InitRoomOutput {
+        let initRoomResult: Single<Void>
+        let roomError: Observable<ClassroomStateError>
+    }
+    func initialRoomStatus() -> InitRoomOutput {
         let initRoom =  stateHandler.setup()
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self = self else { return .error("self not exist") }
@@ -118,8 +122,8 @@ class ClassRoomViewModel {
             }
         
         let error = stateHandler.error.asObservable()
-        
-        return (initRoom, error)
+
+        return .init(initRoomResult: initRoom, roomError: error)
     }
     
     struct ChatChannelInitValue {
