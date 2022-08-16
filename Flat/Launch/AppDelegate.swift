@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         bootstrapLog()
-        logger.info("launch app")
+        logger.info("\(ProcessInfo.processInfo.environment)")
         if isFirstTimeLaunch {
             ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
             setDidFirstTimeLaunch()

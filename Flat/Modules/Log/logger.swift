@@ -13,7 +13,7 @@ var logger: Logger!
 
 func bootstrapLog() {
     LoggingSystem.bootstrap { label in
-        return MultiplexLogHandler(SBLogHandler(filename: "flat-swiftybeaver"), AlibabaLogHandler())
+        return MultiplexLogHandler([SBLogHandler(filename: "flat-swiftybeaver"), AlibabaLogHandler()])
     }
     logger = Logger(label: "")
     logger.logLevel = .trace

@@ -22,10 +22,19 @@ struct SBLogHandler: LogHandler {
         #endif
         
         if let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first {
-            let url = cacheURL.appendingPathComponent("\(filename).log")
+            let url = cacheURL.appendingPathComponent("\(filename).csv")
+            
+            let exist = FileManager.default.fileExists(atPath: url.path)
+            if !exist {
+                let initData = "Date,Level,Function,FILE,MODULE,Message\n".data(using: .utf8)
+                FileManager.default.createFile(atPath: url.path, contents: initData)
+            }
+            
             let file = FileDestination(logFileURL: url)
             file.colored = false
             file.minLevel = .verbose
+            
+            file.format = "$DHH:mm:ss.SSS$d,$C$L$c,$F:$l,$N,$M\n"
             self.logger.addDestination(file)
         }
     }
@@ -50,7 +59,8 @@ struct SBLogHandler: LogHandler {
              file: String,
              function: String,
              line: UInt) {
-        let formattedMsg = "\(source.isEmpty ? "" : "[\(source)]") \(message)"
+        let msg = "\(message)".replacingOccurrences(of: ", ", with: " ")
+        let formattedMsg = "\(source.isEmpty ? "" : "[\(source)],") \(msg)"
         switch level {
         case .trace:
             self.logger.verbose(formattedMsg, file, function, line: Int(line), context: metadata)
