@@ -10,6 +10,7 @@
 import UIKit
 import Whiteboard
 import Siren
+import Zip
 
 private var fpaKey: String? {
     guard let uid = AuthStore.shared.user?.userUUID else { return nil }
@@ -70,10 +71,14 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                   title: NSLocalizedString("Version", comment: ""),
                   detail: "Flat v\(Env().version) (\(Env().build))",
                   targetAction: (self, #selector(onVersion(sender:)))),
-            .init(image: UIImage(named: "info")!,
+            .init(image: UIImage(named: "about_us")!,
                   title: NSLocalizedString("About", comment: ""),
                   detail: "",
                   targetAction: (self, #selector(self.onClickAbout(sender:)))),
+            .init(image: UIImage(named: "info")!,
+                  title: NSLocalizedString("Export log", comment: ""),
+                  detail: "",
+                  targetAction: (self, #selector(self.onClickExportLog(sender:)))),
             .init(image: UIImage(named: "cancellation")!,
                   title: NSLocalizedString("AccountCancellation", comment: ""),
                   detail: "",
@@ -125,6 +130,38 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             }
+        }
+    }
+    
+    @objc func onClickExportLog(sender: Any?) {
+        let files = sbLogURLs()
+        if files.isEmpty {
+            toast("log not exist")
+            return
+        }
+        showActivityIndicator()
+        let id = AuthStore.shared.user?.userUUID ?? "unknown"
+        let zipUrl = FileManager.default.temporaryDirectory.appendingPathComponent("\(id)-flat.zip")
+        if FileManager.default.fileExists(atPath: zipUrl.path) {
+            try? FileManager.default.removeItem(at: zipUrl)
+        }
+        do {
+            try Zip.zipFiles(paths: files,
+                             zipFilePath: zipUrl,
+                             password: nil,
+                             compression: .DefaultCompression) { progress in
+                if progress >= 1 {
+                    DispatchQueue.main.async {
+                        let vc = UIActivityViewController(activityItems: [zipUrl], applicationActivities: nil)
+                        self.mainContainer?.concreteViewController.popoverViewController(viewController: vc, fromSource: sender as? UIView) {
+                            self.stopActivityIndicator()
+                        }
+                    }
+                }
+            }
+        }
+        catch {
+            toast("error happen \(error)")
         }
     }
     

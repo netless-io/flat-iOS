@@ -9,10 +9,31 @@
 import Logging
 import SwiftyBeaver
 
+fileprivate let filename = "flat-log"
+fileprivate let logFileAmount = 3
+func sbLogURLs() -> [URL] {
+    if let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first {
+        return (1...logFileAmount)
+            .map {
+                return cacheURL.appendingPathComponent("\(filename).\($0)")
+            }
+            .filter { FileManager.default.fileExists(atPath: $0.path) }
+    }
+    return []
+}
+
+fileprivate func sbLogURL() -> URL? {
+    if let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first {
+        let url = cacheURL.appendingPathComponent("\(filename)")
+        return url
+    }
+    return nil
+}
+
 struct SBLogHandler: LogHandler {
     let logger: SwiftyBeaver.Type
     
-    init(filename: String) {
+    init() {
         self.logger = SwiftyBeaver.self
         
         #if DEBUG
@@ -21,16 +42,19 @@ struct SBLogHandler: LogHandler {
         self.logger.addDestination(console)
         #endif
         
-        if let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first {
-            let url = cacheURL.appendingPathComponent("\(filename).csv")
-            
+        if let url = sbLogURL() {
             let exist = FileManager.default.fileExists(atPath: url.path)
             if !exist {
                 let initData = "Date,Level,Function,FILE,MODULE,Message\n".data(using: .utf8)
                 FileManager.default.createFile(atPath: url.path, contents: initData)
             }
             
+            #if DEBUG
+            print("log file", url)
+            #endif
+            
             let file = FileDestination(logFileURL: url)
+            file.logFileAmount = logFileAmount
             file.colored = false
             file.minLevel = .verbose
             
@@ -59,7 +83,7 @@ struct SBLogHandler: LogHandler {
              file: String,
              function: String,
              line: UInt) {
-        let msg = "\(message)".replacingOccurrences(of: ", ", with: " ")
+        let msg = "\(message)".replacingOccurrences(of: ", ", with: " ").replacingOccurrences(of: "\n", with: "")
         let formattedMsg = "\(source.isEmpty ? "" : "[\(source)],") \(msg)"
         switch level {
         case .trace:
