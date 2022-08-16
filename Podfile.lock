@@ -79,6 +79,7 @@ PODS:
     - Whiteboard/Resource
     - Whiteboard/Room
   - YYModel (1.0.4)
+  - Zip (2.1.2)
 
 DEPENDENCIES:
   - AcknowList
@@ -101,6 +102,7 @@ DEPENDENCIES:
   - SwiftyBeaver
   - WechatOpenSDK
   - Whiteboard
+  - Zip
 
 SPEC REPOS:
   trunk:
@@ -127,6 +129,7 @@ SPEC REPOS:
     - WechatOpenSDK
     - Whiteboard
     - YYModel
+    - Zip
 
 SPEC CHECKSUMS:
   AcknowList: 6d4faca4c3e0173377fe5649e086d627cd60b003
@@ -152,7 +155,8 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
   Whiteboard: 2eba76f6853ff0fe7db2218fa650e54224cb2688
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
+  Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: ed569a767453bc4d85ab3b7f34676495cfc1de18
+PODFILE CHECKSUM: 03bbbe7e39dbd92bf8459c8a4126272c33327ad2
 
 COCOAPODS: 1.11.3
