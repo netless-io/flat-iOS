@@ -72,13 +72,18 @@ class ApiProvider: NSObject {
     func request<T: Request>(fromApi api: T,
                              generator: Generator,
                              responseDataHandler: ResponseDataHandler) -> Observable<T.Response> {
-        generator.generateObservableRequest(fromApi: api)
+        let reqId = UUID().uuidString
+        return generator
+            .generateObservableRequest(fromApi: api)
+            .do(onNext: { logger.trace("start rx \(reqId) \($0)") })
             .flatMap {
                 self.session.rx.data(request: $0)
             }
+            .do(onNext: { logger.trace("raw rx \(reqId) \(String(data: $0, encoding: .utf8) ?? "")")})
             .flatMap {
                 responseDataHandler.processObservableResponseData($0, decoder: api.decoder, forResponseType: T.Response.self)
             }
+            .do(onNext: { obj in logger.trace("finish rx \(reqId) \(obj)") }, onError: { error in logger.error("finish error rx \(reqId) \(error)")})
             .subscribe(on: ConcurrentDispatchQueueScheduler(queue: rootQueue))
             .observe(on: SerialDispatchQueueScheduler(queue: callBackQueue, internalSerialQueueName: "io.agora.flat.session.callback"))
     }
@@ -90,8 +95,16 @@ class ApiProvider: NSObject {
                              completionHandler: @escaping (Result<T.Response, ApiError>) -> Void
     ) -> URLSessionDataTask? {
         do {
+            let reqId = UUID().uuidString
             let req = try generator.generateRequest(fromApi: api)
+            logger.trace("start \(reqId) \(req)")
             let task = session.dataTask(with: req) { data, response, error in
+                if let data = data {
+                    logger.trace("raw data \(reqId) \(String(data: data, encoding: .utf8) ?? "")")
+                } else if let error = error {
+                    logger.trace("finish error \(reqId) \(error)")
+                }
+                
                 if let error = error {
                     // Request was canceled
                     if (error as NSError).code == -999 {
@@ -123,6 +136,7 @@ class ApiProvider: NSObject {
                 }
                 do {
                     let result = try responseDataHandler.processResponseData(data, decoder: api.decoder, forResponseType: T.Response.self)
+                    logger.trace("finish \(result)")
                     callBackQueue.async {
                         completionHandler(.success(result))
                     }
@@ -137,7 +151,7 @@ class ApiProvider: NSObject {
             return task
         }
         catch {
-            logger.info("\(error)")
+            logger.error("\(error)")
             completionHandler(.failure((error as? ApiError) ?? .unknown))
             return nil
         }
