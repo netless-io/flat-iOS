@@ -310,7 +310,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                 .disposed(by: rx.disposeBag)
         }
         catch {
-            log.error("error create task", error.localizedDescription)
+            logger.error("error create task \(error)")
             toast("error create task \(error.localizedDescription)", timeInterval: 3)
         }
     }

@@ -37,13 +37,13 @@ class Rtm: NSObject {
         agoraKit = AgoraRtmKit(appId: agoraAppId, delegate: self)!
         agoraGenerator.agoraToken = rtmToken
         agoraGenerator.agoraUserId = rtmUserUUID
-        log.verbose(module: .alloc, "\(self)")
+        logger.trace("\(self)")
     }
 
-    deinit { log.verbose(module: .alloc, "\(self) deinit") }
+    deinit { logger.trace("\(self) deinit") }
     
     func sendP2PMessage(text: String, toUUID UUID: String) -> Single<Void> {
-        log.info(module: .rtm, "send p2p message \(text), to \(UUID)")
+        logger.info("send p2p message \(text), to \(UUID)")
         switch state.value {
         case .connecting, .idle, .reconnecting: return .just(())
         case .connected:
@@ -57,7 +57,7 @@ class Rtm: NSObject {
                         observer(.success(()))
                     } else {
                         let errStr = "send p2p msg error \(error)"
-                        log.error(module: .rtm, errStr)
+                        logger.error("\(errStr)")
                         observer(.failure(errStr))
                     }
                 }
@@ -128,13 +128,13 @@ class Rtm: NSObject {
             handler.channelId = channelId
             let channel = self.agoraKit.createChannel(withId: channelId, delegate: handler)!
             handler.channel = channel
-            log.info(module: .rtm, "start join channel: \(channelId)")
+            logger.info("start join channel: \(channelId)")
             channel.join { error in
                 if error == .channelErrorOk {
-                    log.info(module: .rtm, "start join channel: \(channelId) success")
+                    logger.info("start join channel: \(channelId) success")
                     observer(.success(handler))
                 } else {
-                    log.error(module: .rtm, "join channel: \(channelId) fail, \(error)")
+                    logger.error("join channel: \(channelId) fail, \(error)")
                     observer(.failure("join channel error \(error)"))
                 }
             }
@@ -191,7 +191,7 @@ extension AgoraRtmConnectionChangeReason: CustomStringConvertible {
 
 extension Rtm: AgoraRtmDelegate {
     func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
-        log.info(module: .rtm, "state \(state), reason \(reason)")
+        logger.info("state \(state), reason \(reason)")
         switch state {
         case .connected:
             self.state.accept(.connected)
@@ -208,7 +208,7 @@ extension Rtm: AgoraRtmDelegate {
                 }
             }
         case .aborted:
-            log.error(module: .rtm, "remote login")
+            logger.error("remote login")
             error.accept(.remoteLogin)
         default:
             return

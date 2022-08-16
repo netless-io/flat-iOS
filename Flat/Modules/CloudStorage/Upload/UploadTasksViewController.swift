@@ -122,7 +122,7 @@ class UploadTasksViewController: UIViewController {
                         .disposed(by: weakCell.progressObserveDisposeBag!)
                 }
                 
-                log.verbose("upload status update", status)
+                logger.trace("upload status update \(status)")
                 
                 weakCell.progressView.progressTintColor = status.progressBarColor
                 weakCell.statusLabel.text = status.statusDescription

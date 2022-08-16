@@ -245,7 +245,7 @@ class CloudStorageDisplayViewController: UIViewController,
                 self.taskProgressPolling.insertProjectorPollingTask(withTaskUUID: id,
                                                                     token: $0.taskToken,
                                                                     region: .init(rawValue: $0.region.rawValue)) { progress in
-                    log.verbose("task projector \(id) progress \(progress)")
+                    logger.trace("task projector \(id) progress \(progress)")
                 } result: { [weak self] success, info, error in
                     if let error = error {
                         self?.toast(error.localizedDescription)
@@ -258,7 +258,7 @@ class CloudStorageDisplayViewController: UIViewController,
                                                              token: $0.taskToken,
                                                              region: .init(rawValue: $0.region.rawValue),
                                                              taskType: $0.taskType!) { progress in
-                    log.verbose("task v5 \(id) progress \(progress)")
+                    logger.trace("task v5 \(id) progress \(progress)")
                 } result: { [weak self] success, info, error in
                     if let error = error {
                         self?.toast(error.localizedDescription)
@@ -290,7 +290,7 @@ class CloudStorageDisplayViewController: UIViewController,
                         }
                     }
                 case .failure(let error):
-                    log.error("report convert finish error", error)
+                    logger.error("report convert finish error, \(error)")
                 }
             }
         }

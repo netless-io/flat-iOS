@@ -20,6 +20,8 @@ target 'Flat' do
   pod 'Whiteboard'
   pod 'Siren'
   pod 'CropViewController'
+  pod 'Logging'
+  pod 'SwiftyBeaver'
   
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|

@@ -134,7 +134,7 @@ struct ClassroomFactory {
                                                    isOwner: detailInfo.isOwner,
                                                    ownerUUID: playInfo.ownerUUID)
         alertProvider.root = controller
-        log.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
+        logger.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller
     }
 }

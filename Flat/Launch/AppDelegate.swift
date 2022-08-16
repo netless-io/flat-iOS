@@ -35,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var checkOSSVersionObserver: NSObjectProtocol?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        bootstrapLog()
+        logger.info("launch app")
         if isFirstTimeLaunch {
             ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
             setDidFirstTimeLaunch()

@@ -34,7 +34,7 @@ class FastboardViewController: UIViewController {
                     ob(.failure("self not exist"))
                     return Disposables.create()
                 }
-                log.info(module: .whiteboard, "update writable \(writable)")
+                logger.info("update writable \(writable)")
                 self.fastRoom.updateWritable(writable) { error in
                     if let error = error {
                         ob(.failure(error))
@@ -66,7 +66,7 @@ class FastboardViewController: UIViewController {
         self.fastRoom = Fastboard.createFastRoom(withFastRoomConfig: fastRoomConfiguration)
         super.init(nibName: nil, bundle: nil)
         self.fastRoom.delegate = self
-        log.verbose(module: .alloc, "\(self)")
+        logger.trace("\(self)")
     }
     
     required init?(coder: NSCoder) {
@@ -74,7 +74,7 @@ class FastboardViewController: UIViewController {
     }
     
     deinit {
-        log.verbose(module: .alloc, "\(self), deinit")
+        logger.trace("\(self), deinit")
     }
     
     override func viewDidLoad() {
@@ -128,7 +128,7 @@ extension FastboardViewController: FastRoomDelegate {
     }
     
     func fastboardPhaseDidUpdate(_ fastboard: FastRoom, phase: FastRoomPhase) {
-        log.info(module: .whiteboard, "phase update \(phase)")
+        logger.info("phase update \(phase)")
         switch phase {
         case .connecting, .reconnecting, .disconnecting, .disconnected:
             isRoomJoined.accept(false)

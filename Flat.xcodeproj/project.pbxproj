@@ -46,7 +46,7 @@
 		8A11CBF227201069001D0B1F /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBF127201069001D0B1F /* String+Error.swift */; };
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A133529288FA21000C825DE /* MessageCensorRequest.swift */; };
-		8A14EE6C28A6321D00C0CB89 /* log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14EE6B28A6321D00C0CB89 /* log.swift */; };
+		8A14EE6C28A6321D00C0CB89 /* logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14EE6B28A6321D00C0CB89 /* logger.swift */; };
 		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
 		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
 		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
@@ -211,6 +211,8 @@
 		8ABF362F2747B356000D5003 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8ABF362E2747B355000D5003 /* loading.gif */; };
 		8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+Loading.swift */; };
 		8AC1FF3528912BAA00624E8B /* ClassRoomSyncedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */; };
+		8AC3AFCF28AA4B4600587AE0 /* AlibabaLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */; };
+		8AC3AFD128AB355300587AE0 /* SBLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
@@ -303,7 +305,7 @@
 		8A11CBF127201069001D0B1F /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A133529288FA21000C825DE /* MessageCensorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCensorRequest.swift; sourceTree = "<group>"; };
-		8A14EE6B28A6321D00C0CB89 /* log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = log.swift; sourceTree = "<group>"; };
+		8A14EE6B28A6321D00C0CB89 /* logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logger.swift; sourceTree = "<group>"; };
 		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
@@ -478,6 +480,8 @@
 		8ABF36302747B696000D5003 /* UIView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loading.swift"; sourceTree = "<group>"; };
 		8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSyncedStore.swift; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
+		8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlibabaLogHandler.swift; sourceTree = "<group>"; };
+		8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBLogHandler.swift; sourceTree = "<group>"; };
 		8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingViewController.swift; sourceTree = "<group>"; };
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -780,7 +784,9 @@
 		8A14EE6A28A6321500C0CB89 /* Log */ = {
 			isa = PBXGroup;
 			children = (
-				8A14EE6B28A6321D00C0CB89 /* log.swift */,
+				8A14EE6B28A6321D00C0CB89 /* logger.swift */,
+				8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */,
+				8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */,
 			);
 			path = Log;
 			sourceTree = "<group>";
@@ -1259,7 +1265,6 @@
 			isa = PBXGroup;
 			children = (
 				8A80209B27570CC700F5691C /* StorageFileModel.swift */,
-				8AA97EA32741F97B00C3F92E /* Rtm.swift */,
 				8A3460CC27293E3F0066063E /* RoomUser.swift */,
 				8A3460D0272962D70066063E /* RoomStatus.swift */,
 				8AA242F7289A6D7C00C306F0 /* DeviceState.swift */,
@@ -1391,6 +1396,7 @@
 				8AA97EA12741F83A00C3F92E /* RtmChannel.swift */,
 				8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */,
 				8A3460CE272952490066063E /* ClassroomMode.swift */,
+				8AA97EA32741F97B00C3F92E /* Rtm.swift */,
 				8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */,
 			);
 			path = Rtm;
@@ -1457,6 +1463,8 @@
 			dependencies = (
 			);
 			name = Flat;
+			packageProductDependencies = (
+			);
 			productName = flat;
 			productReference = 8AD7C6B927157EA7001C4AAD /* DEV Flat.app */;
 			productType = "com.apple.product-type.application";
@@ -1488,6 +1496,8 @@
 				"zh-Hans",
 			);
 			mainGroup = 8AD7C6B027157EA7001C4AAD;
+			packageReferences = (
+			);
 			productRefGroup = 8AD7C6BA27157EA7001C4AAD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1577,7 +1587,7 @@
 				8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */,
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
 				8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */,
-				8A14EE6C28A6321D00C0CB89 /* log.swift in Sources */,
+				8A14EE6C28A6321D00C0CB89 /* logger.swift in Sources */,
 				8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */,
 				8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */,
 				8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */,
@@ -1631,6 +1641,7 @@
 				8AFA91F5278EA78900E0CA61 /* FastboardViewController.swift in Sources */,
 				8A05C2B32758C78E009BCA79 /* WechatAuthCallbackRequest.swift in Sources */,
 				8A05C324275E06C3009BCA79 /* TraitUpdateHandler.swift in Sources */,
+				8AC3AFD128AB355300587AE0 /* SBLogHandler.swift in Sources */,
 				8AAC69B02717E32E00F9A3B4 /* AuthProcessRequest.swift in Sources */,
 				8A270B6C271822BA00450DC6 /* MainTabBarController.swift in Sources */,
 				8A21DAB8279FA5020060E25D /* StartRecordReqeust.swift in Sources */,
@@ -1680,6 +1691,7 @@
 				8A9FB3C327229A7C00F6F06F /* Method.swift in Sources */,
 				8AF244DA287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift in Sources */,
 				8A05C2AF2758B98F009BCA79 /* WeChatLogin.swift in Sources */,
+				8AC3AFCF28AA4B4600587AE0 /* AlibabaLogHandler.swift in Sources */,
 				8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
 				8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */,
