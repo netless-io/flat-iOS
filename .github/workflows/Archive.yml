@@ -43,6 +43,13 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+      - name: FillSLSSec
+        env:
+          SLS_AK: ${{SLS_AK}}
+          SLS_SK: ${{SLS_SK}}
+        run: |
+          sh FillSecret.sh SLS_AK $SLS_AK ./Flat/EnvConfigs/Release.xcconfig
+          sh FillSecret.sh SLS_SK $SLS_SK ./Flat/EnvConfigs/Release.xcconfig
       - name: PodInstall
         run: |
           pod install
