@@ -7,8 +7,69 @@
 //
 
 import Logging
+import AliyunLogProducer
 
-struct AlibabaLogHandler: LogHandler {
+class AlibabaLogHandler: LogHandler {
+    enum ClientIdentifier {
+        case sessionId(String)
+        case uid(String)
+    }
+    
+    func updateAliSLSLogger(with uid: String) {
+        client.destroyLogProducer()
+        client = Self.createClientWith(identifier: .uid(uid))
+    }
+    
+    static func createClientWith(identifier: ClientIdentifier) -> LogProducerClient {
+        let env = Env()
+        let config = LogProducerConfig(endpoint: env.slsEndpoint,
+                                       project: env.slsProject,
+                                       logstore: "ios",
+                                       accessKeyID: env.slsAk,
+                                       accessKeySecret: env.slsSk)
+        config?.setTopic(env.name)
+        switch identifier {
+        case .sessionId(let sessionId):
+            config?.addTag("sessionId", value: sessionId)
+        case .uid(let uid):
+            config?.addTag("uid", value: uid)
+        }
+        // 1 开启断点续传功能， 0 关闭
+        // 每次发送前会把日志保存到本地的binlog文件，只有发送成功才会删除，保证日志上传At Least Once
+        config?.setPersistent(1)
+        if let url = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first {
+            let path = url.appendingPathComponent("flat-sls-log.dat").path
+            // 持久化的文件名，需要保证文件所在的文件夹已创建。
+            config?.setPersistentFilePath(path)
+        }
+        // 是否每次AddLog强制刷新，高可靠性场景建议打开
+        config?.setPersistentForceFlush(1)
+        // 持久化文件滚动个数，建议设置成10。
+        config?.setPersistentMaxFileCount(10)
+        // 每个持久化文件的大小，建议设置成1-10M
+        config?.setPersistentMaxFileSize(1024*1024)
+        // 本地最多缓存的日志数，不建议超过1M，通常设置为65536即可
+        config?.setPersistentMaxLogCount(65536)
+        config?.setGetTimeUnixFunc({
+            return UInt32(Date().timeIntervalSince1970)
+        })
+        return LogProducerClient(logProducerConfig: config!)
+    }
+    
+    var client: LogProducerClient
+    let sessionId: String?
+    
+    init(uid: String?) {
+        if let uid = uid {
+            self.sessionId = nil
+            client = Self.createClientWith(identifier: .uid(uid))
+        } else {
+            let sid = UUID().uuidString
+            self.sessionId = sid
+            client = Self.createClientWith(identifier: .sessionId(sid))
+        }
+    }
+    
     subscript(metadataKey key: String) -> Logger.Metadata.Value? {
         get {
             return metadata[key]
@@ -20,7 +81,7 @@ struct AlibabaLogHandler: LogHandler {
     
     var metadata: Logger.Metadata = [:]
     
-    var logLevel: Logger.Level = .info
+    var logLevel: Logger.Level = .trace
     
     func log(level: Logger.Level,
              message: Logger.Message,
@@ -29,6 +90,29 @@ struct AlibabaLogHandler: LogHandler {
              file: String,
              function: String,
              line: UInt) {
+        let aLog = AliyunLogProducer.Log()
+        aLog.setTime(useconds_t(Date().timeIntervalSince1970))
+        var dic: [AnyHashable: Any] = [
+            "Level": level.rawValue,
+            "Module": "[\(source)]",
+            "Function": function,
+            "File": file,
+            "Message": "\(message)",
+            "Line": line,
+            "context": metadata ?? [:]
+        ]
         
+        if let sessionId = sessionId {
+            dic["sessionId"] = sessionId
+        }
+        
+        aLog.putContents(dic)
+        
+        switch level {
+        case .trace:
+            client.add(aLog)
+        default:
+            client.add(aLog, flush: 1)
+        }
     }
 }

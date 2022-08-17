@@ -23,6 +23,8 @@ target 'Flat' do
   pod 'Logging'
   pod 'SwiftyBeaver'
   pod 'Zip'
+  pod 'AliyunLogProducer/Core'
+  pod 'AliyunLogProducer/Bricks'
   
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|

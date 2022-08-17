@@ -20,3 +20,5 @@ OSS_ACCESS_KEY_ID = LTAI5t9Gb6tzQzzLmB6cTVf7
 OTHER_SWIFT_FLAGS = $(inherited) -D Flat
 PRODUCT_NAME = DEV Flat
 REGION = CN
+SLS_PROJECT = hz-flat-dev
+SLS_ENDPOINT = cn-hangzhou.log.aliyuncs.com

@@ -11,9 +11,20 @@ import Logging
 
 var logger: Logger!
 
-func bootstrapLog() {
+fileprivate var aliSlsLogger: AlibabaLogHandler?
+
+func updateAliSlsLogger(uid: String) {
+    aliSlsLogger?.updateAliSLSLogger(with: uid)
+}
+
+func bootstrapLogger() {
     LoggingSystem.bootstrap { label in
-        return MultiplexLogHandler([SBLogHandler(), AlibabaLogHandler()])
+        if Env().containsSlsInfo {
+            aliSlsLogger = AlibabaLogHandler(uid: AuthStore.shared.user?.userUUID)
+            return MultiplexLogHandler([SBLogHandler(), aliSlsLogger!])
+        } else {
+            return SBLogHandler()
+        }
     }
     logger = Logger(label: "")
     logger.logLevel = .trace

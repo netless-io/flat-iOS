@@ -173,6 +173,7 @@ extension LaunchCoordinator: AuthStoreDelegate {
         hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
         hitItems = []
         observeFirstJWTExpire()
+        updateAliSlsLogger(uid: user.userUUID)
     }
     
     func authStoreDidLogout(_ authStore: AuthStore) {

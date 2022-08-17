@@ -65,4 +65,26 @@ struct Env {
     var agoraAppId: String {
         Bundle.main.infoDictionary?["AGORA_APP_ID"] as? String ?? ""
     }
+    
+    var slsProject: String {
+        Bundle.main.infoDictionary?["SLS_PROJECT"] as? String ?? ""
+    }
+    
+    var slsEndpoint: String {
+        "https://" + (Bundle.main.infoDictionary?["SLS_ENDPOINT"] as? String ?? "")
+    }
+    
+    var slsSk: String {
+        Bundle.main.infoDictionary?["SLS_SK"] as? String ?? ""
+    }
+    
+    var slsAk: String {
+        Bundle.main.infoDictionary?["SLS_AK"] as? String ?? ""
+    }
+}
+
+extension Env {
+    var containsSlsInfo: Bool {
+        return !slsSk.isEmpty && !slsAk.isEmpty && !slsEndpoint.isEmpty && !slsProject.isEmpty
+    }
 }

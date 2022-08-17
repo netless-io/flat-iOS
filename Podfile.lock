@@ -25,6 +25,9 @@ PODS:
   - AgoraRtcEngine_iOS/VideoPreprocess (3.6.2)
   - AgoraRtcEngine_iOS/VirtualBackground (3.6.2)
   - AgoraRtm_iOS (1.4.10)
+  - AliyunLogProducer/Bricks (2.3.10.4):
+    - AliyunLogProducer/Core
+  - AliyunLogProducer/Core (2.3.10.4)
   - CropViewController (2.6.1)
   - DZNEmptyDataSet (1.8.1)
   - Fastboard (1.0.8):
@@ -85,6 +88,8 @@ DEPENDENCIES:
   - AcknowList
   - AgoraRtcEngine_iOS
   - AgoraRtm_iOS
+  - AliyunLogProducer/Bricks
+  - AliyunLogProducer/Core
   - CropViewController
   - DZNEmptyDataSet
   - Fastboard
@@ -110,6 +115,7 @@ SPEC REPOS:
     - AgoraFPA_iOS
     - AgoraRtcEngine_iOS
     - AgoraRtm_iOS
+    - AliyunLogProducer
     - CropViewController
     - DZNEmptyDataSet
     - Fastboard
@@ -136,6 +142,7 @@ SPEC CHECKSUMS:
   AgoraFPA_iOS: 2202f574e6832567e368d5e69ad6da121a18ee4a
   AgoraRtcEngine_iOS: 5bf5d2bb6669a6f3606716a02f3fb3ac58708f25
   AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
+  AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fastboard: 06013d1514b3974e51d9126253df420e1a8a7a3b
@@ -157,6 +164,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 03bbbe7e39dbd92bf8459c8a4126272c33327ad2
+PODFILE CHECKSUM: 4e6618aa40500f3d7c43e624a628a8c94898ef28
 
 COCOAPODS: 1.11.3
