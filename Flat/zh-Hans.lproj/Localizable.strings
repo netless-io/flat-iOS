@@ -459,6 +459,12 @@
 "SMSVerificationCodeInvalid" = "验证码无效";
 
 
+"SaveSuccess" = "保存成功";
+
+
+"SaveToAlbum" = "是否保存到相册";
+
+
 "Say Something..." = "说点什么吧...";
 
 
@@ -637,6 +643,9 @@
 
 
 "inviteDescribe" = "邀请你参加 Flat 房间";
+
+
+"screenshot" = "白板截图";
 
 
 "selected" = "（已选）";

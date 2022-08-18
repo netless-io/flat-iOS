@@ -136,6 +136,8 @@
 		8A8507EF27E180A00072AF49 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */; };
 		8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */; };
 		8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */; };
+		8A92194828ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */; };
+		8A92194A28ADDFC400DDDA81 /* ScenePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */; };
 		8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBAE2719983700965185 /* CreateRoomRequest.swift */; };
 		8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB02719993C00965185 /* JoinRoomInfo.swift */; };
 		8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB22719999000965185 /* JoinRoomRequest.swift */; };
@@ -396,6 +398,8 @@
 		8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
 		8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageInClassViewController.swift; sourceTree = "<group>"; };
 		8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSAuthView.swift; sourceTree = "<group>"; };
+		8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardScenesListViewController.swift; sourceTree = "<group>"; };
+		8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePreviewCell.swift; sourceTree = "<group>"; };
 		8A97EBAE2719983700965185 /* CreateRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomRequest.swift; sourceTree = "<group>"; };
 		8A97EBB02719993C00965185 /* JoinRoomInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInfo.swift; sourceTree = "<group>"; };
 		8A97EBB22719999000965185 /* JoinRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomRequest.swift; sourceTree = "<group>"; };
@@ -1401,6 +1405,8 @@
 			isa = PBXGroup;
 			children = (
 				8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */,
+				8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */,
+				8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */,
 			);
 			path = Fastboard;
 			sourceTree = "<group>";
@@ -1704,6 +1710,7 @@
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
 				8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */,
+				8A92194828ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift in Sources */,
 				8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */,
 				8A05A1562834EA7A002DE9B9 /* AttributedString.swift in Sources */,
 				8A21DAB2279F86A00060E25D /* ReplayOverlay.swift in Sources */,
@@ -1728,6 +1735,7 @@
 				8AD2EF762775665300087280 /* ShareManager.swift in Sources */,
 				8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
+				8A92194A28ADDFC400DDDA81 /* ScenePreviewCell.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,
 				8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */,
 				8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */,
