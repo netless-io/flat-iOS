@@ -341,6 +341,12 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: writable)
             })
             .disposed(by: rx.disposeBag)
+        
+        fastboardViewController.previewHandler = { [weak self] room, button in
+            guard let self = self else { return }
+            let vc = WhiteboardScenesListViewController(room: room)
+            self.popoverViewController(viewController: vc, fromSource: button)
+        }
     }
     
     func bindSetting() {

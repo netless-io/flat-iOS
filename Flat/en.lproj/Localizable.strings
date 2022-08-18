@@ -468,6 +468,12 @@
 "SMSVerificationCodeInvalid" = "Invalid Code";
 
 
+"SaveSuccess" = "Save successfully";
+
+
+"SaveToAlbum" = "Save to album or not";
+
+
 "Say Something..." = "Say Something...";
 
 
@@ -649,6 +655,9 @@
 
 
 "inviteDescribe" = "invite you to join the Flat classroom";
+
+
+"screenshot" = "screenshot";
 
 
 "selected" = " (Selected)";

@@ -20,6 +20,7 @@ class FastboardViewController: UIViewController {
     
     /// Setup this store after whiteboard joined
     weak var bindStore: ClassRoomSyncedStore?
+    var previewHandler: ((WhiteRoom, UIButton)->Void)?
     
     // MARK: Public
     func leave() {
@@ -116,6 +117,17 @@ class FastboardViewController: UIViewController {
     func setupViews() {
         view.addSubview(fastRoom.view)
         fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }
+        
+        let saveItem = JustExecutionItem(image: UIImage(named: "save")!, action: { [weak self] room, value in
+            if let button = value as? UIButton {
+                self?.previewHandler?(room, button)
+            }
+        }, identifier: "whiteboard_save")
+        RegularFastRoomOverlay.customOptionPanel = {
+            var items = RegularFastRoomOverlay.defaultOperationPanelItems
+            items.append(saveItem)
+            return FastRoomPanel(items: items)
+        }
     }
 }
 
