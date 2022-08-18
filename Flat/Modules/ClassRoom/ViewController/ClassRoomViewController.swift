@@ -389,6 +389,12 @@ class ClassRoomViewController: UIViewController {
             .drive(raiseHandButton.rx.isHidden)
             .disposed(by: rx.disposeBag)
         
+        fastboardViewController.previewHandler = { [weak self] room, button in
+            guard let self = self else { return }
+            let vc = WhiteboardScenesListViewController(room: room)
+            self.popoverViewController(viewController: vc, fromSource: button)
+        }
+        
         // Pair whiteboardEnable and fastboard
         // Update fastboard UI only when joined
         Driver.combineLatest(viewModel.isWhiteboardEnable, fastboardViewController.isRoomJoined.asDriver()) { ($0, $1) }
