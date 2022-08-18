@@ -79,7 +79,7 @@ class JoinRoomLaunchItem: LaunchItem {
         
         RoomPlayInfo.fetchByJoinWith(uuid: id, periodicUUID: nil)
             .concatMap { info in
-                return RoomBasicInfo.fetchInfoBy(uuid: id, periodicUUID: nil).map { (info, $0) }
+                return RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil).map { (info, $0) }
             }
             .asSingle()
             .observe(on: MainScheduler.instance)
