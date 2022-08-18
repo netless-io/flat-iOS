@@ -123,7 +123,7 @@ class FastboardViewController: UIViewController {
                 self?.previewHandler?(room, button)
             }
         }, identifier: "whiteboard_save")
-        RegularFastRoomOverlay.customOptionPanel = {
+        RegularFastRoomOverlay.customOperationPanel = {
             var items = RegularFastRoomOverlay.defaultOperationPanelItems
             items.append(saveItem)
             return FastRoomPanel(items: items)

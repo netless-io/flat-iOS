@@ -30,11 +30,11 @@ PODS:
   - AliyunLogProducer/Core (2.3.10.4)
   - CropViewController (2.6.1)
   - DZNEmptyDataSet (1.8.1)
-  - Fastboard (1.0.8):
-    - Fastboard/core (= 1.0.8)
-  - Fastboard/core (1.0.8):
-    - Whiteboard (~> 2.16.24)
-  - Fastboard/fpa (1.0.8):
+  - Fastboard (1.0.9):
+    - Fastboard/core (= 1.0.9)
+  - Fastboard/core (1.0.9):
+    - Whiteboard (~> 2.16.36)
+  - Fastboard/fpa (1.0.9):
     - Fastboard/core
     - Whiteboard/fpa
   - Hero (1.6.1)
@@ -55,28 +55,28 @@ PODS:
   - SnapKit (5.0.1)
   - SwiftyBeaver (1.9.5)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.16.34):
-    - Whiteboard/Whiteboard-YYModel (= 2.16.34)
-  - Whiteboard/Base (2.16.34):
+  - Whiteboard (2.16.36):
+    - Whiteboard/Whiteboard-YYModel (= 2.16.36)
+  - Whiteboard/Base (2.16.36):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.16.34):
+  - Whiteboard/Converter (2.16.36):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.16.34):
+  - Whiteboard/fpa (2.16.36):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.16.34):
+  - Whiteboard/Model (2.16.36):
     - YYModel
-  - Whiteboard/NativeReplayer (2.16.34):
+  - Whiteboard/NativeReplayer (2.16.36):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.16.34):
+  - Whiteboard/Object (2.16.36):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.16.34):
+  - Whiteboard/Replayer (2.16.36):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.16.34)
-  - Whiteboard/Room (2.16.34):
+  - Whiteboard/Resource (2.16.36)
+  - Whiteboard/Room (2.16.36):
     - Whiteboard/Base
-  - Whiteboard/Whiteboard-YYModel (2.16.34):
+  - Whiteboard/Whiteboard-YYModel (2.16.36):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -145,7 +145,7 @@ SPEC CHECKSUMS:
   AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fastboard: 06013d1514b3974e51d9126253df420e1a8a7a3b
+  Fastboard: 1eb560392bdd9af1a4896e32caf7d90b44c293a3
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
   Kingfisher: 3ac0b75b155cabc0e544877d1a4deea29feece92
@@ -160,7 +160,7 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 2eba76f6853ff0fe7db2218fa650e54224cb2688
+  Whiteboard: 80941e6f81f866f2ef399ecfb965734bee78d8b8
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
