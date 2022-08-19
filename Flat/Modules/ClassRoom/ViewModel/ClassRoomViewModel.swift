@@ -15,7 +15,7 @@ class ClassRoomViewModel {
     
     let alertProvider: AlertProvider
     let rtm: Rtm
-    let chatChannelId: String
+    let commandChannelRequest: Single<RtmChannel>
     let userUUID: String
     let roomUUID: String
     let isOwner: Bool
@@ -51,21 +51,7 @@ class ClassRoomViewModel {
         }
     }
     
-    var whiteboardEnable: Observable<Bool> {
-        if isOwner { return .just(true) }
-        switch roomType {
-        case .bigClass:
-            return currentUser.map { $0.status.isSpeak }
-        case .oneToOne, .smallClass:
-            return .combineLatest(stateHandler.classroomModeState,
-                                  currentUser) { mode, user in
-                if user.status.isSpeak { return true }
-                return mode.interactionEnable
-            }
-        default:
-            return .just(isOwner)
-        }
-    }
+    var whiteboardEnable: Observable<Bool> { currentUser.map { $0.status.isSpeak } }
     
     var isRaisingHand: Observable<Bool> {
         currentUser.map { $0.status.isRaisingHand }
@@ -91,7 +77,7 @@ class ClassRoomViewModel {
          userUUID: String,
          roomUUID: String,
          roomType: ClassRoomType,
-         chatChannelId: String,
+         commandChannelRequest: Single<RtmChannel>,
          rtm: Rtm,
          alertProvider: AlertProvider) {
         self.stateHandler = stateHandler
@@ -100,7 +86,7 @@ class ClassRoomViewModel {
         self.userUUID = userUUID
         self.roomUUID = roomUUID
         self.roomType = roomType
-        self.chatChannelId = chatChannelId
+        self.commandChannelRequest = commandChannelRequest
         self.rtm = rtm
         self.alertProvider = alertProvider
     }
@@ -139,7 +125,7 @@ class ClassRoomViewModel {
         let chatControllerPresentedFetch: (()->Driver<Bool>)
     }
     func initChatChannel(_ input: ChatInput) -> Single<ChatChannelInitValue> {
-        let channel = rtm.joinChannelId(chatChannelId)
+        let channel = self.commandChannelRequest
             .asObservable()
             .share(replay: 1, scope: .forever)
         
@@ -208,7 +194,8 @@ class ClassRoomViewModel {
     
     func transformRaiseHandClick(_ input: ControlEvent<Void>) -> Driver<Bool> {
         guard !isOwner else { return .just(false) }
-        return input.throttle(.seconds(1), scheduler: MainScheduler.instance)
+        return input
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .withLatestFrom(currentUser) { _, user in
             return user.status
         }
