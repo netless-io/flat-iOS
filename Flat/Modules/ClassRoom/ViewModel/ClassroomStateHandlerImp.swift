@@ -20,8 +20,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let isOwner: Bool
     let syncedStore: ClassRoomSyncedStore
     let rtm: Rtm
-    let commandChannelId: String
     var commandChannel: RtmChannel!
+    let commandChannelRequest: Single<RtmChannel>
     
     let error: PublishRelay<ClassroomStateError> = .init()
     let roomStartStatus: BehaviorRelay<RoomStartStatus>
@@ -32,6 +32,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let noticePublisher: PublishRelay<String> = .init()
     let banMessagePublisher: PublishRelay<Bool> = .init()
     let classroomModeState: BehaviorRelay<ClassroomMode> = .init(value: .lecture)
+    let classroomType: ClassRoomType
     
     var bag = DisposeBag()
     let commandEncoder = CommandEncoder()
@@ -39,20 +40,22 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     
     init(syncedStore: ClassRoomSyncedStore,
          rtm: Rtm,
-         commandChannelId: String,
+         commandChannelRequest: Single<RtmChannel>,
          roomUUID: String,
          ownerUUID: String,
          isOwner: Bool,
          maxOnstageUserCount: Int,
          roomStartStatus: RoomStartStatus,
+         classroomType: ClassRoomType,
          whiteboardBannedAction: Observable<Void>,
          whiteboardRoomError: Observable<FastRoomError>,
          rtcError: Observable<RtcError>) {
         self.syncedStore = syncedStore
         self.rtm = rtm
-        self.commandChannelId = commandChannelId
+        self.commandChannelRequest = commandChannelRequest
         self.roomUUID = roomUUID
         self.ownerUUID = ownerUUID
+        self.classroomType = classroomType
         self.isOwner = isOwner
         self.maxOnstageUserCount = maxOnstageUserCount
         self.roomStartStatus = .init(value: roomStartStatus)
@@ -89,16 +92,16 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         rtm.login()
             .flatMap { [weak self] _ -> Single<RtmChannel> in
                 guard let self = self else { return .error("self not exist")}
-                return self.rtm.joinChannelId(self.commandChannelId)
+                return self.commandChannelRequest
             }.do(onSuccess: { [weak self] channel in
                 if let self = self {
                     self.commandChannel = channel
                     
-                    PublishRelay.of(channel.newMessagePublish, self.rtm.p2pMessage)
+                    PublishRelay.of(channel.rawDataPublish, self.rtm.p2pMessage)
                         .merge()
                         .flatMap { [weak self] value -> Observable<RtmCommand?> in
                             guard let self = self else { return .error("self not exist")}
-                            return self.processCommandMessage(text: value.text, senderId: value.sender)
+                            return self.processCommandMessage(data: value.data, senderId: value.sender)
                         }
                         .subscribe()
                         .disposed(by: self.bag)
@@ -136,13 +139,13 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         banState.accept(result.roomState.ban)
         classroomModeState.accept(result.roomState.classMode)
         raisingHandIds.accept(result.roomState.raiseHandUsers)
-        onStageIds.accept(result.roomState.onStageUsers.filter { $0.value }.map { $0.key })
+        onStageIds.accept(result.onStageUsers.filter { $0.value }.map { $0.key })
         logger.info("initialize state from synced store \(result)")
     }
     
-    fileprivate func processCommandMessage(text: String, senderId: String) -> Observable<RtmCommand?> {
+    fileprivate func processCommandMessage(data: Data, senderId: String) -> Observable<RtmCommand?> {
         do {
-            let command = try commandDecoder.decode(text)
+            let command = try commandDecoder.decode(data)
             switch command {
             case .updateRoomStatus(roomUUID: _, status: let status):
                 roomStartStatus.accept(status)
@@ -152,7 +155,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 return syncedStore.getValues()
                     .flatMap { [weak self] result in
                         guard let self = self else { return .error("self not exist") }
-                        let onStageUsersCount = result.roomState.onStageUsers.filter { $0.value }.count
+                        let onStageUsersCount = result.onStageUsers.filter { $0.value }.count
                         if onStageUsersCount >= self.maxOnstageUserCount { return .error("can't accept more onstage users") }
                         var users = result.roomState.raiseHandUsers
                         if raise, !users.contains(senderId) {
@@ -187,20 +190,20 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         do {
             switch command {
             case .updateRoomStartStatus(let status):
-                let msg = try commandEncoder.encode(.updateRoomStatus(roomUUID: roomUUID, status: status))
+                let msgData = try commandEncoder.encode(.updateRoomStatus(roomUUID: roomUUID, status: status))
                 let serverRequest = RoomStatusUpdateRequest(newStatus: status, roomUUID: self.roomUUID)
                 return ApiProvider.shared.request(fromApi: serverRequest).asSingle()
                     .flatMap { [weak self] _ -> Single<Void> in
                         guard let self = self else { return .error("self not exist") }
-                        return self.commandChannel.sendMessage(msg)
+                        return self.commandChannel.sendRawData(msgData)
                     }.do(onSuccess: { [weak self] _ in
                         self?.roomStartStatus.accept(status)
                     })
             case .ban(let ban):
-                let msg = try commandEncoder.encode(.ban(roomUUID: roomUUID, status: ban))
+                let msgData = try commandEncoder.encode(.ban(roomUUID: roomUUID, status: ban))
                 try syncedStore.sendCommand(.banUpdate(ban))
                 banMessagePublisher.accept(ban)
-                return commandChannel.sendMessage(msg)
+                return commandChannel.sendRawData(msgData)
             case .disconnectUser(let uuid):
                 return syncedStore.getValues()
                     .flatMap { [weak self] result -> Single<Void> in
@@ -222,8 +225,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         return .just(())
                     }
             case .updateRaiseHand(let raiseHand):
-                let text = try commandEncoder.encode(.raiseHand(roomUUID: self.roomUUID, raiseHand: raiseHand))
-                return rtm.sendP2PMessage(text: text, toUUID: ownerUUID)
+                let msgData = try commandEncoder.encode(.raiseHand(roomUUID: self.roomUUID, raiseHand: raiseHand))
+                return rtm.sendP2PMessage(data: msgData, toUUID: ownerUUID)
             case .updateDeviceState(uuid: let uuid, state: let state):
                 try syncedStore.sendCommand(.deviceStateUpdate([uuid: state]))
                 return .just(())
@@ -238,7 +241,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                             }
                         }
                         
-                        let newStageIds = result.roomState.onStageUsers.compactMapValues { _ in return false }
+                        let newStageIds = result.onStageUsers.compactMapValues { _ in return false }
                         try self.syncedStore.sendCommand(.onStageUsersUpdate(newStageIds))
                         try self.syncedStore.sendCommand(.raiseHandUsersUpdate([]))
                         try self.syncedStore.sendCommand(.deviceStateUpdate(deviceState))
@@ -364,7 +367,15 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         newUser.status.mic = deviceState.mic
                         newUser.status.camera = deviceState.camera
                     }
-                    newUser.status.isSpeak = ownerUUID == newUser.rtmUUID || onStageIds.contains(newUser.rtmUUID)
+                    switch self.classroomType {
+                    case .oneToOne:
+                        newUser.status.isSpeak = true
+                    case .smallClass, .bigClass:
+                        newUser.status.isSpeak = ownerUUID == newUser.rtmUUID || onStageIds.contains(newUser.rtmUUID)
+                    default:
+                        newUser.status.isSpeak = ownerUUID == newUser.rtmUUID || onStageIds.contains(newUser.rtmUUID)
+                    }
+                    
                     newUser.status.isRaisingHand = raiseHands.contains(newUser.rtmUUID)
                     return newUser
                 }
