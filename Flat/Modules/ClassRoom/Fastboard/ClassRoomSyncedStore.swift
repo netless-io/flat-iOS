@@ -19,7 +19,6 @@ private let deviceStateName = "deviceState"
 private let classroomStateName = "classroom"
 private let onStageUsersName = "onStageUsers"
 private let classroomDefaultValue: [AnyHashable: Any] = [
-    ClassRoomSyncedStore.RoomState.Keys.classMode.rawValue: ClassroomMode.lecture.rawValue,
     ClassRoomSyncedStore.RoomState.Keys.raiseHandUsers.rawValue: [],
     ClassRoomSyncedStore.RoomState.Keys.ban.rawValue: false,
 ]
@@ -39,19 +38,14 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
     }
     struct RoomState {
         enum Keys: String {
-            case classMode
             case raiseHandUsers
             case ban
-            //            case onStageUsers
         }
         
-        let classMode: ClassroomMode
         let raiseHandUsers: [String]
         let ban: Bool
-        //        let onStageUsers: [String: Bool]
     }
     enum Command {
-        case classroomModeUpdate(ClassroomMode)
         case raiseHandUsersUpdate([String])
         case onStageUsersUpdate([String: Bool])
         case banUpdate(Bool)
@@ -113,8 +107,6 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         }
         logger.info("syncedStore try send command \(command)")
         switch command {
-        case .classroomModeUpdate(let classroomMode):
-            try syncStore.setStorageState(classroomStateName, partialState: [RoomState.Keys.classMode.rawValue: dicFromEncodable(classroomMode)])
         case .raiseHandUsersUpdate(let raiseHandUsers):
             try syncStore.setStorageState(classroomStateName, partialState: [RoomState.Keys.raiseHandUsers.rawValue: dicFromEncodable(raiseHandUsers)])
         case .onStageUsersUpdate(let stageUsers):
@@ -203,10 +195,9 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         group.enter()
         syncStore.getStorageState(classroomStateName) { values in
             if let values = values {
-                let mode = ClassroomMode(rawValue: values[RoomState.Keys.classMode.rawValue] as? String ?? "")
                 let raiseHandUsers = values[RoomState.Keys.raiseHandUsers.rawValue] as? [String] ?? []
                 let ban = values[RoomState.Keys.ban.rawValue] as? Bool ?? false
-                roomState = RoomState(classMode: mode, raiseHandUsers: raiseHandUsers, ban: ban)
+                roomState = RoomState(raiseHandUsers: raiseHandUsers, ban: ban)
             } else {
                 getValuesError = "get room state error"
             }
@@ -261,13 +252,6 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                 if let key = partial.key as? String,
                    let roomStateKey = RoomState.Keys(rawValue: key) {
                     switch roomStateKey {
-                    case .classMode:
-                        // TBD: Check Decode
-                        if let dic = partial.value as? NSDictionary,
-                           let modeString = dic[newValueKey] as? String {
-                            let newMode = ClassroomMode(rawValue: modeString)
-                            delegate?.flatSyncedStoreDidReceiveCommand(self, command: .classroomModeUpdate(newMode))
-                        }
                     case .raiseHandUsers:
                         if let dic = partial.value as? NSDictionary,
                            let raiseHandUserIds = dic[newValueKey] as? [String] {

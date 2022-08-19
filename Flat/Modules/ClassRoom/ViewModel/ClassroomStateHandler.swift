@@ -44,7 +44,6 @@ protocol ClassroomStateHandler {
     var banMessagePublisher: PublishRelay<Bool> { get }
     var noticePublisher: PublishRelay<String> { get }
     var banState: BehaviorRelay<Bool> { get }
-    var classroomModeState: BehaviorRelay<ClassroomMode> { get }
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }
     
     func send(command: ClassroomCommand) -> Single<Void>

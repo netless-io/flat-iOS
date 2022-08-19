@@ -39,13 +39,11 @@ class ClassRoomViewModel {
     }
     
     var raiseHandHide: Observable<Bool> {
-        Observable.combineLatest(stateHandler.classroomModeState,
-                                 currentUser,
-                                 banState) { [weak self] mode, currentUser, ban in
+        Observable.combineLatest(currentUser,
+                                 banState) { [weak self] currentUser, ban in
             guard let self = self else { return true }
             if self.isOwner { return true }
             if self.roomType.interactionStrategy == .enable { return true }
-            if mode.interactionEnable { return true }
             if ban { return true }
             return currentUser.status.isSpeak
         }

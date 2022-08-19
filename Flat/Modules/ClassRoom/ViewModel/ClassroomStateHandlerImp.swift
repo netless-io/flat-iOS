@@ -31,7 +31,6 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let deviceState: BehaviorRelay<[String: DeviceState]> = .init(value: [:])
     let noticePublisher: PublishRelay<String> = .init()
     let banMessagePublisher: PublishRelay<Bool> = .init()
-    let classroomModeState: BehaviorRelay<ClassroomMode> = .init(value: .lecture)
     let classroomType: ClassRoomType
     
     var bag = DisposeBag()
@@ -137,7 +136,6 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     fileprivate func initializeState(from result: ClassRoomSyncedStore.SyncedStoreSuccessValue) {
         deviceState.accept(result.deviceState)
         banState.accept(result.roomState.ban)
-        classroomModeState.accept(result.roomState.classMode)
         raisingHandIds.accept(result.roomState.raiseHandUsers)
         onStageIds.accept(result.onStageUsers.filter { $0.value }.map { $0.key })
         logger.info("initialize state from synced store \(result)")
@@ -409,8 +407,6 @@ extension ClassroomStateHandlerImp: FlatSyncedStoreCommandDelegate {
             onStageIds.accept(idMap.filter { $0.value }.map { $0.key} )
         case .banUpdate(let isBan):
             banState.accept(isBan)
-        case .classroomModeUpdate(let mode):
-            classroomModeState.accept(mode)
         case .deviceStateUpdate(let state):
             deviceState.accept(state)
         case .raiseHandUsersUpdate(let users):
