@@ -16,6 +16,7 @@ class ClassRoomUsersViewController: UIViewController {
     let userUUID: String
     let roomOwnerRtmUUID: String
     let isTeacher: Bool
+    let canUserDisconnect: Bool
     
     let disconnectTap: PublishRelay<RoomUser> = .init()
     let raiseHandTap: PublishRelay<RoomUser> = .init()
@@ -63,10 +64,12 @@ class ClassRoomUsersViewController: UIViewController {
     
     // MARK: - LifeCycle
     init(userUUID: String,
-         roomOwnerRtmUUID: String) {
+         roomOwnerRtmUUID: String,
+         canUserDisconnect: Bool) {
         self.roomOwnerRtmUUID = roomOwnerRtmUUID
         self.userUUID = userUUID
         self.isTeacher = roomOwnerRtmUUID == userUUID
+        self.canUserDisconnect = canUserDisconnect
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -129,7 +132,7 @@ class ClassRoomUsersViewController: UIViewController {
             } else if user.status.isSpeak {
                 cell.statusLabel.text = "(\(NSLocalizedString("Interacting", comment: "")))"
                 cell.statusLabel.textColor = .init(hexString: "#9FDF76")
-                let showDisconnect = isTeacher || user.rtmUUID == userUUID
+                let showDisconnect = canUserDisconnect && (isTeacher || user.rtmUUID == userUUID)
                 cell.disconnectButton.isHidden = !showDisconnect
                 cell.cameraButton.isHidden = false
                 cell.micButton.isHidden = false
