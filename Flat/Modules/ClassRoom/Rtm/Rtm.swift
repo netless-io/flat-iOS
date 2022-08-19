@@ -25,7 +25,7 @@ class Rtm: NSObject {
         case connected
     }
     
-    let p2pMessage: PublishRelay<(text: String, sender: String)> = .init()
+    let p2pMessage: PublishRelay<(data: Data, sender: String)> = .init()
     let error: PublishRelay<RtmError> = .init()
     let state: BehaviorRelay<State> = .init(value: .idle)
     let reconnectTimeoutInterval: DispatchTimeInterval = .seconds(5)
@@ -42,8 +42,8 @@ class Rtm: NSObject {
 
     deinit { logger.trace("\(self) deinit") }
     
-    func sendP2PMessage(text: String, toUUID UUID: String) -> Single<Void> {
-        logger.info("send p2p message \(text), to \(UUID)")
+    func sendP2PMessage(data: Data, toUUID UUID: String) -> Single<Void> {
+        logger.info("send p2p raw message data, to \(UUID)")
         switch state.value {
         case .connecting, .idle, .reconnecting: return .just(())
         case .connected:
@@ -52,7 +52,8 @@ class Rtm: NSObject {
                     observer(.failure("self not exist"))
                     return Disposables.create()
                 }
-                self.agoraKit.send(.init(text: text), toPeer: UUID) { error in
+                let msg = AgoraRtmRawMessage(rawData: data, description: "")
+                self.agoraKit.send(msg, toPeer: UUID) { error in
                     if error == .ok {
                         observer(.success(()))
                     } else {
@@ -216,6 +217,9 @@ extension Rtm: AgoraRtmDelegate {
     }
     
     func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
-        p2pMessage.accept((message.text, peerId))
+        logger.info("receive p2p message \(message.text)")
+        if let rawMessage = message as? AgoraRtmRawMessage {
+            p2pMessage.accept((rawMessage.rawData, peerId))
+        }
     }
 }

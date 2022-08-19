@@ -64,6 +64,7 @@ struct ClassroomFactory {
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
+        fastRoomConfiguration.whiteSdkConfiguration.log = false
         fastRoomConfiguration.whiteRoomConfig.isWritable = detailInfo.isOwner || detailInfo.roomType.interactionStrategy == .enable
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
@@ -83,6 +84,10 @@ struct ClassroomFactory {
         let rtm = Rtm(rtmToken: playInfo.rtmToken,
                                 rtmUserUUID: playInfo.rtmUID,
                                 agoraAppId: Env().agoraAppId)
+        let rtmChannel = rtm.joinChannelId(playInfo.rtmChannelId)
+            .asObservable()
+            .share(replay: 1, scope: .forever)
+            .asSingle()
         
         // Config State imp
         let syncedStore = ClassRoomSyncedStore()
@@ -90,12 +95,13 @@ struct ClassroomFactory {
         
         let imp = ClassroomStateHandlerImp(syncedStore: syncedStore,
                                            rtm: rtm,
-                                           commandChannelId: playInfo.commandChannelId,
+                                           commandChannelRequest: rtmChannel,
                                            roomUUID: playInfo.roomUUID,
                                            ownerUUID: playInfo.ownerUUID,
                                            isOwner: playInfo.rtmUID == playInfo.ownerUUID,
                                            maxOnstageUserCount: detailInfo.roomType.maxOnstageUserCount,
                                            roomStartStatus: detailInfo.roomStatus,
+                                           classroomType: detailInfo.roomType,
                                            whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),
                                            rtcError: rtc.errorPublisher.asObservable())
@@ -120,13 +126,13 @@ struct ClassroomFactory {
                                      userUUID: playInfo.rtmUID,
                                      roomUUID: playInfo.roomUUID,
                                      roomType: detailInfo.roomType,
-                                     chatChannelId: playInfo.chatChannelId,
+                                     commandChannelRequest: rtmChannel,
                                      rtm: rtm,
                                      alertProvider: alertProvider)
         let controller = ClassRoomViewController(viewModel: vm,
                                                    fastboardViewController: fastboardViewController,
                                                    rtcListViewController: rtcViewController,
-                                                   userListViewController: .init(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID),
+                                                 userListViewController: .init(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID, canUserDisconnect: playInfo.roomType != .oneToOne),
                                                    inviteViewController: ShareManager.createShareActivityViewController(roomUUID: playInfo.roomUUID,
                                                                                                                         beginTime: detailInfo.beginTime,
                                                                                                                         title: detailInfo.title,

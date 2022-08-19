@@ -22,8 +22,7 @@ struct RoomPlayInfo: Codable {
     let rtmToken: String
     let region: String
     
-    var chatChannelId: String { roomUUID }
-    var commandChannelId: String { chatChannelId + "commands" }
+    var rtmChannelId: String { roomUUID }
 }
 
 extension RoomPlayInfo {

@@ -10,10 +10,7 @@
 import Foundation
 
 struct CommandDecoder {
-    func decode(_ text: String) throws -> RtmCommand {
-        guard let data = text.data(using: .utf8) else {
-            throw "text2data error"
-        }
+    func decode(_ data: Data) throws -> RtmCommand {
         let dic = try JSONSerialization.jsonObject(with: data) as? NSDictionary
         guard let dic = dic else { return .undefined(reason: "decode command error") }
         guard let title = dic["t"] as? String else { return .undefined(reason: "decode command title error") }
