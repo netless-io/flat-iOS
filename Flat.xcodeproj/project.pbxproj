@@ -735,14 +735,16 @@
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
-				8A21DAC2279FCB5D0060E25D /* Recording */,
-				8AFA91F3278EA77800E0CA61 /* Fastboard */,
-				8ABD71C02768213F004FDC36 /* Config */,
-				8ABF362927464565000D5003 /* Factory */,
-				8A11CC2827202236001D0B1F /* Setting */,
-				8ABF362827464543000D5003 /* ViewController */,
-				8ABF362727464538000D5003 /* ViewModel */,
-				8ACDD8A427293D6500007B46 /* Models */,
+				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
+				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
+				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
+				8A92196128AF3BE700DDDA81 /* ClassroomUsers */,
+				8A92195E28AF3B9B00DDDA81 /* ClassroomState */,
+				8A21DAC2279FCB5D0060E25D /* ClassroomRecording */,
+				8AFA91F3278EA77800E0CA61 /* ClassroomFastboard */,
+				8A11CC2827202236001D0B1F /* ClassroomSetting */,
+				8ABF362827464543000D5003 /* ClassroomLayout */,
+				8ACDD8A427293D6500007B46 /* ClassroomModels */,
 				8AE8F55C272101E600D2E0F5 /* Rtm */,
 				8A11CC23272019D6001D0B1F /* Rtc */,
 			);
@@ -763,12 +765,12 @@
 			path = Rtc;
 			sourceTree = "<group>";
 		};
-		8A11CC2827202236001D0B1F /* Setting */ = {
+		8A11CC2827202236001D0B1F /* ClassroomSetting */ = {
 			isa = PBXGroup;
 			children = (
 				8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */,
 			);
-			path = Setting;
+			path = ClassroomSetting;
 			sourceTree = "<group>";
 		};
 		8A14EE6A28A6321500C0CB89 /* Log */ = {
@@ -823,13 +825,13 @@
 			path = Record;
 			sourceTree = "<group>";
 		};
-		8A21DAC2279FCB5D0060E25D /* Recording */ = {
+		8A21DAC2279FCB5D0060E25D /* ClassroomRecording */ = {
 			isa = PBXGroup;
 			children = (
 				8A21DAC0279FBE810060E25D /* RecordModel.swift */,
 				8A21DAC3279FD2CF0060E25D /* RecordingFlagView.swift */,
 			);
-			path = Recording;
+			path = ClassroomRecording;
 			sourceTree = "<group>";
 		};
 		8A270B6D2718299B00450DC6 /* Home */ = {
@@ -847,6 +849,7 @@
 		8A270B7027182A1A00450DC6 /* CloudStorage */ = {
 			isa = PBXGroup;
 			children = (
+				8A92196228AF3C0D00DDDA81 /* Model */,
 				8A05C34E2760AB6F009BCA79 /* Upload */,
 				8A05C343276091FB009BCA79 /* Preview */,
 				8A8507EC27E178790072AF49 /* CloudStorageDisplayViewController.swift */,
@@ -967,6 +970,49 @@
 				8A80209F27570F4B00F5691C /* PageListContainer.swift */,
 			);
 			path = PageContainer;
+			sourceTree = "<group>";
+		};
+		8A92195E28AF3B9B00DDDA81 /* ClassroomState */ = {
+			isa = PBXGroup;
+			children = (
+				8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */,
+				8AA242F5289A6ABD00C306F0 /* ClassroomStateHandler.swift */,
+			);
+			path = ClassroomState;
+			sourceTree = "<group>";
+		};
+		8A92195F28AF3BB900DDDA81 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */,
+				8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		8A92196028AF3BC000DDDA81 /* CommandCoder */ = {
+			isa = PBXGroup;
+			children = (
+				8A5DDC87272A74FB006216AD /* CommandEncoder.swift */,
+				8A5DDC89272A7502006216AD /* CommandDecoder.swift */,
+			);
+			path = CommandCoder;
+			sourceTree = "<group>";
+		};
+		8A92196128AF3BE700DDDA81 /* ClassroomUsers */ = {
+			isa = PBXGroup;
+			children = (
+				8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */,
+			);
+			path = ClassroomUsers;
+			sourceTree = "<group>";
+		};
+		8A92196228AF3C0D00DDDA81 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8A80209B27570CC700F5691C /* StorageFileModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		8A97EBBB271D180600965185 /* Modules */ = {
@@ -1179,39 +1225,13 @@
 			path = Stores;
 			sourceTree = "<group>";
 		};
-		8ABD71C02768213F004FDC36 /* Config */ = {
+		8ABF362827464543000D5003 /* ClassroomLayout */ = {
 			isa = PBXGroup;
 			children = (
+				8ABD71E327683DB5004FDC36 /* ClassRoomLayout.swift */,
 				8ABD71C127682214004FDC36 /* ClassRoomLayoutRatioConfig.swift */,
 			);
-			path = Config;
-			sourceTree = "<group>";
-		};
-		8ABF362727464538000D5003 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */,
-				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
-				8AA242F5289A6ABD00C306F0 /* ClassroomStateHandler.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		8ABF362827464543000D5003 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
-				8ABD71E327683DB5004FDC36 /* ClassRoomLayout.swift */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		8ABF362927464565000D5003 /* Factory */ = {
-			isa = PBXGroup;
-			children = (
-				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
-			);
-			path = Factory;
+			path = ClassroomLayout;
 			sourceTree = "<group>";
 		};
 		8ABF362D27477D6B000D5003 /* Flat */ = {
@@ -1251,14 +1271,13 @@
 			path = About;
 			sourceTree = "<group>";
 		};
-		8ACDD8A427293D6500007B46 /* Models */ = {
+		8ACDD8A427293D6500007B46 /* ClassroomModels */ = {
 			isa = PBXGroup;
 			children = (
-				8A80209B27570CC700F5691C /* StorageFileModel.swift */,
 				8A3460CC27293E3F0066063E /* RoomUser.swift */,
 				8AA242F7289A6D7C00C306F0 /* DeviceState.swift */,
 			);
-			path = Models;
+			path = ClassroomModels;
 			sourceTree = "<group>";
 		};
 		8AD2EF742775664C00087280 /* Share */ = {
@@ -1357,9 +1376,8 @@
 		8AE892F92727E98B009C71DA /* Command */ = {
 			isa = PBXGroup;
 			children = (
+				8A92196028AF3BC000DDDA81 /* CommandCoder */,
 				8AE892FA2727E99D009C71DA /* RtmCommandType.swift */,
-				8A5DDC87272A74FB006216AD /* CommandEncoder.swift */,
-				8A5DDC89272A7502006216AD /* CommandDecoder.swift */,
 			);
 			path = Command;
 			sourceTree = "<group>";
@@ -1367,12 +1385,10 @@
 		8AE8F55C272101E600D2E0F5 /* Rtm */ = {
 			isa = PBXGroup;
 			children = (
-				8AE892F92727E98B009C71DA /* Command */,
-				8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */,
 				8AA97EA12741F83A00C3F92E /* RtmChannel.swift */,
-				8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */,
 				8AA97EA32741F97B00C3F92E /* Rtm.swift */,
-				8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */,
+				8A92195F28AF3BB900DDDA81 /* Chat */,
+				8AE892F92727E98B009C71DA /* Command */,
 			);
 			path = Rtm;
 			sourceTree = "<group>";
@@ -1394,7 +1410,7 @@
 			path = Cancelation;
 			sourceTree = "<group>";
 		};
-		8AFA91F3278EA77800E0CA61 /* Fastboard */ = {
+		8AFA91F3278EA77800E0CA61 /* ClassroomFastboard */ = {
 			isa = PBXGroup;
 			children = (
 				8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */,
@@ -1402,7 +1418,7 @@
 				8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */,
 				8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */,
 			);
-			path = Fastboard;
+			path = ClassroomFastboard;
 			sourceTree = "<group>";
 		};
 		8AFCCDE0276B089A008BD0FC /* SideBar */ = {
