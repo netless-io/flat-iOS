@@ -1,29 +1,29 @@
 PODS:
   - AcknowList (2.0.3)
   - AgoraFPA_iOS (1.0.0)
-  - AgoraRtcEngine_iOS (3.6.2):
-    - AgoraRtcEngine_iOS/AINS (= 3.6.2)
-    - AgoraRtcEngine_iOS/AV1Dec (= 3.6.2)
-    - AgoraRtcEngine_iOS/ContentInspect (= 3.6.2)
-    - AgoraRtcEngine_iOS/FullAudioFormat (= 3.6.2)
-    - AgoraRtcEngine_iOS/JND (= 3.6.2)
-    - AgoraRtcEngine_iOS/ReplayKit (= 3.6.2)
-    - AgoraRtcEngine_iOS/ROIEnc (= 3.6.2)
-    - AgoraRtcEngine_iOS/RtcBasic (= 3.6.2)
-    - AgoraRtcEngine_iOS/SuperResolution (= 3.6.2)
-    - AgoraRtcEngine_iOS/VideoPreprocess (= 3.6.2)
-    - AgoraRtcEngine_iOS/VirtualBackground (= 3.6.2)
-  - AgoraRtcEngine_iOS/AINS (3.6.2)
-  - AgoraRtcEngine_iOS/AV1Dec (3.6.2)
-  - AgoraRtcEngine_iOS/ContentInspect (3.6.2)
-  - AgoraRtcEngine_iOS/FullAudioFormat (3.6.2)
-  - AgoraRtcEngine_iOS/JND (3.6.2)
-  - AgoraRtcEngine_iOS/ReplayKit (3.6.2)
-  - AgoraRtcEngine_iOS/ROIEnc (3.6.2)
-  - AgoraRtcEngine_iOS/RtcBasic (3.6.2)
-  - AgoraRtcEngine_iOS/SuperResolution (3.6.2)
-  - AgoraRtcEngine_iOS/VideoPreprocess (3.6.2)
-  - AgoraRtcEngine_iOS/VirtualBackground (3.6.2)
+  - AgoraRtcEngine_iOS (3.7.1):
+    - AgoraRtcEngine_iOS/AINS (= 3.7.1)
+    - AgoraRtcEngine_iOS/AV1Dec (= 3.7.1)
+    - AgoraRtcEngine_iOS/ContentInspect (= 3.7.1)
+    - AgoraRtcEngine_iOS/FullAudioFormat (= 3.7.1)
+    - AgoraRtcEngine_iOS/ReplayKit (= 3.7.1)
+    - AgoraRtcEngine_iOS/ROIEnc (= 3.7.1)
+    - AgoraRtcEngine_iOS/RtcBasic (= 3.7.1)
+    - AgoraRtcEngine_iOS/SpatialAudio (= 3.7.1)
+    - AgoraRtcEngine_iOS/SuperResolution (= 3.7.1)
+    - AgoraRtcEngine_iOS/VideoPreprocess (= 3.7.1)
+    - AgoraRtcEngine_iOS/VirtualBackground (= 3.7.1)
+  - AgoraRtcEngine_iOS/AINS (3.7.1)
+  - AgoraRtcEngine_iOS/AV1Dec (3.7.1)
+  - AgoraRtcEngine_iOS/ContentInspect (3.7.1)
+  - AgoraRtcEngine_iOS/FullAudioFormat (3.7.1)
+  - AgoraRtcEngine_iOS/ReplayKit (3.7.1)
+  - AgoraRtcEngine_iOS/ROIEnc (3.7.1)
+  - AgoraRtcEngine_iOS/RtcBasic (3.7.1)
+  - AgoraRtcEngine_iOS/SpatialAudio (3.7.1)
+  - AgoraRtcEngine_iOS/SuperResolution (3.7.1)
+  - AgoraRtcEngine_iOS/VideoPreprocess (3.7.1)
+  - AgoraRtcEngine_iOS/VirtualBackground (3.7.1)
   - AgoraRtm_iOS (1.4.10)
   - AliyunLogProducer/Bricks (2.3.10.4):
     - AliyunLogProducer/Core
@@ -140,7 +140,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AcknowList: 6d4faca4c3e0173377fe5649e086d627cd60b003
   AgoraFPA_iOS: 2202f574e6832567e368d5e69ad6da121a18ee4a
-  AgoraRtcEngine_iOS: 5bf5d2bb6669a6f3606716a02f3fb3ac58708f25
+  AgoraRtcEngine_iOS: f5181c4c32075bab11b0bdfc22e63fa00b9dc5bb
   AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
   AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
