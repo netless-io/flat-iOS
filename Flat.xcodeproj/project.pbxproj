@@ -744,7 +744,6 @@
 				8AFA91F3278EA77800E0CA61 /* ClassroomFastboard */,
 				8A11CC2827202236001D0B1F /* ClassroomSetting */,
 				8ABF362827464543000D5003 /* ClassroomLayout */,
-				8ACDD8A427293D6500007B46 /* ClassroomModels */,
 				8AE8F55C272101E600D2E0F5 /* Rtm */,
 				8A11CC23272019D6001D0B1F /* Rtc */,
 			);
@@ -862,14 +861,6 @@
 			path = CloudStorage;
 			sourceTree = "<group>";
 		};
-		8A270B782718332B00450DC6 /* MainTabController */ = {
-			isa = PBXGroup;
-			children = (
-				8A270B6B271822BA00450DC6 /* MainTabBarController.swift */,
-			);
-			path = MainTabController;
-			sourceTree = "<group>";
-		};
 		8A270B7F271929DF00450DC6 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -899,6 +890,7 @@
 				8A05C30E275DA785009BCA79 /* Popover */,
 				8A270B8A27192FEE00450DC6 /* BaseNavigationViewController.swift */,
 				8ACE3A1D272FD51E00BC37F7 /* MainSplitViewController.swift */,
+				8A270B6B271822BA00450DC6 /* MainTabBarController.swift */,
 				8ACE3A1F272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift */,
 				8ACB64D12775B02D00225621 /* MainContainer.swift */,
 			);
@@ -1018,13 +1010,16 @@
 		8A97EBBB271D180600965185 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8A9ACBF9271D602600E7E7CE /* Views */,
+				8A11CBE0271FEBB1001D0B1F /* UIComponents */,
+				8AAC69BD271810CB00F9A3B4 /* Stores */,
+				8A270B9B271967B800450DC6 /* Language */,
 				8A14EE6A28A6321500C0CB89 /* Log */,
 				8A21DAAA279E58E70060E25D /* Replay */,
 				8A11CC22272019C9001D0B1F /* ClassRoom */,
 				8A2D0BA62716859700123207 /* Login */,
 				8A270B6D2718299B00450DC6 /* Home */,
 				8A270B7027182A1A00450DC6 /* CloudStorage */,
-				8A270B782718332B00450DC6 /* MainTabController */,
 				8A270B7F271929DF00450DC6 /* Profile */,
 				8A270B82271929FE00450DC6 /* Setting */,
 				8A270B8927192FDC00450DC6 /* Base */,
@@ -1237,6 +1232,8 @@
 		8ABF362D27477D6B000D5003 /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8A3460CC27293E3F0066063E /* RoomUser.swift */,
+				8AA242F7289A6D7C00C306F0 /* DeviceState.swift */,
 				8A97EBB427199AB600965185 /* RoomPlayInfo.swift */,
 				8A9ACC04271E726B00E7E7CE /* RoomStartStatus.swift */,
 				8A9ACC02271E71B100E7E7CE /* RoomBasicInfo.swift */,
@@ -1269,15 +1266,6 @@
 				8A270BC2271980A300450DC6 /* AboutUsViewController.xib */,
 			);
 			path = About;
-			sourceTree = "<group>";
-		};
-		8ACDD8A427293D6500007B46 /* ClassroomModels */ = {
-			isa = PBXGroup;
-			children = (
-				8A3460CC27293E3F0066063E /* RoomUser.swift */,
-				8AA242F7289A6D7C00C306F0 /* DeviceState.swift */,
-			);
-			path = ClassroomModels;
 			sourceTree = "<group>";
 		};
 		8AD2EF742775664C00087280 /* Share */ = {
@@ -1343,12 +1331,8 @@
 				8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */,
 				8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */,
 				8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */,
-				8A11CBE0271FEBB1001D0B1F /* UIComponents */,
-				8A9ACBF9271D602600E7E7CE /* Views */,
 				8A9ACBF4271D50F000E7E7CE /* EnvConfigs */,
 				8A97EBBB271D180600965185 /* Modules */,
-				8A270B9B271967B800450DC6 /* Language */,
-				8AAC69BD271810CB00F9A3B4 /* Stores */,
 				8AAC69B12717E3E300F9A3B4 /* Models */,
 				8AD3CDF72716B524008BD904 /* Extensions */,
 				8A2D0B9527158C9000123207 /* Api */,

@@ -115,7 +115,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         launch?.start(withLaunchUrl: url)
         return true
     }
-    
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         let _ = launch?.start(withLaunchUserActivity: userActivity)
