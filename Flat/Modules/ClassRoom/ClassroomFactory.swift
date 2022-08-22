@@ -65,13 +65,14 @@ struct ClassroomFactory {
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
+        fastRoomConfiguration.whiteRoomConfig.disableCameraTransform = !userPermissionEnable
         fastRoomConfiguration.whiteSdkConfiguration.log = false
         fastRoomConfiguration.whiteRoomConfig.isWritable = userPermissionEnable
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
         
-        let camera = detailInfo.isOwner ? deviceStatus.camera : detailInfo.roomType != .bigClass
-        let mic = detailInfo.isOwner ? deviceStatus.mic : detailInfo.roomType != .bigClass
+        let camera = userPermissionEnable ? deviceStatus.camera : false
+        let mic = userPermissionEnable ? deviceStatus.mic : false
         let initDeviceState = DeviceState(mic: mic, camera: camera)
         
         // Config Rtc
