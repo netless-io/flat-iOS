@@ -47,6 +47,9 @@ extension UIViewController {
                                permittedArrowDirections: UIPopoverArrowDirection = .unknown,
                                animated: Bool = true,
                                completion: (()->Void)? = nil) {
+        if let presentedViewController = presentedViewController {
+            logger.error("can't present when there is presented \(presentedViewController)")
+        }
         viewController.modalPresentationStyle = .popover
         if let view = sender {
             viewController.popoverPresentationController?.sourceView = view
