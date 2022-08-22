@@ -61,11 +61,12 @@ struct ClassroomFactory {
         fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
         let userName = AuthStore.shared.user?.name ?? ""
         let payload: [String: String] = ["cursorName": userName]
+        let userPermissionEnable = detailInfo.isOwner || detailInfo.roomType.interactionStrategy == .enable
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
         fastRoomConfiguration.whiteSdkConfiguration.log = false
-        fastRoomConfiguration.whiteRoomConfig.isWritable = detailInfo.isOwner || detailInfo.roomType.interactionStrategy == .enable
+        fastRoomConfiguration.whiteRoomConfig.isWritable = userPermissionEnable
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
         

@@ -44,6 +44,7 @@ class FastboardViewController: UIViewController {
                     } else {
                         ob(.success(writable))
                         self?.isRoomWritable.accept(writable)
+                        self?.fastRoom.room?.disableCameraTransform(!writable)
                     }
                 }
                 return Disposables.create()

@@ -126,7 +126,7 @@ class ClassRoomViewModel {
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self = self else { return .error("self not exist") }
                 // Owner broadcast state when join room
-                if self.isOwner {
+                if self.isOwner || self.roomType.interactionStrategy == .enable {
                     return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: self.initDeviceState))
                 } else {
                     return .just(())

@@ -13,7 +13,6 @@ struct ClassRoomType: RawRepresentable, Codable, Equatable {
     enum InteractionStrategy {
         case enable
         case disable
-        case depending
     }
     
     enum RtcStrategy {
@@ -41,10 +40,9 @@ struct ClassRoomType: RawRepresentable, Codable, Equatable {
     
     var interactionStrategy: InteractionStrategy {
         switch self {
-        case .bigClass: return .disable
+        case .bigClass, .smallClass: return .disable
         case .oneToOne: return .enable
-        default:
-            return .depending
+        default: return .disable
         }
     }
     
