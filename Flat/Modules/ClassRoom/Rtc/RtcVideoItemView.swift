@@ -11,6 +11,13 @@ import UIKit
 
 class RtcVideoItemView: UIView {
     var containsUserValue = false
+    var alwaysShowName = false {
+        didSet {
+            if alwaysShowName {
+                nameLabel.isHidden = false
+            }
+        }
+    }
     
     var tapHandler: ((RtcVideoItemView)->Void)?
     

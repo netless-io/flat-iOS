@@ -318,7 +318,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             })
             .startWith([:])
         
-        let memberIds = Observable.combineLatest(
+        let onlineMemberIds = Observable.combineLatest(
             initMembers,
             joinedMembers,
             removedMembers) { initValue, joinedValue, leftValue -> [String] in
@@ -329,10 +329,26 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     .map { $0.key }
         }
         
-        let members = memberIds.flatMap { [weak self] ids -> Observable<[RoomUser]> in
+        let sharedStageIds = onStageIds.share(replay: 1, scope: .forever)
+         
+        let memberIds = Observable.combineLatest(sharedStageIds, onlineMemberIds) { onStage, online -> [String: Bool] in
+            var result: [String: Bool] = [:]
+            for id in online {
+                result[id] = true
+            }
+            for id in onStage {
+                if result[id] == nil {
+                    result[id] = false
+                }
+            }
+            return result
+        }
+        
+        let members = memberIds.flatMap { [weak self] idPairs -> Observable<[RoomUser]> in
             guard let self = self else { return .error("self not exist")}
+            let ids = idPairs.map { $0.key }
             let noCacheIds = ids.filter { self.roomUserInfoCache[$0] == nil }
-            let cachedUsers = ids.compactMap { self.roomUserInfoCache[$0]?.toRoomUser(uid:$0) }
+            let cachedUsers = ids.compactMap { self.roomUserInfoCache[$0]?.toRoomUser(uid:$0, isOnline: idPairs[$0] ?? false) }
             if noCacheIds.isEmpty { return .just(cachedUsers) }
             let memberRequest = MemberRequest(roomUUID: self.roomUUID, usersUUID: noCacheIds)
             let req = ApiProvider.shared
@@ -343,7 +359,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     }
                 })
             let reqUsers = req.map { r -> [RoomUser] in
-                r.response.map { $0.value.toRoomUser(uid: $0.key)}
+                r.response.map { $0.value.toRoomUser(uid: $0.key, isOnline: idPairs[$0.key] ?? false)}
             }
             let totalUsers = reqUsers.map { users -> [RoomUser] in
                 var r = cachedUsers
@@ -358,10 +374,10 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             members,
             deviceState.asObservable(),
             raisingHandIds.asObservable(),
-            onStageIds.asObservable()) { m, d, raiseHands, onStageIds -> [RoomUser] in
-                let updatedUsers = m.map { user -> RoomUser in
+            sharedStageIds) { onlineMembers, currentDeviceState, raiseHands, onStageIds -> [RoomUser] in
+                let updatedUsers = onlineMembers.map { user -> RoomUser in
                     var newUser = user
-                    if let deviceState = d[newUser.rtmUUID] {
+                    if let deviceState = currentDeviceState[newUser.rtmUUID] {
                         newUser.status.mic = deviceState.mic
                         newUser.status.camera = deviceState.camera
                     }
@@ -377,6 +393,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     newUser.status.isRaisingHand = raiseHands.contains(newUser.rtmUUID)
                     return newUser
                 }
+                
                 return updatedUsers
         }
         .debug()

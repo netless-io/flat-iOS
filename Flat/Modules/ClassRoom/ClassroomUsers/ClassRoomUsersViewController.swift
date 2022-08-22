@@ -125,17 +125,23 @@ class ClassRoomUsersViewController: UIViewController {
             cell.statusLabel.text = nil
         } else {
             cell.nameLabel.text = user.name
+            
             if user.status.isRaisingHand {
                 cell.statusLabel.text = "(\(NSLocalizedString("Raised Hand", comment: "")))"
                 cell.statusLabel.textColor = .controlSelected
                 cell.raiseHandButton.isHidden = !isTeacher
             } else if user.status.isSpeak {
-                cell.statusLabel.text = "(\(NSLocalizedString("Interacting", comment: "")))"
-                cell.statusLabel.textColor = .init(hexString: "#9FDF76")
-                let showDisconnect = canUserDisconnect && (isTeacher || user.rtmUUID == userUUID)
-                cell.disconnectButton.isHidden = !showDisconnect
+                if user.isOnline {
+                    cell.statusLabel.text = "(\(NSLocalizedString("Interacting", comment: "")))"
+                    cell.statusLabel.textColor = .init(hexString: "#9FDF76")
+                } else {
+                    cell.statusLabel.text = "(\(NSLocalizedString("offline", comment: "")))"
+                    cell.statusLabel.textColor = .subText
+                }
                 cell.cameraButton.isHidden = false
                 cell.micButton.isHidden = false
+                let showDisconnect = canUserDisconnect && (isTeacher || user.rtmUUID == userUUID)
+                cell.disconnectButton.isHidden = !showDisconnect
             } else {
                 cell.statusLabel.text = nil
             }

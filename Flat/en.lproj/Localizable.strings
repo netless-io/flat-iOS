@@ -374,6 +374,7 @@
 
 "Raised Hand" = "Raised Hand";
 
+
 "Reconnect" = "Reconnect";
 
 
@@ -648,6 +649,9 @@
 
 
 "inviteDescribe" = "invite you to join the Flat classroom";
+
+
+"offline" = "offline";
 
 
 "screenshot" = "screenshot";

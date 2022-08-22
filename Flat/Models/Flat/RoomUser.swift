@@ -15,7 +15,8 @@ struct RoomUser: Hashable, CustomStringConvertible {
         let truncateName = { return name.count > maxLength ? String(name[name.startIndex...name.index(name.startIndex, offsetBy: maxLength - 1)]) : name}
         let fixedName = { return  truncateName() + (0..<(maxLength - name.count)).map { _ in return " " }.joined(separator: "") }
         let formattedName = name.count > maxLength ? truncateName() : fixedName()
-        return String(format: "\n  rtc: %d, rtm: %@, %@, name: %@", rtcUID, rtmUUID, status.description, formattedName)
+        let onlineStr = isOnline ? "Online" : "Offline"
+        return String(format: "\n  rtc: %d, rtm: %@, %@, %@, name: %@", rtcUID, rtmUUID, status.description, onlineStr, formattedName)
     }
     
     let rtmUUID: String
@@ -23,19 +24,22 @@ struct RoomUser: Hashable, CustomStringConvertible {
     let name: String
     let avatarURL: URL?
     var status: RoomUserStatus
+    let isOnline: Bool
     
-    static let empty: Self = .init(rtmUUID: "", rtcUID: 0, name: "", avatarURL: nil)
+    static let empty: Self = .init(rtmUUID: "", rtcUID: 0, name: "", avatarURL: nil, isOnline: false)
     
     init(rtmUUID: String,
          rtcUID: UInt,
          name: String,
          avatarURL: URL?,
-         status: RoomUserStatus = .default) {
+         status: RoomUserStatus = .default,
+         isOnline: Bool = true) {
         self.rtmUUID = rtmUUID
         self.rtcUID = rtcUID
         self.name = name
         self.avatarURL = avatarURL
         self.status = status
+        self.isOnline = isOnline
     }
 }
 

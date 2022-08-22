@@ -171,10 +171,16 @@ class RtcViewController: UIViewController {
     func update(itemView: RtcVideoItemView, user: RoomUser) {
         itemView.heroID = nil
         itemView.update(avatar: user.avatarURL)
-        itemView.nameLabel.text = user.name
-        itemView.nameLabel.isHidden = true
+        if user.isOnline {
+            itemView.nameLabel.text = user.name
+            itemView.nameLabel.isHidden = true
+        } else {
+            itemView.nameLabel.text = "\(user.name) (\(localizeStrings("offline")))"
+            itemView.nameLabel.isHidden = false
+        }
         itemView.silenceImageView.isHidden = user.status.mic
         itemView.containsUserValue = true
+        itemView.alwaysShowName = !user.isOnline
     }
     
     func refresh(view: RtcVideoItemView,
@@ -359,7 +365,11 @@ class RtcViewController: UIViewController {
     
     func respondToVideoItemVideoTap(view: RtcVideoItemView, isLocal: Bool) {
         videoItemsStackView.arrangedSubviews.forEach {
-            ($0 as? RtcVideoItemView)?.nameLabel.isHidden = true
+            if let itemView = $0 as? RtcVideoItemView {
+                if !itemView.alwaysShowName {
+                    itemView.nameLabel.isHidden = true
+                }
+            }
         }
         view.nameLabel.isHidden = !view.nameLabel.isHidden
         

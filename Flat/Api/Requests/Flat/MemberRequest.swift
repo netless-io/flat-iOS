@@ -17,11 +17,12 @@ struct RoomUserInfo: Decodable, Hashable {
     // Empty sometimes. Do not use URL type
     let avatarURL: String
     
-    func toRoomUser(uid: String) -> RoomUser {
+    func toRoomUser(uid: String, isOnline: Bool) -> RoomUser {
         .init(rtmUUID: uid,
               rtcUID: rtcUID,
               name: name,
-              avatarURL: URL(string: avatarURL))
+              avatarURL: URL(string: avatarURL),
+              isOnline: isOnline)
     }
 }
 
