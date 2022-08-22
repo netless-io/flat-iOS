@@ -128,7 +128,8 @@ struct ClassroomFactory {
                                      roomType: detailInfo.roomType,
                                      commandChannelRequest: rtmChannel,
                                      rtm: rtm,
-                                     alertProvider: alertProvider)
+                                     alertProvider: alertProvider,
+                                     preferredDeviceState: deviceStatus)
         let controller = ClassRoomViewController(viewModel: vm,
                                                    fastboardViewController: fastboardViewController,
                                                    rtcListViewController: rtcViewController,

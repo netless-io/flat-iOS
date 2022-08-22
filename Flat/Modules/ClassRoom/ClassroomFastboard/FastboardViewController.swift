@@ -16,6 +16,7 @@ class FastboardViewController: UIViewController {
     let fastRoom: FastRoom
     let isRoomJoined: BehaviorRelay<Bool> = .init(value: false)
     let isRoomBanned: BehaviorRelay<Bool> = .init(value: false)
+    let isRoomWritable: BehaviorRelay<Bool>
     let roomError: PublishRelay<FastRoomError> = .init()
     
     /// Setup this store after whiteboard joined
@@ -29,6 +30,7 @@ class FastboardViewController: UIViewController {
     
     func updateWritable(_ writable: Bool) -> Single<Bool> {
         guard let w = fastRoom.room?.isWritable else { return .just(writable) }
+        logger.info("update writable \(writable)")
         if w != writable {
             return .create { [weak self] ob in
                 guard let self = self else {
@@ -36,11 +38,12 @@ class FastboardViewController: UIViewController {
                     return Disposables.create()
                 }
                 logger.info("update writable \(writable)")
-                self.fastRoom.updateWritable(writable) { error in
+                self.fastRoom.updateWritable(writable) { [weak self] error in
                     if let error = error {
                         ob(.failure(error))
                     } else {
                         ob(.success(writable))
+                        self?.isRoomWritable.accept(writable)
                     }
                 }
                 return Disposables.create()
@@ -65,6 +68,7 @@ class FastboardViewController: UIViewController {
     
     init(fastRoomConfiguration: FastRoomConfiguration) {
         self.fastRoom = Fastboard.createFastRoom(withFastRoomConfig: fastRoomConfiguration)
+        self.isRoomWritable = .init(value: fastRoomConfiguration.whiteRoomConfig.isWritable)
         super.init(nibName: nil, bundle: nil)
         self.fastRoom.delegate = self
         logger.trace("\(self)")

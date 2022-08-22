@@ -654,6 +654,15 @@
 "offline" = "离线中";
 
 
+"onOffStageTips" = "你已被移下讲台";
+
+
+"onStageNoMicTips" = "你已被同意上台, 语音未开启";
+
+
+"onStageTips" = "你已被同意上台, 语音已开启";
+
+
 "screenshot" = "白板截图";
 
 

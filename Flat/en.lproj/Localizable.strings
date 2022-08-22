@@ -654,6 +654,15 @@
 "offline" = "offline";
 
 
+"onOffStageTips" = "You have been removed from the stage";
+
+
+"onStageNoMicTips" = "You have been approved for the stage. But microphone is not on";
+
+
+"onStageTips" = "You have been approved for the stage. And the microphone is turned on";
+
+
 "screenshot" = "screenshot";
 
 

@@ -13,6 +13,7 @@ import RxCocoa
 class ClassRoomViewModel {
     fileprivate var stateHandler: ClassroomStateHandler!
     
+    let preferredDeviceState: DeviceState
     let alertProvider: AlertProvider
     let rtm: Rtm
     let commandChannelRequest: Single<RtmChannel>
@@ -36,6 +37,31 @@ class ClassRoomViewModel {
                 return m.first(where: { $0.rtmUUID == self.userUUID}) ?? .empty
             }
             .distinctUntilChanged()
+    }
+    
+    func transOnStageUpdate(whiteboardEnable: Observable<Bool>) -> Observable<String> {
+        currentUser
+            .map { $0.status.isSpeak }
+            .distinctUntilChanged()
+            .skip(1)
+            .flatMap { speak -> Observable<(speak: Bool, joined: Bool)> in
+                whiteboardEnable.map { (speak, $0) }
+            }.filter {
+                return ($0.speak && $0.joined) || (!$0.speak && !$0.joined)
+            }.flatMap { [weak self] (speak, _) -> Observable<String> in
+                guard let self = self else { return .error("self not exist") }
+                if speak {
+                    let micOn = self.preferredDeviceState.mic
+                    return self.stateHandler
+                        .send(command: .updateDeviceState(uuid: self.userUUID, state: self.preferredDeviceState))
+                        .asObservable()
+                        .map { _ -> String in
+                            micOn ? localizeStrings("onStageTips") : localizeStrings("onStageNoMicTips")
+                        }
+                } else {
+                    return .just(localizeStrings("onOffStageTips"))
+                }
+            }
     }
     
     var raiseHandHide: Observable<Bool> {
@@ -77,7 +103,8 @@ class ClassRoomViewModel {
          roomType: ClassRoomType,
          commandChannelRequest: Single<RtmChannel>,
          rtm: Rtm,
-         alertProvider: AlertProvider) {
+         alertProvider: AlertProvider,
+         preferredDeviceState: DeviceState) {
         self.stateHandler = stateHandler
         self.initDeviceState = initDeviceState
         self.isOwner = isOwner
@@ -87,6 +114,7 @@ class ClassRoomViewModel {
         self.commandChannelRequest = commandChannelRequest
         self.rtm = rtm
         self.alertProvider = alertProvider
+        self.preferredDeviceState = preferredDeviceState
     }
     
     struct InitRoomOutput {

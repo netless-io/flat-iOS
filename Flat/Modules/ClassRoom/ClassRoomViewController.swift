@@ -215,7 +215,6 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
     
-    
     func bindTerminate() {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
@@ -237,6 +236,12 @@ class ClassRoomViewController: UIViewController {
         
         viewModel.isRaisingHand.asDriver(onErrorJustReturn: false)
             .drive(raiseHandButton.rx.isSelected)
+            .disposed(by: rx.disposeBag)
+
+        viewModel.transOnStageUpdate(whiteboardEnable: fastboardViewController.isRoomWritable.asObservable())
+            .subscribe(with: self, onNext: { weakSelf, toastString in
+                weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
+            })
             .disposed(by: rx.disposeBag)
     }
     

@@ -136,7 +136,7 @@ class ClassRoomUsersViewController: UIViewController {
                     cell.statusLabel.textColor = .init(hexString: "#9FDF76")
                 } else {
                     cell.statusLabel.text = "(\(NSLocalizedString("offline", comment: "")))"
-                    cell.statusLabel.textColor = .subText
+                    cell.statusLabel.textColor = .systemRed
                 }
                 cell.cameraButton.isHidden = false
                 cell.micButton.isHidden = false
