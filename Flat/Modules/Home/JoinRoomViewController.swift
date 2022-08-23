@@ -181,7 +181,9 @@ class JoinRoomViewController: UIViewController {
         tf.leftView = .init(frame: .init(origin: .zero, size: .init(width: 10, height: 20)))
         tf.leftViewMode = .always
         tf.keyboardType = .numberPad
+        tf.returnKeyType = .join
         tf.clearButtonMode = .whileEditing
+        tf.delegate = self
         return tf
     }()
     
@@ -221,4 +223,12 @@ class JoinRoomViewController: UIViewController {
         btn.isSelected = micOn
         return btn
     }()
+}
+
+extension JoinRoomViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        onClickJoin(joinButton)
+        return true
+    }
 }

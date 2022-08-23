@@ -272,7 +272,7 @@ class CreateClassRoomViewController: UIViewController {
         tf.placeholder = NSLocalizedString("Room Subject Placeholder", comment: "")
         tf.leftView = .init(frame: .init(origin: .zero, size: .init(width: 10, height: 20)))
         tf.leftViewMode = .always
-        tf.returnKeyType = .done
+        tf.returnKeyType = .join
         tf.clearButtonMode = .whileEditing
         tf.text = defaultTitle
         tf.delegate = self
@@ -334,6 +334,7 @@ class CreateClassRoomViewController: UIViewController {
 extension CreateClassRoomViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        onClickCreate(createButton)
         return true
     }
 }
