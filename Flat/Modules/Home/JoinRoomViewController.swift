@@ -108,6 +108,21 @@ class JoinRoomViewController: UIViewController {
 //        }
 //    }
     
+    fileprivate func getRoomUUIDFrom(_ str: String) -> String? {
+        if !str.isEmpty {
+            if let r = try? str.matchExpressionPattern("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"),
+               let url = URL(string: r),
+               Env().webBaseURL.contains(url.host ?? "") {
+                let id = url.lastPathComponent
+                return id
+            } else if let num = try? str.matchExpressionPattern("(\\d ?){10}") {
+                let r = num.replacingOccurrences(of: " ", with: "")
+                return r
+            }
+        }
+        return nil
+    }
+    
     func bindJoinEnable() {
         subjectTextField.rx.text.orEmpty.asDriver()
             .map { $0.isNotEmptyOrAllSpacing }
@@ -229,6 +244,15 @@ extension JoinRoomViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         onClickJoin(joinButton)
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let uuid = getRoomUUIDFrom(string) {
+            textField.text = uuid
+            textField.sendActions(for: .valueChanged)
+            return false
+        }
         return true
     }
 }
