@@ -33,6 +33,7 @@ enum ClassroomStateError {
 enum ClassroomCommand {
     case disconnectUser(String)
     case acceptRaiseHand(String)
+    case pickUserOnStage(String)
     case updateDeviceState(uuid: String, state: DeviceState)
     case updateRaiseHand(Bool)
     case ban(Bool)

@@ -10,10 +10,6 @@
 import Foundation
 
 struct ClassRoomType: RawRepresentable, Codable, Equatable {
-    enum InteractionStrategy {
-        case enable
-        case disable
-    }
     
     enum RtcStrategy {
         case teacherOrSpeaking
@@ -35,14 +31,6 @@ struct ClassRoomType: RawRepresentable, Codable, Equatable {
         case .smallClass: return .max
         default:
             return .max
-        }
-    }
-    
-    var interactionStrategy: InteractionStrategy {
-        switch self {
-        case .bigClass, .smallClass: return .disable
-        case .oneToOne: return .enable
-        default: return .disable
         }
     }
     

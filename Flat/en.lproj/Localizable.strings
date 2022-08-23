@@ -663,6 +663,9 @@
 "onStageTips" = "You have been approved for the stage. And the microphone is turned on";
 
 
+"ownerAutoOnStageTips" = "The student has been automatically invited to the stage and the user is : ";
+
+
 "screenshot" = "screenshot";
 
 

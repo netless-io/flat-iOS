@@ -61,7 +61,7 @@ struct ClassroomFactory {
         fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
         let userName = AuthStore.shared.user?.name ?? ""
         let payload: [String: String] = ["cursorName": userName]
-        let userPermissionEnable = detailInfo.isOwner || detailInfo.roomType.interactionStrategy == .enable
+        let userPermissionEnable = detailInfo.isOwner
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
@@ -103,7 +103,6 @@ struct ClassroomFactory {
                                            isOwner: playInfo.rtmUID == playInfo.ownerUUID,
                                            maxOnstageUserCount: detailInfo.roomType.maxOnstageUserCount,
                                            roomStartStatus: detailInfo.roomStatus,
-                                           classroomType: detailInfo.roomType,
                                            whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),
                                            rtcError: rtc.errorPublisher.asObservable())
@@ -132,16 +131,19 @@ struct ClassroomFactory {
                                      rtm: rtm,
                                      alertProvider: alertProvider,
                                      preferredDeviceState: deviceStatus)
+        
+        let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
+        let shareViewController = ShareManager.createShareActivityViewController(roomUUID: playInfo.roomUUID,
+                                                                                 beginTime: detailInfo.beginTime,
+                                                                                 title: detailInfo.title,
+                                                                                 roomNumber: detailInfo.formatterInviteCode)
         let controller = ClassRoomViewController(viewModel: vm,
-                                                   fastboardViewController: fastboardViewController,
-                                                   rtcListViewController: rtcViewController,
-                                                 userListViewController: .init(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID, canUserDisconnect: playInfo.roomType != .oneToOne),
-                                                   inviteViewController: ShareManager.createShareActivityViewController(roomUUID: playInfo.roomUUID,
-                                                                                                                        beginTime: detailInfo.beginTime,
-                                                                                                                        title: detailInfo.title,
-                                                                                                                        roomNumber: detailInfo.formatterInviteCode),
-                                                   isOwner: detailInfo.isOwner,
-                                                   ownerUUID: playInfo.ownerUUID)
+                                                 fastboardViewController: fastboardViewController,
+                                                 rtcListViewController: rtcViewController,
+                                                 userListViewController: userListViewController,
+                                                 inviteViewController: shareViewController,
+                                                 isOwner: detailInfo.isOwner,
+                                                 ownerUUID: playInfo.ownerUUID)
         alertProvider.root = controller
         logger.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller

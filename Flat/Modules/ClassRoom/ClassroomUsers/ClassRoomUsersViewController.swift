@@ -15,8 +15,7 @@ class ClassRoomUsersViewController: UIViewController {
     
     let userUUID: String
     let roomOwnerRtmUUID: String
-    let isTeacher: Bool
-    let canUserDisconnect: Bool
+    let isOwner: Bool
     
     let disconnectTap: PublishRelay<RoomUser> = .init()
     let raiseHandTap: PublishRelay<RoomUser> = .init()
@@ -48,7 +47,7 @@ class ClassRoomUsersViewController: UIViewController {
             }
             .disposed(by: rx.disposeBag)
             
-            if !isTeacher {
+            if !isOwner {
                 stopInteractingButton.isHidden = true
             } else {
                 users.map {
@@ -64,12 +63,10 @@ class ClassRoomUsersViewController: UIViewController {
     
     // MARK: - LifeCycle
     init(userUUID: String,
-         roomOwnerRtmUUID: String,
-         canUserDisconnect: Bool) {
+         roomOwnerRtmUUID: String) {
         self.roomOwnerRtmUUID = roomOwnerRtmUUID
         self.userUUID = userUUID
-        self.isTeacher = roomOwnerRtmUUID == userUUID
-        self.canUserDisconnect = canUserDisconnect
+        self.isOwner = roomOwnerRtmUUID == userUUID
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -129,7 +126,7 @@ class ClassRoomUsersViewController: UIViewController {
             if user.status.isRaisingHand {
                 cell.statusLabel.text = "(\(NSLocalizedString("Raised Hand", comment: "")))"
                 cell.statusLabel.textColor = .controlSelected
-                cell.raiseHandButton.isHidden = !isTeacher
+                cell.raiseHandButton.isHidden = !isOwner
             } else if user.status.isSpeak {
                 if user.isOnline {
                     cell.statusLabel.text = "(\(NSLocalizedString("Interacting", comment: "")))"
@@ -140,8 +137,7 @@ class ClassRoomUsersViewController: UIViewController {
                 }
                 cell.cameraButton.isHidden = false
                 cell.micButton.isHidden = false
-                let showDisconnect = canUserDisconnect && (isTeacher || user.rtmUUID == userUUID)
-                cell.disconnectButton.isHidden = !showDisconnect
+                cell.disconnectButton.isHidden = !(isOwner || user.rtmUUID == userUUID)
             } else {
                 cell.statusLabel.text = nil
             }

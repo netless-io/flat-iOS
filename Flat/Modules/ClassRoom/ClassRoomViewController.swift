@@ -117,8 +117,14 @@ class ClassRoomViewController: UIViewController {
                     weakSelf.showAlertWith(message: NSLocalizedString("Init room error", comment: "") + error.localizedDescription) {
                         weakSelf.leaveUIHierarchy()
                     }}
-            )
-            .disposed(by: rx.disposeBag)
+            ).disposed(by: rx.disposeBag)
+
+        result.autoPickMemberOnStageOnce?
+              .subscribe(with: self, onSuccess: { weakSelf, user in
+                  if let user = user {
+                      weakSelf.toast(localizeStrings("ownerAutoOnStageTips") + user.name, timeInterval: 3, preventTouching: false)
+                  }
+              }).disposed(by: rx.disposeBag)
                 
         result.roomError
             .subscribe(with: self, onNext: { weakSelf, error in

@@ -69,7 +69,6 @@ class ClassRoomViewModel {
                                  banState) { [weak self] currentUser, ban in
             guard let self = self else { return true }
             if self.isOwner { return true }
-            if self.roomType.interactionStrategy == .enable { return true }
             if ban { return true }
             return currentUser.status.isSpeak
         }
@@ -120,22 +119,57 @@ class ClassRoomViewModel {
     struct InitRoomOutput {
         let initRoomResult: Single<Void>
         let roomError: Observable<ClassroomStateError>
+        /// enable when user is an owner and roomType is oneToOne
+        let autoPickMemberOnStageOnce: Single<RoomUser?>?
     }
     func initialRoomStatus() -> InitRoomOutput {
         let initRoom =  stateHandler.setup()
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self = self else { return .error("self not exist") }
                 // Owner broadcast state when join room
-                if self.isOwner || self.roomType.interactionStrategy == .enable {
+                if self.isOwner {
                     return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: self.initDeviceState))
                 } else {
                     return .just(())
                 }
             }
         
+        let shareInitRoom = initRoom
+            .asObservable()
+            .share(replay: 1, scope: .whileConnected)
+        
+        let autoPickMemberOnStageOnce: Single<RoomUser?>?
+        if roomType == .oneToOne && isOwner {
+            autoPickMemberOnStageOnce = shareInitRoom
+                .flatMap { [weak self] _ -> Observable<[RoomUser]>  in
+                    guard let self = self else { return .error("self not exist") }
+                    return self.members
+                }
+                .skip(while: { $0.count < 2 })
+                .take(1)
+                .flatMap { [weak self ] members -> Observable<RoomUser?> in
+                    guard let self = self else { return .error("self not exist") }
+                    let nonSpeakers = members.filter({
+                        $0.rtmUUID != self.userUUID &&
+                        !$0.status.isSpeak
+                    })
+                    if let target = nonSpeakers.first {
+                        return self.stateHandler
+                            .send(command: .pickUserOnStage(target.rtmUUID))
+                            .asObservable()
+                            .map { target }
+                    } else {
+                        return .just(nil)
+                    }
+                }
+                .asSingle()
+        } else {
+            autoPickMemberOnStageOnce = nil
+        }
+        
         let error = stateHandler.error.asObservable()
 
-        return .init(initRoomResult: initRoom, roomError: error)
+        return .init(initRoomResult: shareInitRoom.asSingle(), roomError: error, autoPickMemberOnStageOnce: autoPickMemberOnStageOnce)
     }
     
     struct ChatChannelInitValue {

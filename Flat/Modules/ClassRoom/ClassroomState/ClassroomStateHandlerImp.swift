@@ -31,7 +31,6 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let deviceState: BehaviorRelay<[String: DeviceState]> = .init(value: [:])
     let noticePublisher: PublishRelay<String> = .init()
     let banMessagePublisher: PublishRelay<Bool> = .init()
-    let classroomType: ClassRoomType
     
     var bag = DisposeBag()
     let commandEncoder = CommandEncoder()
@@ -45,7 +44,6 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
          isOwner: Bool,
          maxOnstageUserCount: Int,
          roomStartStatus: RoomStartStatus,
-         classroomType: ClassRoomType,
          whiteboardBannedAction: Observable<Void>,
          whiteboardRoomError: Observable<FastRoomError>,
          rtcError: Observable<RtcError>) {
@@ -54,7 +52,6 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         self.commandChannelRequest = commandChannelRequest
         self.roomUUID = roomUUID
         self.ownerUUID = ownerUUID
-        self.classroomType = classroomType
         self.isOwner = isOwner
         self.maxOnstageUserCount = maxOnstageUserCount
         self.roomStartStatus = .init(value: roomStartStatus)
@@ -210,6 +207,9 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         try self.syncedStore.sendCommand(.onStageUsersUpdate([uuid: false]))
                         return .just(())
                     }
+            case .pickUserOnStage(let uuid):
+                try self.syncedStore.sendCommand(.onStageUsersUpdate([uuid: true]))
+                return .just(())
             case .acceptRaiseHand(let uuid):
                 return syncedStore.getValues()
                     .flatMap { [weak self] result -> Single<Void> in
@@ -381,15 +381,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         newUser.status.mic = deviceState.mic
                         newUser.status.camera = deviceState.camera
                     }
-                    switch self.classroomType {
-                    case .oneToOne:
-                        newUser.status.isSpeak = true
-                    case .smallClass, .bigClass:
-                        newUser.status.isSpeak = ownerUUID == newUser.rtmUUID || onStageIds.contains(newUser.rtmUUID)
-                    default:
-                        newUser.status.isSpeak = ownerUUID == newUser.rtmUUID || onStageIds.contains(newUser.rtmUUID)
-                    }
-                    
+                    newUser.status.isSpeak = ownerUUID == newUser.rtmUUID || onStageIds.contains(newUser.rtmUUID)
                     newUser.status.isRaisingHand = raiseHands.contains(newUser.rtmUUID)
                     return newUser
                 }
