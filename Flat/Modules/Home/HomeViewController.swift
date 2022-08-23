@@ -570,7 +570,7 @@ extension HomeViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     }
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        0
+        UIScreen.main.bounds.height / 6
     }
 }
 
