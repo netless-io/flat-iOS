@@ -97,7 +97,7 @@ class LoginViewController: UIViewController {
         stackView.arrangedSubviews.forEach {
             $0.backgroundColor = .whiteBG
         }
-        flatLabel.textColor = .text
+        flatLabel.textColor = .strongText
         
         // Hide weChat login when weChat not installed
         weChatLoginButton.isHidden = !WXApi.isWXAppInstalled()
@@ -108,7 +108,7 @@ class LoginViewController: UIViewController {
         view.addSubview(agreementCheckStackView)
         agreementCheckStackView.snp.makeConstraints { make in
             make.centerX.equalTo(verticalLoginTypesStackView)
-            make.top.equalTo(loginButton.snp.bottom).offset(16)
+            make.top.equalTo(loginButton.snp.bottom).offset(8)
         }
         
         tipsLabel.adjustsFontSizeToFitWidth = true
@@ -137,6 +137,11 @@ class LoginViewController: UIViewController {
     }
     
     func bind() {
+        smsAuthView.loginEnable
+            .asDriver(onErrorJustReturn: true)
+            .drive(loginButton.rx.isEnabled)
+            .disposed(by: rx.disposeBag)
+        
         smsAuthView.additionalCheck = { [weak self] sender in
             guard let self = self else { return .failure("") }
             let agree = self.checkAgreementDidAgree()

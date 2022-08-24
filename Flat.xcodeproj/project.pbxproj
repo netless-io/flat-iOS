@@ -97,6 +97,7 @@
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
+		8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */; };
 		8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55F1B1273A710000D4DA0F /* AnyRequest.swift */; };
 		8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */; };
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
@@ -141,6 +142,8 @@
 		8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB427199AB600965185 /* RoomPlayInfo.swift */; };
 		8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB627199AC700965185 /* ClassRoomType.swift */; };
 		8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBB827199AD300965185 /* ShareScreenInfo.swift */; };
+		8A99EC4028B5BA3C0066CFF3 /* BottomLineTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A99EC3F28B5BA3C0066CFF3 /* BottomLineTextfield.swift */; };
+		8A99EC4328B5C0680066CFF3 /* DashLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A99EC4228B5C0680066CFF3 /* DashLineView.swift */; };
 		8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACBFB271D603E00E7E7CE /* HomeTabBar.swift */; };
 		8A9ACC01271E712100E7E7CE /* RoomListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC00271E712100E7E7CE /* RoomListRequest.swift */; };
 		8A9ACC03271E71B100E7E7CE /* RoomBasicInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC02271E71B100E7E7CE /* RoomBasicInfo.swift */; };
@@ -358,6 +361,7 @@
 		8A4C7A7427F2E4B3006988C6 /* FlatFlint_Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatFlint_Release.entitlements; sourceTree = "<group>"; };
 		8A4C7A7527F2E53B006988C6 /* Flint_Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Develop.xcconfig; sourceTree = "<group>"; };
 		8A4C7A7627F2E544006988C6 /* Flint_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Release.xcconfig; sourceTree = "<group>"; };
+		8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextfield+Rx.swift"; sourceTree = "<group>"; };
 		8A55F1B1273A710000D4DA0F /* AnyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequest.swift; sourceTree = "<group>"; };
 		8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevicePreferredStatusStore.swift; sourceTree = "<group>"; };
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
@@ -401,6 +405,8 @@
 		8A97EBB427199AB600965185 /* RoomPlayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPlayInfo.swift; sourceTree = "<group>"; };
 		8A97EBB627199AC700965185 /* ClassRoomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomType.swift; sourceTree = "<group>"; };
 		8A97EBB827199AD300965185 /* ShareScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareScreenInfo.swift; sourceTree = "<group>"; };
+		8A99EC3F28B5BA3C0066CFF3 /* BottomLineTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLineTextfield.swift; sourceTree = "<group>"; };
+		8A99EC4228B5C0680066CFF3 /* DashLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashLineView.swift; sourceTree = "<group>"; };
 		8A9ACBEA271D4F5600E7E7CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A9ACBF8271D5D2700E7E7CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LoginViewController.xib; sourceTree = "<group>"; };
 		8A9ACBFB271D603E00E7E7CE /* HomeTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBar.swift; sourceTree = "<group>"; };
@@ -656,6 +662,7 @@
 				8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */,
 				8ABF36232745F2D8000D5003 /* AlertProvider.swift */,
 				8ABF362527462F93000D5003 /* Observable+Extension.swift */,
+				8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */,
 			);
 			path = Rx;
 			sourceTree = "<group>";
@@ -1027,6 +1034,22 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		8A99EC3E28B5BA300066CFF3 /* Textfield */ = {
+			isa = PBXGroup;
+			children = (
+				8A99EC3F28B5BA3C0066CFF3 /* BottomLineTextfield.swift */,
+			);
+			path = Textfield;
+			sourceTree = "<group>";
+		};
+		8A99EC4128B5C0580066CFF3 /* DashLine */ = {
+			isa = PBXGroup;
+			children = (
+				8A99EC4228B5C0680066CFF3 /* DashLineView.swift */,
+			);
+			path = DashLine;
+			sourceTree = "<group>";
+		};
 		8A9ACBF4271D50F000E7E7CE /* EnvConfigs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1042,6 +1065,8 @@
 		8A9ACBF9271D602600E7E7CE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8A99EC4128B5C0580066CFF3 /* DashLine */,
+				8A99EC3E28B5BA300066CFF3 /* Textfield */,
 				8A9ACC0F271EAE2800E7E7CE /* Button */,
 				8A9ACBFD271D689800E7E7CE /* Cells */,
 				8A9ACBFA271D602C00E7E7CE /* Tabbar */,
@@ -1724,6 +1749,7 @@
 				8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */,
 				8A270BA4271972F100450DC6 /* ContactUsViewController.swift in Sources */,
 				8AF244D8287C17D900E6B2AF /* BindListRequest.swift in Sources */,
+				8A99EC4028B5BA3C0066CFF3 /* BottomLineTextfield.swift in Sources */,
 				8A2975212726A6810095F9F0 /* UIColor+Theme.swift in Sources */,
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
@@ -1767,6 +1793,7 @@
 				8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */,
 				8A9ACC05271E726B00E7E7CE /* RoomStartStatus.swift in Sources */,
 				8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */,
+				8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */,
 				8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */,
 				8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
@@ -1784,6 +1811,7 @@
 				8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */,
 				8A05C3402760427E009BCA79 /* HTTPHeaders.swift in Sources */,
 				8A9FB3D02722C14B00F6F06F /* AgoraMessage.swift in Sources */,
+				8A99EC4328B5C0680066CFF3 /* DashLineView.swift in Sources */,
 				8A80208F2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift in Sources */,
 				8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */,
 				8A270BBF27197F1500450DC6 /* XIBLocalizeable.swift in Sources */,

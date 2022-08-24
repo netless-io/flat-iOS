@@ -11,7 +11,8 @@ import UIKit
 class BindPhoneViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
-        modalPresentationStyle = .formSheet
+        modalPresentationStyle = .fullScreen
+        modalTransitionStyle = .crossDissolve
     }
     
     required init?(coder: NSCoder) {
@@ -21,50 +22,124 @@ class BindPhoneViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        
     }
     
     func setupViews() {
         view.backgroundColor = .whiteBG
-        
-        let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.textColor = .text
-        titleLabel.text = NSLocalizedString("BindPhone", comment: "")
-        
-        view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+
+        let mainView = UIView()
+        let stack = UIStackView(arrangedSubviews: [])
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        view.addSubview(stack)
+        stack.snp.makeConstraints { $0.edges.equalToSuperview() }
+        if !traitCollection.hasCompact {
+            let leftView = UIImageView(image: UIImage(named: "login_pad"))
+            leftView.contentMode = .scaleAspectFill
+            leftView.clipsToBounds = true
+            stack.addArrangedSubview(leftView)
         }
+        stack.addArrangedSubview(mainView)
         
+        if traitCollection.hasCompact {
+            let titleLabel = UILabel()
+            titleLabel.font = .systemFont(ofSize: 16)
+            titleLabel.textColor = .text
+            titleLabel.text = NSLocalizedString("BindPhone", comment: "")
+            mainView.addSubview(titleLabel)
+            titleLabel.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            }
             
-        let closeButton = UIButton(type: .custom)
-        closeButton.setImage(UIImage(named: "close-bold"), for: .normal)
-        closeButton.tintColor = .text
-        view.addSubview(closeButton)
-        closeButton.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.centerY.equalTo(titleLabel)
-            make.width.height.equalTo(44)
+            let closeButton = UIButton(type: .custom)
+            closeButton.setImage(UIImage(named: "close-bold"), for: .normal)
+            closeButton.tintColor = .text
+            mainView.addSubview(closeButton)
+            closeButton.snp.makeConstraints { make in
+                make.left.equalToSuperview()
+                make.centerY.equalTo(titleLabel)
+                make.width.height.equalTo(44)
+            }
+            closeButton.addTarget(self, action: #selector(onClose), for: .touchUpInside)
+            
+            mainView.addSubview(smsAuthView)
+            smsAuthView.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.left.right.equalToSuperview().inset(16)
+                make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(66)
+            }
+            
+            let bindButton = FlatGeneralCrossButton()
+            bindButton.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
+            mainView.addSubview(bindButton)
+            bindButton.snp.makeConstraints { make in
+                make.left.right.equalToSuperview().inset(16)
+                make.height.equalTo(40)
+                make.top.equalTo(smsAuthView.snp.bottom).offset(28)
+            }
+            bindButton.addTarget(self, action: #selector(onLogin), for: .touchUpInside)
+            
+            smsAuthView
+                .loginEnable
+                .asDriver(onErrorJustReturn: true)
+                .drive(bindButton.rx.isEnabled)
+                .disposed(by: rx.disposeBag)
+        } else {
+            mainView.addSubview(smsAuthView)
+            smsAuthView.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+                make.width.equalToSuperview().multipliedBy(0.72)
+            }
+            
+            let bindButton = FlatGeneralCrossButton()
+            bindButton.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
+            mainView.addSubview(bindButton)
+            bindButton.snp.makeConstraints { make in
+                make.left.right.equalTo(smsAuthView)
+                make.height.equalTo(40)
+                make.top.equalTo(smsAuthView.snp.bottom).offset(32)
+            }
+            bindButton.addTarget(self, action: #selector(onLogin), for: .touchUpInside)
+            
+            smsAuthView
+                .loginEnable
+                .asDriver(onErrorJustReturn: true)
+                .drive(bindButton.rx.isEnabled)
+                .disposed(by: rx.disposeBag)
+                
+            let titleLabel = UILabel()
+            titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+            titleLabel.textColor = .strongText
+            titleLabel.text = NSLocalizedString("BindPhone", comment: "")
+            mainView.addSubview(titleLabel)
+            titleLabel.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.bottom.equalTo(smsAuthView.snp.top).offset(-100)
+            }
+            
+            let bindPhoneDetailLabel = UILabel()
+            bindPhoneDetailLabel.text = localizeStrings("Bind Phone Detail")
+            bindPhoneDetailLabel.font = .systemFont(ofSize: 14)
+            bindPhoneDetailLabel.textColor = .text
+            mainView.addSubview(bindPhoneDetailLabel)
+            bindPhoneDetailLabel.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            }
+            
+            let closeButton = UIButton(type: .custom)
+            closeButton.setTitleColor(.brandColor, for: .normal)
+            closeButton.setTitle(localizeStrings("Back"), for: .normal)
+            closeButton.titleLabel?.font = .systemFont(ofSize: 14)
+            mainView.addSubview(closeButton)
+            closeButton.snp.makeConstraints { make in
+                make.size.equalTo(bindButton)
+                make.top.equalTo(bindButton.snp.bottom).offset(4)
+                make.centerX.equalToSuperview()
+            }
+            closeButton.addTarget(self, action: #selector(onClose), for: .touchUpInside)
         }
-        closeButton.addTarget(self, action: #selector(onClose), for: .touchUpInside)
-        
-        view.addSubview(smsAuthView)
-        smsAuthView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(66)
-            make.left.right.equalToSuperview().inset(16)
-        }
-        
-        let bindButton = FlatGeneralCrossButton()
-        bindButton.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
-        view.addSubview(bindButton)
-        bindButton.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(16)
-            make.height.equalTo(40)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
-        }
-        bindButton.addTarget(self, action: #selector(onLogin), for: .touchUpInside)
     }
     
     @objc

@@ -52,6 +52,10 @@ extension UIColor {
         return UIColor(named:"BrandColor" + nameSuffix)!
     }
     
+    static var brandStrongColor: UIColor {
+        return UIColor(named:"BrandColor-strong" + nameSuffix)!
+    }
+    
     static var controlSelectedBG: UIColor {
         return UIColor(named:"ControlSelectedBG" + nameSuffix)!
     }
@@ -60,12 +64,28 @@ extension UIColor {
         return UIColor(named:"Text" + nameSuffix)!
     }
     
+    static var strongText: UIColor {
+        return UIColor(named:"Text-strong" + nameSuffix)!
+    }
+    
+    static var whiteText: UIColor {
+        return UIColor(named:"Text-White" + nameSuffix)!
+    }
+    
+    static var disableText: UIColor {
+        return UIColor(named:"Text-disable" + nameSuffix)!
+    }
+    
     static var subText: UIColor {
         return UIColor(named:"SubText" + nameSuffix)!
     }
     
     static var commonBG: UIColor {
         return UIColor(named: "GrayBGColor" + nameSuffix)!
+    }
+    
+    static var separateLine: UIColor {
+        return UIColor(named: "separateLine" + nameSuffix)!
     }
     
     static var blackBG: UIColor {

@@ -28,12 +28,22 @@ class FlatGeneralCrossButton: UIButton {
         }
     }
     
+    var bgSize: CGSize = .zero
+    
+    override var isEnabled: Bool {
+        didSet {
+            guard isEnabled != oldValue else { return }
+            backgroundColor = isEnabled ? .brandColor : .controlDisabled
+        }
+    }
+    
     func setup() {
         clipsToBounds = true
-        backgroundColor = .brandColor
         layer.cornerRadius = 4
-        setTitleColor(.white, for: .normal)
-        setTitleColor(UIColor.white.withAlphaComponent(0.7), for: .disabled)
+        backgroundColor = .brandColor
+        setTitleColor(.whiteText, for: .normal)
+        setTitleColor(.disableText, for: .disabled)
+        setTitleColor(UIColor.whiteText.withAlphaComponent(0.7), for: .highlighted)
         titleLabel?.font = .systemFont(ofSize: 16)
     }
 }
