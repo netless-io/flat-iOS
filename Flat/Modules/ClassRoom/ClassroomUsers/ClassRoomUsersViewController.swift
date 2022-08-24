@@ -123,11 +123,7 @@ class ClassRoomUsersViewController: UIViewController {
         } else {
             cell.nameLabel.text = user.name
             
-            if user.status.isRaisingHand {
-                cell.statusLabel.text = "(\(NSLocalizedString("Raised Hand", comment: "")))"
-                cell.statusLabel.textColor = .controlSelected
-                cell.raiseHandButton.isHidden = !isOwner
-            } else if user.status.isSpeak {
+            if user.status.isSpeak {
                 if user.isOnline {
                     cell.statusLabel.text = "(\(NSLocalizedString("Interacting", comment: "")))"
                     cell.statusLabel.textColor = .init(hexString: "#9FDF76")
@@ -138,6 +134,10 @@ class ClassRoomUsersViewController: UIViewController {
                 cell.cameraButton.isHidden = false
                 cell.micButton.isHidden = false
                 cell.disconnectButton.isHidden = !(isOwner || user.rtmUUID == userUUID)
+            } else if user.status.isRaisingHand {
+                cell.statusLabel.text = "(\(NSLocalizedString("Raised Hand", comment: "")))"
+                cell.statusLabel.textColor = .controlSelected
+                cell.raiseHandButton.isHidden = !isOwner
             } else {
                 cell.statusLabel.text = nil
             }

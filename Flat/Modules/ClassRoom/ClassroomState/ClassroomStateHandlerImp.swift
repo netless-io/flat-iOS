@@ -390,12 +390,15 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         }
         .debug()
         .do(onNext: { [weak self] users in
-            users.filter { $0.status.isSpeak }.forEach { user in
-                self?.currentOnStageUsers[user.rtmUUID] = user
-            }
+            let usersPair = users.filter({ $0.status.isSpeak }).map { ($0.rtmUUID, $0)}
+            self?.currentOnStageUsers = .init(uniqueKeysWithValues: usersPair)
         })
         observableMembers = result.share(replay: 1, scope: .forever)
         return observableMembers!
+    }
+    
+    func checkIfOnStageUserOverMaxCount() -> Single<Bool> {
+        .just(currentOnStageUsers.count >= maxOnstageUserCount)
     }
     
     func destroy() {

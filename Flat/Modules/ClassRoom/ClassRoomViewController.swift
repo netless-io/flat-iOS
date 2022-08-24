@@ -319,7 +319,14 @@ class ClassRoomViewController: UIViewController {
                                                tapSomeUserRaiseHand: userListViewController.raiseHandTap.asObservable(),
                                                tapSomeUserCamera: userListViewController.cameraTap.asObservable(),
                                                tapSomeUserMic: userListViewController.micTap.asObservable()))
-            .drive()
+        .drive(with: self, onNext: { weakSelf, r in
+            switch r {
+            case .failure(let tips):
+                weakSelf.toast(tips, timeInterval: 3, preventTouching: false)
+            case .success:
+                return
+            }
+        })
             .disposed(by: rx.disposeBag)
     }
     

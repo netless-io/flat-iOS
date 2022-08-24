@@ -46,11 +46,12 @@ protocol ClassroomStateHandler {
     var noticePublisher: PublishRelay<String> { get }
     var banState: BehaviorRelay<Bool> { get }
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }
+    var currentOnStageUsers: [String: RoomUser] { get }
     
+    func checkIfOnStageUserOverMaxCount() -> Single<Bool>
     func send(command: ClassroomCommand) -> Single<Void>
     func members() -> Observable<[RoomUser]>
     func memberNameQueryProvider() -> UsernameQueryProvider
-    var currentOnStageUsers: [String: RoomUser] { get }
 
     func setup() -> Single<Void>
     func destroy()

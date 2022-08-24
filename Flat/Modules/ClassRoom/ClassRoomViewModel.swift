@@ -149,6 +149,11 @@ class ClassRoomViewModel {
                 .take(1)
                 .flatMap { [weak self ] members -> Observable<RoomUser?> in
                     guard let self = self else { return .error("self not exist") }
+                    let speakers = members.filter { $0.status.isSpeak }
+                    if speakers.count >= 2 {
+                        return .just(nil)
+                    }
+                    
                     let nonSpeakers = members.filter({
                         $0.rtmUUID != self.userUUID &&
                         !$0.status.isSpeak
@@ -277,35 +282,52 @@ class ClassRoomViewModel {
         let tapSomeUserCamera: Observable<RoomUser>
         let tapSomeUserMic: Observable<RoomUser>
     }
-    func transformUserListInput(_ input: UserListInput) -> Driver<Void> {
+    typealias ActionResult = Result<Void, String>
+    func transformUserListInput(_ input: UserListInput) -> Driver<ActionResult> {
         let stopTask = input.stopInteractingTap
-            .flatMap { [unowned self] _ -> Single<Void> in
-                guard self.isOwner else { return .just(()) }
+            .flatMap { [unowned self] _ -> Single<ActionResult> in
+                guard self.isOwner else { return .just(.success(())) }
                 return self.stateHandler.send(command: .stopInteraction)
-            }.asDriver(onErrorJustReturn: ())
+                    .map { _ -> ActionResult in .success(()) }
+            }.asDriver(onErrorJustReturn: .success(()))
         
         let acceptRaiseHandTask = input.tapSomeUserRaiseHand
-            .flatMap { [unowned self] user -> Single<Void> in
-                guard self.isOwner else { return .just(()) }
+            .flatMap { [unowned self] user -> Single<(RoomUser, Bool)> in
+                return self.stateHandler.checkIfOnStageUserOverMaxCount()
+                    .map { r in (user, r)}
+            }
+            .flatMap { [unowned self] user, overCount -> Single<ActionResult> in
+                guard self.isOwner else { return .just(.success(())) }
+                if overCount {
+                    return .just(.failure(localizeStrings("AccpetRaiseHandOverOnStageCountTip")))
+                }
                 return self.stateHandler.send(command: .acceptRaiseHand(user.rtmUUID))
-            }.asDriver(onErrorJustReturn: ())
+                    .map { _ -> ActionResult in .success(()) }
+            }.asDriver(onErrorJustReturn: .success(()))
         
         let disconnectTask = input.disconnectTap
             .flatMap { [unowned self] user in
                 self.stateHandler.send(command: .disconnectUser(user.rtmUUID))
-            }.asDriver(onErrorJustReturn: ())
+                    .map { _ -> ActionResult in .success(()) }
+            }.asDriver(onErrorJustReturn: .success(()))
         
         let cameraTask = input.tapSomeUserCamera
-            .flatMap { [unowned self] user -> Single<Void> in
-                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(())}
-                return self.stateHandler.send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera))) }
-            .asDriver(onErrorJustReturn: ())
+            .flatMap { [unowned self] user -> Single<ActionResult> in
+                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(.success(()))}
+                return self.stateHandler
+                    .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera)))
+                    .map { _ -> ActionResult in .success(()) }
+            }
+            .asDriver(onErrorJustReturn: .success(()))
         
         let micTask = input.tapSomeUserMic
-            .flatMap { [unowned self] user -> Single<Void> in
-                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(())}
-                return self.stateHandler.send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: !user.status.mic, camera: user.status.camera))) }
-            .asDriver(onErrorJustReturn: ())
+            .flatMap { [unowned self] user -> Single<ActionResult> in
+                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(.success(()))}
+                return self.stateHandler
+                    .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: !user.status.mic, camera: user.status.camera)))
+                    .map { _ -> ActionResult in .success(()) }
+            }
+            .asDriver(onErrorJustReturn: .success(()))
         
         return Driver.of(stopTask, acceptRaiseHandTask, disconnectTask, cameraTask, micTask).merge()
     }
