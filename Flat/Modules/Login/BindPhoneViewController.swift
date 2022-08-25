@@ -42,26 +42,11 @@ class BindPhoneViewController: UIViewController {
         stack.addArrangedSubview(mainView)
         
         if traitCollection.hasCompact {
-            let titleLabel = UILabel()
-            titleLabel.font = .systemFont(ofSize: 16)
-            titleLabel.textColor = .text
-            titleLabel.text = NSLocalizedString("BindPhone", comment: "")
-            mainView.addSubview(titleLabel)
-            titleLabel.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            }
             
-            let closeButton = UIButton(type: .custom)
-            closeButton.setImage(UIImage(named: "close-bold"), for: .normal)
-            closeButton.tintColor = .text
-            mainView.addSubview(closeButton)
-            closeButton.snp.makeConstraints { make in
-                make.left.equalToSuperview()
-                make.centerY.equalTo(titleLabel)
-                make.width.height.equalTo(44)
+            addPresentTitle(localizeStrings("BindPhone"))
+            addPresentCloseButton {
+                AuthStore.shared.logout()
             }
-            closeButton.addTarget(self, action: #selector(onClose), for: .touchUpInside)
             
             mainView.addSubview(smsAuthView)
             smsAuthView.snp.makeConstraints { make in
@@ -140,11 +125,6 @@ class BindPhoneViewController: UIViewController {
             }
             closeButton.addTarget(self, action: #selector(onClose), for: .touchUpInside)
         }
-    }
-    
-    @objc
-    func onClose() {
-        AuthStore.shared.logout()
     }
     
     @objc

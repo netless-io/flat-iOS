@@ -89,6 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func configAppearance() {
+        UISwitch.appearance().onTintColor = .brandColor
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true

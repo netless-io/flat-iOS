@@ -31,6 +31,7 @@ struct RoomBasicInfo: Decodable {
     let region: String
     let hasRecord: Bool
     let inviteCode: String
+    let ownerAvatarURL: String
     
     var formatterInviteCode: String {
         inviteCode.split(every: 3).joined(separator: " ")
@@ -55,7 +56,8 @@ extension RoomBasicInfo {
                                  roomStatus: info.roomStatus,
                                  region: info.region,
                                  hasRecord: info.hasRecord,
-                                 inviteCode: info.inviteCode)
+                                 inviteCode: info.inviteCode,
+                                 ownerAvatarURL: "")
         }
     }
     
@@ -78,7 +80,8 @@ extension RoomBasicInfo {
                                               roomStatus: info.roomStatus,
                                               region: info.region,
                                               hasRecord: info.hasRecord,
-                                              inviteCode: info.inviteCode)
+                                              inviteCode: info.inviteCode,
+                                              ownerAvatarURL: "")
                 completion(.success(basicInfo))
             case .failure(let error):
                 completion(.failure(error))

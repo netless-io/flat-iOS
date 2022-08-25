@@ -13,34 +13,15 @@ import RxSwift
 class JoinRoomViewController: UIViewController {
     let deviceStatusStore: UserDevicePreferredStatusStore
     
-    var cameraOn: Bool {
-        didSet {
-            cameraButton.isSelected = cameraOn
-        }
-    }
-    
-    var micOn: Bool {
-        didSet {
-            micButton.isSelected = micOn
-        }
-    }
-    
     // MARK: - LifeCycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
-        self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-        self.micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        modalPresentationStyle = .formSheet
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Remove reading paste board to reduce legal risk
-//        fillTextfieldWithPasteBoard()
     }
     
     override func viewDidLoad() {
@@ -50,14 +31,6 @@ class JoinRoomViewController: UIViewController {
     }
     
     // MARK: - Action
-    @objc func onClickCamera(_ sender: UIButton) {
-        cameraOn = !cameraOn
-    }
-    
-    @objc func onClickMic(_ sender: UIButton) {
-        micOn = !micOn
-    }
-    
     @objc func onClickJoin(_ sender: UIButton) {
         guard let uuid = subjectTextField.text?.replacingOccurrences(of: " ", with: ""), !uuid.isEmpty else {
             return
@@ -74,13 +47,15 @@ class JoinRoomViewController: UIViewController {
                 sender.isEnabled = true
                 let playInfo = tuple.0
                 let roomInfo = tuple.1
-                let deviceStatus = DeviceState(mic: weakSelf.micOn, camera: weakSelf.cameraOn)
+                let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
                 let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: roomInfo,
                                                                      deviceStatus: deviceStatus)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
-                weakSelf.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
+                let parent = weakSelf.mainContainer?.concreteViewController
+                parent?.dismiss(animated: false)
+                parent?.present(vc, animated: true, completion: nil)
             }, onFailure: { weakSelf, error in
                 sender.isEnabled = true
                 weakSelf.showAlertWith(message: error.localizedDescription)
@@ -91,23 +66,6 @@ class JoinRoomViewController: UIViewController {
     }
     
     // MARK: - Private
-//    func fillTextfieldWithPasteBoard() {
-//        guard (subjectTextField.text ?? "").isEmpty else { return }
-//        if let str = UIPasteboard.general.string, !str.isEmpty {
-//            if let r = try? str.matchExpressionPattern("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"),
-//                let url = URL(string: r) {
-//                let id = url.lastPathComponent
-//                subjectTextField.text = id
-//            } else if let num = try? str.matchExpressionPattern("(\\d ?){10}") {
-//                let r = num.replacingOccurrences(of: " ", with: "")
-//                subjectTextField.text = r
-//            } else {
-//                return
-//            }
-//            subjectTextField.sendActions(for: .valueChanged)
-//        }
-//    }
-    
     fileprivate func getRoomUUIDFrom(_ str: String) -> String? {
         if !str.isEmpty {
             if let r = try? str.matchExpressionPattern("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"),
@@ -131,70 +89,39 @@ class JoinRoomViewController: UIViewController {
     }
     
     func setupViews() {
-        navigationItem.title = NSLocalizedString("Join Room", comment: "")
+        addPresentCloseButton()
+        addPresentTitle(localizeStrings("Join Room"))
+        
         view.backgroundColor = .whiteBG
-        let topLabel = UILabel()
-        topLabel.font = .systemFont(ofSize: 14)
-        topLabel.textColor = .subText
-        topLabel.text = NSLocalizedString("Room Number", comment: "")
-        
-        let joinOptionsLabel = UILabel()
-        joinOptionsLabel.font = .systemFont(ofSize: 14)
-        joinOptionsLabel.textColor = .subText
-        joinOptionsLabel.text = NSLocalizedString("Join Options", comment: "")
-        
-        view.addSubview(topLabel)
         view.addSubview(subjectTextField)
         view.addSubview(joinButton)
-        view.addSubview(joinOptionsLabel)
-        view.addSubview(cameraButton)
-        view.addSubview(micButton)
+        view.addSubview(deviceView)
         
-        let margin: CGFloat = 16
-        topLabel.snp.makeConstraints { make in
-            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(margin)
-        }
         subjectTextField.snp.makeConstraints { make in
-            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(46)
-            make.height.equalTo(48)
+            make.width.equalTo(320)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-100)
+            make.height.equalTo(30 + 32)
         }
         
-        joinOptionsLabel.snp.makeConstraints { make in
-            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(110)
-        }
-        
-        cameraButton.snp.makeConstraints { make in
-            make.left.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(135)
-        }
-        
-        micButton.snp.makeConstraints { make in
-            make.left.equalTo(cameraButton.snp.right).offset(12)
-            make.top.equalTo(cameraButton)
+        deviceView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(joinButton.snp.top).offset(-32)
         }
         
         joinButton.snp.makeConstraints { make in
-            make.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.centerY.equalTo(cameraButton)
-            make.height.equalTo(32)
+            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.height.equalTo(40)
         }
     }
     
     // MARK: - Lazy
-    lazy var subjectTextField: UITextField = {
-        let tf = UITextField()
-        tf.layer.borderColor = UIColor.borderColor.cgColor
-        tf.layer.borderWidth = 1 / UIScreen.main.scale
-        tf.layer.cornerRadius = 4
-        tf.clipsToBounds = true
-        tf.textColor = .text
-        tf.font = .systemFont(ofSize: 14)
+    lazy var subjectTextField: BottomLineTextfield = {
+        let tf = BottomLineTextfield()
+        tf.textColor = .strongText
+        tf.textAlignment = .center
+        tf.font = .systemFont(ofSize: 20)
         tf.placeholder = NSLocalizedString("Room Number Input PlaceHolder", comment: "")
-        tf.leftView = .init(frame: .init(origin: .zero, size: .init(width: 10, height: 20)))
-        tf.leftViewMode = .always
         tf.keyboardType = .numberPad
         tf.returnKeyType = .join
         tf.clearButtonMode = .whileEditing
@@ -203,40 +130,17 @@ class JoinRoomViewController: UIViewController {
     }()
     
     lazy var joinButton: UIButton = {
-        let btn = FlatGeneralButton(type: .custom)
+        let btn = FlatGeneralCrossButton(type: .custom)
         btn.setTitle(NSLocalizedString("Join", comment: ""), for: .normal)
         btn.addTarget(self, action: #selector(onClickJoin(_:)), for: .touchUpInside)
         return btn
     }()
     
-    lazy var cameraButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.tintColor = .white
-        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
-        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
-        btn.adjustsImageWhenHighlighted = false
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.subText, for: .normal)
-        btn.setTitle("  " + NSLocalizedString("Open Camera", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
-        btn.addTarget(self, action: #selector(onClickCamera(_:)), for: .touchUpInside)
-        btn.isSelected = cameraOn
-        return btn
-    }()
-    
-    lazy var micButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.tintColor = .white
-        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
-        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
-        btn.adjustsImageWhenHighlighted = false
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.subText, for: .normal)
-        btn.setTitle("  " + NSLocalizedString("Open Mic", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
-        btn.addTarget(self, action: #selector(onClickMic(_:)), for: .touchUpInside)
-        btn.isSelected = micOn
-        return btn
+    lazy var deviceView: CameraMicToggleView = {
+        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
+        let view = CameraMicToggleView(cameraOn: cameraOn, micOn: micOn)
+        return view
     }()
 }
 

@@ -125,6 +125,11 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        mainStackView.axis = view.bounds.width <= 375 ? .vertical : .horizontal
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -155,7 +160,12 @@ class RoomDetailViewController: UIViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "more"), style: .plain, target: self, action: #selector(onClickEdit(_:)))
         }
     }
-
+    
+    @IBAction func onClickCopy(_ sender: Any) {
+        UIPasteboard.general.string = info.formatterInviteCode
+        toast(localizeStrings("Copy Success"))
+    }
+    
     @objc func onClickEdit(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil,
                                                 message: nil,
@@ -174,40 +184,37 @@ class RoomDetailViewController: UIViewController {
     }
     
     func setupViews() {
+        title = info.title
+        
         view.backgroundColor = .whiteBG
-        mainStackView.backgroundColor = .whiteBG
-        mainStackView.arrangedSubviews.forEach {
-            $0.backgroundColor = .whiteBG
-        }
-        startTimeLabel.textColor = .text
-        startDateLabel.textColor = .text
-        endDateLabel.textColor = .text
-        endTimeLabel.textColor = .text
-        durationLabel.textColor = .text
-        durationLabel.backgroundColor = .cellSelectedBG
-        statusLabel.textColor = .text
-        
-        roomTypeLabel.textColor = .text
-        roomNumberLabel.textColor = .text
-        
-        roomTypeTitleLabel.textColor = .subText
-        roomNumberTitleLabel.textColor = .subText
-        
-        navigationItem.title = NSLocalizedString("Room Detail", comment: "")
-        var j = 0
-        for i in 1...mainStackView.arrangedSubviews.count - 1 {
-            let line = UIView()
-            line.backgroundColor = .borderColor
-            mainStackView.insertArrangedSubview(line, at: i + j)
-            line.snp.makeConstraints { make in
-                make.height.equalTo(1 / UIScreen.main.scale)
+        func loopTextColor(view: UIView) {
+            if let stack = view as? UIStackView {
+                stack.backgroundColor = .whiteBG
+                stack.arrangedSubviews.forEach { loopTextColor(view: $0) }
+            } else if let label = view as? UILabel {
+                if label.font.fontName.contains("semiBold") {
+                    label.textColor = .text
+                } else {
+                    label.textColor = .strongText
+                }
+            } else if let imageView = view as? UIImageView {
+                imageView.tintColor = .text
+            } else if let button = view as? UIButton {
+                button.tintColor = .text
+            } else {
+                view.subviews.forEach { loopTextColor(view: $0) }
             }
-            j += 1
         }
         
-        view.addSubview(replayButton)
-        replayButton.snp.makeConstraints { make in
-            make.top.bottom.right.equalTo(roomOperationStackView)
+        loopTextColor(view: mainStackView)
+        
+        let line = UIView()
+        line.backgroundColor = .borderColor
+        view.addSubview(line)
+        line.snp.makeConstraints { make in
+            make.left.right.equalTo(mainStackView)
+            make.top.equalTo(mainStackView.snp.bottom).offset(16)
+            make.height.equalTo(1/UIScreen.main.scale)
         }
     }
     
@@ -231,46 +238,28 @@ class RoomDetailViewController: UIViewController {
         
         let formatter = DateFormatter()
         formatter.timeStyle = .short
-        startTimeLabel.text = formatter.string(from: beginTime)
-        endTimeLabel.text = formatter.string(from: endTime)
+        let timeStr = formatter.string(from: beginTime) + "~" + formatter.string(from: endTime)
         formatter.dateStyle = .short
         formatter.timeStyle = .none
-        startDateLabel.text = formatter.string(from: beginTime)
-        endDateLabel.text = formatter.string(from: endTime)
-        
-        var duration = info.endTime.timeIntervalSince(beginTime)
-        duration = ceil(duration / 60) * 60
-        
-        let durationFormatter = DateComponentsFormatter()
-        durationFormatter.unitsStyle = .brief
-        durationFormatter.maximumUnitCount = 1
-        durationFormatter.zeroFormattingBehavior = .dropAll
-        durationFormatter.calendar?.locale = Locale(identifier: LocaleManager.language?.code ?? "")
-        durationFormatter.allowedUnits = [.day, .hour, .minute, .second]
-        if var durationStr = durationFormatter.string(from: duration) {
-            if durationStr.hasPrefix("-") {
-                durationStr = String(durationStr.dropFirst())
-            }
-            durationLabel.text = durationStr
-        }
-        
-        let displayStatus = status.getDisplayStatus()
-        statusLabel.text = NSLocalizedString(displayStatus.rawValue, comment: "")
-        statusLabel.textColor = displayStatus.textColor
+        let dateStr = formatter.string(from: beginTime)
+        timeLabel.text = dateStr + " " + timeStr
+        statusLabel.text = NSLocalizedString(status.rawValue, comment: "")
         
         roomNumberLabel.text = info.formatterInviteCode
         roomTypeLabel.text = NSLocalizedString(roomType.rawValue, comment: "")
         
         if status == .Stopped {
-            roomOperationStackView.arrangedSubviews.forEach { $0.isHidden = true }
-            replayButton.isEnabled = info.hasRecord
+            replayButton.isHidden = info.hasRecord
+            roomOperationStackView.arrangedSubviews.forEach {
+                $0.isHidden = $0 === replayButton ? false : true
+            }
         } else {
             replayButton.isHidden = true
         }
     }
     
     // MARK: - Action
-    @objc func onClickReplay() {
+    @IBAction func onClickReplay() {
         showActivityIndicator()
         ApiProvider.shared.request(fromApi: RecordDetailRequest(uuid: info.roomUUID)) { [weak self] result in
             guard let self = self else { return }
@@ -312,26 +301,13 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
-    @IBOutlet weak var roomTypeTitleLabel: UILabel!
     @IBOutlet weak var roomNumberTitleLabel: UILabel!
     @IBOutlet weak var enterRoomButton: UIButton!
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var roomTypeLabel: UILabel!
     @IBOutlet weak var roomNumberLabel: UILabel!
-    @IBOutlet weak var endDateLabel: UILabel!
-    @IBOutlet weak var endTimeLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var durationLabel: UILabel!
-    @IBOutlet weak var startDateLabel: UILabel!
-    @IBOutlet weak var startTimeLabel: UILabel!
-    @IBOutlet weak var bottomView: UIView!
-    
     @IBOutlet weak var roomOperationStackView: UIStackView!
-    
-    lazy var replayButton: FlatGeneralButton = {
-        let btn = FlatGeneralButton(type: .custom)
-        btn.setTitle(NSLocalizedString("Replay", comment: ""), for: .normal)
-        btn.addTarget(self, action: #selector(onClickReplay), for: .touchUpInside)
-        return btn
-    }()
+    @IBOutlet weak var replayButton: UIButton!
 }

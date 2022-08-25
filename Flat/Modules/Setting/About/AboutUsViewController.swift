@@ -44,7 +44,7 @@ class AboutUsViewController: UIViewController {
         guard let path = Bundle.main.path(forResource: "Pods-Flat-acknowledgements", ofType: "plist")
         else { return }
         let vc = AcknowListViewController(plistPath: path)
-        present(UINavigationController(rootViewController: vc), animated: true)
+        present(BaseNavigationViewController(rootViewController: vc), animated: true)
     }
     
     @IBOutlet weak var flatLabel: UILabel!

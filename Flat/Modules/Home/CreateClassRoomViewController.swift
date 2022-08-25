@@ -26,48 +26,17 @@ class CreateClassRoomViewController: UIViewController {
         }
     }
     
-    var micOn: Bool {
-        didSet {
-            micButton.isSelected = micOn
-        }
-    }
-    
-    var cameraOn: Bool {
-        didSet {
-            cameraButton.isSelected = cameraOn
-        }
-    }
-    
     let margin: CGFloat = 16
     
     // MARK: - LifeCycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
-        self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-        self.micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        modalPresentationStyle = .formSheet
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if !traitCollection.hasCompact {
-            let width = view.bounds.width
-            let normalWidth: CGFloat = 210
-            let count = CGFloat(typesStackView.arrangedSubviews.count)
-            let averageDivideWidh = (width - (2 * margin) - ((count - 1) * typesStackView.spacing)) / count
-            let preferredWidth = max(normalWidth, averageDivideWidh)
-
-            if let fw = typeViews.first?.bounds.width, fw != preferredWidth {
-                typeViews.first?.snp.remakeConstraints({
-                    $0.width.equalTo(preferredWidth)
-                })
-            }
-        }
     }
     
     override func viewDidLoad() {
@@ -78,104 +47,49 @@ class CreateClassRoomViewController: UIViewController {
     
     // MARK: - Private
     func setupViews() {
-        navigationItem.title = NSLocalizedString("Start Now", comment: "")
+        addPresentCloseButton()
+        addPresentTitle(localizeStrings("Start Now"))
         view.backgroundColor = .whiteBG
-        let topLabel = UILabel()
-        topLabel.font = .systemFont(ofSize: 14)
-        topLabel.textColor = .subText
-        topLabel.text = NSLocalizedString("Room Subject", comment: "")
-        view.addSubview(topLabel)
         view.addSubview(subjectTextField)
-        
-        let typeLabel = UILabel()
-        typeLabel.font = .systemFont(ofSize: 14)
-        typeLabel.textColor = .subText
-        typeLabel.text = NSLocalizedString("Room Type", comment: "")
-        view.addSubview(typeLabel)
-        
-        let scrollView = UIScrollView()
-        scrollView.showsHorizontalScrollIndicator = false
-        let stackView = typesStackView
-        view.addSubview(scrollView)
-        scrollView.addSubview(stackView)
-        
-        let joinOptionsLabel = UILabel()
-        joinOptionsLabel.font = .systemFont(ofSize: 14)
-        joinOptionsLabel.textColor = .subText
-        joinOptionsLabel.text = NSLocalizedString("Join Options", comment: "")
-        view.addSubview(joinOptionsLabel)
-        view.addSubview(cameraButton)
-        view.addSubview(micButton)
         view.addSubview(createButton)
+        view.addSubview(deviceView)
+        view.addSubview(typesStackView)
         
-        topLabel.snp.makeConstraints { make in
-            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(margin)
+        typesStackView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.height.equalTo(66)
+            make.centerY.equalToSuperview().offset(-88)
         }
+        
         subjectTextField.snp.makeConstraints { make in
-            make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(46)
-            make.height.equalTo(48)
-        }
-        typeLabel.snp.makeConstraints { make in
-            make.top.equalTo(subjectTextField.snp.bottom).offset(16)
-            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
-        }
-        let itemHeight = CGFloat(96)
-        if traitCollection.hasCompact {
-            let verticalHeight = itemHeight * CGFloat(stackView.arrangedSubviews.count) + CGFloat(stackView.arrangedSubviews.count - 1) * margin
-            stackView.axis = .vertical
-            stackView.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-                make.height.equalTo(verticalHeight)
-                make.width.equalTo(scrollView)
-            }
-            scrollView.snp.makeConstraints { make in
-                make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
-                make.top.equalTo(view.safeAreaLayoutGuide).inset(140)
-                make.height.equalTo(verticalHeight)
-            }
-        } else {
-            stackView.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-                make.height.equalTo(itemHeight)
-            }
-            scrollView.snp.makeConstraints { make in
-                make.left.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
-                make.top.equalTo(view.safeAreaLayoutGuide).inset(140)
-                make.height.equalTo(itemHeight)
-            }
+            make.width.equalTo(320)
+            make.height.equalTo(30 + 32)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(typesStackView.snp.top).offset(-32)
         }
         
-        joinOptionsLabel.snp.makeConstraints { make in
-            make.left.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.top.equalTo(scrollView.snp.bottom).offset(14)
-        }
-        
-        cameraButton.snp.makeConstraints { make in
-            make.left.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalTo(scrollView.snp.bottom).offset(36)
-        }
-        
-        micButton.snp.makeConstraints { make in
-            make.left.equalTo(cameraButton.snp.right).offset(12)
-            make.top.equalTo(cameraButton)
+        deviceView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(createButton.snp.top).offset(-32)
         }
         
         createButton.snp.makeConstraints { make in
-            make.right.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            make.centerY.equalTo(cameraButton)
-            make.height.equalTo(32)
+            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.height.equalTo(40)
         }
     }
     
-    func typeViewForType(_ type: ClassRoomType) -> ClassTypeCell {
-        let view = ClassTypeCell()
-        view.typeImageView.image = UIImage(named: type.rawValue)
-        view.typeLabel.text = NSLocalizedString(type.rawValue, comment: "")
-        view.typeDescriptionLabel.text = NSLocalizedString(type.rawValue + " Description", comment: "")
-        view.addTarget(self, action: #selector(onClickType(_:)), for: .touchUpInside)
-        return view
+    func typeViewForType(_ type: ClassRoomType) -> UIButton {
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: type.rawValue)
+        button.setImage(image?.tintColor(.text), for: .normal)
+        button.setImage(image?.tintColor(.brandColor), for: .selected)
+        button.setTitle(type.rawValue, for: .normal)
+        button.setTitleColor(.text, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12)
+        button.verticalCenterImageAndTitleWith(2)
+        button.addTarget(self, action: #selector(onClickType(_:)), for: .touchUpInside)
+        return button
     }
     
     func updateSelected() {
@@ -186,16 +100,8 @@ class CreateClassRoomViewController: UIViewController {
         }
     }
     
-    @objc func onClickType(_ sender: ClassTypeCell) {
+    @objc func onClickType(_ sender: UIButton) {
         currentRoomType = availableTypes[sender.tag]
-    }
-    
-    @objc func onClickCamera(_ sender: UIButton) {
-        cameraOn = !cameraOn
-    }
-    
-    @objc func onClickMic(_ sender: UIButton) {
-        micOn = !micOn
     }
     
     @objc func onClickCreate(_ sender: UIButton) {
@@ -220,13 +126,16 @@ class CreateClassRoomViewController: UIViewController {
                 sender.isEnabled = true
                 let playInfo = tuple.0
                 let roomInfo = tuple.1
-                let deviceStatus = DeviceState(mic: weakSelf.micOn, camera: weakSelf.cameraOn)
+                let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
                 let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: roomInfo,
                                                                      deviceStatus: deviceStatus)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
-                weakSelf.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
+                
+                let parent = weakSelf.mainContainer?.concreteViewController
+                parent?.dismiss(animated: false)
+                parent?.present(vc, animated: true, completion: nil)
             }, onFailure: { weakSelf, error in
                 sender.isEnabled = true
                 weakSelf.showAlertWith(message: error.localizedDescription)
@@ -245,10 +154,10 @@ class CreateClassRoomViewController: UIViewController {
                     case .success(let roomInfo):
                         let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                              detailInfo: roomInfo,
-                                                                             deviceStatus: .init(mic: self.micOn,
-                                                                                                 camera: self.cameraOn))
-                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: self.cameraOn)
-                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: self.micOn)
+                                                                             deviceStatus: .init(mic: self.deviceView.micOn,
+                                                                                                 camera: self.deviceView.cameraOn))
+                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: self.deviceView.cameraOn)
+                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: self.deviceView.micOn)
                         completion?(.success(vc))
                     case .failure(let error):
                         completion?(.failure(error))
@@ -261,57 +170,22 @@ class CreateClassRoomViewController: UIViewController {
     }
     
     // MARK: - Lazy
-    lazy var subjectTextField: UITextField = {
-        let tf = UITextField()
-        tf.layer.borderColor = UIColor.borderColor.cgColor
-        tf.layer.borderWidth = 1 / UIScreen.main.scale
-        tf.layer.cornerRadius = 4
-        tf.clipsToBounds = true
-        tf.textColor = .text
-        tf.font = .systemFont(ofSize: 14)
-        tf.placeholder = NSLocalizedString("Room Subject Placeholder", comment: "")
-        tf.leftView = .init(frame: .init(origin: .zero, size: .init(width: 10, height: 20)))
-        tf.leftViewMode = .always
+    lazy var subjectTextField: BottomLineTextfield = {
+        let tf = BottomLineTextfield()
+        tf.textColor = .strongText
+        tf.font = .systemFont(ofSize: 20)
+        tf.placeholder = localizeStrings("Room Subject Placeholder")
         tf.returnKeyType = .join
         tf.clearButtonMode = .whileEditing
         tf.text = defaultTitle
+        tf.textAlignment = .center
         tf.delegate = self
         return tf
     }()
     
-    lazy var cameraButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.tintColor = .white
-        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
-        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
-        btn.adjustsImageWhenHighlighted = false
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.subText, for: .normal)
-        btn.setTitle("  " + NSLocalizedString("Open Camera", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
-        btn.addTarget(self, action: #selector(onClickCamera(_:)), for: .touchUpInside)
-        btn.isSelected = cameraOn
-        return btn
-    }()
-    
-    lazy var micButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.tintColor = .white
-        btn.setImage(UIImage(named: "checklist_normal"), for: .normal)
-        btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
-        btn.adjustsImageWhenHighlighted = false
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.subText, for: .normal)
-        btn.setTitle("  " + NSLocalizedString("Open Mic", comment: ""), for: .normal)
-        btn.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
-        btn.addTarget(self, action: #selector(onClickMic(_:)), for: .touchUpInside)
-        btn.isSelected = micOn
-        return btn
-    }()
-    
-    lazy var createButton: FlatGeneralButton = {
-        let btn = FlatGeneralButton(type: .custom)
-        btn.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
+    lazy var createButton: FlatGeneralCrossButton = {
+        let btn = FlatGeneralCrossButton(type: .custom)
+        btn.setTitle(localizeStrings("Start Class"), for: .normal)
         btn.addTarget(self, action: #selector(onClickCreate(_:)), for: .touchUpInside)
         return btn
     }()
@@ -324,11 +198,18 @@ class CreateClassRoomViewController: UIViewController {
         return view
     }()
     
-    lazy var typeViews: [ClassTypeCell] = availableTypes.enumerated().map {
+    lazy var typeViews: [UIButton] = availableTypes.enumerated().map {
         let view = typeViewForType($0.element)
         view.tag = $0.offset
         return view
     }
+    
+    lazy var deviceView: CameraMicToggleView = {
+        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
+        let view = CameraMicToggleView(cameraOn: cameraOn, micOn: micOn)
+        return view
+    }()
 }
 
 extension CreateClassRoomViewController: UITextFieldDelegate {

@@ -117,6 +117,9 @@
 "CodeSend" = "验证码已发送";
 
 
+"Coming soon" = "开发中，即将到来";
+
+
 "Confirm" = "确认";
 
 
@@ -243,13 +246,13 @@
 "InvalidPhone" = "请填写正确手机号";
 
 
-"Invite" = "邀请";
+"Invite" = "邀请加入";
 
 
 "JWTSignFailed" = "认证信息校验失败，请重新登录";
 
 
-"Join" = "加入";
+"Join" = "立即加入";
 
 
 "Join Link" = "加入链接";
@@ -259,6 +262,12 @@
 
 
 "Join Room" = "加入房间";
+
+
+"JoinCameraDetail" = "是否自动开启摄像头";
+
+
+"JoinMicDetail" = "是否自动开启麦克风";
 
 
 "Language Setting" = "语言设置";
@@ -423,7 +432,7 @@
 "Room Number" = "房间号";
 
 
-"Room Number Input PlaceHolder" = "请输入房间号";
+"Room Number Input PlaceHolder" = "请输入10位房间号";
 
 
 "Room Subject" = "房间主题";
@@ -451,6 +460,12 @@
 
 
 "RoomNotIsRunning" = "房间不在进行中";
+
+
+"RoomStatus" = "房间状态";
+
+
+"RoomTime" = "时间";
 
 
 "Rtc connect lost tips" = "音视频连接中断，请检查网络后重新连接";
@@ -513,10 +528,10 @@
 "SmallClass Description" = "最多16位学生";
 
 
-"Start Class" = "开始";
+"Start Class" = "立即开始";
 
 
-"Start Now" = "立即开始";
+"Start Now" = "快速开始";
 
 
 "Start Time" = "开始时间";
@@ -562,6 +577,9 @@
 
 
 "Today" = "今天";
+
+
+"Tomorrow" = "明天";
 
 
 "Unbound" = "未绑定";

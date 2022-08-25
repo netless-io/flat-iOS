@@ -24,7 +24,7 @@ extension UIViewController {
     var mainContainer: MainContainer? {
         if let s = mainSplitViewController { return s }
         if let tab = navigationController?.tabBarController as? MainTabBarController { return tab }
-        return nil
+        return presentingViewController as? MainContainer
     }
     
     var mainSplitViewController: MainSplitViewController? {

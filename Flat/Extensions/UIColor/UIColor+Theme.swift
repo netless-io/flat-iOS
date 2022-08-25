@@ -17,10 +17,10 @@ extension UIColor {
     static var emptyViewIconTintColor: UIColor {
         if #available(iOS 13.0, *) {
             return UIColor { trait in
-                return trait.userInterfaceStyle == .dark ? .init(hexString: "#747474") : .init(hexString: "#F3F6F9")
+                return trait.userInterfaceStyle == .dark ? .init(hexString: "#383B42") : .init(hexString: "#E5E8F0")
             }
         } else {
-            return nameSuffix.isEmpty ? .init(hexString: "#747474") : .init(hexString: "#F3F6F9")
+            return nameSuffix.isEmpty ? .init(hexString: "#383B42") : .init(hexString: "#E5E8F0")
         }
     }
     
@@ -38,6 +38,10 @@ extension UIColor {
     
     static var controlSelected: UIColor {
         return UIColor(named:"ControlSelected" + nameSuffix)!
+    }
+    
+    static var success: UIColor {
+        return UIColor(named:"success" + nameSuffix)!
     }
     
     static var popoverBorder: UIColor {
