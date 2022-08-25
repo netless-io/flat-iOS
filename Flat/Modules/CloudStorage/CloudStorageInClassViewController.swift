@@ -39,25 +39,21 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        addButton.setImage(UIImage(named: "storage_add"), for: .normal)
+        addButton.setImage(UIImage(named: "storage_add_small"), for: .normal)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainStackView.insertArrangedSubview(topView, at: 0)
+        tableView.removeFromSuperview()
+        view.addSubview(topView)
+        view.addSubview(tableView)
         topView.snp.makeConstraints { make in
+            make.left.right.top.equalToSuperview()
             make.height.equalTo(34)
         }
-        
-        // Update default style
-        editButton.isHidden = true
-        storageUsageLabel.font = .systemFont(ofSize: 12)
-        storageUsageLabel.snp.updateConstraints { make in
-            make.left.equalToSuperview().inset(14)
-        }
-        headView.snp.remakeConstraints { make in
-            make.height.equalTo(34)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset((UIEdgeInsets(top: 34, left: 0, bottom: 0, right: 0)))
         }
         setupAddButton()
     }
@@ -110,7 +106,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else { return }
-        
+
         tableView.deselectRow(at: indexPath, animated: true)
         let item = container.items[indexPath.row]
         switch item.convertStep {
@@ -128,7 +124,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
             toast("waiting for previous file insert")
             return
         }
-        
+
         switch item.fileType {
         case .img:
             fileSelectTask = item
@@ -144,13 +140,13 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         case .video, .music:
             fileContentSelectedHandler?(.media(url: item.fileURL, title: item.fileName))
         case .pdf, .ppt, .word:
-            
+
             guard let taskType = item.taskType else {
                 toast("can't get the task type")
                 return
             }
             fileSelectTask = item
-            
+
             if item.resourceType == .projector {
                 WhiteProjectorPolling.checkProgress(withTaskUUID: item.taskUUID, token: item.taskToken, region: .init(rawValue: item.region.rawValue)) { [weak self] info, error in
                     self?.fileSelectTask = nil

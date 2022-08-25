@@ -10,8 +10,10 @@ import UIKit
 
 @available(iOS 14, *)
 class SidebarViewController: UIViewController, UICollectionViewDelegate {
-    var controllers: [UIViewController] = [BaseNavigationViewController(rootViewController: HomeViewController()),
-                                           BaseNavigationViewController(rootViewController: CloudStorageViewController())]
+    var controllers: [UIViewController] = [
+        BaseNavigationViewController(rootViewController: HomeViewController()),
+        BaseNavigationViewController(rootViewController: CloudStorageViewController()),
+    ]
     
     enum Section {
         case main

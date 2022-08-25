@@ -219,6 +219,7 @@
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
 		8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */; };
+		8ACA7ED228B77E8100EE24D5 /* UIViewController+SafaArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACA7ED128B77E8100EE24D5 /* UIViewController+SafaArea.swift */; };
 		8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64CF27758DAE00225621 /* FlatRegion.swift */; };
 		8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64D12775B02D00225621 /* MainContainer.swift */; };
 		8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */; };
@@ -487,6 +488,7 @@
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomUsersViewController.swift; sourceTree = "<group>"; };
+		8ACA7ED128B77E8100EE24D5 /* UIViewController+SafaArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SafaArea.swift"; sourceTree = "<group>"; };
 		8ACB64CF27758DAE00225621 /* FlatRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatRegion.swift; sourceTree = "<group>"; };
 		8ACB64D12775B02D00225621 /* MainContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainer.swift; sourceTree = "<group>"; };
 		8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopOver.swift"; sourceTree = "<group>"; };
@@ -637,6 +639,7 @@
 			children = (
 				8A270B752718314200450DC6 /* TopViewController.swift */,
 				8AFB942B28B74EBA00B8795D /* UIViewController+Present.swift */,
+				8ACA7ED128B77E8100EE24D5 /* UIViewController+SafaArea.swift */,
 				8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */,
 				8A05C323275E06C3009BCA79 /* TraitUpdateHandler.swift */,
 			);
@@ -1758,6 +1761,7 @@
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
 				8A05C34D2760AB26009BCA79 /* UploadTasksViewController.swift in Sources */,
+				8ACA7ED228B77E8100EE24D5 /* UIViewController+SafaArea.swift in Sources */,
 				8A7741C42734CFAC009FAADA /* BorderLabelView.swift in Sources */,
 				8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */,
 				8AD2EF762775665300087280 /* ShareManager.swift in Sources */,

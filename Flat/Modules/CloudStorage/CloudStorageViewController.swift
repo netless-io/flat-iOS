@@ -29,8 +29,12 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     deinit {
@@ -39,12 +43,92 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("Cloud Storage", comment: "")
-        navigationItem.rightBarButtonItem = .init(image: UIImage(named: "storage_add"),
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(onClickAdd))
+        setupAdditionalViews()
     }
+    
+    func setupAdditionalViews() {
+        view.addSubview(addButton)
+        addButton.snp.makeConstraints { make in
+            make.right.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.size.equalTo(CGSize(width: 80, height: 64))
+        }
+        tableView.contentInset = .init(top: 0, left: 0, bottom: 88, right: 0)
+        fillTopSafeAreaWith(color: .whiteBG)
+    }
+    
+    lazy var addButton: UIButton = {
+        let addButton = UIButton(type: .custom)
+        addButton.setImage(UIImage(named: "storage_add"), for: .normal)
+        addButton.addTarget(self, action: #selector(onClickAdd), for: .touchUpInside)
+        return addButton
+    }()
+    
+    lazy var tableHeader: UIView = {
+        let header = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 56)))
+        header.backgroundColor = .whiteBG
+        
+        let titleLabel = UILabel()
+        titleLabel.text = localizeStrings("Cloud Storage")
+        titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        titleLabel.textColor = .strongText
+        header.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(16)
+        }
+
+        header.addSubview(normalOperationStackView)
+        normalOperationStackView.snp.makeConstraints { make in
+            make.right.equalToSuperview()
+            make.centerY.equalTo(header)
+        }
+        normalOperationStackView.arrangedSubviews.first?.snp.makeConstraints({ make in
+            make.width.height.equalTo(44)
+        })
+
+        header.addSubview(selectionStackView)
+        selectionStackView.snp.makeConstraints { make in
+            make.right.equalToSuperview()
+            make.centerY.equalTo(header)
+        }
+        selectionStackView.isHidden = true
+        return header
+    }()
+    
+    lazy var normalOperationStackView: UIStackView = {
+        let selectionButton = UIButton(type: .custom)
+        selectionButton.setImage(UIImage(named: "cloud_storage_selection")?.tintColor(.text), for: .normal)
+        selectionButton.addTarget(self, action: #selector(onClickEdit(_:)), for: .touchUpInside)
+        let stack = UIStackView(arrangedSubviews: [selectionButton])
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        return stack
+    }()
+    
+    lazy var finishSelectionButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.titleLabel?.font = .systemFont(ofSize: 14)
+        button.setTitleColor(.brandColor, for: .normal)
+        button.setTitle(localizeStrings("Finish"), for: .normal)
+        button.addTarget(self, action: #selector(onClickEdit(_:)), for: .touchUpInside)
+        button.contentEdgeInsets = .init(top: 16, left: 16, bottom: 16, right: 16)
+        return button
+    }()
+    
+    override func onClickEdit(_ sender: UIButton) {
+        super.onClickEdit(sender)
+        normalOperationStackView.isHidden = tableView.isEditing
+        selectionStackView.isHidden = !tableView.isEditing
+        addButton.isHidden = tableView.isEditing
+    }
+    
+    lazy var selectionStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [deleteAllButton, finishSelectionButton])
+        view.axis = .horizontal
+        view.distribution = .fillEqually
+        return view
+    }()
     
     // MARK: - TableView
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -63,7 +147,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = container.items[indexPath.row]
         guard item.usable else { return }
-        
+
         let cell = tableView.cellForRow(at: indexPath)
         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertVC.addAction(.init(title: NSLocalizedString("Preview", comment: ""), style: .default, handler: { [unowned self] _ in
@@ -81,6 +165,18 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }))
         alertVC.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
         popoverViewController(viewController: alertVC, fromSource: cell)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        tableHeader.bounds.height
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        0
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        tableHeader
     }
     
     // MARK: - Actions

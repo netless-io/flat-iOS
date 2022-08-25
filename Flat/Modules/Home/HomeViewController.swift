@@ -219,6 +219,7 @@ class HomeViewController: UIViewController {
         
         tableView.refreshControl = .init(frame: .zero)
         tableView.refreshControl?.addTarget(self, action: #selector(onRefresh(_:)), for: .valueChanged)
+        fillTopSafeAreaWith(color: .whiteBG)
     }
     
     func createHeaderButton(title: String, imageName: String, target: Any?, action: Selector) -> UIButton {
@@ -295,7 +296,7 @@ class HomeViewController: UIViewController {
         header.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(16)
-            make.top.equalToSuperview().inset(16)
+            make.top.equalTo(header.safeAreaLayoutGuide).offset(16)
         }
         
         let operationStack = UIStackView(arrangedSubviews: [historyButton, avatarButton])
@@ -326,6 +327,7 @@ class HomeViewController: UIViewController {
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.separatorStyle = .none
+        table.contentInsetAdjustmentBehavior = .always
         table.backgroundColor = .whiteBG
         table.showsVerticalScrollIndicator = false
         table.delegate = self

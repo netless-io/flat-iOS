@@ -27,14 +27,14 @@ class CloudStorageTableViewCell: UITableViewCell {
         textStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
         let stackView = UIStackView(arrangedSubviews: [iconImage, textStack])
-        stackView.spacing = 8
+        stackView.spacing = 12
         stackView.axis = .horizontal
         stackView.distribution = .fill
         contentView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(12)
         }
-        iconImage.snp.makeConstraints { $0.width.equalTo(32) }
+        iconImage.snp.makeConstraints { $0.width.equalTo(20) }
         
         contentView.addSubview(convertingActivityView)
         convertingActivityView.snp.makeConstraints { make in
@@ -109,14 +109,15 @@ class CloudStorageTableViewCell: UITableViewCell {
     lazy var sizeAndTimeLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 12)
-        label.textColor = .subText
+        label.textColor = .text
         return label
     }()
     
     lazy var fileNameLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .text
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .strongText
+        label.lineBreakMode = .byTruncatingMiddle
         return label
     }()
 }

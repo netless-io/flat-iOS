@@ -28,6 +28,8 @@ class JoinRoomViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         bindJoinEnable()
+        
+        subjectTextField.becomeFirstResponder()
     }
     
     // MARK: - Action

@@ -43,6 +43,10 @@ class CreateClassRoomViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         updateSelected()
+        
+        DispatchQueue.main.async {
+            self.subjectTextField.becomeFirstResponder()
+        }
     }
     
     // MARK: - Private
@@ -175,7 +179,7 @@ class CreateClassRoomViewController: UIViewController {
         tf.textColor = .strongText
         tf.font = .systemFont(ofSize: 20)
         tf.placeholder = localizeStrings("Room Subject Placeholder")
-        tf.returnKeyType = .join
+        tf.returnKeyType = .go
         tf.clearButtonMode = .whileEditing
         tf.text = defaultTitle
         tf.textAlignment = .center

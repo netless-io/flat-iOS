@@ -27,11 +27,13 @@ class CloudStorageDisplayViewController: UIViewController,
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         taskProgressPolling.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
         taskProgressPolling.pause()
     }
     
@@ -65,7 +67,7 @@ class CloudStorageDisplayViewController: UIViewController,
             switch result {
             case .success(let r):
                 let mb = Int(Float(r.totalUsage) / 1024 / 1024)
-                self.storageUsageLabel.text = NSLocalizedString("Used Capacity", comment: "") + " " + mb.description + " MB"
+//                self.storageUsageLabel.text = NSLocalizedString("Used Capacity", comment: "") + " " + mb.description + " MB"
                 self.container.receive(items: r.files, withItemsPage: page)
                 if page > 1 {
                     self.loadingMoreRequest = nil
@@ -154,14 +156,13 @@ class CloudStorageDisplayViewController: UIViewController,
     }
     
     // MARK: - Private
-    
     func observeItemsUpdate() {
         container.itemsUpdateHandler = { [weak self] newItems, _ in
             guard let self = self else { return }
-            let noItemsWhenEdit = newItems.isEmpty && self.tableView.isEditing
-            if noItemsWhenEdit {
-                self.editButton.sendActions(for: .touchUpInside)
-            }
+//            let noItemsWhenEdit = newItems.isEmpty && self.tableView.isEditing
+//            if noItemsWhenEdit {
+//                self.editButton.sendActions(for: .touchUpInside)
+//            }
             self.confirmConvertingTasks(withItems: newItems)
             self.tableView.reloadData()
         }
@@ -173,8 +174,9 @@ class CloudStorageDisplayViewController: UIViewController,
     
     func observeCanDelete() {
         let trigger = Driver.of(Driver.just(()),
-                                editButton.rx.tap.asDriver().mapToVoid(),
-                                tableView.rx.itemSelected.asDriver().mapToVoid())
+//                                editButton.rx.tap.asDriver().mapToVoid(),
+                                tableView.rx.itemSelected.asDriver().mapToVoid(),
+                                tableView.rx.itemDeselected.asDriver().mapToVoid())
             .merge()
         
         let canDelete = trigger
@@ -188,22 +190,16 @@ class CloudStorageDisplayViewController: UIViewController,
             .drive(deleteAllButton.rx.isHidden)
             .disposed(by: rx.disposeBag)
         
-        canDelete
-            .drive(storageUsageLabel.rx.isHidden)
-            .disposed(by: rx.disposeBag)
+//        canDelete
+//            .drive(storageUsageLabel.rx.isHidden)
+//            .disposed(by: rx.disposeBag)
     }
     
     func setupViews() {
         view.backgroundColor = .whiteBG
-        view.addSubview(mainStackView)
-        mainStackView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.left.right.bottom.equalToSuperview()
-        }
-        mainStackView.addArrangedSubview(headView)
-        mainStackView.addArrangedSubview(tableView)
-        headView.snp.makeConstraints { make in
-            make.height.equalTo(46)
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
@@ -300,54 +296,23 @@ class CloudStorageDisplayViewController: UIViewController,
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
         view.backgroundColor = .whiteBG
-        view.contentInsetAdjustmentBehavior = .never
+        view.contentInsetAdjustmentBehavior = .always
         view.separatorStyle = .none
         view.register(CloudStorageTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         view.delegate = self
         view.dataSource = self
-        view.rowHeight = 68
+        view.rowHeight = 70
         view.showsVerticalScrollIndicator = false
         view.allowsMultipleSelectionDuringEditing = true
         view.emptyDataSetSource = self
         view.emptyDataSetDelegate = self
         view.refreshControl = refreshControl
-        return view
-    }()
-    
-    lazy var mainStackView: UIStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.distribution = .fill
-        return view
-    }()
-    
-    lazy var headView: UIView = {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = UIColor.lightBlueBar
-        view.addSubview(storageUsageLabel)
-        view.addSubview(editButton)
-        view.addSubview(deleteAllButton)
-        deleteAllButton.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.centerY.equalToSuperview()
-        }
-        storageUsageLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(16)
-            make.centerY.equalToSuperview()
-            make.right.lessThanOrEqualTo(editButton.snp.left).inset(10)
-        }
-        editButton.snp.makeConstraints { make in
-            make.right.equalToSuperview()
-            make.centerY.equalToSuperview()
+        if #available(iOS 15.0, *) {
+            view.sectionHeaderTopPadding = 0
+        } else {
+            // Fallback on earlier versions
         }
         return view
-    }()
-    
-    lazy var storageUsageLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .subText
-        return label
     }()
     
     lazy var deleteAllButton: UIButton = {
@@ -357,21 +322,6 @@ class CloudStorageDisplayViewController: UIViewController,
         button.setTitleColor(.systemRed, for: .normal)
         button.contentEdgeInsets = .init(top: 16, left: 16, bottom: 16, right: 16)
         button.addTarget(self, action: #selector(onClickDelete), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var editButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.setTitle(NSLocalizedString("Edit", comment: ""), for: .normal)
-        button.setTitle(NSLocalizedString("Finish", comment: ""), for: .selected)
-        button.setImage(UIImage(named: "edit"), for: .normal)
-        button.setImage(UIImage.imageWith(color: .clear), for: .selected)
-        button.setTitleColor(.brandColor, for: .normal)
-        button.tintColor = .brandColor
-        button.adjustsImageWhenHighlighted = false
-        button.contentEdgeInsets = .init(top: 16, left: 16, bottom: 16, right: 16)
-        button.addTarget(self, action: #selector(onClickEdit), for: .touchUpInside)
         return button
     }()
     
@@ -431,7 +381,7 @@ class CloudStorageDisplayViewController: UIViewController,
     // MARK: - EmptyData
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         .init(string: NSLocalizedString("EmptyCloudTip", comment: ""), attributes: [
-            .foregroundColor: UIColor.subText,
+            .foregroundColor: UIColor.text,
             .font: UIFont.systemFont(ofSize: 14)
         ])
     }
@@ -442,9 +392,5 @@ class CloudStorageDisplayViewController: UIViewController,
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
         true
-    }
-    
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        0
     }
 }
