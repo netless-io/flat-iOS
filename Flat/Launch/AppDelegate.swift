@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
             setDidFirstTimeLaunch()
         }
+        tryPreloadWhiteboard()
         processMethodExchange()
         configAppearance()
         registerThirdPartSDK()

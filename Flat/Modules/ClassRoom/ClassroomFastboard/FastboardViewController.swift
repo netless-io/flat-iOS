@@ -12,6 +12,13 @@ import Whiteboard
 import RxSwift
 import RxRelay
 
+func tryPreloadWhiteboard() {
+    DispatchQueue.main.async {
+        // Load once to reduce first time join room
+        _ = WhiteBoardView(frame: .zero)
+    }
+}
+
 class FastboardViewController: UIViewController {
     let fastRoom: FastRoom
     let isRoomJoined: BehaviorRelay<Bool> = .init(value: false)
