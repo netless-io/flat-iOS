@@ -275,7 +275,7 @@ class ClassRoomViewController: UIViewController {
                                                   isBanned: r.isBanned,
                                                   isOwner: weakSelf.isOwner,
                                                   banMessagePublisher: r.banMessagePublisher)
-                let vc = ChatViewController(viewModel: chatViewModel, userRtmId: weakSelf.viewModel.userUUID)
+                let vc = ChatViewController(viewModel: chatViewModel, userRtmId: weakSelf.viewModel.userUUID, ownerRtmId: weakSelf.ownerUUID)
                 weakSelf.chatVC = vc
                 weakSelf.rightToolBar.forceUpdate(button: weakSelf.chatButton, visible: true)
                 
@@ -612,7 +612,7 @@ class ClassRoomViewController: UIViewController {
         if traitCollection.hasCompact {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                         views: [cloudStorageButton, usersButton, chatButton, inviteButton, settingButton])
+                                         views: [chatButton, usersButton, inviteButton, cloudStorageButton, settingButton])
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
             bar.narrowStyle = .none
@@ -620,7 +620,7 @@ class ClassRoomViewController: UIViewController {
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
-                                         views: [cloudStorageButton, chatButton, usersButton, chatButton, inviteButton, settingButton, moreButton])
+                                         views: [chatButton, usersButton, inviteButton, cloudStorageButton, settingButton, moreButton])
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
             bar.forceUpdate(button: moreButton, visible: isOwner)

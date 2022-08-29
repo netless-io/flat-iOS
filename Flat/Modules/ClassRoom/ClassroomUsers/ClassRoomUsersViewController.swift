@@ -97,12 +97,12 @@ class ClassRoomUsersViewController: UIViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         view.addSubview(tableView)
         view.addSubview(topView)
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
-            make.height.equalTo(34)
+            make.height.equalTo(48)
         }
         tableView.snp.makeConstraints { make in
             make.top.equalTo(topView.snp.bottom)
@@ -167,15 +167,21 @@ class ClassRoomUsersViewController: UIViewController {
     // MARK: - Lazy
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         let topLabel = UILabel(frame: .zero)
         topLabel.text = NSLocalizedString("User List", comment: "")
-        topLabel.textColor = .text
-        topLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        topLabel.textColor = .strongText
+        topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.left.equalTo(view.safeAreaLayoutGuide).offset(8)
-            make.centerY.equalToSuperview()
+            make.center.equalToSuperview()
+        }
+        let line = UIView()
+        line.backgroundColor = .borderColor
+        view.addSubview(line)
+        line.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(1/UIScreen.main.scale)
         }
         return view
     }()
@@ -183,7 +189,7 @@ class ClassRoomUsersViewController: UIViewController {
     lazy var teacherLabel: UILabel = {
         let label = UILabel()
         label.textColor = .text
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
         return label
     }()
     
@@ -202,13 +208,13 @@ class ClassRoomUsersViewController: UIViewController {
         let view = UIImageView()
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
-        view.layer.cornerRadius = 15
+        view.layer.cornerRadius = 16
         return view
     }()
     
     lazy var teacherHeaderView: UITableViewHeaderFooterView = {
         let view = UITableViewHeaderFooterView()
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         let line = UIView()
         line.backgroundColor = .borderColor
         view.addSubview(line)
@@ -221,12 +227,12 @@ class ClassRoomUsersViewController: UIViewController {
         view.addSubview(teacherLabel)
         view.addSubview(stopInteractingButton)
         teachAvatarImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(12)
+            make.left.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(32)
         }
         teacherLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(50)
+            make.left.equalToSuperview().inset(56)
             make.centerY.equalToSuperview()
             make.right.lessThanOrEqualTo(stopInteractingButton.snp.left).offset(-10)
         }
@@ -241,7 +247,7 @@ class ClassRoomUsersViewController: UIViewController {
     
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)

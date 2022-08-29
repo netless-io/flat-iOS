@@ -14,7 +14,7 @@ import RxCocoa
 class RtmChannel: NSObject, AgoraRtmChannelDelegate {
     let newMemberPublisher: PublishRelay<String> = .init()
     let memberLeftPublisher: PublishRelay<String> = .init()
-    let newMessagePublish: PublishRelay<(text: String, sender: String)> = .init()
+    let newMessagePublish: PublishRelay<(text: String, date: Date, sender: String)> = .init()
     let rawDataPublish: PublishRelay<(data: Data, sender: String)> = .init()
     
     var userUUID: String!
@@ -61,7 +61,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
         }.do(onSuccess: { [weak self] in
             guard let self = self else { return }
             if appendToNewMessage {
-                self.newMessagePublish.accept((text, self.userUUID))
+                self.newMessagePublish.accept((text, Date(), self.userUUID))
             }
         })
         if censor {
@@ -109,7 +109,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
 //        logger.info("receive \(type)
         switch message.type {
         case .text:
-            newMessagePublish.accept((message.text, member.userId))
+            newMessagePublish.accept((message.text, Date(timeIntervalSince1970: TimeInterval(message.serverReceivedTs)), member.userId))
         case .raw:
             if let rawMessage = message as? AgoraRtmRawMessage {
                 rawDataPublish.accept((rawMessage.rawData, member.userId))

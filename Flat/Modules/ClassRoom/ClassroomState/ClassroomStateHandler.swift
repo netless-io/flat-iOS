@@ -51,7 +51,7 @@ protocol ClassroomStateHandler {
     func checkIfOnStageUserOverMaxCount() -> Single<Bool>
     func send(command: ClassroomCommand) -> Single<Void>
     func members() -> Observable<[RoomUser]>
-    func memberNameQueryProvider() -> UsernameQueryProvider
+    func memberNameQueryProvider() -> UserInfoQueryProvider
 
     func setup() -> Single<Void>
     func destroy()

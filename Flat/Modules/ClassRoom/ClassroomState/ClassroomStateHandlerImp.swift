@@ -253,19 +253,19 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         }
     }
     
-    func memberNameQueryProvider() -> UsernameQueryProvider {
-        return { [weak self] ids -> Observable<[String: String]> in
+    func memberNameQueryProvider() -> UserInfoQueryProvider {
+        return { [weak self] ids -> Observable<[String: UserBriefInfo]> in
             guard let self = self else {
                 return .error("self not exist")
             }
             let noCacheIds = ids.filter { self.roomUserInfoCache[$0] == nil }
-            let cachedUserPairs = ids.compactMap { id -> (String, String)? in
-                if let name = self.roomUserInfoCache[id]?.name {
-                    return (id, name)
+            let cachedUserPairs = ids.compactMap { id -> (String, UserBriefInfo)? in
+                if let cache = self.roomUserInfoCache[id] {
+                    return (id, .init(name: cache.name, avatar: URL(string: cache.avatarURL)))
                 }
                 return nil
             }
-            let cachedResult: [String: String] = .init(uniqueKeysWithValues: cachedUserPairs)
+            let cachedResult: [String: UserBriefInfo] = .init(uniqueKeysWithValues: cachedUserPairs)
             if noCacheIds.isEmpty {
                 return .just(cachedResult)
             }
@@ -279,8 +279,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         self?.roomUserInfoCache[pair.key] = pair.value
                     }
                 })
-                    .map { response -> [String: String] in
-                        let remoteValue = response.response.mapValues { $0.name }
+                    .map { response -> [String: UserBriefInfo] in
+                        let remoteValue = response.response.mapValues { UserBriefInfo(name: $0.name, avatar: URL(string: $0.avatarURL))}
                         let mergedValue = remoteValue.merging(cachedResult, uniquingKeysWith: { return $1 })
                         return mergedValue
                     }

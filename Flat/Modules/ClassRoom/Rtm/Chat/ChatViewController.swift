@@ -17,6 +17,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
     let cellIdentifier = "cellIdentifier"
     let viewModel: ChatViewModel
     
+    let ownerRtmId: String
     let userRtmId: String
     /// If message is banning now
     var isInMessageBan = false {
@@ -44,7 +45,9 @@ class ChatViewController: PopOverDismissDetectableViewController {
 
     // MARK: - LifeCycle
     init(viewModel: ChatViewModel,
-         userRtmId: String) {
+         userRtmId: String,
+         ownerRtmId: String) {
+        self.ownerRtmId = ownerRtmId
         self.viewModel = viewModel
         self.userRtmId = userRtmId
         super.init(nibName: nil, bundle: nil)
@@ -63,7 +66,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.contentInset = .init(top: topView.bounds.height, left: 0, bottom: inputStackView.bounds.height, right: 0)
+        tableView.contentInset = .init(top: topView.bounds.height, left: 0, bottom: inputStackView.bounds.height + 14, right: 0)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -132,17 +135,17 @@ class ChatViewController: PopOverDismissDetectableViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         view.addSubview(tableView)
         let inputBg = UIView()
-        inputBg.backgroundColor = .whiteBG
+        inputBg.backgroundColor = .classroomChildBG
         view.addSubview(inputBg)
         view.addSubview(inputStackView)
         view.addSubview(topView)
 
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
-            make.height.equalTo(34)
+            make.height.equalTo(48)
         }
         
         tableView.snp.makeConstraints { make in
@@ -164,6 +167,15 @@ class ChatViewController: PopOverDismissDetectableViewController {
         inputBg.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(inputStackView)
+        }
+        
+        let line = UIView()
+        line.backgroundColor = .borderColor
+        view.addSubview(line)
+        line.snp.makeConstraints { make in
+            make.left.right.equalTo(inputStackView)
+            make.bottom.equalTo(inputStackView.snp.top)
+            make.height.equalTo(1/UIScreen.main.scale)
         }
     }
     
@@ -187,8 +199,12 @@ class ChatViewController: PopOverDismissDetectableViewController {
     // MARK: - Lazy
     lazy var sendButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "send_message")?.tintColor(.controlDisabled), for: .normal)
-        button.setImage(UIImage(named: "send_message")?.tintColor(.controlNormal), for: .normal)
+        button.setImage(UIImage(named: "send_message")?.tintColor(.chatButtonNormal), for: .normal)
+        button.setImage(UIImage(named: "send_message")?.tintColor(.chatButtonDisable), for: .disabled)
+        button.traitCollectionUpdateHandler = { [weak button] _ in
+            button?.setImage(UIImage(named: "send_message")?.tintColor(.chatButtonNormal), for: .normal)
+            button?.setImage(UIImage(named: "send_message")?.tintColor(.chatButtonDisable), for: .disabled)
+        }
         button.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return button
     }()
@@ -199,6 +215,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
         let view = UIStackView(arrangedSubviews: [banTextButton, textFieldContainer, sendButton])
         view.axis = .horizontal
         view.distribution = .fill
+        sendButton.snp.makeConstraints { $0.width.equalTo(44) }
         return view
     }()
     
@@ -213,11 +230,11 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     lazy var banTextButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "message_ban")?.tintColor(.controlNormal), for: .normal)
-        btn.setImage(UIImage(named: "message_ban")?.tintColor(.controlSelected), for: .selected)
+        btn.setImage(UIImage(named: "message_ban")?.tintColor(.chatButtonNormal), for: .normal)
+        btn.setImage(UIImage(named: "message_ban")?.tintColor(.brandStrongColor), for: .selected)
         btn.traitCollectionUpdateHandler = { [weak btn] _ in
-            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.controlNormal), for: .normal)
-            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.controlSelected), for: .selected)
+            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.chatButtonNormal), for: .normal)
+            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.brandStrongColor), for: .selected)
         }
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
@@ -225,14 +242,11 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     lazy var inputTextField: UITextField = {
         let inputTextField = UITextField.init(frame: .zero)
-        inputTextField.backgroundColor = .whiteBG
-        inputTextField.textColor = .text
+        inputTextField.backgroundColor = .classroomChildBG
+        inputTextField.textColor = .strongText
         inputTextField.clipsToBounds = true
-        inputTextField.layer.borderWidth = 1 / UIScreen.main.scale
-        inputTextField.layer.cornerRadius = 4
-        inputTextField.layer.borderColor = UIColor.borderColor.cgColor
         inputTextField.font = .systemFont(ofSize: 14)
-        inputTextField.placeholder = NSLocalizedString("Say Something...", comment: "")
+        inputTextField.placeholder = localizeStrings("Say Something...")
         inputTextField.returnKeyType = .send
         inputTextField.leftView = UIView(frame: .init(x: 0, y: 0, width: 8, height: 8))
         inputTextField.leftViewMode = .always
@@ -241,22 +255,28 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         let topLabel = UILabel(frame: .zero)
-        topLabel.text = NSLocalizedString("Chat", comment: "")
-        topLabel.textColor = .text
-        topLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        topLabel.text = localizeStrings("Chat")
+        topLabel.textColor = .strongText
+        topLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.left.equalTo(view.safeAreaLayoutGuide).offset(8)
-            make.centerY.equalToSuperview()
+            make.center.equalToSuperview()
+        }
+        let line = UIView()
+        line.backgroundColor = .borderColor
+        view.addSubview(line)
+        line.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(1/UIScreen.main.scale)
         }
         return view
     }()
     
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(ChatTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -273,10 +293,17 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
         switch message {
-        case .user(message: let message, name: let name):
+        case .user(message: let message, info: let info):
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ChatTableViewCell
-            cell.update(nickName: name,
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            formatter.dateStyle = .none
+            let dateStr = formatter.string(from: message.time)
+            cell.update(nickName: info.name,
                         text: message.text,
+                        time: dateStr,
+                        avatar: info.avatar,
+                        isTeach: message.userId == ownerRtmId,
                         style: message.userId == userRtmId ? .self : .other)
             return cell
         case .notice(let notice):
@@ -298,20 +325,16 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         let message = messages[indexPath.row]
         switch message {
         case .user(message: let message, _):
-            let isSelf = message.userId == userRtmId
-            let width = view.bounds.width - (2 * ChatTableViewCell.textMargin) - ChatTableViewCell.textEdge.left - ChatTableViewCell.textEdge.right
+            let width = view.bounds.width - (2*ChatTableViewCell.textMargin) - ChatTableViewCell.textEdge.left - ChatTableViewCell.textEdge.right
             let textSize = message.text.boundingRect(with: .init(width: width,
-                                                  height: .greatestFiniteMagnitude),
-                                      options: [.usesLineFragmentOrigin, .usesFontLeading],
-                                      attributes: [.font: ChatTableViewCell.textFont],
-                                      context: nil).size
-            var height: CGFloat = textSize.height + ChatTableViewCell.textEdge.top + ChatTableViewCell.textEdge.bottom + ChatTableViewCell.bottomMargin
-            if !isSelf {
-                height += ChatTableViewCell.nickNameHeight
-            }
-            return height
+                                                                 height: .greatestFiniteMagnitude),
+                                                     options: [.usesLineFragmentOrigin, .usesFontLeading],
+                                                     attributes: ChatTableViewCell.textAttribute,
+                                                     context: nil).size
+            let textContainerHeight = textSize.height + ChatTableViewCell.textEdge.top + ChatTableViewCell.textEdge.bottom
+            return ceil(max(32, textContainerHeight)) + ChatTableViewCell.textTopMargin
         case .notice:
-            return 26.5 + ChatTableViewCell.bottomMargin
+            return 26.5 + 12
         }
     }
 }
@@ -328,9 +351,5 @@ extension ChatViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
         true
-    }
-    
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        0
     }
 }

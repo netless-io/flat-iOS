@@ -11,12 +11,17 @@ import RxRelay
 import RxCocoa
 import RxSwift
 
+struct UserBriefInfo {
+    let name: String
+    let avatar: URL?
+}
+
 enum DisplayMessage {
-    case user(message: UserMessage, name: String)
+    case user(message: UserMessage, info: UserBriefInfo)
     case notice(String)
 }
 
-typealias UsernameQueryProvider = (([String]) -> Observable<[String: String]>)
+typealias UserInfoQueryProvider = (([String]) -> Observable<[String: UserBriefInfo]>)
 
 class ChatViewModel {
     struct Input {
@@ -30,7 +35,7 @@ class ChatViewModel {
     }
     
     let roomUUID: String
-    let userNameProvider: UsernameQueryProvider
+    let userInfoProvider: UserInfoQueryProvider
     let rtm: RtmChannel
     let notice: Observable<String>
     let isOwner: Bool
@@ -38,7 +43,7 @@ class ChatViewModel {
     let banMessagePublisher: PublishRelay<Bool>
     
     init(roomUUID: String,
-         userNameProvider: @escaping UsernameQueryProvider,
+         userNameProvider: @escaping UserInfoQueryProvider,
          rtm: RtmChannel,
          notice: Observable<String>,
          isBanned: Driver<Bool>,
@@ -46,7 +51,7 @@ class ChatViewModel {
          banMessagePublisher: PublishRelay<Bool>) {
         self.rtm = rtm
         self.notice = notice
-        self.userNameProvider = userNameProvider
+        self.userInfoProvider = userNameProvider
         self.roomUUID = roomUUID
         self.isBanned = isBanned
         self.isOwner = isOwner
@@ -74,7 +79,7 @@ class ChatViewModel {
         }
         
         let history = requestHistory(channelId: rtm.channelId).asObservable().share(replay: 1, scope: .whileConnected)
-        let newMessage = rtm.newMessagePublish.map { [Message.user(UserMessage.init(userId: $0.sender, text: $0.text))] }
+        let newMessage = rtm.newMessagePublish.map { [Message.user(UserMessage(userId: $0.sender, text: $0.text, time: $0.date))] }
         let noticeMessage = notice.map { [Message.notice($0)]}
         let banMessage   = banMessagePublisher.map { [Message.notice(NSLocalizedString($0 ? "All banned" : "The ban was lifted", comment: ""))]}
         
@@ -86,7 +91,7 @@ class ChatViewModel {
                 return r
             })
         
-        let nameResult = rawMessages.flatMap { message -> Observable<[String: String]> in
+        let nameResult = rawMessages.flatMap { message -> Observable<[String: UserBriefInfo]> in
             let ids = message.compactMap { $0.userId }
             return self.userName(userIds: ids)
         }
@@ -95,18 +100,18 @@ class ChatViewModel {
             return msgs.map { msg -> DisplayMessage in
                 switch msg {
                 case .notice(let text): return .notice(text)
-                case .user(let user): return .user(message: user, name: dic[user.userId]!)
+                case .user(let msg): return .user(message: msg, info: dic[msg.userId]!)
                 }
             }
-        }.debug("msg:: ", trimOutput: false)
+        }
         
         return .init(message: result, sendMessage: send, sendMessageEnable: sendMessageEnable)
     }
     
-    func userName(userIds: [String]) -> Observable<[String: String]> {
+    func userName(userIds: [String]) -> Observable<[String: UserBriefInfo]> {
         guard !userIds.isEmpty else { return .just([:]) }
         let ids = userIds.removeDuplicate()
-        return userNameProvider(ids)
+        return userInfoProvider(ids)
     }
     
     func requestHistory(channelId: String) -> Single<[Message]> {
@@ -131,7 +136,7 @@ class ChatViewModel {
                         switch result {
                         case .success(let historyResult):
                             let historyMessages: [Message] = historyResult.result
-                                .map { UserMessage(userId: $0.sourceUserId, text: $0.message) }
+                                .map { UserMessage(userId: $0.sourceUserId, text: $0.message, time: $0.date) }
                                 .map { Message.user($0) }
                                 .reversed()
                             observer(.success(historyMessages))

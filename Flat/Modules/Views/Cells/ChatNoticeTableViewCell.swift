@@ -21,11 +21,11 @@ class ChatNoticeTableViewCell: UITableViewCell {
     
     func setupViews() {
         selectionStyle = .none
-        contentView.backgroundColor = .whiteBG
+        backgroundColor = .classroomChildBG
+        contentView.backgroundColor = .classroomChildBG
         contentView.addSubview(labelView)
         labelView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview()
+            make.center.equalToSuperview()
         }
         labelView.edge = .init(top: 6, left: 12, bottom: 6, right: 12)
     }

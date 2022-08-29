@@ -179,7 +179,7 @@ class ClassRoomViewModel {
     
     struct ChatChannelInitValue {
         let channel: RtmChannel
-        let userNameProvider: UsernameQueryProvider
+        let userNameProvider: UserInfoQueryProvider
         let notice: Observable<String>
         let isBanned: Driver<Bool>
         let banMessagePublisher: PublishRelay<Bool>

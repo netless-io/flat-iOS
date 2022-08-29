@@ -24,5 +24,6 @@ enum Message {
 struct UserMessage: Codable {
     let userId: String
     let text: String
+    let time: Date
 }
 

@@ -28,7 +28,7 @@ class RoomUserTableViewCell: UITableViewCell {
     }
     
     func setupViews() {
-        contentView.backgroundColor = .whiteBG
+        contentView.backgroundColor = .classroomChildBG
         
         let line = UIView()
         line.backgroundColor = .borderColor
@@ -39,12 +39,12 @@ class RoomUserTableViewCell: UITableViewCell {
         contentView.addSubview(operationStackView)
         contentView.addSubview(line)
         avatarImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(12)
+            make.left.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(32)
         }
         nameLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(50)
+            make.left.equalToSuperview().inset(56)
             make.centerY.equalToSuperview()
         }
         statusLabel.snp.makeConstraints { make in
@@ -53,14 +53,11 @@ class RoomUserTableViewCell: UITableViewCell {
             make.right.lessThanOrEqualToSuperview().inset(66)
         }
         operationStackView.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(8)
-            make.centerY.equalToSuperview()
-            make.height.equalTo(40)
+            make.top.bottom.right.equalToSuperview()
         }
         line.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
-            make.left.equalToSuperview().inset(50)
-            make.right.equalToSuperview().inset(8)
+            make.left.right.equalToSuperview().inset(16)
             make.height.equalTo(1 / UIScreen.main.scale)
         }
     }
@@ -86,7 +83,7 @@ class RoomUserTableViewCell: UITableViewCell {
         let nameLabel = UILabel()
         nameLabel.font = .systemFont(ofSize: 12)
         nameLabel.setContentHuggingPriority(.required, for: .horizontal)
-        nameLabel.textColor = .init(hexString: "#5D5D5D")
+        nameLabel.textColor = .text
         return nameLabel
     }()
     
@@ -145,7 +142,7 @@ class RoomUserTableViewCell: UITableViewCell {
         let view = UIImageView()
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
-        view.layer.cornerRadius = 15
+        view.layer.cornerRadius = 16
         return view
     }()
 }

@@ -28,6 +28,14 @@ extension UIColor {
         return UIColor(named: "CellSelectedBG" + nameSuffix)!
     }
     
+    static var chatButtonDisable: UIColor {
+        return UIColor(named: "chat_button_disable" + nameSuffix)!
+    }
+    
+    static var chatButtonNormal: UIColor {
+        return UIColor(named: "chat_button_normal" + nameSuffix)!
+    }
+    
     static var controlDisabled: UIColor {
         return UIColor(named: "ControlDisable" + nameSuffix)!
     }
@@ -64,8 +72,16 @@ extension UIColor {
         return UIColor(named:"ControlSelectedBG" + nameSuffix)!
     }
     
+    static var classroomChildBG: UIColor {
+        return UIColor(named: "classroomChildBG" + nameSuffix)!
+    }
+    
     static var text: UIColor {
         return UIColor(named:"Text" + nameSuffix)!
+    }
+    
+    static var otherUserChat: UIColor {
+        return UIColor(named: "otherUserChat" + nameSuffix)!
     }
     
     static var strongText: UIColor {
@@ -78,6 +94,10 @@ extension UIColor {
     
     static var disableText: UIColor {
         return UIColor(named:"Text-disable" + nameSuffix)!
+    }
+    
+    static var nickname: UIColor {
+        return UIColor(named: "nickname" + nameSuffix)!
     }
     
     static var subText: UIColor {
