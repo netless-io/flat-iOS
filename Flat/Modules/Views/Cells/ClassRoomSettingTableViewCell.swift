@@ -19,6 +19,7 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        backgroundColor = .classroomChildBG
         contentView.backgroundColor = .classroomChildBG
         label.textColor = .nickname
         lineHeightConstraint.constant = 1 / UIScreen.main.scale
