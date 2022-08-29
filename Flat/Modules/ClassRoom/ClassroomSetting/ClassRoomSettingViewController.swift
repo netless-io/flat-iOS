@@ -79,10 +79,10 @@ class ClassRoomSettingViewController: UIViewController {
 
     // MARK: - Private
     func setupViews() {
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         view.addSubview(tableView)
         view.addSubview(topView)
-        let topViewHeight: CGFloat = 34
+        let topViewHeight: CGFloat = 48
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
             make.height.equalTo(topViewHeight)
@@ -92,16 +92,16 @@ class ClassRoomSettingViewController: UIViewController {
             make.edges.equalToSuperview().inset(UIEdgeInsets.init(top: topViewHeight, left: 0, bottom: 0, right: 0))
         }
         
-        let bottomContainer = UIView(frame: .init(origin: .zero, size: .init(width: 240, height: 64)))
+        let bottomContainer = UIView(frame: .init(origin: .zero, size: .init(width: 400, height: 96)))
         bottomContainer.addSubview(logoutButton)
         tableView.tableFooterView = bottomContainer
         logoutButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.height.equalTo(36)
+            make.height.equalTo(40)
         }
         
-        preferredContentSize = .init(width: 240, height: 205)
+        preferredContentSize = .init(width: 400, height: 289)
     }
     
     func config(cell: ClassRoomSettingTableViewCell, type: SettingControlType) {
@@ -112,6 +112,7 @@ class ClassRoomSettingViewController: UIViewController {
             if cell.switch.isOn != cameraOn.value {
                 cell.switch.isOn = cameraOn.value
             }
+            cell.iconView.image = UIImage(named: "camera")?.tintColor(.nickname)
             cell.setEnable(deviceUpdateEnable.value)
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.cameraPublish.accept(())
@@ -124,22 +125,30 @@ class ClassRoomSettingViewController: UIViewController {
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.micPublish.accept(())
             }
+            cell.iconView.image = UIImage(named: "microphone")?.tintColor(.nickname)
         case .videoArea:
             cell.setEnable(true)
             cell.switch.isOn = videoAreaOn.value
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.videoAreaPublish.accept(())
             }
+            cell.iconView.image = UIImage(named: "video_area")?.tintColor(.nickname)
         }
     }
     
     // MARK: - Lazy
     lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitleColor(.init(hexString: "#F45454"), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.setImage(UIImage(named: "logout")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.layer.borderColor = UIColor.init(hexString: "#F45454").cgColor
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.setTitleColor(.classroomLogout, for: .normal)
+        button.setImage(UIImage(named: "logout")?.tintColor(.classroomLogout), for: .normal)
+        button.layer.borderColor = UIColor.classroomLogout.cgColor
+        button.traitCollectionUpdateHandler = { [weak button] _ in
+            button?.setTitleColor(.classroomLogout, for: .normal)
+            button?.setImage(UIImage(named: "logout")?.tintColor(.classroomLogout), for: .normal)
+            button?.layer.borderColor = UIColor.classroomLogout.cgColor
+        }
+        
         button.layer.borderWidth = 1 / UIScreen.main.scale
         button.layer.cornerRadius = 4
         button.layer.masksToBounds = true
@@ -150,28 +159,34 @@ class ClassRoomSettingViewController: UIViewController {
     
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         let topLabel = UILabel(frame: .zero)
-        topLabel.text = NSLocalizedString("Setting", comment: "")
-        topLabel.textColor = .text
-        topLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        topLabel.text = localizeStrings("Setting")
+        topLabel.textColor = .strongText
+        topLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(8)
-            make.centerY.equalToSuperview()
+            make.center.equalToSuperview()
+        }
+        let line = UIView()
+        line.backgroundColor = .borderColor
+        view.addSubview(line)
+        line.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(1/UIScreen.main.scale)
         }
         return view
     }()
     
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(.init(nibName: String(describing: ClassRoomSettingTableViewCell.self), bundle: nil), forCellReuseIdentifier: cellIdentifier)
         view.delegate = self
         view.dataSource = self
-        view.rowHeight = 37
+        view.rowHeight = 48
         view.showsVerticalScrollIndicator = false
         return view
     }()

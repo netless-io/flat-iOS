@@ -50,7 +50,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         view.addSubview(tableView)
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
-            make.height.equalTo(34)
+            make.height.equalTo(48)
         }
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset((UIEdgeInsets(top: 34, left: 0, bottom: 0, right: 0)))
@@ -89,6 +89,12 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         guard let cell = super.tableView(tableView, cellForRowAt: indexPath) as?
                 CloudStorageTableViewCell
         else { fatalError() }
+        
+        cell.backgroundColor = .classroomChildBG
+        cell.contentView.backgroundColor = .classroomChildBG
+        cell.fileNameLabel.textColor = .nickname
+        cell.sizeAndTimeLabel.textColor = .init(hexString: "#B7BBC1")
+        cell.rightArrowImageView.isHidden = false
         
         let item = container.items[indexPath.row]
         let isProcessing = item == fileSelectTask
@@ -194,15 +200,21 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     // MARK: - Lazy
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .classroomChildBG
         let topLabel = UILabel(frame: .zero)
-        topLabel.text = NSLocalizedString("Cloud Storage", comment: "")
-        topLabel.textColor = .text
-        topLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        topLabel.text = localizeStrings("Cloud Storage")
+        topLabel.textColor = .strongText
+        topLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(14)
-            make.centerY.equalToSuperview()
+            make.center.equalToSuperview()
+        }
+        let line = UIView()
+        line.backgroundColor = .borderColor
+        view.addSubview(line)
+        line.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(1/UIScreen.main.scale)
         }
         view.addSubview(addFileStackView)
         addFileStackView.snp.makeConstraints { make in
@@ -224,7 +236,10 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     
     lazy var addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "storage_add"), for: .normal)
+        button.setImage(UIImage(named: "storage_add_small")?.tintColor(.nickname), for: .normal)
+        button.traitCollectionUpdateHandler = { [weak button] _ in
+            button?.setImage(UIImage(named: "storage_add_small")?.tintColor(.nickname), for: .normal)
+        }
         return button
     }()
     

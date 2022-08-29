@@ -28,6 +28,11 @@ extension UIColor {
         return UIColor(named: "CellSelectedBG" + nameSuffix)!
     }
     
+    static var classroomLogout: UIColor {
+        return UIColor(named: "classroom_logout" + nameSuffix)!
+    }
+    
+    
     static var chatButtonDisable: UIColor {
         return UIColor(named: "chat_button_disable" + nameSuffix)!
     }

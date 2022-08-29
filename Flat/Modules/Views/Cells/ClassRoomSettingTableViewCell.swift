@@ -12,10 +12,15 @@ import UIKit
 class ClassRoomSettingTableViewCell: UITableViewCell {
     var switchValueChangedHandler: ((Bool)->Void)?
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        iconView.image = iconView.image?.tintColor(.nickname)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        label.textColor = .subText
-        contentView.backgroundColor = .whiteBG
+        contentView.backgroundColor = .classroomChildBG
+        label.textColor = .nickname
         lineHeightConstraint.constant = 1 / UIScreen.main.scale
     }
     
@@ -28,6 +33,7 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         label.textColor = enable ? .subText : UIColor.subText.withAlphaComponent(0.5)
     }
     
+    @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var lineHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var `switch`: UISwitch!

@@ -248,6 +248,9 @@
                             </buttonConfiguration>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="xibLocKey" value="Enter Room"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                                    <real key="value" value="4"/>
+                                </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="onClickEnterRoom:" destination="-1" eventType="touchUpInside" id="i1m-ue-xCu"/>

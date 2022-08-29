@@ -18,6 +18,11 @@ class CloudStorageTableViewCell: UITableViewCell {
         fatalError()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        rightArrowImageView.image = UIImage(named: "arrowRight")?.tintColor(.nickname)
+    }
+    
     func setupViews() {
         backgroundColor = .whiteBG
         contentView.backgroundColor = .whiteBG
@@ -26,7 +31,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         textStack.distribution = .fillEqually
         textStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
-        let stackView = UIStackView(arrangedSubviews: [iconImage, textStack])
+        let stackView = UIStackView(arrangedSubviews: [iconImage, textStack, rightArrowImageView])
         stackView.spacing = 12
         stackView.axis = .horizontal
         stackView.distribution = .fill
@@ -35,6 +40,7 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.edges.equalToSuperview().inset(12)
         }
         iconImage.snp.makeConstraints { $0.width.equalTo(20) }
+        rightArrowImageView.snp.makeConstraints { $0.width.equalTo(16) }
         
         contentView.addSubview(convertingActivityView)
         convertingActivityView.snp.makeConstraints { make in
@@ -53,6 +59,8 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.height.equalTo(1 / UIScreen.main.scale)
             make.bottom.equalToSuperview()
         }
+        
+        rightArrowImageView.isHidden = true
     }
     
     func stopConvertingAnimation() {
@@ -104,6 +112,12 @@ class CloudStorageTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
+    }()
+    
+    lazy var rightArrowImageView:UIImageView = {
+        let view = UIImageView(image: UIImage(named: "arrowRight")?.tintColor(.nickname))
+        view.contentMode = .scaleAspectFit
+        return view
     }()
     
     lazy var sizeAndTimeLabel: UILabel = {

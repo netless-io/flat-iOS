@@ -20,8 +20,8 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="麦克风" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRz-pY-tDB">
-                        <rect key="frame" x="8" y="13.5" width="43" height="17"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <rect key="frame" x="48" y="12.5" width="49" height="19.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" systemColor="systemRedColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -33,25 +33,31 @@
                         </connections>
                     </switch>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vjS-8p-I6h">
-                        <rect key="frame" x="8" y="43" width="304" height="1"/>
+                        <rect key="frame" x="16" y="43" width="288" height="1"/>
                         <color key="backgroundColor" name="BorderColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="IfA-HX-YPc"/>
                         </constraints>
                     </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="microphone" translatesAutoresizingMaskIntoConstraints="NO" id="42O-Re-dDv">
+                        <rect key="frame" x="16" y="10" width="24" height="24"/>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="huR-eH-g4L" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="2dA-w6-wiq"/>
                     <constraint firstItem="NRz-pY-tDB" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="KxI-AG-ZUH"/>
                     <constraint firstAttribute="bottom" secondItem="vjS-8p-I6h" secondAttribute="bottom" id="MaG-S7-Szo"/>
                     <constraint firstAttribute="trailing" secondItem="huR-eH-g4L" secondAttribute="trailing" constant="8" id="TAe-q9-q6L"/>
-                    <constraint firstAttribute="trailing" secondItem="vjS-8p-I6h" secondAttribute="trailing" constant="8" id="VaA-tJ-75U"/>
-                    <constraint firstItem="vjS-8p-I6h" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="Yvu-IA-NAa"/>
-                    <constraint firstItem="NRz-pY-tDB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="rXZ-2e-bfg"/>
+                    <constraint firstAttribute="trailing" secondItem="vjS-8p-I6h" secondAttribute="trailing" constant="16" id="VaA-tJ-75U"/>
+                    <constraint firstItem="42O-Re-dDv" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Xl4-Gb-H7A"/>
+                    <constraint firstItem="vjS-8p-I6h" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Yvu-IA-NAa"/>
+                    <constraint firstItem="42O-Re-dDv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="bot-7r-bvM"/>
+                    <constraint firstItem="NRz-pY-tDB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="48" id="rXZ-2e-bfg"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="iconView" destination="42O-Re-dDv" id="D0X-Kx-KzY"/>
                 <outlet property="label" destination="NRz-pY-tDB" id="jd6-a1-7L7"/>
                 <outlet property="lineHeightConstraint" destination="IfA-HX-YPc" id="mXZ-Ai-1bL"/>
                 <outlet property="switch" destination="huR-eH-g4L" id="ZQM-ZD-VDg"/>
@@ -60,11 +66,12 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="microphone" width="24" height="24"/>
         <namedColor name="BorderColor">
             <color red="0.86274509803921573" green="0.8784313725490196" blue="0.9137254901960784" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="BrandColor">
-            <color red="0.28200000524520874" green="0.49799999594688416" blue="0.9649999737739563" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.20000000000000001" green="0.50588235294117645" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

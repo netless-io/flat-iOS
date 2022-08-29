@@ -295,8 +295,7 @@ class CloudStorageDisplayViewController: UIViewController,
     // MARK: - Lazy
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
-        view.backgroundColor = .whiteBG
-        view.contentInsetAdjustmentBehavior = .always
+        view.backgroundColor = .classroomChildBG
         view.separatorStyle = .none
         view.register(CloudStorageTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         view.delegate = self
