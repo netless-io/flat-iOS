@@ -56,7 +56,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         
         contentView.addSubview(convertingActivityView)
         convertingActivityView.snp.makeConstraints { make in
-            make.centerX.equalTo(iconImage.snp.right).inset(10)
+            make.centerX.equalTo(iconImage.snp.right).inset(2)
             make.centerY.equalTo(iconImage.snp.bottom).inset(13)
             make.width.height.equalTo(10)
         }
