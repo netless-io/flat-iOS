@@ -45,6 +45,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.backgroundColor = .classroomChildBG
         tableView.removeFromSuperview()
         view.addSubview(topView)
         view.addSubview(tableView)
@@ -90,6 +91,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                 CloudStorageTableViewCell
         else { fatalError() }
         
+        cell.selectionView.isHidden = true
         cell.backgroundColor = .classroomChildBG
         cell.contentView.backgroundColor = .classroomChildBG
         cell.fileNameLabel.textColor = .nickname

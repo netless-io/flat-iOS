@@ -589,7 +589,6 @@ class ClassRoomViewController: UIViewController {
             case .projectorPptx(uuid: let uuid, prefix: let prefix, title: let title):
                 self.fastboardViewController.fastRoom.insertPptx(uuid: uuid, url: prefix, title: title)
             }
-            self.dismiss(animated: true, completion: nil)
         }
         return vc
     }()
