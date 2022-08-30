@@ -27,9 +27,9 @@ class ClassRoomLayout {
     }
     
     /// If direction is top, the margin is top and bottom; Or the margin is left and right for right
-    let rtcMargin: CGFloat = 10
+    let rtcMargin: CGFloat = 0
     /// If estimate rtc height less than minRtcHeight, it turn to .right
-    fileprivate let minRtcHeight: CGFloat = 88
+    fileprivate let minRtcHeight: CGFloat = 66
     let verticalRtcFixedHeight: CGFloat = 84
     let rtcRatio = ClassRoomLayoutRatioConfig.rtcItemRatio
     let rtcMinRatio: CGFloat = 0.1

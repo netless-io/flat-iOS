@@ -13,6 +13,7 @@ import AgoraRtcKit
 
 class RtcViewModel {
     internal init(rtc: Rtc,
+                  userRtcUid: UInt,
                   localUserRegular: @escaping (UInt) -> Bool,
                   userFetch: @escaping (UInt) -> RoomUser?,
                   userThumbnailStream: @escaping ((UInt) -> AgoraVideoStreamType)) {
@@ -20,8 +21,10 @@ class RtcViewModel {
         self.localUserRegular = localUserRegular
         self.userFetch = userFetch
         self.userThumbnailStream = userThumbnailStream
+        self.userRtcUid = userRtcUid
     }
     
+    let userRtcUid: UInt
     let rtc: Rtc
     let localUserRegular: (UInt)-> Bool
     let userFetch: (UInt)-> RoomUser?
@@ -99,5 +102,15 @@ class RtcViewModel {
         return .init(user: user,
                      camera: camera,
                      mic: mic)
+    }
+    
+    func strenthFor(uid: UInt) -> Observable<CGFloat> {
+        let uid = uid == userRtcUid ? 0 : uid
+        if let s = rtc.micStrenths[uid] {
+            return s.asObservable()
+        } else {
+            rtc.micStrenths[uid] = .init()
+            return strenthFor(uid: uid)
+        }
     }
 }

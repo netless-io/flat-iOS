@@ -108,6 +108,7 @@ struct ClassroomFactory {
                                            rtcError: rtc.errorPublisher.asObservable())
         
         let rtcViewController = RtcViewController(viewModel: .init(rtc: rtc,
+                                                                   userRtcUid: playInfo.rtcUID,
                                                                    localUserRegular: { $0 == 0 || $0 == playInfo.rtcUID },
                                                                    userFetch: { rtcId -> RoomUser? in
             if rtcId == 0 { return imp.currentOnStageUsers[playInfo.rtmUID] }

@@ -22,7 +22,7 @@ class RtcViewController: UIViewController {
     var localCameraOn = false
     var localMicOn = false
     
-    var preferredMargin: CGFloat = 10 {
+    var preferredMargin: CGFloat = 0 {
         didSet {
             guard preferredMargin != oldValue else { return }
             sync(direction: direction)
@@ -71,6 +71,7 @@ class RtcViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
     
+    var localUserMicVolumeBag: DisposeBag = .init()
     func bindLocalUser(_ user: Driver<RoomUser>) {
         let output = viewModel.transformLocalUser(user: user)
         
@@ -78,10 +79,8 @@ class RtcViewController: UIViewController {
             .drive(with: self, onNext: { weakSelf, user in
                 weakSelf.localMicOn = user.status.isSpeak && user.status.mic
                 weakSelf.localCameraOn = user.status.isSpeak && user.status.camera
-                if !weakSelf.localVideoItemView.containsUserValue {
-                    weakSelf.update(itemView: weakSelf.localVideoItemView, user: user)
-                }
-                weakSelf.cellMenuView.update(cameraOn: user.status.camera, micOn: user.status.mic)
+                weakSelf.localUserMicVolumeBag = .init()
+                weakSelf.update(itemView: weakSelf.localVideoItemView, user: user, volumeBag: weakSelf.localUserMicVolumeBag)
             })
             .disposed(by: rx.disposeBag)
 
@@ -168,7 +167,8 @@ class RtcViewController: UIViewController {
         sync(direction: direction)
     }
     
-    func update(itemView: RtcVideoItemView, user: RoomUser) {
+    var otherUsersVolumeDisposeBag = DisposeBag()
+    func update(itemView: RtcVideoItemView, user: RoomUser, volumeBag: DisposeBag) {
         itemView.heroID = nil
         itemView.update(avatar: user.avatarURL)
         if user.isOnline {
@@ -179,15 +179,24 @@ class RtcViewController: UIViewController {
             itemView.nameLabel.isHidden = false
         }
         itemView.silenceImageView.isHidden = user.status.mic
-        itemView.containsUserValue = true
         itemView.alwaysShowName = !user.isOnline
+        itemView.showMicVolum(user.status.mic)
+        
+        if user.status.mic {
+            viewModel.strenthFor(uid: user.rtcUID)
+                .asDriver(onErrorJustReturn: 0)
+                .drive(with: itemView) { wi, strenth in
+                    wi.micStrenth = strenth
+                }
+                .disposed(by: volumeBag)
+        }
     }
     
     func refresh(view: RtcVideoItemView,
                  user: RoomUser,
                  canvas: AgoraRtcVideoCanvas,
                  isLocal: Bool) {
-        update(itemView: view, user: user)
+        update(itemView: view, user: user, volumeBag: isLocal ? otherUsersVolumeDisposeBag : otherUsersVolumeDisposeBag)
         view.showAvatar(!user.status.camera)
         
         viewModel.rtc.updateRemoteUserStreamType(rtcUID: user.rtcUID, type: viewModel.userThumbnailStream(user.rtcUID))
@@ -210,6 +219,8 @@ class RtcViewController: UIViewController {
     }
     
     func updateWith(nonTeacherValues values: [(user: RoomUser, canvas: AgoraRtcVideoCanvas)]) {
+        // Reset voluem spy
+        otherUsersVolumeDisposeBag = DisposeBag()
         for value in values {
             let itemView = itemViewForUid(value.user.rtcUID)
             if itemView.superview == nil {
@@ -412,8 +423,6 @@ class RtcViewController: UIViewController {
     lazy var videoItemsStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [noTeacherPlaceHolderView, localVideoItemView])
         view.axis = .horizontal
-        view.distribution = .equalSpacing
-        view.spacing = 8
         return view
     }()
     

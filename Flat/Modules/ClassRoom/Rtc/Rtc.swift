@@ -24,6 +24,7 @@ class Rtc: NSObject {
     let isJoined = BehaviorRelay<Bool>.init(value: false)
     var targetLocalMic: Bool? = false
     var targetLocalCamera: Bool? = false
+    var micStrenths: [UInt: PublishRelay<CGFloat>] = [:]
     
     // MARK: - Public
     func joinChannel() { joinChannelBlock?() }
@@ -114,6 +115,7 @@ class Rtc: NSObject {
         // Agora 建议自定义的小流分辨率不超过 320 × 180 px，码率不超过 140 Kbps，且小流帧率不能超过大流帧率。
         agoraKit.setParameters("{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":5,\"bitRate\":140}}")
         agoraKit.enableVideo()
+        agoraKit.enableAudioVolumeIndication(500, smooth: 3, report_vad: true)
         
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
@@ -169,6 +171,18 @@ extension Rtc: AgoraRtcEngineDelegate {
         @unknown default: break
         }
         logger.info("connectionChangedTo \(state) \(reason)")
+    }
+    
+    func rtcEngine(_ engine: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], totalVolume: Int) {
+        for speaker in speakers {
+            let strenth = CGFloat(speaker.volume) / 255
+            if let p = micStrenths[speaker.uid] {
+                p.accept(strenth)
+            } else {
+                micStrenths[speaker.uid] = .init()
+                micStrenths[speaker.uid]?.accept(strenth)
+            }
+        }
     }
     
     func rtcEngine(_ engine: AgoraRtcEngineKit, didApiCallExecute error: Int, api: String, result: String) {}
