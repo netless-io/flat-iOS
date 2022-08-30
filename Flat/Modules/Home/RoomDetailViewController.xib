@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RoomDetailViewController" customModule="DEV_Flat" customModuleProvider="target">
             <connections>
                 <outlet property="enterRoomButton" destination="GeJ-mC-FiS" id="tyk-iy-iZW"/>
+                <outlet property="inviteButton" destination="IAT-Qa-awO" id="mny-jk-EKv"/>
                 <outlet property="mainStackView" destination="cne-vZ-81t" id="Drx-I0-Pg7"/>
                 <outlet property="replayButton" destination="a70-nE-myW" id="8Ha-RL-OfY"/>
                 <outlet property="roomNumberLabel" destination="399-0V-V9A" id="Gff-B9-bRp"/>

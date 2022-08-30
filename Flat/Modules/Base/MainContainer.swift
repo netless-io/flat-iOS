@@ -44,7 +44,7 @@ extension MainSplitViewController: MainContainer {
     }
     
     func pushOnSplitPresentOnCompact(_ vc: UIViewController) {
-        show(vc)
+        push(vc)
     }
     
     func push(_ vc: UIViewController) {

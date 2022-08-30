@@ -17,7 +17,7 @@ class RoomDetailViewController: UIViewController {
         case cancel
         
         var isDestructive: Bool {
-            if self == .cancel { return true }
+            if self == .cancel || self == .remove { return true }
             return false
         }
         
@@ -40,6 +40,17 @@ class RoomDetailViewController: UIViewController {
                 return NSLocalizedString("Remove Room Verbose", comment: "")
             case .cancel:
                 return NSLocalizedString("Cancel Room Verbose", comment: "")
+            }
+        }
+        
+        var image: UIImage? {
+            switch self {
+            case .modify:
+                return nil
+            case .remove:
+                return UIImage(named: "delete_room")
+            case .cancel:
+                return nil
             }
         }
         
@@ -130,6 +141,12 @@ class RoomDetailViewController: UIViewController {
         mainStackView.axis = view.bounds.width <= 375 ? .vertical : .horizontal
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        inviteButton.layer.borderColor = UIColor.borderColor.cgColor
+        replayButton.layer.borderColor = UIColor.borderColor.cgColor
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -157,30 +174,36 @@ class RoomDetailViewController: UIViewController {
         if availableOperations.isEmpty {
             navigationItem.rightBarButtonItem = nil
         } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "more"), style: .plain, target: self, action: #selector(onClickEdit(_:)))
+            let item = UIBarButtonItem(image: UIImage(named: "more"),
+                                       style: .plain,
+                                       target: nil,
+                                       action: nil)
+            var actions = availableOperations.map { operation -> Action in
+                Action(title: operation.title,
+                       image: operation.image,
+                       style: operation.isDestructive ? .destructive : .default,
+                       handler: { _ in
+                    if !operation.alertVerbose.isEmpty {
+                        self.showCheckAlert(title: operation.title, message: operation.alertVerbose) {
+                            operation.actionFor(viewController: self)
+                        }
+                    } else {
+                        operation.actionFor(viewController: self)
+                    }
+                })
+            }
+            actions.append(.cancel)
+            item.setupCommonCustomAlert(actions)
+            item.viewContainingControllerProvider = { [weak self]  in
+                return self
+            }
+            navigationItem.rightBarButtonItem = item
         }
     }
     
     @IBAction func onClickCopy(_ sender: Any) {
         UIPasteboard.general.string = info.formatterInviteCode
         toast(localizeStrings("Copy Success"))
-    }
-    
-    @objc func onClickEdit(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: nil,
-                                                message: nil,
-                                                preferredStyle: .actionSheet)
-        for action in availableOperations {
-            alertController.addAction(.init(title: action.title, style: action.isDestructive ? .destructive : .default, handler: { _ in
-                if !action.alertVerbose.isEmpty {
-                    self.showCheckAlert(title: action.title, message: action.alertVerbose) {
-                        action.actionFor(viewController: self)
-                    }
-                }
-            }))
-        }
-        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-        popoverViewController(viewController: alertController, fromItem: sender)
     }
     
     func setupViews() {
@@ -301,6 +324,7 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var inviteButton: UIButton!
     @IBOutlet weak var roomNumberTitleLabel: UILabel!
     @IBOutlet weak var enterRoomButton: UIButton!
     @IBOutlet weak var mainStackView: UIStackView!

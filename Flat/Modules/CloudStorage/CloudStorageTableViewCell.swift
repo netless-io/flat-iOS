@@ -18,20 +18,31 @@ class CloudStorageTableViewCell: UITableViewCell {
         fatalError()
     }
     
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        if animated {
+            selectionView.layer.backgroundColor = selected ? UIColor.cellSelectedBG.cgColor : UIColor.whiteBG.cgColor
+        } else {
+            selectionView.backgroundColor = selected ?  .cellSelectedBG : .whiteBG
+        }
+    }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         rightArrowImageView.image = UIImage(named: "arrowRight")?.tintColor(.nickname)
+        moreActionButton.setImage(UIImage(named: "cloud_file_more")?.tintColor(.strongText), for: .normal)
     }
     
     func setupViews() {
         backgroundColor = .whiteBG
         contentView.backgroundColor = .whiteBG
+        
         let textStack = UIStackView(arrangedSubviews: [fileNameLabel, sizeAndTimeLabel])
         textStack.axis = .vertical
         textStack.distribution = .fillEqually
         textStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
-        let stackView = UIStackView(arrangedSubviews: [iconImage, textStack, rightArrowImageView])
+        let stackView = UIStackView(arrangedSubviews: [iconImage, textStack, rightArrowImageView, moreActionButton])
         stackView.spacing = 12
         stackView.axis = .horizontal
         stackView.distribution = .fill
@@ -41,6 +52,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         }
         iconImage.snp.makeConstraints { $0.width.equalTo(20) }
         rightArrowImageView.snp.makeConstraints { $0.width.equalTo(16) }
+        moreActionButton.snp.makeConstraints { $0.width.equalTo(44) }
         
         contentView.addSubview(convertingActivityView)
         convertingActivityView.snp.makeConstraints { make in
@@ -60,7 +72,15 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview()
         }
         
+        moreActionButton.isHidden = true
         rightArrowImageView.isHidden = true
+        
+        contentView.insertSubview(selectionView, at: 0)
+        selectionView.clipsToBounds = true
+        selectionView.layer.cornerRadius = 6
+        selectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8))
+        }
     }
     
     func stopConvertingAnimation() {
@@ -114,6 +134,13 @@ class CloudStorageTableViewCell: UITableViewCell {
         return imageView
     }()
     
+    lazy var moreActionButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.strongText), for: .normal)
+        btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        return btn
+    }()
+    
     lazy var rightArrowImageView:UIImageView = {
         let view = UIImageView(image: UIImage(named: "arrowRight")?.tintColor(.nickname))
         view.contentMode = .scaleAspectFit
@@ -134,4 +161,6 @@ class CloudStorageTableViewCell: UITableViewCell {
         label.lineBreakMode = .byTruncatingMiddle
         return label
     }()
+    
+    lazy var selectionView = UIView()
 }

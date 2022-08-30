@@ -174,7 +174,6 @@ class CloudStorageDisplayViewController: UIViewController,
     
     func observeCanDelete() {
         let trigger = Driver.of(Driver.just(()),
-//                                editButton.rx.tap.asDriver().mapToVoid(),
                                 tableView.rx.itemSelected.asDriver().mapToVoid(),
                                 tableView.rx.itemDeselected.asDriver().mapToVoid())
             .merge()
@@ -189,10 +188,6 @@ class CloudStorageDisplayViewController: UIViewController,
         canDelete.map { !$0 }
             .drive(deleteAllButton.rx.isHidden)
             .disposed(by: rx.disposeBag)
-        
-//        canDelete
-//            .drive(storageUsageLabel.rx.isHidden)
-//            .disposed(by: rx.disposeBag)
     }
     
     func setupViews() {
@@ -295,7 +290,7 @@ class CloudStorageDisplayViewController: UIViewController,
     // MARK: - Lazy
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
-        view.backgroundColor = .classroomChildBG
+        view.backgroundColor = .whiteBG
         view.separatorStyle = .none
         view.register(CloudStorageTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         view.delegate = self

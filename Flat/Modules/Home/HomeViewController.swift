@@ -86,21 +86,6 @@ class HomeViewController: UIViewController {
         showAlertWith(message: localizeStrings("Coming soon"))
     }
     
-    @objc func onClickAvatarBeforeiOS14(_ sender: UIButton) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(.init(title: NSLocalizedString("Profile", comment: ""), style: .default, handler: {  _ in
-            self.onClickProfile()
-        }))
-        alertController.addAction(.init(title: NSLocalizedString("Setting", comment: ""), style: .default, handler: { _ in
-            self.onClickSetting()
-        }))
-        alertController.modalPresentationStyle = .popover
-        let popPresent = alertController.popoverPresentationController
-        popPresent?.sourceView = sender
-        popPresent?.sourceRect = sender.bounds
-        present(alertController, animated: true, completion: nil)
-    }
-    
     @objc func onRefresh(_ sender: UIRefreshControl) {
         // Update for sometimes network doesn't work
         applyAvatar()
@@ -251,25 +236,15 @@ class HomeViewController: UIViewController {
         avatarButton.translatesAutoresizingMaskIntoConstraints = false
         avatarButton.contentMode = .scaleAspectFill
         avatarButton.isUserInteractionEnabled = true
-        if #available(iOS 14.0, *) {
-            avatarButton.menu = UIMenu.init(title: "",
-                                            image: UIImage(named: "login_logo"),
-                                            identifier: nil,
-                                            children: [
-                                                UIAction(title: NSLocalizedString("Profile", comment: ""),
-                                                         image: UIImage(named: "profile")
-                                                        ) { _ in
-                                                            self.onClickProfile()
-                                                        },
-                                                UIAction(title: NSLocalizedString("Setting", comment: ""),
-                                                         image: UIImage(named: "setting")
-                                                        ) { _ in
-                                                            self.onClickSetting()
-                                                        }])
-            avatarButton.showsMenuAsPrimaryAction = true
-        } else {
-            avatarButton.addTarget(self, action: #selector(onClickAvatarBeforeiOS14(_:)), for: .touchUpInside)
-        }
+        avatarButton.setupCommonCustomAlert([
+            .init(title: localizeStrings("Profile"), image: UIImage(named: "profile"), style: .default, handler: { _ in
+                self.onClickProfile()
+            }),
+            .init(title: localizeStrings("Setting"), image: UIImage(named: "setting"), style: .default, handler: { _ in
+                self.onClickSetting()
+            }),
+            .cancel
+        ])
         return avatarButton
     }()
     

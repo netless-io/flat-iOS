@@ -13,16 +13,7 @@ import SafariServices
 import Kingfisher
 
 class CloudStorageViewController: CloudStorageDisplayViewController {
-    var previewingUUID: String? {
-        didSet {
-            if let newId = previewingUUID, let newIndex = container.items.firstIndex(where: { $0.fileUUID == newId}) {
-                tableView.reloadRows(at: [IndexPath(row: newIndex, section: 0)], with: .none)
-            }
-            if let oldId = oldValue, let oldIndex = container.items.firstIndex(where: { $0.fileUUID == oldId}) {
-                tableView.reloadRows(at: [IndexPath(row: oldIndex, section: 0)], with: .none)
-            }
-        }
-    }
+    var previewingUUID: String?
     
     weak var previewingController: CustomPreviewViewController?
     var currentPreview: AnyPreview?
@@ -121,6 +112,10 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         normalOperationStackView.isHidden = tableView.isEditing
         selectionStackView.isHidden = !tableView.isEditing
         addButton.isHidden = tableView.isEditing
+        // To fire can delete action
+        if !tableView.isEditing, !container.items.isEmpty {
+            tableView.delegate?.tableView?(tableView, didDeselectRowAt: .init(row: 0, section: 0))
+        }
     }
     
     lazy var selectionStackView: UIStackView = {
@@ -135,36 +130,64 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         guard let cell =
                 super.tableView(tableView, cellForRowAt: indexPath) as? CloudStorageTableViewCell
         else { fatalError() }
-        
-        let item = container.items[indexPath.row]
-        let isPreviewing = item.fileUUID == previewingUUID
-        cell.contentView.backgroundColor = isPreviewing ? .cellSelectedBG : .whiteBG
+        cell.moreActionButton.isHidden = false
+        cell.moreActionButton.tag = indexPath.row
+        cell.moreActionButton.addTarget(self, action: #selector(onClickMoreAction(sender:)))
+        cell.selectionStyle = .none
         return cell
+    }
+    
+    @objc func onClickMoreAction(sender: UIButton) {
+        let item = container.items[sender.tag]
+        let hasCompact = mainContainer?.concreteViewController.traitCollection.hasCompact ?? false
+        if hasCompact {
+            presentCommonCustomAlert(actions(for: item))
+        } else {
+            popOverCommonCustomAlert(actions(for: item), fromSource: sender, permittedArrowDirections: [.right])
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard !tableView.isEditing else { return nil }
+        let item = container.items[indexPath.row]
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
+            let uiActions = self.actions(for: item).compactMap { action -> UIAction? in
+                if action.isCancelAction() {
+                    return nil
+                }
+                return UIAction(title: action.title, attributes: action.style == .destructive ? .destructive : []) { _ in
+                    action.handler?(action)
+                }
+            }
+            return UIMenu(title: "", children: uiActions)
+        }
+    }
+    
+    func actions(for item: StorageFileModel) -> [Action] {
+        [
+            .init(title: localizeStrings("Preview"), style: .default, handler: { _ in
+                self.preview(item)
+            }),
+            .init(title: localizeStrings("Rename"), style: .default, handler: { _ in
+                self.rename(item)
+            }),
+            .init(title: localizeStrings("Share"), style: .default, handler: { _ in
+                self.share(item)
+            }),
+            .init(title: localizeStrings("Delete"), style: .destructive, handler: { _ in
+                self.deleteItems([item])
+            }),
+            .cancel
+        ]
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else { return }
-        tableView.deselectRow(at: indexPath, animated: true)
+//        tableView.deselectRow(at: indexPath, animated: true)
         let item = container.items[indexPath.row]
         guard item.usable else { return }
-
-        let cell = tableView.cellForRow(at: indexPath)
-        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertVC.addAction(.init(title: NSLocalizedString("Preview", comment: ""), style: .default, handler: { [unowned self] _ in
-            if item.convertStep == .converting {
-                self.toast(NSLocalizedString("FileIsConverting", comment: ""))
-                return
-            }
-            self.preview(item)
-        }))
-        alertVC.addAction(.init(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { [unowned self] _ in
-            self.rename(item)
-        }))
-        alertVC.addAction(.init(title: NSLocalizedString("Share", comment: ""), style: .default, handler: { [unowned self] _ in
-            self.share(item)
-        }))
-        alertVC.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-        popoverViewController(viewController: alertVC, fromSource: cell)
+        preview(item)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -297,7 +320,10 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             vc.clickBackHandler = { [weak self] in
                 self?.cleanPreviewResource()
             }
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
             mainContainer?.pushOnSplitPresentOnCompact(vc)
+            CATransaction.commit()
         }
         catch {
             logger.error("previewLocalFileUrlPath, \(error)")

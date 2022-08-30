@@ -37,6 +37,9 @@
 		8A0A85F227ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
 		8A0CA22328BC73FE0035F71A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0CA22228BC73FE0035F71A /* QuartzCore.framework */; };
+		8A0CA22628BC98180035F71A /* FlatPopoverAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */; };
+		8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */; };
+		8A0CA22A28BCC4380035F71A /* FlatCompactAlertController copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
 		8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */; };
@@ -310,6 +313,9 @@
 		8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Pods-Flat-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-Flat/Pods-Flat-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
 		8A0CA22228BC73FE0035F71A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatPopoverAlertController.swift; sourceTree = "<group>"; };
+		8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatCustomAlertSetable.swift; sourceTree = "<group>"; };
+		8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlatCompactAlertController copy.swift"; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
 		8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverDismissDetectableViewController.swift; sourceTree = "<group>"; };
@@ -748,9 +754,20 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
+		8A0CA22428BC97FC0035F71A /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */,
+				8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */,
+				8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
 		8A11CBE0271FEBB1001D0B1F /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8A0CA22428BC97FC0035F71A /* Alert */,
 				8AD2EF742775664C00087280 /* Share */,
 				8A8020AC275864A200F5691C /* PageContainer */,
 				8A0BD7B1274B345900383E9D /* Button */,
@@ -1606,6 +1623,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A05A1582834EA99002DE9B9 /* Agreement.swift in Sources */,
+				8A0CA22628BC98180035F71A /* FlatPopoverAlertController.swift in Sources */,
 				8A21DAC4279FD2CF0060E25D /* RecordingFlagView.swift in Sources */,
 				8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */,
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
@@ -1620,6 +1638,7 @@
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
 				8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */,
+				8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */,
 				8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */,
 				8ABD71E427683DB5004FDC36 /* ClassRoomLayout.swift in Sources */,
 				8A05C33C2760411D009BCA79 /* MultipartFormData.swift in Sources */,
@@ -1673,6 +1692,7 @@
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
 				8A05C322275E05BC009BCA79 /* MethodExchange.swift in Sources */,
 				8AF244DC287C243C00E6B2AF /* WechatBinding.swift in Sources */,
+				8A0CA22A28BCC4380035F71A /* FlatCompactAlertController copy.swift in Sources */,
 				8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,

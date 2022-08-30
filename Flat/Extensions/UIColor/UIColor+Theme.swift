@@ -24,6 +24,14 @@ extension UIColor {
         }
     }
     
+    static var compactAlertBg: UIColor {
+        return UIColor(named: "compactAlertBg" + nameSuffix)!
+    }
+    
+    static var delete: UIColor {
+        return UIColor(named: "delete" + nameSuffix)!
+    }
+    
     static var cellSelectedBG: UIColor {
         return UIColor(named: "CellSelectedBG" + nameSuffix)!
     }
