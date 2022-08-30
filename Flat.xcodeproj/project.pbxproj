@@ -40,6 +40,7 @@
 		8A0CA22628BC98180035F71A /* FlatPopoverAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */; };
 		8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */; };
 		8A0CA22A28BCC4380035F71A /* FlatCompactAlertController copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */; };
+		8A0CA22C28BDA9060035F71A /* HomeEntryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22B28BDA9060035F71A /* HomeEntryButton.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
 		8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */; };
@@ -316,6 +317,7 @@
 		8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatPopoverAlertController.swift; sourceTree = "<group>"; };
 		8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatCustomAlertSetable.swift; sourceTree = "<group>"; };
 		8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlatCompactAlertController copy.swift"; sourceTree = "<group>"; };
+		8A0CA22B28BDA9060035F71A /* HomeEntryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEntryButton.swift; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
 		8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverDismissDetectableViewController.swift; sourceTree = "<group>"; };
@@ -882,6 +884,7 @@
 			isa = PBXGroup;
 			children = (
 				8A270B6E271829AB00450DC6 /* HomeViewController.swift */,
+				8A0CA22B28BDA9060035F71A /* HomeEntryButton.swift */,
 				8AFB942928B7124C00B8795D /* HistoryViewController.swift */,
 				8ACE3A25272FF77100BC37F7 /* RoomDetailViewController.swift */,
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
@@ -1725,6 +1728,7 @@
 				8A05C34227604576009BCA79 /* UploadFinishRequest.swift in Sources */,
 				8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */,
 				8A21DAB6279F9EEF0060E25D /* RecordAcquireRequest.swift in Sources */,
+				8A0CA22C28BDA9060035F71A /* HomeEntryButton.swift in Sources */,
 				8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */,
 				8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */,
 				8A7741B9273287C2009FAADA /* RtcCellPopMenuView.swift in Sources */,

@@ -207,16 +207,10 @@ class HomeViewController: UIViewController {
         fillTopSafeAreaWith(color: .whiteBG)
     }
     
-    func createHeaderButton(title: String, imageName: String, target: Any?, action: Selector) -> UIButton {
-        let button = UIButton(type: .custom)
-        button.setTitleColor(.text, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 12)
-        
-        button.setImage(UIImage(named: imageName), for: .normal)
-        button.setTitle(title, for: .normal)
-        button.addTarget(target, action: action, for: .touchUpInside)
-        button.verticalCenterImageAndTitleWith(8)
-        return button
+    func createHeaderButton(title: String, imageName: String, target: Any?, action: Selector) -> HomeEntryButton {
+        let view = HomeEntryButton(imageName: imageName, title: title)
+        view.addTarget(target, action: action)
+        return view
     }
     
     func applyAvatar() {
@@ -252,9 +246,9 @@ class HomeViewController: UIViewController {
         let header = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 166)))
         header.backgroundColor = .whiteBG
         let stack = UIStackView(arrangedSubviews: [
-            createHeaderButton(title: NSLocalizedString("Join Room", comment: ""), imageName: "room_join", target: self, action: #selector(onClickJoin)),
-            createHeaderButton(title: NSLocalizedString("Start Now", comment: ""), imageName: "room_create", target: self, action: #selector(onClickCreate)),
-            createHeaderButton(title: NSLocalizedString("Book Room", comment: ""), imageName: "room_book", target: self, action: #selector(onClickBook))
+            createHeaderButton(title: localizeStrings("Join Room"), imageName: "room_join", target: self, action: #selector(onClickJoin)),
+            createHeaderButton(title: localizeStrings("Start Now"), imageName: "room_create", target: self, action: #selector(onClickCreate)),
+            createHeaderButton(title: localizeStrings("Book Room"), imageName: "room_book", target: self, action: #selector(onClickBook))
         ])
         stack.distribution = .fillEqually
         stack.axis = .horizontal
