@@ -197,7 +197,7 @@ class RtcViewController: UIViewController {
                  canvas: AgoraRtcVideoCanvas,
                  isLocal: Bool) {
         update(itemView: view, user: user, volumeBag: isLocal ? otherUsersVolumeDisposeBag : otherUsersVolumeDisposeBag)
-        view.showAvatar(!user.status.camera)
+        view.showAvatar(!user.status.camera || !user.isOnline)
         
         viewModel.rtc.updateRemoteUserStreamType(rtcUID: user.rtcUID, type: viewModel.userThumbnailStream(user.rtcUID))
         apply(canvas: canvas,
