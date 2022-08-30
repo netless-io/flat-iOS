@@ -166,7 +166,7 @@ class UploadTasksViewController: UIViewController {
                       forCellReuseIdentifier: cellIdentifier)
         view.delegate = self
         view.dataSource = self
-        view.rowHeight = 54
+        view.rowHeight = 70
         view.showsVerticalScrollIndicator = false
         return view
     }()
