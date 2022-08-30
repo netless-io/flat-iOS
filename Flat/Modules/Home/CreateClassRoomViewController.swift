@@ -102,6 +102,8 @@ class CreateClassRoomViewController: UIViewController {
             let selectedTypeView = typeViews[index]
             selectedTypeView.isSelected = true
         }
+        
+        subjectTextField.resignFirstResponder()
     }
     
     @objc func onClickType(_ sender: UIButton) {

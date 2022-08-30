@@ -15,7 +15,7 @@ protocol MainSplitViewControllerDetailUpdateDelegate: AnyObject {
 
 extension UISplitViewController {
     /// hidePrimary will only effect when style is triple column
-    @objc func show(_ vc: UIViewController, hidePrimary: Bool = true) {
+    @objc func show(_ vc: UIViewController, hidePrimary: Bool = false) {
         showDetailViewController(vc, sender: nil)
     }
 }
@@ -70,7 +70,7 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         delegate = self
     }
     
-    override func show(_ vc: UIViewController, hidePrimary: Bool = true) {
+    override func show(_ vc: UIViewController, hidePrimary: Bool = false) {
         detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: nil)
         if #available(iOS 14.0, *) {
             if style == .tripleColumn {

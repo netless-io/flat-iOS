@@ -70,7 +70,7 @@ class HomeEntryButton: UIView {
         let interval = Date().timeIntervalSince(touchesBeginDate)
         animator.fractionComplete = 0
         animator.pauseAnimation()
-        if interval <= 0.001 {
+        if interval <= 0.05 {
             let basic = CABasicAnimation(keyPath: "transform.scale")
             basic.isRemovedOnCompletion = true
             basic.duration = 0.15

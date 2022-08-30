@@ -62,7 +62,6 @@ class HomeViewController: UIViewController {
         setupViews()
         observeNotification()
         observeClassLeavingNotification()
-        applyAvatar()
     }
     
     // MARK: - Action
@@ -214,6 +213,7 @@ class HomeViewController: UIViewController {
     }
     
     func applyAvatar() {
+        guard avatarButton.superview != nil else { return }
         let width = CGFloat(24)
         let size = CGSize.init(width: width, height: width)
         let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5))
@@ -268,7 +268,11 @@ class HomeViewController: UIViewController {
             make.top.equalTo(header.safeAreaLayoutGuide).offset(16)
         }
         
-        let operationStack = UIStackView(arrangedSubviews: [historyButton, avatarButton])
+        let operationStack = UIStackView(arrangedSubviews: [historyButton])
+        if let hasSideBar = mainContainer?.hasSideBar, !hasSideBar {
+            operationStack.addArrangedSubview(avatarButton)
+            applyAvatar()
+        }
         operationStack.axis = .horizontal
         operationStack.distribution = .fillEqually
         header.addSubview(operationStack)
@@ -386,7 +390,7 @@ extension HomeViewController: MainSplitViewControllerDetailUpdateDelegate {
     func mainSplitViewControllerDidUpdateDetail(_ vc: UIViewController, sender: Any?) {
         let isHistory = (vc as? HistoryViewController) != nil
         self.showingHistory = isHistory
-        
+
         // If select a vc is not the room detail, deselect the tableview
         if let selectedItem = tableView.indexPathForSelectedRow {
             let item = list[selectedItem.row]

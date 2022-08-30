@@ -15,6 +15,8 @@ protocol MainContainer: AnyObject {
     
     func removeTop()
     
+    var hasSideBar: Bool { get }
+    
     var concreteViewController: UIViewController { get }
 }
 
@@ -23,6 +25,10 @@ extension MainContainer where Self: UIViewController {
 }
 
 extension MainTabBarController: MainContainer {
+    var hasSideBar: Bool {
+        false
+    }
+    
     func removeTop() {
         (selectedViewController as? UINavigationController)?.popViewController(animated: true)
     }
@@ -39,6 +45,14 @@ extension MainTabBarController: MainContainer {
 }
 
 extension MainSplitViewController: MainContainer {
+    var hasSideBar: Bool {
+        if #available(iOS 14.0, *) {
+            return (viewController(for: .primary) != nil)
+        } else {
+            return false
+        }
+    }
+    
     func removeTop() {
         cleanSecondary()
     }

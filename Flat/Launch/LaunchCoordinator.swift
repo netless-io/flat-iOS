@@ -95,19 +95,17 @@ class LaunchCoordinator {
                 return compactMain()
             }
             let vc = MainSplitViewController(style: .tripleColumn)
+            if #available(iOS 14.5, *) {
+                vc.displayModeButtonVisibility = .never
+            }
             vc.preferredDisplayMode = .twoBesideSecondary
             vc.preferredSplitBehavior = .tile
             vc.showsSecondaryOnlyButton = false
-            if #available(iOS 14.5, *) {
-                vc.displayModeButtonVisibility = .always
-            }
-            vc.preferredSupplementaryColumnWidthFraction = 0.375
-            vc.preferredPrimaryColumnWidthFraction = 0.375 / 2
-            vc.minimumPrimaryColumnWidth = 144
-            vc.setViewController(BaseNavigationViewController(rootViewController: SidebarViewController()), for: .primary)
-            vc.setViewController(HomeViewController(), for: .supplementary)
+            vc.preferredPrimaryColumnWidth = 64
+            vc.preferredSupplementaryColumnWidth = 360
+            let sideVC = RegularSideBarViewController()
+            vc.setViewController(sideVC, for: .primary)
             vc.setViewController(vc.emptyDetailController, for: .secondary)
-            vc.primaryBackgroundStyle = .sidebar
             return vc
         } else {
             return oldPadMain()

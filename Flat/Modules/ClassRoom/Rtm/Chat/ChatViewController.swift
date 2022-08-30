@@ -231,10 +231,10 @@ class ChatViewController: PopOverDismissDetectableViewController {
     lazy var banTextButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "message_ban")?.tintColor(.chatButtonNormal), for: .normal)
-        btn.setImage(UIImage(named: "message_ban")?.tintColor(.brandStrongColor), for: .selected)
+        btn.setImage(UIImage(named: "message_ban")?.tintColor(.delete), for: .selected)
         btn.traitCollectionUpdateHandler = { [weak btn] _ in
             btn?.setImage(UIImage(named: "message_ban")?.tintColor(.chatButtonNormal), for: .normal)
-            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.brandStrongColor), for: .selected)
+            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.delete), for: .selected)
         }
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
@@ -343,6 +343,10 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
 extension ChatViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         nil
+    }
+    
+    func backgroundColor(forEmptyDataSet scrollView: UIScrollView!) -> UIColor! {
+        .classroomChildBG
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {

@@ -183,8 +183,10 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if isCompact() {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
         guard !tableView.isEditing else { return }
-//        tableView.deselectRow(at: indexPath, animated: true)
         let item = container.items[indexPath.row]
         guard item.usable else { return }
         preview(item)
@@ -320,10 +322,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             vc.clickBackHandler = { [weak self] in
                 self?.cleanPreviewResource()
             }
-            CATransaction.begin()
-            CATransaction.setDisableActions(true)
             mainContainer?.pushOnSplitPresentOnCompact(vc)
-            CATransaction.commit()
         }
         catch {
             logger.error("previewLocalFileUrlPath, \(error)")
