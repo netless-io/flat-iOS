@@ -48,10 +48,33 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         fillTopSafeAreaWith(color: .whiteBG)
     }
     
+    // MARK: - Action
+    override func onClickEdit(_ sender: UIButton) {
+        super.onClickEdit(sender)
+        normalOperationStackView.isHidden = tableView.isEditing
+        selectionStackView.isHidden = !tableView.isEditing
+        addButton.isHidden = tableView.isEditing
+        // To fire can delete action
+        if !tableView.isEditing, !container.items.isEmpty {
+            tableView.delegate?.tableView?(tableView, didDeselectRowAt: .init(row: 0, section: 0))
+        }
+    }
+    
+    
+    // MARK: - Lazy
     lazy var addButton: UIButton = {
         let addButton = UIButton(type: .custom)
         addButton.setImage(UIImage(named: "storage_add"), for: .normal)
-        addButton.addTarget(self, action: #selector(onClickAdd), for: .touchUpInside)
+        var actions = UploadType.allCases.map { type -> Action in
+            return Action(title: type.title, image: UIImage(named: type.imageName), style: .default) { _ in
+                UploadUtility.shared.start(uploadType: type,
+                                           fromViewController: self,
+                                           delegate: self,
+                                           presentStyle: .main)
+            }
+        }
+        actions.append(.cancel)
+        addButton.setupCommonCustomAlert(actions)
         return addButton
     }()
     
@@ -88,10 +111,14 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     }()
     
     lazy var normalOperationStackView: UIStackView = {
+        let uploadListButton = UIButton(type: .custom)
+        uploadListButton.setImage(UIImage(named: "upload_list")?.tintColor(.text), for: .normal)
+        uploadListButton.addTarget(self, action: #selector(presentTask), for: .touchUpInside)
+        
         let selectionButton = UIButton(type: .custom)
         selectionButton.setImage(UIImage(named: "cloud_storage_selection")?.tintColor(.text), for: .normal)
         selectionButton.addTarget(self, action: #selector(onClickEdit(_:)), for: .touchUpInside)
-        let stack = UIStackView(arrangedSubviews: [selectionButton])
+        let stack = UIStackView(arrangedSubviews: [uploadListButton, selectionButton])
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         return stack
@@ -107,16 +134,11 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         return button
     }()
     
-    override func onClickEdit(_ sender: UIButton) {
-        super.onClickEdit(sender)
-        normalOperationStackView.isHidden = tableView.isEditing
-        selectionStackView.isHidden = !tableView.isEditing
-        addButton.isHidden = tableView.isEditing
-        // To fire can delete action
-        if !tableView.isEditing, !container.items.isEmpty {
-            tableView.delegate?.tableView?(tableView, didDeselectRowAt: .init(row: 0, section: 0))
-        }
-    }
+    lazy var tasksViewController: UploadTasksViewController = {
+        let vc = UploadTasksViewController()
+        vc.modalPresentationStyle = .pageSheet
+        return vc
+    }()
     
     lazy var selectionStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [deleteAllButton, finishSelectionButton])
@@ -205,11 +227,6 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     }
     
     // MARK: - Actions
-    @objc func onClickAdd() {
-        let vc = UploadHomeViewController()
-        mainContainer?.push(vc)
-    }
-    
     func share(_ item: StorageFileModel) {
         guard let index = container.items.firstIndex(of: item) else { return }
         let cell = tableView.cellForRow(at: .init(row: index, section: 0))
@@ -364,5 +381,71 @@ extension CloudStorageViewController: SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         mainContainer?.removeTop()
         previewingUUID = nil
+    }
+}
+
+// MARK: - UploadUtilityDelegate
+extension CloudStorageViewController: UploadUtilityDelegate {
+    @objc func presentTask() {
+        mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
+    }
+    
+    func uploadFile(url: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool) {
+        do {
+            var result = try UploadService.shared
+                .createUploadTaskFrom(fileURL: url,
+                                      region: region,
+                                      shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
+            let newTask = result.task.do(onSuccess: { fillUUID in
+                if ConvertService.isFileConvertible(withFileURL: url) {
+                    ConvertService.startConvert(fileUUID: fillUUID, isWhiteboardProjector: ConvertService.isDynamicPpt(url: url)) { [weak self] result in
+                        switch result {
+                        case .success:
+                            NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
+                        case .failure(let error):
+                            self?.toast(error.localizedDescription)
+                        }
+                    }
+                } else {
+                    NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
+                }
+            })
+            result = (newTask, result.tracker)
+            tasksViewController.appendTask(task: result.task, fileURL: url, subject: result.tracker)
+            presentTask()
+        }
+        catch {
+            toast("error create task \(error.localizedDescription)", timeInterval: 3)
+        }
+    }
+    
+    func uploadUtilityDidCompletePick(type: UploadType, url: URL) {
+        switch type {
+        case .image:
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
+        case .video:
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
+        case .audio:
+            // It from file
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
+        case .doc:
+            // It from file
+            uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
+        }
+    }
+    
+    func uploadUtilityDidStartVideoConverting() {
+        showActivityIndicator()
+    }
+    
+    func uploadUtilityDidFinishVideoConverting(error: Error?) {
+        stopActivityIndicator()
+        if let error = error {
+            toast(error.localizedDescription)
+        }
+    }
+    
+    func uploadUtilityDidMeet(error: Error) {
+        toast(error.localizedDescription)
     }
 }

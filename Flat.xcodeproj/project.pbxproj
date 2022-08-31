@@ -18,7 +18,6 @@
 		8A05C313275DE279009BCA79 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C312275DE279009BCA79 /* ProfileViewController.swift */; };
 		8A05C322275E05BC009BCA79 /* MethodExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C321275E05BC009BCA79 /* MethodExchange.swift */; };
 		8A05C324275E06C3009BCA79 /* TraitUpdateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C323275E06C3009BCA79 /* TraitUpdateHandler.swift */; };
-		8A05C329275F399E009BCA79 /* UploadHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C327275F399E009BCA79 /* UploadHomeViewController.swift */; };
 		8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C32B275F4E7E009BCA79 /* UploadService.swift */; };
 		8A05C32E275F5017009BCA79 /* PrepareUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C32D275F5017009BCA79 /* PrepareUploadRequest.swift */; };
 		8A05C330275F5044009BCA79 /* UploadInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05C32F275F5044009BCA79 /* UploadInfo.swift */; };
@@ -295,7 +294,6 @@
 		8A05C312275DE279009BCA79 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		8A05C321275E05BC009BCA79 /* MethodExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodExchange.swift; sourceTree = "<group>"; };
 		8A05C323275E06C3009BCA79 /* TraitUpdateHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitUpdateHandler.swift; sourceTree = "<group>"; };
-		8A05C327275F399E009BCA79 /* UploadHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadHomeViewController.swift; sourceTree = "<group>"; };
 		8A05C32B275F4E7E009BCA79 /* UploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadService.swift; sourceTree = "<group>"; };
 		8A05C32D275F5017009BCA79 /* PrepareUploadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareUploadRequest.swift; sourceTree = "<group>"; };
 		8A05C32F275F5044009BCA79 /* UploadInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadInfo.swift; sourceTree = "<group>"; };
@@ -734,7 +732,6 @@
 		8A05C34E2760AB6F009BCA79 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
-				8A05C327275F399E009BCA79 /* UploadHomeViewController.swift */,
 				8ABD71BE276716AA004FDC36 /* UploadType.swift */,
 				8AD2EF6C2774128200087280 /* ConvertService.swift */,
 				8AAB06232762E514006CAEF2 /* ExportService.swift */,
@@ -1753,7 +1750,6 @@
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
 				8A9FB3AD2722674F00F6F06F /* FlatResponseDataHandler.swift in Sources */,
 				8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */,
-				8A05C329275F399E009BCA79 /* UploadHomeViewController.swift in Sources */,
 				8A9ACC0A271E98DB00E7E7CE /* RoomTableViewCell.swift in Sources */,
 				8A9FB395272154B800F6F06F /* Message.swift in Sources */,
 				8A270B8427192A0800450DC6 /* SettingViewController.swift in Sources */,
