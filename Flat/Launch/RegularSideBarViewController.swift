@@ -102,10 +102,11 @@ class RegularSideBarViewController: UIViewController {
             make.right.centerY.equalToSuperview()
             make.width.equalTo(width)
         }
-        icons.enumerated().forEach { addBtn(imageName: $0.element, tag: $0.offset) }
+        icons.enumerated().forEach { addBtn(imageName: $0.element, title: titles[$0.offset], tag: $0.offset) }
         syncSelected()
     }
     
+    var titles: [String] = ["Home", "Cloud Storage"].map { localizeStrings($0) }
     var icons: [String] = ["side_home", "side_cloud"]
     var selectedIndex = 0 {
         didSet {
@@ -117,11 +118,14 @@ class RegularSideBarViewController: UIViewController {
         BaseNavigationViewController(rootViewController: CloudStorageViewController()),
     ]
     
-    func addBtn(imageName: String, tag: Int) {
+    func addBtn(imageName: String, title: String, tag: Int) {
         let btn = UIButton(type: .custom)
         btn.tag = tag
         btn.setImage(UIImage(named: imageName), for: .normal)
         btn.addTarget(self, action: #selector(onClickMainBtn(_:)), for: .touchUpInside)
+        btn.setTitle(title, for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 12)
+        btn.verticalCenterImageAndTitleWith(4)
         mainStackView.addArrangedSubview(btn)
         btn.snp.makeConstraints { make in
             make.height.equalTo(width)
@@ -131,11 +135,13 @@ class RegularSideBarViewController: UIViewController {
     func syncSelected() {
         let newButton = (mainStackView.arrangedSubviews[selectedIndex] as! UIButton)
         newButton.setImage(UIImage(named: icons[selectedIndex] + "_filled")?.tintColor(.brandColor), for: .normal)
+        newButton.setTitleColor(.brandColor, for: .normal)
         
         mainStackView.arrangedSubviews.enumerated().forEach { (offset, element) in
             if offset != selectedIndex {
                 guard let btn = element as? UIButton else { return }
                 btn.setImage(UIImage(named: icons[offset])?.tintColor(.text), for: .normal)
+                btn.setTitleColor(.text, for: .normal)
             }
         }
         
