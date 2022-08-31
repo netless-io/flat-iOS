@@ -61,13 +61,23 @@ class FlatCompactAlertController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        popAnimation()
+    }
+    
+    func popAnimation(reverse: Bool = false, completion: ((Bool)->Void)? = nil) {
         let itemsHeight = CGFloat(stack.arrangedSubviews.count) * rowHeight + additionalSafeAreaInsets.bottom
-        stack.transform = .init(translationX: 0, y: itemsHeight)
-        container.transform = .init(translationX: 0, y: itemsHeight)
-        UIView.animate(withDuration: 0.15) {
-            self.stack.transform = .identity
-            self.container.transform = .identity
+        if reverse {
+            UIView.animate(withDuration: 0.15, animations: {
+                self.stack.transform = .init(translationX: 0, y: itemsHeight)
+                self.container.transform = .init(translationX: 0, y: itemsHeight)
+            }, completion: completion)
+        } else {
+            stack.transform = .init(translationX: 0, y: itemsHeight)
+            container.transform = .init(translationX: 0, y: itemsHeight)
+            UIView.animate(withDuration: 0.15, animations: {
+                self.stack.transform = .identity
+                self.container.transform = .identity
+            }, completion: completion)
         }
     }
     
@@ -88,7 +98,11 @@ class FlatCompactAlertController: UIViewController {
     }
     
     func dismissView() {
-        dismiss(animated: true)
+        popAnimation(reverse: true) { success in
+            if success {
+                self.dismiss(animated: false)
+            }
+        }
     }
     
     @objc func onTap() {
@@ -100,15 +114,21 @@ class FlatCompactAlertController: UIViewController {
 
         let buttons = actions.enumerated().map { value -> UIButton in
             let title = value.element.title
-            let btn = UIButton(type: .custom)
+            let btn = UIButton(type: .system)
             btn.setTitle(title, for: .normal)
             btn.tag = value.offset
+            btn.backgroundColor = .compactAlertBg
             btn.titleLabel?.font = .systemFont(ofSize: 20)
             if value.element.style == .destructive {
                 btn.setTitleColor(.delete, for: .normal)
-                btn.titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
                     btn?.setTitleColor(.delete, for: .normal)
+                }
+            } else if value.element.isCancelAction() {
+                btn.titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
+                btn.setTitleColor(.text, for: .normal)
+                btn.traitCollectionUpdateHandler = { [weak btn] _ in
+                    btn?.setTitleColor(.strongText, for: .normal)
                 }
             } else {
                 btn.setTitleColor(.text, for: .normal)
@@ -119,7 +139,9 @@ class FlatCompactAlertController: UIViewController {
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)
             return btn
         }
-        buttons.forEach { stack.addArrangedSubview($0) }
+        buttons.forEach {
+            stack.addArrangedSubview($0)
+        }
         stack.arrangedSubviews.first?.snp.makeConstraints { make in
             make.height.equalTo(rowHeight)
         }
@@ -127,7 +149,7 @@ class FlatCompactAlertController: UIViewController {
         view.addSubview(stack)
         
         stack.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
+            make.left.right.equalToSuperview().inset(16)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(CGFloat(stack.arrangedSubviews.count) * rowHeight)
         }
@@ -145,7 +167,8 @@ class FlatCompactAlertController: UIViewController {
         let stack = UIStackView(arrangedSubviews: [])
         stack.axis = .vertical
         stack.distribution = .fillEqually
-        stack.backgroundColor = .compactAlertBg
+        stack.backgroundColor = .borderColor
+        stack.spacing = 1 / UIScreen.main.scale
         return stack
     }()
     

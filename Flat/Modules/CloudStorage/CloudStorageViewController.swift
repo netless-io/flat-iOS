@@ -40,9 +40,8 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     func setupAdditionalViews() {
         view.addSubview(addButton)
         addButton.snp.makeConstraints { make in
-            make.right.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.size.equalTo(CGSize(width: 80, height: 64))
+            make.right.bottom.equalToSuperview()
+            make.size.equalTo(CGSize(width: 80, height: 80))
         }
         tableView.contentInset = .init(top: 0, left: 0, bottom: 88, right: 0)
         fillTopSafeAreaWith(color: .whiteBG)
