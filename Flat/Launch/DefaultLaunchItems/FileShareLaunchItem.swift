@@ -48,10 +48,45 @@ class FileShareLaunchItem: LaunchItem {
             if let _ = mainContainer.concreteViewController.presentedViewController {
                 mainContainer.concreteViewController.dismiss(animated: false, completion: nil)
             }
-            let vc = UploadHomeViewController()
-            mainContainer.push(vc)
-            // TODO: The temp file does not deleted, in tmp dir
-            vc.uploadFile(url: self.url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
+            
+            func startWith(_ controller: CloudStorageViewController) {
+                // TODO: The temp file does not deleted, in tmp dir
+                controller.uploadFile(url: self.url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
+            }
+            
+            // Select to storage
+            if let split = mainContainer.concreteViewController as? MainSplitViewController {
+                if #available(iOS 14, *) {
+                    if let side = split.viewController(for: .primary) as? RegularSideBarViewController {
+                        if let index = side.controllers.firstIndex(where: { ($0 as? UINavigationController)?.topViewController is CloudStorageViewController }) {
+                            side.selectedIndex = index
+                            if let controller = (side.controllers[index] as? UINavigationController)?.topViewController as? CloudStorageViewController {
+                                startWith(controller)
+                                return
+                            }
+                        }
+                    }
+                }
+                
+                if let tab = split.viewControllers.first as? MainTabBarController {
+                    if let index = tab.viewControllers?.firstIndex(where: { ($0 as? UINavigationController)?.topViewController is CloudStorageViewController }) {
+                        tab.selectedIndex = index
+                        if let controller = (tab.viewControllers?[index] as? UINavigationController)?.topViewController as? CloudStorageViewController {
+                            startWith(controller)
+                            return
+                        }
+                    }
+                }
+                
+            } else if let tab = mainContainer.concreteViewController as? MainTabBarController {
+                if let index = tab.viewControllers?.firstIndex(where: { ($0 as? UINavigationController)?.topViewController is CloudStorageViewController }) {
+                    tab.selectedIndex = index
+                    if let controller = (tab.viewControllers?[index] as? UINavigationController)?.topViewController as? CloudStorageViewController {
+                        startWith(controller)
+                        return
+                    }
+                }
+            }
         })
     }
 }

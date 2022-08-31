@@ -57,7 +57,7 @@ class FlatCompactAlertController: UIViewController {
         self.actions.append(action)
     }
     
-    let rowHeight: CGFloat = 48
+    let rowHeight: CGFloat = 56
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -103,9 +103,10 @@ class FlatCompactAlertController: UIViewController {
             let btn = UIButton(type: .custom)
             btn.setTitle(title, for: .normal)
             btn.tag = value.offset
-            btn.titleLabel?.font = .systemFont(ofSize: 16)
+            btn.titleLabel?.font = .systemFont(ofSize: 20)
             if value.element.style == .destructive {
                 btn.setTitleColor(.delete, for: .normal)
+                btn.titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
                     btn?.setTitleColor(.delete, for: .normal)
                 }
