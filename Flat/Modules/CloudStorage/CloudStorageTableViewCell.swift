@@ -137,7 +137,6 @@ class CloudStorageTableViewCell: UITableViewCell {
     lazy var moreActionButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.strongText), for: .normal)
-        btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         return btn
     }()
     
