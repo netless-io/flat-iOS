@@ -43,7 +43,12 @@ class FileShareLaunchItem: LaunchItem {
     }
     
     func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) {
-        UIApplication.shared.topViewController?.showCheckAlert(message: NSLocalizedString("Got New File Alert", comment: ""), completionHandler: {
+        guard let top = UIApplication.shared.topViewController else { return }
+        if top is ClassRoomViewController {
+            top.toast(localizeStrings("TryLaunchUploadInClassTip"))
+            return
+        }
+        top.showCheckAlert(message: NSLocalizedString("Got New File Alert", comment: ""), completionHandler: {
             guard let mainContainer = UIApplication.shared.topViewController?.mainContainer else { return }
             if let _ = mainContainer.concreteViewController.presentedViewController {
                 mainContainer.concreteViewController.dismiss(animated: false, completion: nil)
