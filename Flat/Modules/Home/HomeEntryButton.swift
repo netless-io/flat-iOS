@@ -10,7 +10,8 @@ import UIKit
 
 class HomeEntryButton: UIView {
     init(imageName: String, title: String) {
-        imageView = UIImageView(image: UIImage(named: imageName))
+        imageView = UIImageView()
+        imageView.setDynamicImage(dynamicName: imageName)
         imageView.contentMode = .scaleAspectFit
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
@@ -18,11 +19,6 @@ class HomeEntryButton: UIView {
         label.textAlignment = .center
         label.text = title
         super.init(frame: .zero)
-        
-        traitCollectionUpdateHandler = { [weak self] _ in
-            self?.imageView.image = UIImage(named: imageName)
-        }
-        
         stack.addArrangedSubview(imageView)
         stack.addArrangedSubview(label)
         addSubview(stack)

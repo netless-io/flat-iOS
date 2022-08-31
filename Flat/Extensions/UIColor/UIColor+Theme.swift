@@ -136,20 +136,4 @@ extension UIColor {
     static var lightBlueBar: UIColor {
         return UIColor(named: "LightBlueBar" + nameSuffix)!
     }
-    
-    static var sideBarNormal: UIColor {
-        return UIColor(named: "SideBarNormal" + nameSuffix)!
-    }
-    
-    static var sideBarSelected: UIColor {
-        return UIColor(named: "SideBarSelected" + nameSuffix)!
-    }
-    
-    static var sideBarTextNormal: UIColor {
-        return UIColor(named: "SideBarTextNormal" + nameSuffix)!
-    }
-    
-    static var sideBarTextSelected: UIColor {
-        return UIColor(named: "SideBarTextSelected" + nameSuffix)!
-    }
 }

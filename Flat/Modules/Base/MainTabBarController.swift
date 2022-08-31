@@ -31,6 +31,14 @@ class MainTabBarController: UITabBarController {
         }
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+        } else {
+            tabBar.barTintColor = .whiteBG
+        }
+    }
+    
     func setup() {
         tabBar.tintColor = .brandColor
         tabBar.isTranslucent = true
@@ -41,17 +49,19 @@ class MainTabBarController: UITabBarController {
             if #available(iOS 15.0, *) {
                 tabBar.scrollEdgeAppearance = appearance
             }
+        } else {
+            tabBar.barTintColor = .whiteBG
         }
         
         let home = makeSubController(fromViewController: HomeViewController(),
                                      image: UIImage(named: "tab_room")!,
                                      selectedImage: UIImage(named: "tab_room_sel")!,
-                                     title: NSLocalizedString("Home", comment: ""))
+                                     title: localizeStrings("Home"))
         addChild(home)
         let cloudStorage = makeSubController(fromViewController: CloudStorageViewController(),
                                              image: UIImage(named: "tab_cloud_storage")!,
                                              selectedImage: UIImage(named: "tab_cloud_storage_sel")!,
-                                             title: NSLocalizedString("Cloud Storage", comment: ""))
+                                             title: localizeStrings("Cloud Storage"))
         addChild(cloudStorage)
     }
     

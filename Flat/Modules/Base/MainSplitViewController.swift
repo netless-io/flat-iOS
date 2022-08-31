@@ -68,6 +68,7 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
+        view.backgroundColor = .borderColor
     }
     
     override func show(_ vc: UIViewController, hidePrimary: Bool = false) {

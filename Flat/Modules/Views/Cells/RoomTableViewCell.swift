@@ -20,6 +20,7 @@ class RoomTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectionStyle = .none
         separatorLineHeightConstraint.constant = 1 / UIScreen.main.scale
         contentView.backgroundColor = .whiteBG
         borderView.backgroundColor = .borderColor
