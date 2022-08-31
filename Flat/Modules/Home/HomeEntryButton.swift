@@ -55,7 +55,15 @@ class HomeEntryButton: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        breakAnimation(fireAction: true)
+        let isEndInView = touches.allSatisfy({
+            let location = $0.location(in: self)
+            return self.bounds.contains(location)
+        })
+        if isEndInView {
+            breakAnimation(fireAction: true)
+        } else {
+            breakAnimation(fireAction: false)
+        }
     }
     
     func breakAnimation(fireAction: Bool) {
