@@ -26,8 +26,6 @@ class CreateClassRoomViewController: UIViewController {
         }
     }
     
-    let margin: CGFloat = 16
-    
     // MARK: - LifeCycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
@@ -39,10 +37,16 @@ class CreateClassRoomViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        previewView.turnCamera(on: false)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         updateSelected()
+        previewView.turnCamera(on: deviceView.cameraOn)
     }
     
     // MARK: - Private
@@ -51,31 +55,77 @@ class CreateClassRoomViewController: UIViewController {
         addPresentTitle(localizeStrings("Start Now"))
         view.backgroundColor = .whiteBG
         view.addSubview(subjectTextField)
-        view.addSubview(createButton)
-        view.addSubview(deviceView)
         view.addSubview(typesStackView)
+        view.addSubview(previewView)
         
-        typesStackView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.height.equalTo(66)
-            make.centerY.equalToSuperview().offset(-88)
-        }
+//        typesStackView.snp.makeConstraints { make in
+//            make.left.right.equalToSuperview()
+//            make.height.equalTo(66)
+//            make.centerY.equalToSuperview().offset(-88)
+//        }
         
-        subjectTextField.snp.makeConstraints { make in
-            make.width.equalTo(320)
-            make.height.equalTo(30 + 32)
-            make.centerX.equalToSuperview()
-            make.bottom.equalTo(typesStackView.snp.top).offset(-32)
-        }
-        
-        deviceView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.bottom.equalTo(createButton.snp.top).offset(-32)
-        }
-        
-        createButton.snp.makeConstraints { make in
-            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.height.equalTo(40)
+        if isCompact() {
+//            previewView.snp.makeConstraints { make in
+//                make.top.equalTo(typesStackView.snp.bottom)
+//                make.bottom.equalTo(deviceView.snp.top)
+//                make.width.equalTo(previewView.snp.height).multipliedBy(16.0/9)
+//                make.centerX.equalToSuperview()
+//            }
+//            deviceView.snp.makeConstraints { make in
+//                make.left.right.equalToSuperview()
+//                make.bottom.equalTo(createButton.snp.top).offset(-32)
+//            }
+//
+//            createButton.snp.makeConstraints { make in
+//                make.left.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)h
+//                make.height.equalTo(40)
+//            }
+        } else {
+            subjectTextField.snp.makeConstraints { make in
+                make.left.right.equalToSuperview().inset(80)
+                make.height.equalTo(30 + 32)
+                make.centerX.equalToSuperview()
+                make.top.equalToSuperview().inset(56)
+            }
+            
+            typesStackView.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.width.equalToSuperview().inset(96)
+                make.height.equalTo(66)
+                make.top.equalTo(subjectTextField.snp.bottom).offset(16)
+            }
+            typesStackView.arrangedSubviews.forEach { $0.snp.makeConstraints { make in
+                make.width.equalTo(66)
+            }}
+            
+            previewView.snp.makeConstraints { make in
+                make.top.equalTo(typesStackView.snp.bottom).offset(16)
+                make.width.equalTo(previewView.snp.height).multipliedBy(16.0/9)
+                make.left.right.equalToSuperview().inset(40)
+                make.centerX.equalToSuperview()
+                make.bottom.equalToSuperview().inset(64)
+            }
+            
+            let createContainer = UIView()
+            createContainer.addSubview(createButton)
+            
+            let bottomStack = UIStackView(arrangedSubviews: [deviceView, createContainer])
+            bottomStack.axis = .horizontal
+            bottomStack.spacing = 16
+            view.addSubview(bottomStack)
+            bottomStack.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.bottom.equalToSuperview().inset(8)
+                make.height.equalTo(48)
+            }
+            createContainer.snp.makeConstraints {
+                $0.width.equalTo(88)
+            }
+            createButton.snp.makeConstraints { make in
+                make.edges.equalToSuperview().inset(UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
+            }
+            
+            preferredContentSize = .init(width: 480, height: 506)
         }
     }
     
@@ -187,7 +237,7 @@ class CreateClassRoomViewController: UIViewController {
         tf.placeholder = localizeStrings("Room Subject Placeholder")
         tf.returnKeyType = .go
         tf.clearButtonMode = .whileEditing
-        tf.text = defaultTitle
+        tf.placeholder = defaultTitle
         tf.textAlignment = .center
         tf.delegate = self
         return tf
@@ -203,8 +253,7 @@ class CreateClassRoomViewController: UIViewController {
     lazy var typesStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: typeViews)
         view.axis = .horizontal
-        view.spacing = margin
-        view.distribution = .fillEqually
+        view.distribution = .equalSpacing
         return view
     }()
     
@@ -214,10 +263,15 @@ class CreateClassRoomViewController: UIViewController {
         return view
     }
     
+    lazy var previewView = CameraPreviewView()
+    
     lazy var deviceView: CameraMicToggleView = {
         let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
         let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         let view = CameraMicToggleView(cameraOn: cameraOn, micOn: micOn)
+        view.cameraOnUpdate = { [weak self] camera in
+            self?.previewView.turnCamera(on: camera)
+        }
         return view
     }()
 }

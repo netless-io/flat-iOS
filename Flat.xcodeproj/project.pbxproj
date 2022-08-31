@@ -43,6 +43,7 @@
 		8A0CA23028BE11A10035F71A /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22F28BE11A10035F71A /* Global.swift */; };
 		8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */; };
 		8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23428BF37B50035F71A /* ConvinceInit.swift */; };
+		8A0CA23728BF4A860035F71A /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
 		8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */; };
@@ -321,6 +322,7 @@
 		8A0CA22F28BE11A10035F71A /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+oldDark.swift"; sourceTree = "<group>"; };
 		8A0CA23428BF37B50035F71A /* ConvinceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvinceInit.swift; sourceTree = "<group>"; };
+		8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
 		8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverDismissDetectableViewController.swift; sourceTree = "<group>"; };
@@ -898,6 +900,7 @@
 				8AFB942928B7124C00B8795D /* HistoryViewController.swift */,
 				8ACE3A25272FF77100BC37F7 /* RoomDetailViewController.swift */,
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
+				8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */,
 				8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */,
 				8AFB942D28B7550100B8795D /* CameraMicToggleView.swift */,
 				8ACE3A26272FF77100BC37F7 /* RoomDetailViewController.xib */,
@@ -1830,6 +1833,7 @@
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,
 				8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */,
 				8A9FB3BD272298CD00F6F06F /* JSONDecoder+Extension.swift in Sources */,
+				8A0CA23728BF4A860035F71A /* CameraPreviewView.swift in Sources */,
 				8ACE3A24272FED7700BC37F7 /* RoomHistoryRequest.swift in Sources */,
 				8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */,
 				8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */,

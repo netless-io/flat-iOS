@@ -9,8 +9,20 @@
 import UIKit
 
 class CameraMicToggleView: UIView {
-    var cameraOn: Bool
-    var micOn: Bool
+    var cameraOnUpdate: ((Bool)->Void)?
+    var micOnUpdate: ((Bool)->Void)?
+    
+    var cameraOn: Bool {
+        didSet {
+            cameraOnUpdate?(cameraOn)
+        }
+    }
+    
+    var micOn: Bool {
+        didSet {
+            micOnUpdate?(micOn)
+        }
+    }
 
     init(cameraOn: Bool, micOn: Bool) {
         self.cameraOn = cameraOn
@@ -28,80 +40,45 @@ class CameraMicToggleView: UIView {
     
     func setupViews() {
         addSubview(stackView)
-        stackView.axis = .vertical
-        stackView.spacing = 12
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.distribution = .fillEqually
+        
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        for view in stackView.arrangedSubviews {
-            view.snp.makeConstraints { make in
-                make.height.equalTo(58)
-            }
+        stackView.arrangedSubviews.first?.snp.makeConstraints { make in
+            make.width.equalTo(stackView.snp.height)
         }
         
-        self.cameraSwitch.isOn = cameraOn
-        self.micSwitch.isOn = micOn
-        self.cameraSwitch.addTarget(self, action: #selector(onSwitchUpdate(_:)), for: .valueChanged)
-        self.micSwitch.addTarget(self, action: #selector(onSwitchUpdate(_:)), for: .valueChanged)
+        cameraButton.isSelected = cameraOn
+        microphoneButton.isSelected = micOn
     }
     
-    @objc func onSwitchUpdate(_ sender: UISwitch) {
-        if sender === cameraSwitch {
-            self.cameraOn = sender.isOn
+    @objc func onButtonClick(_ sender: UIButton) {
+        if sender === cameraButton {
+            self.cameraOn.toggle()
         } else {
-            self.micOn = sender.isOn
+            self.micOn.toggle()
         }
+        sender.isSelected.toggle()
     }
     
-    func selectionView(imageName: String, title: String, detail: String, switchView: UISwitch) -> UIView {
-        let view = UIView()
-        let imageView = UIImageView(image: UIImage(named: imageName)?.tintColor(.brandColor))
-        imageView.contentMode = .scaleAspectFit
-        view.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.centerX.equalTo(view.snp.left).offset(28)
-            make.top.equalTo(11)
-        }
-        let label1 = UILabel()
-        label1.text = title
-        label1.font = .systemFont(ofSize: 16)
-        label1.textColor = .strongText
-        view.addSubview(label1)
-        label1.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(56)
-            make.top.equalToSuperview()
-        }
-        let label2 = UILabel()
-        label2.text = detail
-        label2.font = .systemFont(ofSize: 12)
-        label2.textColor = .text
-        view.addSubview(label2)
-        label2.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(56)
-            make.top.equalToSuperview().inset(28)
-        }
-        let line = UIView()
-        view.addSubview(line)
-        line.backgroundColor = .borderColor
-        line.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(1/UIScreen.main.scale)
-            make.left.equalToSuperview().inset(56)
-            make.right.equalToSuperview().inset(16)
-        }
-        view.addSubview(switchView)
-        switchView.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(16)
-            make.centerY.equalToSuperview()
-        }
-        return view
-    }
+    lazy var cameraButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "camera"), for: .selected)
+        button.setImage(UIImage(named: "camera_off"), for: .normal)
+        button.addTarget(self, action: #selector(onButtonClick(_:)), for: .touchUpInside)
+        return button
+    }()
     
-    lazy var stackView = UIStackView(arrangedSubviews: [
-        selectionView(imageName: "camera", title: localizeStrings("Camera"), detail: localizeStrings("JoinCameraDetail"), switchView: cameraSwitch),
-        selectionView(imageName: "microphone", title: localizeStrings("Mic"), detail: localizeStrings("JoinMicDetail"), switchView: micSwitch),
-    ])
-    lazy var cameraSwitch = UISwitch()
-    lazy var micSwitch = UISwitch()
+    lazy var microphoneButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "microphone"), for: .selected)
+        button.setImage(UIImage(named: "mic_off"), for: .normal)
+        button.addTarget(self, action: #selector(onButtonClick(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var stackView = UIStackView(arrangedSubviews: [cameraButton, microphoneButton])
 }
