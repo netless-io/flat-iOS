@@ -153,10 +153,13 @@ class RegularSideBarViewController: UIViewController {
     }
     
     func applyAvatar() {
+        let scale = UIScreen.main.scale
+        let containerWidth = CGFloat(64)
         let width = CGFloat(32)
-        let size = CGSize.init(width: width, height: width)
+        let size = CGSize(width: width, height: width).applying(.init(scaleX: scale, y: scale))
         let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5))
         let processor = ResizingImageProcessor(referenceSize: size).append(another: corner)
+        avatarButton.imageEdgeInsets = .init(inset: (containerWidth - width) / 2)
         avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
                                  for: .normal,
                                  options: [.processor(processor)])

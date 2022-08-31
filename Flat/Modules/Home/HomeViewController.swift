@@ -214,10 +214,13 @@ class HomeViewController: UIViewController {
     
     func applyAvatar() {
         guard avatarButton.superview != nil else { return }
+        let containerWidth: CGFloat = 44
+        let scale = UIScreen.main.scale
         let width = CGFloat(24)
-        let size = CGSize.init(width: width, height: width)
+        let size = CGSize(width: width, height: width).applying(.init(scaleX: scale, y: scale))
         let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5))
         let processor = ResizingImageProcessor(referenceSize: size).append(another: corner)
+        avatarButton.imageEdgeInsets = .init(inset: (containerWidth - width) / 2)
         avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
                                  for: .normal,
                                  options: [.processor(processor)])

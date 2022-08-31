@@ -42,6 +42,7 @@
 		8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */; };
 		8A0CA23028BE11A10035F71A /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22F28BE11A10035F71A /* Global.swift */; };
 		8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */; };
+		8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23428BF37B50035F71A /* ConvinceInit.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
 		8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */; };
@@ -319,6 +320,7 @@
 		8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularSideBarViewController.swift; sourceTree = "<group>"; };
 		8A0CA22F28BE11A10035F71A /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+oldDark.swift"; sourceTree = "<group>"; };
+		8A0CA23428BF37B50035F71A /* ConvinceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvinceInit.swift; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
 		8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverDismissDetectableViewController.swift; sourceTree = "<group>"; };
@@ -764,6 +766,14 @@
 				8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */,
 			);
 			path = Alert;
+			sourceTree = "<group>";
+		};
+		8A0CA23328BF37A60035F71A /* ConvinceInit */ = {
+			isa = PBXGroup;
+			children = (
+				8A0CA23428BF37B50035F71A /* ConvinceInit.swift */,
+			);
+			path = ConvinceInit;
 			sourceTree = "<group>";
 		};
 		8A11CBE0271FEBB1001D0B1F /* UIComponents */ = {
@@ -1355,6 +1365,7 @@
 		8AD3CDF72716B524008BD904 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8A0CA23328BF37A60035F71A /* ConvinceInit */,
 				8A05C316275E03EF009BCA79 /* UIView */,
 				8ADD9E0027701CFB009A7050 /* UITraitCollection */,
 				8A05C320275E046D009BCA79 /* Array */,
@@ -1632,6 +1643,7 @@
 				8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */,
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
+				8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */,
 				8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */,
 				8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */,
 				8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */,

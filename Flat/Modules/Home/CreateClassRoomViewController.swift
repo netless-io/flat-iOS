@@ -43,10 +43,6 @@ class CreateClassRoomViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         updateSelected()
-        
-        DispatchQueue.main.async {
-            self.subjectTextField.becomeFirstResponder()
-        }
     }
     
     // MARK: - Private
@@ -107,7 +103,15 @@ class CreateClassRoomViewController: UIViewController {
     }
     
     @objc func onClickType(_ sender: UIButton) {
-        currentRoomType = availableTypes[sender.tag]
+        let newType = availableTypes[sender.tag]
+        if currentRoomType != newType {
+            currentRoomType = newType
+            if #available(iOS 13.0, *) {
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+            } else {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+        }
     }
     
     @objc func onClickCreate(_ sender: UIButton) {

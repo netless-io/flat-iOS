@@ -63,9 +63,14 @@ class HomeEntryButton: UIView {
     }
     
     func breakAnimation(fireAction: Bool) {
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         
         if fireAction {
+            if #available(iOS 13.0, *) {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            } else {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+            
             if let t = target, let s = sel {
                 _ = t.perform(s)
             }

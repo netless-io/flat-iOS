@@ -111,7 +111,7 @@ class FlatCompactAlertController: UIViewController {
                     btn?.setTitleColor(.delete, for: .normal)
                 }
             } else {
-                btn.setTitleColor(.strongText, for: .normal)
+                btn.setTitleColor(.text, for: .normal)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
                     btn?.setTitleColor(.strongText, for: .normal)
                 }

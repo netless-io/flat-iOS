@@ -9,7 +9,7 @@
 
 import UIKit
 
-class MainTabBarController: UITabBarController {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         traitCollection.hasCompact ? .portrait : .all
     }
@@ -63,6 +63,8 @@ class MainTabBarController: UITabBarController {
                                              selectedImage: UIImage(named: "tab_cloud_storage_sel")!,
                                              title: localizeStrings("Cloud Storage"))
         addChild(cloudStorage)
+        
+        delegate = self
     }
     
     func makeSubController(
@@ -76,5 +78,13 @@ class MainTabBarController: UITabBarController {
         controller.tabBarItem.title = title
         let navi = BaseNavigationViewController(rootViewController: controller)
         return navi
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if #available(iOS 13.0, *) {
+            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        } else {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        }
     }
 }
