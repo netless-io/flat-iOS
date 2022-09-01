@@ -56,8 +56,9 @@ class JoinRoomViewController: UIViewController {
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
                 let parent = weakSelf.mainContainer?.concreteViewController
-                parent?.dismiss(animated: false)
-                parent?.present(vc, animated: true, completion: nil)
+                parent?.dismiss(animated: true) {
+                    parent?.present(vc, animated: true, completion: nil)
+                }
             }, onFailure: { weakSelf, error in
                 sender.isEnabled = true
                 weakSelf.showAlertWith(message: error.localizedDescription)

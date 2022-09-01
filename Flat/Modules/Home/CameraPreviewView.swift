@@ -38,8 +38,6 @@ class CameraPreviewView: UIView {
         super.init(frame: .zero)
         setupViews()
         syncRotate()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(syncRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -67,9 +65,7 @@ class CameraPreviewView: UIView {
                 return UIApplication.shared.statusBarOrientation
             }
         }
-        let isUnknown = UIDevice.current.orientation == .unknown
-        let orientation: UIInterfaceOrientation =  isUnknown ? applicantionOrientation() : UIDevice.current.orientation.toInterfaceOrientation()
-        switch orientation {
+        switch applicantionOrientation() {
         case .unknown:
             return
         case .portrait:
@@ -79,7 +75,7 @@ class CameraPreviewView: UIView {
         case .landscapeLeft:
             previewLayer.connection?.videoOrientation = .landscapeRight
         case .landscapeRight:
-            previewLayer.connection?.videoOrientation = .landscapeLeft
+            previewLayer.connection?.videoOrientation = .landscapeRight
         @unknown default:
             return
         }
@@ -152,6 +148,7 @@ class CameraPreviewView: UIView {
             sampleQueue.async {
                 self.session.startRunning()
             }
+            syncRotate()
             didSetupCapture = true
         }
         catch {
