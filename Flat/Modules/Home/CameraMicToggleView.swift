@@ -7,19 +7,39 @@
 //
 
 import UIKit
+import AVFoundation
+
+protocol CameraMicToggleViewDelegate: AnyObject {
+    func cameraMicToggleViewCouldUpdate(_ view: CameraMicToggleView, cameraOn: Bool) -> Bool
+    func cameraMicToggleViewCouldUpdate(_ view: CameraMicToggleView, micOn: Bool) -> Bool
+}
 
 class CameraMicToggleView: UIView {
+    weak var delegate: CameraMicToggleViewDelegate?
+    
     var cameraOnUpdate: ((Bool)->Void)?
     var micOnUpdate: ((Bool)->Void)?
     
     var cameraOn: Bool {
         didSet {
+            if #available(iOS 13.0, *) {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            } else {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+            cameraButton.isSelected = cameraOn
             cameraOnUpdate?(cameraOn)
         }
     }
     
     var micOn: Bool {
         didSet {
+            if #available(iOS 13.0, *) {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            } else {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+            microphoneButton.isSelected = micOn
             micOnUpdate?(micOn)
         }
     }
@@ -37,18 +57,32 @@ class CameraMicToggleView: UIView {
         super.init(coder: coder)
         setupViews()
     }
+
+    let itemWidth: CGFloat = 48
+    
+    override var intrinsicContentSize: CGSize {
+        let count = CGFloat(2) //CGFloat(stackView.arrangedSubviews.count)
+        if stackView.axis == .vertical {
+            return .init(width: itemWidth * count, height: itemWidth)
+        } else {
+            return .init(width: itemWidth, height: itemWidth * count)
+        }
+    }
     
     func setupViews() {
         addSubview(stackView)
         stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.distribution = .fillEqually
+        stackView.distribution = .equalCentering
+        stackView.alignment = .center
         
         stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.center.equalToSuperview()
+            make.width.height.lessThanOrEqualToSuperview()
         }
-        stackView.arrangedSubviews.first?.snp.makeConstraints { make in
-            make.width.equalTo(stackView.snp.height)
+        stackView.arrangedSubviews.forEach {
+            $0.snp.makeConstraints { make in
+                make.width.height.equalTo(itemWidth)
+            }
         }
         
         cameraButton.isSelected = cameraOn
@@ -57,11 +91,22 @@ class CameraMicToggleView: UIView {
     
     @objc func onButtonClick(_ sender: UIButton) {
         if sender === cameraButton {
-            self.cameraOn.toggle()
+            if let delegate = delegate, !cameraOn {
+                if delegate.cameraMicToggleViewCouldUpdate(self, cameraOn: !self.cameraOn) {
+                    self.cameraOn.toggle()
+                }
+            } else {
+                self.cameraOn.toggle()
+            }
         } else {
-            self.micOn.toggle()
+            if let delegate = delegate, !micOn {
+                if delegate.cameraMicToggleViewCouldUpdate(self, micOn: !self.micOn) {
+                    self.micOn.toggle()
+                }
+            } else {
+                self.micOn.toggle()
+            }
         }
-        sender.isSelected.toggle()
     }
     
     lazy var cameraButton: UIButton = {

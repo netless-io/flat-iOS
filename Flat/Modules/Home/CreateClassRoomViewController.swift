@@ -37,16 +37,10 @@ class CreateClassRoomViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        previewView.turnCamera(on: false)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         updateSelected()
-        previewView.turnCamera(on: deviceView.cameraOn)
     }
     
     // MARK: - Private
@@ -54,79 +48,69 @@ class CreateClassRoomViewController: UIViewController {
         addPresentCloseButton()
         addPresentTitle(localizeStrings("Start Now"))
         view.backgroundColor = .whiteBG
-        view.addSubview(subjectTextField)
-        view.addSubview(typesStackView)
-        view.addSubview(previewView)
         
-//        typesStackView.snp.makeConstraints { make in
-//            make.left.right.equalToSuperview()
-//            make.height.equalTo(66)
-//            make.centerY.equalToSuperview().offset(-88)
-//        }
+        let bottomStack = UIStackView(arrangedSubviews: [deviceView, createButton])
         
-        if isCompact() {
-//            previewView.snp.makeConstraints { make in
-//                make.top.equalTo(typesStackView.snp.bottom)
-//                make.bottom.equalTo(deviceView.snp.top)
-//                make.width.equalTo(previewView.snp.height).multipliedBy(16.0/9)
-//                make.centerX.equalToSuperview()
-//            }
-//            deviceView.snp.makeConstraints { make in
-//                make.left.right.equalToSuperview()
-//                make.bottom.equalTo(createButton.snp.top).offset(-32)
-//            }
-//
-//            createButton.snp.makeConstraints { make in
-//                make.left.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)h
-//                make.height.equalTo(40)
-//            }
-        } else {
-            subjectTextField.snp.makeConstraints { make in
-                make.left.right.equalToSuperview().inset(80)
-                make.height.equalTo(30 + 32)
-                make.centerX.equalToSuperview()
-                make.top.equalToSuperview().inset(56)
-            }
-            
-            typesStackView.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.width.equalToSuperview().inset(96)
-                make.height.equalTo(66)
-                make.top.equalTo(subjectTextField.snp.bottom).offset(16)
-            }
-            typesStackView.arrangedSubviews.forEach { $0.snp.makeConstraints { make in
-                make.width.equalTo(66)
-            }}
-            
-            previewView.snp.makeConstraints { make in
-                make.top.equalTo(typesStackView.snp.bottom).offset(16)
-                make.width.equalTo(previewView.snp.height).multipliedBy(16.0/9)
-                make.left.right.equalToSuperview().inset(40)
-                make.centerX.equalToSuperview()
-                make.bottom.equalToSuperview().inset(64)
-            }
-            
-            let createContainer = UIView()
-            createContainer.addSubview(createButton)
-            
-            let bottomStack = UIStackView(arrangedSubviews: [deviceView, createContainer])
-            bottomStack.axis = .horizontal
-            bottomStack.spacing = 16
-            view.addSubview(bottomStack)
-            bottomStack.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.bottom.equalToSuperview().inset(8)
-                make.height.equalTo(48)
-            }
-            createContainer.snp.makeConstraints {
-                $0.width.equalTo(88)
-            }
-            createButton.snp.makeConstraints { make in
-                make.edges.equalToSuperview().inset(UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
-            }
-            
-            preferredContentSize = .init(width: 480, height: 506)
+        let verticalStack = UIStackView(arrangedSubviews: [subjectTextField, typesStackView, previewView, bottomStack])
+        verticalStack.axis = .vertical
+        verticalStack.alignment = .center
+        verticalStack.distribution = .fill
+        verticalStack.spacing = 0
+        view.addSubview(verticalStack)
+        verticalStack.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide).inset(UIEdgeInsets(top: 66, left: 16, bottom: 16, right: 16))
         }
+        
+        subjectTextField.setContentHuggingPriority(.defaultLow, for: .vertical)
+        subjectTextField.snp.makeConstraints { make in
+            make.width.equalTo(320)
+            make.height.greaterThanOrEqualTo(66)
+            make.width.equalTo(typesStackView)
+            make.height.equalTo(typesStackView)
+        }
+        
+        typesStackView.arrangedSubviews.forEach { $0.snp.makeConstraints { make in
+            make.width.equalTo(66)
+        }}
+        
+        previewView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        previewView.setContentCompressionResistancePriority(.required, for: .vertical)
+        previewView.snp.makeConstraints { make in
+            if isCompact() {
+                make.height.equalTo(previewView.snp.width)
+            } else {
+                make.width.equalTo(previewView.snp.height).multipliedBy(16.0/9)
+            }
+            make.width.equalToSuperview().priority(.medium)
+            make.width.greaterThanOrEqualTo(280)
+        }
+        if isCompact() {
+            previewView.transform = .init(scaleX: 0.95, y: 0.95)
+        } else {
+            previewView.transform = .init(scaleX: 0.9, y: 0.9)
+        }
+        
+        bottomStack.axis = isCompact() ? .vertical : .horizontal
+        let bottomStackItemHeight: CGFloat = 44
+        bottomStack.spacing = 8
+        bottomStack.distribution = .equalCentering
+        bottomStack.alignment = .center
+        bottomStack.snp.makeConstraints { make in
+            if isCompact() {
+                make.height.equalTo(bottomStackItemHeight * 2 + 8)
+                make.width.equalToSuperview()
+            } else {
+                make.height.equalTo(bottomStackItemHeight)
+            }
+        }
+        createButton.snp.makeConstraints { make in
+            make.height.equalTo(bottomStackItemHeight)
+            if isCompact() {
+                make.width.equalToSuperview()
+            }
+        }
+        
+        preferredContentSize = .init(width: 480, height: 0)
     }
     
     func typeViewForType(_ type: ClassRoomType) -> UIButton {
@@ -266,14 +250,24 @@ class CreateClassRoomViewController: UIViewController {
     lazy var previewView = CameraPreviewView()
     
     lazy var deviceView: CameraMicToggleView = {
-        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
-        let view = CameraMicToggleView(cameraOn: cameraOn, micOn: micOn)
+        let view = CameraMicToggleView(cameraOn: false, micOn: false)
+        view.delegate = deviceAutorizationHelper
         view.cameraOnUpdate = { [weak self] camera in
             self?.previewView.turnCamera(on: camera)
         }
+        
+        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
+        if cameraOn {
+            view.onButtonClick(view.cameraButton)
+        }
+        if micOn {
+            view.onButtonClick(view.microphoneButton)
+        }
         return view
     }()
+    
+    lazy var deviceAutorizationHelper = DeviceAutorizationHelper(rootController: self)
 }
 
 extension CreateClassRoomViewController: UITextFieldDelegate {

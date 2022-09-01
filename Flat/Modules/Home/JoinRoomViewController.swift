@@ -29,7 +29,7 @@ class JoinRoomViewController: UIViewController {
         setupViews()
         bindJoinEnable()
         
-        subjectTextField.becomeFirstResponder()
+        subjectTextField.keyboardDistanceFromTextField = 700
     }
     
     // MARK: - Action
@@ -93,28 +93,77 @@ class JoinRoomViewController: UIViewController {
     func setupViews() {
         addPresentCloseButton()
         addPresentTitle(localizeStrings("Join Room"))
-        
         view.backgroundColor = .whiteBG
-        view.addSubview(subjectTextField)
-        view.addSubview(joinButton)
-        view.addSubview(deviceView)
         
+        let bottomStackItemHeight: CGFloat = 44
+        
+        if isCompact() {
+            let centerStack = UIStackView(arrangedSubviews: [subjectTextField, previewView, deviceView])
+            centerStack.axis = .vertical
+            centerStack.alignment = .center
+            centerStack.distribution = .equalCentering
+            view.addSubview(centerStack)
+            centerStack.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+            
+            subjectTextField.snp.makeConstraints { make in
+                make.width.equalTo(320)
+                make.height.equalTo(66)
+            }
+            
+            previewView.snp.makeConstraints { make in
+                make.height.equalTo(previewView.snp.width)
+                make.width.equalToSuperview().priority(.medium)
+                make.width.greaterThanOrEqualTo(280)
+            }
+            previewView.transform = .init(scaleX: 0.95, y: 0.95)
+            
+            view.addSubview(joinButton)
+            joinButton.snp.makeConstraints { make in
+                make.height.equalTo(bottomStackItemHeight)
+                make.left.right.equalToSuperview().inset(16)
+                make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            }
+            return
+        }
+        
+        
+        let bottomStack = UIStackView(arrangedSubviews: [deviceView, joinButton])
+        let verticalStack = UIStackView(arrangedSubviews: [subjectTextField, previewView, bottomStack])
+        verticalStack.axis = .vertical
+        verticalStack.alignment = .center
+        verticalStack.distribution = .equalCentering
+        view.addSubview(verticalStack)
+        verticalStack.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide).inset(UIEdgeInsets(top: 56, left: 16, bottom: 16, right: 16))
+        }
+        
+        subjectTextField.setContentHuggingPriority(.defaultLow, for: .vertical)
         subjectTextField.snp.makeConstraints { make in
             make.width.equalTo(320)
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-100)
-            make.height.equalTo(30 + 32)
+            make.height.equalTo(66)
         }
         
-        deviceView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.bottom.equalTo(joinButton.snp.top).offset(-32)
+        previewView.snp.makeConstraints { make in
+            make.width.equalTo(previewView.snp.height).multipliedBy(16.0/9)
+            make.width.equalToSuperview().priority(.medium)
+            make.width.greaterThanOrEqualTo(280)
         }
+        previewView.transform = .init(scaleX: 0.9, y: 0.9)
         
+        bottomStack.axis = .horizontal
+        bottomStack.spacing = 8
+        bottomStack.distribution = .equalCentering
+        bottomStack.alignment = .center
+        bottomStack.snp.makeConstraints { make in
+            make.height.equalTo(bottomStackItemHeight)
+        }
         joinButton.snp.makeConstraints { make in
-            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
-            make.height.equalTo(40)
+            make.height.equalTo(bottomStackItemHeight)
         }
+        
+        preferredContentSize = .init(width: 480, height: 424)
     }
     
     // MARK: - Lazy
@@ -138,12 +187,27 @@ class JoinRoomViewController: UIViewController {
         return btn
     }()
     
+    lazy var previewView = CameraPreviewView()
+    
     lazy var deviceView: CameraMicToggleView = {
+        let view = CameraMicToggleView(cameraOn: false, micOn: false)
+        view.delegate = deviceAutorizationHelper
+        view.cameraOnUpdate = { [weak self] camera in
+            self?.previewView.turnCamera(on: camera)
+        }
+        
         let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
         let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
-        let view = CameraMicToggleView(cameraOn: cameraOn, micOn: micOn)
+        if cameraOn {
+            view.onButtonClick(view.cameraButton)
+        }
+        if micOn {
+            view.onButtonClick(view.microphoneButton)
+        }
         return view
     }()
+    
+    lazy var deviceAutorizationHelper = DeviceAutorizationHelper(rootController: self)
 }
 
 extension JoinRoomViewController: UITextFieldDelegate {

@@ -75,6 +75,9 @@
 "Camera" = "Camera";
 
 
+"CameraDenyTip" = "You need to invoke the camera permissions to be able to video chat, click into the settings to open the camera permissions";
+
+
 "Cancel" = "Cancel";
 
 
@@ -216,6 +219,9 @@
 "Finish" = "Finish";
 
 
+"GoSetting" = "Go Setting";
+
+
 "Got New File Alert" = "A new document is received, upload?";
 
 
@@ -298,6 +304,9 @@
 
 
 "Mic" = "Mic";
+
+
+"MicDenyTip" = "You need to invoke microphone permission for voice chat, click into settings to open microphone permission";
 
 
 "Modify Room" = "Modify Room";

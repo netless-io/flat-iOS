@@ -47,7 +47,7 @@ extension UIViewController {
     @discardableResult
     func addPresentTitle(_ title: String) -> UILabel {
         let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         titleLabel.textColor = .strongText
         titleLabel.text = title
         view.addSubview(titleLabel)
@@ -55,14 +55,18 @@ extension UIViewController {
             make.centerX.equalToSuperview()
             make.centerY.equalTo(view.safeAreaLayoutGuide.snp.top).offset(28)
         }
-        let line = UIView()
-        line.backgroundColor = .borderColor
-        view.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.top.equalToSuperview().inset(56)
-            make.height.equalTo(1 / UIScreen.main.scale)
+        
+        if !isCompact() {
+            let line = UIView()
+            line.backgroundColor = .borderColor
+            view.addSubview(line)
+            line.snp.makeConstraints { make in
+                make.left.right.equalToSuperview()
+                make.top.equalToSuperview().inset(56)
+                make.height.equalTo(1 / UIScreen.main.scale)
+            }
         }
+        
         return titleLabel
     }
 }

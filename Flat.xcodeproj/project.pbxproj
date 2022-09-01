@@ -44,6 +44,7 @@
 		8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */; };
 		8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23428BF37B50035F71A /* ConvinceInit.swift */; };
 		8A0CA23728BF4A860035F71A /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */; };
+		8A0CA23928C0519A0035F71A /* DeviceAutorizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
 		8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */; };
@@ -323,6 +324,7 @@
 		8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+oldDark.swift"; sourceTree = "<group>"; };
 		8A0CA23428BF37B50035F71A /* ConvinceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvinceInit.swift; sourceTree = "<group>"; };
 		8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
+		8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAutorizationHelper.swift; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
 		8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverDismissDetectableViewController.swift; sourceTree = "<group>"; };
@@ -903,6 +905,7 @@
 				8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */,
 				8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */,
 				8AFB942D28B7550100B8795D /* CameraMicToggleView.swift */,
+				8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */,
 				8ACE3A26272FF77100BC37F7 /* RoomDetailViewController.xib */,
 			);
 			path = Home;
@@ -1870,6 +1873,7 @@
 				8A05C3402760427E009BCA79 /* HTTPHeaders.swift in Sources */,
 				8A9FB3D02722C14B00F6F06F /* AgoraMessage.swift in Sources */,
 				8A99EC4328B5C0680066CFF3 /* DashLineView.swift in Sources */,
+				8A0CA23928C0519A0035F71A /* DeviceAutorizationHelper.swift in Sources */,
 				8A80208F2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift in Sources */,
 				8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */,
 				8A270BBF27197F1500450DC6 /* XIBLocalizeable.swift in Sources */,

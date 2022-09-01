@@ -13,11 +13,12 @@ import UIKit
 extension UIViewController {
     @discardableResult
     func showCheckAlert(title: String = NSLocalizedString("Alert", comment: ""),
+                        checkTitle: String = NSLocalizedString("Confirm", comment: ""),
                         message: String = "",
                         completionHandler: (()->Void)? = nil) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-        alertController.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: { _ in
+        alertController.addAction(.init(title: checkTitle, style: .default, handler: { _ in
             completionHandler?()
         }))
         present(alertController, animated: true, completion: nil)

@@ -23,11 +23,11 @@ extension UIDeviceOrientation {
         case .landscapeRight:
             return .landscapeRight
         case .faceUp:
-            return .portrait
+            return .unknown
         case .faceDown:
-            return .portrait
+            return .unknown
         @unknown default:
-            return .portrait
+            return .unknown
         }
     }
 }
@@ -37,7 +37,6 @@ class CameraPreviewView: UIView {
     init() {
         super.init(frame: .zero)
         setupViews()
-        setupCapture()
         syncRotate()
         
         NotificationCenter.default.addObserver(self, selector: #selector(syncRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -45,6 +44,19 @@ class CameraPreviewView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        // Turn off device
+        if window == nil, self.isOn {
+            turnCamera(on: false)
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        previewLayer.frame = bounds
     }
     
     @objc func syncRotate() {
@@ -58,20 +70,28 @@ class CameraPreviewView: UIView {
         let isUnknown = UIDevice.current.orientation == .unknown
         let orientation: UIInterfaceOrientation =  isUnknown ? applicantionOrientation() : UIDevice.current.orientation.toInterfaceOrientation()
         switch orientation {
-        case .unknown, .portrait:
+        case .unknown:
+            return
+        case .portrait:
             previewLayer.connection?.videoOrientation = .portrait
         case .portraitUpsideDown:
             previewLayer.connection?.videoOrientation = .portraitUpsideDown
         case .landscapeLeft:
-            previewLayer.connection?.videoOrientation = .landscapeLeft
-        case .landscapeRight:
             previewLayer.connection?.videoOrientation = .landscapeRight
+        case .landscapeRight:
+            previewLayer.connection?.videoOrientation = .landscapeLeft
         @unknown default:
-            previewLayer.connection?.videoOrientation = .portrait
+            return
         }
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        previewLayer.backgroundColor = UIColor.lightBlueBar.cgColor
+    }
+    
     func setupViews() {
+        previewLayer.backgroundColor = UIColor.lightBlueBar.cgColor
         layer.addSublayer(previewLayer)
         previewLayer.videoGravity = .resizeAspectFill
         clipsToBounds = true
@@ -83,10 +103,10 @@ class CameraPreviewView: UIView {
         }
         avatarContainer.addSubview(avatarImageView)
         avatarImageView.clipsToBounds = true
-        avatarImageView.layer.cornerRadius = 16
+        avatarImageView.layer.cornerRadius = 32
         avatarImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.height.equalTo(32)
+            make.width.height.equalTo(64)
         }
         avatarImageView.kf.setImage(with: AuthStore.shared.user?.avatar)
     }
@@ -96,7 +116,13 @@ class CameraPreviewView: UIView {
     func turnCamera(on: Bool) {
         if on == isOn { return }
         if on {
-            session.startRunning()
+            if !didSetupCapture {
+                setupCapture()
+            } else {
+                sampleQueue.async {
+                    self.session.startRunning()
+                }
+            }
             avatarContainer.isHidden = true
         } else {
             session.stopRunning()
@@ -105,6 +131,7 @@ class CameraPreviewView: UIView {
         isOn = on
     }
     
+    var didSetupCapture = false
     func setupCapture() {
         do {
             guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {
@@ -117,20 +144,19 @@ class CameraPreviewView: UIView {
             }
             let output = AVCaptureVideoDataOutput()
             output.alwaysDiscardsLateVideoFrames = true
-            output.setSampleBufferDelegate(self, queue: sampleQueue)
+            output.setSampleBufferDelegate(nil, queue: sampleQueue)
             if session.canAddOutput(output) {
                 session.addOutput(output)
             }
             output.connection(with: .video)?.isEnabled = true
+            sampleQueue.async {
+                self.session.startRunning()
+            }
+            didSetupCapture = true
         }
         catch {
             logger.error("setup capture error \(error)")
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        previewLayer.frame = bounds
     }
     
     lazy var avatarImageView: UIImageView = {
@@ -146,15 +172,10 @@ class CameraPreviewView: UIView {
     }()
     
     lazy var previewLayer = AVCaptureVideoPreviewLayer(session: session)
+    
     lazy var session: AVCaptureSession = {
         let session = AVCaptureSession()
         session.sessionPreset = .medium
         return session
     }()
 }
-
-extension CameraPreviewView: AVCaptureVideoDataOutputSampleBufferDelegate {
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-    }
-}
-
