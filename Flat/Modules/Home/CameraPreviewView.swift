@@ -117,12 +117,18 @@ class CameraPreviewView: UIView {
             } else {
                 sampleQueue.async {
                     self.session.startRunning()
+                    DispatchQueue.main.async {
+                        self.avatarContainer.isHidden = true
+                    }
                 }
             }
-            avatarContainer.isHidden = true
         } else {
-            session.stopRunning()
-            avatarContainer.isHidden = false
+            sampleQueue.async {
+                self.session.stopRunning()
+                DispatchQueue.main.async {
+                    self.avatarContainer.isHidden = false
+                }
+            }
         }
         isOn = on
     }
@@ -147,6 +153,9 @@ class CameraPreviewView: UIView {
             output.connection(with: .video)?.isEnabled = true
             sampleQueue.async {
                 self.session.startRunning()
+                DispatchQueue.main.async {
+                    self.avatarContainer.isHidden = true
+                }
             }
             syncRotate()
             didSetupCapture = true

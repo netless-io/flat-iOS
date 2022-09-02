@@ -154,7 +154,7 @@ class JoinRoomViewController: UIViewController {
         previewView.transform = .init(scaleX: 0.9, y: 0.9)
         
         bottomStack.axis = .horizontal
-        bottomStack.spacing = 8
+        bottomStack.spacing = isCompact() ? 8 : 16
         bottomStack.distribution = .equalCentering
         bottomStack.alignment = .center
         bottomStack.snp.makeConstraints { make in

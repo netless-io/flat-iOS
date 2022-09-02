@@ -50,57 +50,89 @@ class CreateClassRoomViewController: UIViewController {
         view.backgroundColor = .whiteBG
         
         let bottomStack = UIStackView(arrangedSubviews: [deviceView, createButton])
+        view.addSubview(subjectTextField)
+        view.addSubview(typesStackView)
+        view.addSubview(previewView)
+        view.addSubview(bottomStack)
         
-        let verticalStack = UIStackView(arrangedSubviews: [subjectTextField, typesStackView, previewView, bottomStack])
-        verticalStack.axis = .vertical
-        verticalStack.alignment = .center
-        verticalStack.distribution = .fill
-        verticalStack.spacing = 0
-        view.addSubview(verticalStack)
-        verticalStack.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide).inset(UIEdgeInsets(top: 66, left: 16, bottom: 16, right: 16))
+        let guide0 = UILayoutGuide()
+        let guide1 = UILayoutGuide()
+        let guide2 = UILayoutGuide()
+        view.addLayoutGuide(guide0)
+        view.addLayoutGuide(guide1)
+        view.addLayoutGuide(guide2)
+        
+        let margin: CGFloat = 16
+        let baseHeight = CGFloat(66)
+        
+        guide0.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(56)
+            make.height.greaterThanOrEqualTo(margin)
+            make.height.lessThanOrEqualTo(margin * 2)
+            make.height.equalTo(margin).priority(.low)
         }
         
-        subjectTextField.setContentHuggingPriority(.defaultLow, for: .vertical)
         subjectTextField.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(guide0.snp.bottom)
             make.width.equalTo(320)
-            make.height.greaterThanOrEqualTo(66)
-            make.width.equalTo(typesStackView)
-            make.height.equalTo(typesStackView)
+            make.height.equalTo(baseHeight)
         }
         
+        guide1.snp.makeConstraints { make in
+            make.top.equalTo(subjectTextField.snp.bottom)
+            make.height.greaterThanOrEqualTo(margin)
+            make.height.equalTo(guide0)
+        }
+
         typesStackView.arrangedSubviews.forEach { $0.snp.makeConstraints { make in
-            make.width.equalTo(66)
+            make.width.equalTo(baseHeight)
         }}
-        
-        previewView.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        previewView.setContentCompressionResistancePriority(.required, for: .vertical)
+        typesStackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(guide1.snp.bottom)
+            make.width.equalTo(subjectTextField)
+            make.height.equalTo(baseHeight)
+        }
+
+        guide2.snp.makeConstraints { make in
+            make.top.equalTo(typesStackView.snp.bottom)
+            make.height.greaterThanOrEqualTo(margin)
+            make.height.equalTo(guide1)
+        }
+
         previewView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(guide2.snp.bottom)
             if isCompact() {
                 make.height.equalTo(previewView.snp.width)
+                make.width.lessThanOrEqualToSuperview().inset(margin / 2)
+                make.width.equalToSuperview().inset(margin).priority(.medium)
             } else {
                 make.width.equalTo(previewView.snp.height).multipliedBy(16.0/9)
+                make.width.equalToSuperview().priority(.medium)
             }
-            make.width.equalToSuperview().priority(.medium)
-            make.width.greaterThanOrEqualTo(280)
         }
-        if isCompact() {
-            previewView.transform = .init(scaleX: 0.95, y: 0.95)
-        } else {
-            previewView.transform = .init(scaleX: 0.9, y: 0.9)
-        }
-        
+
         bottomStack.axis = isCompact() ? .vertical : .horizontal
+        bottomStack.backgroundColor = .whiteBG
         let bottomStackItemHeight: CGFloat = 44
-        bottomStack.spacing = 8
+        bottomStack.spacing = margin / 2
         bottomStack.distribution = .equalCentering
         bottomStack.alignment = .center
+        if !isCompact() {
+            bottomStack.spacing = margin
+        }
         bottomStack.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(margin)
             if isCompact() {
+                make.top.equalTo(previewView.snp.bottom)
                 make.height.equalTo(bottomStackItemHeight * 2 + 8)
-                make.width.equalToSuperview()
+                make.left.right.equalToSuperview().inset(margin)
             } else {
+                make.top.equalTo(previewView.snp.bottom).offset(margin)
                 make.height.equalTo(bottomStackItemHeight)
+                make.centerX.equalToSuperview()
             }
         }
         createButton.snp.makeConstraints { make in
@@ -109,8 +141,8 @@ class CreateClassRoomViewController: UIViewController {
                 make.width.equalToSuperview()
             }
         }
-        
-        preferredContentSize = .init(width: 480, height: 0)
+
+        preferredContentSize = .init(width: 480, height: 544)
     }
     
     func typeViewForType(_ type: ClassRoomType) -> UIButton {
