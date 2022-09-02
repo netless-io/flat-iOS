@@ -455,7 +455,7 @@ class ClassRoomViewController: UIViewController {
     func setupToolbar() {
         view.addSubview(rightToolBar)
         rightToolBar.snp.makeConstraints { make in
-            make.right.equalTo(fastboardViewController.view.snp.right)
+            make.right.equalTo(fastboardViewController.view.snp.right).inset(8)
             make.centerY.equalTo(fastboardViewController.view)
         }
         
@@ -610,7 +610,7 @@ class ClassRoomViewController: UIViewController {
     lazy var rightToolBar: FastRoomControlBar = {
         if traitCollection.hasCompact {
             let bar = FastRoomControlBar(direction: .vertical,
-                                         borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
+                                         borderMask: .all,
                                          views: [chatButton, usersButton, inviteButton, cloudStorageButton, settingButton])
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
@@ -618,7 +618,7 @@ class ClassRoomViewController: UIViewController {
             return bar
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
-                                         borderMask: [.layerMinXMinYCorner, .layerMinXMaxYCorner],
+                                         borderMask: .all,
                                          views: [chatButton, usersButton, inviteButton, cloudStorageButton, settingButton, moreButton])
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)

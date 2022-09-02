@@ -30,11 +30,11 @@ PODS:
   - AliyunLogProducer/Core (2.3.10.4)
   - CropViewController (2.6.1)
   - DZNEmptyDataSet (1.8.1)
-  - Fastboard (1.0.9):
-    - Fastboard/core (= 1.0.9)
-  - Fastboard/core (1.0.9):
+  - Fastboard (1.1.0):
+    - Fastboard/core (= 1.1.0)
+  - Fastboard/core (1.1.0):
     - Whiteboard (~> 2.16.36)
-  - Fastboard/fpa (1.0.9):
+  - Fastboard/fpa (1.1.0):
     - Fastboard/core
     - Whiteboard/fpa
   - Hero (1.6.1)
@@ -145,7 +145,7 @@ SPEC CHECKSUMS:
   AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fastboard: 1eb560392bdd9af1a4896e32caf7d90b44c293a3
+  Fastboard: 3e3a7d8fafa39d605b8c9f2bd549dc62b3f225c8
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
   Kingfisher: 3ac0b75b155cabc0e544877d1a4deea29feece92

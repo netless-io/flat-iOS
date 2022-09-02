@@ -159,9 +159,7 @@
 		8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC06271E969100E7E7CE /* Date+Extension.swift */; };
 		8A9ACC0A271E98DB00E7E7CE /* RoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC08271E98DB00E7E7CE /* RoomTableViewCell.swift */; };
 		8A9ACC0B271E98DB00E7E7CE /* RoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A9ACC09271E98DB00E7E7CE /* RoomTableViewCell.xib */; };
-		8A9ACC11271EAE3700E7E7CE /* IndicatorMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC10271EAE3700E7E7CE /* IndicatorMoreButton.swift */; };
 		8A9ACC17271EBD9300E7E7CE /* UIImage+Appliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC16271EBD9300E7E7CE /* UIImage+Appliance.swift */; };
-		8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9ACC18271EBE2300E7E7CE /* UIButton+Appliance.swift */; };
 		8A9FB395272154B800F6F06F /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB394272154B800F6F06F /* Message.swift */; };
 		8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB396272156D900F6F06F /* ChatTableViewCell.swift */; };
 		8A9FB39D2721783B00F6F06F /* MemberRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB39C2721783B00F6F06F /* MemberRequest.swift */; };
@@ -447,9 +445,7 @@
 		8A9ACC06271E969100E7E7CE /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		8A9ACC08271E98DB00E7E7CE /* RoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTableViewCell.swift; sourceTree = "<group>"; };
 		8A9ACC09271E98DB00E7E7CE /* RoomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomTableViewCell.xib; sourceTree = "<group>"; };
-		8A9ACC10271EAE3700E7E7CE /* IndicatorMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorMoreButton.swift; sourceTree = "<group>"; };
 		8A9ACC16271EBD9300E7E7CE /* UIImage+Appliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Appliance.swift"; sourceTree = "<group>"; };
-		8A9ACC18271EBE2300E7E7CE /* UIButton+Appliance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Appliance.swift"; sourceTree = "<group>"; };
 		8A9FB394272154B800F6F06F /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		8A9FB396272156D900F6F06F /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		8A9FB39C2721783B00F6F06F /* MemberRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberRequest.swift; sourceTree = "<group>"; };
@@ -1158,8 +1154,6 @@
 		8A9ACC0F271EAE2800E7E7CE /* Button */ = {
 			isa = PBXGroup;
 			children = (
-				8A9ACC10271EAE3700E7E7CE /* IndicatorMoreButton.swift */,
-				8A9ACC18271EBE2300E7E7CE /* UIButton+Appliance.swift */,
 				8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */,
 			);
 			path = Button;
@@ -1765,7 +1759,6 @@
 				8A270BA72719759E00450DC6 /* UIView+NibProperty.swift in Sources */,
 				8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */,
 				8A9FB3AA272262D800F6F06F /* ResponseDataHandler.swift in Sources */,
-				8A9ACC11271EAE3700E7E7CE /* IndicatorMoreButton.swift in Sources */,
 				8A8020A52757225400F5691C /* AgoraResponseDataHandler.swift in Sources */,
 				8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */,
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
@@ -1821,7 +1814,6 @@
 				8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */,
 				8A92194A28ADDFC400DDDA81 /* ScenePreviewCell.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,
-				8A9ACC19271EBE2400E7E7CE /* UIButton+Appliance.swift in Sources */,
 				8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */,
 				8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */,
 				8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */,

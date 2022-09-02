@@ -1,18 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "矩形备份 19@2x(1).png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "矩形备份 19@3x(1).png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "undo.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

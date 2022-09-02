@@ -23,6 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else {
             launch?.start(withLaunchUrl: connectionOptions.urlContexts.first?.url)
         }
+        configAppearance()
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

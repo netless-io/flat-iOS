@@ -28,6 +28,29 @@ var globalLaunchCoordinator: LaunchCoordinator? {
     }
 }
 
+func configAppearance() {
+    FastRoomThemeManager.shared.updateIcons(using: Bundle.main)
+    let flatTheme: FastRoomThemeAsset
+    if #available(iOS 13, *) {
+        flatTheme = FastRoomDefaultTheme.defaultAutoTheme
+    } else {
+        flatTheme = FastRoomDefaultTheme.defaultLightTheme
+    }
+    flatTheme.panelItemAssets.normalIconColor = .text
+    flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
+    flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8
+    flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .lightBlueBar
+    
+    FastRoomThemeManager.shared.apply(flatTheme)
+    FastRoomControlBar.appearance().commonRadius = isCompact() ? 8 : 4
+    
+    UISwitch.appearance().onTintColor = .brandColor
+    IQKeyboardManager.shared.enable = true
+    IQKeyboardManager.shared.enableAutoToolbar = false
+    IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+    IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
+}
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
@@ -42,7 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         tryPreloadWhiteboard()
         processMethodExchange()
-        configAppearance()
         registerThirdPartSDK()
         
         if #available(iOS 13, *) {
@@ -52,7 +74,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window = UIWindow(frame: UIScreen.main.bounds)
             launch = LaunchCoordinator(window: window!, authStore: AuthStore.shared, defaultLaunchItems: [JoinRoomLaunchItem(), FileShareLaunchItem()])
             launch?.start(withLaunchUrl: url)
+            configAppearance()
         }
+        
 #if DEBUG
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             guard AuthStore.shared.isLogin else { return }
@@ -87,14 +111,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func registerThirdPartSDK() {
         WXApi.registerApp(Env().weChatAppId, universalLink: "https://flat-api.whiteboard.agora.io")
-    }
-    
-    func configAppearance() {
-        UISwitch.appearance().onTintColor = .brandColor
-        IQKeyboardManager.shared.enable = true
-        IQKeyboardManager.shared.enableAutoToolbar = false
-        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
-        IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
     }
     
     func processMethodExchange() {

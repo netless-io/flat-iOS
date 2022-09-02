@@ -1,18 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "矩形@3x@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "矩形@3x@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "selector.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

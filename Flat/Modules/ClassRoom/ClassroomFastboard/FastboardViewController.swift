@@ -171,35 +171,30 @@ extension FastboardViewController: FastRoomDelegate {
 
     func fastboardDidSetupOverlay(_ fastboard: FastRoom, overlay: FastRoomOverlay?) {
         if let overlay = overlay as? RegularFastRoomOverlay {
-            overlay.deleteSelectionPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-            overlay.operationPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-            overlay.undoRedoPanel.view?.borderMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            overlay.scenePanel.view?.borderMask = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-
             overlay.invalidAllLayout()
             overlay.operationPanel.view?.snp.makeConstraints { make in
                 make.centerY.equalTo(fastboard.view.whiteboardView)
-                make.left.equalTo(fastboard.view.whiteboardView)
+                make.left.equalTo(fastboard.view.whiteboardView).inset(8)
             }
+            
             overlay.deleteSelectionPanel.view?.snp.makeConstraints({ make in
                 make.left.equalTo(overlay.operationPanel.view!)
                 make.bottom.equalTo(overlay.operationPanel.view!.snp.top).offset(-8)
             })
+            
             overlay.undoRedoPanel.view?.snp.makeConstraints { make in
-                make.bottom.equalTo(fastboard.view.whiteboardView)
-                make.left.equalToSuperview().inset(16)
+                make.bottom.equalTo(fastboard.view.whiteboardView).inset(8)
+                make.left.equalToSuperview().inset(8)
             }
+            
             overlay.scenePanel.view?.snp.makeConstraints { make in
-                make.centerX.equalTo(fastboard.view.whiteboardView)
-                make.bottom.equalTo(fastboard.view.whiteboardView)
+                make.bottom.equalTo(fastboard.view.whiteboardView).inset(8)
+                make.right.equalToSuperview().inset(8)
             }
         }
+        
         if let overlay = overlay as? CompactFastRoomOverlay {
-            overlay.operationPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-            overlay.colorAndStrokePanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-            overlay.deleteSelectionPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
             overlay.undoRedoPanel.view?.direction = .vertical
-            overlay.undoRedoPanel.view?.borderMask = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
 
             overlay.setPanelItemHide(item: .operationType(.previousPage)!, hide: true)
             overlay.setPanelItemHide(item: .operationType(.pageIndicator)!, hide: true)
@@ -210,21 +205,21 @@ extension FastboardViewController: FastRoomDelegate {
 
             overlay.operationPanel.view?.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
-                make.left.equalToSuperview()
+                make.left.equalToSuperview().inset(8)
             }
 
             overlay.colorAndStrokePanel.view?.snp.makeConstraints { make in
                 make.bottom.equalTo(overlay.operationPanel.view!.snp.top).offset(-8)
-                make.left.equalToSuperview()
+                make.left.equalToSuperview().inset(8)
             }
 
             overlay.deleteSelectionPanel.view?.snp.makeConstraints { make in
                 make.bottom.equalTo(overlay.operationPanel.view!.snp.top).offset(-8)
-                make.left.equalToSuperview()
+                make.left.equalToSuperview().inset(8)
             }
 
             overlay.undoRedoPanel.view?.snp.makeConstraints { make in
-                make.left.equalToSuperview()
+                make.left.equalToSuperview().inset(8)
                 make.top.equalTo(overlay.operationPanel.view!.snp.bottom).offset(8)
             }
         }
