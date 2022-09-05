@@ -51,13 +51,16 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         view.addSubview(tableView)
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
-            make.height.equalTo(48)
+            make.height.equalTo(40)
         }
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset((UIEdgeInsets(top: 34, left: 0, bottom: 0, right: 0)))
         }
         setupAddButton()
+        
+        preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
+        
     
     func uploadActionFor(type: UploadType) {
         UploadUtility.shared.start(uploadType: type, fromViewController: self, delegate: self, presentStyle: .popOver(parent: self, source: self.addButton))
@@ -203,13 +206,26 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
+        
+        let leftIcon = UIImageView(image: UIImage(named: "classroom_cloud")?.tintColor(.strongText))
+        view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
+            leftIcon?.image = UIImage(named: "classroom_cloud")?.tintColor(.strongText)
+        }
+        leftIcon.contentMode = .center
+        view.addSubview(leftIcon)
+        leftIcon.snp.makeConstraints { make in
+            make.left.top.bottom.equalToSuperview()
+            make.width.equalTo(40)
+        }
+        
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("Cloud Storage")
         topLabel.textColor = .strongText
-        topLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(40)
         }
         let line = UIView()
         line.backgroundColor = .borderColor

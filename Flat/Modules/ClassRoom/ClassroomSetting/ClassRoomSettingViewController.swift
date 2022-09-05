@@ -82,7 +82,7 @@ class ClassRoomSettingViewController: UIViewController {
         view.backgroundColor = .classroomChildBG
         view.addSubview(tableView)
         view.addSubview(topView)
-        let topViewHeight: CGFloat = 48
+        let topViewHeight: CGFloat = 40
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
             make.height.equalTo(topViewHeight)
@@ -94,14 +94,19 @@ class ClassRoomSettingViewController: UIViewController {
         
         let bottomContainer = UIView(frame: .init(origin: .zero, size: .init(width: 400, height: 96)))
         bottomContainer.addSubview(logoutButton)
-        tableView.tableFooterView = bottomContainer
+        view.addSubview(bottomContainer)
+        bottomContainer.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.size.equalTo(CGSize(width: 400, height: 96))
+        }
         logoutButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(40)
         }
         
-        preferredContentSize = .init(width: 400, height: 289)
+        preferredContentSize = .init(width: 320, height: 480)
     }
     
     func config(cell: ClassRoomSettingTableViewCell, type: SettingControlType) {
@@ -160,13 +165,26 @@ class ClassRoomSettingViewController: UIViewController {
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
+        
+        let leftIcon = UIImageView(image: UIImage(named: "classroom_setting")?.tintColor(.strongText))
+        view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
+            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.strongText)
+        }
+        leftIcon.contentMode = .center
+        view.addSubview(leftIcon)
+        leftIcon.snp.makeConstraints { make in
+            make.left.top.bottom.equalToSuperview()
+            make.width.equalTo(40)
+        }
+        
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("Setting")
         topLabel.textColor = .strongText
-        topLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(40)
         }
         let line = UIView()
         line.backgroundColor = .borderColor

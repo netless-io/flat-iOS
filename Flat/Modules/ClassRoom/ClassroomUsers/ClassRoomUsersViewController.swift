@@ -78,11 +78,8 @@ class ClassRoomUsersViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         bind()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        preferredContentSize = .init(width: 360, height: UIScreen.main.bounds.height * 0.67)
+        
+        preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
     
     // MARK: - Private
@@ -102,7 +99,7 @@ class ClassRoomUsersViewController: UIViewController {
         view.addSubview(topView)
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
-            make.height.equalTo(48)
+            make.height.equalTo(40)
         }
         tableView.snp.makeConstraints { make in
             make.top.equalTo(topView.snp.bottom)
@@ -169,12 +166,23 @@ class ClassRoomUsersViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
         let topLabel = UILabel(frame: .zero)
-        topLabel.text = NSLocalizedString("User List", comment: "")
+        topLabel.text = localizeStrings("User List")
         topLabel.textColor = .strongText
         topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(40)
+        }
+        let leftIcon = UIImageView(image: UIImage(named: "users")?.tintColor(.strongText))
+        view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
+            leftIcon?.image = UIImage(named: "users")?.tintColor(.strongText)
+        }
+        leftIcon.contentMode = .center
+        view.addSubview(leftIcon)
+        leftIcon.snp.makeConstraints { make in
+            make.left.top.bottom.equalToSuperview()
+            make.width.equalTo(40)
         }
         let line = UIView()
         line.backgroundColor = .borderColor

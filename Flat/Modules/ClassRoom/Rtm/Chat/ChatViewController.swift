@@ -62,6 +62,8 @@ class ChatViewController: PopOverDismissDetectableViewController {
         super.viewDidLoad()
         setupViews()
         bind()
+        
+        preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
     
     override func viewDidLayoutSubviews() {
@@ -145,7 +147,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
 
         topView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
-            make.height.equalTo(48)
+            make.height.equalTo(40)
         }
         
         tableView.snp.makeConstraints { make in
@@ -256,13 +258,25 @@ class ChatViewController: PopOverDismissDetectableViewController {
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
+        let leftIcon = UIImageView(image: UIImage(named: "chat")?.tintColor(.strongText))
+        view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
+            leftIcon?.image = UIImage(named: "chat")?.tintColor(.strongText)
+        }
+        leftIcon.contentMode = .center
+        view.addSubview(leftIcon)
+        leftIcon.snp.makeConstraints { make in
+            make.left.top.bottom.equalToSuperview()
+            make.width.equalTo(40)
+        }
+        
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("Chat")
         topLabel.textColor = .strongText
-        topLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(40)
         }
         let line = UIView()
         line.backgroundColor = .borderColor
