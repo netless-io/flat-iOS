@@ -105,6 +105,8 @@
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
+		8A4BF2D528C58AD800021D2A /* WhiteboardAppsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4BF2D428C58AD800021D2A /* WhiteboardAppsViewController.swift */; };
+		8A4BF2D728C58BB000021D2A /* WhiteboardAppsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4BF2D628C58BB000021D2A /* WhiteboardAppsCell.swift */; };
 		8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */; };
 		8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55F1B1273A710000D4DA0F /* AnyRequest.swift */; };
 		8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */; };
@@ -386,6 +388,8 @@
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
 		8A48A9C82716D734003719DB /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
 		8A48A9CA2716D795003719DB /* FlatResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatResponse.swift; sourceTree = "<group>"; };
+		8A4BF2D428C58AD800021D2A /* WhiteboardAppsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardAppsViewController.swift; sourceTree = "<group>"; };
+		8A4BF2D628C58BB000021D2A /* WhiteboardAppsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardAppsCell.swift; sourceTree = "<group>"; };
 		8A4C7A7127F2E3B0006988C6 /* FlatFlint_Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatFlint_Debug.entitlements; sourceTree = "<group>"; };
 		8A4C7A7427F2E4B3006988C6 /* FlatFlint_Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatFlint_Release.entitlements; sourceTree = "<group>"; };
 		8A4C7A7527F2E53B006988C6 /* Flint_Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Develop.xcconfig; sourceTree = "<group>"; };
@@ -1477,6 +1481,8 @@
 			isa = PBXGroup;
 			children = (
 				8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */,
+				8A4BF2D428C58AD800021D2A /* WhiteboardAppsViewController.swift */,
+				8A4BF2D628C58BB000021D2A /* WhiteboardAppsCell.swift */,
 				8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */,
 				8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */,
 				8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */,
@@ -1684,6 +1690,7 @@
 				8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */,
 				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
 				8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */,
+				8A4BF2D728C58BB000021D2A /* WhiteboardAppsCell.swift in Sources */,
 				8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */,
 				8A21DABA279FA90D0060E25D /* UpdateLayoutRequest.swift in Sources */,
 				8A05C35B2761E9AD009BCA79 /* CancelUploadRequest.swift in Sources */,
@@ -1863,6 +1870,7 @@
 				8ABD71C227682214004FDC36 /* ClassRoomLayoutRatioConfig.swift in Sources */,
 				8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */,
 				8A05C3402760427E009BCA79 /* HTTPHeaders.swift in Sources */,
+				8A4BF2D528C58AD800021D2A /* WhiteboardAppsViewController.swift in Sources */,
 				8A9FB3D02722C14B00F6F06F /* AgoraMessage.swift in Sources */,
 				8A99EC4328B5C0680066CFF3 /* DashLineView.swift in Sources */,
 				8A0CA23928C0519A0035F71A /* DeviceAutorizationHelper.swift in Sources */,

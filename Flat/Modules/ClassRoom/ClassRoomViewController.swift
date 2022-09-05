@@ -360,9 +360,12 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
         
-        fastboardViewController.previewHandler = { [weak self] room, button in
+        
+        fastboardViewController.appsClickHandler = { [weak self] room, button in
             guard let self = self else { return }
-            let vc = WhiteboardScenesListViewController(room: room)
+            let vc = WhiteboardAppsViewController()
+            vc.clickSource = button
+            vc.room = room
             self.popoverViewController(viewController: vc, fromSource: button)
         }
     }
