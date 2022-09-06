@@ -244,24 +244,48 @@ let darkColorTable: [ColorType: [ColorStrenth: UIColor]] = [
 ]
 
 extension UIColor {
-    static func color(type: ColorType, _ strenth: ColorStrenth = .normal) -> UIColor {
+    static func color(light: UIColor, dark: UIColor) -> UIColor {
         if #available(iOS 13.0, *) {
             return UIColor { t in
                 switch t.userInterfaceStyle {
                 case .dark:
-                    return darkColorTable[type]![strenth]!
+                    return dark
                 case .light, .unspecified:
-                    return colorTable[type]![strenth]!
+                    return light
                 @unknown default:
-                    return .black
+                    return light
                 }
             }
         } else {
             if Theme.shared.isDarkBeforeIOS13 {
-                return darkColorTable[type]![strenth]!
+                return dark
             } else {
-                return colorTable[type]![strenth]!
+                return light
             }
         }
+    }
+    
+    static func color(type: ColorType, _ strenth: ColorStrenth = .normal) -> UIColor {
+        color(light: colorTable[type]![strenth]!, dark: darkColorTable[type]![strenth]!)
+    }
+    
+    static var borderColor: UIColor {
+        color(light: .grey1, dark: grey8)
+    }
+    
+    static var whiteBG: UIColor {
+        color(light: .white, dark: .grey11)
+    }
+    
+    static var classroomChildBG: UIColor {
+        color(light: .white, dark: .grey7)
+    }
+    
+    static var whiteText: UIColor {
+        color(light: .white, dark: .blue0)
+    }
+    
+    static var customAlertBg: UIColor {
+        color(light: .white, dark: .grey9)
     }
 }

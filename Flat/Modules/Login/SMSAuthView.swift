@@ -140,14 +140,14 @@ class SMSAuthView: UIView {
         f.placeholder = NSLocalizedString("VerificationCodePlaceholder", comment: "")
         f.font = .systemFont(ofSize: 16)
         f.keyboardType = .numberPad
-        f.textColor = .text
+        f.textColor = .color(type: .text)
         
         f.leftViewMode = .always
         let leftContainer = UIView()
         let leftIcon = UIImageView(image: UIImage(named: "veryfication"))
         leftIcon.contentMode = .center
         leftIcon.frame = .init(origin: .zero, size: .init(width: 30, height: 44))
-        leftIcon.tintColor = .text
+        leftIcon.tintColor = .color(type: .text)
         leftContainer.addSubview(leftIcon)
         leftContainer.frame = leftIcon.bounds
         f.leftView = leftContainer
@@ -165,11 +165,11 @@ class SMSAuthView: UIView {
         let btn = UIButton(type: .custom)
         btn.frame = .init(origin: .zero, size: .init(width: 66, height: 48))
         btn.setTitle("+\(countryCode)", for: .normal)
-        btn.setTitleColor(.text, for: .normal)
+        btn.setTitleColor(.color(type: .text), for: .normal)
         btn.setImage(UIImage(named: "arrow_down"), for: .normal)
         btn.titleEdgeInsets = .init(top: 0, left: -20, bottom: 0, right: 20)
         btn.imageEdgeInsets = .init(top: 0, left: 40, bottom: 0, right: 0)
-        btn.tintColor = .text
+        btn.tintColor = .color(type: .text)
         btn.titleLabel?.font = .systemFont(ofSize: 16)
         btn.addTarget(self, action: #selector(onClickCountryCode), for: .touchUpInside)
         return btn
@@ -180,7 +180,7 @@ class SMSAuthView: UIView {
         f.placeholder = NSLocalizedString("PhoneInputPlaceholder", comment: "")
         f.keyboardType = .phonePad
         f.font = .systemFont(ofSize: 16)
-        f.textColor = .text
+        f.textColor = .color(type: .text)
         
         f.leftViewMode = .always
         let leftContainer = UIView()
@@ -194,8 +194,8 @@ class SMSAuthView: UIView {
         let btn = UIButton(frame: .zero)
         btn.setTitle(NSLocalizedString("SendSMS", comment: ""), for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.brandColor, for: .normal)
-        btn.setTitleColor(.controlDisabled, for: .disabled)
+        btn.setTitleColor(.color(type: .primary), for: .normal)
+        btn.setTitleColor(.color(type: .text, .weaker), for: .disabled)
         btn.addTarget(self, action: #selector(onClickSendSMS(sender:)), for: .touchUpInside)
         return btn
     }()

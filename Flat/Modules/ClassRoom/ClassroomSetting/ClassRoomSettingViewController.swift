@@ -117,7 +117,7 @@ class ClassRoomSettingViewController: UIViewController {
             if cell.switch.isOn != cameraOn.value {
                 cell.switch.isOn = cameraOn.value
             }
-            cell.iconView.image = UIImage(named: "camera")?.tintColor(.nickname)
+            cell.iconView.image = UIImage(named: "camera")?.tintColor(.color(type: .text))
             cell.setEnable(deviceUpdateEnable.value)
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.cameraPublish.accept(())
@@ -130,14 +130,14 @@ class ClassRoomSettingViewController: UIViewController {
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.micPublish.accept(())
             }
-            cell.iconView.image = UIImage(named: "microphone")?.tintColor(.nickname)
+            cell.iconView.image = UIImage(named: "microphone")?.tintColor(.color(type: .text))
         case .videoArea:
             cell.setEnable(true)
             cell.switch.isOn = videoAreaOn.value
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.videoAreaPublish.accept(())
             }
-            cell.iconView.image = UIImage(named: "video_area")?.tintColor(.nickname)
+            cell.iconView.image = UIImage(named: "video_area")?.tintColor(.color(type: .text))
         }
     }
     
@@ -145,13 +145,13 @@ class ClassRoomSettingViewController: UIViewController {
     lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.setTitleColor(.classroomLogout, for: .normal)
-        button.setImage(UIImage(named: "logout")?.tintColor(.classroomLogout), for: .normal)
-        button.layer.borderColor = UIColor.classroomLogout.cgColor
+        button.setTitleColor(.color(type: .danger), for: .normal)
+        button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger)), for: .normal)
+        button.layer.borderColor = UIColor.color(type: .danger).cgColor
         button.traitCollectionUpdateHandler = { [weak button] _ in
-            button?.setTitleColor(.classroomLogout, for: .normal)
-            button?.setImage(UIImage(named: "logout")?.tintColor(.classroomLogout), for: .normal)
-            button?.layer.borderColor = UIColor.classroomLogout.cgColor
+            button?.setTitleColor(.color(type: .danger), for: .normal)
+            button?.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger)), for: .normal)
+            button?.layer.borderColor = UIColor.color(type: .danger).cgColor
         }
         
         button.layer.borderWidth = 1 / UIScreen.main.scale
@@ -166,9 +166,9 @@ class ClassRoomSettingViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
         
-        let leftIcon = UIImageView(image: UIImage(named: "classroom_setting")?.tintColor(.strongText))
+        let leftIcon = UIImageView(image: UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .stronger)))
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.strongText)
+            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .stronger))
         }
         leftIcon.contentMode = .center
         view.addSubview(leftIcon)
@@ -179,7 +179,7 @@ class ClassRoomSettingViewController: UIViewController {
         
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("Setting")
-        topLabel.textColor = .strongText
+        topLabel.textColor = .color(type: .text, .stronger)
         topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in

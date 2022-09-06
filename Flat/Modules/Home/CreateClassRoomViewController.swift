@@ -148,10 +148,10 @@ class CreateClassRoomViewController: UIViewController {
     func typeViewForType(_ type: ClassRoomType) -> UIButton {
         let button = UIButton(type: .custom)
         let image = UIImage(named: type.rawValue)
-        button.setImage(image?.tintColor(.text), for: .normal)
-        button.setImage(image?.tintColor(.brandColor), for: .selected)
+        button.setImage(image?.tintColor(.color(type: .text)), for: .normal)
+        button.setImage(image?.tintColor(.color(type: .primary)), for: .selected)
         button.setTitle(type.rawValue, for: .normal)
-        button.setTitleColor(.text, for: .normal)
+        button.setTitleColor(.color(type: .text), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 12)
         button.verticalCenterImageAndTitleWith(2)
         button.addTarget(self, action: #selector(onClickType(_:)), for: .touchUpInside)
@@ -249,7 +249,7 @@ class CreateClassRoomViewController: UIViewController {
     // MARK: - Lazy
     lazy var subjectTextField: BottomLineTextfield = {
         let tf = BottomLineTextfield()
-        tf.textColor = .strongText
+        tf.textColor = .color(type: .text, .stronger)
         tf.font = .systemFont(ofSize: 20)
         tf.placeholder = localizeStrings("Room Subject Placeholder")
         tf.returnKeyType = .go

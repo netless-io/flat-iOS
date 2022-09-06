@@ -201,11 +201,11 @@ class ChatViewController: PopOverDismissDetectableViewController {
     // MARK: - Lazy
     lazy var sendButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "send_message")?.tintColor(.chatButtonNormal), for: .normal)
-        button.setImage(UIImage(named: "send_message")?.tintColor(.chatButtonDisable), for: .disabled)
+        button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .strong)), for: .normal)
+        button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .weaker)), for: .disabled)
         button.traitCollectionUpdateHandler = { [weak button] _ in
-            button?.setImage(UIImage(named: "send_message")?.tintColor(.chatButtonNormal), for: .normal)
-            button?.setImage(UIImage(named: "send_message")?.tintColor(.chatButtonDisable), for: .disabled)
+            button?.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .strong)), for: .normal)
+            button?.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .weaker)), for: .disabled)
         }
         button.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return button
@@ -232,11 +232,11 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     lazy var banTextButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "message_ban")?.tintColor(.chatButtonNormal), for: .normal)
-        btn.setImage(UIImage(named: "message_ban")?.tintColor(.delete), for: .selected)
+        btn.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text, .strong)), for: .normal)
+        btn.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger)), for: .selected)
         btn.traitCollectionUpdateHandler = { [weak btn] _ in
-            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.chatButtonNormal), for: .normal)
-            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.delete), for: .selected)
+            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text, .strong)), for: .normal)
+            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger)), for: .selected)
         }
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
@@ -245,7 +245,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
     lazy var inputTextField: UITextField = {
         let inputTextField = UITextField.init(frame: .zero)
         inputTextField.backgroundColor = .classroomChildBG
-        inputTextField.textColor = .strongText
+        inputTextField.textColor = .color(type: .text, .stronger)
         inputTextField.clipsToBounds = true
         inputTextField.font = .systemFont(ofSize: 14)
         inputTextField.placeholder = localizeStrings("Say Something...")
@@ -258,9 +258,9 @@ class ChatViewController: PopOverDismissDetectableViewController {
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
-        let leftIcon = UIImageView(image: UIImage(named: "chat")?.tintColor(.strongText))
+        let leftIcon = UIImageView(image: UIImage(named: "chat")?.tintColor(.color(type: .text, .stronger)))
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "chat")?.tintColor(.strongText)
+            leftIcon?.image = UIImage(named: "chat")?.tintColor(.color(type: .text, .stronger))
         }
         leftIcon.contentMode = .center
         view.addSubview(leftIcon)
@@ -271,7 +271,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
         
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("Chat")
-        topLabel.textColor = .strongText
+        topLabel.textColor = .color(type: .text, .stronger)
         topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in

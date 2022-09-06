@@ -30,12 +30,12 @@ fileprivate class FlatLoadingView: UIView {
         }
         
         addSubview(cancelButton)
-        cancelButton.layer.borderColor = UIColor.brandColor.cgColor
+        cancelButton.layer.borderColor = UIColor.color(type: .primary).cgColor
         cancelButton.layer.borderWidth = 1 / UIScreen.main.scale
         cancelButton.layer.cornerRadius = 4
         cancelButton.addTarget(self, action: #selector(onClickCancel), for: .touchUpInside)
         cancelButton.titleLabel?.font = .systemFont(ofSize: 16)
-        cancelButton.setTitleColor(.brandColor, for: .normal)
+        cancelButton.setTitleColor(.color(type: .primary), for: .normal)
         cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), for: .normal)
         cancelButton.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
         cancelButton.snp.makeConstraints { make in

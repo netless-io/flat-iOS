@@ -176,7 +176,7 @@ class UploadTasksViewController: UIViewController {
         view.backgroundColor = .whiteBG
         let topLabel = UILabel(frame: .zero)
         topLabel.text = NSLocalizedString("Uploading List", comment: "")
-        topLabel.textColor = .text
+        topLabel.textColor = .color(type: .text)
         topLabel.font = .systemFont(ofSize: 16, weight: .medium)
         
         let closeButton = UIButton(type: .custom)

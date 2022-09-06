@@ -26,8 +26,8 @@ class EmptySplitSecondaryViewController: UIViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        // For before iOS 13Ω
-        iconView.tintColor = .emptyViewIconTintColor
+        // For before iOS 13
+        iconView.tintColor = .color(type: .text, .strong)
     }
     
     override func viewDidLoad() {
@@ -42,7 +42,7 @@ class EmptySplitSecondaryViewController: UIViewController {
     
     lazy var iconView: UIImageView = {
         let iconView = UIImageView(image: UIImage(named: "split_empty"))
-        iconView.tintColor = .emptyViewIconTintColor
+        iconView.tintColor = .color(type: .text, .strong)
         iconView.contentMode = .scaleAspectFit
         return iconView
     }()

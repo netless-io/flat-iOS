@@ -75,13 +75,13 @@ class CancellationViewController: UIViewController {
         
         let tl = UILabel()
         tl.text = NSLocalizedString("AccountCancelationInfoTitle", comment: "")
-        tl.textColor = .text
+        tl.textColor = .color(type: .text)
         tl.font = .systemFont(ofSize: 16, weight: .semibold)
         tl.textAlignment = .center
         
         let cl = UILabel()
         cl.text = NSLocalizedString("AccountCancelationInfo", comment: "")
-        cl.textColor = .text
+        cl.textColor = .color(type: .text)
         cl.font = .systemFont(ofSize: 14)
         cl.numberOfLines = 0
         let stackView = UIStackView(arrangedSubviews: [tl, cl])
@@ -123,7 +123,7 @@ class CancellationViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setTitle(NSLocalizedString("CancelationAndLogout", comment: ""), for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
-        button.setTitleColor(.subText, for: .disabled)
+        button.setTitleColor(.color(type: .text), for: .disabled)
         button.titleLabel?.font = .systemFont(ofSize: 16)
         let disableImage = UIImage.imageWith(color: .lightGray)
         button.setBackgroundImage(disableImage, for: .disabled)
@@ -136,7 +136,7 @@ class CancellationViewController: UIViewController {
     
     lazy var agreementCheckButton: UIButton = {
         let btn = UIButton.checkBoxStyleButton()
-        btn.setTitleColor(.text, for: .normal)
+        btn.setTitleColor(.color(type: .text), for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 12)
         btn.setTitle("  " + NSLocalizedString("Have read and agree", comment: "") + " ", for: .normal)
         btn.contentEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)

@@ -84,7 +84,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         let titleLabel = UILabel()
         titleLabel.text = localizeStrings("Cloud Storage")
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        titleLabel.textColor = .strongText
+        titleLabel.textColor = .color(type: .text, .stronger)
         header.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(16)
@@ -111,11 +111,11 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     
     lazy var normalOperationStackView: UIStackView = {
         let uploadListButton = UIButton(type: .custom)
-        uploadListButton.setImage(UIImage(named: "upload_list")?.tintColor(.text), for: .normal)
+        uploadListButton.setImage(UIImage(named: "upload_list")?.tintColor(.color(type: .text)), for: .normal)
         uploadListButton.addTarget(self, action: #selector(presentTask), for: .touchUpInside)
         
         let selectionButton = UIButton(type: .custom)
-        selectionButton.setImage(UIImage(named: "cloud_storage_selection")?.tintColor(.text), for: .normal)
+        selectionButton.setImage(UIImage(named: "cloud_storage_selection")?.tintColor(.color(type: .text)), for: .normal)
         selectionButton.addTarget(self, action: #selector(onClickEdit(_:)), for: .touchUpInside)
         let stack = UIStackView(arrangedSubviews: [uploadListButton, selectionButton])
         stack.axis = .horizontal
@@ -126,7 +126,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     lazy var finishSelectionButton: UIButton = {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.setTitleColor(.brandColor, for: .normal)
+        button.setTitleColor(.color(type: .primary), for: .normal)
         button.setTitle(localizeStrings("Finish"), for: .normal)
         button.addTarget(self, action: #selector(onClickEdit(_:)), for: .touchUpInside)
         button.contentEdgeInsets = .init(top: 16, left: 16, bottom: 16, right: 16)

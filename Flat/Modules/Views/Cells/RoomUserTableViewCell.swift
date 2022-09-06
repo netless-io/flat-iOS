@@ -83,7 +83,7 @@ class RoomUserTableViewCell: UITableViewCell {
         let nameLabel = UILabel()
         nameLabel.font = .systemFont(ofSize: 12)
         nameLabel.setContentHuggingPriority(.required, for: .horizontal)
-        nameLabel.textColor = .text
+        nameLabel.textColor = .color(type: .text)
         return nameLabel
     }()
     
@@ -107,15 +107,15 @@ class RoomUserTableViewCell: UITableViewCell {
         let raiseHandButton = UIButton(type: .custom)
         raiseHandButton.setImage(UIImage(named: "raisehand_small_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
         raiseHandButton.addTarget(self, action: #selector(onClickRaiseHand), for: .touchUpInside)
-        raiseHandButton.tintColor = .controlSelected
+        raiseHandButton.tintColor = .color(type: .primary)
         raiseHandButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return raiseHandButton
     }()
     
     lazy var cameraButton: UIButton = {
         let cameraButton = UIButton(type: .custom)
-        cameraButton.setImage(UIImage(named: "camera_off")?.tintColor(.controlNormal), for: .normal)
-        cameraButton.setImage(UIImage(named: "camera_on")?.tintColor(.controlNormal), for: .selected)
+        cameraButton.setImage(UIImage(named: "camera_off")?.tintColor(.color(type: .text, .strong)), for: .normal)
+        cameraButton.setImage(UIImage(named: "camera_on")?.tintColor(.color(type: .text, .strong)), for: .selected)
         cameraButton.addTarget(self, action: #selector(onClickCamera), for: .touchUpInside)
         cameraButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return cameraButton
@@ -123,8 +123,8 @@ class RoomUserTableViewCell: UITableViewCell {
     
     lazy var micButton: UIButton = {
         let micButton = UIButton(type: .custom)
-        micButton.setImage(UIImage(named: "mic_off")?.tintColor(.controlNormal), for: .normal)
-        micButton.setImage(UIImage(named: "mic_on")?.tintColor(.controlNormal), for: .selected)
+        micButton.setImage(UIImage(named: "mic_off")?.tintColor(.color(type: .text, .strong)), for: .normal)
+        micButton.setImage(UIImage(named: "mic_on")?.tintColor(.color(type: .text, .strong)), for: .selected)
         micButton.addTarget(self, action: #selector(onClickMic), for: .touchUpInside)
         micButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return micButton

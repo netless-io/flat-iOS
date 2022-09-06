@@ -97,7 +97,7 @@ class LoginViewController: UIViewController {
         stackView.arrangedSubviews.forEach {
             $0.backgroundColor = .whiteBG
         }
-        flatLabel.textColor = .strongText
+        flatLabel.textColor = .color(type: .text, .stronger)
         
         // Hide weChat login when weChat not installed
         weChatLoginButton.isHidden = !WXApi.isWXAppInstalled()
@@ -295,7 +295,7 @@ class LoginViewController: UIViewController {
     // MARK: Lazy
     lazy var agreementCheckButton: UIButton = {
         let btn = UIButton.checkBoxStyleButton()
-        btn.setTitleColor(.text, for: .normal)
+        btn.setTitleColor(.color(type: .text), for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 12)
         btn.setTitle("  " + NSLocalizedString("Have read and agree", comment: "") + " ", for: .normal)
         btn.addTarget(self, action: #selector(onClickAgreement), for: .touchUpInside)
@@ -305,21 +305,21 @@ class LoginViewController: UIViewController {
     
     lazy var agreementCheckStackView: UIStackView = {
         let privacyButton = UIButton(type: .custom)
-        privacyButton.tintColor = .brandColor
-        privacyButton.setTitleColor(.brandColor, for: .normal)
+        privacyButton.tintColor = .color(type: .primary)
+        privacyButton.setTitleColor(.color(type: .primary), for: .normal)
         privacyButton.titleLabel?.font = .systemFont(ofSize: 12)
         privacyButton.setTitle(NSLocalizedString("Privacy Policy", comment: ""), for: .normal)
         privacyButton.addTarget(self, action: #selector(onClickPrivacy), for: .touchUpInside)
         
         let serviceAgreementButton = UIButton(type: .custom)
-        serviceAgreementButton.tintColor = .brandColor
+        serviceAgreementButton.tintColor = .color(type: .primary)
         serviceAgreementButton.titleLabel?.font = .systemFont(ofSize: 12)
         serviceAgreementButton.setTitle(NSLocalizedString("Service Agreement", comment: ""), for: .normal)
-        serviceAgreementButton.setTitleColor(.brandColor, for: .normal)
+        serviceAgreementButton.setTitleColor(.color(type: .primary), for: .normal)
         serviceAgreementButton.addTarget(self, action: #selector(onClickServiceAgreement), for: .touchUpInside)
         
         let label1 = UILabel()
-        label1.textColor = .text
+        label1.textColor = .color(type: .text)
         label1.font = .systemFont(ofSize: 12)
         label1.text = " " + NSLocalizedString("and", comment: "") + " "
         let view = UIStackView(arrangedSubviews: [agreementCheckButton, privacyButton, label1, serviceAgreementButton])

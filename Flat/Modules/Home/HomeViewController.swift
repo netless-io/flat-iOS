@@ -20,7 +20,7 @@ extension RoomStartStatus {
         } else if self == .Started {
             return .init(hexString: "#7EC452")
         }
-        return .subText
+        return .color(type: .text)
     }
 }
 
@@ -112,6 +112,7 @@ class HomeViewController: UIViewController {
             switch result {
             case .success(let list):
                 self.list = list
+                self.tableView.tableFooterView = list.isEmpty ? nil : self.didLoadAllFooterView
                 completion(nil)
             case.failure(let error):
                 completion(error)
@@ -264,7 +265,7 @@ class HomeViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.text = localizeStrings("Home")
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        titleLabel.textColor = .strongText
+        titleLabel.textColor = .color(type: .text, .stronger)
         header.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(16)
@@ -290,8 +291,8 @@ class HomeViewController: UIViewController {
     
     lazy var historyButton: UIButton = {
         let button = UIButton(type: .custom)
-        let normalImage = UIImage(named: "history")?.tintColor(.text)
-        let selectedImage = UIImage(named: "history")?.tintColor(.brandColor)
+        let normalImage = UIImage(named: "history")?.tintColor(.color(type: .text))
+        let selectedImage = UIImage(named: "history")?.tintColor(.color(type: .primary))
         button.setImage(normalImage, for: .normal)
         button.setImage(selectedImage, for: .selected)
         button.addTarget(self, action: #selector(onClickHistory), for: .touchUpInside)
@@ -299,6 +300,20 @@ class HomeViewController: UIViewController {
     }()
     
     lazy var historyViewController = HistoryViewController()
+    
+    lazy var didLoadAllFooterView: UIView = {
+        let view = UIView(frame: .init(x: 0, y: 0, width: 0, height: 44))
+        view.backgroundColor = .whiteBG
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .color(type: .text)
+        label.text = localizeStrings("DidLoadAll")
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        return view
+    }()
     
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
@@ -361,7 +376,7 @@ extension HomeViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         .init(string: localizeStrings("No room at the moment"),
               attributes: [
-                .foregroundColor: UIColor.text,
+                .foregroundColor: UIColor.color(type: .text),
                     .font: UIFont.systemFont(ofSize: 14)
               ])
     }

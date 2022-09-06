@@ -15,7 +15,7 @@ class HomeEntryButton: UIView {
         imageView.contentMode = .scaleAspectFit
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
-        label.textColor = .text
+        label.textColor = .color(type: .text)
         label.textAlignment = .center
         label.text = title
         super.init(frame: .zero)

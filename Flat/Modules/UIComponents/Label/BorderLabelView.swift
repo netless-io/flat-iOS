@@ -26,7 +26,7 @@ class BorderLabelView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         clipsToBounds = true
-        backgroundColor = .commonBG
+        backgroundColor = .color(type: .text, .weaker)
         addSubview(label)
         label.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -40,7 +40,7 @@ class BorderLabelView: UIView {
     lazy var label: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 12)
-        label.textColor = .subText
+        label.textColor = .color(type: .text)
         return label
     }()
 }

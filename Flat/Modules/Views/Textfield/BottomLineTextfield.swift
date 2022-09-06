@@ -37,11 +37,11 @@ class BottomLineTextfield: UITextField {
     }
     
     func setLineSelected(_ selected: Bool) {
-        let color = selected ? UIColor.brandColor : UIColor.separateLine
+        let color = selected ? UIColor.color(type: .primary) : UIColor.borderColor
         UIView.animate(withDuration: 0.15) {
             self.line.backgroundColor = color
             if selected {
-                self.line.layer.shadowColor = UIColor.brandColor.cgColor
+                self.line.layer.shadowColor = UIColor.color(type: .primary).cgColor
                 self.line.layer.shadowOpacity = 0.3
                 self.line.layer.shadowOffset = .init(width: 0, height: 2)
                 self.line.layer.shadowRadius = 4
@@ -53,7 +53,7 @@ class BottomLineTextfield: UITextField {
     
     var line: UIView =  {
         let view = UIView()
-        view.backgroundColor = .separateLine
+        view.backgroundColor = .borderColor
         return view
     }()
 }

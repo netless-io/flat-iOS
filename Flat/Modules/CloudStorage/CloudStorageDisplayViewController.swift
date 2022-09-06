@@ -375,7 +375,7 @@ class CloudStorageDisplayViewController: UIViewController,
     // MARK: - EmptyData
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         .init(string: NSLocalizedString("EmptyCloudTip", comment: ""), attributes: [
-            .foregroundColor: UIColor.text,
+            .foregroundColor: UIColor.color(type: .text),
             .font: UIFont.systemFont(ofSize: 14)
         ])
     }

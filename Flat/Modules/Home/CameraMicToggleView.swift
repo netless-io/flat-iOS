@@ -112,16 +112,16 @@ class CameraMicToggleView: UIView {
     
     lazy var cameraButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "common_camera_on")?.tintColor(.brandColor), for: .selected)
-        button.setImage(UIImage(named: "common_camera_off")?.tintColor(.delete), for: .normal)
+        button.setImage(UIImage(named: "common_camera_on")?.tintColor(.color(type: .primary)), for: .selected)
+        button.setImage(UIImage(named: "common_camera_off")?.tintColor(.color(type: .danger)), for: .normal)
         button.addTarget(self, action: #selector(onButtonClick(_:)), for: .touchUpInside)
         return button
     }()
     
     lazy var microphoneButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "common_mic_on")?.tintColor(.brandColor), for: .selected)
-        button.setImage(UIImage(named: "common_mic_off")?.tintColor(.delete), for: .normal)
+        button.setImage(UIImage(named: "common_mic_on")?.tintColor(.color(type: .primary)), for: .selected)
+        button.setImage(UIImage(named: "common_mic_off")?.tintColor(.color(type: .danger)), for: .normal)
         button.addTarget(self, action: #selector(onButtonClick(_:)), for: .touchUpInside)
         return button
     }()

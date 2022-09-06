@@ -21,11 +21,11 @@ class RoomTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        separatorLineHeightConstraint.constant = 1 / UIScreen.main.scale
+        separatorLineHeightConstraint.constant = 1
         contentView.backgroundColor = .whiteBG
         borderView.backgroundColor = .borderColor
-        roomTitleLabel.textColor = .strongText
-        roomTimeLabel.textColor = .text
+        roomTitleLabel.textColor = .color(type: .text, .stronger)
+        roomTimeLabel.textColor = .color(type: .text)
         
         contentView.insertSubview(selectionView, at: 0)
         selectionView.clipsToBounds = true
@@ -38,9 +38,9 @@ class RoomTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if animated {
-            selectionView.layer.backgroundColor = selected ? UIColor.cellSelectedBG.cgColor : UIColor.whiteBG.cgColor
+            selectionView.layer.backgroundColor = selected ? UIColor.color(type: .primary, .weaker).cgColor : UIColor.whiteBG.cgColor
         } else {
-            selectionView.backgroundColor = selected ?  .cellSelectedBG : .whiteBG
+            selectionView.backgroundColor = selected ?  .color(type: .primary, .weaker) : .whiteBG
         }
     }
     
@@ -70,10 +70,10 @@ class RoomTableViewCell: UITableViewCell {
         
         if room.roomStatus == .Started {
             roomTimeLabel.text = localizeStrings(room.roomStatus.rawValue) + " " + timeStr
-            roomTimeLabel.textColor = .success
+            roomTimeLabel.textColor = .color(type: .success)
         } else {
             roomTimeLabel.text = dateStr + " " + timeStr
-            roomTimeLabel.textColor = .text
+            roomTimeLabel.textColor = .color(type: .text)
         }
         
         calendarIcon.isHidden = (room.periodicUUID ?? "").isEmpty

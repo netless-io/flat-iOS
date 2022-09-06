@@ -142,7 +142,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // MARK: - Private
     fileprivate func setupCell(_ cell: UITableViewCell, type: BindingType) {
-        cell.textLabel?.textColor = .text
+        cell.textLabel?.textColor = .color(type: .text)
         cell.backgroundColor = .whiteBG
         cell.contentView.backgroundColor = .whiteBG
         cell.textLabel?.text = NSLocalizedString("Binding \(type.identifierString)", comment: "")
@@ -190,7 +190,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             label.text = NSLocalizedString("Account binding information", comment: "")
             view.addSubview(label)
             label.font = .systemFont(ofSize: 12, weight: .light)
-            label.textColor = .subText
+            label.textColor = .color(type: .text)
             label.snp.makeConstraints {
                 $0.left.equalToSuperview().inset(16)
                 $0.centerY.equalToSuperview()
@@ -203,8 +203,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: cellIdentifier)
         if indexPath.section == 0 {
-            cell.textLabel?.textColor = .text
-            cell.detailTextLabel?.textColor = .subText
+            cell.textLabel?.textColor = .color(type: .text)
+            cell.detailTextLabel?.textColor = .color(type: .text)
             cell.backgroundColor = .whiteBG
             cell.contentView.backgroundColor = .whiteBG
             cell.selectionStyle = .none

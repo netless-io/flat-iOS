@@ -18,7 +18,7 @@ extension UIButton {
         btn.setImage(UIImage(named: "checklist_selected"), for: .selected)
         btn.adjustsImageWhenHighlighted = false
         btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(.subText, for: .normal)
+        btn.setTitleColor(.color(type: .text), for: .normal)
         btn.contentEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
         return btn
     }

@@ -216,14 +216,14 @@ class RoomDetailViewController: UIViewController {
                 stack.arrangedSubviews.forEach { loopTextColor(view: $0) }
             } else if let label = view as? UILabel {
                 if label.font.fontName.contains("semiBold") {
-                    label.textColor = .text
+                    label.textColor = .color(type: .text)
                 } else {
-                    label.textColor = .strongText
+                    label.textColor = .color(type: .text, .stronger)
                 }
             } else if let imageView = view as? UIImageView {
-                imageView.tintColor = .text
+                imageView.tintColor = .color(type: .text)
             } else if let button = view as? UIButton {
-                button.tintColor = .text
+                button.tintColor = .color(type: .text)
             } else {
                 view.subviews.forEach { loopTextColor(view: $0) }
             }

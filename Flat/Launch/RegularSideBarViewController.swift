@@ -29,7 +29,7 @@ class RegularSideBarViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         updateGradientColors()
-        foldButton.setImage(UIImage(named: "side_bar_fold")?.tintColor(.strongText), for: .normal)
+        foldButton.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text, .stronger)), for: .normal)
         syncSelected()
     }
         
@@ -134,14 +134,14 @@ class RegularSideBarViewController: UIViewController {
 
     func syncSelected() {
         let newButton = (mainStackView.arrangedSubviews[selectedIndex] as! UIButton)
-        newButton.setImage(UIImage(named: icons[selectedIndex] + "_filled")?.tintColor(.brandColor), for: .normal)
-        newButton.setTitleColor(.brandColor, for: .normal)
+        newButton.setImage(UIImage(named: icons[selectedIndex] + "_filled")?.tintColor(.color(type: .primary)), for: .normal)
+        newButton.setTitleColor(.color(type: .primary), for: .normal)
         
         mainStackView.arrangedSubviews.enumerated().forEach { (offset, element) in
             if offset != selectedIndex {
                 guard let btn = element as? UIButton else { return }
-                btn.setImage(UIImage(named: icons[offset])?.tintColor(.text), for: .normal)
-                btn.setTitleColor(.text, for: .normal)
+                btn.setImage(UIImage(named: icons[offset])?.tintColor(.color(type: .text)), for: .normal)
+                btn.setTitleColor(.color(type: .text), for: .normal)
             }
         }
         

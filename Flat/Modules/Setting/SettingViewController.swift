@@ -285,7 +285,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         let item = items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SettingTableViewCell
         cell.iconImageView.image = item.image
-        cell.iconImageView.tintColor = .text
+        cell.iconImageView.tintColor = .color(type: .text)
         cell.settingTitleLabel.text = item.title
         if let bool = item.detail as? Bool {
             cell.settingDetailLabel.isHidden = true

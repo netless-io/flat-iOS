@@ -17,7 +17,7 @@ func agreementAttributedString()-> NSAttributedString {
     let str = NSLocalizedString("AgreementText", comment: "")
     let paraStyle = NSMutableParagraphStyle()
     paraStyle.lineSpacing = 2
-    let attributedStr = NSMutableAttributedString(string: str, attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.text, .paragraphStyle: paraStyle])
+    let attributedStr = NSMutableAttributedString(string: str, attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.color(type: .text), .paragraphStyle: paraStyle])
     attributedStr.add(link: privacyLink, forExistString: pStr)
     attributedStr.add(link: serviceLink, forExistString: sStr)
     return attributedStr
@@ -29,7 +29,7 @@ func agreementAttributedString1()-> NSAttributedString {
     let str = NSLocalizedString("AgreementText1", comment: "")
     let paraStyle = NSMutableParagraphStyle()
     paraStyle.lineSpacing = 2
-    let attributedStr = NSMutableAttributedString(string: str, attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.text, .paragraphStyle: paraStyle])
+    let attributedStr = NSMutableAttributedString(string: str, attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.color(type: .text), .paragraphStyle: paraStyle])
     attributedStr.add(link: privacyLink, forExistString: pStr)
     attributedStr.add(link: serviceLink, forExistString: sStr)
     return attributedStr

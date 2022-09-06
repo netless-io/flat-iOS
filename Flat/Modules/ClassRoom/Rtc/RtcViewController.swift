@@ -158,7 +158,7 @@ class RtcViewController: UIViewController {
     
     // MARK: - Private
     func setupViews() {
-        view.backgroundColor = .commonBG
+        view.backgroundColor = .color(type: .text, .weaker)
         view.addSubview(mainScrollView)
         mainScrollView.addSubview(videoItemsStackView)
         mainScrollView.snp.makeConstraints { make in

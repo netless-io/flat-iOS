@@ -33,14 +33,14 @@ class ChatTableViewCell: UITableViewCell {
         
         var backgroundColor: UIColor {
             switch self {
-            case .other: return .lightBlueBar
-            case .`self`: return .brandColor
+            case .other: return .color(type: .primary, .weaker)
+            case .`self`: return .color(type: .primary)
             }
         }
         
         var textColor: UIColor {
             switch self {
-            case .other: return .otherUserChat
+            case .other: return .color(type: .primary, .strong)
             case .`self`: return .init(hexString: "#F4F8FF")
             }
         }
@@ -151,7 +151,7 @@ class ChatTableViewCell: UITableViewCell {
     lazy var nickNameLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 12)
-        label.textColor = .nickname
+        label.textColor = .color(type: .text)
         label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()

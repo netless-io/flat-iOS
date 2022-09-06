@@ -170,7 +170,7 @@ class JoinRoomViewController: UIViewController {
     // MARK: - Lazy
     lazy var subjectTextField: BottomLineTextfield = {
         let tf = BottomLineTextfield()
-        tf.textColor = .strongText
+        tf.textColor = .color(type: .text, .stronger)
         tf.textAlignment = .center
         tf.font = .systemFont(ofSize: 20)
         tf.placeholder = NSLocalizedString("Room Number Input PlaceHolder", comment: "")

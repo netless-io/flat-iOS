@@ -95,7 +95,7 @@ class BindPhoneViewController: UIViewController {
                 
             let titleLabel = UILabel()
             titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
-            titleLabel.textColor = .strongText
+            titleLabel.textColor = .color(type: .text, .stronger)
             titleLabel.text = NSLocalizedString("BindPhone", comment: "")
             mainView.addSubview(titleLabel)
             titleLabel.snp.makeConstraints { make in
@@ -106,7 +106,7 @@ class BindPhoneViewController: UIViewController {
             let bindPhoneDetailLabel = UILabel()
             bindPhoneDetailLabel.text = localizeStrings("Bind Phone Detail")
             bindPhoneDetailLabel.font = .systemFont(ofSize: 14)
-            bindPhoneDetailLabel.textColor = .text
+            bindPhoneDetailLabel.textColor = .color(type: .text)
             mainView.addSubview(bindPhoneDetailLabel)
             bindPhoneDetailLabel.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()
@@ -114,7 +114,7 @@ class BindPhoneViewController: UIViewController {
             }
             
             let closeButton = UIButton(type: .custom)
-            closeButton.setTitleColor(.brandColor, for: .normal)
+            closeButton.setTitleColor(.color(type: .primary), for: .normal)
             closeButton.setTitle(localizeStrings("Back"), for: .normal)
             closeButton.titleLabel?.font = .systemFont(ofSize: 14)
             mainView.addSubview(closeButton)

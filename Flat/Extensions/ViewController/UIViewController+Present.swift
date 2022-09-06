@@ -25,7 +25,7 @@ extension UIViewController {
         self.closeBlock = handler
         let closeButton = UIButton(type: .custom)
         closeButton.setImage(UIImage(named: "close-bold"), for: .normal)
-        closeButton.tintColor = .text
+        closeButton.tintColor = .color(type: .text)
         view.addSubview(closeButton)
         closeButton.snp.makeConstraints { make in
             make.right.equalToSuperview()
@@ -48,7 +48,7 @@ extension UIViewController {
     func addPresentTitle(_ title: String) -> UILabel {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        titleLabel.textColor = .strongText
+        titleLabel.textColor = .color(type: .text, .stronger)
         titleLabel.text = title
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in

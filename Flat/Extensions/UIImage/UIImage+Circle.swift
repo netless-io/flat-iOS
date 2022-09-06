@@ -29,12 +29,12 @@ extension UIImage {
         let size = CGSize(width: radius * 2, height: radius * 2)
         UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
         let context = UIGraphicsGetCurrentContext()
-        UIColor.brandColor.setStroke()
+        UIColor.color(type: .primary).setStroke()
         context?.setLineWidth(bigLineWidth)
         context?.addPath(path.cgPath)
         context?.strokePath()
         
-        UIColor.brandColor.setFill()
+        UIColor.color(type: .primary).setFill()
         context?.addPath(center.cgPath)
         context?.fillPath()
         

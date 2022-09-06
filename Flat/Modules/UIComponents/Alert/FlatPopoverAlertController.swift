@@ -51,7 +51,7 @@ class FlatPopoverAlertController: UIViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = .compactAlertBg
+        view.backgroundColor = .customAlertBg
         let buttons = actions.enumerated().compactMap { value -> UIButton? in
             if value.element.isCancelAction() { return nil }
             let title = value.element.title
@@ -62,14 +62,14 @@ class FlatPopoverAlertController: UIViewController {
             btn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
             btn.titleLabel?.font = .systemFont(ofSize: 14)
             if value.element.style == .destructive {
-                btn.setTitleColor(.delete, for: .normal)
+                btn.setTitleColor(.color(type: .danger), for: .normal)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.delete, for: .normal)
+                    btn?.setTitleColor(.color(type: .danger), for: .normal)
                 }
             } else {
-                btn.setTitleColor(.text, for: .normal)
+                btn.setTitleColor(.color(type: .text), for: .normal)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.text, for: .normal)
+                    btn?.setTitleColor(.color(type: .text), for: .normal)
                 }
             }
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)
@@ -89,7 +89,7 @@ class FlatPopoverAlertController: UIViewController {
         let stack = UIStackView(arrangedSubviews: [])
         stack.axis = .vertical
         stack.distribution = .fillEqually
-        stack.backgroundColor = .compactAlertBg
+        stack.backgroundColor = .customAlertBg
         return stack
     }()
 }

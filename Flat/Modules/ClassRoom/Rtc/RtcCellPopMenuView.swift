@@ -88,7 +88,7 @@ class RtcCellPopMenuView: PopMenuView {
     
     lazy var cameraButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.tintColor = .controlNormal
+        btn.tintColor = .color(type: .text, .strong)
         btn.tag = 0
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
@@ -96,7 +96,7 @@ class RtcCellPopMenuView: PopMenuView {
     
     lazy var micButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.tintColor = .controlNormal
+        btn.tintColor = .color(type: .text, .strong)
         btn.tag = 1
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
@@ -105,7 +105,7 @@ class RtcCellPopMenuView: PopMenuView {
     lazy var expandButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "expand"), for: .normal)
-        btn.tintColor = .controlNormal
+        btn.tintColor = .color(type: .text, .strong)
         btn.tag = 2
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn

@@ -69,7 +69,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     func setupAddButton() {
         if #available(iOS 14.0, *) {
             let actions = UploadType.allCases.map { type in
-                UIAction(title: type.title, image: UIImage(named: type.imageName)?.withTintColor(.blackBG, renderingMode: .alwaysOriginal)) { _ in
+                UIAction(title: type.title, image: UIImage(named: type.imageName)?.withTintColor(.color(type: .text, .strong), renderingMode: .alwaysOriginal)) { _ in
                     self.uploadActionFor(type: type)
                 }
             }
@@ -97,7 +97,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         cell.selectionView.isHidden = true
         cell.backgroundColor = .classroomChildBG
         cell.contentView.backgroundColor = .classroomChildBG
-        cell.fileNameLabel.textColor = .nickname
+        cell.fileNameLabel.textColor = .color(type: .text)
         cell.sizeAndTimeLabel.textColor = .init(hexString: "#B7BBC1")
         cell.rightArrowImageView.isHidden = false
         
@@ -207,9 +207,9 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
         
-        let leftIcon = UIImageView(image: UIImage(named: "classroom_cloud")?.tintColor(.strongText))
+        let leftIcon = UIImageView(image: UIImage(named: "classroom_cloud")?.tintColor(.color(type: .text, .stronger)))
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "classroom_cloud")?.tintColor(.strongText)
+            leftIcon?.image = UIImage(named: "classroom_cloud")?.tintColor(.color(type: .text, .stronger))
         }
         leftIcon.contentMode = .center
         view.addSubview(leftIcon)
@@ -220,7 +220,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("Cloud Storage")
-        topLabel.textColor = .strongText
+        topLabel.textColor = .color(type: .text, .stronger)
         topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
@@ -254,9 +254,9 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     
     lazy var addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "storage_add_small")?.tintColor(.nickname), for: .normal)
+        button.setImage(UIImage(named: "storage_add_small")?.tintColor(.color(type: .text)), for: .normal)
         button.traitCollectionUpdateHandler = { [weak button] _ in
-            button?.setImage(UIImage(named: "storage_add_small")?.tintColor(.nickname), for: .normal)
+            button?.setImage(UIImage(named: "storage_add_small")?.tintColor(.color(type: .text)), for: .normal)
         }
         return button
     }()

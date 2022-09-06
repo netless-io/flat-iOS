@@ -36,15 +36,15 @@ func configAppearance() {
     } else {
         flatTheme = FastRoomDefaultTheme.defaultLightTheme
     }
-    flatTheme.panelItemAssets.normalIconColor = .text
+    flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
     flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
     flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8
-    flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .lightBlueBar
+    flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .color(type: .primary, .weaker)
     
     FastRoomThemeManager.shared.apply(flatTheme)
     FastRoomControlBar.appearance().commonRadius = isCompact() ? 8 : 4
     
-    UISwitch.appearance().onTintColor = .brandColor
+    UISwitch.appearance().onTintColor = .color(type: .primary)
     IQKeyboardManager.shared.enable = true
     IQKeyboardManager.shared.enableAutoToolbar = false
     IQKeyboardManager.shared.shouldResignOnTouchOutside = true

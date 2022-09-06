@@ -20,8 +20,8 @@ class SettingTableViewCell: UITableViewCell {
         super.awakeFromNib()
         selectionStyle = .none
         accessoryType = .disclosureIndicator
-        settingTitleLabel.textColor = .text
-        settingDetailLabel.textColor = .subText
+        settingTitleLabel.textColor = .color(type: .text)
+        settingDetailLabel.textColor = .color(type: .text)
         backgroundColor = .whiteBG
         contentView.backgroundColor = .whiteBG
     }

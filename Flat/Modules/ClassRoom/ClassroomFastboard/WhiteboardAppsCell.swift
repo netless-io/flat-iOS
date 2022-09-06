@@ -39,7 +39,7 @@ class WhiteboardAppsCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18)
         label.textAlignment = .center
-        label.textColor = .text
+        label.textColor = .color(type: .text)
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
         return label

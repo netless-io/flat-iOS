@@ -133,7 +133,7 @@ class ClassRoomUsersViewController: UIViewController {
                 cell.disconnectButton.isHidden = !(isOwner || user.rtmUUID == userUUID)
             } else if user.status.isRaisingHand {
                 cell.statusLabel.text = "(\(NSLocalizedString("Raised Hand", comment: "")))"
-                cell.statusLabel.textColor = .controlSelected
+                cell.statusLabel.textColor = .color(type: .primary)
                 cell.raiseHandButton.isHidden = !isOwner
             } else {
                 cell.statusLabel.text = nil
@@ -167,16 +167,16 @@ class ClassRoomUsersViewController: UIViewController {
         view.backgroundColor = .classroomChildBG
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("User List")
-        topLabel.textColor = .strongText
+        topLabel.textColor = .color(type: .text, .stronger)
         topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(40)
         }
-        let leftIcon = UIImageView(image: UIImage(named: "users")?.tintColor(.strongText))
+        let leftIcon = UIImageView(image: UIImage(named: "users")?.tintColor(.color(type: .text, .stronger)))
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "users")?.tintColor(.strongText)
+            leftIcon?.image = UIImage(named: "users")?.tintColor(.color(type: .text, .stronger))
         }
         leftIcon.contentMode = .center
         view.addSubview(leftIcon)
@@ -196,7 +196,7 @@ class ClassRoomUsersViewController: UIViewController {
     
     lazy var teacherLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .text
+        label.textColor = .color(type: .text)
         label.font = .systemFont(ofSize: 12)
         return label
     }()
@@ -204,7 +204,7 @@ class ClassRoomUsersViewController: UIViewController {
     lazy var stopInteractingButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.titleLabel?.font = .systemFont(ofSize: 12)
-        btn.setTitleColor(.text, for: .normal)
+        btn.setTitleColor(.color(type: .text), for: .normal)
         btn.setTitle(NSLocalizedString("Stop Interacting", comment: ""), for: .normal)
         btn.contentEdgeInsets = .init(top: 12, left: 12, bottom: 12, right: 12)
         btn.layer.borderColor = UIColor.borderColor.cgColor

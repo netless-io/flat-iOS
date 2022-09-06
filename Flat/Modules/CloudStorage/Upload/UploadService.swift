@@ -69,7 +69,7 @@ enum UploadStatus {
         case .cancel, .error:
             return .systemRed
         default:
-            return .subText
+            return .color(type: .text)
         }
     }
     
@@ -80,7 +80,7 @@ enum UploadStatus {
         case .cancel, .error:
             return .systemRed
         default:
-            return .brandColor
+            return .color(type: .primary)
         }
     }
 }

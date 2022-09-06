@@ -34,7 +34,7 @@ class RaiseHandButton: UIButton {
     
     override var isSelected: Bool {
         didSet {
-            borderView.layer.borderColor = isSelected ? UIColor.borderColor.withAlphaComponent(0.15).cgColor : UIColor.brandColor.withAlphaComponent(0.15).cgColor
+            borderView.layer.borderColor = isSelected ? UIColor.borderColor.withAlphaComponent(0.15).cgColor : UIColor.color(type: .primary).withAlphaComponent(0.15).cgColor
         }
     }
     

@@ -129,16 +129,16 @@ class Theme {
     
     fileprivate func applyNavigationBar() {
         let proxy = UINavigationBar.appearance()
-        proxy.tintColor = .subText
+        proxy.tintColor = .color(type: .text)
         
         if #available(iOS 13.0, *) {} else {
             proxy.isTranslucent = false
             proxy.barTintColor = .whiteBG
             proxy.largeTitleTextAttributes = [
-                .foregroundColor: UIColor.text
+                .foregroundColor: UIColor.color(type: .text)
             ]
             proxy.titleTextAttributes = [
-                .foregroundColor: UIColor.text
+                .foregroundColor: UIColor.color(type: .text)
             ]
         }
     }

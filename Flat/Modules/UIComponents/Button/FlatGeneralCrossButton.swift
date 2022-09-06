@@ -33,16 +33,16 @@ class FlatGeneralCrossButton: UIButton {
     override var isEnabled: Bool {
         didSet {
             guard isEnabled != oldValue else { return }
-            backgroundColor = isEnabled ? .brandColor : .controlDisabled
+            backgroundColor = isEnabled ? .color(type: .primary) : .color(type: .text, .weaker)
         }
     }
     
     func setup() {
         clipsToBounds = true
         layer.cornerRadius = 4
-        backgroundColor = .brandColor
+        backgroundColor = .color(type: .primary)
         setTitleColor(.whiteText, for: .normal)
-        setTitleColor(.disableText, for: .disabled)
+        setTitleColor(.grey5, for: .disabled)
         setTitleColor(UIColor.whiteText.withAlphaComponent(0.7), for: .highlighted)
         titleLabel?.font = .systemFont(ofSize: 16)
     }

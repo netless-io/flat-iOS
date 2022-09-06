@@ -132,7 +132,7 @@ extension HistoryViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate 
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         .init(string: localizeStrings("NoHistoryTip"),
               attributes: [
-                .foregroundColor: UIColor.text,
+                .foregroundColor: UIColor.color(type: .text),
                     .font: UIFont.systemFont(ofSize: 14)
               ])
     }

@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+extension UIColor {
+    fileprivate static var nameSuffix: String {
+        Theme.shared.isDarkBeforeIOS13 ? "-dark" : ""
+    }
+    
+}

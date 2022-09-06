@@ -52,14 +52,14 @@ class PrivacyAlertViewController: UIViewController {
         cancelBtn.setTitle(rejectTitle, for: .normal)
         cancelBtn.layer.borderWidth = 1 / UIScreen.main.scale
         
-        titleLabel.textColor = .text
+        titleLabel.textColor = .color(type: .text)
         mainBgView.backgroundColor = .whiteBG
         
         let maxHeight: CGFloat = 280
         let b = attributedString.boundingRect(with: .init(width: maxHeight, height: .infinity), options: .usesLineFragmentOrigin, context: nil)
         textViewHeightConstraint.constant = min(b.height + 14, 340)
         attributedStringTextView.attributedText = attributedString
-        attributedStringTextView.linkTextAttributes = [.foregroundColor: UIColor.brandColor, .underlineColor: UIColor.clear]
+        attributedStringTextView.linkTextAttributes = [.foregroundColor: UIColor.color(type: .primary), .underlineColor: UIColor.clear]
         
         let btn = UIButton(type: .custom)
         btn.tag = 1

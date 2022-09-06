@@ -43,7 +43,7 @@ class RecordingFlagView: UIView {
     
     lazy var durationLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .text
+        label.textColor = .color(type: .text)
         label.text = "00 : 00"
         label.font = .preferredFont(forTextStyle: .footnote)
         return label

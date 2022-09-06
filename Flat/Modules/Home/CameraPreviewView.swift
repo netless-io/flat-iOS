@@ -83,11 +83,11 @@ class CameraPreviewView: UIView {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        previewLayer.backgroundColor = UIColor.lightBlueBar.cgColor
+        previewLayer.backgroundColor = UIColor.color(type: .primary, .weaker).cgColor
     }
     
     func setupViews() {
-        previewLayer.backgroundColor = UIColor.lightBlueBar.cgColor
+        previewLayer.backgroundColor = UIColor.color(type: .primary, .weaker).cgColor
         layer.addSublayer(previewLayer)
         previewLayer.videoGravity = .resizeAspectFill
         clipsToBounds = true
@@ -173,7 +173,7 @@ class CameraPreviewView: UIView {
     
     lazy var avatarContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightBlueBar
+        view.backgroundColor = .color(type: .primary, .weaker)
         return view
     }()
     

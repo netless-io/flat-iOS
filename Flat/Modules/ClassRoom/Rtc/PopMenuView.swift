@@ -40,7 +40,7 @@ class PopMenuView: UIView {
 
     lazy var bg: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.blackBG.withAlphaComponent(0.03)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.03)
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTapBg(_:))))
         return view
     }()

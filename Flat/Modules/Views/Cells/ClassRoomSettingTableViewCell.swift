@@ -14,14 +14,14 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        iconView.image = iconView.image?.tintColor(.nickname)
+        iconView.image = iconView.image?.tintColor(.color(type: .text))
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = .classroomChildBG
         contentView.backgroundColor = .classroomChildBG
-        label.textColor = .nickname
+        label.textColor = .color(type: .text)
         lineHeightConstraint.constant = 1 / UIScreen.main.scale
     }
     
@@ -31,7 +31,7 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
     
     func setEnable(_ enable: Bool) {
         `switch`.isEnabled = enable
-        label.textColor = enable ? .subText : UIColor.subText.withAlphaComponent(0.5)
+        label.textColor = enable ? .color(type: .text) : UIColor.color(type: .text).withAlphaComponent(0.5)
     }
     
     @IBOutlet weak var iconView: UIImageView!

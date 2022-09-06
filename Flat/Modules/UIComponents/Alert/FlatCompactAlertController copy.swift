@@ -117,23 +117,23 @@ class FlatCompactAlertController: UIViewController {
             let btn = UIButton(type: .system)
             btn.setTitle(title, for: .normal)
             btn.tag = value.offset
-            btn.backgroundColor = .compactAlertBg
+            btn.backgroundColor = .customAlertBg
             btn.titleLabel?.font = .systemFont(ofSize: 20)
             if value.element.style == .destructive {
-                btn.setTitleColor(.delete, for: .normal)
+                btn.setTitleColor(.color(type: .danger), for: .normal)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.delete, for: .normal)
+                    btn?.setTitleColor(.color(type: .danger), for: .normal)
                 }
             } else if value.element.isCancelAction() {
                 btn.titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
-                btn.setTitleColor(.text, for: .normal)
+                btn.setTitleColor(.color(type: .text), for: .normal)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.strongText, for: .normal)
+                    btn?.setTitleColor(.color(type: .text, .stronger), for: .normal)
                 }
             } else {
-                btn.setTitleColor(.text, for: .normal)
+                btn.setTitleColor(.color(type: .text), for: .normal)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.strongText, for: .normal)
+                    btn?.setTitleColor(.color(type: .text, .stronger), for: .normal)
                 }
             }
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)
@@ -174,7 +174,7 @@ class FlatCompactAlertController: UIViewController {
     
     lazy var container: UIView = {
         let container = UIView()
-        container.backgroundColor = .compactAlertBg
+        container.backgroundColor = .customAlertBg
         return container
     }()
 }
