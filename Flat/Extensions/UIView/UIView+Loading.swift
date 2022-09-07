@@ -22,7 +22,7 @@ fileprivate class FlatLoadingView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .whiteBG
+        backgroundColor = .color(type: .background)
         addSubview(loadingView)
         loadingView.snp.makeConstraints { make in
             make.center.equalToSuperview()

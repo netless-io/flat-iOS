@@ -71,7 +71,7 @@ class CancellationViewController: UIViewController {
     func setupViews() {
         title = NSLocalizedString("AccountCancellation", comment: "")
         
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         
         let tl = UILabel()
         tl.text = NSLocalizedString("AccountCancelationInfoTitle", comment: "")
@@ -105,7 +105,7 @@ class CancellationViewController: UIViewController {
         }
         
         let bottomStack = UIStackView(arrangedSubviews: [agreementCheckButton, confirmButton])
-        bottomStack.backgroundColor = .whiteBG
+        bottomStack.backgroundColor = .color(type: .background)
         bottomStack.axis = .horizontal
         bottomStack.distribution = .fill
         agreementCheckButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)

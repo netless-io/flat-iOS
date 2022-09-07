@@ -133,7 +133,7 @@ class Theme {
         
         if #available(iOS 13.0, *) {} else {
             proxy.isTranslucent = false
-            proxy.barTintColor = .whiteBG
+            proxy.barTintColor = .color(type: .background)
             proxy.largeTitleTextAttributes = [
                 .foregroundColor: UIColor.color(type: .text)
             ]

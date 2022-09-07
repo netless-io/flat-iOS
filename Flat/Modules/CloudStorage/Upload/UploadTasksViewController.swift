@@ -70,7 +70,7 @@ class UploadTasksViewController: UIViewController {
     
     // MARK: - Private
     func setupViews() {
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         view.addSubview(tableView)
         view.addSubview(topView)
         topView.snp.makeConstraints { make in
@@ -159,7 +159,7 @@ class UploadTasksViewController: UIViewController {
     // MARK: - Lazy
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(.init(nibName: String(describing: UploadTaskTableViewCell.self), bundle: nil),
@@ -173,7 +173,7 @@ class UploadTasksViewController: UIViewController {
     
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         let topLabel = UILabel(frame: .zero)
         topLabel.text = NSLocalizedString("Uploading List", comment: "")
         topLabel.textColor = .color(type: .text)

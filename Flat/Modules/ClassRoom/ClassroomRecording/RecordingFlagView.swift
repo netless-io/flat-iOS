@@ -13,7 +13,7 @@ class RecordingFlagView: UIView {
         super.init(frame: frame)
         addSubview(durationLabel)
         addSubview(endRecordingButton)
-        backgroundColor = .whiteBG
+        backgroundColor = .color(type: .background)
         
         clipsToBounds = true
         layer.cornerRadius = 22

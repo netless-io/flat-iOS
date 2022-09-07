@@ -166,9 +166,9 @@ class ClassRoomSettingViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
         
-        let leftIcon = UIImageView(image: UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .stronger)))
+        let leftIcon = UIImageView(image: UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong)))
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .stronger))
+            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong))
         }
         leftIcon.contentMode = .center
         view.addSubview(leftIcon)
@@ -179,7 +179,7 @@ class ClassRoomSettingViewController: UIViewController {
         
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("Setting")
-        topLabel.textColor = .color(type: .text, .stronger)
+        topLabel.textColor = .color(type: .text, .strong)
         topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in

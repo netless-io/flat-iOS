@@ -25,7 +25,7 @@ class BindPhoneViewController: UIViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
 
         let mainView = UIView()
         let stack = UIStackView(arrangedSubviews: [])
@@ -95,7 +95,7 @@ class BindPhoneViewController: UIViewController {
                 
             let titleLabel = UILabel()
             titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
-            titleLabel.textColor = .color(type: .text, .stronger)
+            titleLabel.textColor = .color(type: .text, .strong)
             titleLabel.text = NSLocalizedString("BindPhone", comment: "")
             mainView.addSubview(titleLabel)
             titleLabel.snp.makeConstraints { make in

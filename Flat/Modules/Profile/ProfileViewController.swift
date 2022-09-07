@@ -143,8 +143,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Private
     fileprivate func setupCell(_ cell: UITableViewCell, type: BindingType) {
         cell.textLabel?.textColor = .color(type: .text)
-        cell.backgroundColor = .whiteBG
-        cell.contentView.backgroundColor = .whiteBG
+        cell.backgroundColor = .color(type: .background)
+        cell.contentView.backgroundColor = .color(type: .background)
         cell.textLabel?.text = NSLocalizedString("Binding \(type.identifierString)", comment: "")
         cell.accessoryView = nil
         cell.selectionStyle = .none
@@ -161,7 +161,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Lazy
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         view.separatorStyle = .none
         view.rowHeight = 47
         view.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -205,8 +205,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         if indexPath.section == 0 {
             cell.textLabel?.textColor = .color(type: .text)
             cell.detailTextLabel?.textColor = .color(type: .text)
-            cell.backgroundColor = .whiteBG
-            cell.contentView.backgroundColor = .whiteBG
+            cell.backgroundColor = .color(type: .background)
+            cell.contentView.backgroundColor = .color(type: .background)
             cell.selectionStyle = .none
             cell.accessoryView = nil
             if indexPath.row == 0 {

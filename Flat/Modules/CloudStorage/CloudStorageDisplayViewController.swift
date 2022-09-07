@@ -66,12 +66,13 @@ class CloudStorageDisplayViewController: UIViewController,
             self.tableView.refreshControl?.endRefreshing()
             switch result {
             case .success(let r):
-                let mb = Int(Float(r.totalUsage) / 1024 / 1024)
+//                let mb = Int(Float(r.totalUsage) / 1024 / 1024)
 //                self.storageUsageLabel.text = NSLocalizedString("Used Capacity", comment: "") + " " + mb.description + " MB"
                 self.container.receive(items: r.files, withItemsPage: page)
                 if page > 1 {
                     self.loadingMoreRequest = nil
                 }
+                self.tableView.showLoadedAll(!self.container.items.isEmpty && !self.container.canLoadMore)
             case .failure(let error):
                 self.toast(error.localizedDescription)
             }
@@ -191,7 +192,7 @@ class CloudStorageDisplayViewController: UIViewController,
     }
     
     func setupViews() {
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -290,7 +291,7 @@ class CloudStorageDisplayViewController: UIViewController,
     // MARK: - Lazy
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         view.separatorStyle = .none
         view.register(CloudStorageTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         view.delegate = self
@@ -362,7 +363,7 @@ class CloudStorageDisplayViewController: UIViewController,
         let dateStr = formatter.string(from: item.createAt)
         cell.sizeAndTimeLabel.text = dateStr + "   " + item.fileSizeDescription
         let selBgView = UIView()
-        selBgView.backgroundColor = .whiteBG
+        selBgView.backgroundColor = .color(type: .background)
         cell.selectedBackgroundView = selBgView
         if item.convertStep == .converting {
             cell.startConvertingAnimation()

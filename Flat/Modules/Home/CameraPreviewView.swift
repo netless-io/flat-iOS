@@ -91,7 +91,7 @@ class CameraPreviewView: UIView {
         layer.addSublayer(previewLayer)
         previewLayer.videoGravity = .resizeAspectFill
         clipsToBounds = true
-        layer.cornerRadius = 6
+        layer.cornerRadius = 8
         
         addSubview(avatarContainer)
         avatarContainer.snp.makeConstraints { make in

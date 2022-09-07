@@ -36,6 +36,7 @@ func configAppearance() {
     } else {
         flatTheme = FastRoomDefaultTheme.defaultLightTheme
     }
+    flatTheme.whiteboardAssets.whiteboardBackgroundColor = .color(type: .background)
     flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
     flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
     flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8

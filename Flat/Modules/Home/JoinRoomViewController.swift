@@ -94,7 +94,7 @@ class JoinRoomViewController: UIViewController {
     func setupViews() {
         addPresentCloseButton()
         addPresentTitle(localizeStrings("Join Room"))
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         
         let bottomStackItemHeight: CGFloat = 44
         
@@ -170,7 +170,7 @@ class JoinRoomViewController: UIViewController {
     // MARK: - Lazy
     lazy var subjectTextField: BottomLineTextfield = {
         let tf = BottomLineTextfield()
-        tf.textColor = .color(type: .text, .stronger)
+        tf.textColor = .color(type: .text, .strong)
         tf.textAlignment = .center
         tf.font = .systemFont(ofSize: 20)
         tf.placeholder = NSLocalizedString("Room Number Input PlaceHolder", comment: "")

@@ -40,11 +40,12 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     func setupAdditionalViews() {
         view.addSubview(addButton)
         addButton.snp.makeConstraints { make in
-            make.right.bottom.equalToSuperview()
+            make.right.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(10)
             make.size.equalTo(CGSize(width: 80, height: 80))
         }
         tableView.contentInset = .init(top: 0, left: 0, bottom: 88, right: 0)
-        fillTopSafeAreaWith(color: .whiteBG)
+        fillTopSafeAreaWith(color: .color(type: .background))
     }
     
     // MARK: - Action
@@ -79,12 +80,12 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     
     lazy var tableHeader: UIView = {
         let header = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 56)))
-        header.backgroundColor = .whiteBG
+        header.backgroundColor = .color(type: .background)
         
         let titleLabel = UILabel()
         titleLabel.text = localizeStrings("Cloud Storage")
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        titleLabel.textColor = .color(type: .text, .stronger)
+        titleLabel.textColor = .color(type: .text, .strong)
         header.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(16)

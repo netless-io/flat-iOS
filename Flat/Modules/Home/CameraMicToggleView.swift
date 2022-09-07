@@ -74,7 +74,7 @@ class CameraMicToggleView: UIView {
         stackView.axis = .horizontal
         stackView.distribution = .equalCentering
         stackView.alignment = .center
-        stackView.spacing = 8
+        stackView.spacing = 0
         
         stackView.snp.makeConstraints { make in
             make.center.equalToSuperview()

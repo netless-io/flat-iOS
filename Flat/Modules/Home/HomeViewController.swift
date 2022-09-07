@@ -97,6 +97,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc func onClickHistory() {
+        //  Just push on iPhone device
+        if isCompact() {
+            mainContainer?.push(historyViewController)
+            return
+        }
         showingHistory = !showingHistory
         if showingHistory {
             mainContainer?.push(historyViewController)
@@ -112,7 +117,7 @@ class HomeViewController: UIViewController {
             switch result {
             case .success(let list):
                 self.list = list
-                self.tableView.tableFooterView = list.isEmpty ? nil : self.didLoadAllFooterView
+                self.tableView.showLoadedAll(!list.isEmpty)
                 completion(nil)
             case.failure(let error):
                 completion(error)
@@ -204,7 +209,7 @@ class HomeViewController: UIViewController {
         
         tableView.refreshControl = .init(frame: .zero)
         tableView.refreshControl?.addTarget(self, action: #selector(onRefresh(_:)), for: .valueChanged)
-        fillTopSafeAreaWith(color: .whiteBG)
+        fillTopSafeAreaWith(color: .color(type: .background))
     }
     
     func createHeaderButton(title: String, imageName: String, target: Any?, action: Selector) -> HomeEntryButton {
@@ -248,7 +253,7 @@ class HomeViewController: UIViewController {
     
     lazy var tableHeader: UIView = {
         let header = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 166)))
-        header.backgroundColor = .whiteBG
+        header.backgroundColor = .color(type: .background)
         let stack = UIStackView(arrangedSubviews: [
             createHeaderButton(title: localizeStrings("Join Room"), imageName: "room_join", target: self, action: #selector(onClickJoin)),
             createHeaderButton(title: localizeStrings("Start Now"), imageName: "room_create", target: self, action: #selector(onClickCreate)),
@@ -265,7 +270,7 @@ class HomeViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.text = localizeStrings("Home")
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        titleLabel.textColor = .color(type: .text, .stronger)
+        titleLabel.textColor = .color(type: .text, .strong)
         header.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(16)
@@ -301,25 +306,11 @@ class HomeViewController: UIViewController {
     
     lazy var historyViewController = HistoryViewController()
     
-    lazy var didLoadAllFooterView: UIView = {
-        let view = UIView(frame: .init(x: 0, y: 0, width: 0, height: 44))
-        view.backgroundColor = .whiteBG
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 12)
-        label.textColor = .color(type: .text)
-        label.text = localizeStrings("DidLoadAll")
-        view.addSubview(label)
-        label.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        return view
-    }()
-    
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.separatorStyle = .none
         table.contentInsetAdjustmentBehavior = .always
-        table.backgroundColor = .whiteBG
+        table.backgroundColor = .color(type: .background)
         table.showsVerticalScrollIndicator = false
         table.delegate = self
         table.dataSource = self

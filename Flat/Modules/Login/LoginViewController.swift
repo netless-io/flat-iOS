@@ -95,9 +95,9 @@ class LoginViewController: UIViewController {
     // MARK: - Private
     func setupViews() {
         stackView.arrangedSubviews.forEach {
-            $0.backgroundColor = .whiteBG
+            $0.backgroundColor = .color(type: .background)
         }
-        flatLabel.textColor = .color(type: .text, .stronger)
+        flatLabel.textColor = .color(type: .text, .strong)
         
         // Hide weChat login when weChat not installed
         weChatLoginButton.isHidden = !WXApi.isWXAppInstalled()

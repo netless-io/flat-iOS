@@ -15,7 +15,7 @@ class UploadTaskTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .whiteBG
+        contentView.backgroundColor = .color(type: .background)
     }
     
     @IBAction func operationButton(_ sender: Any) {

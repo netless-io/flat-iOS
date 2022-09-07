@@ -40,8 +40,6 @@ class HistoryViewController: UIViewController {
     }
     
     func removeAt(indexPath: IndexPath) {
-        let item = list[indexPath.row]
-        
         tableView.beginUpdates()
         list.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .right)
@@ -72,7 +70,7 @@ class HistoryViewController: UIViewController {
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.separatorStyle = .none
-        table.backgroundColor = .whiteBG
+        table.backgroundColor = .color(type: .background, .weak)
         table.showsVerticalScrollIndicator = false
         table.delegate = self
         table.dataSource = self
@@ -117,6 +115,9 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: historyTableViewCellIdentifier, for: indexPath) as! RoomTableViewCell
         cell.render(info: list[indexPath.row])
+        cell.backgroundColor = .color(type: .background, .weak)
+        cell.contentView.backgroundColor = .color(type: .background, .weak)
+        cell.selectionView.backgroundColor = .red
         return cell
     }
     

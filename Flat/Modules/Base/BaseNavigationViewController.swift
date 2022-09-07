@@ -12,6 +12,22 @@ import UIKit
 class BaseNavigationViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.backgroundColor = .color(type: .background)
+            appearance.setBackIndicatorImage(UIImage(named: "arrowLeft"),
+                                             transitionMaskImage: UIImage(named: "arrowLeft"))
+            navigationBar.standardAppearance = appearance
+            navigationBar.compactAppearance = appearance
+            navigationBar.scrollEdgeAppearance = appearance
+        } else {
+            UINavigationBar.appearance().isTranslucent = false
+            UINavigationBar.appearance().setBackgroundImage(UIImage.imageWith(color: .color(type: .background)), for: .default)
+            UINavigationBar.appearance().backgroundColor = .color(type: .background)
+            UINavigationBar.appearance().backIndicatorImage = UIImage(named: "arrowLeft")
+            UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "arrowLeft")
+        }
     }
     
     override func show(_ vc: UIViewController, sender: Any?) {
@@ -34,6 +50,12 @@ class BaseNavigationViewController: UINavigationController {
     }
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        if #available(iOS 14.0, *) {
+            viewController.navigationItem.backButtonDisplayMode = .minimal
+        } else {
+            let back = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+            viewController.navigationItem.backBarButtonItem = back
+        }
         if viewControllers.count == 1 {
             viewController.hidesBottomBarWhenPushed = true
         }

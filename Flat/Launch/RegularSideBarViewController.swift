@@ -29,7 +29,7 @@ class RegularSideBarViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         updateGradientColors()
-        foldButton.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text, .stronger)), for: .normal)
+        foldButton.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text, .strong)), for: .normal)
         syncSelected()
     }
         

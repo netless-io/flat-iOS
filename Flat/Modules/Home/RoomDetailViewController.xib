@@ -207,8 +207,8 @@
                         </stackView>
                     </subviews>
                 </stackView>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="oyc-oS-6GD">
-                    <rect key="frame" x="24" y="678" width="366" height="152"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="oyc-oS-6GD">
+                    <rect key="frame" x="24" y="694" width="366" height="136"/>
                     <subviews>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IAT-Qa-awO">
                             <rect key="frame" x="0.0" y="0.0" width="366" height="40"/>
@@ -239,7 +239,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeJ-mC-FiS" customClass="FlatGeneralCrossButton">
-                            <rect key="frame" x="0.0" y="56" width="366" height="40"/>
+                            <rect key="frame" x="0.0" y="48" width="366" height="40"/>
                             <color key="backgroundColor" name="BrandColor"/>
                             <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                             <state key="normal" title="Button"/>
@@ -258,7 +258,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a70-nE-myW">
-                            <rect key="frame" x="0.0" y="112" width="366" height="40"/>
+                            <rect key="frame" x="0.0" y="96" width="366" height="40"/>
                             <color key="backgroundColor" name="whiteBG"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="j4Y-NP-QAa"/>

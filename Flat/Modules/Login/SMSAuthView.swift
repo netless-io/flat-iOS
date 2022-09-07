@@ -85,7 +85,7 @@ class SMSAuthView: UIView {
     }
     
     func setupViews() {
-        backgroundColor = .whiteBG
+        backgroundColor = .color(type: .background)
         
         let margin: CGFloat = 16
         let textfieldHeight: CGFloat = 44
@@ -195,7 +195,7 @@ class SMSAuthView: UIView {
         btn.setTitle(NSLocalizedString("SendSMS", comment: ""), for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.color(type: .primary), for: .normal)
-        btn.setTitleColor(.color(type: .text, .weaker), for: .disabled)
+        btn.setTitleColor(.color(type: .text, .weak), for: .disabled)
         btn.addTarget(self, action: #selector(onClickSendSMS(sender:)), for: .touchUpInside)
         return btn
     }()

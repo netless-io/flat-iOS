@@ -48,7 +48,7 @@ extension UIViewController {
     func addPresentTitle(_ title: String) -> UILabel {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        titleLabel.textColor = .color(type: .text, .stronger)
+        titleLabel.textColor = .color(type: .text, .strong)
         titleLabel.text = title
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in

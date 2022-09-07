@@ -22,7 +22,7 @@ class SettingTableViewCell: UITableViewCell {
         accessoryType = .disclosureIndicator
         settingTitleLabel.textColor = .color(type: .text)
         settingDetailLabel.textColor = .color(type: .text)
-        backgroundColor = .whiteBG
-        contentView.backgroundColor = .whiteBG
+        backgroundColor = .color(type: .background)
+        contentView.backgroundColor = .color(type: .background)
     }
 }

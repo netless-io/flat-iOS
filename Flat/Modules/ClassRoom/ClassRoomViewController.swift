@@ -437,7 +437,7 @@ class ClassRoomViewController: UIViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         addChild(fastboardViewController)
         addChild(rtcListViewController)
         view.addSubview(rtcListViewController.view)
@@ -634,7 +634,7 @@ class ClassRoomViewController: UIViewController {
     
     lazy var screenShareView: UIView = {
         let view = UIView()
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         return view
     }()
 }

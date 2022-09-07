@@ -21,21 +21,21 @@ class CloudStorageTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if animated {
-            selectionView.layer.backgroundColor = selected ? UIColor.color(type: .primary, .weaker).cgColor : UIColor.whiteBG.cgColor
+            selectionView.layer.backgroundColor = selected ? UIColor.color(type: .primary, .weaker).cgColor : UIColor.color(type: .background).cgColor
         } else {
-            selectionView.backgroundColor = selected ?  .color(type: .primary, .weaker) : .whiteBG
+            selectionView.backgroundColor = selected ?  .color(type: .primary, .weaker) : .color(type: .background)
         }
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         rightArrowImageView.image = UIImage(named: "arrowRight")?.tintColor(.color(type: .text))
-        moreActionButton.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(type: .text, .stronger)), for: .normal)
+        moreActionButton.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(type: .text, .strong)), for: .normal)
     }
     
     func setupViews() {
-        backgroundColor = .whiteBG
-        contentView.backgroundColor = .whiteBG
+        backgroundColor = .color(type: .background)
+        contentView.backgroundColor = .color(type: .background)
         
         let textStack = UIStackView(arrangedSubviews: [fileNameLabel, sizeAndTimeLabel])
         textStack.axis = .vertical
@@ -68,7 +68,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         line.snp.makeConstraints { make in
             make.right.equalTo(stackView)
             make.left.equalTo(textStack)
-            make.height.equalTo(1 / UIScreen.main.scale)
+            make.height.equalTo(1)
             make.bottom.equalToSuperview()
         }
         
@@ -136,7 +136,7 @@ class CloudStorageTableViewCell: UITableViewCell {
     
     lazy var moreActionButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(type: .text, .stronger)), for: .normal)
+        btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(type: .text, .strong)), for: .normal)
         return btn
     }()
     
@@ -149,14 +149,14 @@ class CloudStorageTableViewCell: UITableViewCell {
     lazy var sizeAndTimeLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 12)
-        label.textColor = .color(type: .text)
+        label.textColor = .color(type: .text, .weak)
         return label
     }()
     
     lazy var fileNameLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 16)
-        label.textColor = .color(type: .text, .stronger)
+        label.textColor = .color(type: .text)
         label.lineBreakMode = .byTruncatingMiddle
         return label
     }()

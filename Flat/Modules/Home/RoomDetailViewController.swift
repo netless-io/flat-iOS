@@ -138,7 +138,7 @@ class RoomDetailViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        mainStackView.axis = view.bounds.width <= 375 ? .vertical : .horizontal
+        mainStackView.axis = view.bounds.width <= 428 ? .vertical : .horizontal
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -209,16 +209,16 @@ class RoomDetailViewController: UIViewController {
     func setupViews() {
         title = info.title
         
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background, .weak)
         func loopTextColor(view: UIView) {
             if let stack = view as? UIStackView {
-                stack.backgroundColor = .whiteBG
+                stack.backgroundColor = self.view.backgroundColor
                 stack.arrangedSubviews.forEach { loopTextColor(view: $0) }
             } else if let label = view as? UILabel {
-                if label.font.fontName.contains("semiBold") {
-                    label.textColor = .color(type: .text)
+                if label.font.pointSize >= 16 {
+                    label.textColor = .color(type: .text, .strong)
                 } else {
-                    label.textColor = .color(type: .text, .stronger)
+                    label.textColor = .color(type: .text)
                 }
             } else if let imageView = view as? UIImageView {
                 imageView.tintColor = .color(type: .text)

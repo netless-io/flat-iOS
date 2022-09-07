@@ -246,13 +246,13 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         view.separatorColor = .borderColor
         view.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 0)
         view.separatorStyle = .singleLine
         view.register(UINib(nibName: String(describing: SettingTableViewCell.self), bundle: nil), forCellReuseIdentifier: cellIdentifier)
         let container = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 40)))
-        container.backgroundColor = .whiteBG
+        container.backgroundColor = .color(type: .background)
         container.addSubview(logoutButton)
         logoutButton.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()

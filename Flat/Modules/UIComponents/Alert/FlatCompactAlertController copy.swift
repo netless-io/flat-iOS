@@ -125,15 +125,14 @@ class FlatCompactAlertController: UIViewController {
                     btn?.setTitleColor(.color(type: .danger), for: .normal)
                 }
             } else if value.element.isCancelAction() {
-                btn.titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
                 btn.setTitleColor(.color(type: .text), for: .normal)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.color(type: .text, .stronger), for: .normal)
+                    btn?.setTitleColor(.color(type: .text, .strong), for: .normal)
                 }
             } else {
                 btn.setTitleColor(.color(type: .text), for: .normal)
                 btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.color(type: .text, .stronger), for: .normal)
+                    btn?.setTitleColor(.color(type: .text, .strong), for: .normal)
                 }
             }
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)
@@ -168,7 +167,7 @@ class FlatCompactAlertController: UIViewController {
         stack.axis = .vertical
         stack.distribution = .fillEqually
         stack.backgroundColor = .borderColor
-        stack.spacing = 1 / UIScreen.main.scale
+        stack.spacing = 1
         return stack
     }()
     

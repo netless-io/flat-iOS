@@ -35,7 +35,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.traitCollectionDidChange(previousTraitCollection)
         if #available(iOS 13.0, *) {
         } else {
-            tabBar.barTintColor = .whiteBG
+            tabBar.barTintColor = .color(type: .background)
         }
     }
     
@@ -45,22 +45,23 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         if #available(iOS 13.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithDefaultBackground()
+            appearance.backgroundColor = .color(type: .background)
             tabBar.standardAppearance = appearance
             if #available(iOS 15.0, *) {
                 tabBar.scrollEdgeAppearance = appearance
             }
         } else {
-            tabBar.barTintColor = .whiteBG
+            tabBar.barTintColor = .color(type: .background)
         }
         
         let home = makeSubController(fromViewController: HomeViewController(),
-                                     image: UIImage(named: "tab_room")!,
-                                     selectedImage: UIImage(named: "tab_room_sel")!,
+                                     image: UIImage(named: "side_home")!,
+                                     selectedImage: UIImage(named: "side_home_filled")!,
                                      title: localizeStrings("Home"))
         addChild(home)
         let cloudStorage = makeSubController(fromViewController: CloudStorageViewController(),
-                                             image: UIImage(named: "tab_cloud_storage")!,
-                                             selectedImage: UIImage(named: "tab_cloud_storage_sel")!,
+                                             image: UIImage(named: "side_cloud")!,
+                                             selectedImage: UIImage(named: "side_cloud_filled")!,
                                              title: localizeStrings("Cloud Storage"))
         addChild(cloudStorage)
         

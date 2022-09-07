@@ -175,11 +175,12 @@ enum ColorType: Int {
     case success
     case warning
     case text
+    case background
 }
 
 let colorTable: [ColorType: [ColorStrenth: UIColor]] = [
-    .primary: [.weaker: .blue2,
-               .weak: .blue5,
+    .primary: [.weaker: .blue0,
+               .weak: .blue1,
                .normal: .blue6,
                .strong: .blue7,
                .stronger: .blue8,
@@ -202,20 +203,23 @@ let colorTable: [ColorType: [ColorStrenth: UIColor]] = [
                .strong: .yellow7,
                .stronger: .yellow8,
     ],
-    .text: [.weaker: .grey3,
-            .weak: .grey5,
+    .text: [.weak: .grey3,
             .normal: .grey6,
-            .strong: .grey8,
-            .stronger: .grey12,
+            .strong: .grey12
+    ],
+    .background: [
+        .weak: .white,
+        .normal: .white,
+        .strong: .init(hexString: "#F9F9F9")
     ]
 ]
 
 let darkColorTable: [ColorType: [ColorStrenth: UIColor]] = [
-    .primary: [.weaker: .blue10,
-               .weak: .blue8,
+    .primary: [.weaker: .grey7,
+               .weak: .grey8,
                .normal: .blue7,
                .strong: .blue6,
-               .stronger: .blue2,
+               .stronger: .blue0,
     ],
     .danger: [.weaker: .red10,
               .weak: .red8,
@@ -235,11 +239,14 @@ let darkColorTable: [ColorType: [ColorStrenth: UIColor]] = [
                .strong: .yellow6,
                .stronger: .yellow2,
     ],
-    .text: [.weaker: .grey8,
-            .weak: .grey7,
-            .normal: .grey4,
-            .strong: .grey3,
-            .stronger: .grey0,
+    .text: [.weak: .grey6,
+            .normal: .grey3,
+            .strong: .grey0,
+    ],
+    .background: [
+        .weak: .init(hexString: "#222429"),
+        .normal: .grey9,
+        .strong: .grey7
     ]
 ]
 

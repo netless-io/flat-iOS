@@ -45,7 +45,7 @@ class WhiteboardScenesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.backgroundColor = .whiteBG
+        tableView.backgroundColor = .color(type: .background)
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

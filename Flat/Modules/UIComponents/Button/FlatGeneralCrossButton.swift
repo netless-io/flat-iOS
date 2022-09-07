@@ -33,7 +33,7 @@ class FlatGeneralCrossButton: UIButton {
     override var isEnabled: Bool {
         didSet {
             guard isEnabled != oldValue else { return }
-            backgroundColor = isEnabled ? .color(type: .primary) : .color(type: .text, .weaker)
+            backgroundColor = isEnabled ? .color(type: .primary) : .color(type: .text, .weak)
         }
     }
     

@@ -36,8 +36,8 @@ class HomeTabBar: UITabBar {
     func setupAppearance() {
         tintColor = .color(type: .text)
         unselectedItemTintColor = .color(type: .text)
-        backgroundColor = .whiteBG
-        backgroundImage = .imageWith(color: .whiteBG)
+        backgroundColor = .color(type: .background)
+        backgroundImage = .imageWith(color: .color(type: .background))
         shadowImage = .imageWith(color: .borderColor)
         selectionIndicatorImage = createSelectionIndicator(color: .color(type: .primary),
                                                            size: .init(width: 44, height: 44),

@@ -26,7 +26,7 @@ class BorderLabelView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         clipsToBounds = true
-        backgroundColor = .color(type: .text, .weaker)
+        backgroundColor = .color(type: .text, .weak)
         addSubview(label)
         label.snp.makeConstraints { make in
             make.edges.equalToSuperview()

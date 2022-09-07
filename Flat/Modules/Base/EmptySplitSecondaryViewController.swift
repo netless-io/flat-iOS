@@ -27,12 +27,12 @@ class EmptySplitSecondaryViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         // For before iOS 13
-        iconView.tintColor = .color(type: .text, .strong)
+        iconView.tintColor = .color(type: .text, .weak)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background, .weak)
         view.addSubview(iconView)
         iconView.snp.makeConstraints({
             $0.center.equalTo(view.safeAreaLayoutGuide)
@@ -42,7 +42,7 @@ class EmptySplitSecondaryViewController: UIViewController {
     
     lazy var iconView: UIImageView = {
         let iconView = UIImageView(image: UIImage(named: "split_empty"))
-        iconView.tintColor = .color(type: .text, .strong)
+        iconView.tintColor = .color(type: .text, .weak)
         iconView.contentMode = .scaleAspectFit
         return iconView
     }()

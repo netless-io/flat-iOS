@@ -47,7 +47,7 @@ class CreateClassRoomViewController: UIViewController {
     func setupViews() {
         addPresentCloseButton()
         addPresentTitle(localizeStrings("Start Now"))
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         
         let bottomStack = UIStackView(arrangedSubviews: [deviceView, createButton])
         view.addSubview(subjectTextField)
@@ -115,7 +115,7 @@ class CreateClassRoomViewController: UIViewController {
         }
 
         bottomStack.axis = isCompact() ? .vertical : .horizontal
-        bottomStack.backgroundColor = .whiteBG
+        bottomStack.backgroundColor = .color(type: .background)
         let bottomStackItemHeight: CGFloat = 44
         bottomStack.spacing = margin / 2
         bottomStack.distribution = .equalCentering
@@ -148,8 +148,12 @@ class CreateClassRoomViewController: UIViewController {
     func typeViewForType(_ type: ClassRoomType) -> UIButton {
         let button = UIButton(type: .custom)
         let image = UIImage(named: type.rawValue)
-        button.setImage(image?.tintColor(.color(type: .text)), for: .normal)
+        button.setImage(image?.tintColor(.color(type: .text, .weak)), for: .normal)
         button.setImage(image?.tintColor(.color(type: .primary)), for: .selected)
+        button.traitCollectionUpdateHandler = { [weak button] _ in
+            button?.setImage(image?.tintColor(.color(type: .text, .weak)), for: .normal)
+            button?.setImage(image?.tintColor(.color(type: .primary)), for: .selected)
+        }
         button.setTitle(type.rawValue, for: .normal)
         button.setTitleColor(.color(type: .text), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 12)
@@ -249,7 +253,7 @@ class CreateClassRoomViewController: UIViewController {
     // MARK: - Lazy
     lazy var subjectTextField: BottomLineTextfield = {
         let tf = BottomLineTextfield()
-        tf.textColor = .color(type: .text, .stronger)
+        tf.textColor = .color(type: .text, .strong)
         tf.font = .systemFont(ofSize: 20)
         tf.placeholder = localizeStrings("Room Subject Placeholder")
         tf.returnKeyType = .go

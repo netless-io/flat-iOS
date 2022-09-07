@@ -82,7 +82,7 @@ class ReplayViewController: UIViewController {
     lazy var videoScrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsHorizontalScrollIndicator = false
-        view.backgroundColor = .whiteBG
+        view.backgroundColor = .color(type: .background)
         return view
     }()
     lazy var whiteboardView: WhiteBoardView = {

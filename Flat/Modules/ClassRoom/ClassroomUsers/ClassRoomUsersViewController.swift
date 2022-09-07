@@ -167,16 +167,16 @@ class ClassRoomUsersViewController: UIViewController {
         view.backgroundColor = .classroomChildBG
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("User List")
-        topLabel.textColor = .color(type: .text, .stronger)
+        topLabel.textColor = .color(type: .text, .strong)
         topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(40)
         }
-        let leftIcon = UIImageView(image: UIImage(named: "users")?.tintColor(.color(type: .text, .stronger)))
+        let leftIcon = UIImageView(image: UIImage(named: "users")?.tintColor(.color(type: .text, .strong)))
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "users")?.tintColor(.color(type: .text, .stronger))
+            leftIcon?.image = UIImage(named: "users")?.tintColor(.color(type: .text, .strong))
         }
         leftIcon.contentMode = .center
         view.addSubview(leftIcon)

@@ -53,7 +53,7 @@ class PrivacyAlertViewController: UIViewController {
         cancelBtn.layer.borderWidth = 1 / UIScreen.main.scale
         
         titleLabel.textColor = .color(type: .text)
-        mainBgView.backgroundColor = .whiteBG
+        mainBgView.backgroundColor = .color(type: .background)
         
         let maxHeight: CGFloat = 280
         let b = attributedString.boundingRect(with: .init(width: maxHeight, height: .infinity), options: .usesLineFragmentOrigin, context: nil)

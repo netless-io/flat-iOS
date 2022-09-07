@@ -22,9 +22,9 @@ class RoomTableViewCell: UITableViewCell {
         super.awakeFromNib()
         selectionStyle = .none
         separatorLineHeightConstraint.constant = 1
-        contentView.backgroundColor = .whiteBG
+        contentView.backgroundColor = .color(type: .background)
         borderView.backgroundColor = .borderColor
-        roomTitleLabel.textColor = .color(type: .text, .stronger)
+        roomTitleLabel.textColor = .color(type: .text, .strong)
         roomTimeLabel.textColor = .color(type: .text)
         
         contentView.insertSubview(selectionView, at: 0)
@@ -38,9 +38,9 @@ class RoomTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if animated {
-            selectionView.layer.backgroundColor = selected ? UIColor.color(type: .primary, .weaker).cgColor : UIColor.whiteBG.cgColor
+            selectionView.layer.backgroundColor = selected ? UIColor.color(type: .primary, .weak).cgColor : UIColor.clear.cgColor
         } else {
-            selectionView.backgroundColor = selected ?  .color(type: .primary, .weaker) : .whiteBG
+            selectionView.backgroundColor = selected ?  .color(type: .primary, .weak) : .clear
         }
     }
     
