@@ -115,6 +115,7 @@ class LaunchCoordinator {
     // MARK: - Private
     fileprivate func configRootWith(user: User?) {
         if let user = user {
+            startGoogleAnalytics()
             if user.hasPhone {
                 guard let _ = window.rootViewController as? MainContainer else {
                     window.rootViewController = createMainContainer()

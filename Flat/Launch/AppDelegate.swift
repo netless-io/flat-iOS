@@ -14,6 +14,13 @@ import Siren
 import FirebaseCore
 import FirebaseAnalytics
 
+var didStartGoogleAnalytics = false
+func startGoogleAnalytics() {
+    guard !didStartGoogleAnalytics else { return }
+    FirebaseApp.configure()
+    didStartGoogleAnalytics = true
+}
+
 var isFirstTimeLaunch: Bool {
     UserDefaults.standard.value(forKey: "isFirstTimeLaunch") != nil
 }
@@ -62,7 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         bootstrapLogger()
-        FirebaseApp.configure()
         if isFirstTimeLaunch {
             ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
             setDidFirstTimeLaunch()

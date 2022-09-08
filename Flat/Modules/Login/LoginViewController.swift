@@ -34,6 +34,9 @@ class LoginViewController: UIViewController {
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: "deviceAgreementAgree")
+            if newValue {
+                startGoogleAnalytics()
+            }
         }
     }
     
