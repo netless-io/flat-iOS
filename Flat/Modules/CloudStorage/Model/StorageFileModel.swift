@@ -20,6 +20,7 @@ enum ResourceType: String, Codable {
     case white = "WhiteboardConvert"
     case projector = "WhiteboardProjector"
     case normal = "NormalResources"
+    case directory = "Directory"
 }
 
 struct StorageFileModel: Codable, Equatable {
