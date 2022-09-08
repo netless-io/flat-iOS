@@ -85,6 +85,9 @@ jobs:
           IPA=$(find . -name '*.ipa')
           SHA=$(shasum -a 256 $IPA)
           echo "sha: $SHA" >> archive_$RUN_NUMBER.log
+      - name: Upload dsyms
+        run: |
+          sh uploadDSYM.sh
       - name: BlackDuck
         env:
           BLACK_DUCK_TOKEN: ${{ secrets.BLACK_DUCK_TOKEN }}

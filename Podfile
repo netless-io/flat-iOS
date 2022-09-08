@@ -25,6 +25,7 @@ target 'Flat' do
   pod 'Zip'
   pod 'AliyunLogProducer/Core'
   pod 'AliyunLogProducer/Bricks'
+  pod 'FirebaseCrashlytics'
   
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|
