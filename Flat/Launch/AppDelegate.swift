@@ -14,6 +14,8 @@ import Siren
 import FirebaseCore
 import FirebaseAnalytics
 
+var globalSessionId = UUID().uuidString
+
 var didStartGoogleAnalytics = false
 func startGoogleAnalytics() {
     guard !didStartGoogleAnalytics else { return }

@@ -20,7 +20,13 @@ func updateAliSlsLogger(uid: String) {
 func bootstrapLogger() {
     LoggingSystem.bootstrap { label in
         if Env().containsSlsInfo {
-            aliSlsLogger = AlibabaLogHandler(uid: AuthStore.shared.user?.userUUID)
+            let identifier: AlibabaLogHandler.ClientIdentifier
+            if let uid = AuthStore.shared.user?.userUUID, !uid.isEmpty {
+                identifier = .uid(uid)
+            } else {
+                identifier = .sessionId(globalSessionId)
+            }
+            aliSlsLogger = AlibabaLogHandler(identifier: identifier)
             return MultiplexLogHandler([SBLogHandler(), aliSlsLogger!])
         } else {
             return SBLogHandler()

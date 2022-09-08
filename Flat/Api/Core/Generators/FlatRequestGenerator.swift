@@ -13,12 +13,12 @@ class FlatRequestGenerator: Generator {
     var token: String?
     let host: String
     let timeoutInterval: TimeInterval
+    let sessionId: String
     
-    init(host: String,
-        timeoutInterval: TimeInterval
-    ) {
+    init(host: String, timeoutInterval: TimeInterval, sessionId: String) {
         self.host = host
         self.timeoutInterval = timeoutInterval
+        self.sessionId = sessionId
     }
     
     func generateRequest<T: Request>(fromApi api: T) throws -> URLRequest {
@@ -29,6 +29,8 @@ class FlatRequestGenerator: Generator {
         if let token = token {
             request.addValue("Bearer " + token, forHTTPHeaderField: "authorization")
         }
+        request.addValue(UUID().uuidString, forHTTPHeaderField: "x-request-id")
+        request.addValue(sessionId, forHTTPHeaderField: "x-session-id")
         switch api.method {
         case .get:
             break

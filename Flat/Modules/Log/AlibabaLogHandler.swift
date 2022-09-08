@@ -59,14 +59,14 @@ class AlibabaLogHandler: LogHandler {
     var client: LogProducerClient
     let sessionId: String?
     
-    init(uid: String?) {
-        if let uid = uid {
-            self.sessionId = nil
-            client = Self.createClientWith(identifier: .uid(uid))
-        } else {
-            let sid = UUID().uuidString
+    init(identifier: ClientIdentifier) {
+        switch identifier {
+        case .sessionId(let sid):
             self.sessionId = sid
             client = Self.createClientWith(identifier: .sessionId(sid))
+        case .uid(let uid):
+            self.sessionId = nil
+            client = Self.createClientWith(identifier: .uid(uid))
         }
     }
     
