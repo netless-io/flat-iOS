@@ -11,7 +11,8 @@ import IQKeyboardManagerSwift
 import Kingfisher
 import Fastboard
 import Siren
-import Firebase
+import FirebaseCore
+import FirebaseAnalytics
 
 var isFirstTimeLaunch: Bool {
     UserDefaults.standard.value(forKey: "isFirstTimeLaunch") != nil

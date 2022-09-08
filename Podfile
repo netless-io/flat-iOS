@@ -26,6 +26,7 @@ target 'Flat' do
   pod 'AliyunLogProducer/Core'
   pod 'AliyunLogProducer/Bricks'
   pod 'FirebaseCrashlytics'
+  pod 'Firebase/AnalyticsWithoutAdIdSupport'
   
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|
