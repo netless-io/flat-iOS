@@ -19,8 +19,6 @@ enum StorageCovertStep: String, Codable {
 enum ResourceType: String, Codable {
     case white = "WhiteboardConvert"
     case projector = "WhiteboardProjector"
-    case local = "LocalCourseware"
-    case online = "OnlineCourseware"
     case normal = "NormalResources"
 }
 
@@ -84,27 +82,101 @@ struct StorageFileModel: Codable, Equatable {
         }
     }
     
-    var convertStep: StorageCovertStep
+    struct WhiteboardFilePayload: Codable, Equatable {
+        let convertStep: StorageCovertStep
+        let region: FlatRegion
+        let taskToken: String
+        let taskUUID: String
+    }
+    enum Payload: Codable, Equatable {
+        case whiteboardProjector(WhiteboardFilePayload)
+        case whiteboardConvert(WhiteboardFilePayload)
+        case empty
+        
+        var whiteConverteInfo: WhiteboardFilePayload? {
+            switch self {
+            case .whiteboardProjector(let whiteboardFilePayload):
+                return whiteboardFilePayload
+            case .whiteboardConvert(let whiteboardFilePayload):
+                return whiteboardFilePayload
+            case .empty:
+                return nil
+            }
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case whiteboardConvert
+            case whiteboardProjector
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            switch self {
+            case .whiteboardProjector(let payload):
+                try container.encode(payload, forKey: .whiteboardProjector)
+            case .whiteboardConvert(let payload):
+                try container.encode(payload, forKey: .whiteboardConvert)
+            case .empty:
+                return
+            }
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            if let value = try? container.decode(WhiteboardFilePayload.self, forKey: .whiteboardConvert) {
+                self = .whiteboardConvert(value)
+                return
+            }
+            if let value = try? container.decode(WhiteboardFilePayload.self, forKey: .whiteboardProjector) {
+                self = .whiteboardProjector(value)
+                return
+            }
+            // Add code here when add new meta type
+            self = .empty
+        }
+    }
+    
+    let fileURL: URL
+    let fileUUID: String
     let createAt: Date
-    let external: Bool
     var fileName: String
     let fileSize: Int
-    var fileType: FileType { .init(fileName: fileName) }
     let resourceType: ResourceType
+    
+    var fileType: FileType { .init(fileName: fileName) }
     var fileSizeDescription: String {
         String(format: "%.2fMB", Float(fileSize) / 1024 / 1024)
     }
-    
     var taskType: WhiteConvertTypeV5? {
         ConvertService.convertingTaskTypeFor(url: fileURL)
     }
-    
     var usable: Bool {
         return !ConvertService.shouldConvertFile(withFile: self)
     }
-    let fileURL: URL
-    let fileUUID: String
-    let region: FlatRegion
-    var taskToken: String
-    var taskUUID: String
+    var converting: Bool {
+        switch meta {
+        case .empty: return false
+        case .whiteboardConvert(let payload): return payload.convertStep == .converting
+        case .whiteboardProjector(let payload): return payload.convertStep == .converting
+        }
+    }
+    
+    var meta: Payload
+    
+    mutating func updateConvert(step: StorageCovertStep, taskUUID: String? = nil, taskToken: String? = nil) {
+        switch meta {
+        case .whiteboardProjector(let whiteboardFilePayload):
+            self.meta = .whiteboardProjector(.init(convertStep: step,
+                                              region: whiteboardFilePayload.region,
+                                              taskToken: taskToken ?? whiteboardFilePayload.taskToken,
+                                              taskUUID: taskUUID ?? whiteboardFilePayload.taskUUID))
+        case .whiteboardConvert(let whiteboardFilePayload):
+            self.meta = .whiteboardConvert(.init(convertStep: step,
+                                              region: whiteboardFilePayload.region,
+                                              taskToken: taskToken ?? whiteboardFilePayload.taskToken,
+                                              taskUUID: taskUUID ?? whiteboardFilePayload.taskUUID))
+        case .empty:
+            return
+        }
+    }
 }

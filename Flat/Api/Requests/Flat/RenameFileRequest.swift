@@ -11,10 +11,7 @@ import Foundation
 struct RenameFileRequest: FlatRequest {
     let fileName: String
     let fileUUID: String
-    let external: Bool
-    var path: String {
-        external ? "/v1/cloud-storage/url-cloud/rename" : "/v1/cloud-storage/alibaba-cloud/rename"
-    }
+    var path: String {"/v1/cloud-storage/alibaba-cloud/rename" }
     var task: Task { .requestJSONEncodable(encodable: ["fileName": fileName, "fileUUID": fileUUID])}
     let responseType = EmptyResponse.self
 }

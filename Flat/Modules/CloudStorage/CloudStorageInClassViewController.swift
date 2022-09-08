@@ -120,15 +120,17 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
 
         tableView.deselectRow(at: indexPath, animated: true)
         let item = container.items[indexPath.row]
-        switch item.convertStep {
-        case .converting:
-            toast(NSLocalizedString("FileIsConverting", comment: ""))
-            return
-        case .failed:
-            toast(NSLocalizedString("FileConvertFailed", comment: ""))
-            return
-        default:
-            break
+        if let payload = item.meta.whiteConverteInfo {
+            switch payload.convertStep {
+            case .converting:
+                toast(NSLocalizedString("FileIsConverting", comment: ""))
+                return
+            case .failed:
+                toast(NSLocalizedString("FileConvertFailed", comment: ""))
+                return
+            default:
+                break
+            }
         }
         guard item.usable else { return }
         guard fileSelectTask == nil else {
@@ -151,15 +153,18 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         case .video, .music:
             fileContentSelectedHandler?(.media(url: item.fileURL, title: item.fileName))
         case .pdf, .ppt, .word:
-
             guard let taskType = item.taskType else {
                 toast("can't get the task type")
+                return
+            }
+            guard let payload = item.meta.whiteConverteInfo else {
+                toast("can't get the meta payload")
                 return
             }
             fileSelectTask = item
 
             if item.resourceType == .projector {
-                WhiteProjectorPolling.checkProgress(withTaskUUID: item.taskUUID, token: item.taskToken, region: .init(rawValue: item.region.rawValue)) { [weak self] info, error in
+                WhiteProjectorPolling.checkProgress(withTaskUUID: payload.taskUUID, token: payload.taskToken, region: .init(rawValue: payload.region.rawValue)) { [weak self] info, error in
                     self?.fileSelectTask = nil
                     if let error = error {
                         self?.toast(error.localizedDescription)
@@ -174,9 +179,9 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                     }
                 }
             } else {
-                WhiteConverterV5.checkProgress(withTaskUUID: item.taskUUID,
-                                               token: item.taskToken,
-                                               region: .init(rawValue: item.region.rawValue),
+                WhiteConverterV5.checkProgress(withTaskUUID: payload.taskUUID,
+                                               token: payload.taskToken,
+                                               region: .init(rawValue: payload.region.rawValue),
                                                taskType: taskType) { [weak self] info, error in
                     self?.fileSelectTask = nil
                     if let error = error {

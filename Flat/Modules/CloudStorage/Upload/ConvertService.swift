@@ -39,7 +39,8 @@ struct ConvertService {
     }
     
     static func shouldConvertFile(withFile file: StorageFileModel) -> Bool {
-        if file.convertStep == .none,
+        if let payload = file.meta.whiteConverteInfo,
+           payload.convertStep == .none,
            ConvertConfig.shouldConvertPathExtensions.contains(file.fileURL.pathExtension.lowercased()) {
             return true
         }

@@ -80,17 +80,11 @@ class CloudStorageDisplayViewController: UIViewController,
     }
     
     func deleteItems(_ items: [StorageFileModel]) {
-        let externalFileUUIDs = items.filter { $0.external }.map { $0.fileUUID }
-        let internalFileUUIDs = items.filter { !$0.external }.map { $0.fileUUID }
-        let externalRequest = RemoveFilesRequest(fileUUIDs: externalFileUUIDs, external: true)
-        let internalRequest = RemoveFilesRequest(fileUUIDs: internalFileUUIDs, external: false)
-        let externalR: Observable<Void> = externalFileUUIDs.isEmpty ? .just(()) : ApiProvider.shared.request(fromApi: externalRequest).mapToVoid()
-        let internalR: Observable<Void> = internalFileUUIDs.isEmpty ? .just(()) : ApiProvider.shared.request(fromApi: internalRequest).mapToVoid()
+        let request = RemoveFilesRequest(fileUUIDs: items.map { $0.fileUUID })
         
         func executeDelete() {
             showActivityIndicator()
-            externalR
-                .flatMap { internalR }
+            ApiProvider.shared.request(fromApi: request).mapToVoid()
                 .asSingle()
                 .subscribe(with: self, onSuccess: { weakSelf, _ in
                     weakSelf.stopActivityIndicator()
@@ -119,7 +113,7 @@ class CloudStorageDisplayViewController: UIViewController,
         alert.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: { _ in
             let newName = alert.textFields?[0].text ?? ""
             let newFileName = newName + ".\(ext)"
-            let req = RenameFileRequest(fileName: newFileName, fileUUID: item.fileUUID, external: item.external)
+            let req = RenameFileRequest(fileName: newFileName, fileUUID: item.fileUUID)
             self.showActivityIndicator()
             ApiProvider.shared.request(fromApi: req) { [weak self] result in
                 guard let self = self else { return }
@@ -212,9 +206,9 @@ class CloudStorageDisplayViewController: UIViewController,
                     case .success(let model):
                         guard let self = self else { return }
                         if let index = self.container.items.firstIndex(where: { $0.fileUUID == uuid }) {
-                            self.container.items[index].convertStep = .converting
-                            self.container.items[index].taskUUID = model.taskUUID
-                            self.container.items[index].taskToken = model.taskToken
+                            self.container.items[index].updateConvert(step: .converting,
+                                                                      taskUUID: model.taskUUID,
+                                                                      taskToken: model.taskToken)
                             self.configPollingTaskWith(newItems: self.container.items)
                         }
                     case .failure(let error):
@@ -227,36 +221,43 @@ class CloudStorageDisplayViewController: UIViewController,
     
     func configPollingTaskWith(newItems: [StorageFileModel]) {
         let itemsShouldPolling = newItems.filter {
-            $0.convertStep == .converting && $0.taskType != nil
+            if let info = $0.meta.whiteConverteInfo,
+               info.convertStep == .converting,
+               $0.taskType != nil {
+                return true
+            }
+            return false
         }
         guard !itemsShouldPolling.isEmpty else { return }
         itemsShouldPolling.forEach {
-            let id = $0.taskUUID
+            guard let payload = $0.meta.whiteConverteInfo else { return }
+            let fileUUID = $0.fileUUID
+            let taskUUID = payload.taskUUID
             switch $0.resourceType {
             case .projector:
-                self.taskProgressPolling.insertProjectorPollingTask(withTaskUUID: id,
-                                                                    token: $0.taskToken,
-                                                                    region: .init(rawValue: $0.region.rawValue)) { progress in
-                    logger.trace("task projector \(id) progress \(progress)")
+                self.taskProgressPolling.insertProjectorPollingTask(withTaskUUID: taskUUID,
+                                                                    token: payload.taskToken,
+                                                                    region: .init(rawValue: payload.region.rawValue)) { progress in
+                    logger.trace("task projector \(taskUUID) progress \(progress)")
                 } result: { [weak self] success, info, error in
                     if let error = error {
                         self?.toast(error.localizedDescription)
                         return
                     }
-                    self?.removeConvertingTask(uuid: id, isFinished: info?.status == .finished)
+                    self?.removeConvertingTask(fileUUID: fileUUID, taskUUID: taskUUID, isFinished: info?.status == .finished)
                 }
             case .white:
-                self.taskProgressPolling.insertV5PollingTask(withTaskUUID: id,
-                                                             token: $0.taskToken,
-                                                             region: .init(rawValue: $0.region.rawValue),
+                self.taskProgressPolling.insertV5PollingTask(withTaskUUID: taskUUID,
+                                                             token: payload.taskToken,
+                                                             region: .init(rawValue: payload.region.rawValue),
                                                              taskType: $0.taskType!) { progress in
-                    logger.trace("task v5 \(id) progress \(progress)")
+                    logger.trace("task v5 \(taskUUID) progress \(progress)")
                 } result: { [weak self] success, info, error in
                     if let error = error {
                         self?.toast(error.localizedDescription)
                         return
                     }
-                    self?.removeConvertingTask(uuid: id, isFinished: info?.status == .finished)
+                    self?.removeConvertingTask(fileUUID: fileUUID, taskUUID: taskUUID, isFinished: info?.status == .finished)
                 }
             default:
                 return
@@ -265,25 +266,25 @@ class CloudStorageDisplayViewController: UIViewController,
         tableView.reloadData()
     }
     
-    func removeConvertingTask(uuid: String, isFinished: Bool) {
-        taskProgressPolling.cancelTask(withTaskUUID: uuid)
-        if let index = container.items.firstIndex(where: { $0.taskUUID == uuid }) {
-            let item = container.items[index]
-            ApiProvider.shared.request(fromApi: FinishConvertRequest(fileUUID: item.fileUUID, region: item.region)) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success:
-                    if isFinished {
-                        if let index = self.container.items.firstIndex(where: { $0.taskUUID == uuid }){
-                            var new = self.container.items[index]
-                            new.convertStep = .done
-                            self.container.items[index] = new
-                            self.tableView.reloadData()
-                        }
+    func removeConvertingTask(fileUUID: String, taskUUID: String, isFinished: Bool) {
+        taskProgressPolling.cancelTask(withTaskUUID: taskUUID)
+        guard let index = container.items.firstIndex(where: { $0.fileUUID == fileUUID }) else { return }
+        let item = container.items[index]
+        guard let payload = item.meta.whiteConverteInfo else { return }
+        ApiProvider.shared.request(fromApi: FinishConvertRequest(fileUUID: item.fileUUID, region: payload.region)) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                if isFinished {
+                    if let index = self.container.items.firstIndex(where: { $0.fileUUID == fileUUID }){
+                        var new = self.container.items[index]
+                        new.updateConvert(step: .done)
+                        self.container.items[index] = new
+                        self.tableView.reloadData()
                     }
-                case .failure(let error):
-                    logger.error("report convert finish error, \(error)")
                 }
+            case .failure(let error):
+                logger.error("report convert finish error, \(error)")
             }
         }
     }
@@ -365,7 +366,7 @@ class CloudStorageDisplayViewController: UIViewController,
         let selBgView = UIView()
         selBgView.backgroundColor = .color(type: .background)
         cell.selectedBackgroundView = selBgView
-        if item.convertStep == .converting {
+        if item.converting {
             cell.startConvertingAnimation()
         } else {
             cell.stopConvertingAnimation()

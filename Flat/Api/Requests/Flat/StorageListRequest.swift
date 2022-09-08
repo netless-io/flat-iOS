@@ -9,15 +9,20 @@
 
 import Foundation
 
-struct StorageListResponse: Codable {
+struct StorageListResponse: Decodable {
     let files: [StorageFileModel]
     let totalUsage: Int
 }
 
 struct StorageListRequest: FlatRequest {
+    struct Input: Encodable {
+        let page: Int
+        let order: String
+        let directoryPath: String
+    }
     let page: Int
     
-    var path: String { "/v1/cloud-storage/list" }
-    var task: Task { .requestURLEncodable(parameters: ["page": page, "order": "DESC"])}
+    var path: String { "/v2/cloud-storage/list" }
+    var task: Task { .requestJSONEncodable(encodable: Input(page: page, order: "DESC", directoryPath: "/")) }
     let responseType = StorageListResponse.self
 }

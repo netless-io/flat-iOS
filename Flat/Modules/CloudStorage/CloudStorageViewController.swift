@@ -268,21 +268,28 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
                 }
             }
         default:
-            let isProjector = item.resourceType == .projector
             // Preview dynamic with web preview
             if ConvertService.convertingTaskTypeFor(url: item.fileURL) == .dynamic {
-                let formatURL = item.fileURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
-                let link = Env().webBaseURL + "/preview/\(formatURL)/\(item.taskToken)/\(item.taskUUID)/\(item.region.rawValue)/\(isProjector ? "projector/" : "")"
-                if let url = URL(string: link) {
-                    let config = SFSafariViewController.Configuration()
-                    config.barCollapsingEnabled = true
-                    config.entersReaderIfAvailable = false
-                    let vc = SFSafariViewController(url: url, configuration: config)
-                    vc.delegate = self
-                    vc.dismissButtonStyle = .close
-                    vc.title = item.fileName
-                    mainContainer?.pushOnSplitPresentOnCompact(vc)
-                    return
+                if let payload = item.meta.whiteConverteInfo {
+                    do {
+                        let jsonData = try JSONEncoder().encode(item)
+                        let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
+                        let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
+                        if let url = URL(string: link) {
+                            let config = SFSafariViewController.Configuration()
+                            config.barCollapsingEnabled = true
+                            config.entersReaderIfAvailable = false
+                            let vc = SFSafariViewController(url: url, configuration: config)
+                            vc.delegate = self
+                            vc.dismissButtonStyle = .close
+                            vc.title = item.fileName
+                            mainContainer?.pushOnSplitPresentOnCompact(vc)
+                            return
+                        }
+                    }
+                    catch {
+                        toast("encode storage item fail, \(error)")
+                    }
                 }
             }
             
