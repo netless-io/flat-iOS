@@ -270,26 +270,24 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         default:
             // Preview dynamic with web preview
             if ConvertService.convertingTaskTypeFor(url: item.fileURL) == .dynamic {
-                if let payload = item.meta.whiteConverteInfo {
-                    do {
-                        let jsonData = try JSONEncoder().encode(item)
-                        let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
-                        let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
-                        if let url = URL(string: link) {
-                            let config = SFSafariViewController.Configuration()
-                            config.barCollapsingEnabled = true
-                            config.entersReaderIfAvailable = false
-                            let vc = SFSafariViewController(url: url, configuration: config)
-                            vc.delegate = self
-                            vc.dismissButtonStyle = .close
-                            vc.title = item.fileName
-                            mainContainer?.pushOnSplitPresentOnCompact(vc)
-                            return
-                        }
+                do {
+                    let jsonData = try JSONEncoder().encode(item)
+                    let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
+                    let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
+                    if let url = URL(string: link) {
+                        let config = SFSafariViewController.Configuration()
+                        config.barCollapsingEnabled = true
+                        config.entersReaderIfAvailable = false
+                        let vc = SFSafariViewController(url: url, configuration: config)
+                        vc.delegate = self
+                        vc.dismissButtonStyle = .close
+                        vc.title = item.fileName
+                        mainContainer?.pushOnSplitPresentOnCompact(vc)
+                        return
                     }
-                    catch {
-                        toast("encode storage item fail, \(error)")
-                    }
+                }
+                catch {
+                    toast("encode storage item fail, \(error)")
                 }
             }
             

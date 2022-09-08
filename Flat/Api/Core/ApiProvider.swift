@@ -72,18 +72,24 @@ class ApiProvider: NSObject {
     func request<T: Request>(fromApi api: T,
                              generator: Generator,
                              responseDataHandler: ResponseDataHandler) -> Observable<T.Response> {
-        let reqId = UUID().uuidString
+        var reqId: String!
         return generator
             .generateObservableRequest(fromApi: api)
-            .do(onNext: { logger.trace("start rx \(reqId) \($0)") })
+            .do(onNext: {
+                reqId = $0.value(forHTTPHeaderField: "x-request-id") ?? UUID().uuidString
+                logger.trace("start rx \(String(describing: reqId)) \($0)") }
+            )
             .flatMap {
                 self.session.rx.data(request: $0)
             }
-            .do(onNext: { logger.trace("raw rx \(reqId) \(String(data: $0, encoding: .utf8) ?? "")")})
+            .do(onNext: { logger.trace("raw rx \(String(describing: reqId)) \(String(data: $0, encoding: .utf8) ?? "")")})
             .flatMap {
                 responseDataHandler.processObservableResponseData($0, decoder: api.decoder, forResponseType: T.Response.self)
             }
-            .do(onNext: { obj in logger.trace("finish rx \(reqId) \(obj)") }, onError: { error in logger.error("finish error rx \(reqId) \(error)")})
+            .do(
+                onNext: { obj in logger.trace("finish rx \(String(describing: reqId)) \(obj)") },
+                onError: { error in logger.error("finish error rx \(String(describing: reqId)) \(error)")}
+            )
             .subscribe(on: ConcurrentDispatchQueueScheduler(queue: rootQueue))
             .observe(on: SerialDispatchQueueScheduler(queue: callBackQueue, internalSerialQueueName: "io.agora.flat.session.callback"))
     }
@@ -95,8 +101,8 @@ class ApiProvider: NSObject {
                              completionHandler: @escaping (Result<T.Response, ApiError>) -> Void
     ) -> URLSessionDataTask? {
         do {
-            let reqId = UUID().uuidString
             let req = try generator.generateRequest(fromApi: api)
+            let reqId = req.value(forHTTPHeaderField: "x-request-id") ?? UUID().uuidString
             logger.trace("start \(reqId) \(req)")
             let task = session.dataTask(with: req) { data, response, error in
                 if let data = data {

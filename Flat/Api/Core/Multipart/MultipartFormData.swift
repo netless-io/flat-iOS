@@ -411,7 +411,7 @@ open class MultipartFormData {
             let bytesRead = inputStream.read(&buffer, maxLength: streamBufferSize)
 
             if let error = inputStream.streamError {
-                throw "multipartEncodingFailed"
+                throw "multipartEncodingFailed, \(error)"
             }
 
             if bytesRead > 0 {
@@ -458,7 +458,7 @@ open class MultipartFormData {
             let bytesRead = inputStream.read(&buffer, maxLength: streamBufferSize)
 
             if let streamError = inputStream.streamError {
-                throw "multipartEncodingFailed"
+                throw "multipartEncodingFailed, \(streamError)"
             }
 
             if bytesRead > 0 {
@@ -495,7 +495,7 @@ open class MultipartFormData {
             let bytesWritten = outputStream.write(buffer, maxLength: bytesToWrite)
 
             if let error = outputStream.streamError {
-                throw "multipartEncodingFailed"
+                throw "multipartEncodingFailed, \(error)"
             }
 
             bytesToWrite -= bytesWritten

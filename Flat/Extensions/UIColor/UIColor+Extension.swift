@@ -46,7 +46,8 @@ extension UIColor {
         let r = UInt32(truncating: numberArray[0])
         let g = UInt32(truncating: numberArray[1])
         let b = UInt32(truncating: numberArray[2])
-        self.init(r: r, g: g, b: b, a: arrayCount >= 4 ? CGFloat(numberArray[3]) : 1)
+        
+        self.init(r: r, g: g, b: b, a: arrayCount >= 4 ? CGFloat(numberArray[3].floatValue) : 1)
     }
     
     convenience init (hexString: String) {

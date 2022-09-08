@@ -14,13 +14,12 @@
             <connections>
                 <outlet property="flatLabel" destination="hhQ-qF-rd8" id="sEf-ae-A9i"/>
                 <outlet property="githubLoginButton" destination="66p-b6-epO" id="UmJ-jc-cPR"/>
-                <outlet property="horizontalLoginTypesStackView" destination="fJS-yJ-6Z6" id="T1i-za-TuS"/>
+                <outlet property="horizontalLoginTypesStackView" destination="J7d-YG-TGG" id="Uz8-Ih-VcS"/>
                 <outlet property="loginBg" destination="XSB-Cf-LTe" id="Fw4-oL-sUW"/>
                 <outlet property="loginButton" destination="Fkj-E5-RS5" id="GId-FY-m1a"/>
                 <outlet property="smsAuthView" destination="Kbq-rl-1M2" id="4AE-Rl-5JN"/>
                 <outlet property="stackView" destination="Eu9-lO-dxG" id="HNj-Ff-97c"/>
                 <outlet property="tipsLabel" destination="LTh-jI-o8u" id="6W5-6a-ltX"/>
-                <outlet property="verticalLoginTypesStackView" destination="J7d-YG-TGG" id="Lho-MZ-oBH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="weChatLoginButton" destination="bLG-0j-XGe" id="Old-JZ-sWO"/>
             </connections>
@@ -114,10 +113,10 @@
                                             <rect key="frame" x="143" y="0.0" width="16" height="128"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="AAAAAAAAAAAAAAAAAAAAAAAA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTh-jI-o8u">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="AAAAAAAAAAAAAAAAAAAAAAAA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTh-jI-o8u">
                                             <rect key="frame" x="159" y="0.0" width="194.5" height="128"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" name="7A7B7C"/>
+                                            <color key="textColor" systemColor="systemGreenColor"/>
                                             <nil key="highlightedColor"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="string" keyPath="xibLocKey" value="OtherLoginTips"/>
@@ -143,37 +142,29 @@
                                         <constraint firstItem="w15-pG-zIq" firstAttribute="width" secondItem="g43-OR-gCl" secondAttribute="width" id="rx1-Y6-yOV"/>
                                     </constraints>
                                 </stackView>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="J7d-YG-TGG">
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="J7d-YG-TGG">
                                     <rect key="frame" x="154" y="908" width="204" height="72"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="fJS-yJ-6Z6">
-                                            <rect key="frame" x="0.0" y="0.0" width="204" height="72"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLG-0j-XGe">
-                                                    <rect key="frame" x="0.0" y="0.0" width="82" height="72"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="82" id="XOQ-hm-N6b"/>
-                                                    </constraints>
-                                                    <color key="tintColor" systemColor="tintColor"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="login_wechat" title=""/>
-                                                    <connections>
-                                                        <action selector="onClickWeChatButton:" destination="-1" eventType="touchUpInside" id="Yra-42-4P3"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="66p-b6-epO">
-                                                    <rect key="frame" x="122" y="0.0" width="82" height="72"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="login_github" title=""/>
-                                                    <connections>
-                                                        <action selector="onClickGithubButton:" destination="-1" eventType="touchUpInside" id="nLz-SL-vsB"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLG-0j-XGe">
+                                            <rect key="frame" x="0.0" y="0.0" width="82" height="72"/>
                                             <constraints>
-                                                <constraint firstItem="bLG-0j-XGe" firstAttribute="width" secondItem="66p-b6-epO" secondAttribute="width" id="EnO-qh-b1h"/>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="82" id="WSC-zD-b7b"/>
                                             </constraints>
-                                        </stackView>
+                                            <color key="tintColor" systemColor="tintColor"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain" image="login_wechat" title=""/>
+                                            <connections>
+                                                <action selector="onClickWeChatButton:" destination="-1" eventType="touchUpInside" id="Yra-42-4P3"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="66p-b6-epO">
+                                            <rect key="frame" x="122" y="0.0" width="82" height="72"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain" image="login_github" title=""/>
+                                            <connections>
+                                                <action selector="onClickGithubButton:" destination="-1" eventType="touchUpInside" id="nLz-SL-vsB"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </stackView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_icon" translatesAutoresizingMaskIntoConstraints="NO" id="LcV-pg-1cs">
@@ -224,6 +215,9 @@
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

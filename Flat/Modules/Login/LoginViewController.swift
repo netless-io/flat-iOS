@@ -110,10 +110,11 @@ class LoginViewController: UIViewController {
         }
         view.addSubview(agreementCheckStackView)
         agreementCheckStackView.snp.makeConstraints { make in
-            make.centerX.equalTo(verticalLoginTypesStackView)
+            make.centerX.equalTo(horizontalLoginTypesStackView)
             make.top.equalTo(loginButton.snp.bottom).offset(8)
         }
         
+        tipsLabel.textColor = .color(type: .text)
         tipsLabel.adjustsFontSizeToFitWidth = true
         tipsLabel.minimumScaleFactor = 0.7
     }
@@ -200,10 +201,8 @@ class LoginViewController: UIViewController {
         let button = ASAuthorizationAppleIDButton(authorizationButtonType: .default, authorizationButtonStyle: .black)
         container.addSubview(button)
         horizontalLoginTypesStackView.addArrangedSubview(container)
-        container.snp.makeConstraints { make in
-            make.width.equalTo(82)
-        }
         button.addTarget(self, action: #selector(onClickAppleLogin), for: .touchUpInside)
+        
         button.cornerRadius = 29
         button.removeConstraints(button.constraints)
         button.snp.makeConstraints { make in
@@ -288,7 +287,6 @@ class LoginViewController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
-    @IBOutlet weak var verticalLoginTypesStackView: UIStackView!
     @IBOutlet weak var horizontalLoginTypesStackView: UIStackView!
     @IBOutlet weak var loginBg: UIView!
     @IBOutlet weak var stackView: UIStackView!

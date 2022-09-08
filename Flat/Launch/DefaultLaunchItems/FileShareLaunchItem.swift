@@ -25,7 +25,7 @@ class FileShareLaunchItem: LaunchItem {
             }
             try FileManager.default.copyItem(at: url, to: temp)
             self.url = temp
-            _ = url.stopAccessingSecurityScopedResource()
+            url.stopAccessingSecurityScopedResource()
             return true
         }
         catch {
