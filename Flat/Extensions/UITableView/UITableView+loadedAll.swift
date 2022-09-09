@@ -10,7 +10,10 @@ import UIKit
 
 extension UITableView {
     func showLoadedAll(_ flag: Bool) {
-        if !flag { tableFooterView = nil }
+        if !flag {
+            tableFooterView = nil
+            return
+        }
         let view = UIView(frame: .init(x: 0, y: 0, width: 0, height: 44))
         view.backgroundColor = backgroundColor
         let label = UILabel()
