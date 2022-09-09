@@ -12,11 +12,11 @@ import RxRelay
 
 class UploadTasksViewController: UIViewController {
     // MARK: - Public
-    func appendTask(task: Single<String>, fileURL: URL, subject: BehaviorRelay<UploadStatus>) {
+    func appendTask(task: Single<String>, fileURL: URL, targetDirectoryPath: String, subject: BehaviorRelay<UploadStatus>) {
         let disposable = task
             .observe(on: ConcurrentDispatchQueueScheduler.init(queue: .global()))
             .subscribe()
-        let uploadTask = UploadTask(url: fileURL, disposable: disposable)
+        let uploadTask = UploadTask(url: fileURL, targetDirectoryPath: targetDirectoryPath, disposable: disposable)
         
         tasks.append((uploadTask, subject))
         tableView.reloadData()
@@ -24,6 +24,7 @@ class UploadTasksViewController: UIViewController {
     
     struct UploadTask {
         let url: URL
+        let targetDirectoryPath: String
         let disposable: Disposable
     }
     
@@ -57,8 +58,9 @@ class UploadTasksViewController: UIViewController {
                     let result = try UploadService.shared
                         .createUploadTaskFrom(fileURL: task.0.url,
                                               region: .CN_HZ,
-                                              shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
-                    appendTask(task: result.task, fileURL: task.0.url, subject: result.tracker)
+                                              shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource,
+                                              targetDirectoryPath: task.0.targetDirectoryPath)
+                    appendTask(task: result.task, fileURL: task.0.url, targetDirectoryPath: task.0.targetDirectoryPath, subject: result.tracker)
                 }
                 catch {
                     toast(error.localizedDescription)

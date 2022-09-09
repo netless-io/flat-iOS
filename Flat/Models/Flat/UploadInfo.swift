@@ -9,9 +9,9 @@
 import Foundation
 
 struct UploadInfo: Codable {
-    let filePath: String
     let fileUUID: String
+    let ossFilePath: String
+    let ossDomain: URL
     let policy: String
-    let policyURL: URL
     let signature: String
 }

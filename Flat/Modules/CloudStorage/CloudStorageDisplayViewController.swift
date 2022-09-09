@@ -12,6 +12,7 @@ import Whiteboard
 import DZNEmptyDataSet
 import RxSwift
 import RxCocoa
+import MobileCoreServices
 
 let cloudStorageShouldUpdateNotificationName = Notification.Name("cloudStorageShouldUpdateNotificationName")
 
@@ -23,17 +24,31 @@ class CloudStorageDisplayViewController: UIViewController,
     let cellIdentifier = "CloudStorageTableViewCell"
     let container = PageListContainer<StorageFileModel>()
     var loadingMoreRequest: URLSessionDataTask?
+    let currentDirectoryPath: String
+    var dragingIndex: Int?
+    
+    var firstNotDirectoryIndexPath: IndexPath {
+        let index = container.items.firstIndex(where: { $0.resourceType != .directory }) ?? container.items.count
+        return .init(row: index, section: 0)
+    }
+    
+    init(currentDirectoryPath: String = "/") {
+        self.currentDirectoryPath = currentDirectoryPath
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
         taskProgressPolling.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
         taskProgressPolling.pause()
     }
     
@@ -49,6 +64,10 @@ class CloudStorageDisplayViewController: UIViewController,
         observeUpdateNotification()
         observeCanDelete()
         loadData(loadMore: false)
+        
+        tableView.dragInteractionEnabled = true
+        tableView.dragDelegate = self
+        tableView.dropDelegate = self
     }
     
     // MARK: - Datas
@@ -61,7 +80,7 @@ class CloudStorageDisplayViewController: UIViewController,
     @discardableResult
     func loadData(loadMore: Bool) -> URLSessionDataTask? {
         let page = loadMore ? container.currentPage + 1 : 1
-        return ApiProvider.shared.request(fromApi: StorageListRequest(page: page)) { [weak self] result in
+        return ApiProvider.shared.request(fromApi: StorageListRequest(input: .init(page: page, directoryPath: currentDirectoryPath))) { [weak self] result in
             guard let self = self else { return }
             self.tableView.refreshControl?.endRefreshing()
             switch result {
@@ -104,6 +123,52 @@ class CloudStorageDisplayViewController: UIViewController,
     }
     
     // MARK: - Actions
+    func createDirctory(name: String) {
+        showActivityIndicator()
+        let request = StorageCreateDirectoryRequest(parentDirectoryPath: currentDirectoryPath, directoryName: name)
+        ApiProvider.shared.request(fromApi: request)
+            .asSingle()
+            .subscribe(with: self, onSuccess: { weakSelf, _ in
+                weakSelf.loadData(loadMore: false)
+            }, onFailure: { weakSelf, error in
+                weakSelf.toast(error.localizedDescription)
+            }, onDisposed: { weakSelf in
+                weakSelf.stopActivityIndicator()
+            })
+            .disposed(by: rx.disposeBag)
+    }
+    
+    // Return the target directory
+    func move(items: [StorageFileModel], to indexPath: IndexPath) -> String {
+        let uuids = items.map { $0.fileUUID }
+        let indices = uuids.compactMap { id in self.container.items.firstIndex(where: { $0.fileUUID == id }) }
+        if !indices.isEmpty {
+            container.items.remove(atOffsets: IndexSet(indices))
+            tableView.deleteRows(at: indices.map { IndexPath(item: $0, section: 0)}, with: .automatic)
+        }
+        
+        let targetDirectoryPath: String
+        if indexPath.row < container.items.count &&
+            container.items[indexPath.row].resourceType == .directory {
+            targetDirectoryPath = currentDirectoryPath + container.items[indexPath.row].fileName + "/"
+        } else {
+            targetDirectoryPath = currentDirectoryPath
+            // Means items from other dir.
+            let insertIndex = firstNotDirectoryIndexPath.row
+            container.items.insert(contentsOf: items, at: insertIndex)
+            let insertedIndexPaths = items.enumerated().map { $0.offset }.map { IndexPath(row: insertIndex + $0, section: 0) }
+            tableView.insertRows(at: insertedIndexPaths, with: .automatic)
+        }
+        
+        let request = StorageMoveFileRequest(targetDirectoryPath: targetDirectoryPath, uuids: uuids)
+        ApiProvider.shared.request(fromApi: request)
+            .asSingle()
+            .subscribe()
+            .disposed(by: rx.disposeBag)
+        
+        return targetDirectoryPath
+    }
+    
     func rename(_ item: StorageFileModel) {
         let alert = UIAlertController(title: NSLocalizedString("Rename", comment: ""), message: nil, preferredStyle: .alert)
         let ext = String(item.fileName.split(separator: ".").last ?? "")
@@ -135,13 +200,16 @@ class CloudStorageDisplayViewController: UIViewController,
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func onReceiveUpdateNotification() {
+    @objc func onReceiveUpdateNotification(_ notification: Notification) {
+        guard let dir = notification.userInfo?["dir"] as? String,
+              dir == currentDirectoryPath else { return }
         loadFirstPageData()
     }
     
     @objc func onClickEdit(_ sender: UIButton) {
         tableView.isEditing = !tableView.isEditing
         sender.isSelected = !sender.isSelected
+        tableView.reloadData()
     }
     
     @objc func onClickDelete(_ sender: UIButton) {
@@ -164,7 +232,7 @@ class CloudStorageDisplayViewController: UIViewController,
     }
     
     func observeUpdateNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onReceiveUpdateNotification), name: cloudStorageShouldUpdateNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onReceiveUpdateNotification(_:)), name: cloudStorageShouldUpdateNotificationName, object: nil)
     }
     
     func observeCanDelete() {
@@ -201,14 +269,15 @@ class CloudStorageDisplayViewController: UIViewController,
             }
             .forEach {
                 let uuid = $0.fileUUID
-                ConvertService.startConvert(fileUUID: uuid, isWhiteboardProjector: ConvertService.isDynamicPpt(url: $0.fileURL)) { [weak self] r in
+                ConvertService.startConvert(fileUUID: uuid) { [weak self] r in
                     switch r {
                     case .success(let model):
                         guard let self = self else { return }
-                        if let index = self.container.items.firstIndex(where: { $0.fileUUID == uuid }) {
+                        if let index = self.container.items.firstIndex(where: { $0.fileUUID == uuid }),
+                            let info = model.whiteConverteInfo {
                             self.container.items[index].updateConvert(step: .converting,
-                                                                      taskUUID: model.taskUUID,
-                                                                      taskToken: model.taskToken)
+                                                                      taskUUID: info.taskUUID,
+                                                                      taskToken: info.taskToken)
                             self.configPollingTaskWith(newItems: self.container.items)
                         }
                     case .failure(let error):
@@ -270,8 +339,7 @@ class CloudStorageDisplayViewController: UIViewController,
         taskProgressPolling.cancelTask(withTaskUUID: taskUUID)
         guard let index = container.items.firstIndex(where: { $0.fileUUID == fileUUID }) else { return }
         let item = container.items[index]
-        guard let payload = item.meta.whiteConverteInfo else { return }
-        ApiProvider.shared.request(fromApi: FinishConvertRequest(fileUUID: item.fileUUID, region: payload.region)) { [weak self] result in
+        ApiProvider.shared.request(fromApi: FinishConvertRequest(fileUUID: item.fileUUID)) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success:
@@ -362,7 +430,11 @@ class CloudStorageDisplayViewController: UIViewController,
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         let dateStr = formatter.string(from: item.createAt)
-        cell.sizeAndTimeLabel.text = dateStr + "   " + item.fileSizeDescription
+        if item.resourceType == .directory {
+            cell.sizeAndTimeLabel.text = dateStr
+        } else {
+            cell.sizeAndTimeLabel.text = dateStr + "   " + item.fileSizeDescription
+        }
         let selBgView = UIView()
         selBgView.backgroundColor = .color(type: .background)
         cell.selectedBackgroundView = selBgView
@@ -388,5 +460,117 @@ class CloudStorageDisplayViewController: UIViewController,
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
         true
+    }
+}
+
+extension CloudStorageDisplayViewController: UITableViewDragDelegate {
+    func dragItem(for indexPath: IndexPath) -> [UIDragItem] {
+        let item = container.items[indexPath.row]
+        let itemProvider = NSItemProvider()
+        do {
+            let data = try JSONEncoder.flatEncoder.encode(item)
+            itemProvider.registerDataRepresentation(forTypeIdentifier: kUTTypePlainText as String, visibility: .all) { completion in
+                completion(data, nil)
+                return nil
+            }
+            return [.init(itemProvider: itemProvider)]
+        }
+        catch {
+            logger.error("drag encoder fail \(error)")
+            return []
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        session.localContext = currentDirectoryPath
+        return dragItem(for: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        let dir = (session.localContext as? String) ?? ""
+        if container.items[indexPath.row].resourceType == .directory {
+            return []
+        }
+        if dir == currentDirectoryPath {
+            return dragItem(for: indexPath)
+        }
+        return []
+    }
+    
+    func tableView(_ tableView: UITableView, dragSessionDidEnd session: UIDragSession) {
+        // Remove items when move items to other folders
+        guard let targetDirPath = session.localContext as? String else { return }
+        guard let dragingIndex = dragingIndex else { return }
+        let pathsInCurrentLevel = container.items.compactMap { item -> String? in
+            if item.resourceType == .directory {
+                return self.currentDirectoryPath + item.fileName + "/"
+            }
+            return nil
+        }
+        if !pathsInCurrentLevel.contains(targetDirPath) {
+            container.items.remove(at: dragingIndex)
+            tableView.deleteRows(at: [.init(row: dragingIndex, section: 0)], with: .none)
+        }
+        self.dragingIndex = nil
+    }
+}
+
+extension CloudStorageDisplayViewController: UITableViewDropDelegate {
+    func sessionDir(_ session: UIDropSession) -> String? {
+        session.localDragSession?.localContext as? String
+    }
+    
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        let indexPath = coordinator.destinationIndexPath ?? firstNotDirectoryIndexPath
+        coordinator.session.loadObjects(ofClass: NSString.self) { [unowned self] stringItems in
+            do {
+                let items = try(stringItems as! [String]).compactMap { string -> StorageFileModel? in
+                    guard let data = string.data(using: .utf8) else { return nil }
+                    let model = try JSONDecoder.flatDecoder.decode(StorageFileModel.self, from: data)
+                    return model
+                }
+                let targetDirectory = self.move(items: items, to: indexPath)
+                coordinator.session.localDragSession?.localContext = targetDirectory
+            }
+            catch {
+                logger.error("drop decode error \(error)")
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        sessionDir(session) != nil
+    }
+    
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        guard let dir = sessionDir(session) else { return .init(operation: .forbidden) }
+        
+        // From other dir
+        if dir != currentDirectoryPath {
+            if let destinationIndexPath = destinationIndexPath,
+               destinationIndexPath.row < container.items.count {
+                let item = container.items[destinationIndexPath.row]
+                if item.resourceType == .directory {
+                    
+                    // Forbid to move to same fold
+                    let targetPath = currentDirectoryPath + item.fileName + "/"
+                    if targetPath == dir {
+                        return .init(operation: .forbidden)
+                    }
+                    return .init(operation: .move, intent: .insertIntoDestinationIndexPath)
+                }
+            }
+            return .init(operation: .move, intent: .insertAtDestinationIndexPath)
+        }
+        
+        guard let destinationIndexPath = destinationIndexPath else { return .init(operation: .forbidden) }
+        if destinationIndexPath.row >= container.items.count { return .init(operation: .forbidden) }
+        
+        let isDirectory = container.items[destinationIndexPath.row].resourceType == .directory
+        if isDirectory {
+            return .init(operation: .move, intent: .insertIntoDestinationIndexPath)
+        } else {
+            return .init(operation: .forbidden)
+        }
     }
 }

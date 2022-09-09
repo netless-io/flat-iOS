@@ -293,7 +293,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     private func upload(info: UploadInfo, fileURL: URL) throws -> Observable<Void> {
         let session = URLSession(configuration: .default)
         let boundary = UUID().uuidString
-        var request = URLRequest(url: info.policyURL, timeoutInterval: 60 * 10)
+        var request = URLRequest(url: info.ossDomain, timeoutInterval: 60 * 10)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
@@ -304,7 +304,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         
         let partFormData = MultipartFormData(fileManager: FileManager.default, boundary: boundary)
         let headers: [(String, String)] = [
-            ("key", info.filePath),
+            ("key", info.ossFilePath),
             ("name", fileURL.lastPathComponent),
             ("policy", info.policy),
             ("OSSAccessKeyId", Env().ossAccessKeyId),

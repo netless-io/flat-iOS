@@ -141,17 +141,17 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         switch item.fileType {
         case .img:
             fileSelectTask = item
-            KingfisherManager.shared.retrieveImage(with: item.fileURL) { [weak self] result in
+            KingfisherManager.shared.retrieveImage(with: item.urlOrEmpty) { [weak self] result in
                 self?.fileSelectTask = nil
                 switch result {
                 case .success(let r):
-                    self?.fileContentSelectedHandler?(.image(url: item.fileURL, image: r.image))
+                    self?.fileContentSelectedHandler?(.image(url: item.urlOrEmpty, image: r.image))
                 case .failure(let error):
                     self?.toast(error.localizedDescription)
                 }
             }
         case .video, .music:
-            fileContentSelectedHandler?(.media(url: item.fileURL, title: item.fileName))
+            fileContentSelectedHandler?(.media(url: item.urlOrEmpty, title: item.fileName))
         case .pdf, .ppt, .word:
             guard let taskType = item.taskType else {
                 toast("can't get the task type")
@@ -204,6 +204,8 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
             }
         case .unknown:
             toast("file type not defined")
+        case .directory:
+            toast("害没开发呢")
         }
     }
     
@@ -288,22 +290,24 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     
     func uploadFile(url: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool) {
         do {
+            let dir = currentDirectoryPath
             let result = try UploadService.shared
                 .createUploadTaskFrom(fileURL: url,
                                       region: region,
-                                      shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
+                                      shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource,
+                                      targetDirectoryPath: dir)
             result.task.do(onSuccess: { fillUUID in
                 if ConvertService.isFileConvertible(withFileURL: url) {
-                    ConvertService.startConvert(fileUUID: fillUUID, isWhiteboardProjector: ConvertService.isDynamicPpt(url: url)) { [weak self] result in
+                    ConvertService.startConvert(fileUUID: fillUUID) { [weak self] result in
                         switch result {
                         case .success:
-                            NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
+                            NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil, userInfo: ["dir": dir])
                         case .failure(let error):
                             self?.toast(error.localizedDescription)
                         }
                     }
                 } else {
-                    NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
+                    NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil, userInfo: ["dir": dir])
                 }
             }).subscribe().disposed(by: rx.disposeBag)
                 

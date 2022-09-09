@@ -41,19 +41,18 @@ struct ConvertService {
     static func shouldConvertFile(withFile file: StorageFileModel) -> Bool {
         if let payload = file.meta.whiteConverteInfo,
            payload.convertStep == .none,
-           ConvertConfig.shouldConvertPathExtensions.contains(file.fileURL.pathExtension.lowercased()) {
+           ConvertConfig.shouldConvertPathExtensions.contains(file.urlOrEmpty.pathExtension.lowercased()) {
             return true
         }
         return false
     }
     
     static func startConvert(fileUUID: String,
-                             isWhiteboardProjector: Bool,
-                             completion: @escaping ((Result<StartConvertResponse, Error>)->Void)) {
-        ApiProvider.shared.request(fromApi: StartConvertRequest(fileUUID: fileUUID, isWhiteboardProjector: isWhiteboardProjector)) { result in
+                             completion: @escaping ((Result<StorageFileModel.Payload, Error>)->Void)) {
+        ApiProvider.shared.request(fromApi: StartConvertRequest(fileUUID: fileUUID)) { result in
             switch result {
             case .success(let item):
-                logger.info("submit convert task success \(item.taskUUID)")
+                logger.info("submit convert task success")
                 completion(.success(item))
             case .failure(let error):
                 logger.info("submit convert task error \(error)")

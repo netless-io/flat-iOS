@@ -32,9 +32,12 @@ struct StorageFileModel: Codable, Equatable {
         case ppt
         case word
         case unknown
+        case directory
         
         var iconImageName: String {
             switch self {
+            case .directory:
+                return "storage_directory"
             case .img:
                 return "storage_type_img"
             case .pdf:
@@ -66,7 +69,7 @@ struct StorageFileModel: Codable, Equatable {
                 return ["ppt", "pptx"]
             case .word:
                 return ["doc", "docx"]
-            case .unknown:
+            case .unknown, .directory:
                 return []
             }
         }
@@ -137,19 +140,26 @@ struct StorageFileModel: Codable, Equatable {
         }
     }
     
-    let fileURL: URL
+    var urlOrEmpty: URL {
+        URL(string: fileURL) ?? .init(fileURLWithPath: "")
+    }
+    let fileURL: String
     let fileUUID: String
     let createAt: Date
     var fileName: String
     let fileSize: Int
     let resourceType: ResourceType
+    var meta: Payload
     
-    var fileType: FileType { .init(fileName: fileName) }
+    var fileType: FileType {
+        if resourceType == .directory { return .directory }
+        return .init(fileName: fileName)
+    }
     var fileSizeDescription: String {
         String(format: "%.2fMB", Float(fileSize) / 1024 / 1024)
     }
     var taskType: WhiteConvertTypeV5? {
-        ConvertService.convertingTaskTypeFor(url: fileURL)
+        ConvertService.convertingTaskTypeFor(url: urlOrEmpty)
     }
     var usable: Bool {
         return !ConvertService.shouldConvertFile(withFile: self)
@@ -161,8 +171,6 @@ struct StorageFileModel: Codable, Equatable {
         case .whiteboardProjector(let payload): return payload.convertStep == .converting
         }
     }
-    
-    var meta: Payload
     
     mutating func updateConvert(step: StorageCovertStep, taskUUID: String? = nil, taskToken: String? = nil) {
         switch meta {

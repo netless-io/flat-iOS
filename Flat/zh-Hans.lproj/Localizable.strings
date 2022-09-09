@@ -141,6 +141,12 @@
 "Create" = "创建";
 
 
+"CreateDirectory" = "创建文件夹";
+
+
+"CreateDirectoryPlaceholder" = "请输入文件夹名称";
+
+
 "Created Room" = "创建的房间";
 
 

@@ -21,11 +21,8 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        // Reload selected
+        tableView.reloadData()
     }
     
     deinit {
@@ -60,6 +57,30 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
     }
     
+    @objc func onClickCreateDirectory(_ sender: UIButton) {
+        let alert = UIAlertController(title: localizeStrings("CreateDirectory"), message: nil, preferredStyle: .alert)
+        alert.addTextField { tf in
+            tf.placeholder = localizeStrings("CreateDirectoryPlaceholder")
+        }
+        alert.addAction(.init(title: localizeStrings("Cancel"), style: .cancel))
+        let confirmAction = UIAlertAction(title: localizeStrings("Confirm"), style: .default) { [unowned alert, unowned self] _ in
+            let foldName = alert.textFields![0].text ?? ""
+            self.createDirctory(name: foldName)
+        }
+        alert.addAction(confirmAction)
+        alert.textFields![0].rx.text.orEmpty
+            .map { $0.count > 0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(confirmAction.rx.isEnabled)
+            .disposed(by: alert.rx.disposeBag)
+        mainContainer?.concreteViewController.present(alert, animated: true)
+    }
+    
+    @objc func onClickFolderBack() {
+        navigationController?.popViewController(animated: true)
+        (mainContainer?.concreteViewController as? MainSplitViewController)?.cleanSecondary()
+    }
+    
     
     // MARK: - Lazy
     lazy var addButton: UIButton = {
@@ -77,19 +98,44 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         addButton.setupCommonCustomAlert(actions)
         return addButton
     }()
+
+    lazy var backItem: UIButton = {
+        let backItem = UIButton(type: .custom)
+        backItem.setImage(UIImage(named: "arrowLeft")?.tintColor(.color(type: .text)), for: .normal)
+        backItem.addTarget(self, action: #selector(onClickFolderBack), for: .touchUpInside)
+        return backItem
+    }()
     
     lazy var tableHeader: UIView = {
         let header = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 56)))
         header.backgroundColor = .color(type: .background)
         
         let titleLabel = UILabel()
-        titleLabel.text = localizeStrings("Cloud Storage")
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         titleLabel.textColor = .color(type: .text, .strong)
-        header.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(16)
+        
+        let leftStack = UIStackView(arrangedSubviews: [backItem, titleLabel])
+        header.addSubview(leftStack)
+
+        if currentDirectoryPath == "/" {
+            titleLabel.text = localizeStrings("Cloud Storage")
+            backItem.isHidden = true
+            leftStack.snp.makeConstraints { make in
+                make.left.equalToSuperview().inset(16)
+                make.centerY.equalToSuperview()
+                make.height.equalTo(44)
+            }
+        } else {
+            titleLabel.text = String(currentDirectoryPath.split(separator: "/").last ?? "")
+            backItem.isHidden = false
+            leftStack.snp.makeConstraints { make in
+                make.left.equalToSuperview()
+                make.centerY.equalToSuperview()
+                make.height.equalTo(44)
+            }
+            backItem.snp.makeConstraints { make in
+                make.width.height.equalTo(44)
+            }
         }
 
         header.addSubview(normalOperationStackView)
@@ -118,7 +164,12 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         let selectionButton = UIButton(type: .custom)
         selectionButton.setImage(UIImage(named: "cloud_storage_selection")?.tintColor(.color(type: .text)), for: .normal)
         selectionButton.addTarget(self, action: #selector(onClickEdit(_:)), for: .touchUpInside)
-        let stack = UIStackView(arrangedSubviews: [uploadListButton, selectionButton])
+        
+        let createDirectoryButton = UIButton(type: .custom)
+        createDirectoryButton.setImage(UIImage(named: "create_directory")?.tintColor(.color(type: .text)), for: .normal)
+        createDirectoryButton.addTarget(self, action: #selector(onClickCreateDirectory(_:)), for: .touchUpInside)
+        
+        let stack = UIStackView(arrangedSubviews: [uploadListButton, selectionButton, createDirectoryButton])
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         return stack
@@ -152,10 +203,9 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         guard let cell =
                 super.tableView(tableView, cellForRowAt: indexPath) as? CloudStorageTableViewCell
         else { fatalError() }
-        cell.moreActionButton.isHidden = false
+        cell.moreActionButton.isHidden = tableView.isEditing
         cell.moreActionButton.tag = indexPath.row
         cell.moreActionButton.addTarget(self, action: #selector(onClickMoreAction(sender:)))
-        cell.selectionStyle = .none
         return cell
     }
     
@@ -205,11 +255,18 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !tableView.isEditing else { return }
         if isCompact() {
             tableView.deselectRow(at: indexPath, animated: true)
         }
-        guard !tableView.isEditing else { return }
         let item = container.items[indexPath.row]
+        if item.resourceType == .directory {
+            let directory = currentDirectoryPath + item.fileName + "/"
+            let controller = CloudStorageViewController(currentDirectoryPath: directory)
+            navigationController?.pushViewController(controller, animated: true)
+            (mainContainer?.concreteViewController as? MainSplitViewController)?.cleanSecondary()
+            return
+        }
         guard item.usable else { return }
         preview(item)
     }
@@ -245,7 +302,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         switch item.fileType {
         case .video:
             let vc = CustomAVPlayerViewController()
-            let player = AVPlayer(url: item.fileURL)
+            let player = AVPlayer(url: item.urlOrEmpty)
             vc.dismissHandler = { [weak self] in
                 self?.cleanPreviewResource()
             }
@@ -254,7 +311,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
         case .img:
             showActivityIndicator()
-            KingfisherManager.shared.retrieveImageDiskCachePath(fromURL: item.fileURL) { [weak self] result in
+            KingfisherManager.shared.retrieveImageDiskCachePath(fromURL: item.urlOrEmpty) { [weak self] result in
                 DispatchQueue.main.async {
                     self?.stopActivityIndicator()
                     switch result {
@@ -269,7 +326,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             }
         default:
             // Preview dynamic with web preview
-            if ConvertService.convertingTaskTypeFor(url: item.fileURL) == .dynamic {
+            if ConvertService.convertingTaskTypeFor(url: item.urlOrEmpty) == .dynamic {
                 do {
                     let jsonData = try JSONEncoder().encode(item)
                     let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
@@ -292,7 +349,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             }
             
             showActivityIndicator()
-            let request = URLRequest(url: item.fileURL,
+            let request = URLRequest(url: item.urlOrEmpty,
                                      cachePolicy: .returnCacheDataElseLoad,
                                      timeoutInterval: 60)
             let task = URLSession.shared.downloadTask(with: request) { [weak self] targetUrl, response, error in
@@ -397,26 +454,28 @@ extension CloudStorageViewController: UploadUtilityDelegate {
     
     func uploadFile(url: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool) {
         do {
+            let dir = currentDirectoryPath
             var result = try UploadService.shared
                 .createUploadTaskFrom(fileURL: url,
                                       region: region,
-                                      shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource)
+                                      shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource,
+                                      targetDirectoryPath: currentDirectoryPath)
             let newTask = result.task.do(onSuccess: { fillUUID in
                 if ConvertService.isFileConvertible(withFileURL: url) {
-                    ConvertService.startConvert(fileUUID: fillUUID, isWhiteboardProjector: ConvertService.isDynamicPpt(url: url)) { [weak self] result in
+                    ConvertService.startConvert(fileUUID: fillUUID) { [weak self] result in
                         switch result {
                         case .success:
-                            NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
+                            NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil, userInfo: ["dir": dir])
                         case .failure(let error):
                             self?.toast(error.localizedDescription)
                         }
                     }
                 } else {
-                    NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil)
+                    NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil, userInfo: ["dir": dir])
                 }
             })
             result = (newTask, result.tracker)
-            tasksViewController.appendTask(task: result.task, fileURL: url, subject: result.tracker)
+            tasksViewController.appendTask(task: result.task, fileURL: url, targetDirectoryPath: currentDirectoryPath, subject: result.tracker)
             presentTask()
         }
         catch {

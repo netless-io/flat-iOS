@@ -118,7 +118,7 @@ class UploadService {
     }
     
     ///   - shouldAccessingSecurityScopedResource: If the file is outside of the app, it should be 'true'
-    func createUploadTaskFrom(fileURL: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool) throws -> (task: Single<String>,  tracker: BehaviorRelay<UploadStatus>)  {
+    func createUploadTaskFrom(fileURL: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool, targetDirectoryPath: String) throws -> (task: Single<String>,  tracker: BehaviorRelay<UploadStatus>)  {
         if shouldAccessingSecurityScopedResource {
             let accessing = fileURL.startAccessingSecurityScopedResource()
             guard accessing else { throw "access file error, \(fileURL)" }
@@ -127,7 +127,7 @@ class UploadService {
         let tracker = BehaviorRelay<UploadStatus>(value: .idle)
         trackers[fileURL] = tracker
         tracker.accept(.preparing)
-        let task = prepare(fileURL: fileURL, region: region)
+        let task = prepare(fileURL: fileURL, region: region, targetDirectoryPath: targetDirectoryPath)
             .do(onNext: { info in
                 tracker.accept(.prepareFinish)
                 fileUUID = info.fileUUID
@@ -183,12 +183,13 @@ class UploadService {
             return (task, tracker)
     }
     
-    fileprivate func prepare(fileURL: URL, region: FlatRegion) -> Observable<UploadInfo> {
+    fileprivate func prepare(fileURL: URL, region: FlatRegion, targetDirectoryPath: String) -> Observable<UploadInfo> {
         do {
             let attribute = try FileManager.default.attributesOfItem(atPath: fileURL.path)
             let name = fileURL.lastPathComponent
             let size = (attribute[.size] as? NSNumber)?.intValue ?? 0
-            return ApiProvider.shared.request(fromApi: PrepareUploadRequest(fileName: name, fileSize: size, region: region))
+            let request = PrepareUploadRequest(fileName: name, fileSize: size, targetDirectoryPath: targetDirectoryPath)
+            return ApiProvider.shared.request(fromApi: request)
         }
         catch {
             return .error(error)
@@ -196,13 +197,13 @@ class UploadService {
     }
     
     fileprivate func reportFinish(fileUUID: String, region: FlatRegion, isWhiteboardProjector: Bool) -> Observable<Void> {
-        ApiProvider.shared.request(fromApi: UploadFinishRequest(fileUUID: fileUUID, region: region, isWhiteboardProjector: isWhiteboardProjector)).mapToVoid()
+        ApiProvider.shared.request(fromApi: UploadFinishRequest(fileUUID: fileUUID)).mapToVoid()
     }
     
     fileprivate func upload(fileURL: URL, info: UploadInfo) throws -> Observable<Void> {
         let session = URLSession(configuration: .default)
         let boundary = UUID().uuidString
-        var request = URLRequest(url: info.policyURL, timeoutInterval: 60 * 10)
+        var request = URLRequest(url: info.ossDomain, timeoutInterval: 60 * 10)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
@@ -213,7 +214,7 @@ class UploadService {
         
         let partFormData = MultipartFormData(fileManager: FileManager.default, boundary: boundary)
         let headers: [(String, String)] = [
-            ("key", info.filePath),
+            ("key", info.ossFilePath),
             ("name", fileURL.lastPathComponent),
             ("policy", info.policy),
             ("OSSAccessKeyId", Env().ossAccessKeyId),

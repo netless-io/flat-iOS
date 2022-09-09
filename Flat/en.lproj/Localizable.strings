@@ -141,6 +141,12 @@
 "Create" = "Create";
 
 
+"CreateDirectory" = "Create Directory";
+
+
+"CreateDirectoryPlaceholder" = "Please enter the folder name";
+
+
 "Created Room" = "Created Room";
 
 
