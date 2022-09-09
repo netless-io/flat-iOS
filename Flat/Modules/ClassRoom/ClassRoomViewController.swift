@@ -573,8 +573,10 @@ class ClassRoomViewController: UIViewController {
     }()
 
     @objc func onClickStorage(_ sender: UIButton) {
-        popoverViewController(viewController: cloudStorageListViewController, fromSource: sender)
+        popoverViewController(viewController: cloudStorageNavigationController, fromSource: sender)
     }
+    
+    lazy var cloudStorageNavigationController = BaseNavigationViewController(rootViewController: cloudStorageListViewController)
     
     lazy var cloudStorageListViewController: CloudStorageInClassViewController = {
         let vc = CloudStorageInClassViewController()

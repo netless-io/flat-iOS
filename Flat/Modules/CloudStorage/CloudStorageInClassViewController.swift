@@ -35,7 +35,13 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         }
     }
     
-    var fileContentSelectedHandler: ((CloudStorageFileContent)->Void)?
+    var fileContentSelectedHandler: ((CloudStorageFileContent)->Void)? {
+        didSet {
+            navigationController?.viewControllers
+                .compactMap { $0 as? Self }
+                .forEach { $0.fileContentSelectedHandler = fileContentSelectedHandler }
+        }
+    }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -46,21 +52,17 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         super.viewDidLoad()
         
         tableView.backgroundColor = .classroomChildBG
-        tableView.removeFromSuperview()
-        view.addSubview(topView)
-        view.addSubview(tableView)
-        topView.snp.makeConstraints { make in
-            make.left.right.top.equalToSuperview()
-            make.height.equalTo(40)
-        }
-        tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset((UIEdgeInsets(top: 34, left: 0, bottom: 0, right: 0)))
-        }
-        setupAddButton()
         
+        let dirName = String(currentDirectoryPath.split(separator: "/").last ?? "")
+        title = currentDirectoryPath == "/" ? localizeStrings("Cloud Storage") : dirName
+        navigationItem.rightBarButtonItems = [
+            .init(customView: addButton),
+            .init(customView: uploadingActivity)
+        ]
+        
+        setupAddButton()
         preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
-        
     
     func uploadActionFor(type: UploadType) {
         UploadUtility.shared.start(uploadType: type, fromViewController: self, delegate: self, presentStyle: .popOver(parent: self, source: self.addButton))
@@ -205,60 +207,14 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         case .unknown:
             toast("file type not defined")
         case .directory:
-            toast("害没开发呢")
+            let path = currentDirectoryPath + item.fileName + "/"
+            let vc = CloudStorageInClassViewController(currentDirectoryPath: path)
+            vc.fileContentSelectedHandler = fileContentSelectedHandler
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     // MARK: - Lazy
-    lazy var topView: UIView = {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = .classroomChildBG
-        
-        let leftIcon = UIImageView(image: UIImage(named: "classroom_cloud")?.tintColor(.color(type: .text, .strong)))
-        view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "classroom_cloud")?.tintColor(.color(type: .text, .strong))
-        }
-        leftIcon.contentMode = .center
-        view.addSubview(leftIcon)
-        leftIcon.snp.makeConstraints { make in
-            make.left.top.bottom.equalToSuperview()
-            make.width.equalTo(40)
-        }
-        
-        let topLabel = UILabel(frame: .zero)
-        topLabel.text = localizeStrings("Cloud Storage")
-        topLabel.textColor = .color(type: .text, .strong)
-        topLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        view.addSubview(topLabel)
-        topLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalToSuperview().inset(40)
-        }
-        let line = UIView()
-        line.backgroundColor = .borderColor
-        view.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(1/UIScreen.main.scale)
-        }
-        view.addSubview(addFileStackView)
-        addFileStackView.snp.makeConstraints { make in
-            make.right.equalToSuperview()
-            make.top.bottom.equalToSuperview()
-        }
-        return view
-    }()
-    
-    lazy var addFileStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [self.uploadingActivity, self.addButton])
-        view.axis = .horizontal
-        addButton.snp.makeConstraints { make in
-            make.width.equalTo(66)
-        }
-        uploadingActivity.transform = .init(translationX: 18, y: 0)
-        return view
-    }()
-    
     lazy var addButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "storage_add_small")?.tintColor(.color(type: .text)), for: .normal)
