@@ -12,7 +12,7 @@ import UIKit
 class BaseNavigationViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        interactivePopGestureRecognizer?.delegate = self
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.backgroundColor = .color(type: .background)
@@ -60,5 +60,11 @@ class BaseNavigationViewController: UINavigationController {
             viewController.hidesBottomBarWhenPushed = true
         }
         super.pushViewController(viewController, animated: animated)
+    }
+}
+
+extension BaseNavigationViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        viewControllers.count > 1
     }
 }
