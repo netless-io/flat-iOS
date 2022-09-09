@@ -10,7 +10,7 @@ import Foundation
 
 struct RemoveFilesRequest: FlatRequest {
     let fileUUIDs: [String]
-    var path: String { "/v1/cloud-storage/alibaba-cloud/remove" }
-    var task: Task { .requestJSONEncodable(encodable: ["fileUUIDs": fileUUIDs]) }
+    var path: String { "/v2/cloud-storage/delete" }
+    var task: Task { .requestJSONEncodable(encodable: ["uuids": fileUUIDs]) }
     let responseType = EmptyResponse.self
 }

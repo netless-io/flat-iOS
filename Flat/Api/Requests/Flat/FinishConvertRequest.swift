@@ -10,9 +10,8 @@ import Foundation
 
 struct FinishConvertRequest: FlatRequest {
     let fileUUID: String
-    let region: FlatRegion
     
-    var path: String { "/v1/cloud-storage/convert/finish" }
-    var task: Task { .requestJSONEncodable(encodable: ["fileUUID": fileUUID, "region": region.rawValue]) }
+    var path: String { "/v2/cloud-storage/convert/finish" }
+    var task: Task { .requestJSONEncodable(encodable: ["fileUUID": fileUUID]) }
     let responseType = EmptyResponse.self
 }

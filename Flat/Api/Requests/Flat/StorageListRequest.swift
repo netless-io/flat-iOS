@@ -17,12 +17,12 @@ struct StorageListResponse: Decodable {
 struct StorageListRequest: FlatRequest {
     struct Input: Encodable {
         let page: Int
-        let order: String
         let directoryPath: String
+        let order: String = "DESC"
     }
-    let page: Int
+    let input: Input
     
     var path: String { "/v2/cloud-storage/list" }
-    var task: Task { .requestJSONEncodable(encodable: Input(page: page, order: "DESC", directoryPath: "/")) }
+    var task: Task { .requestJSONEncodable(encodable: input) }
     let responseType = StorageListResponse.self
 }

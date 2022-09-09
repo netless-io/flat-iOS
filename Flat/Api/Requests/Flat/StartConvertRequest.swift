@@ -8,16 +8,10 @@
 
 import Foundation
 
-struct StartConvertResponse: Decodable {
-    let taskToken: String
-    let taskUUID: String
-}
-
 struct StartConvertRequest: FlatRequest, Encodable {
     let fileUUID: String
-    let isWhiteboardProjector: Bool
     
-    var path: String { "/v1/cloud-storage/convert/start" }
+    var path: String { "/v2/cloud-storage/convert/start" }
     var task: Task { .requestJSONEncodable(encodable: self) }
-    var responseType: StartConvertResponse.Type { StartConvertResponse.self }
+    var responseType: StorageFileModel.Payload.Type { StorageFileModel.Payload.self }
 }
