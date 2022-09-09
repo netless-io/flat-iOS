@@ -146,11 +146,19 @@ class RtcViewController: UIViewController {
                 make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: preferredMargin, bottom: 0, right: preferredMargin))
                 make.width.equalTo(self.view).offset(-marginInset)
             }
+            line.snp.remakeConstraints { make in
+                make.left.top.bottom.equalToSuperview()
+                make.width.equalTo(1)
+            }
         case .top:
             videoItemsStackView.axis = .horizontal
             videoItemsStackView.snp.remakeConstraints { make in
                 make.edges.equalToSuperview().inset(UIEdgeInsets(top: preferredMargin, left: 0, bottom: preferredMargin, right: 0))
                 make.height.equalTo(self.view).offset(-marginInset)
+            }
+            line.snp.remakeConstraints { make in
+                make.left.right.bottom.equalToSuperview()
+                make.height.equalTo(1)
             }
         }
         videoItemsStackView.arrangedSubviews.forEach { remakeConstraintForItemView(view: $0, direction: direction) }
@@ -160,6 +168,7 @@ class RtcViewController: UIViewController {
     func setupViews() {
         view.backgroundColor = .color(type: .background)
         view.addSubview(mainScrollView)
+        view.addSubview(line)
         mainScrollView.addSubview(videoItemsStackView)
         mainScrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -428,6 +437,12 @@ class RtcViewController: UIViewController {
     
     lazy var cellMenuView: RtcCellPopMenuView = {
         let view = RtcCellPopMenuView()
+        return view
+    }()
+    
+    lazy var line: UIView = {
+        let view = UIView()
+        view.backgroundColor = .color(type: .background, .strong)
         return view
     }()
 }
