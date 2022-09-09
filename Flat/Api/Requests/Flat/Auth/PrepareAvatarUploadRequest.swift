@@ -11,8 +11,7 @@ import Foundation
 struct PrepareAvatarUploadRequest: FlatRequest, Codable {
     let fileName: String
     let fileSize: Int
-    var region: FlatRegion
-    var path: String { "/v1/user/upload-avatar/start" }
+    var path: String { "/v2/user/upload-avatar/start" }
     var method: HttpMethod { .post }
     var task: Task { .requestJSONEncodable(encodable: self) }
     var responseType: UploadInfo.Type { UploadInfo.self }

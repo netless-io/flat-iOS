@@ -9,12 +9,8 @@
 import Foundation
 
 struct UploadAvatarFinishRequest: FlatRequest {
-    struct Response: Decodable {
-        let avatarURL: URL
-    }
     let fileUUID: String
-    let region: FlatRegion
-    var path: String { "/v1/user/upload-avatar/finish" }
-    var task: Task { .requestJSONEncodable(encodable: ["fileUUID": fileUUID, "region": region.rawValue]) }
-    let responseType = Response.self
+    var path: String { "/v2/user/upload-avatar/finish" }
+    var task: Task { .requestJSONEncodable(encodable: ["fileUUID": fileUUID]) }
+    let responseType = EmptyResponse.self
 }

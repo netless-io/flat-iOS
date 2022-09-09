@@ -11,7 +11,7 @@ import Foundation
 struct UserRenameRequest: FlatRequest {
     let name: String
     
-    var task: Task { .requestJSONEncodable(encodable: ["name": name]) }
-    var path: String { "/v1/user/rename" }
+    var task: Task { .requestJSONEncodable(encodable: ["newUserName": name]) }
+    var path: String { "/v2/user/rename" }
     let responseType = EmptyResponse.self
 }

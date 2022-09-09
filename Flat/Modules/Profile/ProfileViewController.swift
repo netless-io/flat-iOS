@@ -252,17 +252,16 @@ extension ProfileViewController: CropViewControllerDelegate {
             let attribute = try FileManager.default.attributesOfItem(atPath: fileURL.path)
             let name = fileURL.lastPathComponent
             let size = (attribute[.size] as? NSNumber)?.intValue ?? 0
-            var uuid: String!
             showActivityIndicator(text: NSLocalizedString("Uploading", comment: ""))
-            ApiProvider.shared.request(fromApi: PrepareAvatarUploadRequest(fileName: name, fileSize: size, region: .CN_HZ))
-                .flatMap { [weak self] info throws -> Observable<Void> in
+            ApiProvider.shared.request(fromApi: PrepareAvatarUploadRequest(fileName: name, fileSize: size))
+                .flatMap { [weak self] info throws -> Observable<UploadInfo> in
                     guard let self = self else { return .error("self not exist") }
-                    uuid = info.fileUUID
-                    return try self.upload(info: info, fileURL: fileURL)
+                    return try self.upload(info: info, fileURL: fileURL).map { info}
                 }
-                .flatMap { _ -> Observable<URL> in
-                    let finishRequest = UploadAvatarFinishRequest(fileUUID: uuid, region: .CN_HZ)
-                    return ApiProvider.shared.request(fromApi: finishRequest).map { $0.avatarURL }
+                .flatMap { info -> Observable<URL> in
+                    let finishRequest = UploadAvatarFinishRequest(fileUUID: info.fileUUID)
+                    let avatarURL = info.ossDomain.appendingPathComponent(info.ossFilePath)
+                    return ApiProvider.shared.request(fromApi: finishRequest).map { _ in avatarURL }
                 }
                 .subscribe(with: self, onNext: { weakSelf, avatarUrl in
                     weakSelf.stopActivityIndicator()
