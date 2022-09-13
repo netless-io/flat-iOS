@@ -31,7 +31,7 @@ class RoomTableViewCell: UITableViewCell {
         selectionView.clipsToBounds = true
         selectionView.layer.cornerRadius = 6
         selectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8))
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 1, left: 8, bottom: 2, right: 8))
         }
     }
 

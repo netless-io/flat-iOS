@@ -237,7 +237,7 @@ class RoomDetailViewController: UIViewController {
         line.snp.makeConstraints { make in
             make.left.right.equalTo(mainStackView)
             make.top.equalTo(mainStackView.snp.bottom).offset(16)
-            make.height.equalTo(1/UIScreen.main.scale)
+            make.height.equalTo(1)
         }
     }
     

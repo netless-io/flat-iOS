@@ -277,7 +277,7 @@ extension UIColor {
     }
     
     static var borderColor: UIColor {
-        color(light: .grey1, dark: grey8)
+        color(light: .grey1, dark: .grey8)
     }
     
     static var whiteBG: UIColor {

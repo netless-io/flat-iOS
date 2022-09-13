@@ -10,14 +10,18 @@
 import UIKit
 
 class BaseNavigationViewController: UINavigationController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        interactivePopGestureRecognizer?.delegate = self
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateNaviAppearance()
+    }
+    
+    func updateNaviAppearance() {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.backgroundColor = .color(type: .background)
             appearance.setBackIndicatorImage(UIImage(named: "arrowLeft"),
                                              transitionMaskImage: UIImage(named: "arrowLeft"))
+            appearance.shadowImage = UIImage.imageWith(color: .borderColor)
             navigationBar.standardAppearance = appearance
             navigationBar.compactAppearance = appearance
             navigationBar.scrollEdgeAppearance = appearance
@@ -28,6 +32,12 @@ class BaseNavigationViewController: UINavigationController {
             UINavigationBar.appearance().backIndicatorImage = UIImage(named: "arrowLeft")
             UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "arrowLeft")
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+        updateNaviAppearance()
     }
     
     override func show(_ vc: UIViewController, sender: Any?) {

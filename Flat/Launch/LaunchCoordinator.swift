@@ -85,7 +85,10 @@ class LaunchCoordinator {
         
         func oldPadMain() -> UIViewController {
             let vc = MainSplitViewController()
-            vc.viewControllers = [MainTabBarController()]
+            // Line for splitViewController
+            let tabbar = MainTabBarController()
+            tabbar.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
+            vc.viewControllers = [tabbar]
             vc.preferredDisplayMode = .oneBesideSecondary
             return vc
         }

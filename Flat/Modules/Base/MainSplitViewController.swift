@@ -56,7 +56,6 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         if canShowDetail {
             // Show detail for device support split
             if viewControllers.count == 1 {
@@ -68,7 +67,7 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
-        view.backgroundColor = .borderColor
+        view.backgroundColor = .color(type: .background)
     }
     
     override func show(_ vc: UIViewController, hidePrimary: Bool = false) {

@@ -113,10 +113,23 @@ class RegularSideBarViewController: UIViewController {
             syncSelected()
         }
     }
-    var controllers: [UIViewController] = [
-        BaseNavigationViewController(rootViewController: HomeViewController()),
-        BaseNavigationViewController(rootViewController: CloudStorageViewController()),
+    lazy var controllers: [UIViewController] = [
+        BaseNavigationViewController(rootViewController: self.homeViewController),
+        BaseNavigationViewController(rootViewController: self.cloudStorageViewController),
     ]
+    
+    // Line for splitViewController
+    lazy var cloudStorageViewController: CloudStorageViewController = {
+        let cloudStorage = CloudStorageViewController()
+        cloudStorage.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
+        return cloudStorage
+    }()
+    
+    lazy var homeViewController: HomeViewController = {
+        let home = HomeViewController()
+        home.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
+        return home
+    }()
     
     func addBtn(imageName: String, title: String, tag: Int) {
         let btn = UIButton(type: .custom)

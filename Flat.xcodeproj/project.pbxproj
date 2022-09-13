@@ -101,6 +101,7 @@
 		8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9B27158FF000123207 /* FlatRequestGenerator.swift */; };
 		8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9D27159F4C00123207 /* ApiError.swift */; };
 		8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0BA82716859700123207 /* LoginViewController.swift */; };
+		8A2E0C4A28D03B8300CD63EE /* UIView+seperatorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */; };
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
@@ -389,6 +390,7 @@
 		8A2D0B9B27158FF000123207 /* FlatRequestGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatRequestGenerator.swift; sourceTree = "<group>"; };
 		8A2D0B9D27159F4C00123207 /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
 		8A2D0BA82716859700123207 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+seperatorLine.swift"; sourceTree = "<group>"; };
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
 		8A48A9C82716D734003719DB /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
 		8A48A9CA2716D795003719DB /* FlatResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatResponse.swift; sourceTree = "<group>"; };
@@ -634,6 +636,7 @@
 				8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */,
 				8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */,
 				8ABF36302747B696000D5003 /* UIView+Loading.swift */,
+				8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */,
 			);
 			path = UIView;
 			sourceTree = "<group>";
@@ -1790,6 +1793,7 @@
 				8A8020912755B09000F5691C /* RtcViewController.swift in Sources */,
 				8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */,
 				8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */,
+				8A2E0C4A28D03B8300CD63EE /* UIView+seperatorLine.swift in Sources */,
 				8A270BA72719759E00450DC6 /* UIView+NibProperty.swift in Sources */,
 				8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */,
 				8A9FB3AA272262D800F6F06F /* ResponseDataHandler.swift in Sources */,
