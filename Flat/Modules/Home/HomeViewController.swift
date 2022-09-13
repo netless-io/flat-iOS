@@ -224,7 +224,7 @@ class HomeViewController: UIViewController {
         let scale = UIScreen.main.scale
         let width = CGFloat(24)
         let size = CGSize(width: width, height: width).applying(.init(scaleX: scale, y: scale))
-        let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5))
+        let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5), backgroundColor: .clear)
         let processor = ResizingImageProcessor(referenceSize: size).append(another: corner)
         avatarButton.imageEdgeInsets = .init(inset: (containerWidth - width) / 2)
         avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
@@ -263,8 +263,9 @@ class HomeViewController: UIViewController {
         stack.axis = .horizontal
         header.addSubview(stack)
         stack.snp.makeConstraints({
-            $0.left.right.bottom.equalToSuperview()
-            $0.height.equalTo(98)
+            $0.left.right.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(16)
+            $0.height.equalTo(82)
         })
         
         let titleLabel = UILabel()
