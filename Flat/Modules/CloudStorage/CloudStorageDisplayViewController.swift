@@ -143,7 +143,14 @@ class CloudStorageDisplayViewController: UIViewController,
         let uuids = items.map { $0.fileUUID }
         let indices = uuids.compactMap { id in self.container.items.firstIndex(where: { $0.fileUUID == id }) }
         if !indices.isEmpty {
-            container.items.remove(atOffsets: IndexSet(indices))
+            var newItems = container.items
+            IndexSet(indices).forEach { i in
+                let uuid = container.items[i].fileUUID
+                if let removeIndex = newItems.firstIndex(where: { $0.fileUUID == uuid }) {
+                    newItems.remove(at: removeIndex)
+                }
+            }
+            container.items =  newItems
             tableView.deleteRows(at: indices.map { IndexPath(item: $0, section: 0)}, with: .automatic)
         }
         
