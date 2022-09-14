@@ -287,8 +287,13 @@ class ClassRoomViewModel {
         let stopTask = input.stopInteractingTap
             .flatMap { [unowned self] _ -> Single<ActionResult> in
                 guard self.isOwner else { return .just(.success(())) }
-                return self.stateHandler.send(command: .stopInteraction)
+                let stopRecordCommand: Single<Void> = self.recordModel == nil ? .just(()) : self.recordModel!.endRecord().asSingle()
+                let stopCommand = self.stateHandler.send(command: .stopInteraction)
                     .map { _ -> ActionResult in .success(()) }
+                
+                return stopRecordCommand.flatMap { _ -> Single<ActionResult> in
+                    return stopCommand
+                }
             }.asDriver(onErrorJustReturn: .success(()))
         
         let acceptRaiseHandTask = input.tapSomeUserRaiseHand
@@ -373,87 +378,54 @@ class ClassRoomViewModel {
             }
     }
     
-    struct RecordOutput {
-        let isRecording: Observable<Bool>
-        let recordingDuration: Observable<TimeInterval>
-    }
     var recordModel: RecordModel?
-    func transformMoreTap(moreTap: ControlEvent<TapSource>, topRecordingTap: ControlEvent<Void>) -> RecordOutput {
-        let topManualEnding = topRecordingTap
-            .asObservable()
-            .flatMap { [unowned self] in
-                return self.recordModel!
-                    .endRecord()
-                    .asObservable()
-                    .do(onNext: { [weak self] in
-                        self?.recordModel = nil
-                    })
-            }
+    struct RecordingOutput {
+        let recording: Observable<Bool>
+        let loading: Observable<Bool>
+    }
+    func transformRecordTap(_ tap: ControlEvent<Void>) -> RecordingOutput {
+        let loading = BehaviorRelay<Bool>.init(value: true)
         
-        let moreToRecording = moreTap
-            .flatMap { [unowned self] source -> Single<(TapSource, Bool)> in
-                let isRecording = self.recordModel != nil
-                return Single<Bool>.just(isRecording).map { (source, $0) }
+        let userOperation = tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .asObservable()
+            .flatMap { [unowned self] _ -> Observable<Bool> in
+                Observable<Bool>.just(self.recordModel != nil)
             }
-            .flatMap { [unowned self] source, r -> Single<(AlertModel.ActionModel, Bool)> in
-                let str = NSLocalizedString(r ? "EndRecording" : "StartRecording", comment: "")
-                let alert = self.alertProvider.showActionSheet(with: .init(title: nil,
-                                                                            message: nil,
-                                                                            preferredStyle: .actionSheet,
-                                                                            actionModels: [
-                                                                                .init(title: str, style: .default, handler: { _ in }),
-                                                                                .cancel]),
-                                                                source: source)
-                return alert.map { model in return (model, r) }
-            }
-            .filter { $0.0.style != .cancel }
-            .flatMap { [unowned self] source, recording -> Observable<(Bool, [RoomUser])> in
-                return self.members.map { (recording, $0) }
-            }
-            .flatMap { [weak self] recording, members -> Observable<Bool> in
-                guard let self = self else { throw "self not exist" }
+            .flatMap { [unowned self] recording -> Observable<Bool> in
+                loading.accept(true)
                 if recording {
                     return self.recordModel!.endRecord()
-                        .do(onNext: { [weak self] in
-                            self?.recordModel = nil
-                        }).map { false }
-                } else {
-                    return RecordModel
-                        .create(fromRoomUUID: self.roomUUID, joinedUsers: members)
                         .do(onNext: { [weak self] model in
+                            loading.accept(false)
+                            self?.recordModel = nil
+                        })
+                        .map { _ in false }
+                } else {
+                    return RecordModel.create(fromRoomUUID: roomUUID)
+                        .do(onNext: { [weak self] model in
+                            loading.accept(false)
                             self?.recordModel = model
-                        }).map { _ in return true }
+                        })
+                        .map { _ in true }
                 }
             }
         
-        let recording = Observable.merge(moreToRecording, topManualEnding.map { false } )
-            .share(replay: 1, scope: .whileConnected)
-        
-        let recordingDuration: Observable<TimeInterval> = recording
-            .flatMapLatest { r -> Observable<Int> in
-                if r {
-                    return Observable<Int>.interval(.milliseconds(1000),
-                                             scheduler: ConcurrentDispatchQueueScheduler(queue: .global()))
-                } else {
-                    return .just(0)
-                }
-            }
-            .map { [weak self] _ -> TimeInterval in
-                if let date = self?.recordModel?.startDate {
-                    return Date().timeIntervalSince(date)
-                } else {
-                    return 0
-                }
-            }
-            .do(onNext: { [weak self] i in
-                if Int(i) % 10 == 0 {
-                    self?.recordModel?.updateServerEndTime()
-                }
+        let recording = RecordModel
+            .fetchSavedRecordModel().do(onSuccess: { [weak self] model in
+                self?.recordModel = model
+                loading.accept(false)
             })
-        return RecordOutput(isRecording: recording, recordingDuration: recordingDuration)
+            .map { $0 != nil }
+            .asObservable()
+            .concat(userOperation)
+        return .init(recording: recording, loading: loading.asObservable())
+        
     }
     
     func destroy() {
+        // Manual deinit it to remove update timer. In case of memory leak
+        recordModel = nil
         stateHandler.destroy()
         let startStatus = stateHandler.roomStartStatus.value
         NotificationCenter.default.post(name: classRoomLeavingNotificationName,

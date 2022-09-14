@@ -8,17 +8,6 @@
 
 import Foundation
 
-struct StopResponse: Codable {
-    struct ServerResponse: Codable {
-        let fileListMode: String
-        let fileList: String
-        let uploadingStatus: String
-    }
-    let resourceId: String
-    let sid: String
-    let serverResponse: ServerResponse
-}
-
 struct StopRecordRequest: FlatRequest, Encodable {
     struct AgoraParams: Codable {
         let resourceid: String
@@ -32,5 +21,5 @@ struct StopRecordRequest: FlatRequest, Encodable {
     
     var task: Task { .requestJSONEncodable(encodable: self) }
     var method: HttpMethod { .post }
-    var responseType: StopResponse.Type { StopResponse.self }
+    var responseType: EmptyResponse.Type { EmptyResponse.self }
 }

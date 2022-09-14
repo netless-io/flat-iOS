@@ -67,11 +67,9 @@
 		8A21DAB2279F86A00060E25D /* ReplayOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */; };
 		8A21DAB6279F9EEF0060E25D /* RecordAcquireRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB5279F9EEF0060E25D /* RecordAcquireRequest.swift */; };
 		8A21DAB8279FA5020060E25D /* StartRecordReqeust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB7279FA5020060E25D /* StartRecordReqeust.swift */; };
-		8A21DABA279FA90D0060E25D /* UpdateLayoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB9279FA90D0060E25D /* UpdateLayoutRequest.swift */; };
 		8A21DABC279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DABB279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift */; };
 		8A21DABE279FAAC20060E25D /* StopRecordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DABD279FAAC20060E25D /* StopRecordRequest.swift */; };
 		8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAC0279FBE810060E25D /* RecordModel.swift */; };
-		8A21DAC4279FD2CF0060E25D /* RecordingFlagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAC3279FD2CF0060E25D /* RecordingFlagView.swift */; };
 		8A270B6C271822BA00450DC6 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6B271822BA00450DC6 /* MainTabBarController.swift */; };
 		8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7327182B9300450DC6 /* UIColor+Extension.swift */; };
 		8A270B762718314200450DC6 /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B752718314200450DC6 /* TopViewController.swift */; };
@@ -112,6 +110,7 @@
 		8A59FF8628D8410C00318407 /* JoinRoomInputAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */; };
 		8A59FF8828D96D3600318407 /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8728D96D3600318407 /* WKWebViewController.swift */; };
 		8A59FF8B28DAA28600318407 /* UIViewController+screenSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8A28DAA28600318407 /* UIViewController+screenSize.swift */; };
+		8A5B91FC28D06C120032C4C6 /* AdvanceReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5B91FB28D06C120032C4C6 /* AdvanceReplayViewController.swift */; };
 		8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */; };
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
@@ -225,7 +224,7 @@
 		8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362527462F93000D5003 /* Observable+Extension.swift */; };
 		8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362B27464E63000D5003 /* String+Empty.swift */; };
 		8ABF362F2747B356000D5003 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8ABF362E2747B355000D5003 /* loading.gif */; };
-		8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+Loading.swift */; };
+		8ABF36312747B696000D5003 /* UIView+FlatLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+FlatLoading.swift */; };
 		8AC1FF3528912BAA00624E8B /* ClassRoomSyncedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */; };
 		8AC3AFCF28AA4B4600587AE0 /* AlibabaLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */; };
 		8AC3AFD128AB355300587AE0 /* SBLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */; };
@@ -262,6 +261,8 @@
 		8ADD9E0227701D05009A7050 /* UITraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD9E0127701D05009A7050 /* UITraitCollection.swift */; };
 		8ADEDB6928C601EF00482EF2 /* UIColor+FlatTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEDB6828C601EF00482EF2 /* UIColor+FlatTheme.swift */; };
 		8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */; };
+		8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */; };
+		8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */; };
 		8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* RtmCommandType.swift */; };
 		8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */; };
 		8AED087928113840001DEFDC /* AccountCancelationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED087728113741001DEFDC /* AccountCancelationRequest.swift */; };
@@ -358,11 +359,9 @@
 		8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayOverlay.swift; sourceTree = "<group>"; };
 		8A21DAB5279F9EEF0060E25D /* RecordAcquireRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAcquireRequest.swift; sourceTree = "<group>"; };
 		8A21DAB7279FA5020060E25D /* StartRecordReqeust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartRecordReqeust.swift; sourceTree = "<group>"; };
-		8A21DAB9279FA90D0060E25D /* UpdateLayoutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLayoutRequest.swift; sourceTree = "<group>"; };
 		8A21DABB279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRecordEndTimeRequest.swift; sourceTree = "<group>"; };
 		8A21DABD279FAAC20060E25D /* StopRecordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopRecordRequest.swift; sourceTree = "<group>"; };
 		8A21DAC0279FBE810060E25D /* RecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordModel.swift; sourceTree = "<group>"; };
-		8A21DAC3279FD2CF0060E25D /* RecordingFlagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingFlagView.swift; sourceTree = "<group>"; };
 		8A270B6B271822BA00450DC6 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		8A270B6E271829AB00450DC6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8A270B7327182B9300450DC6 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -410,6 +409,7 @@
 		8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInputAccessView.swift; sourceTree = "<group>"; };
 		8A59FF8728D96D3600318407 /* WKWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		8A59FF8A28DAA28600318407 /* UIViewController+screenSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+screenSize.swift"; sourceTree = "<group>"; };
+		8A5B91FB28D06C120032C4C6 /* AdvanceReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceReplayViewController.swift; sourceTree = "<group>"; };
 		8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevicePreferredStatusStore.swift; sourceTree = "<group>"; };
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
@@ -525,7 +525,7 @@
 		8ABF362527462F93000D5003 /* Observable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extension.swift"; sourceTree = "<group>"; };
 		8ABF362B27464E63000D5003 /* String+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Empty.swift"; sourceTree = "<group>"; };
 		8ABF362E2747B355000D5003 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
-		8ABF36302747B696000D5003 /* UIView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loading.swift"; sourceTree = "<group>"; };
+		8ABF36302747B696000D5003 /* UIView+FlatLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+FlatLoading.swift"; sourceTree = "<group>"; };
 		8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSyncedStore.swift; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlibabaLogHandler.swift; sourceTree = "<group>"; };
@@ -567,6 +567,8 @@
 		8ADD9E0127701D05009A7050 /* UITraitCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitCollection.swift; sourceTree = "<group>"; };
 		8ADEDB6828C601EF00482EF2 /* UIColor+FlatTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+FlatTheme.swift"; sourceTree = "<group>"; };
 		8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Level.swift"; sourceTree = "<group>"; };
+		8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordQueryRequest.swift; sourceTree = "<group>"; };
+		8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+loading.swift"; sourceTree = "<group>"; };
 		8AE892FA2727E99D009C71DA /* RtmCommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmCommandType.swift; sourceTree = "<group>"; };
 		8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationValidateRequest.swift; sourceTree = "<group>"; };
 		8AED087728113741001DEFDC /* AccountCancelationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationRequest.swift; sourceTree = "<group>"; };
@@ -647,6 +649,8 @@
 				8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */,
 				8AD3627D28DD49680086699E /* UIView+TableViewHeader.swift */,
 				8ABF36302747B696000D5003 /* UIView+Loading.swift */,
+				8ABF36302747B696000D5003 /* UIView+FlatLoading.swift */,
+				8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */,
 				8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */,
 			);
 			path = UIView;
@@ -893,6 +897,7 @@
 			isa = PBXGroup;
 			children = (
 				8A21DAAB279E58F80060E25D /* ReplayViewController.swift */,
+				8A5B91FB28D06C120032C4C6 /* AdvanceReplayViewController.swift */,
 				8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */,
 			);
 			path = Replay;
@@ -904,8 +909,8 @@
 				8A21DAB5279F9EEF0060E25D /* RecordAcquireRequest.swift */,
 				8A21DAB7279FA5020060E25D /* StartRecordReqeust.swift */,
 				8A21DABB279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift */,
+				8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */,
 				8A21DABD279FAAC20060E25D /* StopRecordRequest.swift */,
-				8A21DAB9279FA90D0060E25D /* UpdateLayoutRequest.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -914,7 +919,6 @@
 			isa = PBXGroup;
 			children = (
 				8A21DAC0279FBE810060E25D /* RecordModel.swift */,
-				8A21DAC3279FD2CF0060E25D /* RecordingFlagView.swift */,
 			);
 			path = ClassroomRecording;
 			sourceTree = "<group>";
@@ -1669,7 +1673,6 @@
 				8A05A1582834EA99002DE9B9 /* Agreement.swift in Sources */,
 				8A0CA22628BC98180035F71A /* FlatPopoverAlertController.swift in Sources */,
 				8AB3CB3028CB11D400922DEF /* StorageMoveFileRequest.swift in Sources */,
-				8A21DAC4279FD2CF0060E25D /* RecordingFlagView.swift in Sources */,
 				8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */,
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
@@ -1730,7 +1733,6 @@
 				8ADEDB6928C601EF00482EF2 /* UIColor+FlatTheme.swift in Sources */,
 				8A4BF2D728C58BB000021D2A /* WhiteboardAppsCell.swift in Sources */,
 				8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */,
-				8A21DABA279FA90D0060E25D /* UpdateLayoutRequest.swift in Sources */,
 				8A05C35B2761E9AD009BCA79 /* CancelUploadRequest.swift in Sources */,
 				8AA242F6289A6ABD00C306F0 /* ClassroomStateHandler.swift in Sources */,
 				8A9FB39D2721783B00F6F06F /* MemberRequest.swift in Sources */,
@@ -1789,6 +1791,7 @@
 				8A05C2AF2758B98F009BCA79 /* WeChatLogin.swift in Sources */,
 				8AC3AFCF28AA4B4600587AE0 /* AlibabaLogHandler.swift in Sources */,
 				8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */,
+				8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
 				8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */,
 				8A2D0B9A27158FCD00123207 /* Request.swift in Sources */,
@@ -1842,7 +1845,7 @@
 				8AA242F8289A6D7C00C306F0 /* DeviceState.swift in Sources */,
 				8AAB06242762E514006CAEF2 /* ExportService.swift in Sources */,
 				8A270B9D271967D800450DC6 /* Language.swift in Sources */,
-				8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */,
+				8ABF36312747B696000D5003 /* UIView+FlatLoading.swift in Sources */,
 				8A6E89E12807B48D00908771 /* FlatGeneralCrossButton.swift in Sources */,
 				8A0EB7B5272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift in Sources */,
 				8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */,
@@ -1865,6 +1868,7 @@
 				8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */,
 				8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */,
 				8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */,
+				8A5B91FC28D06C120032C4C6 /* AdvanceReplayViewController.swift in Sources */,
 				8A270B9F2719681F00450DC6 /* Bundle+Language.swift in Sources */,
 				8A9FB3C127229A6200F6F06F /* FlatRequest.swift in Sources */,
 				8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */,
@@ -1896,6 +1900,7 @@
 				8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */,
 				8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */,
 				8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */,
+				8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */,
 				8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
 				8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */,

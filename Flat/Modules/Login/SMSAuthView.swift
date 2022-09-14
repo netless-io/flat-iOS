@@ -17,7 +17,7 @@ class SMSAuthView: UIView {
             countryCodeSelectBtn.setTitle("+\(countryCode)", for: .normal)
         }
     }
-    var smsRequestMaker: ((String)->Observable<Dictionary<String, String>>)?
+    var smsRequestMaker: ((String)->Observable<EmptyResponse>)?
     var additionalCheck: ((_ sender: UIView)->Result<Void, String>)?
     var phoneRegex: String = "1[3456789]\\d{9}$"
     var phoneValid: Bool { (try? phoneTextfield.text?.matchExpressionPattern(phoneRegex) != nil) ?? false }

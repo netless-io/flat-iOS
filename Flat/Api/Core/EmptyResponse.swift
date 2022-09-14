@@ -9,4 +9,5 @@
 
 import Foundation
 
-typealias EmptyResponse = [String: String]
+struct EmptyResponse: Codable {}
+//typealias EmptyResponse = [String: String]

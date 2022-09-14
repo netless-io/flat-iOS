@@ -8,13 +8,6 @@
 
 import Foundation
 
-enum MixedVideoLayout: Int, Codable {
-    case float = 0
-    case adapt = 1
-    case vertical = 2
-    case custom = 3
-}
-
 enum AgoraRecordMode: String, Codable {
     case individual
     case mix
@@ -27,41 +20,37 @@ struct StartRecordResponse: Codable {
 }
 
 struct StartRecordRequest: FlatRequest, Encodable {
-    struct LayoutConfig: Codable {
-        let x_axis: Float
-        let y_axis: Float
-        let width: Float
-        let height: Float
-    }
-    
     struct AgoraParams: Codable {
         let resourceid: String
         let mode: AgoraRecordMode
     }
     
-    struct BackgroundConfig: Codable {
-        let uid: String
-        let image_url: String
+    enum StreamMode: String, Codable {
+        case `default` = "default"
+        case standard = "standard"
+        case original = "original"
     }
     
-    struct TranscodingConfig: Codable {
-        let width: Int
-        let height: Int
-        let fps: Int
-        let bitrate: Int
-        let mixedVideoLayout: MixedVideoLayout
-        let backgroundColor: String // #000000
-        let defaultUserBackgroundImage: String  //https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg"
-        let backgroundConfig: [BackgroundConfig]
-        let layoutConfig: [LayoutConfig]
+    enum StreamType: Int, Codable {
+        case hd = 0
+        case small
+    }
+    
+    enum ChannelType: Int, Codable {
+        case communication = 0
+        case boardcast
     }
     
     struct RecordingConfig: Codable {
-        let channelType: Int
+        let channelType: ChannelType
         let maxIdleTime: Int
         ///（选填）Number 类型，预估的订阅人数峰值。
         let subscribeUidGroup: Int
-        let transcodingConfig: TranscodingConfig
+        let streamMode: StreamMode
+        let videoStreamType: StreamType
+        var privateParams: String = """
+{"correctEXTINF": true}
+"""
     }
     
     struct ClientRequest: Codable {

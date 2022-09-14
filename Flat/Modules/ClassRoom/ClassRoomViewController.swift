@@ -180,44 +180,21 @@ class ClassRoomViewController: UIViewController {
     }
     
     func bindRecording() {
-        let output = viewModel.transformMoreTap(moreTap: moreButton.rx.sourceTap,
-                                                topRecordingTap: recordingFlagView.endRecordingButton.rx.tap)
-        output.isRecording
+        let output = viewModel.transformRecordTap(recordButton.rx.tap)
+        
+        output.recording
+            .skip(while: { !$0 })
             .asDriver(onErrorJustReturn: false)
-            .map { !($0)}
-            .do(onNext: { [weak self] hide in
-                guard let view = self?.recordingFlagView else { return }
-                self?.toast(NSLocalizedString(hide ? "RecordingEndTips" : "RecordingStartTips", comment: ""),
-                            timeInterval: 3)
-                if !hide {
-                    view.transform = .init(translationX: 0, y: -view.bounds.height)
-                    UIView.animate(withDuration: 0.3) {
-                        view.transform = .identity
-                    }
-                }
+            .do(onNext: { [weak self] recording in
+                self?.toast(localizeStrings(recording ? "RecordingStartTips" : "RecordingEndTips"))
             })
-            .drive(recordingFlagView.rx.isHidden)
+            .drive(recordButton.rx.isSelected)
             .disposed(by: rx.disposeBag)
-
-        output.recordingDuration
-            .map { i -> String in
-                let min = Int(i) / 60
-                let sec = Int(i) % 60
-                return String(format: "%02d : %02d", min, sec)
-            }
-            .asDriver(onErrorJustReturn: "")
-            .drive(recordingFlagView.durationLabel.rx.text)
-            .disposed(by: rx.disposeBag)
-
-        viewModel.members
-            .distinctUntilChanged()
-            .filter { [weak self] _ in
-                return self?.viewModel.recordModel != nil
-            }
-            .flatMap { [unowned self] users in
-                self.viewModel.recordModel!.updateLayout(joinedUsers: users)
-            }
-            .subscribe()
+                
+        output
+            .loading
+            .asDriver(onErrorJustReturn: false)
+            .drive(recordButton.rx.isLoading)
             .disposed(by: rx.disposeBag)
     }
     
@@ -467,14 +444,6 @@ class ClassRoomViewController: UIViewController {
         fastboardViewController.didMove(toParent: self)
         rtcListViewController.didMove(toParent: self)
         setupToolbar()
-
-        // RecordView
-        recordingFlagView.isHidden = true
-        view.addSubview(recordingFlagView)
-        recordingFlagView.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(14)
-            make.top.equalTo(view.safeAreaLayoutGuide)
-        }
     }
     
     func setupToolbar() {
@@ -569,9 +538,10 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
     
-    lazy var moreButton: FastRoomPanelItemButton = {
+    lazy var recordButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
-        button.rawImage = UIImage(named: "classroom_more")!
+        button.rawImage = UIImage(named: "classroom_record")!
+        button.style = .selectableAppliance
         return button
     }()
 
@@ -652,15 +622,13 @@ class ClassRoomViewController: UIViewController {
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [chatButton, usersButton, inviteButton, cloudStorageButton, settingButton, moreButton])
+                                         views: [chatButton, usersButton, inviteButton, cloudStorageButton, settingButton, recordButton])
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
-            bar.forceUpdate(button: moreButton, visible: isOwner)
+            bar.forceUpdate(button: recordButton, visible: isOwner)
             return bar
         }
     }()
-
-    lazy var recordingFlagView = RecordingFlagView(frame: .zero)
     
     lazy var screenShareView: UIView = {
         let view = UIView()
