@@ -48,9 +48,6 @@ struct StartRecordRequest: FlatRequest, Encodable {
         let subscribeUidGroup: Int
         let streamMode: StreamMode
         let videoStreamType: StreamType
-        var privateParams: String = """
-{"correctEXTINF": true}
-"""
     }
     
     struct ClientRequest: Codable {
