@@ -46,10 +46,14 @@ class ReplayOverlay: NSObject {
     
     var isPause = true {
         didSet {
-            let img = UIImage(named: isPause ? "play" : "pause")!
-            playPauseButton.setImage(img, for: .normal)
+            updatePlayPauseButton(isPause: isPause)
         }
     }
+    func updatePlayPauseButton(isPause: Bool) {
+        let img = UIImage(named: isPause ? "play" : "pause")!
+        playPauseButton.setImage(img, for: .normal)
+    }
+    
     var duration: TimeInterval = 1
     
     weak var delegate: ReplayOverlayDelegate?
@@ -129,11 +133,12 @@ class ReplayOverlay: NSObject {
     }
     
     func updateIsBuffering(_ buffering: Bool) {
-        playPauseButton.imageView?.isHidden = buffering
         if buffering {
+            playPauseButton.setImage(nil, for: .normal)
             indicator.isHidden = false
             indicator.startAnimating()
         } else {
+            updatePlayPauseButton(isPause: isPause)
             indicator.isHidden = false
             indicator.stopAnimating()
         }
@@ -142,7 +147,7 @@ class ReplayOverlay: NSObject {
     func updateCurrentTime(_ time: TimeInterval) {
         currentTimeLabel.text = getFormattedString(time)
         let progress = time / duration
-        progressView.progress = Float(progress)
+        progressView.setProgress(Float(progress), animated: true)
     }
     
     func updateDuration(_ duration: TimeInterval) {

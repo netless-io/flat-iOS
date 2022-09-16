@@ -90,7 +90,7 @@ extension FlatCustomAlertSetable {
         }
     }
     
-    func setupCommonCustomAlert(_ actions: [Action]) {
+    func setupCommonCustomAlert(title: String? = nil, _ actions: [Action]) {
         guard let trait = UIApplication.shared.keyWindow?.traitCollection else { return }
         if trait.hasCompact {
             self.actions = actions
@@ -107,7 +107,7 @@ extension FlatCustomAlertSetable {
                     }
                     return realAction
                 }
-                menu = UIMenu.init(title: "",
+                menu = UIMenu.init(title: title ?? "",
                                    image: nil,
                                    identifier: nil,
                                    children: systemActions)

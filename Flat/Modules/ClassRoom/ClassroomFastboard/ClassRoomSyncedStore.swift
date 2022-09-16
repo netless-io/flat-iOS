@@ -58,10 +58,10 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
     fileprivate var waitingCallbacks: [SyncedStoreValuesCallback] = []
     weak var delegate: FlatSyncedStoreCommandDelegate?
     
-    func setup(with room: WhiteRoom) {
+    func setup(with displayer: WhiteDisplayer) {
         logger.info("setup room")
         isConnected = false
-        syncStore = room.obtainSyncedStore()
+        syncStore = displayer.obtainSyncedStore()
         syncStore.delegate = self
         let group = DispatchGroup()
         var error: Error?

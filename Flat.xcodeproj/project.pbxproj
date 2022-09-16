@@ -115,6 +115,7 @@
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
 		8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */; };
+		8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62D35828D445710046910B /* RecordSelectionListViewController.swift */; };
 		8A6E89E12807B48D00908771 /* FlatGeneralCrossButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E89E02807B48D00908771 /* FlatGeneralCrossButton.swift */; };
 		8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */; };
 		8A716F3627B9FFF800DB408F /* LoginViewController+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */; };
@@ -263,6 +264,8 @@
 		8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */; };
 		8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */; };
 		8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */; };
+		8AE59C7A28D1E21C00BAC8FC /* AdvanceReplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7928D1E21C00BAC8FC /* AdvanceReplayViewModel.swift */; };
+		8AE59C7C28D302D500BAC8FC /* VideoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */; };
 		8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* RtmCommandType.swift */; };
 		8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */; };
 		8AED087928113840001DEFDC /* AccountCancelationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED087728113741001DEFDC /* AccountCancelationRequest.swift */; };
@@ -414,6 +417,7 @@
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
 		8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcPreviewViewController.swift; sourceTree = "<group>"; };
+		8A62D35828D445710046910B /* RecordSelectionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSelectionListViewController.swift; sourceTree = "<group>"; };
 		8A6E89E02807B48D00908771 /* FlatGeneralCrossButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralCrossButton.swift; sourceTree = "<group>"; };
 		8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverPresentationStyleAdaptor.swift; sourceTree = "<group>"; };
 		8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Debug.swift"; sourceTree = "<group>"; };
@@ -569,6 +573,8 @@
 		8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Level.swift"; sourceTree = "<group>"; };
 		8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordQueryRequest.swift; sourceTree = "<group>"; };
 		8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+loading.swift"; sourceTree = "<group>"; };
+		8AE59C7928D1E21C00BAC8FC /* AdvanceReplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceReplayViewModel.swift; sourceTree = "<group>"; };
+		8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreviewView.swift; sourceTree = "<group>"; };
 		8AE892FA2727E99D009C71DA /* RtmCommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmCommandType.swift; sourceTree = "<group>"; };
 		8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationValidateRequest.swift; sourceTree = "<group>"; };
 		8AED087728113741001DEFDC /* AccountCancelationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationRequest.swift; sourceTree = "<group>"; };
@@ -850,6 +856,7 @@
 				8A7741B8273287C2009FAADA /* RtcCellPopMenuView.swift */,
 				8A7741BA27328AEA009FAADA /* PopMenuView.swift */,
 				8A80208C275473D900F5691C /* RtcVideoItemView.swift */,
+				8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */,
 			);
 			path = Rtc;
 			sourceTree = "<group>";
@@ -896,9 +903,10 @@
 		8A21DAAA279E58E70060E25D /* Replay */ = {
 			isa = PBXGroup;
 			children = (
+				8AE59C7D28D30F0F00BAC8FC /* AdvanceReplay */,
 				8A21DAAB279E58F80060E25D /* ReplayViewController.swift */,
-				8A5B91FB28D06C120032C4C6 /* AdvanceReplayViewController.swift */,
 				8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */,
+				8A62D35828D445710046910B /* RecordSelectionListViewController.swift */,
 			);
 			path = Replay;
 			sourceTree = "<group>";
@@ -1483,6 +1491,15 @@
 			path = UITraitCollection;
 			sourceTree = "<group>";
 		};
+		8AE59C7D28D30F0F00BAC8FC /* AdvanceReplay */ = {
+			isa = PBXGroup;
+			children = (
+				8AE59C7928D1E21C00BAC8FC /* AdvanceReplayViewModel.swift */,
+				8A5B91FB28D06C120032C4C6 /* AdvanceReplayViewController.swift */,
+			);
+			path = AdvanceReplay;
+			sourceTree = "<group>";
+		};
 		8AE892F92727E98B009C71DA /* Command */ = {
 			isa = PBXGroup;
 			children = (
@@ -1700,6 +1717,7 @@
 				8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */,
 				8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */,
 				8A80208B2754699300F5691C /* Rtc.swift in Sources */,
+				8AE59C7C28D302D500BAC8FC /* VideoPreviewView.swift in Sources */,
 				8A21DABE279FAAC20060E25D /* StopRecordRequest.swift in Sources */,
 				8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */,
 				8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */,
@@ -1765,6 +1783,7 @@
 				8A7741DC2738BB06009FAADA /* ClassroomFactory.swift in Sources */,
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
+				8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */,
 				8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
@@ -1903,6 +1922,7 @@
 				8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */,
 				8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
+				8AE59C7A28D1E21C00BAC8FC /* AdvanceReplayViewModel.swift in Sources */,
 				8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */,
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
 				8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */,

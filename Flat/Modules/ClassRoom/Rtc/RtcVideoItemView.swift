@@ -20,12 +20,6 @@ class RtcVideoItemView: UIView {
     
     var tapHandler: ((RtcVideoItemView)->Void)?
     
-    let uid: UInt
-
-    @objc func onTap() {
-        tapHandler?(self)
-    }
-    
     func showAvatar(_ show: Bool) {
         largeAvatarImageView.isHidden = !show
         effectView.isHidden = !show
@@ -47,7 +41,14 @@ class RtcVideoItemView: UIView {
         }
     }
     
-    /// From 0-1
+    // MARK: - Action
+    @objc func onTap() {
+        tapHandler?(self)
+    }
+    
+    // MARK: - Private
+    
+    // From 0-1
     fileprivate func updateStrenth(_ newStrenth: CGFloat, oldStrenth: CGFloat) {
         func pathFor(strens s: CGFloat) -> CGPath {
             let s = min(1, max(0, s))
@@ -71,6 +72,7 @@ class RtcVideoItemView: UIView {
         micStrenthMaskLayer.add(animation, forKey: strengthAnimationKey)
     }
     
+    let uid: UInt
     init(uid: UInt) {
         self.uid = uid
         super.init(frame: .zero)
@@ -121,7 +123,7 @@ class RtcVideoItemView: UIView {
     }
     
     // MARK: - Lazy
-    lazy var videoContainerView = UIView()
+    lazy var videoContainerView = VideoPreviewView()
     
     lazy var largeAvatarImageView: UIImageView  = {
         let view = UIImageView(frame: .zero)
