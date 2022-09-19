@@ -110,6 +110,7 @@
 		8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */; };
 		8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55F1B1273A710000D4DA0F /* AnyRequest.swift */; };
 		8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */; };
+		8A59FF8628D8410C00318407 /* JoinRoomInputAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */; };
 		8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */; };
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
@@ -403,6 +404,7 @@
 		8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextfield+Rx.swift"; sourceTree = "<group>"; };
 		8A55F1B1273A710000D4DA0F /* AnyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequest.swift; sourceTree = "<group>"; };
 		8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageCreateDirectoryRequest.swift; sourceTree = "<group>"; };
+		8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInputAccessView.swift; sourceTree = "<group>"; };
 		8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevicePreferredStatusStore.swift; sourceTree = "<group>"; };
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
@@ -917,6 +919,7 @@
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
 				8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */,
 				8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */,
+				8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */,
 				8AFB942D28B7550100B8795D /* CameraMicToggleView.swift */,
 				8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */,
 				8ACE3A26272FF77100BC37F7 /* RoomDetailViewController.xib */,
@@ -1682,6 +1685,7 @@
 				8ABD71E427683DB5004FDC36 /* ClassRoomLayout.swift in Sources */,
 				8A05C33C2760411D009BCA79 /* MultipartFormData.swift in Sources */,
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
+				8A59FF8628D8410C00318407 /* JoinRoomInputAccessView.swift in Sources */,
 				8AF244DE287C2AFD00E6B2AF /* WechatBindingRequest.swift in Sources */,
 				8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */,
 				8AFB942C28B74EBA00B8795D /* UIViewController+Present.swift in Sources */,

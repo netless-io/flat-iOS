@@ -41,6 +41,8 @@ class CreateClassRoomViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         updateSelected()
+        setupJoinRoomInputAccessView()
+        simulatorUserDeviceStateSelect()
     }
     
     // MARK: - Private
@@ -250,6 +252,51 @@ class CreateClassRoomViewController: UIViewController {
         }
     }
     
+    @objc func handle(keyboardShowNotification notification: Notification) {
+        guard let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        guard let window = view.window else { return }
+        let deviceEnd = deviceView.convert(CGPoint(x: 0, y: deviceView.bounds.height), to: window).y
+        let isOverDeviceView = keyboardRect.origin.y > deviceEnd
+        if isOverDeviceView, subjectTextField.inputAccessoryView == roomInputAccessView {
+            subjectTextField.inputAccessoryView = nil
+            UIView.performWithoutAnimation {
+                self.subjectTextField.reloadInputViews()
+            }
+        } else if !isOverDeviceView, subjectTextField.inputAccessoryView == nil {
+            subjectTextField.inputAccessoryView = roomInputAccessView
+            UIView.performWithoutAnimation {
+                self.subjectTextField.reloadInputViews()
+            }
+        }
+    }
+    
+    func setupJoinRoomInputAccessView() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handle(keyboardShowNotification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        
+        subjectTextField.inputAccessoryView = roomInputAccessView
+        roomInputAccessView.deviceStateView.delegate = deviceAutorizationHelper
+        roomInputAccessView.deviceStateView.cameraOnUpdate = { [weak self] camera in
+            self?.deviceView.set(cameraOn: camera)
+            self?.previewView.turnCamera(on: camera)
+        }
+        roomInputAccessView.deviceStateView.micOnUpdate = { [weak self] micOn in
+            self?.deviceView.set(micOn: micOn)
+        }
+        roomInputAccessView.joinButton.isHidden = true
+    }
+    
+    func simulatorUserDeviceStateSelect() {
+        // Simulator click to fire permission alert
+        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
+        if cameraOn {
+            deviceView.onButtonClick(deviceView.cameraButton)
+        }
+        if micOn {
+            deviceView.onButtonClick(deviceView.microphoneButton)
+        }
+    }
+    
     // MARK: - Lazy
     lazy var subjectTextField: BottomLineTextfield = {
         let tf = BottomLineTextfield()
@@ -263,6 +310,10 @@ class CreateClassRoomViewController: UIViewController {
         tf.delegate = self
         return tf
     }()
+    
+    lazy var roomInputAccessView = JoinRoomInputAccessView(cameraOn: deviceView.cameraOn,
+                                                               micOn: deviceView.micOn,
+                                                               enterTitle: "")
     
     lazy var createButton: FlatGeneralCrossButton = {
         let btn = FlatGeneralCrossButton(type: .custom)
@@ -290,16 +341,11 @@ class CreateClassRoomViewController: UIViewController {
         let view = CameraMicToggleView(cameraOn: false, micOn: false)
         view.delegate = deviceAutorizationHelper
         view.cameraOnUpdate = { [weak self] camera in
+            self?.roomInputAccessView.cameraOn = camera
             self?.previewView.turnCamera(on: camera)
         }
-        
-        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
-        if cameraOn {
-            view.onButtonClick(view.cameraButton)
-        }
-        if micOn {
-            view.onButtonClick(view.microphoneButton)
+        view.micOnUpdate = { [weak self] mic in
+            self?.roomInputAccessView.micOn = mic
         }
         return view
     }()

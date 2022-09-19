@@ -20,29 +20,44 @@ class CameraMicToggleView: UIView {
     var cameraOnUpdate: ((Bool)->Void)?
     var micOnUpdate: ((Bool)->Void)?
     
-    var cameraOn: Bool {
-        didSet {
+    func set(cameraOn: Bool) {
+        set(cameraOn: cameraOn, fireCallback: false, fireImpact: false)
+    }
+    func set(micOn: Bool) {
+        set(micOn: micOn, fireCallback: false, fireImpact: false)
+    }
+    
+    fileprivate func set(cameraOn: Bool, fireCallback: Bool, fireImpact: Bool) {
+        self.cameraOn = cameraOn
+        cameraButton.isSelected = cameraOn
+        if fireCallback {
+            cameraOnUpdate?(cameraOn)
+        }
+        if fireImpact {
             if #available(iOS 13.0, *) {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
             } else {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             }
-            cameraButton.isSelected = cameraOn
-            cameraOnUpdate?(cameraOn)
         }
     }
     
-    var micOn: Bool {
-        didSet {
+    fileprivate func set(micOn: Bool, fireCallback: Bool, fireImpact: Bool) {
+        self.micOn = micOn
+        microphoneButton.isSelected = micOn
+        if fireCallback {
+            micOnUpdate?(micOn)
+        }
+        if fireImpact {
             if #available(iOS 13.0, *) {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
             } else {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             }
-            microphoneButton.isSelected = micOn
-            micOnUpdate?(micOn)
         }
     }
+    internal fileprivate(set) var cameraOn: Bool
+    internal fileprivate(set) var micOn: Bool
 
     init(cameraOn: Bool, micOn: Bool) {
         self.cameraOn = cameraOn
@@ -91,21 +106,29 @@ class CameraMicToggleView: UIView {
     }
     
     @objc func onButtonClick(_ sender: UIButton) {
+        func toggleCamera() {
+            set(cameraOn: !cameraOn, fireCallback: true, fireImpact: true)
+        }
+        
+        func toggleMic() {
+            set(micOn: !micOn, fireCallback: true, fireImpact: true)
+        }
+        
         if sender === cameraButton {
             if let delegate = delegate, !cameraOn {
                 if delegate.cameraMicToggleViewCouldUpdate(self, cameraOn: !self.cameraOn) {
-                    self.cameraOn.toggle()
+                    toggleCamera()
                 }
             } else {
-                self.cameraOn.toggle()
+                toggleCamera()
             }
         } else {
             if let delegate = delegate, !micOn {
                 if delegate.cameraMicToggleViewCouldUpdate(self, micOn: !self.micOn) {
-                    self.micOn.toggle()
+                    toggleMic()
                 }
             } else {
-                self.micOn.toggle()
+                toggleMic()
             }
         }
     }

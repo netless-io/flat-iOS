@@ -9,6 +9,7 @@
 
 import UIKit
 import RxSwift
+import IQKeyboardManagerSwift
 
 class JoinRoomViewController: UIViewController {
     let deviceStatusStore: UserDevicePreferredStatusStore
@@ -28,8 +29,10 @@ class JoinRoomViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         bindJoinEnable()
+        setupJoinRoomInputAccessView()
+        simulatorUserDeviceStateSelect()
         
-        subjectTextField.keyboardDistanceFromTextField = 700
+        subjectTextField.becomeFirstResponder()
     }
     
     // MARK: - Action
@@ -87,8 +90,23 @@ class JoinRoomViewController: UIViewController {
     func bindJoinEnable() {
         subjectTextField.rx.text.orEmpty.asDriver()
             .map { $0.isNotEmptyOrAllSpacing }
-            .drive(joinButton.rx.isEnabled)
+            .drive(with: self, onNext: { weakSelf, joinEnable in
+                weakSelf.joinButton.isEnabled = joinEnable
+                weakSelf.roomInputAccessView.enterEnable = joinEnable
+            })
             .disposed(by: rx.disposeBag)
+    }
+    
+    func simulatorUserDeviceStateSelect() {
+        // Simulator click to fire permission alert
+        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
+        if cameraOn {
+            deviceView.onButtonClick(deviceView.cameraButton)
+        }
+        if micOn {
+            deviceView.onButtonClick(deviceView.microphoneButton)
+        }
     }
     
     func setupViews() {
@@ -180,10 +198,49 @@ class JoinRoomViewController: UIViewController {
         tf.delegate = self
         return tf
     }()
+
+    @objc func handle(keyboardShowNotification notification: Notification) {
+        guard let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        guard let window = view.window else { return }
+        let deviceEnd = deviceView.convert(CGPoint(x: 0, y: deviceView.bounds.height), to: window).y
+        let isOverDeviceView = keyboardRect.origin.y > deviceEnd
+        if isOverDeviceView, subjectTextField.inputAccessoryView == roomInputAccessView {
+            subjectTextField.inputAccessoryView = nil
+            UIView.performWithoutAnimation {
+                self.subjectTextField.reloadInputViews()
+            }
+        } else if !isOverDeviceView, subjectTextField.inputAccessoryView == nil {
+            subjectTextField.inputAccessoryView = roomInputAccessView
+            UIView.performWithoutAnimation {
+                self.subjectTextField.reloadInputViews()
+            }
+        }
+    }
+    
+    func setupJoinRoomInputAccessView() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handle(keyboardShowNotification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        
+        subjectTextField.inputAccessoryView = roomInputAccessView
+        roomInputAccessView.deviceStateView.delegate = deviceAutorizationHelper
+        roomInputAccessView.deviceStateView.cameraOnUpdate = { [weak self] camera in
+            self?.deviceView.set(cameraOn: camera)
+            self?.previewView.turnCamera(on: camera)
+        }
+        roomInputAccessView.deviceStateView.micOnUpdate = { [weak self] micOn in
+            self?.deviceView.set(micOn: micOn)
+        }
+        // Hide join for iPad, because of the keyboard return type
+        roomInputAccessView.joinButton.isHidden = !isCompact()
+        roomInputAccessView.enterHandler = onClickJoin(_:)
+    }
+    
+    lazy var roomInputAccessView = JoinRoomInputAccessView(cameraOn: deviceView.cameraOn,
+                                                               micOn: deviceView.micOn,
+                                                               enterTitle: localizeStrings("Join"))
     
     lazy var joinButton: UIButton = {
         let btn = FlatGeneralCrossButton(type: .custom)
-        btn.setTitle(NSLocalizedString("Join", comment: ""), for: .normal)
+        btn.setTitle(localizeStrings("Join"), for: .normal)
         btn.addTarget(self, action: #selector(onClickJoin(_:)), for: .touchUpInside)
         return btn
     }()
@@ -194,16 +251,11 @@ class JoinRoomViewController: UIViewController {
         let view = CameraMicToggleView(cameraOn: false, micOn: false)
         view.delegate = deviceAutorizationHelper
         view.cameraOnUpdate = { [weak self] camera in
+            self?.roomInputAccessView.cameraOn = camera
             self?.previewView.turnCamera(on: camera)
         }
-        
-        let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-        let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
-        if cameraOn {
-            view.onButtonClick(view.cameraButton)
-        }
-        if micOn {
-            view.onButtonClick(view.microphoneButton)
+        view.micOnUpdate = { [weak self] mic in
+            self?.roomInputAccessView.micOn = mic
         }
         return view
     }()
