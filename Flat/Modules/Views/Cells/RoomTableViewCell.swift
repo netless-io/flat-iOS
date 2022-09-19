@@ -8,6 +8,7 @@
 
 
 import UIKit
+import Kingfisher
 
 class RoomTableViewCell: UITableViewCell {
     @IBOutlet weak var calendarIcon: UIImageView!
@@ -77,7 +78,11 @@ class RoomTableViewCell: UITableViewCell {
         }
         
         calendarIcon.isHidden = (room.periodicUUID ?? "").isEmpty
-        ownerAvatarView.kf.setImage(with: URL(string: room.ownerAvatarURL))
+        
+        let scale = UIScreen.main.scale
+        let avatarWidth: CGFloat = max(scale * 32, ownerAvatarView.bounds.width * scale)
+        let avatarProcessor = ResizingImageProcessor(referenceSize: .init(width: avatarWidth, height: avatarWidth))
+        ownerAvatarView.kf.setImage(with: URL(string: room.ownerAvatarURL), options: [.processor(avatarProcessor)])
         
         recordIconView.isHidden = !room.hasRecord
     }
