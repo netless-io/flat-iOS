@@ -237,7 +237,19 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     }
     
     func actions(for item: StorageFileModel) -> [Action] {
-        [
+        if item.resourceType == .directory {
+            return [
+                .init(title: localizeStrings("Rename"), style: .default, handler: { _ in
+                    self.rename(item)
+                }),
+                .init(title: localizeStrings("Delete"), style: .destructive, handler: { _ in
+                    self.deleteItems([item])
+                }),
+                .cancel
+            ]
+        }
+        
+        return [
             .init(title: localizeStrings("Preview"), style: .default, handler: { _ in
                 self.preview(item)
             }),
