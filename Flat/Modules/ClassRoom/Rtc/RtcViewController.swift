@@ -81,6 +81,7 @@ class RtcViewController: UIViewController {
                 weakSelf.localCameraOn = user.status.isSpeak && user.status.camera
                 weakSelf.localUserMicVolumeBag = .init()
                 weakSelf.update(itemView: weakSelf.localVideoItemView, user: user, volumeBag: weakSelf.localUserMicVolumeBag)
+                weakSelf.cellMenuView.update(cameraOn: weakSelf.localCameraOn, micOn: weakSelf.localMicOn)
             })
             .disposed(by: rx.disposeBag)
 
@@ -395,7 +396,6 @@ class RtcViewController: UIViewController {
         
         if isLocal {
             cellMenuView.show(fromSource: view, direction: .bottom, inset: .init(top: -10, left: -10, bottom: -10, right: -10))
-            cellMenuView.update(cameraOn: localCameraOn, micOn: localMicOn)
             cellMenuView.dismissHandle = { [weak view] in
                 view?.nameLabel.isHidden = true
             }
