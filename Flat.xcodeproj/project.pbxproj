@@ -111,6 +111,7 @@
 		8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55F1B1273A710000D4DA0F /* AnyRequest.swift */; };
 		8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */; };
 		8A59FF8628D8410C00318407 /* JoinRoomInputAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */; };
+		8A59FF8828D96D3600318407 /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8728D96D3600318407 /* WKWebViewController.swift */; };
 		8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */; };
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
@@ -405,6 +406,7 @@
 		8A55F1B1273A710000D4DA0F /* AnyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequest.swift; sourceTree = "<group>"; };
 		8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageCreateDirectoryRequest.swift; sourceTree = "<group>"; };
 		8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInputAccessView.swift; sourceTree = "<group>"; };
+		8A59FF8728D96D3600318407 /* WKWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevicePreferredStatusStore.swift; sourceTree = "<group>"; };
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
@@ -936,6 +938,7 @@
 				8A8507EC27E178790072AF49 /* CloudStorageDisplayViewController.swift */,
 				8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */,
 				8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */,
+				8A59FF8728D96D3600318407 /* WKWebViewController.swift */,
 				8AD2EF6E277451BA00087280 /* CustomPreviewViewController.swift */,
 				8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */,
 				8A80209927570A4A00F5691C /* CloudStorageTableViewCell.swift */,
@@ -1843,6 +1846,7 @@
 				8A270BA4271972F100450DC6 /* ContactUsViewController.swift in Sources */,
 				8AF244D8287C17D900E6B2AF /* BindListRequest.swift in Sources */,
 				8A99EC4028B5BA3C0066CFF3 /* BottomLineTextfield.swift in Sources */,
+				8A59FF8828D96D3600318407 /* WKWebViewController.swift in Sources */,
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
 				8A05C34D2760AB26009BCA79 /* UploadTasksViewController.swift in Sources */,

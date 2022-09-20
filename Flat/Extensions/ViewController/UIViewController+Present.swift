@@ -28,7 +28,7 @@ extension UIViewController {
         closeButton.tintColor = .color(type: .text)
         view.addSubview(closeButton)
         closeButton.snp.makeConstraints { make in
-            make.right.equalToSuperview()
+            make.right.equalTo(view.safeAreaLayoutGuide)
             make.centerY.equalTo(view.safeAreaLayoutGuide.snp.top).offset(28)
             make.width.height.equalTo(44)
         }
@@ -49,11 +49,12 @@ extension UIViewController {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         titleLabel.textColor = .color(type: .text, .strong)
+        titleLabel.textAlignment = .center
         titleLabel.text = title
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
             make.centerY.equalTo(view.safeAreaLayoutGuide.snp.top).offset(28)
+            make.right.left.equalTo(view.safeAreaLayoutGuide).inset(44)
         }
         
         if !isCompact() {

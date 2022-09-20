@@ -9,11 +9,17 @@
 import UIKit
 import QuickLook
 import AVKit
-import SafariServices
 import Kingfisher
 
 class CloudStorageViewController: CloudStorageDisplayViewController {
-    var previewingUUID: String?
+    var previewingUUID: String? {
+        didSet {
+            guard previewingUUID != oldValue else { return }
+            if previewingUUID == nil {
+                tableView.reloadData()
+            }
+        }
+    }
     
     weak var previewingController: CustomPreviewViewController?
     var currentPreview: AnyPreview?
@@ -23,10 +29,6 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         // Reload selected
         tableView.reloadData()
-    }
-    
-    deinit {
-        cleanPreviewResource()
     }
     
     override func viewDidLoad() {
@@ -308,7 +310,6 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         if let _ = previewingController {
             mainContainer?.removeTop()
         }
-        cleanPreviewResource()
         previewingUUID = item.fileUUID
         let fileExtension = String(item.fileName.split(separator: ".").last ?? "")
         switch item.fileType {
@@ -316,146 +317,51 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             let vc = CustomAVPlayerViewController()
             let player = AVPlayer(url: item.urlOrEmpty)
             vc.dismissHandler = { [weak self] in
-                self?.cleanPreviewResource()
+                self?.previewingUUID = nil
             }
             vc.player = player
             player.play()
             mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
         case .img:
-            showActivityIndicator()
-            KingfisherManager.shared.retrieveImageDiskCachePath(fromURL: item.urlOrEmpty) { [weak self] result in
-                DispatchQueue.main.async {
-                    self?.stopActivityIndicator()
-                    switch result {
-                    case .success(let path):
-                        self?.previewLocalFileUrlPath(path,
-                                                      fileExtension: fileExtension,
-                                                      fileName: item.fileName)
-                    case .failure(let error):
-                        self?.toast(error.localizedDescription)
-                    }
-                }
-            }
+            previewLocalFileUrlPath(source: .image(url: item.urlOrEmpty, fileExtension: fileExtension, fileName: item.fileName))
         default:
-            // Preview dynamic with web preview
-            if ConvertService.convertingTaskTypeFor(url: item.urlOrEmpty) == .dynamic {
-                do {
-                    let jsonData = try JSONEncoder().encode(item)
-                    let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
-                    let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
-                    if let url = URL(string: link) {
-                        let config = SFSafariViewController.Configuration()
-                        config.barCollapsingEnabled = true
-                        config.entersReaderIfAvailable = false
-                        let vc = SFSafariViewController(url: url, configuration: config)
-                        vc.delegate = self
-                        vc.dismissButtonStyle = .close
-                        vc.title = item.fileName
-                        mainContainer?.pushOnSplitPresentOnCompact(vc)
-                        return
-                    }
-                }
-                catch {
-                    toast("encode storage item fail, \(error)")
-                }
-            }
-            
-            showActivityIndicator()
-            let request = URLRequest(url: item.urlOrEmpty,
-                                     cachePolicy: .returnCacheDataElseLoad,
-                                     timeoutInterval: 60)
-            let task = URLSession.shared.downloadTask(with: request) { [weak self] targetUrl, response, error in
-                DispatchQueue.main.async {
-                    self?.stopActivityIndicator()
-                }
-                guard error == nil else {
-                    self?.toast(error!.localizedDescription)
-                    return
-                }
-                guard let url = targetUrl else {
-                    self?.toast("download fail")
-                    return
-                }
-                var tempURL = FileManager.default.temporaryDirectory
-                tempURL.appendPathComponent(UUID().uuidString)
-                do {
-                    try FileManager.default.copyItem(at: url, to: tempURL)
-                }
-                catch {
-                    DispatchQueue.main.async {
-                        self?.toast(error.localizedDescription)
-                    }
-                }
-                DispatchQueue.main.async {
-                    self?.previewLocalFileUrlPath(tempURL.path,
-                                                  fileExtension: fileExtension,
-                                                  fileName: item.fileName)
-                    try? FileManager.default.removeItem(at: tempURL)
-                }
-            }
-            task.resume()
-        }
-    }
-    
-    func previewLocalFileUrlPath(_ path: String,
-                                 fileExtension: String,
-                                 fileName: String) {
-        var tempURL = FileManager.default.temporaryDirectory
-        tempURL.appendPathComponent(UUID().uuidString + ".\(fileExtension)")
-        do {
-            try FileManager.default.copyItem(atPath: path, toPath: tempURL.path)
-            let previewItem = AnyPreview(previewItemURL: URL(fileURLWithPath: tempURL.path), title: fileName)
-            currentPreview = previewItem
-            let vc = CustomPreviewViewController()
-            self.previewingController = vc
-            vc.dataSource = self
-            vc.delegate = self
-            vc.clickBackHandler = { [weak self] in
-                self?.cleanPreviewResource()
-            }
-            mainContainer?.pushOnSplitPresentOnCompact(vc)
-        }
-        catch {
-            logger.error("previewLocalFileUrlPath, \(error)")
-            toast(error.localizedDescription)
-        }
-    }
-    
-    func cleanPreviewResource() {
-        previewingUUID = nil
-        if let url = currentPreview?.previewItemURL {
+            // Preview with web link
             do {
-                try FileManager.default.removeItem(at: url)
+                let jsonData = try JSONEncoder().encode(item)
+                let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
+                let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
+                if let url = URL(string: link) {
+                    let vc = WKWebViewController(url: url)
+                    vc.modalPresentationStyle = .fullScreen
+                    vc.title = item.fileName
+                    vc.dismissHandler = { [weak self] in
+                        guard let self = self else { return }
+                        self.mainContainer?.removeTop()
+                        self.previewingUUID = nil
+                    }
+                    mainContainer?.pushOnSplitPresentOnCompact(vc)
+                    return
+                }
             }
             catch {
-                logger.error("remove preview item fail")
+                toast("encode storage item fail, \(error)")
             }
         }
-        currentPreview = nil
-    }
-}
-
-extension CloudStorageViewController: QLPreviewControllerDelegate {
-    func previewControllerDidDismiss(_ controller: QLPreviewController) {
-        cleanPreviewResource()
-    }
-}
-
-extension CloudStorageViewController: QLPreviewControllerDataSource {
-    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        currentPreview == nil ? 0 : 1
     }
     
-    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        currentPreview!
+    func previewLocalFileUrlPath(source: CustomPreviewViewController.Source) {
+        systemPreviewController.update(source: source)
+        mainContainer?.pushOnSplitPresentOnCompact(systemPreviewController)
     }
-}
-
-extension CloudStorageViewController: SFSafariViewControllerDelegate {
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        mainContainer?.removeTop()
-        previewingUUID = nil
-    }
+    
+    // MARK: - Lazy
+    lazy var systemPreviewController: CustomPreviewViewController = {
+        let vc = CustomPreviewViewController()
+        vc.clickBackHandler = { [weak self] in
+            self?.previewingUUID = nil
+        }
+        return vc
+    }()
 }
 
 // MARK: - UploadUtilityDelegate
