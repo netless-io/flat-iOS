@@ -32,6 +32,7 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
     func setEnable(_ enable: Bool) {
         `switch`.isEnabled = enable
         label.textColor = enable ? .color(type: .text) : UIColor.color(type: .text).withAlphaComponent(0.5)
+        iconView.alpha = enable ? 1 : 0.5
     }
     
     @IBOutlet weak var iconView: UIImageView!

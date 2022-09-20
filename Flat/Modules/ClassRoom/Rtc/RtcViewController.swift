@@ -442,7 +442,7 @@ class RtcViewController: UIViewController {
     
     lazy var line: UIView = {
         let view = UIView()
-        view.backgroundColor = .color(type: .background, .strong)
+        view.backgroundColor = .borderColor
         return view
     }()
 }

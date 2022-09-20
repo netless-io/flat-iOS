@@ -1,18 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "userGroup@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "userGroup@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "userGroup.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
