@@ -9,7 +9,6 @@
 
 import UIKit
 import RxSwift
-import IQKeyboardManagerSwift
 
 class JoinRoomViewController: UIViewController {
     let deviceStatusStore: UserDevicePreferredStatusStore
@@ -25,14 +24,16 @@ class JoinRoomViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillLayoutSubviews() {
+        subjectTextField.becomeFirstResponder()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         bindJoinEnable()
         setupJoinRoomInputAccessView()
         simulatorUserDeviceStateSelect()
-        
-        subjectTextField.becomeFirstResponder()
     }
     
     // MARK: - Action
@@ -196,6 +197,7 @@ class JoinRoomViewController: UIViewController {
         tf.returnKeyType = .join
         tf.clearButtonMode = .whileEditing
         tf.delegate = self
+        tf.keyboardDistanceFromTextField = 188
         return tf
     }()
 
