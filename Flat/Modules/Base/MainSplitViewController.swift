@@ -94,6 +94,7 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     func cleanSecondary() {
         if canShowDetail {
             if #available(iOS 14.0, *) {
+                detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(emptyDetailController, sender: nil)
                 setViewController(emptyDetailController, for: .secondary)
             } else {
                 show(emptyDetailController, hidePrimary: false)
