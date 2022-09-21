@@ -51,7 +51,7 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.edges.equalToSuperview().inset(12)
         }
         iconImage.snp.makeConstraints { $0.width.equalTo(20) }
-        rightArrowImageView.snp.makeConstraints { $0.width.equalTo(16) }
+        rightArrowImageView.snp.makeConstraints { $0.width.equalTo(24) }
         moreActionButton.snp.makeConstraints { $0.width.equalTo(44) }
         
         contentView.addSubview(convertingActivityView)
@@ -62,15 +62,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         }
         convertingActivityView.transform = .init(scaleX: 0.5, y: 0.5)
         
-        let line = UIView(frame: .zero)
-        line.backgroundColor = .borderColor
-        contentView.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.right.equalTo(stackView)
-            make.left.equalTo(textStack)
-            make.height.equalTo(1)
-            make.bottom.equalToSuperview()
-        }
+        contentView.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 52, bottom: 0, right: 16))
         
         moreActionButton.isHidden = true
         rightArrowImageView.isHidden = true

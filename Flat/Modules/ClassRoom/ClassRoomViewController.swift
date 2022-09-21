@@ -254,7 +254,9 @@ class ClassRoomViewController: UIViewController {
     func bindInvite() {
         inviteButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
-                weakSelf.popoverViewController(viewController: weakSelf.inviteViewController, fromSource: weakSelf.inviteButton)
+                weakSelf.popoverViewController(viewController: weakSelf.inviteViewController,
+                                               fromSource: weakSelf.inviteButton,
+                                               permittedArrowDirections: .none)
             })
             .disposed(by: rx.disposeBag)
     }
@@ -276,6 +278,9 @@ class ClassRoomViewController: UIViewController {
                                                   isOwner: weakSelf.isOwner,
                                                   banMessagePublisher: r.banMessagePublisher)
                 let vc = ChatViewController(viewModel: chatViewModel, userRtmId: weakSelf.viewModel.userUUID, ownerRtmId: weakSelf.ownerUUID)
+                vc.popOverDismissHandler = { [weak self] in
+                    self?.chatButton.isSelected = false
+                }
                 weakSelf.chatVC = vc
                 weakSelf.rightToolBar.forceUpdate(button: weakSelf.chatButton, visible: true)
                 
@@ -294,15 +299,25 @@ class ClassRoomViewController: UIViewController {
         chatButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
                 guard let vc = weakSelf.chatVC else { return }
-                weakSelf.popoverViewController(viewController: vc, fromSource: weakSelf.chatButton)
+                weakSelf.chatButton.isSelected = true
+                weakSelf.popoverViewController(viewController: vc,
+                                               fromSource: weakSelf.chatButton,
+                                               permittedArrowDirections: .none)
             })
             .disposed(by: rx.disposeBag)
     }
     
     func bindUsersList() {
+        userListViewController.popOverDismissHandler = { [weak self] in
+            self?.usersButton.isSelected = false
+        }
+        
         usersButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, source in
-                weakSelf.popoverViewController(viewController: weakSelf.userListViewController, fromSource: weakSelf.usersButton)
+                weakSelf.usersButton.isSelected = true
+                weakSelf.popoverViewController(viewController: weakSelf.userListViewController,
+                                               fromSource: weakSelf.usersButton,
+                                               permittedArrowDirections: .none)
             })
             .disposed(by: rx.disposeBag)
         
@@ -366,15 +381,22 @@ class ClassRoomViewController: UIViewController {
             let vc = WhiteboardAppsViewController()
             vc.clickSource = button
             vc.room = room
-            self.popoverViewController(viewController: vc, fromSource: button)
+            self.popoverViewController(viewController: vc,
+                                       fromSource: button,
+                                       permittedArrowDirections: .none)
         }
     }
     
     func bindSetting() {
+        settingVC.popOverDismissHandler = { [weak self] in
+            self?.settingButton.isSelected = false
+        }
         settingButton.rx.controlEvent(.touchUpInside)
             .subscribe(with: self, onNext: { weakSelf, _ in
+                weakSelf.settingButton.isSelected = true
                 weakSelf.popoverViewController(viewController: weakSelf.settingVC,
-                                               fromSource: weakSelf.settingButton)
+                                               fromSource: weakSelf.settingButton,
+                                               permittedArrowDirections: .none)
             })
             .disposed(by: rx.disposeBag)
         
@@ -573,7 +595,13 @@ class ClassRoomViewController: UIViewController {
     }()
 
     @objc func onClickStorage(_ sender: UIButton) {
-        popoverViewController(viewController: cloudStorageNavigationController, fromSource: sender)
+        cloudStorageNavigationController.popOverDismissHandler = { [weak self] in
+            self?.cloudStorageButton.isSelected = false
+        }
+        cloudStorageButton.isSelected = true
+        popoverViewController(viewController: cloudStorageNavigationController,
+                              fromSource: sender,
+                              permittedArrowDirections: .none)
     }
     
     lazy var cloudStorageNavigationController = BaseNavigationViewController(rootViewController: cloudStorageListViewController)

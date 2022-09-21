@@ -24,22 +24,30 @@ extension UIView {
         switch direction {
         case .top:
             line.snp.makeConstraints { make in
-                make.left.top.right.equalToSuperview().inset(inset)
+                make.left.equalTo(self.safeAreaLayoutGuide).inset(inset.left)
+                make.right.equalTo(self.safeAreaLayoutGuide).inset(inset.right)
+                make.top.equalTo(self.safeAreaLayoutGuide).inset(inset.top)
                 make.height.equalTo(width)
             }
         case .bottom:
             line.snp.makeConstraints { make in
-                make.left.bottom.right.equalToSuperview().inset(inset)
+                make.left.equalTo(self.safeAreaLayoutGuide).inset(inset.left)
+                make.right.equalTo(self.safeAreaLayoutGuide).inset(inset.right)
+                make.bottom.equalTo(self.safeAreaLayoutGuide).inset(inset.bottom)
                 make.height.equalTo(width)
             }
         case .left:
             line.snp.makeConstraints { make in
-                make.left.top.bottom.equalToSuperview().inset(inset)
+                make.left.equalTo(self.safeAreaLayoutGuide).inset(inset.left)
+                make.top.equalTo(self.safeAreaLayoutGuide).inset(inset.top)
+                make.bottom.equalTo(self.safeAreaLayoutGuide).inset(inset.bottom)
                 make.width.equalTo(width)
             }
         case .right:
             line.snp.makeConstraints { make in
-                make.right.top.bottom.equalToSuperview().inset(inset)
+                make.right.equalTo(self.safeAreaLayoutGuide).inset(inset.right)
+                make.top.equalTo(self.safeAreaLayoutGuide).inset(inset.top)
+                make.bottom.equalTo(self.safeAreaLayoutGuide).inset(inset.bottom)
                 make.width.equalTo(width)
             }
         }

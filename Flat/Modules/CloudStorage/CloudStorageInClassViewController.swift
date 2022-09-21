@@ -66,13 +66,13 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
             make.height.equalTo(40)
         }
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset((UIEdgeInsets(top: 34, left: 0, bottom: 0, right: 0)))
+            make.edges.equalToSuperview().inset((UIEdgeInsets(top: 40, left: 0, bottom: 0, right: 0)))
         }
         
         setupAddButton()
-        preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
     
+    // MARK: - Private
     func uploadActionFor(type: UploadType) {
         UploadUtility.shared.start(uploadType: type, fromViewController: self, delegate: self, presentStyle: .popOver(parent: self, source: self.addButton))
     }
@@ -249,11 +249,12 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         } else {
             let leftIcon = UIImageView(image: UIImage(named: "classroom_cloud"))
             leftIcon.tintColor = .color(type: .text, .strong)
-            leftIcon.contentMode = .center
+            leftIcon.contentMode = .scaleAspectFit
             view.addSubview(leftIcon)
             leftIcon.snp.makeConstraints { make in
-                make.left.top.bottom.equalToSuperview()
-                make.width.equalTo(40)
+                make.width.height.equalTo(24)
+                make.centerY.equalToSuperview()
+                make.left.equalToSuperview().inset(8)
             }
         }
         
@@ -269,13 +270,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(40)
         }
-        let line = UIView()
-        line.backgroundColor = .borderColor
-        view.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(1/UIScreen.main.scale)
-        }
+        view.addLine(direction: .bottom, color: .borderColor)
         view.addSubview(addFileStackView)
         addFileStackView.snp.makeConstraints { make in
             make.right.equalToSuperview()

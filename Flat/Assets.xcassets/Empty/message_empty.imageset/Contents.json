@@ -1,8 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename" : "Group 170 (1).pdf",
+      "idiom" : "universal"
     },
     {
       "appearances" : [
@@ -11,38 +11,8 @@
           "value" : "dark"
         }
       ],
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Group 170.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "content-empty-dark.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Group 170.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

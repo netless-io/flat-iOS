@@ -2,29 +2,34 @@ platform :ios, '12.0'
 target 'Flat' do
   use_frameworks!
   
-  pod 'AcknowList'
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'NSObject+Rx'
+  
+  pod 'AcknowList'
+  pod 'CropViewController'
+  pod 'Siren'
+  pod 'IQKeyboardManagerSwift'
+  pod 'Zip'
+  
+  pod 'AgoraRtm_iOS'
+  pod 'AgoraRtcEngine_iOS'
+  pod 'Fastboard', '2.0.0-alpha.1'
+  pod 'Fastboard/fpa'
+  pod 'Whiteboard'
+  
   pod 'MBProgressHUD', '~> 1.2.0'
   pod 'Kingfisher'
   pod 'Hero'
   pod 'SnapKit'
   pod 'DZNEmptyDataSet'
-  pod 'IQKeyboardManagerSwift'
-  pod 'AgoraRtm_iOS'
-  pod 'AgoraRtcEngine_iOS'
-  pod 'WechatOpenSDK'
-  pod 'Fastboard'
-  pod 'Fastboard/fpa'
-  pod 'Whiteboard'
-  pod 'Siren'
-  pod 'CropViewController'
+  
   pod 'Logging'
   pod 'SwiftyBeaver'
-  pod 'Zip'
   pod 'AliyunLogProducer/Core'
   pod 'AliyunLogProducer/Bricks'
+
+  pod 'WechatOpenSDK'
   pod 'FirebaseCrashlytics'
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   

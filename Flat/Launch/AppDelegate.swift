@@ -48,15 +48,18 @@ func configAppearance() {
         flatTheme = FastRoomDefaultTheme.defaultLightTheme
     }
     flatTheme.whiteboardAssets.whiteboardBackgroundColor = .color(type: .background)
+    
     flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
     flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
     flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8
-    flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .color(type: .primary, .weaker)
+    flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .color(type: .primary, .weak)
+    
     flatTheme.controlBarAssets.borderColor = .borderColor
     flatTheme.controlBarAssets.effectStyle = nil
     flatTheme.controlBarAssets.backgroundColor = .color(type: .background)
     
     FastRoomThemeManager.shared.apply(flatTheme)
+    
     FastRoomControlBar.appearance().commonRadius = isCompact() ? 8 : 4
     FastRoomControlBar.appearance().itemWidth = 48
     FastRoomControlBar.appearance().borderWidth = 1

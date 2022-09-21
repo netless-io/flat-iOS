@@ -52,6 +52,7 @@ class ClassRoomSettingViewController: UIViewController {
         self.deviceUpdateEnable = .init(value: deviceUpdateEnable)
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
+        preferredContentSize = .init(width: 320, height: 480)
     }
     
     required init?(coder: NSCoder) {
@@ -105,8 +106,6 @@ class ClassRoomSettingViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.height.equalTo(40)
         }
-        
-        preferredContentSize = .init(width: 320, height: 480)
     }
     
     func config(cell: ClassRoomSettingTableViewCell, type: SettingControlType) {
@@ -170,11 +169,12 @@ class ClassRoomSettingViewController: UIViewController {
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
             leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong))
         }
-        leftIcon.contentMode = .center
+        leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
         leftIcon.snp.makeConstraints { make in
-            make.left.top.bottom.equalToSuperview()
-            make.width.equalTo(40)
+            make.width.height.equalTo(24)
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(8)
         }
         
         let topLabel = UILabel(frame: .zero)
@@ -186,13 +186,7 @@ class ClassRoomSettingViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(40)
         }
-        let line = UIView()
-        line.backgroundColor = .borderColor
-        view.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(1/UIScreen.main.scale)
-        }
+        view.addLine(direction: .bottom, color: .borderColor)
         return view
     }()
     

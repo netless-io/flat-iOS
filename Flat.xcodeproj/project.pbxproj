@@ -47,7 +47,7 @@
 		8A0CA23928C0519A0035F71A /* DeviceAutorizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
-		8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */; };
+		8A0EB7B5272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift */; };
 		8A0EB7BA272BD4E300003DF7 /* RoomUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */; };
 		8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C1272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift */; };
 		8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */; };
@@ -112,6 +112,7 @@
 		8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */; };
 		8A59FF8628D8410C00318407 /* JoinRoomInputAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */; };
 		8A59FF8828D96D3600318407 /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8728D96D3600318407 /* WKWebViewController.swift */; };
+		8A59FF8B28DAA28600318407 /* UIViewController+screenSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8A28DAA28600318407 /* UIViewController+screenSize.swift */; };
 		8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */; };
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
@@ -335,7 +336,7 @@
 		8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAutorizationHelper.swift; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
-		8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverDismissDetectableViewController.swift; sourceTree = "<group>"; };
+		8A0EB7B4272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopoverDismissDetect.swift"; sourceTree = "<group>"; };
 		8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUserTableViewCell.swift; sourceTree = "<group>"; };
 		8A0EB7C1272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingTableViewCell.swift; sourceTree = "<group>"; };
 		8A0EB7C2272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassRoomSettingTableViewCell.xib; sourceTree = "<group>"; };
@@ -407,6 +408,7 @@
 		8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageCreateDirectoryRequest.swift; sourceTree = "<group>"; };
 		8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInputAccessView.swift; sourceTree = "<group>"; };
 		8A59FF8728D96D3600318407 /* WKWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
+		8A59FF8A28DAA28600318407 /* UIViewController+screenSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+screenSize.swift"; sourceTree = "<group>"; };
 		8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevicePreferredStatusStore.swift; sourceTree = "<group>"; };
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
@@ -623,7 +625,7 @@
 			isa = PBXGroup;
 			children = (
 				8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */,
-				8A0EB7B4272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift */,
+				8A0EB7B4272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift */,
 			);
 			path = Popover;
 			sourceTree = "<group>";
@@ -685,6 +687,7 @@
 		8A05C31A275E0421009BCA79 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				8A59FF8A28DAA28600318407 /* UIViewController+screenSize.swift */,
 				8A270B752718314200450DC6 /* TopViewController.swift */,
 				8AFB942B28B74EBA00B8795D /* UIViewController+Present.swift */,
 				8ACA7ED128B77E8100EE24D5 /* UIViewController+SafaArea.swift */,
@@ -1841,7 +1844,7 @@
 				8A270B9D271967D800450DC6 /* Language.swift in Sources */,
 				8ABF36312747B696000D5003 /* UIView+Loading.swift in Sources */,
 				8A6E89E12807B48D00908771 /* FlatGeneralCrossButton.swift in Sources */,
-				8A0EB7B5272BCFC300003DF7 /* PopOverDismissDetectableViewController.swift in Sources */,
+				8A0EB7B5272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift in Sources */,
 				8AD7C6BF27157EA7001C4AAD /* SceneDelegate.swift in Sources */,
 				8A270BA4271972F100450DC6 /* ContactUsViewController.swift in Sources */,
 				8AF244D8287C17D900E6B2AF /* BindListRequest.swift in Sources */,
@@ -1883,6 +1886,7 @@
 				8A9FB3C927229E5E00F6F06F /* AnyEncodable.swift in Sources */,
 				8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */,
 				8A9FB3B72722949600F6F06F /* ParameterEncoder.swift in Sources */,
+				8A59FF8B28DAA28600318407 /* UIViewController+screenSize.swift in Sources */,
 				8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */,
 				8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */,
 				8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */,

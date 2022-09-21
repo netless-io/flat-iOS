@@ -12,7 +12,7 @@ import RxRelay
 import RxCocoa
 import DZNEmptyDataSet
 
-class ChatViewController: PopOverDismissDetectableViewController {
+class ChatViewController: UIViewController {
     let noticeCellIdentifier = "noticeCellIdentifier"
     let cellIdentifier = "cellIdentifier"
     let viewModel: ChatViewModel
@@ -52,6 +52,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
         self.userRtmId = userRtmId
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
+        preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
     
     required init?(coder: NSCoder) {
@@ -62,8 +63,6 @@ class ChatViewController: PopOverDismissDetectableViewController {
         super.viewDidLoad()
         setupViews()
         bind()
-        
-        preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
     
     override func viewDidLayoutSubviews() {
@@ -232,10 +231,10 @@ class ChatViewController: PopOverDismissDetectableViewController {
     
     lazy var banTextButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text, .strong)), for: .normal)
+        btn.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text)), for: .normal)
         btn.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger)), for: .selected)
         btn.traitCollectionUpdateHandler = { [weak btn] _ in
-            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text, .strong)), for: .normal)
+            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text)), for: .normal)
             btn?.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger)), for: .selected)
         }
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
@@ -262,11 +261,12 @@ class ChatViewController: PopOverDismissDetectableViewController {
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
             leftIcon?.image = UIImage(named: "chat")?.tintColor(.color(type: .text, .strong))
         }
-        leftIcon.contentMode = .center
+        leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
         leftIcon.snp.makeConstraints { make in
-            make.left.top.bottom.equalToSuperview()
-            make.width.equalTo(40)
+            make.width.height.equalTo(24)
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(8)
         }
         
         let topLabel = UILabel(frame: .zero)
@@ -278,13 +278,7 @@ class ChatViewController: PopOverDismissDetectableViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(40)
         }
-        let line = UIView()
-        line.backgroundColor = .borderColor
-        view.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(1/UIScreen.main.scale)
-        }
+        view.addLine(direction: .bottom, color: .borderColor)
         return view
     }()
     

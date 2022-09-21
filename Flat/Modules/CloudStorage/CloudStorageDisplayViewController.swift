@@ -35,6 +35,7 @@ class CloudStorageDisplayViewController: UIViewController,
     init(currentDirectoryPath: String = "/") {
         self.currentDirectoryPath = currentDirectoryPath
         super.init(nibName: nil, bundle: nil)
+        preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
     
     required init?(coder: NSCoder) {

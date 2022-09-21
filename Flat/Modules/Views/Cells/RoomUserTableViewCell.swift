@@ -30,14 +30,10 @@ class RoomUserTableViewCell: UITableViewCell {
     func setupViews() {
         contentView.backgroundColor = .classroomChildBG
         
-        let line = UIView()
-        line.backgroundColor = .borderColor
-
         contentView.addSubview(avatarImageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(statusLabel)
         contentView.addSubview(operationStackView)
-        contentView.addSubview(line)
         avatarImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
@@ -55,11 +51,8 @@ class RoomUserTableViewCell: UITableViewCell {
         operationStackView.snp.makeConstraints { make in
             make.top.bottom.right.equalToSuperview()
         }
-        line.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.left.right.equalToSuperview().inset(16)
-            make.height.equalTo(1 / UIScreen.main.scale)
-        }
+        
+        contentView.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
     }
     
     // MARK: - Action
@@ -81,7 +74,7 @@ class RoomUserTableViewCell: UITableViewCell {
     
     lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
-        nameLabel.font = .systemFont(ofSize: 12)
+        nameLabel.font = .systemFont(ofSize: 14)
         nameLabel.setContentHuggingPriority(.required, for: .horizontal)
         nameLabel.textColor = .color(type: .text)
         return nameLabel

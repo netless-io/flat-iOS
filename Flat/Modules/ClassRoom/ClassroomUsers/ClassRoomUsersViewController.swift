@@ -68,6 +68,8 @@ class ClassRoomUsersViewController: UIViewController {
         self.userUUID = userUUID
         self.isOwner = roomOwnerRtmUUID == userUUID
         super.init(nibName: nil, bundle: nil)
+        
+        preferredContentSize = .init(width: greatWindowSide / 2, height: 560)
     }
     
     required init?(coder: NSCoder) {
@@ -78,8 +80,6 @@ class ClassRoomUsersViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         bind()
-        
-        preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
     
     // MARK: - Private
@@ -178,26 +178,21 @@ class ClassRoomUsersViewController: UIViewController {
         view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
             leftIcon?.image = UIImage(named: "users")?.tintColor(.color(type: .text, .strong))
         }
-        leftIcon.contentMode = .center
+        leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
         leftIcon.snp.makeConstraints { make in
-            make.left.top.bottom.equalToSuperview()
-            make.width.equalTo(40)
+            make.width.height.equalTo(24)
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(8)
         }
-        let line = UIView()
-        line.backgroundColor = .borderColor
-        view.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(1/UIScreen.main.scale)
-        }
+        view.addLine(direction: .bottom, color: .borderColor)
         return view
     }()
     
     lazy var teacherLabel: UILabel = {
         let label = UILabel()
         label.textColor = .color(type: .text)
-        label.font = .systemFont(ofSize: 12)
+        label.font = .systemFont(ofSize: 14)
         return label
     }()
     
@@ -222,15 +217,8 @@ class ClassRoomUsersViewController: UIViewController {
     
     lazy var teacherHeaderView: UITableViewHeaderFooterView = {
         let view = UITableViewHeaderFooterView()
-        view.backgroundColor = .classroomChildBG
-        let line = UIView()
-        line.backgroundColor = .borderColor
-        view.addSubview(line)
-        line.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalTo(1 / UIScreen.main.scale)
-        }
+        view.contentView.backgroundColor = .classroomChildBG
+        view.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
         view.addSubview(teachAvatarImageView)
         view.addSubview(teacherLabel)
         view.addSubview(stopInteractingButton)
@@ -259,7 +247,7 @@ class ClassRoomUsersViewController: UIViewController {
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        view.rowHeight = 55
+        view.rowHeight = 56
         if #available(iOS 15.0, *) {
             // F apple
             view.sectionHeaderTopPadding = 0
@@ -272,7 +260,7 @@ class ClassRoomUsersViewController: UIViewController {
 extension ClassRoomUsersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if let _ = teacher {
-            return 48
+            return 56
         } else {
             return .leastNonzeroMagnitude
         }
