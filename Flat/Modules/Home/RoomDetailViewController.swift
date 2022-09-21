@@ -55,13 +55,14 @@ class RoomDetailViewController: UIViewController {
         }
         
         func actionFor(viewController: RoomDetailViewController) {
+            guard let info = viewController.info else { return }
             switch self {
             case .modify:
                 // TODO: Modify Room 
                 return
             case .remove, .cancel:
                 let hud = viewController.showActivityIndicator()
-                let api = RoomCancelRequest(roomUUID: viewController.info.roomUUID)
+                let api = RoomCancelRequest(roomUUID: info.roomUUID)
                 ApiProvider.shared.request(fromApi: api) { result in
                     switch result {
                     case .success:
@@ -98,38 +99,31 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
-    var info: RoomBasicInfo
+    var info: RoomBasicInfo?
     var availableOperations: [RoomOperation] = []
     
-    let deviceStatusStore: UserDevicePreferredStatusStore
-    
-    var cameraOn: Bool
-    
-    var micOn: Bool
-    
     func updateStatus(_ status: RoomStartStatus) {
-        info.roomStatus = status
+        info?.roomStatus = status
         if isViewLoaded {
             updateEnterRoomButtonTitle()
         }
     }
     
-    init(info: RoomBasicInfo) {
+    func updateInfo(_ info: RoomBasicInfo) {
         self.info = info
-        deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
-        self.cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-        self.micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
+        if isViewLoaded {
+            updateViewWithCurrentStatus()
+            updateAvailableActions()
+            updateEnterRoomButtonTitle()
+        }
     }
     
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadData { _ in
+        loadData { [weak self] _ in
+            guard let self = self else { return }
+            self.view.endFlatLoading()
             self.updateViewWithCurrentStatus()
             self.updateAvailableActions()
             self.updateEnterRoomButtonTitle()
@@ -150,18 +144,20 @@ class RoomDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        updateViewWithCurrentStatus()
-        updateAvailableActions()
-        updateEnterRoomButtonTitle()
+        view.startFlatLoading()
     }
     
     // MARK: - Private
     func loadData(completion: @escaping ((Result<RoomBasicInfo, ApiError>)->Void)) {
-        RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: info.periodicUUID) { result in
+        guard let fetchingInfo = info else { return }
+        RoomBasicInfo.fetchInfoBy(uuid: fetchingInfo.roomUUID, periodicUUID: fetchingInfo.periodicUUID) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let detail):
-                self.info = detail
-                completion(.success(detail))
+                if self.info?.roomUUID == detail.roomUUID {
+                    self.info = detail
+                    completion(.success(detail))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -169,6 +165,7 @@ class RoomDetailViewController: UIViewController {
     }
     
     func updateAvailableActions() {
+        guard let info = info else { return }
         let isTeacher = info.isOwner
         availableOperations = RoomOperation.actionsWith(isTeacher: isTeacher, roomStatus: info.roomStatus)
         if availableOperations.isEmpty {
@@ -202,13 +199,12 @@ class RoomDetailViewController: UIViewController {
     }
     
     @IBAction func onClickCopy(_ sender: Any) {
+        guard let info = info else { return }
         UIPasteboard.general.string = info.formatterInviteCode
         toast(localizeStrings("Copy Success"))
     }
     
     func setupViews() {
-        title = info.title
-        
         view.backgroundColor = .color(type: .background, .weak)
         func loopTextColor(view: UIView) {
             if let stack = view as? UIStackView {
@@ -242,14 +238,19 @@ class RoomDetailViewController: UIViewController {
     }
     
     func updateEnterRoomButtonTitle() {
-        if self.info.isOwner, info.roomStatus == .Idle {
-            self.enterRoomButton.setTitle(NSLocalizedString("Start Class", comment: ""), for: .normal)
+        guard let info = info else { return }
+        if info.isOwner, info.roomStatus == .Idle {
+            self.enterRoomButton.setTitle(localizeStrings("Start Class"), for: .normal)
         } else {
-            self.enterRoomButton.setTitle(NSLocalizedString("Enter Room", comment: ""), for: .normal)
+            self.enterRoomButton.setTitle(localizeStrings("Enter Room"), for: .normal)
         }
     }
     
     func updateViewWithCurrentStatus() {
+        guard let info = info else { return }
+        
+        title = info.title
+        
         let beginTime: Date
         let endTime: Date
         let status: RoomStartStatus
@@ -283,6 +284,7 @@ class RoomDetailViewController: UIViewController {
     
     // MARK: - Action
     @IBAction func onClickReplay() {
+        guard let info = info else { return }
         showActivityIndicator()
         ApiProvider.shared.request(fromApi: RecordDetailRequest(uuid: info.roomUUID)) { [weak self] result in
             guard let self = self else { return }
@@ -298,6 +300,7 @@ class RoomDetailViewController: UIViewController {
     }
     
     @IBAction func onClickInvite(_ sender: UIButton) {
+        guard let info = info else { return }
         let vc = ShareManager.createShareActivityViewController(roomUUID: info.roomUUID,
                                                                 beginTime: info.beginTime,
                                                                 title: info.title,
@@ -306,6 +309,8 @@ class RoomDetailViewController: UIViewController {
     }
     
     @IBAction func onClickEnterRoom(_ sender: Any) {
+        guard let info = info else { return }
+        
         enterRoomButton.isEnabled = false
         
         // Join room
@@ -314,9 +319,12 @@ class RoomDetailViewController: UIViewController {
             self.enterRoomButton.isEnabled = true
             switch result {
             case .success(let playInfo):
+                let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
+                let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
+                let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
                 let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
-                                                                     detailInfo: self.info,
-                                                                     deviceStatus: .init(mic: self.micOn, camera: self.cameraOn))
+                                                                     detailInfo: info,
+                                                                     deviceStatus: .init(mic: micOn, camera: cameraOn))
                 self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             case .failure(let error):
                 self.showAlertWith(message: error.localizedDescription)

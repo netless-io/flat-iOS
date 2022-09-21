@@ -85,6 +85,8 @@ class HistoryViewController: UIViewController {
         }
         return table
     }()
+    
+    lazy var detailViewController = RoomDetailViewController()
 }
 
 extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
@@ -123,8 +125,8 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
-        let vc = RoomDetailViewController(info: item)
-        navigationController?.pushViewController(vc, animated: true)
+        detailViewController.updateInfo(item)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 

@@ -138,11 +138,13 @@ class HomeViewController: UIViewController {
             } else {
                 if !vc.viewControllers
                     .map ({ ($0 as? UINavigationController)?.topViewController ?? $0 })
-                    .contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == roomUUID }) {
+                    .contains(where: { ($0 as? RoomDetailViewController)?.info?.roomUUID == roomUUID }) {
                     RoomBasicInfo.fetchInfoBy(uuid: roomUUID, periodicUUID: nil) { result in
                         switch result {
                         case .success(let r):
-                            vc.push(RoomDetailViewController(info: r))
+                            let roomDetailController = RoomDetailViewController()
+                            roomDetailController.updateInfo(r)
+                            vc.push(roomDetailController)
                         case .failure: return
                         }
                     }
@@ -157,14 +159,18 @@ class HomeViewController: UIViewController {
                 return true
             }
             if !isStop {
-                if !vcs.contains(where: { ($0 as? RoomDetailViewController)?.info.roomUUID == roomUUID }) {
+                if !vcs.contains(where: { ($0 as? RoomDetailViewController)?.info?.roomUUID == roomUUID }) {
                     if let info = list.first(where: { $0.roomUUID == roomUUID }) {
-                        vcs.append(RoomDetailViewController(info: info))
+                        let roomDetailController = RoomDetailViewController()
+                        roomDetailController.updateInfo(info)
+                        vcs.append(roomDetailController)
                     } else {
                         RoomBasicInfo.fetchInfoBy(uuid: roomUUID, periodicUUID: nil) { result in
                             switch result {
                             case .success(let r):
-                                vcs.append(RoomDetailViewController(info: r))
+                                let roomDetailController = RoomDetailViewController()
+                                roomDetailController.updateInfo(r)
+                                vcs.append(roomDetailController)
                                 navi.setViewControllers(vcs, animated: false)
                             case .failure: return
                             }
@@ -326,6 +332,8 @@ class HomeViewController: UIViewController {
         }
         return table
     }()
+    
+    lazy var detailViewController = RoomDetailViewController()
 }
 
 // MARK: - Tableview
@@ -346,8 +354,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
-        let vc = RoomDetailViewController(info: item)
-        mainContainer?.push(vc)
+        detailViewController.updateInfo(item)
+        mainContainer?.push(detailViewController)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -405,11 +413,11 @@ extension HomeViewController: MainSplitViewControllerDetailUpdateDelegate {
         if let selectedItem = tableView.indexPathForSelectedRow {
             let item = list[selectedItem.row]
             if let vc = ((vc as? UINavigationController)?.topViewController as? RoomDetailViewController),
-               vc.info.roomUUID == item.roomUUID {
+               vc.info?.roomUUID == item.roomUUID {
                 return
             }
             if let vc = vc as? RoomDetailViewController,
-               vc.info.roomUUID == item.roomUUID {
+               vc.info?.roomUUID == item.roomUUID {
                 return
             }
             tableView.deselectRow(at: selectedItem, animated: true)
