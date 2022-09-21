@@ -35,6 +35,7 @@ class HomeViewController: UIViewController {
     
     lazy var list: [RoomBasicInfo] = [] {
         didSet {
+            guard list != oldValue else { return }
             tableView.reloadData()
         }
     }

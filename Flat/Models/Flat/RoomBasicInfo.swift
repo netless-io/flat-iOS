@@ -12,7 +12,7 @@ import RxSwift
 import Fastboard
 
 /// Get from list or by 'ordinary' request
-struct RoomBasicInfo: Decodable {
+struct RoomBasicInfo: Decodable, Equatable {
     let roomUUID: String
     let periodicUUID: String?
     
