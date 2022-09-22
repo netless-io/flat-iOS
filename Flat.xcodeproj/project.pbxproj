@@ -38,7 +38,6 @@
 		8A0CA22628BC98180035F71A /* FlatPopoverAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */; };
 		8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */; };
 		8A0CA22A28BCC4380035F71A /* FlatCompactAlertController copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */; };
-		8A0CA22C28BDA9060035F71A /* HomeEntryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22B28BDA9060035F71A /* HomeEntryButton.swift */; };
 		8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */; };
 		8A0CA23028BE11A10035F71A /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22F28BE11A10035F71A /* Global.swift */; };
 		8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */; };
@@ -249,6 +248,7 @@
 		8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF6E277451BA00087280 /* CustomPreviewViewController.swift */; };
 		8AD2EF71277461C900087280 /* CustomAVPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */; };
 		8AD2EF762775665300087280 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF752775665300087280 /* ShareManager.swift */; };
+		8AD3627A28DC61E00086699E /* SpringButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3627928DC61E00086699E /* SpringButton.swift */; };
 		8AD3CDF027168F25008BD904 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDEF27168F25008BD904 /* Env.swift */; };
 		8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF1271693EC008BD904 /* GithubLogin.swift */; };
 		8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */; };
@@ -327,7 +327,6 @@
 		8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatPopoverAlertController.swift; sourceTree = "<group>"; };
 		8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatCustomAlertSetable.swift; sourceTree = "<group>"; };
 		8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlatCompactAlertController copy.swift"; sourceTree = "<group>"; };
-		8A0CA22B28BDA9060035F71A /* HomeEntryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEntryButton.swift; sourceTree = "<group>"; };
 		8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularSideBarViewController.swift; sourceTree = "<group>"; };
 		8A0CA22F28BE11A10035F71A /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+oldDark.swift"; sourceTree = "<group>"; };
@@ -549,6 +548,7 @@
 		8AD2EF6E277451BA00087280 /* CustomPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPreviewViewController.swift; sourceTree = "<group>"; };
 		8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAVPlayerViewController.swift; sourceTree = "<group>"; };
 		8AD2EF752775665300087280 /* ShareManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareManager.swift; sourceTree = "<group>"; };
+		8AD3627928DC61E00086699E /* SpringButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringButton.swift; sourceTree = "<group>"; };
 		8AD3CDEC27168E75008BD904 /* Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Develop.xcconfig; sourceTree = "<group>"; };
 		8AD3CDEE27168E87008BD904 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		8AD3CDEF27168F25008BD904 /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
@@ -777,6 +777,7 @@
 			isa = PBXGroup;
 			children = (
 				8A6E89E02807B48D00908771 /* FlatGeneralCrossButton.swift */,
+				8AD3627928DC61E00086699E /* SpringButton.swift */,
 				8AEF06A0276980590009904A /* UIButton+CheckBox.swift */,
 			);
 			path = Button;
@@ -808,7 +809,6 @@
 				8A8020AC275864A200F5691C /* PageContainer */,
 				8A0BD7B1274B345900383E9D /* Button */,
 				8A7741C22734CF8E009FAADA /* Label */,
-				8AEA34F227279CB500EA4009 /* Popover */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -918,7 +918,6 @@
 			isa = PBXGroup;
 			children = (
 				8A270B6E271829AB00450DC6 /* HomeViewController.swift */,
-				8A0CA22B28BDA9060035F71A /* HomeEntryButton.swift */,
 				8AFB942928B7124C00B8795D /* HistoryViewController.swift */,
 				8ACE3A25272FF77100BC37F7 /* RoomDetailViewController.swift */,
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
@@ -1494,13 +1493,6 @@
 			path = Rtm;
 			sourceTree = "<group>";
 		};
-		8AEA34F227279CB500EA4009 /* Popover */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Popover;
-			sourceTree = "<group>";
-		};
 		8AED087528113608001DEFDC /* Cancelation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1780,7 +1772,6 @@
 				8A05C34227604576009BCA79 /* UploadFinishRequest.swift in Sources */,
 				8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */,
 				8A21DAB6279F9EEF0060E25D /* RecordAcquireRequest.swift in Sources */,
-				8A0CA22C28BDA9060035F71A /* HomeEntryButton.swift in Sources */,
 				8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */,
 				8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */,
 				8A7741B9273287C2009FAADA /* RtcCellPopMenuView.swift in Sources */,
@@ -1808,6 +1799,7 @@
 				8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */,
 				8A9FB3AA272262D800F6F06F /* ResponseDataHandler.swift in Sources */,
 				8A8020A52757225400F5691C /* AgoraResponseDataHandler.swift in Sources */,
+				8AD3627A28DC61E00086699E /* SpringButton.swift in Sources */,
 				8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */,
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
 				8A9FB3AD2722674F00F6F06F /* FlatResponseDataHandler.swift in Sources */,

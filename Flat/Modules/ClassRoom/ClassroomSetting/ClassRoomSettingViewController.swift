@@ -153,7 +153,7 @@ class ClassRoomSettingViewController: UIViewController {
             button?.layer.borderColor = UIColor.color(type: .danger).cgColor
         }
         
-        button.layer.borderWidth = 1 / UIScreen.main.scale
+        button.layer.borderWidth = 1
         button.layer.cornerRadius = 4
         button.layer.masksToBounds = true
         button.contentEdgeInsets = .init(top: 0, left: 20, bottom: 0, right: 20)

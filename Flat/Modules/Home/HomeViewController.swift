@@ -219,10 +219,15 @@ class HomeViewController: UIViewController {
         fillTopSafeAreaWith(color: .color(type: .background))
     }
     
-    func createHeaderButton(title: String, imageName: String, target: Any?, action: Selector) -> HomeEntryButton {
-        let view = HomeEntryButton(imageName: imageName, title: title)
-        view.addTarget(target, action: action)
-        return view
+    func createHeaderButton(title: String, imageName: String, target: Any?, action: Selector) -> UIButton {
+        let button = SpringButton(type: .custom)
+        button.setImage(UIImage.init(dynamicName: imageName), for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12)
+        button.setTitleColor(.color(type: .text), for: .normal)
+        button.setTitle(title, for: .normal)
+        button.verticalCenterImageAndTitleWith(8)
+        button.addTarget(target, action: action, for: .touchUpInside)
+        return button
     }
     
     func applyAvatar() {
@@ -354,6 +359,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if isCompact() {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
         let item = list[indexPath.row]
         detailViewController.updateInfo(item)
         mainContainer?.push(detailViewController)

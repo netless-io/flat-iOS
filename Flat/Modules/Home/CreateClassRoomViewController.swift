@@ -148,7 +148,7 @@ class CreateClassRoomViewController: UIViewController {
     }
     
     func typeViewForType(_ type: ClassRoomType) -> UIButton {
-        let button = UIButton(type: .custom)
+        let button = SpringButton(type: .custom)
         let image = UIImage(named: type.rawValue)
         button.setImage(image?.tintColor(.color(type: .text, .weak)), for: .normal)
         button.setImage(image?.tintColor(.color(type: .primary)), for: .selected)
