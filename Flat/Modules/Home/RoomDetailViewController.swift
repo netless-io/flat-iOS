@@ -295,7 +295,7 @@ class RoomDetailViewController: UIViewController {
             self.stopActivityIndicator()
             switch result {
             case .success(let recordInfo):
-                let viewModel = AdvanceReplayViewModel(roomInfo: self.info, recordDetail: recordInfo)
+                let viewModel = AdvanceReplayViewModel(roomInfo: info, recordDetail: recordInfo)
                 let vc = AdvanceReplayViewController(viewModel: viewModel)
 //                let vc = ReplayViewController(info: recordInfo)
                 self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)

@@ -71,7 +71,6 @@ class AdvanceReplayViewModel: NSObject {
         let whitePlayerConfig = WhitePlayerConfig(room: recordDetail.whiteboardRoomUUID,
                                                   roomToken: recordDetail.whiteboardRoomToken)
         let windowParams = WhiteWindowParams()
-        windowParams.chessboard = false
         whitePlayerConfig.windowParams = windowParams
         
         let record = recordDetail.recordInfo[index]
