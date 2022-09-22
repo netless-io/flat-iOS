@@ -86,7 +86,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     
     // MARK: - Lazy
     lazy var addButton: UIButton = {
-        let addButton = UIButton(type: .custom)
+        let addButton = SpringButton(type: .custom)
         addButton.setImage(UIImage(named: "storage_add"), for: .normal)
         var actions = UploadType.allCases.map { type -> Action in
             return Action(title: type.title, image: UIImage(named: type.imageName), style: .default) { _ in
@@ -206,19 +206,12 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
                 super.tableView(tableView, cellForRowAt: indexPath) as? CloudStorageTableViewCell
         else { fatalError() }
         cell.moreActionButton.isHidden = tableView.isEditing
-        cell.moreActionButton.tag = indexPath.row
-        cell.moreActionButton.addTarget(self, action: #selector(onClickMoreAction(sender:)))
-        return cell
-    }
-    
-    @objc func onClickMoreAction(sender: UIButton) {
-        let item = container.items[sender.tag]
-        let hasCompact = mainContainer?.concreteViewController.traitCollection.hasCompact ?? false
-        if hasCompact {
-            presentCommonCustomAlert(actions(for: item))
-        } else {
-            popOverCommonCustomAlert(actions(for: item), fromSource: sender, permittedArrowDirections: [.right])
+        if !tableView.isEditing {
+            let item = container.items[indexPath.row]
+            let actions = actions(for: item)
+            cell.moreActionButton.setupCommonCustomAlert(actions)
         }
+        return cell
     }
     
     @available(iOS 13.0, *)
