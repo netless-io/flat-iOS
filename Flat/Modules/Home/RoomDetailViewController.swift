@@ -279,6 +279,9 @@ class RoomDetailViewController: UIViewController {
             }
         } else {
             replayButton.isHidden = true
+            roomOperationStackView.arrangedSubviews.forEach {
+                $0.isHidden = $0 === replayButton ? true : false
+            }
         }
     }
     
