@@ -11,8 +11,22 @@ import RxSwift
 import AVFoundation
 import SyncPlayer
 import Whiteboard
+import Fastboard
 
 class AdvanceReplayViewController: UIViewController {
+    override var prefersHomeIndicatorAutoHidden: Bool { true }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return traitCollection.hasCompact ? .landscapeRight : .landscape
+    }
+    override var prefersStatusBarHidden: Bool { traitCollection.verticalSizeClass == .compact }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        } else {
+            return .default
+        }
+    }
+    
     let viewModel: AdvanceReplayViewModel
     
     // MARK: - LifeCycle
@@ -36,9 +50,14 @@ class AdvanceReplayViewController: UIViewController {
         }
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateLayout()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateScrollViewInset()
+        updateLayout()
     }
     
     // MARK: - Private
@@ -50,31 +69,71 @@ class AdvanceReplayViewController: UIViewController {
                 weakSelf.listen(to: record.player, duration: record.duration)
                 weakSelf.updateSectionListButton()
                 weakSelf.observe(userState: record.userState)
-                weakSelf.updateScrollViewInset()
+                weakSelf.updateLayout()
             }
             .disposed(by: rx.disposeBag)
     }
     
-    let itemHeight: CGFloat = 144
     private func setupViews() {
         view.backgroundColor = .color(type: .background)
         view.addSubview(videoScrollView)
         videoScrollView.addSubview(videoItemsStackView)
-        videoScrollView.snp.makeConstraints { make in
-            make.left.right.top.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(itemHeight)
-        }
-        videoItemsStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.height.equalToSuperview()
-        }
         view.addSubview(whiteboardView)
-        whiteboardView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(videoScrollView.snp.bottom)
-        }
-        
+        view.addSubview(separatorLine)
         overlay.attachTo(parent: view)
+    }
+    
+    let itemRatio: CGFloat = ClassRoomLayoutRatioConfig.rtcItemRatio
+    let classRoomLayout = ClassRoomLayout()
+    func updateLayout() {
+        let safeInset = UIEdgeInsets(top: 0, left: view.safeAreaInsets.left, bottom: 0, right: 0)
+        var contentSize = view.bounds.inset(by: safeInset).size
+        // Height should be greater than width, for sometimes, user enter with portrait orientation
+        if contentSize.height > contentSize.width {
+            contentSize = .init(width: contentSize.height, height: contentSize.width)
+        }
+        let layoutOutput = classRoomLayout.update(rtcHide: false, contentSize: contentSize)
+        let x = layoutOutput.inset.left + safeInset.left
+        let y = layoutOutput.inset.top + safeInset.top
+        switch layoutOutput.rtcDirection {
+        case .top:
+            videoItemsStackView.axis = .horizontal
+            videoScrollView.frame = .init(x: x, y: y, width: layoutOutput.rtcSize.width, height: layoutOutput.rtcSize.height)
+            whiteboardView.frame = .init(x: x, y: y + videoScrollView.frame.maxY, width: layoutOutput.whiteboardSize.width, height: layoutOutput.whiteboardSize.height)
+            videoItemsStackView.snp.remakeConstraints { make in
+                make.edges.equalToSuperview()
+                make.height.equalTo(layoutOutput.rtcSize.height)
+            }
+            separatorLine.snp.remakeConstraints { make in
+                make.height.equalTo(1)
+                make.left.right.equalToSuperview()
+                make.bottom.equalTo(whiteboardView.snp.top)
+            }
+            videoItemsStackView.arrangedSubviews.forEach { itemView in
+                itemView.snp.remakeConstraints { make in
+                    make.width.equalTo(videoItemsStackView.snp.height).multipliedBy(1 / self.itemRatio)
+                }
+            }
+        case .right:
+            videoItemsStackView.axis = .vertical
+            whiteboardView.frame = .init(x: x, y: y, width: layoutOutput.whiteboardSize.width, height: layoutOutput.whiteboardSize.height)
+            videoScrollView.frame = .init(x: x + layoutOutput.whiteboardSize.width, y: 0, width: layoutOutput.rtcSize.width, height: view.bounds.height)
+            videoItemsStackView.snp.remakeConstraints { make in
+                make.edges.equalToSuperview()
+                make.width.equalTo(layoutOutput.rtcSize.width)
+            }
+            separatorLine.snp.remakeConstraints { make in
+                make.width.equalTo(1)
+                make.top.bottom.equalToSuperview()
+                make.left.equalTo(whiteboardView.snp.right)
+            }
+            videoItemsStackView.arrangedSubviews.forEach { itemView in
+                itemView.snp.remakeConstraints { make in
+                    make.height.equalTo(videoItemsStackView.snp.width).multipliedBy(itemRatio)
+                }
+            }
+        }
+        updateScrollViewInset(direction: layoutOutput.rtcDirection)
     }
     
     var userStateDisposeBag: DisposeBag!
@@ -94,7 +153,7 @@ class AdvanceReplayViewController: UIViewController {
                     }
                     itemView.isHidden = !userState.isSpeak
                 }
-                weakSelf.updateScrollViewInset()
+                weakSelf.updateLayout()
             }
             .disposed(by: userStateDisposeBag)
     }
@@ -130,15 +189,30 @@ class AdvanceReplayViewController: UIViewController {
         }
     }
     
-    func updateScrollViewInset() {
-        let itemWidth = itemHeight / itemRatio
-        let itemCount = CGFloat(videoItemsStackView.arrangedSubviews.filter { !$0.isHidden }.count)
-        let estimateWidth = itemWidth * itemCount + (itemCount - 1) * videoItemsStackView.spacing
-        if estimateWidth <= view.bounds.width {
-            let margin = (view.bounds.width - estimateWidth) / 2
-            videoScrollView.contentInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
-        } else {
-            videoScrollView.contentInset = .zero
+    func updateScrollViewInset(direction: ClassRoomLayout.RtcDirection) {
+        videoScrollView.setNeedsLayout()
+        videoScrollView.layoutIfNeeded()
+        switch direction {
+        case .right:
+            let itemHeight = videoItemsStackView.bounds.width * itemRatio
+            let itemCount = CGFloat(videoItemsStackView.arrangedSubviews.filter { !$0.isHidden }.count)
+            let estimateHeight = itemHeight * itemCount + (itemCount - 1) * videoItemsStackView.spacing
+            if estimateHeight <= view.bounds.height {
+                let margin = (view.bounds.height - estimateHeight) / 2
+                videoScrollView.contentInset = UIEdgeInsets(top: margin, left: 0, bottom: margin, right: 0)
+            } else {
+                videoScrollView.contentInset = .zero
+            }
+        case .top:
+            let itemWidth = videoItemsStackView.bounds.height / itemRatio
+            let itemCount = CGFloat(videoItemsStackView.arrangedSubviews.filter { !$0.isHidden }.count)
+            let estimateWidth = itemWidth * itemCount + (itemCount - 1) * videoItemsStackView.spacing
+            if estimateWidth <= view.bounds.width {
+                let margin = (view.bounds.width - estimateWidth) / 2
+                videoScrollView.contentInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
+            } else {
+                videoScrollView.contentInset = .zero
+            }
         }
     }
     
@@ -153,19 +227,12 @@ class AdvanceReplayViewController: UIViewController {
             if itemView.superview == nil {
                 videoItemsStackView.addArrangedSubview(itemView)
             }
-            remakeConstraintForItemView(view: itemView)
             refresh(view: itemView, user: userPlayer.user)
             refreshPlayer(view: itemView, player: userPlayer.player)
         }
+        updateLayout()
     }
-    
-    let itemRatio: CGFloat = ClassRoomLayoutRatioConfig.rtcItemRatio
-    func remakeConstraintForItemView(view: UIView) {
-        view.snp.remakeConstraints { make in
-            make.width.equalTo(videoItemsStackView.snp.height).multipliedBy(1 / self.itemRatio)
-        }
-    }
-    
+
     func itemViewForUid(_ uid: UInt) -> RtcVideoItemView {
         let target = videoItemsStackView
             .arrangedSubviews
@@ -197,6 +264,7 @@ class AdvanceReplayViewController: UIViewController {
     // MARK: - Lazy
     lazy var videoScrollView: UIScrollView = {
         let view = UIScrollView()
+        view.contentInsetAdjustmentBehavior = .never
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
         return view
@@ -266,6 +334,12 @@ class AdvanceReplayViewController: UIViewController {
             self.updateRecordIndex(index)
         }
         return vc
+    }()
+    
+    lazy var separatorLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = .borderColor
+        return view
     }()
 }
 
