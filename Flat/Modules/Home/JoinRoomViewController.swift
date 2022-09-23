@@ -222,7 +222,6 @@ class JoinRoomViewController: UIViewController {
     func setupJoinRoomInputAccessView() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handle(keyboardShowNotification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         
-        subjectTextField.inputAccessoryView = roomInputAccessView
         roomInputAccessView.deviceStateView.delegate = deviceAutorizationHelper
         roomInputAccessView.deviceStateView.cameraOnUpdate = { [weak self] camera in
             self?.deviceView.set(cameraOn: camera)
