@@ -249,6 +249,8 @@
 		8AD2EF71277461C900087280 /* CustomAVPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */; };
 		8AD2EF762775665300087280 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF752775665300087280 /* ShareManager.swift */; };
 		8AD3627A28DC61E00086699E /* SpringButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3627928DC61E00086699E /* SpringButton.swift */; };
+		8AD3627C28DC6D660086699E /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3627B28DC6D660086699E /* ProfileTableViewCell.swift */; };
+		8AD3627E28DD49680086699E /* UIView+TableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3627D28DD49680086699E /* UIView+TableViewHeader.swift */; };
 		8AD3CDF027168F25008BD904 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDEF27168F25008BD904 /* Env.swift */; };
 		8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF1271693EC008BD904 /* GithubLogin.swift */; };
 		8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */; };
@@ -549,6 +551,8 @@
 		8AD2EF70277461C900087280 /* CustomAVPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAVPlayerViewController.swift; sourceTree = "<group>"; };
 		8AD2EF752775665300087280 /* ShareManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareManager.swift; sourceTree = "<group>"; };
 		8AD3627928DC61E00086699E /* SpringButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringButton.swift; sourceTree = "<group>"; };
+		8AD3627B28DC6D660086699E /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		8AD3627D28DD49680086699E /* UIView+TableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+TableViewHeader.swift"; sourceTree = "<group>"; };
 		8AD3CDEC27168E75008BD904 /* Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Develop.xcconfig; sourceTree = "<group>"; };
 		8AD3CDEE27168E87008BD904 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		8AD3CDEF27168F25008BD904 /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
@@ -641,6 +645,7 @@
 				8AD3CDF82716B53D008BD904 /* UIViewController+Alert.swift */,
 				8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */,
 				8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */,
+				8AD3627D28DD49680086699E /* UIView+TableViewHeader.swift */,
 				8ABF36302747B696000D5003 /* UIView+Loading.swift */,
 				8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */,
 			);
@@ -952,6 +957,7 @@
 			isa = PBXGroup;
 			children = (
 				8A05C312275DE279009BCA79 /* ProfileViewController.swift */,
+				8AD3627B28DC6D660086699E /* ProfileTableViewCell.swift */,
 				8AF244DB287C243C00E6B2AF /* WechatBinding.swift */,
 			);
 			path = Profile;
@@ -1717,6 +1723,7 @@
 				8A0CA23028BE11A10035F71A /* Global.swift in Sources */,
 				8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */,
 				8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */,
+				8AD3627C28DC6D660086699E /* ProfileTableViewCell.swift in Sources */,
 				8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */,
 				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
 				8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */,
@@ -1803,6 +1810,7 @@
 				8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */,
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
 				8A9FB3AD2722674F00F6F06F /* FlatResponseDataHandler.swift in Sources */,
+				8AD3627E28DD49680086699E /* UIView+TableViewHeader.swift in Sources */,
 				8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */,
 				8A9ACC0A271E98DB00E7E7CE /* RoomTableViewCell.swift in Sources */,
 				8A9FB395272154B800F6F06F /* Message.swift in Sources */,

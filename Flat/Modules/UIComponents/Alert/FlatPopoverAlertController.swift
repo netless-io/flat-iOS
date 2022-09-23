@@ -62,14 +62,12 @@ class FlatPopoverAlertController: UIViewController {
             btn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
             btn.titleLabel?.font = .systemFont(ofSize: 14)
             if value.element.style == .destructive {
-                btn.setTitleColor(.color(type: .danger), for: .normal)
-                btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.color(type: .danger), for: .normal)
+                btn.setTraitRelatedBlock { button in
+                    button.setTitleColor(.color(type: .danger), for: .normal)
                 }
             } else {
-                btn.setTitleColor(.color(type: .text), for: .normal)
-                btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.color(type: .text), for: .normal)
+                btn.setTraitRelatedBlock { button in
+                    button.setTitleColor(.color(type: .text), for: .normal)
                 }
             }
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)

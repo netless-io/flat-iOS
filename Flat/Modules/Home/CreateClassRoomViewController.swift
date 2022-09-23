@@ -150,12 +150,10 @@ class CreateClassRoomViewController: UIViewController {
     func typeViewForType(_ type: ClassRoomType) -> UIButton {
         let button = SpringButton(type: .custom)
         let image = UIImage(named: type.rawValue)
-        button.setImage(image?.tintColor(.color(type: .text, .weak)), for: .normal)
-        button.setImage(image?.tintColor(.color(type: .primary)), for: .selected)
-        button.traitCollectionUpdateHandler = { [weak button] _ in
-            button?.setImage(image?.tintColor(.color(type: .text, .weak)), for: .normal)
-            button?.setImage(image?.tintColor(.color(type: .primary)), for: .selected)
-        }
+        button.setTraitRelatedBlock({ button in
+            button.setImage(image?.tintColor(.color(type: .text, .weak)), for: .normal)
+            button.setImage(image?.tintColor(.color(type: .primary)), for: .selected)
+        })
         button.setTitle(type.rawValue, for: .normal)
         button.setTitleColor(.color(type: .text), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 12)

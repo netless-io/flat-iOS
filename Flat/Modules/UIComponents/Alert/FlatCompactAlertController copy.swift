@@ -120,19 +120,16 @@ class FlatCompactAlertController: UIViewController {
             btn.backgroundColor = .customAlertBg
             btn.titleLabel?.font = .systemFont(ofSize: 20)
             if value.element.style == .destructive {
-                btn.setTitleColor(.color(type: .danger), for: .normal)
-                btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.color(type: .danger), for: .normal)
+                btn.setTraitRelatedBlock { button in
+                    button.setTitleColor(.color(type: .danger), for: .normal)
                 }
             } else if value.element.isCancelAction() {
-                btn.setTitleColor(.color(type: .text), for: .normal)
-                btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.color(type: .text, .strong), for: .normal)
+                btn.setTraitRelatedBlock { button in
+                    button.setTitleColor(.color(type: .text, .strong), for: .normal)
                 }
             } else {
-                btn.setTitleColor(.color(type: .text), for: .normal)
-                btn.traitCollectionUpdateHandler = { [weak btn] _ in
-                    btn?.setTitleColor(.color(type: .text, .strong), for: .normal)
+                btn.setTraitRelatedBlock { button in
+                    button.setTitleColor(.color(type: .text), for: .normal)
                 }
             }
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)

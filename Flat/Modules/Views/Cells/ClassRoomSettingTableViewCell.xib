@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -34,7 +34,7 @@
                     </switch>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vjS-8p-I6h">
                         <rect key="frame" x="16" y="43" width="288" height="1"/>
-                        <color key="backgroundColor" name="BorderColor"/>
+                        <color key="backgroundColor" systemColor="systemBrownColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="IfA-HX-YPc"/>
                         </constraints>
@@ -57,6 +57,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="borderView" destination="vjS-8p-I6h" id="H4S-80-Mt4"/>
                 <outlet property="iconView" destination="42O-Re-dDv" id="D0X-Kx-KzY"/>
                 <outlet property="label" destination="NRz-pY-tDB" id="jd6-a1-7L7"/>
                 <outlet property="lineHeightConstraint" destination="IfA-HX-YPc" id="mXZ-Ai-1bL"/>
@@ -67,12 +68,12 @@
     </objects>
     <resources>
         <image name="microphone" width="24" height="24"/>
-        <namedColor name="BorderColor">
-            <color red="0.86274509803921573" green="0.8784313725490196" blue="0.9137254901960784" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
         <namedColor name="BrandColor">
             <color red="0.20000000000000001" green="0.50588235294117645" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
+        <systemColor name="systemBrownColor">
+            <color red="0.63529411764705879" green="0.51764705882352946" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

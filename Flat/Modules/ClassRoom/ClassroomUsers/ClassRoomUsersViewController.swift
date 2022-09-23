@@ -174,9 +174,10 @@ class ClassRoomUsersViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(40)
         }
-        let leftIcon = UIImageView(image: UIImage(named: "users")?.tintColor(.color(type: .text, .strong)))
-        view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "users")?.tintColor(.color(type: .text, .strong))
+        
+        let leftIcon = UIImageView()
+        leftIcon.setTraitRelatedBlock { iconView in
+            iconView.image = UIImage(named: "users")?.tintColor(.color(type: .text, .strong))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)

@@ -36,7 +36,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func setupViews() {
-        title = NSLocalizedString("Profile", comment: "")
+        title = localizeStrings("Profile")
         view.addSubview(tableView)
         tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
         tableView.reloadData()
@@ -140,104 +140,65 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    // MARK: - Private
-    fileprivate func setupCell(_ cell: UITableViewCell, type: BindingType) {
-        cell.textLabel?.textColor = .color(type: .text)
-        cell.backgroundColor = .color(type: .background)
-        cell.contentView.backgroundColor = .color(type: .background)
-        cell.textLabel?.text = NSLocalizedString("Binding \(type.identifierString)", comment: "")
-        cell.accessoryView = nil
-        cell.selectionStyle = .none
-        if let bindInfo = bindInfo {
-            let binded = bindInfo[type] ?? false
-            cell.detailTextLabel?.text = NSLocalizedString(binded ? "Binded" : "Unbound", comment: "")
-            cell.detailTextLabel?.textColor = binded ? .systemGreen : .systemRed
-        } else {
-            cell.detailTextLabel?.text = NSLocalizedString("Loading", comment: "")
-            cell.detailTextLabel?.textColor = .systemGray
-        }
-    }
-    
     // MARK: - Lazy
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.backgroundColor = .color(type: .background)
         view.separatorStyle = .none
-        view.rowHeight = 47
-        view.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        view.register(ProfileTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         view.delegate = self
         view.dataSource = self
+        view.tableHeaderView = .minHeaderView()
         return view
     }()
     
     // MARK: - Table view data source
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 2 : 1
+        3
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 0 : 22
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 1 {
-            let view = UIView(frame: .zero)
-            let label = UILabel()
-            label.text = NSLocalizedString("Account binding information", comment: "")
-            view.addSubview(label)
-            label.font = .systemFont(ofSize: 12, weight: .light)
-            label.textColor = .color(type: .text)
-            label.snp.makeConstraints {
-                $0.left.equalToSuperview().inset(16)
-                $0.centerY.equalToSuperview()
-            }
-            return view
-        }
-        return nil
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        indexPath.row == 0 ? 68 : 48
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .value1, reuseIdentifier: cellIdentifier)
-        if indexPath.section == 0 {
-            cell.textLabel?.textColor = .color(type: .text)
-            cell.detailTextLabel?.textColor = .color(type: .text)
-            cell.backgroundColor = .color(type: .background)
-            cell.contentView.backgroundColor = .color(type: .background)
-            cell.selectionStyle = .none
-            cell.accessoryView = nil
-            if indexPath.row == 0 {
-                cell.textLabel?.text = NSLocalizedString("Nickname", comment: "")
-                cell.detailTextLabel?.text = AuthStore.shared.user?.name ?? ""
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ProfileTableViewCell
+        switch indexPath.row {
+        case 0:
+            cell.avatarImageView.isHidden = false
+            cell.profileDetailTextLabel.isHidden = true
+            cell.profileTitleLabel.text = localizeStrings("Avatar")
+            cell.avatarImageView.kf.setImage(with: AuthStore.shared.user?.avatar)
+        case 1:
+            cell.avatarImageView.isHidden = true
+            cell.profileDetailTextLabel.isHidden = false
+            cell.profileTitleLabel.text = localizeStrings("Nickname")
+            cell.profileDetailTextLabel.text = AuthStore.shared.user?.name
+        default:
+            cell.avatarImageView.isHidden = true
+            cell.profileDetailTextLabel.isHidden = false
+            let type = BindingType(rawValue: indexPath.row - 2)!
+            cell.profileTitleLabel.text = localizeStrings(type.identifierString)
+            if let bindInfo = bindInfo {
+                let binded = bindInfo[type] ?? false
+                cell.profileDetailTextLabel.text = localizeStrings(binded ? "Binded" : "Unbound")
+                cell.profileDetailTextLabel.textColor = binded ? .color(type: .success) : .color(type: .text)
             } else {
-                cell.textLabel?.text = NSLocalizedString("Avatar", comment: "")
-                cell.detailTextLabel?.text = ""
-                let avatarView = UIImageView(frame: .init(origin: .zero, size: .init(width: 44, height: 44)))
-                avatarView.backgroundColor = .systemGray
-                avatarView.kf.setImage(with: AuthStore.shared.user?.avatar)
-                avatarView.clipsToBounds = true
-                avatarView.layer.cornerRadius = 22
-                cell.accessoryView = avatarView
+                cell.profileDetailTextLabel.text = localizeStrings("Loading")
+                cell.profileDetailTextLabel.textColor = .color(type: .text)
             }
-        } else {
-            setupCell(cell, type: .init(rawValue: indexPath.row)!)
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                onClickNickName()
-            } else {
-                onClickAvatar()
-            }
-        }
-        if indexPath.section == 1 {
-            onClickBindType(.init(rawValue: indexPath.row)!)
+        switch indexPath.row {
+        case 0:
+            onClickAvatar()
+        case 1:
+            onClickNickName()
+        default:
+            onClickBindType(.init(rawValue: indexPath.row - 2)!)
         }
     }
 }

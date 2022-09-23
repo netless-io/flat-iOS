@@ -41,4 +41,18 @@ extension UIView {
         self.exchangedTraitCollectionDidChange(previousTraitCollection)
         traitCollectionUpdateHandler?(previousTraitCollection)
     }
+    
+}
+
+protocol TraitRelatedBlockSetable {}
+extension UIView: TraitRelatedBlockSetable {}
+extension TraitRelatedBlockSetable where Self: UIView {
+    /// Conflict with traitCollectionUpdateHandler
+    func setTraitRelatedBlock(_ block: @escaping (Self)->Void) {
+        block(self)
+        self.traitCollectionUpdateHandler = { [weak self] _ in
+            guard let strongSelf = self else { return }
+            block(strongSelf)
+        }
+    }
 }

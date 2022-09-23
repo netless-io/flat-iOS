@@ -31,6 +31,7 @@ class RegularSideBarViewController: UIViewController {
         updateGradientColors()
         foldButton.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text, .strong)), for: .normal)
         syncSelected()
+        applyAvatar()
     }
         
     override func viewDidLayoutSubviews() {
@@ -170,7 +171,8 @@ class RegularSideBarViewController: UIViewController {
         let containerWidth = CGFloat(64)
         let width = CGFloat(32)
         let size = CGSize(width: width, height: width).applying(.init(scaleX: scale, y: scale))
-        let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5), backgroundColor: .clear)
+        let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5),
+                                               backgroundColor: .clear)
         let processor = ResizingImageProcessor(referenceSize: size).append(another: corner)
         avatarButton.imageEdgeInsets = .init(inset: (containerWidth - width) / 2)
         avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
@@ -180,7 +182,7 @@ class RegularSideBarViewController: UIViewController {
     
     // MARK: - Lazy
     lazy var avatarButton: UIButton = {
-        let avatarButton = UIButton(type: .custom)
+        let avatarButton = SpringButton(type: .custom)
         avatarButton.clipsToBounds = true
         avatarButton.translatesAutoresizingMaskIntoConstraints = false
         avatarButton.contentMode = .scaleAspectFill

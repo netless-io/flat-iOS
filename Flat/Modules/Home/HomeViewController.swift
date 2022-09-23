@@ -246,7 +246,7 @@ class HomeViewController: UIViewController {
     
     // MARK: - Lazy
     lazy var avatarButton: UIButton = {
-        let avatarButton = UIButton(type: .custom)
+        let avatarButton = SpringButton(type: .custom)
         avatarButton.clipsToBounds = true
         avatarButton.translatesAutoresizingMaskIntoConstraints = false
         avatarButton.contentMode = .scaleAspectFill

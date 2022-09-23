@@ -75,7 +75,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                   title: NSLocalizedString("About", comment: ""),
                   detail: "",
                   targetAction: (self, #selector(self.onClickAbout(sender:)))),
-            .init(image: UIImage(named: "info")!,
+            .init(image: UIImage(named: "export")!,
                   title: NSLocalizedString("Export log", comment: ""),
                   detail: "",
                   targetAction: (self, #selector(self.onClickExportLog(sender:)))),
@@ -85,9 +85,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                   targetAction: (self, #selector(self.onClickCancellation(sender:))))
         ]
         if #available(iOS 13.0, *) {
-            let config = UIImage.SymbolConfiguration(pointSize: 10, weight: .light, scale: .small)
-            let image = UIImage(systemName: "bolt", withConfiguration: config)!
-            items.insert(.init(image: image,
+            items.insert(.init(image: UIImage(named: "rocket")!,
                                title: NSLocalizedString("FPA", comment: ""),
                                detail: userUseFPA ? true : false,
                                targetAction: (self, #selector(self.onClickFPA(sender:)))),
@@ -232,14 +230,19 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor(hexString: "#F45454").cgColor
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 4
-        button.setTitleColor(.init(hexString: "#F45454"), for: .normal)
-        button.setTitle(NSLocalizedString("Logout", comment: ""), for: .normal)
-        button.setImage(UIImage(named: "logout")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.adjustsImageWhenHighlighted = false
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.setTitle("  " + localizeStrings("Logout"), for: .normal)
         button.addTarget(self, action: #selector(onClickLogout), for: .touchUpInside)
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
+        
+        button.setTraitRelatedBlock { button in
+            button.layer.borderColor = UIColor.color(type: .danger).cgColor
+            button.setTitleColor(UIColor.color(type: .danger), for: .normal)
+            button.setImage(UIImage(named: "logout")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
         return button
     }()
     
@@ -247,9 +250,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.backgroundColor = .color(type: .background)
-        view.separatorColor = .borderColor
-        view.separatorInset = .init(top: 0, left: 20, bottom: 0, right: 0)
-        view.separatorStyle = .singleLine
         view.register(UINib(nibName: String(describing: SettingTableViewCell.self), bundle: nil), forCellReuseIdentifier: cellIdentifier)
         let container = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 40)))
         container.backgroundColor = .color(type: .background)
@@ -258,9 +258,11 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             make.top.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
         }
+        view.separatorStyle = .none
         view.delegate = self
         view.dataSource = self
         view.tableFooterView = container
+        view.tableHeaderView = .minHeaderView()
         return view
     }()
     
@@ -285,19 +287,18 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         let item = items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SettingTableViewCell
         cell.iconImageView.image = item.image
-        cell.iconImageView.tintColor = .color(type: .text)
         cell.settingTitleLabel.text = item.title
         if let bool = item.detail as? Bool {
             cell.settingDetailLabel.isHidden = true
             cell.switch.isHidden = false
             cell.switch.isOn = bool
-            cell.accessoryType = .none
+            cell.rightArrowView.isHidden = true
             if let pair = item.targetAction {
                 cell.switch.addTarget(pair.0, action: pair.1, for: .valueChanged)
                     }
         }
         if let description = item.detail as? String {
-            cell.accessoryType = .disclosureIndicator
+            cell.rightArrowView.isHidden = false
             cell.settingDetailLabel.isHidden = false
             cell.switch.isHidden = true
             cell.settingDetailLabel.text = description

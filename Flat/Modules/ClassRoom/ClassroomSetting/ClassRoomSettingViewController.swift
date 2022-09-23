@@ -144,14 +144,11 @@ class ClassRoomSettingViewController: UIViewController {
     lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.setTitleColor(.color(type: .danger), for: .normal)
-        button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger)), for: .normal)
-        button.layer.borderColor = UIColor.color(type: .danger).cgColor
-        button.traitCollectionUpdateHandler = { [weak button] _ in
-            button?.setTitleColor(.color(type: .danger), for: .normal)
-            button?.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger)), for: .normal)
-            button?.layer.borderColor = UIColor.color(type: .danger).cgColor
-        }
+        button.setTraitRelatedBlock({ button in 
+            button.setTitleColor(.color(type: .danger), for: .normal)
+            button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger)), for: .normal)
+            button.layer.borderColor = UIColor.color(type: .danger).cgColor
+        })
         
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 4
@@ -165,9 +162,9 @@ class ClassRoomSettingViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
         
-        let leftIcon = UIImageView(image: UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong)))
-        view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong))
+        let leftIcon = UIImageView()
+        leftIcon.setTraitRelatedBlock { iconView in
+            iconView.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)

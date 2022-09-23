@@ -22,7 +22,8 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         backgroundColor = .classroomChildBG
         contentView.backgroundColor = .classroomChildBG
         label.textColor = .color(type: .text)
-        lineHeightConstraint.constant = 1 / UIScreen.main.scale
+        lineHeightConstraint.constant = 1
+        borderView.backgroundColor = .borderColor
     }
     
     @IBAction func valueChanged(_ sender: UISwitch) {
@@ -35,6 +36,7 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         iconView.alpha = enable ? 1 : 0.5
     }
     
+    @IBOutlet weak var borderView: UIView!
     @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var lineHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var label: UILabel!

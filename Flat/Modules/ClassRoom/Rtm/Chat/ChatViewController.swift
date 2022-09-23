@@ -200,12 +200,10 @@ class ChatViewController: UIViewController {
     // MARK: - Lazy
     lazy var sendButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .strong)), for: .normal)
-        button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .weak)), for: .disabled)
-        button.traitCollectionUpdateHandler = { [weak button] _ in
-            button?.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .strong)), for: .normal)
-            button?.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .weak)), for: .disabled)
-        }
+        button.setTraitRelatedBlock({ button in
+            button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .strong)), for: .normal)
+            button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .weak)), for: .disabled)
+        })
         button.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return button
     }()
@@ -231,12 +229,10 @@ class ChatViewController: UIViewController {
     
     lazy var banTextButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text)), for: .normal)
-        btn.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger)), for: .selected)
-        btn.traitCollectionUpdateHandler = { [weak btn] _ in
-            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text)), for: .normal)
-            btn?.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger)), for: .selected)
-        }
+        btn.setTraitRelatedBlock({  button in
+            button.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text)), for: .normal)
+            button.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger)), for: .selected)
+        })
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
     }()
@@ -257,9 +253,9 @@ class ChatViewController: UIViewController {
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
-        let leftIcon = UIImageView(image: UIImage(named: "chat")?.tintColor(.color(type: .text, .strong)))
-        view.traitCollectionUpdateHandler = { [weak leftIcon] _ in
-            leftIcon?.image = UIImage(named: "chat")?.tintColor(.color(type: .text, .strong))
+        let leftIcon = UIImageView()
+        leftIcon.setTraitRelatedBlock { iconView in
+            iconView.image = UIImage(named: "chat")?.tintColor(.color(type: .text, .strong))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
