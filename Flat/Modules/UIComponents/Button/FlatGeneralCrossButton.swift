@@ -48,6 +48,7 @@ class FlatGeneralCrossButton: SpringButton {
     override var isHighlighted: Bool {
         didSet {
             guard isHighlighted != oldValue else { return }
+            guard isEnabled else { return }
             backgroundColor = backgroundColorDic[isHighlighted ? .highlighted : .normal]
         }
     }

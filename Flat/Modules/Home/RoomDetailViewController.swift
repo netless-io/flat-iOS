@@ -314,13 +314,10 @@ class RoomDetailViewController: UIViewController {
     
     @IBAction func onClickEnterRoom(_ sender: Any) {
         guard let info = info else { return }
-        
         enterRoomButton.isEnabled = false
-        
         // Join room
         RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID) { [weak self] result in
             guard let self = self else { return }
-            self.enterRoomButton.isEnabled = true
             switch result {
             case .success(let playInfo):
                 let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
@@ -333,6 +330,7 @@ class RoomDetailViewController: UIViewController {
             case .failure(let error):
                 self.showAlertWith(message: error.localizedDescription)
             }
+            self.enterRoomButton.isEnabled = true
         }
     }
     
