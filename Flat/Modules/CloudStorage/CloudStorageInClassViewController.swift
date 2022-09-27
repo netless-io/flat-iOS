@@ -134,10 +134,10 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
         if let payload = item.meta.whiteConverteInfo {
             switch payload.convertStep {
             case .converting:
-                toast(NSLocalizedString("FileIsConverting", comment: ""))
+                toast(localizeStrings("FileIsConverting"))
                 return
             case .failed:
-                toast(NSLocalizedString("FileConvertFailed", comment: ""))
+                toast(localizeStrings("FileConvertFailed"))
                 return
             default:
                 break

@@ -274,6 +274,18 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             (mainContainer?.concreteViewController as? MainSplitViewController)?.cleanSecondary()
             return
         }
+        if let payload = item.meta.whiteConverteInfo {
+            switch payload.convertStep {
+            case .converting:
+                toast(localizeStrings("FileIsConverting"))
+                return
+            case .failed:
+                toast(localizeStrings("FileConvertFailed"))
+                return
+            default:
+                break
+            }
+        }
         guard item.usable else { return }
         preview(item)
     }
