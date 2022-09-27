@@ -29,7 +29,6 @@ class RegularSideBarViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         updateGradientColors()
-        foldButton.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text, .strong)), for: .normal)
         syncSelected()
         applyAvatar()
     }
@@ -210,7 +209,9 @@ class RegularSideBarViewController: UIViewController {
     
     lazy var foldButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "side_bar_fold")?.tintColor(.red), for: .normal)
+        btn.setTraitRelatedBlock { button in
+            button.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text)), for: .normal)
+        }
         btn.addTarget(self, action: #selector(onClickFold), for: .touchUpInside)
         return btn
     }()
