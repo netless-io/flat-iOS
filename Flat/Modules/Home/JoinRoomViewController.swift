@@ -25,8 +25,14 @@ class JoinRoomViewController: UIViewController {
     }
     
     override func viewWillLayoutSubviews() {
-        subjectTextField.becomeFirstResponder()
+        guard !fireKeyboardFirstTime else { return }
+        if view.window != nil, view.bounds.width > 0 {
+            fireKeyboardFirstTime = true
+            subjectTextField.becomeFirstResponder()
+        }
     }
+    
+    var fireKeyboardFirstTime = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +47,7 @@ class JoinRoomViewController: UIViewController {
         guard let uuid = subjectTextField.text?.replacingOccurrences(of: " ", with: ""), !uuid.isEmpty else {
             return
         }
-        sender.isEnabled = false
+        sender.isLoading = true
         let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: uuid, periodicUUID: nil).share(replay: 1, scope: .whileConnected)
         let roomInfo = playInfo.flatMap { info in
             return RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil)
@@ -50,7 +56,6 @@ class JoinRoomViewController: UIViewController {
             .asSingle()
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onSuccess: { weakSelf, tuple in
-                sender.isEnabled = true
                 let playInfo = tuple.0
                 let roomInfo = tuple.1
                 let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
@@ -59,12 +64,15 @@ class JoinRoomViewController: UIViewController {
                                                                      deviceStatus: deviceStatus)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
+                
                 let parent = weakSelf.mainContainer?.concreteViewController
+                parent?.view.showActivityIndicator()
                 parent?.dismiss(animated: true) {
+                    parent?.view.stopActivityIndicator()
                     parent?.present(vc, animated: true, completion: nil)
                 }
             }, onFailure: { weakSelf, error in
-                sender.isEnabled = true
+                sender.isLoading = false
                 weakSelf.showAlertWith(message: error.localizedDescription)
             }, onDisposed: { _ in
                 return

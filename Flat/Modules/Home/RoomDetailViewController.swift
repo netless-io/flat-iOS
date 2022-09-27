@@ -295,9 +295,7 @@ class RoomDetailViewController: UIViewController {
             self.stopActivityIndicator()
             switch result {
             case .success(let recordInfo):
-                let viewModel = AdvanceReplayViewModel(roomInfo: info, recordDetail: recordInfo)
-                let vc = AdvanceReplayViewController(viewModel: viewModel)
-//                let vc = ReplayViewController(info: recordInfo)
+                let vc = ReplayViewController(info: recordInfo)
                 self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             case .failure(let error):
                 self.toast(error.localizedDescription)
@@ -316,7 +314,7 @@ class RoomDetailViewController: UIViewController {
     
     @IBAction func onClickEnterRoom(_ sender: Any) {
         guard let info = info else { return }
-        enterRoomButton.isEnabled = false
+        enterRoomButton.isLoading = true
         // Join room
         RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID) { [weak self] result in
             guard let self = self else { return }
@@ -328,11 +326,13 @@ class RoomDetailViewController: UIViewController {
                 let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: info,
                                                                      deviceStatus: .init(mic: micOn, camera: cameraOn))
-                self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
+                self.mainContainer?.concreteViewController.present(vc, animated: true) {
+                    self.enterRoomButton.isLoading = false
+                }
             case .failure(let error):
                 self.showAlertWith(message: error.localizedDescription)
+                self.enterRoomButton.isLoading = false
             }
-            self.enterRoomButton.isEnabled = true
         }
     }
     

@@ -13,38 +13,59 @@ fileprivate let activityTag = 888
 extension Reactive where Base: UIButton {
     var isLoading: Binder<Bool> {
         Binder(self.base) { button, loading in
-            if !loading {
-                if let normal = button.savedNormalImage {
-                    button.setImage(normal, for: .normal)
+            button.isLoading = loading
+        }
+    }
+}
+
+extension UIButton {
+    var isLoading: Bool {
+        get { false }
+        set {
+            if !newValue {
+                if let normal = savedNormalImage {
+                    setImage(normal, for: .normal)
                 }
-                if let selected = button.savedSelectedImage {
-                    button.setImage(selected, for: .selected)
+                if let selected = savedSelectedImage {
+                    setImage(selected, for: .selected)
+                }
+                if let normal = savedNormalText {
+                    setTitle(normal, for: .normal)
+                }
+                if let selected = savedSelectedText {
+                    setTitle(selected, for: .selected)
                 }
                 
-                button.activityView.stopAnimating()
-                button.isUserInteractionEnabled = true
+                activityView.stopAnimating()
+                isUserInteractionEnabled = true
                 return
             }
-            if button.activityView.superview == nil {
-                button.addSubview(button.activityView)
-                button.activityView.snp.makeConstraints { make in
+            if activityView.superview == nil {
+                addSubview(activityView)
+                activityView.snp.makeConstraints { make in
                     make.center.equalToSuperview()
-                    make.width.height.equalTo(button).multipliedBy(0.6)
+                    make.width.height.equalTo(self).multipliedBy(0.6)
                 }
             }
-            button.savedNormalImage = button.image(for: .normal)
-            button.savedSelectedImage = button.image(for: .selected)
-            button.setImage(nil, for: .normal)
-            button.setImage(nil, for: .selected)
+            savedNormalImage = image(for: .normal)
+            savedSelectedImage = image(for: .selected)
+            savedNormalText = title(for: .normal)
+            savedSelectedText = title(for: .selected)
+            setImage(nil, for: .normal)
+            setImage(nil, for: .selected)
+            setTitle("", for: .normal)
+            setTitle("", for: .selected)
             
-            button.activityView.startAnimating()
-            button.isUserInteractionEnabled = false
+            activityView.startAnimating()
+            isUserInteractionEnabled = false
         }
     }
 }
 
 private var savedNormalImageKey: Void?
 private var savedSelectedImageKey: Void?
+private var savedNormalTextKey: Void?
+private var savedSelectedTextKey: Void?
 extension UIButton {
     fileprivate var savedNormalImage: UIImage? {
         get {
@@ -63,6 +84,24 @@ extension UIButton {
             objc_setAssociatedObject(self, &savedSelectedImageKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
+    
+    fileprivate var savedNormalText: String? {
+        get {
+            objc_getAssociatedObject(self, &savedNormalTextKey) as? String
+        }
+        set {
+            objc_setAssociatedObject(self, &savedNormalTextKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        }
+    }
+    
+    fileprivate var savedSelectedText: String? {
+        get {
+            objc_getAssociatedObject(self, &savedSelectedTextKey) as? String
+        }
+        set {
+            objc_setAssociatedObject(self, &savedSelectedTextKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        }
+    }
 }
 
 extension UIView {
@@ -74,6 +113,7 @@ extension UIView {
             if #available(iOS 13.0, *) {
                 activityView = UIActivityIndicatorView(style: .medium)
                 activityView.tintColor = .white
+                activityView.color = .white
             } else {
                 activityView = UIActivityIndicatorView(style: .white)
             }

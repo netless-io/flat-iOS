@@ -192,8 +192,7 @@ class CreateClassRoomViewController: UIViewController {
         let createQuest = CreateRoomRequest(beginTime: startDate,
                           title: title,
                           type: currentRoomType)
-
-        sender.isEnabled = false
+        sender.isLoading = true
         ApiProvider.shared.request(fromApi: createQuest)
             .flatMap { info -> Observable<(RoomPlayInfo, RoomBasicInfo)> in
                 let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID)
@@ -203,22 +202,25 @@ class CreateClassRoomViewController: UIViewController {
             .asSingle()
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onSuccess: { weakSelf, tuple in
-                sender.isEnabled = true
-                let playInfo = tuple.0
-                let roomInfo = tuple.1
-                let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
-                let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
-                                                                     detailInfo: roomInfo,
-                                                                     deviceStatus: deviceStatus)
-                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
-                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
+                DispatchQueue.main.async {
+                    let playInfo = tuple.0
+                    let roomInfo = tuple.1
+                    let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
+                    let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
+                                                                         detailInfo: roomInfo,
+                                                                         deviceStatus: deviceStatus)
+                    weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
+                    weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
                 
-                let parent = weakSelf.mainContainer?.concreteViewController
-                parent?.dismiss(animated: true) {
-                    parent?.present(vc, animated: true, completion: nil)
+                    let parent = weakSelf.mainContainer?.concreteViewController
+                    parent?.view.showActivityIndicator()
+                    parent?.dismiss(animated: true) {
+                        parent?.view.stopActivityIndicator()
+                        parent?.present(vc, animated: true, completion: nil)
+                    }
                 }
             }, onFailure: { weakSelf, error in
-                sender.isEnabled = true
+                sender.isLoading = false
                 weakSelf.showAlertWith(message: error.localizedDescription)
             }, onDisposed: { _ in
                 return
