@@ -112,21 +112,23 @@ class RoomDetailViewController: UIViewController {
     func updateInfo(_ info: RoomBasicInfo) {
         self.info = info
         if isViewLoaded {
-            updateViewWithCurrentStatus()
-            updateAvailableActions()
-            updateEnterRoomButtonTitle()
+            applyCurrentInfoToView()
         }
+    }
+    
+    func applyCurrentInfoToView() {
+        updateViewWithCurrentStatus()
+        updateAvailableActions()
+        updateEnterRoomButtonTitle()
     }
     
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        applyCurrentInfoToView()
         loadData { [weak self] _ in
             guard let self = self else { return }
-            self.view.endFlatLoading()
-            self.updateViewWithCurrentStatus()
-            self.updateAvailableActions()
-            self.updateEnterRoomButtonTitle()
+            self.applyCurrentInfoToView()
         }
     }
     
@@ -144,7 +146,6 @@ class RoomDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        view.startFlatLoading()
     }
     
     // MARK: - Private
