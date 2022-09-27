@@ -63,6 +63,7 @@ struct ClassroomFactory {
         let payload: [String: String] = ["cursorName": userName]
         let userPermissionEnable = detailInfo.isOwner
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
+        fastRoomConfiguration.whiteRoomConfig.windowParams?.scrollVerticalOnly = true
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
         fastRoomConfiguration.whiteRoomConfig.disableCameraTransform = !userPermissionEnable
@@ -119,7 +120,6 @@ struct ClassroomFactory {
             let isTeacher = user.rtmUUID == playInfo.ownerUUID
             return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
         }))
-        
         
         let alertProvider = DefaultAlertProvider()
         let vm = ClassRoomViewModel(stateHandler: imp,

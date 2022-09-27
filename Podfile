@@ -16,7 +16,7 @@ target 'Flat' do
   pod 'AgoraRtcEngine_iOS'
   pod 'Fastboard', '2.0.0-alpha.1'
   pod 'Fastboard/fpa'
-  pod 'Whiteboard'
+  pod 'Whiteboard', :git => 'git@github.com:netless-io/Whiteboard-iOS.git', :tag => '2.17.0-alpha.3'
   
   pod 'MBProgressHUD', '~> 1.2.0'
   pod 'Kingfisher'

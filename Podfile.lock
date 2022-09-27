@@ -128,28 +128,28 @@ PODS:
   - SnapKit (5.0.1)
   - SwiftyBeaver (1.9.5)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.17.0-alpha.2):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.2)
-  - Whiteboard/Base (2.17.0-alpha.2):
+  - Whiteboard (2.17.0-alpha.3):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.3)
+  - Whiteboard/Base (2.17.0-alpha.3):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.2):
+  - Whiteboard/Converter (2.17.0-alpha.3):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.17.0-alpha.2):
+  - Whiteboard/fpa (2.17.0-alpha.3):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.17.0-alpha.2):
+  - Whiteboard/Model (2.17.0-alpha.3):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.2):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.3):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.2):
+  - Whiteboard/Object (2.17.0-alpha.3):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.2):
+  - Whiteboard/Replayer (2.17.0-alpha.3):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.2)
-  - Whiteboard/Room (2.17.0-alpha.2):
+  - Whiteboard/Resource (2.17.0-alpha.3)
+  - Whiteboard/Room (2.17.0-alpha.3):
     - Whiteboard/Base
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.2):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.3):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -181,7 +181,7 @@ DEPENDENCIES:
   - SnapKit
   - SwiftyBeaver
   - WechatOpenSDK
-  - Whiteboard
+  - "Whiteboard (from `git@github.com:netless-io/Whiteboard-iOS.git`, tag `2.17.0-alpha.3`)"
   - Zip
 
 SPEC REPOS:
@@ -220,9 +220,18 @@ SPEC REPOS:
     - SnapKit
     - SwiftyBeaver
     - WechatOpenSDK
-    - Whiteboard
     - YYModel
     - Zip
+
+EXTERNAL SOURCES:
+  Whiteboard:
+    :git: "git@github.com:netless-io/Whiteboard-iOS.git"
+    :tag: 2.17.0-alpha.3
+
+CHECKOUT OPTIONS:
+  Whiteboard:
+    :git: "git@github.com:netless-io/Whiteboard-iOS.git"
+    :tag: 2.17.0-alpha.3
 
 SPEC CHECKSUMS:
   AcknowList: 6d4faca4c3e0173377fe5649e086d627cd60b003
@@ -259,10 +268,10 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 5f9ea88065bee4aa702216b6b85d8e70cd6ef1bd
+  Whiteboard: 6cf1a927da5e2aae2e288ad33a7d822936dad668
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 466655c0f35426afdc3e60b2bbb753aa034fd348
+PODFILE CHECKSUM: c7a729129d902359f028d7954bfe7ca0a1e19967
 
 COCOAPODS: 1.11.3
