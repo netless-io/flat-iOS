@@ -17,7 +17,7 @@ target 'Flat' do
   pod 'Fastboard', '2.0.0-alpha.2'
   pod 'Fastboard/fpa', '2.0.0-alpha.2'
   pod 'Whiteboard', '2.17.0-alpha.6'
-  pod 'Whiteboard/SyncPlayer', '0.3.2'
+  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.6'
   pod 'SyncPlayer', '0.3.2'
   
   pod 'MBProgressHUD', '~> 1.2.0'
