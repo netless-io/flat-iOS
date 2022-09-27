@@ -88,6 +88,12 @@ class RtcVideoItemView: UIView {
             make.right.bottom.equalToSuperview().inset(4)
             make.size.equalTo(micStrenthView.bounds.size)
         }
+        silenceImageView.clipsToBounds = true
+        silenceImageView.layer.cornerRadius = micStrenthView.bounds.size.width / 2
+        silenceImageView.snp.makeConstraints { make in
+            make.size.equalTo(micStrenthView)
+            make.right.bottom.equalTo(micStrenthView)
+        }
         avatarImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.height.equalTo(self.snp.width).multipliedBy(48.0 / 112.0)
@@ -100,9 +106,6 @@ class RtcVideoItemView: UIView {
         }
         nameLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-        }
-        silenceImageView.snp.makeConstraints { make in
-            make.right.bottom.equalToSuperview().inset(4)
         }
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTap)))
     }
@@ -136,7 +139,15 @@ class RtcVideoItemView: UIView {
         return view
     }()
     
-    lazy var silenceImageView = UIImageView(image: UIImage(named: "silence"))
+    lazy var silenceImageView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .center
+        view.setTraitRelatedBlock { v in
+            v.image = UIImage(named: "silence")?.tintColor(.color(type: .danger))
+        }
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        return view
+    }()
     
     lazy var nameLabel: UILabel = {
        let label = UILabel()
@@ -153,7 +164,7 @@ class RtcVideoItemView: UIView {
     lazy var micStrenthView: UIImageView = {
         let image = UIImageView(image: UIImage(named: "microphone_volume"))
         image.tintColor = .white
-        image.backgroundColor = UIColor.init(hexString: "#999CA3").withAlphaComponent(0.01)
+        image.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         image.frame = .init(origin: .zero, size: .init(width: 24, height: 24))
         image.clipsToBounds = true
         image.layer.cornerRadius = 12
