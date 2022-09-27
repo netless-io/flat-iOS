@@ -59,11 +59,27 @@ extension UIViewController {
             viewController.popoverPresentationController?.sourceView = view
             
             if permittedArrowDirections == .none {
+                var isOnRight = true
+                if let window = view.window {
+                    let originInWindow = view.convert(CGPoint.zero, to: window)
+                    isOnRight = originInWindow.x >= window.bounds.width / 2
+                }
+                
                 if let navi = viewController as? UINavigationController, let root = navi.topViewController {
-                    let xInset = (-root.preferredContentSize.width / 2) + sourceBoundsInset.dx
+                    let xInset: CGFloat
+                    if isOnRight {
+                        xInset = (-root.preferredContentSize.width / 2) + sourceBoundsInset.dx
+                    } else {
+                        xInset = (viewController.preferredContentSize.width / 2)  + (-sourceBoundsInset.dx) + view.bounds.width
+                    }
                     viewController.popoverPresentationController?.sourceRect = .init(x: xInset, y: 0, width: 0, height: 0)
                 } else {
-                    let xInset = (-viewController.preferredContentSize.width / 2) + sourceBoundsInset.dx
+                    let xInset: CGFloat
+                    if isOnRight {
+                        xInset = (-viewController.preferredContentSize.width / 2) + sourceBoundsInset.dx
+                    } else {
+                        xInset = (viewController.preferredContentSize.width / 2)  + (-sourceBoundsInset.dx) + view.bounds.width
+                    }
                     viewController.popoverPresentationController?.sourceRect = .init(x: xInset, y: 0, width: 0, height: 0)
                 }
             } else {

@@ -21,6 +21,17 @@ class WhiteboardAppsViewController: UIViewController {
 
     var room: WhiteRoom?
     weak var clickSource: UIButton?
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        let rows = ceil(CGFloat(items.count) / numberPerRow)
+        preferredContentSize = .init(width: layout.itemSize.width * numberPerRow + layout.sectionInset.left + layout.sectionInset.right,
+                                     height: layout.itemSize.height * rows + layout.sectionInset.top + layout.sectionInset.bottom)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,10 +45,6 @@ class WhiteboardAppsViewController: UIViewController {
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        
-        let rows = ceil(CGFloat(items.count) / numberPerRow)
-        preferredContentSize = .init(width: layout.itemSize.width * numberPerRow + layout.sectionInset.left + layout.sectionInset.right,
-                                     height: layout.itemSize.height * rows + layout.sectionInset.top + layout.sectionInset.bottom)
     }
     
     
