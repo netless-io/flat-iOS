@@ -385,6 +385,7 @@ extension AdvanceReplayViewController: ReplayOverlayDelegate {
     func replayOverlayDidClickSeekToPercent(_ overlay: ReplayOverlay, percent: Float) {
         guard let syncPlayer = syncPlayer else { return }
         let seconds = syncPlayer.totalTime.seconds * Double(percent)
+        guard !seconds.isNaN else { return }
         syncPlayer.seek(time: CMTime(seconds: seconds, preferredTimescale: syncPlayer.totalTime.timescale))
         overlay.show()
     }
