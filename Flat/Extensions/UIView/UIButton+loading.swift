@@ -47,6 +47,10 @@ extension UIButton {
                     make.width.height.equalTo(self).multipliedBy(0.6)
                 }
             }
+            var white: CGFloat = 0
+            backgroundColor?.getWhite(&white, alpha: nil)
+            activityView.color = white > 0.45 ? .white : .color(type: .text)
+            
             savedNormalImage = image(for: .normal)
             savedSelectedImage = image(for: .selected)
             savedNormalText = title(for: .normal)

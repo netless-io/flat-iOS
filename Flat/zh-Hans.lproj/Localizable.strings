@@ -600,6 +600,12 @@
 "TryLaunchUploadInClassTip" = "请打开云盘自行上传文件";
 
 
+"TurnOffReocrdAlertTip" = "是否确定结束录制？";
+
+
+"TurnOnRecordAlertTip" = "是否确定开启录制？";
+
+
 "Unbound" = "未绑定";
 
 

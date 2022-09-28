@@ -386,11 +386,36 @@ class ClassRoomViewModel {
     func transformRecordTap(_ tap: ControlEvent<Void>) -> RecordingOutput {
         let loading = BehaviorRelay<Bool>.init(value: true)
         
+        func startAlert() -> Observable<Bool> {
+            return alertProvider
+                .showAlert(with: .init(message: localizeStrings("TurnOnRecordAlertTip"), preferredStyle: .alert, actionModels: [
+                    .cancel,
+                    .confirm
+                ]))
+                .asObservable()
+                .map { $0.style == .default }
+                .filter { $0 }
+        }
+        
+        func finishAlert() -> Observable<Bool> {
+            return alertProvider
+                .showAlert(with: .init(message: localizeStrings("TurnOffReocrdAlertTip"), preferredStyle: .alert, actionModels: [
+                    .cancel,
+                    .confirm
+                ]))
+                .asObservable()
+                .map { $0.style == .default }
+                .filter { $0 }
+        }
+        
         let userOperation = tap
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .asObservable()
             .flatMap { [unowned self] _ -> Observable<Bool> in
                 Observable<Bool>.just(self.recordModel != nil)
+            }
+            .flatMap { recording -> Observable<Bool> in
+                let alert = recording ? finishAlert() : startAlert()
+                return alert.map { _ in recording }
             }
             .flatMap { [unowned self] recording -> Observable<Bool> in
                 loading.accept(true)
@@ -419,6 +444,7 @@ class ClassRoomViewModel {
             .map { $0 != nil }
             .asObservable()
             .concat(userOperation)
+        
         return .init(recording: recording, loading: loading.asObservable())
         
     }

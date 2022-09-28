@@ -600,6 +600,12 @@
 "TryLaunchUploadInClassTip" = "Please open the cloud storage to upload the file by yourself";
 
 
+"TurnOffReocrdAlertTip" = "Is it sure to end the recording?";
+
+
+"TurnOnRecordAlertTip" = "Is it sure to turn on recording?";
+
+
 "Unbound" = "Unbound";
 
 
