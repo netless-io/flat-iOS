@@ -79,7 +79,7 @@ class RegularSideBarViewController: UIViewController {
     
     func setupViews() {
         gradientBackgroundLayer.startPoint = .zero
-        gradientBackgroundLayer.endPoint = .init(x: 0, y: 1)
+        gradientBackgroundLayer.endPoint = .init(x: 1, y: 0)
         view.layer.addSublayer(gradientBackgroundLayer)
         updateGradientColors()
         
@@ -121,13 +121,13 @@ class RegularSideBarViewController: UIViewController {
     // Line for splitViewController
     lazy var cloudStorageViewController: CloudStorageViewController = {
         let cloudStorage = CloudStorageViewController()
-        cloudStorage.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
+//        cloudStorage.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
         return cloudStorage
     }()
     
     lazy var homeViewController: HomeViewController = {
         let home = HomeViewController()
-        home.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
+//        home.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
         return home
     }()
     
