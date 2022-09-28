@@ -204,6 +204,7 @@ class RegularSideBarViewController: UIViewController {
         let stack = UIStackView(arrangedSubviews: [])
         stack.axis = .vertical
         stack.distribution = .fillEqually
+        stack.spacing = 11
         return stack
     }()
     
