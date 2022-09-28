@@ -30,11 +30,11 @@ PODS:
   - AliyunLogProducer/Core (2.3.10.4)
   - CropViewController (2.6.1)
   - DZNEmptyDataSet (1.8.1)
-  - Fastboard (2.0.0-alpha.1):
-    - Fastboard/core (= 2.0.0-alpha.1)
-  - Fastboard/core (2.0.0-alpha.1):
-    - Whiteboard (~> 2.17.0-alhpa.2)
-  - Fastboard/fpa (2.0.0-alpha.1):
+  - Fastboard (2.0.0-alpha.2):
+    - Fastboard/core (= 2.0.0-alpha.2)
+  - Fastboard/core (2.0.0-alpha.2):
+    - Whiteboard (~> 2.17.0-alhpa.4)
+  - Fastboard/fpa (2.0.0-alpha.2):
     - Fastboard/core
     - Whiteboard/fpa
   - Firebase/AnalyticsWithoutAdIdSupport (9.5.0):
@@ -128,28 +128,28 @@ PODS:
   - SnapKit (5.0.1)
   - SwiftyBeaver (1.9.5)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.17.0-alpha.3):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.3)
-  - Whiteboard/Base (2.17.0-alpha.3):
+  - Whiteboard (2.17.0-alpha.6):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.6)
+  - Whiteboard/Base (2.17.0-alpha.6):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.3):
+  - Whiteboard/Converter (2.17.0-alpha.6):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.17.0-alpha.3):
+  - Whiteboard/fpa (2.17.0-alpha.6):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.17.0-alpha.3):
+  - Whiteboard/Model (2.17.0-alpha.6):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.3):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.6):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.3):
+  - Whiteboard/Object (2.17.0-alpha.6):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.3):
+  - Whiteboard/Replayer (2.17.0-alpha.6):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.3)
-  - Whiteboard/Room (2.17.0-alpha.3):
+  - Whiteboard/Resource (2.17.0-alpha.6)
+  - Whiteboard/Room (2.17.0-alpha.6):
     - Whiteboard/Base
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.3):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.6):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -165,8 +165,8 @@ DEPENDENCIES:
   - AliyunLogProducer/Core
   - CropViewController
   - DZNEmptyDataSet
-  - Fastboard (from `/Users/xuyunshi/Desktop/Fastboard`)
-  - Fastboard/fpa (from `/Users/xuyunshi/Desktop/Fastboard`)
+  - Fastboard (= 2.0.0-alpha.2)
+  - Fastboard/fpa (= 2.0.0-alpha.2)
   - Firebase/AnalyticsWithoutAdIdSupport
   - FirebaseCrashlytics
   - Hero
@@ -181,7 +181,7 @@ DEPENDENCIES:
   - SnapKit
   - SwiftyBeaver
   - WechatOpenSDK
-  - "Whiteboard (from `git@github.com:netless-io/Whiteboard-iOS.git`, tag `2.17.0-alpha.3`)"
+  - Whiteboard (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
   - Zip
 
 SPEC REPOS:
@@ -193,6 +193,7 @@ SPEC REPOS:
     - AliyunLogProducer
     - CropViewController
     - DZNEmptyDataSet
+    - Fastboard
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -223,16 +224,8 @@ SPEC REPOS:
     - Zip
 
 EXTERNAL SOURCES:
-  Fastboard:
-    :path: "/Users/xuyunshi/Desktop/Fastboard"
   Whiteboard:
-    :git: "git@github.com:netless-io/Whiteboard-iOS.git"
-    :tag: 2.17.0-alpha.3
-
-CHECKOUT OPTIONS:
-  Whiteboard:
-    :git: "git@github.com:netless-io/Whiteboard-iOS.git"
-    :tag: 2.17.0-alpha.3
+    :path: "/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS"
 
 SPEC CHECKSUMS:
   AcknowList: 6d4faca4c3e0173377fe5649e086d627cd60b003
@@ -242,7 +235,7 @@ SPEC CHECKSUMS:
   AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fastboard: 60e26c6f66dd6866d99cc9f9c1216ab001fba115
+  Fastboard: 3ec01c619c8edee1b5305b382b9207305dcb63ce
   Firebase: 800f16f07af493d98d017446a315c27af0552f41
   FirebaseAnalytics: 1b60984a408320dda637306f3f733699ef8473d7
   FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
@@ -269,10 +262,10 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 6cf1a927da5e2aae2e288ad33a7d822936dad668
+  Whiteboard: 56819569d6bbb93a6b8c745d28d478d1e3d5c708
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: c1882f65d427c689e925ea36dce749a625eec34c
+PODFILE CHECKSUM: ead0610ed14cfa1f5548d57dd869acba1a76be87
 
 COCOAPODS: 1.11.3
