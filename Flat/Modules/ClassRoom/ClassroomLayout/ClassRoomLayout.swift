@@ -57,20 +57,11 @@ class ClassRoomLayout {
                 } else {
                     let heightDelta = contentSize.height - estimateHeight
                     let realRtcHeight = min((isRtcHide ? 0 : heightDelta + estimateRtcHeight), rtcMaxRatio * contentSize.height)
-                    let extraHeight = contentSize.height - realRtcHeight - estimateWhiteHeight
-                    let topMargin: CGFloat
-                    let bottomMargin: CGFloat
-                    if isRtcHide {
-                        topMargin = extraHeight / 2
-                        bottomMargin = extraHeight / 2
-                    } else {
-                        topMargin = 0
-                        bottomMargin = extraHeight
-                    }
+                    let realWhiteboardHeight = contentSize.height - realRtcHeight
                     let output = OutPut(rtcSize: .init(width: contentSize.width, height: realRtcHeight),
                                         rtcDirection: rtcDirection,
-                                        whiteboardSize: .init(width: width, height: estimateWhiteHeight),
-                                        inset: .init(top: topMargin, left: 0, bottom: bottomMargin, right: 0))
+                                        whiteboardSize: .init(width: width, height: realWhiteboardHeight),
+                                        inset: .zero)
                     return (output, preferredStyle)
                 }
             case .right:

@@ -14,8 +14,8 @@ target 'Flat' do
   
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
-  pod 'Fastboard', '2.0.0-alpha.1'
-  pod 'Fastboard/fpa'
+  pod 'Fastboard', :path => '/Users/xuyunshi/Desktop/Fastboard'
+  pod 'Fastboard/fpa', :path => '/Users/xuyunshi/Desktop/Fastboard'
   pod 'Whiteboard', :git => 'git@github.com:netless-io/Whiteboard-iOS.git', :tag => '2.17.0-alpha.3'
   
   pod 'MBProgressHUD', '~> 1.2.0'
