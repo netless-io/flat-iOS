@@ -14,6 +14,11 @@ import RxCocoa
 extension Reactive where Base: UIViewController {
     func dismiss(animated: Bool) -> Single<Void> {
         Single<Void>.create { observer in
+            if let top = self.base.presentedViewController,
+               top.modalPresentationStyle == .popover,
+               let popOverPresentationController = top.popoverPresentationController {
+                top.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(popOverPresentationController)
+            }
             self.base.dismiss(animated: animated) {
                 observer(.success(()))
             }

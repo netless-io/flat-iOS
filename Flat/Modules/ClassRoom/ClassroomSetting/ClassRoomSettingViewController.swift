@@ -69,13 +69,6 @@ class ClassRoomSettingViewController: UIViewController {
                 weakSelf.tableView.reloadData()
             }
             .disposed(by: rx.disposeBag)
-
-        
-        logoutButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.dismiss(animated: true, completion: nil)
-            })
-            .disposed(by: rx.disposeBag)
     }
 
     // MARK: - Private
@@ -149,7 +142,6 @@ class ClassRoomSettingViewController: UIViewController {
             button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger)), for: .normal)
             button.layer.borderColor = UIColor.color(type: .danger).cgColor
         })
-        
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 4
         button.layer.masksToBounds = true

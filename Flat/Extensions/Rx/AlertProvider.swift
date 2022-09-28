@@ -50,7 +50,7 @@ protocol AlertProvider {
 class DefaultAlertProvider: AlertProvider {
     weak var root: UIViewController?
     
-    var customPopOverSourceProvider: ((AlertModel) -> (UIView, CGRect))?
+    var customPopOverSourceProvider: ((AlertModel) -> (UIView, (dx: CGFloat, dy: CGFloat)))?
     
     // Cancel style will be called when white space clicked
     func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel> {
@@ -69,21 +69,19 @@ class DefaultAlertProvider: AlertProvider {
             var newModel = model
             newModel.actionModels = models
             let vc = AlertBuilder.buildAlertController(for: newModel)
-            vc.modalPresentationStyle = .popover
+
             if let customPopOverSourceProvider = self.customPopOverSourceProvider {
-                let i = customPopOverSourceProvider(model)
-                vc.popoverPresentationController?.sourceView = i.0
-                vc.popoverPresentationController?.sourceRect = i.1
+                let p = customPopOverSourceProvider(model)
+                root.popoverViewController(viewController: vc,
+                                           fromSource: p.0,
+                                           sourceBoundsInset: p.1)
             } else {
                 if let source = source as? UIView {
-                    vc.popoverPresentationController?.sourceView = source
-                    vc.popoverPresentationController?.sourceRect = source.bounds
+                    root.popoverViewController(viewController: vc, fromSource: source)
                 } else {
-                    vc.popoverPresentationController?.sourceView = root.view
-                    vc.popoverPresentationController?.sourceRect = .zero
+                    root.popoverViewController(viewController: vc, fromSource: root.view)
                 }
             }
-            root.present(vc, animated: true, completion: nil)
             return Disposables.create()
         }
         
