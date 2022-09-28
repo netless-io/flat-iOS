@@ -188,11 +188,9 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             }))
         }
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-        let popPresent = alertController.popoverPresentationController
         if let cell = sender as? SettingTableViewCell {
-            popPresent?.sourceView = cell.popOverAnchorView
+            popoverViewController(viewController: alertController, fromSource: cell.settingDetailLabel)
         }
-        present(alertController, animated: true, completion: nil)
     }
     
     @objc func onClickLanguage(sender: Any?) {
@@ -206,11 +204,9 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             }))
         }
         alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-        let popPresent = alertController.popoverPresentationController
         if let cell = sender as? SettingTableViewCell {
-            popPresent?.sourceView = cell.popOverAnchorView
+            popoverViewController(viewController: alertController, fromSource: cell.settingDetailLabel)
         }
-        present(alertController, animated: true, completion: nil)
     }
     
     func rebootAndTurnToSetting() {
