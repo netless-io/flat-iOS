@@ -49,7 +49,8 @@ class RoomUserTableViewCell: UITableViewCell {
             make.right.lessThanOrEqualToSuperview().inset(66)
         }
         operationStackView.snp.makeConstraints { make in
-            make.top.bottom.right.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.right.equalToSuperview().inset(14)
         }
         
         contentView.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
@@ -107,8 +108,10 @@ class RoomUserTableViewCell: UITableViewCell {
     
     lazy var cameraButton: UIButton = {
         let cameraButton = UIButton(type: .custom)
-        cameraButton.setImage(UIImage(named: "camera_off")?.tintColor(.color(type: .text, .strong)), for: .normal)
-        cameraButton.setImage(UIImage(named: "camera_on")?.tintColor(.color(type: .text, .strong)), for: .selected)
+        cameraButton.setTraitRelatedBlock { btn in
+            btn.setImage(UIImage(named: "camera_off")?.tintColor(.color(type: .danger)), for: .normal)
+            btn.setImage(UIImage(named: "camera_on")?.tintColor(.color(type: .primary)), for: .selected)
+        }
         cameraButton.addTarget(self, action: #selector(onClickCamera), for: .touchUpInside)
         cameraButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return cameraButton
@@ -116,8 +119,10 @@ class RoomUserTableViewCell: UITableViewCell {
     
     lazy var micButton: UIButton = {
         let micButton = UIButton(type: .custom)
-        micButton.setImage(UIImage(named: "mic_off")?.tintColor(.color(type: .text, .strong)), for: .normal)
-        micButton.setImage(UIImage(named: "mic_on")?.tintColor(.color(type: .text, .strong)), for: .selected)
+        micButton.setTraitRelatedBlock { btn in
+            btn.setImage(UIImage(named: "mic_off")?.tintColor(.color(type: .danger)), for: .normal)
+            btn.setImage(UIImage(named: "mic_on")?.tintColor(.color(type: .primary)), for: .selected)
+        }
         micButton.addTarget(self, action: #selector(onClickMic), for: .touchUpInside)
         micButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return micButton

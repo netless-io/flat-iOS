@@ -1,18 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Group 951@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Group 951@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Group 951.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

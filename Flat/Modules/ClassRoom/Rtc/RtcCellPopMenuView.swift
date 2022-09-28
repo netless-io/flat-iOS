@@ -28,7 +28,9 @@ class RtcCellPopMenuView: PopMenuView {
     
     func update(cameraOn: Bool, micOn: Bool) {
         cameraButton.setImage(cameraOn ? cameraOnImage : cameraOffImage, for: .normal)
+        cameraButton.tintColor = cameraOn ? .color(type: .primary) : .color(type: .danger)
         micButton.setImage(micOn ? micOnImage : micOffImage, for: .normal)
+        micButton.tintColor = micOn ? .color(type: .primary) : .color(type: .danger)
     }
     
     override var intrinsicContentSize: CGSize {
@@ -49,7 +51,7 @@ class RtcCellPopMenuView: PopMenuView {
     func setup() {
         clipsToBounds = true
         layer.cornerRadius = 4
-        layer.borderWidth = 1 / UIScreen.main.scale
+        layer.borderWidth = 1
         layer.borderColor = UIColor.borderColor.cgColor
         backgroundColor = .color(type: .background)
         addSubview(stackView)
@@ -88,7 +90,6 @@ class RtcCellPopMenuView: PopMenuView {
     
     lazy var cameraButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.tintColor = .color(type: .text, .strong)
         btn.tag = 0
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
@@ -96,7 +97,6 @@ class RtcCellPopMenuView: PopMenuView {
     
     lazy var micButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.tintColor = .color(type: .text, .strong)
         btn.tag = 1
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
@@ -105,10 +105,9 @@ class RtcCellPopMenuView: PopMenuView {
     lazy var expandButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "expand"), for: .normal)
-        btn.tintColor = .color(type: .text, .strong)
+        btn.tintColor = .color(type: .text)
         btn.tag = 2
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
     }()
-
 }
