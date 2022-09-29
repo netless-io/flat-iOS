@@ -11,96 +11,7 @@ import UIKit
 import RxSwift
 
 class RoomDetailViewController: UIViewController {
-    enum RoomOperation {
-        case modify
-        case remove
-        case cancel
-        
-        var isDestructive: Bool {
-            if self == .cancel || self == .remove { return true }
-            return false
-        }
-        
-        var title: String {
-            switch self {
-            case .cancel:
-                return NSLocalizedString("Cancel Room", comment: "")
-            case .remove:
-                return NSLocalizedString("Remove From List", comment: "")
-            case .modify:
-                return NSLocalizedString("Modify Room", comment: "")
-            }
-        }
-        
-        var alertVerbose: String {
-            switch self {
-            case .modify:
-                return ""
-            case .remove:
-                return NSLocalizedString("Remove Room Verbose", comment: "")
-            case .cancel:
-                return NSLocalizedString("Cancel Room Verbose", comment: "")
-            }
-        }
-        
-        var image: UIImage? {
-            switch self {
-            case .modify:
-                return nil
-            case .remove:
-                return UIImage(named: "delete_room")
-            case .cancel:
-                return nil
-            }
-        }
-        
-        func actionFor(viewController: RoomDetailViewController) {
-            guard let info = viewController.info else { return }
-            switch self {
-            case .modify:
-                // TODO: Modify Room 
-                return
-            case .remove, .cancel:
-                let hud = viewController.showActivityIndicator()
-                let api = RoomCancelRequest(roomUUID: info.roomUUID)
-                ApiProvider.shared.request(fromApi: api) { result in
-                    switch result {
-                    case .success:
-                        NotificationCenter.default.post(name: .init(rawValue: homeShouldUpdateListNotification), object: nil)
-                        hud.stopAnimating()
-                        
-                        viewController.navigationController?.popViewController(animated: true)
-                        viewController.mainContainer?.removeTop()
-                    case .failure(let error):
-                        hud.stopAnimating()
-                        viewController.toast(error.localizedDescription)
-                    }
-                }
-            }
-        }
-        
-        static func actionsWith(isTeacher: Bool, roomStatus: RoomStartStatus) -> [RoomOperation] {
-            switch roomStatus {
-            case .Idle:
-                if isTeacher {
-                    return [.modify, .cancel]
-                } else {
-                    return [.remove]
-                }
-            case .Started, .Paused:
-                if isTeacher {
-                    return []
-                } else {
-                    return [.remove]
-                }
-            default:
-                return []
-            }
-        }
-    }
-    
     var info: RoomBasicInfo?
-    var availableOperations: [RoomOperation] = []
     
     func updateStatus(_ status: RoomStartStatus) {
         info?.roomStatus = status
@@ -146,6 +57,7 @@ class RoomDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        observeRoomRemoved()
     }
     
     // MARK: - Private
@@ -165,38 +77,30 @@ class RoomDetailViewController: UIViewController {
         }
     }
     
+    @objc func onRoomRemoved(_ notification: Notification) {
+        guard
+            let roomUUID = notification.userInfo?["roomUUID"] as? String,
+            roomUUID == info?.roomUUID
+        else { return }
+        mainContainer?.removeTop()
+//        navigationController.popviewcon
+    }
+    
+    func observeRoomRemoved() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onRoomRemoved(_:)), name: .init(roomRemovedNotification), object: nil)
+    }
+    
     func updateAvailableActions() {
         guard let info = info else { return }
-        let isTeacher = info.isOwner
-        availableOperations = RoomOperation.actionsWith(isTeacher: isTeacher, roomStatus: info.roomStatus)
-        if availableOperations.isEmpty {
-            navigationItem.rightBarButtonItem = nil
-        } else {
-            let item = UIBarButtonItem(image: UIImage(named: "more"),
-                                       style: .plain,
-                                       target: nil,
-                                       action: nil)
-            var actions = availableOperations.map { operation -> Action in
-                Action(title: operation.title,
-                       image: operation.image,
-                       style: operation.isDestructive ? .destructive : .default,
-                       handler: { _ in
-                    if !operation.alertVerbose.isEmpty {
-                        self.showCheckAlert(title: operation.title, message: operation.alertVerbose) {
-                            operation.actionFor(viewController: self)
-                        }
-                    } else {
-                        operation.actionFor(viewController: self)
-                    }
-                })
-            }
-            actions.append(.cancel)
-            item.setupCommonCustomAlert(actions)
-            item.viewContainingControllerProvider = { [weak self]  in
-                return self
-            }
-            navigationItem.rightBarButtonItem = item
+        let actions = info.roomActions(rootController: self)
+        navigationItem.rightBarButtonItem = actions.isEmpty ? nil : UIBarButtonItem(image: UIImage(named: "more"),
+                                                                                    style: .plain,
+                                                                                    target: nil,
+                                                                                    action: nil)
+        navigationItem.rightBarButtonItem?.viewContainingControllerProvider = { [unowned self] in
+            return self
         }
+        navigationItem.rightBarButtonItem?.setupCommonCustomAlert(actions)
     }
     
     @IBAction func onClickCopy(_ sender: Any) {

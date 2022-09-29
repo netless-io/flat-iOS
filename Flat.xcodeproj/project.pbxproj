@@ -100,6 +100,7 @@
 		8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0BA82716859700123207 /* LoginViewController.swift */; };
 		8A2E0C4A28D03B8300CD63EE /* UIView+seperatorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */; };
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
+		8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
 		8A4BF2D528C58AD800021D2A /* WhiteboardAppsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4BF2D428C58AD800021D2A /* WhiteboardAppsViewController.swift */; };
@@ -398,6 +399,7 @@
 		8A2D0BA82716859700123207 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+seperatorLine.swift"; sourceTree = "<group>"; };
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
+		8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomOperation.swift; sourceTree = "<group>"; };
 		8A48A9C82716D734003719DB /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
 		8A48A9CA2716D795003719DB /* FlatResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatResponse.swift; sourceTree = "<group>"; };
 		8A4BF2D428C58AD800021D2A /* WhiteboardAppsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardAppsViewController.swift; sourceTree = "<group>"; };
@@ -654,7 +656,6 @@
 				8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */,
 				8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */,
 				8AD3627D28DD49680086699E /* UIView+TableViewHeader.swift */,
-				8ABF36302747B696000D5003 /* UIView+Loading.swift */,
 				8ABF36302747B696000D5003 /* UIView+FlatLoading.swift */,
 				8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */,
 				8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */,
@@ -934,6 +935,7 @@
 		8A270B6D2718299B00450DC6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				8A40F70A28E541DF00BCEF45 /* RoomOperation */,
 				8A270B6E271829AB00450DC6 /* HomeViewController.swift */,
 				8AFB942928B7124C00B8795D /* HistoryViewController.swift */,
 				8ACE3A25272FF77100BC37F7 /* RoomDetailViewController.swift */,
@@ -1051,6 +1053,14 @@
 				8A05C2AE2758B98F009BCA79 /* WeChatLogin.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		8A40F70A28E541DF00BCEF45 /* RoomOperation */ = {
+			isa = PBXGroup;
+			children = (
+				8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */,
+			);
+			path = RoomOperation;
 			sourceTree = "<group>";
 		};
 		8A73309228C843BB00404B2D /* UITableView */ = {
@@ -1778,6 +1788,7 @@
 				8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */,
 				8AFB942E28B7550100B8795D /* CameraMicToggleView.swift in Sources */,
 				8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */,
+				8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */,
 				8AD3CDF92716B53D008BD904 /* UIViewController+Alert.swift in Sources */,
 				8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */,
 				8A7741DC2738BB06009FAADA /* ClassroomFactory.swift in Sources */,

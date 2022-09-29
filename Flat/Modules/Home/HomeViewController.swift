@@ -11,8 +11,6 @@ import UIKit
 import Kingfisher
 import DZNEmptyDataSet
 
-let homeShouldUpdateListNotification = "homeShouldUpdateListNotification"
-
 extension RoomStartStatus {
     var textColor: UIColor {
         if self == .Idle {
@@ -183,15 +181,22 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc func onHomeShouldUpdateNotification(_ noti: Notification) {
-        loadRooms(nil)
+    @objc func onRoomRemovedNotification(_ noti: Notification) {
+        guard
+            let roomUUID = noti.userInfo?["roomUUID"] as? String,
+            let index = list.firstIndex(where: { $0.roomUUID == roomUUID })
+        else { return }
+        tableView.beginUpdates()
+        list.remove(at: index)
+        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
+        tableView.endUpdates()
     }
     
     // MARK: - Private
     func observeNotification() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(onHomeShouldUpdateNotification(_:)),
-                                               name: .init(rawValue: "homeShouldUpdateListNotification"),
+                                               selector: #selector(onRoomRemovedNotification(_:)),
+                                               name: .init(rawValue: roomRemovedNotification),
                                                object: nil)
         NotificationCenter.default.rx
             .notification(avatarUpdateNotificationName)
@@ -369,6 +374,24 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         tableHeader.bounds.height
+    }
+    
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let item = list[indexPath.row]
+        let actions = item.roomActions(rootController: self)
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let uiActions = actions.compactMap { action -> UIAction? in
+                if action.isCancelAction() {
+                    return nil
+                }
+                return UIAction(title: action.title,
+                                attributes: action.style == .destructive ? .destructive : []) { _ in
+                    action.handler?(action)
+                }
+            }
+            return UIMenu(title: "", children: uiActions)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
