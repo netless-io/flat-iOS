@@ -21,7 +21,6 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
     }
     
-    weak var previewingController: CustomPreviewViewController?
     var currentPreview: AnyPreview?
     
     override func viewWillAppear(_ animated: Bool) {
@@ -215,11 +214,65 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     }
     
     @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        guard let identifier = configuration.identifier as? NSString else { return }
+        let index = Int(identifier.intValue)
+        let item = container.items[index]
+        
+        if let selected = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selected, animated: true)
+        }
+        tableView.selectRow(at: .init(row: index, section: 0), animated: true, scrollPosition: .none)
+        
+        let vc = animator.previewViewController
+        if let vc = vc as? CloudStorageViewController {
+            animator.addAnimations {
+                self.enterDirectoryWith(controller: vc)
+            }
+        } else {
+            animator.addAnimations {
+                self.preview(item, existController: vc)
+            }
+        }
+    }
+    
+    @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard !tableView.isEditing else { return nil }
         let item = container.items[indexPath.row]
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [unowned self] _ in
-            let uiActions = self.actions(for: item).compactMap { action -> UIAction? in
+        let directoryProvider = { [unowned self] in
+            let controller = self.directoryControllerFor(item: item)
+            let size = self.view.bounds.size.applying(.init(scaleX: 0.9, y: 0.5))
+            controller.preferredContentSize = size
+            return controller
+        }
+        let provider: UIContextMenuContentPreviewProvider?
+        if item.resourceType == .directory {
+            provider = directoryProvider
+        } else {
+            switch item.fileType {
+            case .video:
+                provider = { self.createVideoControllerFor(url: item.urlOrEmpty) }
+            case .img:
+                provider = {
+                    let vc = CustomPreviewViewController()
+                    let fileExtension = String(item.fileName.split(separator: ".").last ?? "")
+                    vc.update(source: .image(url: item.urlOrEmpty,
+                                             fileExtension: fileExtension,
+                                             fileName: item.fileName))
+                    return vc
+                }
+            default:
+                if let step = item.meta.whiteConverteInfo?.convertStep,
+                    step == .done {
+                    provider = { self.tryCreatewebPreviewController(for: item) }
+                } else {
+                    provider = nil
+                }
+            }
+        }
+        return UIContextMenuConfiguration(identifier: indexPath.row.description as NSString, previewProvider: provider) { [unowned self] _ in
+            let uiActions = self.actions(for: item, skipPreview: true).compactMap { action -> UIAction? in
                 if action.isCancelAction() {
                     return nil
                 }
@@ -231,7 +284,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
     }
     
-    func actions(for item: StorageFileModel) -> [Action] {
+    func actions(for item: StorageFileModel, skipPreview: Bool = false) -> [Action] {
         if item.resourceType == .directory {
             return [
                 .init(title: localizeStrings("Rename"), style: .default, handler: { _ in
@@ -244,10 +297,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             ]
         }
         
-        return [
-            .init(title: localizeStrings("Preview"), style: .default, handler: { _ in
-                self.preview(item)
-            }),
+        var actions: [Action] = [
             .init(title: localizeStrings("Rename"), style: .default, handler: { _ in
                 self.rename(item)
             }),
@@ -259,6 +309,12 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             }),
             .cancel
         ]
+        if !skipPreview {
+            actions.insert(.init(title: localizeStrings("Preview"), style: .default, handler: { _ in
+                self.preview(item)
+            }), at: 0)
+        }
+        return actions
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -268,10 +324,8 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
         let item = container.items[indexPath.row]
         if item.resourceType == .directory {
-            let directory = currentDirectoryPath + item.fileName + "/"
-            let controller = CloudStorageViewController(currentDirectoryPath: directory)
-            navigationController?.pushViewController(controller, animated: true)
-            (mainContainer?.concreteViewController as? MainSplitViewController)?.cleanSecondary()
+            let controller = directoryControllerFor(item: item)
+            enterDirectoryWith(controller: controller)
             return
         }
         if let payload = item.meta.whiteConverteInfo {
@@ -288,6 +342,16 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
         guard item.usable else { return }
         preview(item)
+    }
+    
+    func enterDirectoryWith(controller: CloudStorageViewController) {
+        navigationController?.pushViewController(controller, animated: true)
+        (mainContainer?.concreteViewController as? MainSplitViewController)?.cleanSecondary()
+    }
+    
+    func directoryControllerFor(item: StorageFileModel) -> CloudStorageViewController {
+        let directory = currentDirectoryPath + item.fileName + "/"
+        return CloudStorageViewController(currentDirectoryPath: directory)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -311,52 +375,73 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     }
     
     // MARK: - Preview
-    func preview(_ item: StorageFileModel) {
-        if let _ = previewingController {
-            mainContainer?.removeTop()
-        }
+    func preview(_ item: StorageFileModel, existController: UIViewController? = nil) {
         previewingUUID = item.fileUUID
-        let fileExtension = String(item.fileName.split(separator: ".").last ?? "")
         switch item.fileType {
         case .video:
-            let vc = CustomAVPlayerViewController()
-            let player = AVPlayer(url: item.urlOrEmpty)
-            vc.dismissHandler = { [weak self] in
-                self?.previewingUUID = nil
-            }
-            vc.player = player
-            player.play()
-            mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
-        case .img:
-            previewLocalFileUrlPath(source: .image(url: item.urlOrEmpty, fileExtension: fileExtension, fileName: item.fileName))
-        default:
-            // Preview with web link
-            do {
-                let jsonData = try JSONEncoder().encode(item)
-                let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
-                let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
-                if let url = URL(string: link) {
-                    let vc = WKWebViewController(url: url)
-                    vc.modalPresentationStyle = .fullScreen
-                    vc.title = item.fileName
-                    vc.dismissHandler = { [weak self] in
-                        guard let self = self else { return }
-                        self.mainContainer?.removeTop()
-                        self.previewingUUID = nil
-                    }
-                    mainContainer?.pushOnSplitPresentOnCompact(vc)
-                    return
+            func enterVideo(_ vc: CustomAVPlayerViewController) {
+                vc.dismissHandler = { [weak self] in
+                    self?.previewingUUID = nil
                 }
+                mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             }
-            catch {
-                toast("encode storage item fail, \(error)")
+            if let vc = existController as? CustomAVPlayerViewController {
+                enterVideo(vc)
+            } else {
+                enterVideo(createVideoControllerFor(url: item.urlOrEmpty))
+            }
+        case .img:
+            let fileExtension = String(item.fileName.split(separator: ".").last ?? "")
+            systemPreviewController.update(source: .image(url: item.urlOrEmpty,
+                                                          fileExtension: fileExtension,
+                                                          fileName: item.fileName))
+            if systemPreviewController.mainContainer == nil {
+                mainContainer?.pushOnSplitPresentOnCompact(systemPreviewController)
+            }
+        default:
+            func enterWebPreview(_ vc: WKWebViewController) {
+                vc.dismissHandler = { [weak self] in
+                    guard let self = self else { return }
+                    self.mainContainer?.removeTop()
+                    self.previewingUUID = nil
+                }
+                mainContainer?.pushOnSplitPresentOnCompact(vc)
+            }
+            if let vc = existController as? WKWebViewController {
+                enterWebPreview(vc)
+            } else if let vc = tryCreatewebPreviewController(for: item) {
+                enterWebPreview(vc)
             }
         }
     }
     
-    func previewLocalFileUrlPath(source: CustomPreviewViewController.Source) {
-        systemPreviewController.update(source: source)
-        mainContainer?.pushOnSplitPresentOnCompact(systemPreviewController)
+    func tryCreatewebPreviewController(for item: StorageFileModel) -> WKWebViewController? {
+        do {
+            let jsonData = try JSONEncoder().encode(item)
+            let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
+            let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
+            if let url = URL(string: link) {
+                let vc = WKWebViewController(url: url)
+                vc.modalPresentationStyle = .fullScreen
+                vc.title = item.fileName
+                return vc
+            }
+        } catch {
+            toast("encode storage item fail, \(error)")
+        }
+        return nil
+    }
+    
+    func createVideoControllerFor(url: URL? = nil) -> CustomAVPlayerViewController {
+        let vc = CustomAVPlayerViewController()
+        DispatchQueue.global().async {
+            if let url = url {
+                let player = AVPlayer(url: url)
+                vc.player = player
+                player.play()
+            }
+        }
+        return vc
     }
     
     // MARK: - Lazy

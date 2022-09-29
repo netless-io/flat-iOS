@@ -25,11 +25,35 @@ class WKWebViewController: UIViewController {
         dismissHandler?()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presentCloseButton?.removeFromSuperview()
+        presentTitleLabel?.removeFromSuperview()
+        
+        if let _ = navigationController {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: localizeStrings("Close"), style: .plain, target: self, action: #selector(onClickNaviBack))
+            webView.snp.remakeConstraints { make in
+                make.edges.equalTo(view.safeAreaLayoutGuide)
+            }
+        } else {
+            presentCloseButton = addPresentCloseButton()
+            presentTitleLabel = addPresentTitle(title ?? "")
+            webView.snp.remakeConstraints { make in
+                make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
+                make.top.equalTo(presentCloseButton!.snp.bottom)
+            }
+        }
+    }
+    
+    var presentCloseButton: UIButton?
+    var presentTitleLabel: UILabel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         webView.navigationDelegate = self
-        showActivityIndicator()
+        view.startFlatLoading()
     }
     
     func setupViews() {
@@ -37,20 +61,6 @@ class WKWebViewController: UIViewController {
         webView.backgroundColor = .color(type: .background)
         view.addSubview(webView)
         webView.scrollView.isScrollEnabled = false
-        
-        if let _ = navigationController {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: localizeStrings("Close"), style: .plain, target: self, action: #selector(onClickNaviBack))
-            webView.snp.makeConstraints { make in
-                make.edges.equalTo(view.safeAreaLayoutGuide)
-            }
-        } else {
-            let closeButton = addPresentCloseButton()
-            addPresentTitle(title ?? "")
-            webView.snp.makeConstraints { make in
-                make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
-                make.top.equalTo(closeButton.snp.bottom)
-            }
-        }
     }
 
     lazy var webView = WKWebView(frame: .zero)
@@ -58,6 +68,6 @@ class WKWebViewController: UIViewController {
 
 extension WKWebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        stopActivityIndicator()
+        view.endFlatLoading()
     }
 }
