@@ -378,6 +378,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        guard let identifier = (configuration.identifier as? NSString) else { return }
+        let index = Int(identifier.intValue)
+        
+        if let selected = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selected, animated: true)
+        }
+        tableView.selectRow(at: .init(row: index, section: 0), animated: true, scrollPosition: .none)
         if let controller = animator.previewViewController as? RoomDetailViewController,
            let item = controller.info {
             detailViewController.updateInfo(item)
@@ -397,7 +404,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             vc.preferredContentSize = .init(width: width, height: 280)
             return vc
         }
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider) { _ in
+        let identifier = indexPath.row.description as NSString
+        return UIContextMenuConfiguration(identifier: identifier, previewProvider: previewProvider) { _ in
             let uiActions = actions.compactMap { action -> UIAction? in
                 if action.isCancelAction() {
                     return nil
