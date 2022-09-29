@@ -15,33 +15,31 @@ class RoomTableViewCell: UITableViewCell {
     @IBOutlet weak var ownerAvatarView: UIImageView!
     @IBOutlet weak var roomTimeLabel: UILabel!
     @IBOutlet weak var roomTitleLabel: UILabel!
-    @IBOutlet weak var borderView: UIView!
-    @IBOutlet weak var separatorLineHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var recordIconView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        separatorLineHeightConstraint.constant = 1
         contentView.backgroundColor = .color(type: .background)
-        borderView.backgroundColor = .borderColor
         roomTitleLabel.textColor = .color(type: .text, .strong)
         roomTimeLabel.textColor = .color(type: .text)
-        
-        contentView.insertSubview(selectionView, at: 0)
-        selectionView.clipsToBounds = true
-        selectionView.layer.cornerRadius = 6
-        selectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 1, left: 8, bottom: 2, right: 8))
-        }
+
+        contentView.layer.insertSublayer(selectionShapeLayer, at: 0)
+        contentView.addLine(direction: .bottom,
+                            color: .borderColor,
+                            inset: .init(top: 0, left: 64, bottom: 0, right: 16))
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let path = UIBezierPath(roundedRect: bounds.inset(by: UIEdgeInsets(top: 1, left: 8, bottom: 2, right: 8)), cornerRadius: 6)
+        selectionShapeLayer.path = path.cgPath
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        if animated {
-            selectionView.layer.backgroundColor = selected ? UIColor.color(type: .primary, .weak).cgColor : UIColor.clear.cgColor
-        } else {
-            selectionView.backgroundColor = selected ?  .color(type: .primary, .weak) : .clear
+        setTraitRelatedBlock {
+            $0.selectionShapeLayer.fillColor = selected ? UIColor.color(type: .primary, .weak).cgColor : UIColor.clear.cgColor
         }
     }
     
@@ -87,5 +85,5 @@ class RoomTableViewCell: UITableViewCell {
         recordIconView.isHidden = !room.hasRecord
     }
     
-    lazy var selectionView = UIView()
+    lazy var selectionShapeLayer = CAShapeLayer()
 }

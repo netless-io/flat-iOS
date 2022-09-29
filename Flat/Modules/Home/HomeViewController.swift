@@ -375,12 +375,29 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         tableHeader.bounds.height
     }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        if let controller = animator.previewViewController as? RoomDetailViewController,
+           let item = controller.info {
+            detailViewController.updateInfo(item)
+            mainContainer?.push(detailViewController)
+        }
+    }
     
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let item = list[indexPath.row]
         let actions = item.roomActions(rootController: self)
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+        let previewProvider: UIContextMenuContentPreviewProvider = { [unowned self] in
+            let vc = RoomDetailViewController()
+            vc.hideAllActions = true
+            vc.updateInfo(item)
+            let width = self.view.bounds.width - 88
+            vc.preferredContentSize = .init(width: width, height: 280)
+            return vc
+        }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider) { _ in
             let uiActions = actions.compactMap { action -> UIAction? in
                 if action.isCancelAction() {
                     return nil

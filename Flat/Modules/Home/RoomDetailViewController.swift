@@ -12,6 +12,7 @@ import RxSwift
 
 class RoomDetailViewController: UIViewController {
     var info: RoomBasicInfo?
+    var hideAllActions = false
     
     func updateStatus(_ status: RoomStartStatus) {
         info?.roomStatus = status
@@ -83,7 +84,6 @@ class RoomDetailViewController: UIViewController {
             roomUUID == info?.roomUUID
         else { return }
         mainContainer?.removeTop()
-//        navigationController.popviewcon
     }
     
     func observeRoomRemoved() {
@@ -188,6 +188,8 @@ class RoomDetailViewController: UIViewController {
                 $0.isHidden = $0 === replayButton ? true : false
             }
         }
+        
+        roomOperationStackView.isHidden = hideAllActions
     }
     
     // MARK: - Action

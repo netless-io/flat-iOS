@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,13 +18,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="516" height="76"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dam-SV-4Jd">
-                        <rect key="frame" x="64" y="75" width="436" height="1"/>
-                        <color key="backgroundColor" systemColor="systemRedColor"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" id="RWc-FB-A3f"/>
-                        </constraints>
-                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DXd-Er-CdJ">
                         <rect key="frame" x="16" y="22" width="32" height="32"/>
                         <constraints>
@@ -85,29 +78,24 @@
                         </subviews>
                     </stackView>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="n3u-Wr-gKc" secondAttribute="trailing" constant="16" id="0ca-Oz-e1H"/>
                     <constraint firstItem="C8f-iz-tdT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="15G-CY-5pa"/>
-                    <constraint firstItem="dam-SV-4Jd" firstAttribute="trailing" secondItem="n3u-Wr-gKc" secondAttribute="trailing" id="285-Xp-AlR"/>
                     <constraint firstAttribute="trailing" secondItem="C8f-iz-tdT" secondAttribute="trailing" constant="44" id="7wf-a9-KKQ"/>
-                    <constraint firstAttribute="bottom" secondItem="dam-SV-4Jd" secondAttribute="bottom" id="Hjb-sC-ETt"/>
                     <constraint firstItem="n3u-Wr-gKc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="LjN-Fm-APH"/>
                     <constraint firstItem="DXd-Er-CdJ" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="OdM-tO-8d2"/>
-                    <constraint firstItem="dam-SV-4Jd" firstAttribute="leading" secondItem="C8f-iz-tdT" secondAttribute="leading" id="SWd-6Y-SKw"/>
                     <constraint firstItem="C8f-iz-tdT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="64" id="VNt-5R-rja"/>
                     <constraint firstItem="DXd-Er-CdJ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="lcG-AS-Kfa"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="borderView" destination="dam-SV-4Jd" id="ao9-bY-IXi"/>
                 <outlet property="calendarIcon" destination="RN4-XQ-Mcr" id="g15-H7-FId"/>
                 <outlet property="ownerAvatarView" destination="DXd-Er-CdJ" id="E7P-EX-mt2"/>
                 <outlet property="recordIconView" destination="weJ-ho-LZ8" id="q3V-Gx-yJV"/>
                 <outlet property="roomTimeLabel" destination="EcH-QX-dha" id="K2w-bl-FmD"/>
                 <outlet property="roomTitleLabel" destination="2ha-Hg-WhR" id="bZw-Jc-uh3"/>
-                <outlet property="separatorLineHeightConstraint" destination="RWc-FB-A3f" id="Yvw-5f-KAM"/>
             </connections>
             <point key="canvasLocation" x="-2046" y="-347"/>
         </tableViewCell>
@@ -121,9 +109,6 @@
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

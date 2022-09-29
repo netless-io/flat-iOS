@@ -119,7 +119,6 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         cell.render(info: list[indexPath.row])
         cell.backgroundColor = .color(type: .background, .weak)
         cell.contentView.backgroundColor = .color(type: .background, .weak)
-        cell.selectionView.backgroundColor = .red
         return cell
     }
     
