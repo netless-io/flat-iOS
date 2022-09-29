@@ -387,14 +387,38 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 }
                 
                 return updatedUsers
-        }
-        .debug()
-        .do(onNext: { [weak self] users in
-            let usersPair = users.filter({ $0.status.isSpeak }).map { ($0.rtmUUID, $0)}
-            self?.currentOnStageUsers = .init(uniqueKeysWithValues: usersPair)
-        })
-        observableMembers = result.share(replay: 1, scope: .forever)
-        return observableMembers!
+            }
+            .map({ unsortedUsers in
+                unsortedUsers
+                    .sorted { a, b in
+                        func sortNum(_ user: RoomUser) -> Int {
+                            var r = 0
+                            if user.rtmUUID == ownerUUID {
+                                r += (1 << 3)
+                            }
+                            if user.status.isSpeak {
+                                r += (1 << 2)
+                            }
+                            if user.status.isRaisingHand {
+                                r += (1 << 1)
+                            }
+                            return r
+                        }
+                        let aNum = sortNum(a)
+                        let bNum = sortNum(b)
+                        if aNum == bNum {
+                            return a.name.compare(b.name) == .orderedDescending
+                        }
+                        return aNum > bNum
+                    }
+            })
+            .debug()
+            .do(onNext: { [weak self] users in
+                let usersPair = users.filter({ $0.status.isSpeak }).map { ($0.rtmUUID, $0)}
+                self?.currentOnStageUsers = .init(uniqueKeysWithValues: usersPair)
+            })
+            observableMembers = result.share(replay: 1, scope: .forever)
+            return observableMembers!
     }
     
     func checkIfOnStageUserOverMaxCount() -> Single<Bool> {
