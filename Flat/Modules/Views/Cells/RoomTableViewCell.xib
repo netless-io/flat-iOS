@@ -45,16 +45,16 @@
                                         <color key="textColor" systemColor="systemBlueColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="record" translatesAutoresizingMaskIntoConstraints="NO" id="weJ-ho-LZ8">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="room_calendar" translatesAutoresizingMaskIntoConstraints="NO" id="RN4-XQ-Mcr">
                                         <rect key="frame" x="298" y="0.0" width="24" height="24"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="24" id="dsY-wR-2LE"/>
+                                            <constraint firstAttribute="width" constant="24" id="fbd-cz-95s"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="room_calendar" translatesAutoresizingMaskIntoConstraints="NO" id="RN4-XQ-Mcr">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="record" translatesAutoresizingMaskIntoConstraints="NO" id="weJ-ho-LZ8">
                                         <rect key="frame" x="326" y="0.0" width="24" height="24"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="24" id="fbd-cz-95s"/>
+                                            <constraint firstAttribute="width" constant="24" id="dsY-wR-2LE"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vsr-3N-Zws">
