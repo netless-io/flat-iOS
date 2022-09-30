@@ -61,10 +61,11 @@ func configAppearance() {
     FastRoomThemeManager.shared.apply(flatTheme)
     
     FastRoomControlBar.appearance().commonRadius = isCompact() ? 8 : 4
-    FastRoomControlBar.appearance().itemWidth = 48
+    FastRoomControlBar.appearance().itemWidth = isCompact() ? 40 : 48
     FastRoomControlBar.appearance().borderWidth = 1
-    
+
     UISwitch.appearance().onTintColor = .color(type: .primary)
+    
     IQKeyboardManager.shared.enable = true
     IQKeyboardManager.shared.enableAutoToolbar = false
     IQKeyboardManager.shared.shouldResignOnTouchOutside = true

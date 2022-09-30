@@ -3,6 +3,9 @@
     {
       "filename" : "delete.pdf",
       "idiom" : "universal"
+    },
+    {
+      "idiom" : "iphone"
     }
   ],
   "info" : {
