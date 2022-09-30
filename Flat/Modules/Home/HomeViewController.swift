@@ -381,10 +381,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         guard let identifier = (configuration.identifier as? NSString) else { return }
         let index = Int(identifier.intValue)
         
-        if let selected = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selected, animated: true)
+        if !isCompact() {
+            if let selected = tableView.indexPathForSelectedRow {
+                tableView.deselectRow(at: selected, animated: true)
+            }
+            tableView.selectRow(at: .init(row: index, section: 0), animated: true, scrollPosition: .none)
         }
-        tableView.selectRow(at: .init(row: index, section: 0), animated: true, scrollPosition: .none)
+        
         if let controller = animator.previewViewController as? RoomDetailViewController,
            let item = controller.info {
             detailViewController.updateInfo(item)
