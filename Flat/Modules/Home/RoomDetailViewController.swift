@@ -173,6 +173,7 @@ class RoomDetailViewController: UIViewController {
         let dateStr = formatter.string(from: beginTime)
         timeLabel.text = dateStr + " " + timeStr
         statusLabel.text = NSLocalizedString(status.rawValue, comment: "")
+        statusLabel.textColor = status == .Started ? .color(type: .success) : .color(type: .text)
         
         roomNumberLabel.text = info.formatterInviteCode
         roomTypeLabel.text = NSLocalizedString(roomType.rawValue, comment: "")
