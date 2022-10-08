@@ -34,7 +34,7 @@ class ClassRoomViewController: UIViewController {
     let fastboardViewController: FastboardViewController
     let rtcListViewController: RtcViewController
     let settingVC = ClassRoomSettingViewController(cameraOn: false, micOn: false, videoAreaOn: true, deviceUpdateEnable: false)
-    let inviteViewController: UIViewController
+    let inviteViewController: () -> UIViewController
     let userListViewController: ClassRoomUsersViewController
     var chatVC: ChatViewController?
     
@@ -43,7 +43,7 @@ class ClassRoomViewController: UIViewController {
          fastboardViewController: FastboardViewController,
          rtcListViewController: RtcViewController,
          userListViewController: ClassRoomUsersViewController,
-         inviteViewController: UIViewController,
+         inviteViewController: @escaping () -> UIViewController,
          isOwner: Bool,
          ownerUUID: String
     ) {
@@ -231,7 +231,7 @@ class ClassRoomViewController: UIViewController {
     func bindInvite() {
         inviteButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
-                weakSelf.popoverViewController(viewController: weakSelf.inviteViewController,
+                weakSelf.popoverViewController(viewController: weakSelf.inviteViewController(),
                                                fromSource: weakSelf.inviteButton,
                                                permittedArrowDirections: .none)
             })

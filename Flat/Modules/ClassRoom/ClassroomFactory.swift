@@ -64,6 +64,7 @@ struct ClassroomFactory {
         let userPermissionEnable = detailInfo.isOwner
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
         fastRoomConfiguration.whiteRoomConfig.windowParams?.scrollVerticalOnly = true
+        fastRoomConfiguration.whiteRoomConfig.windowParams?.stageStyle = "box-shadow: 0 0 0"
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
         fastRoomConfiguration.whiteRoomConfig.disableCameraTransform = !userPermissionEnable
@@ -134,10 +135,12 @@ struct ClassroomFactory {
                                      preferredDeviceState: deviceStatus)
         
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
-        let shareViewController = ShareManager.createShareActivityViewController(roomUUID: playInfo.roomUUID,
-                                                                                 beginTime: detailInfo.beginTime,
-                                                                                 title: detailInfo.title,
-                                                                                 roomNumber: detailInfo.formatterInviteCode)
+        let shareViewController: () -> UIViewController = {
+            ShareManager.createShareActivityViewController(roomUUID: playInfo.roomUUID,
+                                                                                                          beginTime: detailInfo.beginTime,
+                                                                                                          title: detailInfo.title,
+                                                                                                          roomNumber: detailInfo.formatterInviteCode)
+        }
         let controller = ClassRoomViewController(viewModel: vm,
                                                  fastboardViewController: fastboardViewController,
                                                  rtcListViewController: rtcViewController,

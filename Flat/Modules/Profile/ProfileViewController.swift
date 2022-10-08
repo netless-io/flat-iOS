@@ -205,7 +205,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
 extension ProfileViewController: CropViewControllerDelegate {
     func cropViewController(_ cropViewController: CropViewController, didCropToCircularImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
-        var targetImage = image
+        var targetImage = cropViewController.image
         let maxSize = CGSize(width: 244, height: 244)
         if image.size.width > maxSize.width || image.size.height > maxSize.height {
             UIGraphicsBeginImageContextWithOptions(maxSize, true, 3)
