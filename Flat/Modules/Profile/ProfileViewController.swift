@@ -205,10 +205,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
 extension ProfileViewController: CropViewControllerDelegate {
     func cropViewController(_ cropViewController: CropViewController, didCropToCircularImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
-        var targetImage = cropViewController.image
+        var targetImage = image
         let maxSize = CGSize(width: 244, height: 244)
         if image.size.width > maxSize.width || image.size.height > maxSize.height {
-            UIGraphicsBeginImageContextWithOptions(maxSize, true, 3)
+            UIGraphicsBeginImageContextWithOptions(maxSize, false, 3)
             image.draw(in: .init(origin: .zero, size: maxSize))
             if let t = UIGraphicsGetImageFromCurrentImageContext() {
                 targetImage = t
@@ -216,8 +216,8 @@ extension ProfileViewController: CropViewControllerDelegate {
             UIGraphicsEndImageContext()
         }
         
-        let data = targetImage.jpegData(compressionQuality: 1)
-        let path = NSTemporaryDirectory() + UUID().uuidString + ".jpg"
+        let data = targetImage.pngData()
+        let path = NSTemporaryDirectory() + UUID().uuidString + ".png"
         FileManager.default.createFile(atPath: path, contents: data)
         let fileURL = URL(fileURLWithPath: path)
         do {
