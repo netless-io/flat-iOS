@@ -82,7 +82,6 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         (mainContainer?.concreteViewController as? MainSplitViewController)?.cleanSecondary()
     }
     
-    
     // MARK: - Lazy
     lazy var addButton: UIButton = {
         let addButton = SpringButton(type: .custom)
@@ -117,6 +116,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         
         let leftStack = UIStackView(arrangedSubviews: [backItem, titleLabel])
         header.addSubview(leftStack)
+        header.addSubview(normalOperationStackView)
 
         if currentDirectoryPath == "/" {
             titleLabel.text = localizeStrings("Cloud Storage")
@@ -125,6 +125,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
                 make.left.equalToSuperview().inset(16)
                 make.centerY.equalToSuperview()
                 make.height.equalTo(44)
+                make.right.lessThanOrEqualTo(normalOperationStackView.snp.left)
             }
         } else {
             titleLabel.text = String(currentDirectoryPath.split(separator: "/").last ?? "")
@@ -133,13 +134,13 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
                 make.left.equalToSuperview()
                 make.centerY.equalToSuperview()
                 make.height.equalTo(44)
+                make.right.lessThanOrEqualTo(normalOperationStackView.snp.left)
             }
             backItem.snp.makeConstraints { make in
                 make.width.height.equalTo(44)
             }
         }
 
-        header.addSubview(normalOperationStackView)
         normalOperationStackView.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.centerY.equalTo(header)
