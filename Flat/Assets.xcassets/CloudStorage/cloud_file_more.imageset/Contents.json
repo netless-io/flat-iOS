@@ -1,18 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "moreVertical@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "moreVertical@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "moreVertical.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

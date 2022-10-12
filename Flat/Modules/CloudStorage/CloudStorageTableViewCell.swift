@@ -25,12 +25,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         } else {
             selectionView.backgroundColor = selected ?  .color(type: .primary, .weaker) : .color(type: .background)
         }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        rightArrowImageView.image = UIImage(named: "arrowRight")?.tintColor(.color(type: .text))
-        moreActionButton.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(type: .text, .strong)), for: .normal)
+        moreActionButton.isSelected = selected
     }
     
     func setupViews() {
@@ -85,7 +80,6 @@ class CloudStorageTableViewCell: UITableViewCell {
         convertingActivityView.startAnimating()
     }
     
-    
     func updateActivityAnimate(_ animate: Bool) {
         if animate {
             if activity.superview == nil {
@@ -128,12 +122,18 @@ class CloudStorageTableViewCell: UITableViewCell {
     
     lazy var moreActionButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(type: .text, .strong)), for: .normal)
+        btn.setTraitRelatedBlock { btn in
+            btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(light: .init(hexString: "#1A1E21"), dark: .grey3)), for: .normal)
+            btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(type: .primary)), for: .selected)
+        }
         return btn
     }()
     
     lazy var rightArrowImageView:UIImageView = {
-        let view = UIImageView(image: UIImage(named: "arrowRight")?.tintColor(.color(type: .text)))
+        let view = UIImageView()
+        view.setTraitRelatedBlock { v in
+            v.image = UIImage(named: "arrowRight")?.tintColor(.color(type: .text))
+        }
         view.contentMode = .scaleAspectFit
         return view
     }()

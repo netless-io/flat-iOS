@@ -93,7 +93,7 @@ class RoomDetailViewController: UIViewController {
     func updateAvailableActions() {
         guard let info = info else { return }
         let actions = info.roomActions(rootController: self)
-        navigationItem.rightBarButtonItem = actions.isEmpty ? nil : UIBarButtonItem(image: UIImage(named: "more"),
+        navigationItem.rightBarButtonItem = actions.isEmpty ? nil : UIBarButtonItem(image: UIImage(named: "cloud_file_more"),
                                                                                     style: .plain,
                                                                                     target: nil,
                                                                                     action: nil)
