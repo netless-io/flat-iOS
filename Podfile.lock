@@ -127,33 +127,33 @@ PODS:
   - Siren (5.7.1)
   - SnapKit (5.0.1)
   - SwiftyBeaver (1.9.5)
-  - SyncPlayer (0.3.2)
+  - SyncPlayer (0.3.3)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.17.0-alpha.6):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.6)
-  - Whiteboard/Base (2.17.0-alpha.6):
+  - Whiteboard (2.17.0-alpha.8):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.8)
+  - Whiteboard/Base (2.17.0-alpha.8):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.6):
+  - Whiteboard/Converter (2.17.0-alpha.8):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.17.0-alpha.6):
+  - Whiteboard/fpa (2.17.0-alpha.8):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.17.0-alpha.6):
+  - Whiteboard/Model (2.17.0-alpha.8):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.6):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.8):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.6):
+  - Whiteboard/Object (2.17.0-alpha.8):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.6):
+  - Whiteboard/Replayer (2.17.0-alpha.8):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.6)
-  - Whiteboard/Room (2.17.0-alpha.6):
+  - Whiteboard/Resource (2.17.0-alpha.8)
+  - Whiteboard/Room (2.17.0-alpha.8):
     - Whiteboard/Base
-  - Whiteboard/SyncPlayer (2.17.0-alpha.6):
+  - Whiteboard/SyncPlayer (2.17.0-alpha.8):
     - SyncPlayer
     - Whiteboard/Replayer
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.6):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.8):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -184,10 +184,10 @@ DEPENDENCIES:
   - Siren
   - SnapKit
   - SwiftyBeaver
-  - SyncPlayer (= 0.3.2)
+  - SyncPlayer (= 0.3.3)
   - WechatOpenSDK
-  - Whiteboard (= 2.17.0-alpha.6)
-  - Whiteboard/SyncPlayer (= 2.17.0-alpha.6)
+  - Whiteboard (= 2.17.0-alpha.8)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.8)
   - Zip
 
 SPEC REPOS:
@@ -265,12 +265,12 @@ SPEC CHECKSUMS:
   Siren: 76ac728f4f2f4a3576c322272e94a0e37955664f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
-  SyncPlayer: a9b3a6d9946cf63d8c978b553eb808558b64b156
+  SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 56819569d6bbb93a6b8c745d28d478d1e3d5c708
+  Whiteboard: 5b1b80b643a44bad2c8afd224acc9820480e217e
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 1c1cbd0df20415517520ede3cff083fb8a276160
+PODFILE CHECKSUM: ae3c1f1ee022be025710ff114ebdf06153fa0521
 
 COCOAPODS: 1.11.3
