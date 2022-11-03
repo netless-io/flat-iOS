@@ -108,41 +108,41 @@ class ClassRoomViewController: UIViewController {
                         self?.stopSubModulesAndLeaveUIHierarchy()
                     })
                 })
-            .subscribe(
-                with: self,
-                onSuccess: { weakSelf, _ in
-                    weakSelf.setupBinding() },
-                onFailure: { weakSelf, error in
-                    weakSelf.stopSubModules()
-                    weakSelf.showAlertWith(message: NSLocalizedString("Init room error", comment: "") + error.localizedDescription) {
-                        weakSelf.leaveUIHierarchy()
-                    }}
-            ).disposed(by: rx.disposeBag)
-
-        result.autoPickMemberOnStageOnce?
-              .subscribe(with: self, onSuccess: { weakSelf, user in
-                  if let user = user {
-                      weakSelf.toast(localizeStrings("ownerAutoOnStageTips") + user.name, timeInterval: 3, preventTouching: false)
-                  }
-              }).disposed(by: rx.disposeBag)
+                .subscribe(
+                    with: self,
+                    onSuccess: { weakSelf, _ in
+                        weakSelf.setupBinding() },
+                    onFailure: { weakSelf, error in
+                        weakSelf.stopSubModules()
+                        weakSelf.showAlertWith(message: NSLocalizedString("Init room error", comment: "") + error.localizedDescription) {
+                            weakSelf.leaveUIHierarchy()
+                        }}
+                ).disposed(by: rx.disposeBag)
                 
-        result.roomError
-            .subscribe(with: self, onNext: { weakSelf, error in
-                func loopToAlert() {
-                    if let _ = weakSelf.presentedViewController {
-                        logger.trace("delay room error alert \(error)")
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            loopToAlert()
-                        }
-                    }  else {
-                        weakSelf.showAlertWith(message: error.uiAlertString) {
-                            weakSelf.stopSubModulesAndLeaveUIHierarchy()
+                result.autoPickMemberOnStageOnce?
+                .subscribe(with: self, onSuccess: { weakSelf, user in
+                    if let user = user {
+                        weakSelf.toast(localizeStrings("ownerAutoOnStageTips") + user.name, timeInterval: 3, preventTouching: false)
+                    }
+                }).disposed(by: rx.disposeBag)
+                
+                result.roomError
+                .subscribe(with: self, onNext: { weakSelf, error in
+                    func loopToAlert() {
+                        if let _ = weakSelf.presentedViewController {
+                            logger.trace("delay room error alert \(error)")
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                loopToAlert()
+                            }
+                        }  else {
+                            weakSelf.showAlertWith(message: error.uiAlertString) {
+                                weakSelf.stopSubModulesAndLeaveUIHierarchy()
+                            }
                         }
                     }
+                    loopToAlert()
+                }).disposed(by: rx.disposeBag)
                 }
-                loopToAlert()
-        }).disposed(by: rx.disposeBag)
-    }
     
     func setupBinding() {
         bindUsersList()
@@ -196,6 +196,10 @@ class ClassRoomViewController: UIViewController {
             .asDriver(onErrorJustReturn: false)
             .drive(recordButton.rx.isLoading)
             .disposed(by: rx.disposeBag)
+
+        output.layoutUpdate
+            .subscribe()
+            .disposed(by: rx.disposeBag)
     }
     
     func bindTerminate() {
@@ -220,7 +224,7 @@ class ClassRoomViewController: UIViewController {
         viewModel.isRaisingHand.asDriver(onErrorJustReturn: false)
             .drive(raiseHandButton.rx.isSelected)
             .disposed(by: rx.disposeBag)
-
+        
         viewModel.transOnStageUpdate(whiteboardEnable: fastboardViewController.isRoomWritable.asObservable())
             .subscribe(with: self, onNext: { weakSelf, toastString in
                 weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
@@ -243,7 +247,7 @@ class ClassRoomViewController: UIViewController {
             .init(chatButtonTap: chatButton.rx.tap, chatControllerPresentedFetch: { [weak self] in
                 guard let chatVC = self?.chatVC else { return .just(false) }
                 return chatVC.rx.isPresented
-        }))
+            }))
         
         initChatResult
             .subscribe(with: self, onSuccess: { weakSelf, r in
@@ -319,7 +323,7 @@ class ClassRoomViewController: UIViewController {
                 return
             }
         })
-            .disposed(by: rx.disposeBag)
+        .disposed(by: rx.disposeBag)
     }
     
     func bindRtc() {
@@ -378,26 +382,26 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
         
         settingVC.videoAreaPublish.asDriver(onErrorJustReturn: ())
-                .drive(with: self, onNext: { weakSelf, _ in
-                    let isOpen = !weakSelf.settingVC.videoAreaOn.value
-                    weakSelf.settingVC.videoAreaOn.accept(isOpen)
-                    weakSelf.updateLayout()
-                    UIView.animate(withDuration: 0.3) {
-                        weakSelf.rtcListViewController.view.alpha = isOpen ? 1 : 0
-                        weakSelf.view.setNeedsLayout()
-                        weakSelf.view.layoutIfNeeded()
-                    }
-                })
-                .disposed(by: rx.disposeBag)
-        
-        viewModel.transformLogoutTap(settingVC.logoutButton.rx.sourceTap.map { [unowned self] _ in
-            self.settingButton })
-            .subscribe(with: self, onNext: { weakSelf, dismiss in
-                if dismiss {
-                    weakSelf.stopSubModulesAndLeaveUIHierarchy()
+            .drive(with: self, onNext: { weakSelf, _ in
+                let isOpen = !weakSelf.settingVC.videoAreaOn.value
+                weakSelf.settingVC.videoAreaOn.accept(isOpen)
+                weakSelf.updateLayout()
+                UIView.animate(withDuration: 0.3) {
+                    weakSelf.rtcListViewController.view.alpha = isOpen ? 1 : 0
+                    weakSelf.view.setNeedsLayout()
+                    weakSelf.view.layoutIfNeeded()
                 }
             })
             .disposed(by: rx.disposeBag)
+        
+        viewModel.transformLogoutTap(settingVC.logoutButton.rx.sourceTap.map { [unowned self] _ in
+            self.settingButton })
+        .subscribe(with: self, onNext: { weakSelf, dismiss in
+            if dismiss {
+                weakSelf.stopSubModulesAndLeaveUIHierarchy()
+            }
+        })
+        .disposed(by: rx.disposeBag)
         
         viewModel.currentUser.map { $0.status.isSpeak }
             .asDriver(onErrorJustReturn: false)
@@ -496,7 +500,7 @@ class ClassRoomViewController: UIViewController {
         let x = layoutOutput.inset.left + safeInset.left
         let y = layoutOutput.inset.top + safeInset.top
         rtcListViewController.preferredMargin = classRoomLayout.rtcMargin
-                
+        
         switch layoutOutput.rtcDirection {
         case .top:
             if layoutOutput.rtcSize.height == 0 {
@@ -544,12 +548,12 @@ class ClassRoomViewController: UIViewController {
         button.style = .selectableAppliance
         return button
     }()
-
+    
     lazy var raiseHandButton: RaiseHandButton = {
         let button = RaiseHandButton(type: .custom)
         return button
     }()
-
+    
     lazy var chatButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "chat")!
@@ -563,7 +567,7 @@ class ClassRoomViewController: UIViewController {
         button.setupBadgeView(rightInset: 5, topInset: 5)
         return button
     }()
-
+    
     @objc func onClickStorage(_ sender: UIButton) {
         cloudStorageNavigationController.popOverDismissHandler = { [weak self] in
             self?.cloudStorageButton.isSelected = false
@@ -595,7 +599,7 @@ class ClassRoomViewController: UIViewController {
         }
         return vc
     }()
-     
+    
     lazy var cloudStorageButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "classroom_cloud")!
@@ -608,7 +612,7 @@ class ClassRoomViewController: UIViewController {
         button.rawImage = UIImage(named: "invite")!
         return button
     }()
-
+    
     
     lazy var rightToolBar: FastRoomControlBar = {
         if traitCollection.hasCompact {

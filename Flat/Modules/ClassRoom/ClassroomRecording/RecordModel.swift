@@ -9,8 +9,18 @@
 import Foundation
 import RxSwift
 
+fileprivate let maxUserCount = 17
+fileprivate let singleHeight: Int = 84
+fileprivate let singleWidth = Int(CGFloat(84) / ClassRoomLayoutRatioConfig.rtcItemRatio)
+fileprivate let margin = Float(20)
+fileprivate let videoWidth = singleWidth * maxUserCount + ((maxUserCount + 1) * Int(margin))
+fileprivate let singleUserRatio: Float = Float(singleWidth) / Float(videoWidth)
+fileprivate let marginRatio = margin / Float(videoWidth)
+fileprivate let defaultAvatarUrl = "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg"
+fileprivate let defaultBackgroundColor = "#F3F6F9"
+
 fileprivate let savedRecordModelKey = "RecordModelKey"
-fileprivate let defaultRecordMode: AgoraRecordMode = .individual
+fileprivate let defaultRecordMode: AgoraRecordMode = .mix
 
 // It start record when createModel function was called.
 // The model will saved in userDefaults. (The model will be cleaned when stop function was called or the model was queried as a stoped record)
@@ -61,7 +71,7 @@ class RecordModel: Codable {
     let sid: String
     let roomUUID: String
     let startDate: Date
-
+    
     static func fetchSavedRecordModel() -> Single<RecordModel?> {
         guard let model = savedRecord else { return .just(nil) }
         return model
@@ -70,14 +80,14 @@ class RecordModel: Codable {
             .asSingle()
     }
     
-    static func create(fromRoomUUID uuid: String) -> Observable<RecordModel> {
+    static func create(fromRoomUUID uuid: String, users: [RoomUser]) -> Observable<RecordModel> {
         let maxRetryTime = 3
         let errorRetryTimeInterval = 3
         let clientRequest = RecordAcquireRequest.ClientRequest.default
         let acquireAgoraData = RecordAcquireRequest.AgoraData(clientRequest: clientRequest)
         return ApiProvider.shared
             .request(fromApi: RecordAcquireRequest(agoraData: acquireAgoraData, roomUUID: uuid))
-            .flatMap { start(fromRoomUUID: uuid, resourceId: $0.resourceId) }
+            .flatMap { start(fromRoomUUID: uuid, resourceId: $0.resourceId, users: users) }
             .map { RecordModel(resourceId: $0.resourceId, sid: $0.sid, roomUUID: uuid, startDate: Date()) }
             .retry(when: { error in
                 return error.enumerated().flatMap { index, _  -> Observable<Int> in
@@ -94,7 +104,7 @@ class RecordModel: Codable {
                 RecordModel.savedRecord = model
             })
     }
-
+    
     func endRecord() -> Observable<Void> {
         RecordModel.savedRecord = nil
         let request = StopRecordRequest(roomUUID: roomUUID, agoraParams: .init(resourceid: resourceId, sid: sid, mode: defaultRecordMode))
@@ -104,17 +114,31 @@ class RecordModel: Codable {
             .asObservable()
     }
     
+    func updateLayout(users: [RoomUser]) -> Observable<Void> {
+        let joinedUsers = Array(users.prefix(maxUserCount))
+        let backgroundConfig: [BackgroundConfig] = joinedUsers.map {
+            .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
+        }
+        let layoutConfig: [LayoutConfig] = joinedUsers.enumerated().map { index, _ in
+            let x = (Float(index + 1) * marginRatio) + (Float(index) * singleUserRatio)
+            return .init(x_axis: x, y_axis: 0, width: singleUserRatio, height: 1)
+        }
+        let clientRequest = UpdateLayoutRequest.ClientRequest(mixedVideoLayout: .custom,
+                                                              backgroundColor: defaultBackgroundColor,
+                                                              defaultUserBackgroundImage: defaultAvatarUrl,
+                                                              backgroundConfig: backgroundConfig,
+                                                              layoutConfig: layoutConfig)
+        let agoraData = UpdateLayoutRequest.AgoraData(clientRequest: clientRequest)
+        let agoraParams = UpdateLayoutRequest.AgoraParams(resourceid: resourceId, mode: .mix, sid: sid)
+        let request = UpdateLayoutRequest(roomUUID: roomUUID, agoraData: agoraData, agoraParams: agoraParams)
+        return ApiProvider.shared.request(fromApi: request).mapToVoid()
+    }
+    
     fileprivate func loopToUpdateServerEndTime() {
         DispatchQueue.global().asyncAfter(deadline: .now() + 5) { [weak self] in
             guard let self = self else { return }
-            self.updateServerEndTime()
+            ApiProvider.shared.request(fromApi: UpdateRecordEndTimeRequest(roomUUID: self.roomUUID)) { _ in }
             self.loopToUpdateServerEndTime()
-        }
-    }
-
-    fileprivate func updateServerEndTime() {
-        ApiProvider.shared.request(fromApi: UpdateRecordEndTimeRequest(roomUUID: roomUUID)) { _ in
-            return
         }
     }
     
@@ -126,15 +150,36 @@ class RecordModel: Codable {
             .asObservable()
     }
     
-    fileprivate static func start(fromRoomUUID uuid: String, resourceId: String) -> Observable<StartRecordResponse> {
+    fileprivate static func start(
+        fromRoomUUID uuid: String,
+        resourceId: String,
+        users: [RoomUser])
+    -> Observable<StartRecordResponse> {
+        let displayUsers = Array(users.prefix(maxUserCount))
+        let layoutConfigs: [LayoutConfig] = displayUsers.enumerated().map { (index, _) in
+            let x = (Float(index + 1) * marginRatio) + (Float(index) * singleUserRatio)
+            return .init(x_axis: x, y_axis: 0, width: singleUserRatio, height: 1)
+        }
+        let backgroundConfigs: [BackgroundConfig] = displayUsers.map {
+            return .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
+        }
+        let transCodingConfig = TranscodingConfig(width: videoWidth,
+                                                  height: singleHeight,
+                                                  fps: 15,
+                                                  bitrate: 500,
+                                                  mixedVideoLayout: .custom,
+                                                  backgroundColor: defaultBackgroundColor,
+                                                  defaultUserBackgroundImage: defaultAvatarUrl,
+                                                  backgroundConfig: backgroundConfigs,
+                                                  layoutConfig: layoutConfigs)
         let recordingConfig = StartRecordRequest.RecordingConfig(channelType: .communication,
                                                                  maxIdleTime: 5 * 60,
                                                                  subscribeUidGroup: 2,
-                                                                 streamMode: .standard,
-                                                                 videoStreamType: .small)
+                                                                 transcodingConfig: transCodingConfig)
         let clientRequest = StartRecordRequest.ClientRequest(recordingConfig: recordingConfig)
-        let startAgoraData = StartRecordRequest.AgoraData(clientRequest: clientRequest)
+        let agoraData = StartRecordRequest.AgoraData(clientRequest: clientRequest)
         let agoraParams = StartRecordRequest.AgoraParams(resourceid: resourceId, mode: defaultRecordMode)
-        return ApiProvider.shared.request(fromApi: StartRecordRequest(roomUUID: uuid, agoraData: startAgoraData, agoraParams: agoraParams))
+        let startRequest = StartRecordRequest(roomUUID: uuid, agoraData: agoraData, agoraParams: agoraParams)
+        return ApiProvider.shared.request(fromApi: startRequest)
     }
 }

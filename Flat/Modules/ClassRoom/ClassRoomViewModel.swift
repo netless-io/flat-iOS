@@ -173,7 +173,7 @@ class ClassRoomViewModel {
         }
         
         let error = stateHandler.error.asObservable()
-
+        
         return .init(initRoomResult: shareInitRoom.asSingle(), roomError: error, autoPickMemberOnStageOnce: autoPickMemberOnStageOnce)
     }
     
@@ -262,17 +262,17 @@ class ClassRoomViewModel {
         return input
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .withLatestFrom(currentUser) { _, user in
-            return user.status
-        }
-        .asDriver(onErrorJustReturn: .default)
-        .flatMap { [weak self] status -> Driver<Bool> in
-            guard let self = self else { return .just(false) }
-            if status.isSpeak { return .just(false) }
-            return self.stateHandler
-                .send(command: .updateRaiseHand(!status.isRaisingHand))
-                .asDriver(onErrorJustReturn: ())
-                .map { !status.isRaisingHand }
-        }
+                return user.status
+            }
+            .asDriver(onErrorJustReturn: .default)
+            .flatMap { [weak self] status -> Driver<Bool> in
+                guard let self = self else { return .just(false) }
+                if status.isSpeak { return .just(false) }
+                return self.stateHandler
+                    .send(command: .updateRaiseHand(!status.isRaisingHand))
+                    .asDriver(onErrorJustReturn: ())
+                    .map { !status.isRaisingHand }
+            }
     }
     
     struct UserListInput {
@@ -382,6 +382,7 @@ class ClassRoomViewModel {
     struct RecordingOutput {
         let recording: Observable<Bool>
         let loading: Observable<Bool>
+        let layoutUpdate: Observable<Void>
     }
     func transformRecordTap(_ tap: ControlEvent<Void>) -> RecordingOutput {
         let loading = BehaviorRelay<Bool>.init(value: true)
@@ -417,7 +418,10 @@ class ClassRoomViewModel {
                 let alert = recording ? finishAlert() : startAlert()
                 return alert.map { _ in recording }
             }
-            .flatMap { [unowned self] recording -> Observable<Bool> in
+            .withLatestFrom(rtcUsers, resultSelector: { recording, users in
+                return (recording, users)
+            })
+            .flatMap { [unowned self] (recording, users) -> Observable<Bool> in
                 loading.accept(true)
                 if recording {
                     return self.recordModel!.endRecord()
@@ -427,12 +431,11 @@ class ClassRoomViewModel {
                         })
                         .map { _ in false }
                 } else {
-                    return RecordModel.create(fromRoomUUID: roomUUID)
+                    return RecordModel.create(fromRoomUUID: roomUUID, users: users)
                         .do(onNext: { [weak self] model in
                             loading.accept(false)
                             self?.recordModel = model
-                        })
-                        .map { _ in true }
+                        }).map { _ in true }
                 }
             }
         
@@ -441,12 +444,21 @@ class ClassRoomViewModel {
                 self?.recordModel = model
                 loading.accept(false)
             })
-            .map { $0 != nil }
-            .asObservable()
-            .concat(userOperation)
+                .map { $0 != nil }
+                .asObservable()
+                .concat(userOperation)
         
-        return .init(recording: recording, loading: loading.asObservable())
+        let layoutUpdate = rtcUsers
+            .distinctUntilChanged()
+            .filter { [weak self] _ in
+                return self?.recordModel != nil
+            }
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .flatMap { [unowned self] users -> Observable<Void> in
+                self.recordModel!.updateLayout(users: users)
+            }
         
+        return .init(recording: recording, loading: loading.asObservable(), layoutUpdate: layoutUpdate)
     }
     
     func destroy() {

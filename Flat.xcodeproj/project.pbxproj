@@ -117,6 +117,7 @@
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
 		8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */; };
 		8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62D35828D445710046910B /* RecordSelectionListViewController.swift */; };
+		8A64212D2913BAAB008EEB2F /* UpdateLayoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64212C2913BAAB008EEB2F /* UpdateLayoutRequest.swift */; };
 		8A6E89E12807B48D00908771 /* FlatGeneralCrossButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E89E02807B48D00908771 /* FlatGeneralCrossButton.swift */; };
 		8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */; };
 		8A716F3627B9FFF800DB408F /* LoginViewController+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */; };
@@ -420,6 +421,7 @@
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
 		8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcPreviewViewController.swift; sourceTree = "<group>"; };
 		8A62D35828D445710046910B /* RecordSelectionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSelectionListViewController.swift; sourceTree = "<group>"; };
+		8A64212C2913BAAB008EEB2F /* UpdateLayoutRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateLayoutRequest.swift; sourceTree = "<group>"; };
 		8A6E89E02807B48D00908771 /* FlatGeneralCrossButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatGeneralCrossButton.swift; sourceTree = "<group>"; };
 		8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverPresentationStyleAdaptor.swift; sourceTree = "<group>"; };
 		8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Debug.swift"; sourceTree = "<group>"; };
@@ -915,6 +917,7 @@
 		8A21DABF279FAB220060E25D /* Record */ = {
 			isa = PBXGroup;
 			children = (
+				8A64212C2913BAAB008EEB2F /* UpdateLayoutRequest.swift */,
 				8A21DAB5279F9EEF0060E25D /* RecordAcquireRequest.swift */,
 				8A21DAB7279FA5020060E25D /* StartRecordReqeust.swift */,
 				8A21DABB279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift */,
@@ -1926,6 +1929,7 @@
 				8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */,
 				8A9ACC01271E712100E7E7CE /* RoomListRequest.swift in Sources */,
 				8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */,
+				8A64212D2913BAAB008EEB2F /* UpdateLayoutRequest.swift in Sources */,
 				8A9ACC05271E726B00E7E7CE /* RoomStartStatus.swift in Sources */,
 				8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */,
 				8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */,
