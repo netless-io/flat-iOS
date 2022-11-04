@@ -23,6 +23,12 @@ protocol ReplayOverlayDelegate: AnyObject {
 class ReplayOverlay: NSObject {
     let labelWidth: CGFloat = 66
     let toolBarHeight: CGFloat = 50
+    let hideDelayTIme: TimeInterval
+    
+    init(hideDelayTIme: TimeInterval = 5) {
+        self.hideDelayTIme = hideDelayTIme
+        super.init()
+    }
     
     enum DisplayState {
         case showAlways
@@ -173,7 +179,7 @@ class ReplayOverlay: NSObject {
         case .showDelayHide:
             subviews.forEach { $0.isHidden = false }
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(self.dismiss), object: nil)
-            perform(#selector(self.dismiss), with: nil, afterDelay: 20)
+            perform(#selector(self.dismiss), with: nil, afterDelay: hideDelayTIme)
         case .hideAlways, .hideWaitingTouch:
             subviews.forEach { $0.isHidden = true }
         }

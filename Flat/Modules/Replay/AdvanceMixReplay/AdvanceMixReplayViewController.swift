@@ -47,17 +47,36 @@ class AdvanceMixReplayViewController: UIViewController {
         // Select to first record
         if !viewModel.recordDetail.recordInfo.isEmpty {
             updateRecordIndex(0)
+            setupSectionList()
         }
     }
     
     // MARK: - Private
-    private func updateRecordIndex(_ index: Int) {
-        viewModel.setupWhite(whiteboardView, index: index)
+    private func updateRecordIndex(_ index: Int, autoPlay: Bool = true) {
+        syncPlayer?.destroy()
+        syncPlayer = nil
+        rtcPlayer = nil
+        playerTimeObserver = nil
+        whiteboardView?.removeFromSuperview()
+        whiteboardView = nil
+        
+        let newWhiteView = WhiteBoardView()
+        newWhiteView.isUserInteractionEnabled = false
+        whiteboardView = newWhiteView
+        view.insertSubview(newWhiteView, belowSubview: videoScrollView)
+        newWhiteView.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.top.equalTo(videoScrollView.snp.bottom)
+        }
+        
+        viewModel.setupWhite(newWhiteView, index: index)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { weakSelf, record in
                 weakSelf.listen(to: record.player, duration: record.duration)
                 weakSelf.setup(forRtcPlayer: record.rtcPlayer)
-                weakSelf.updateSectionListButton()
+                if autoPlay {
+                    weakSelf.syncPlayer?.play()
+                }
             }
             .disposed(by: rx.disposeBag)
     }
@@ -114,6 +133,7 @@ class AdvanceMixReplayViewController: UIViewController {
                 self.overlay.updateIsBuffering(true)
             case .ended:
                 self.overlay.update(isPause: true)
+                self.overlay.showAlways()
             case .error:
                 self.overlay.update(isPause: false)
             }
@@ -127,7 +147,7 @@ class AdvanceMixReplayViewController: UIViewController {
         }
     }
     
-    func updateSectionListButton() {
+    func setupSectionList() {
         let currentIndex = viewModel.currentIndex
         let sections = viewModel.recordDetail.recordInfo.enumerated().map { index, item -> (String, Bool) in
             let formatter = DateFormatter()
@@ -141,17 +161,11 @@ class AdvanceMixReplayViewController: UIViewController {
     private func setupViews() {
         view.backgroundColor = .color(type: .background)
         view.addSubview(videoScrollView)
-        view.addSubview(whiteboardView)
         overlay.attachTo(parent: view)
         
         videoScrollView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
             make.height.equalTo(singleRecordHeight)
-        }
-        
-        whiteboardView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(videoScrollView.snp.bottom)
         }
     }
     
@@ -176,11 +190,7 @@ class AdvanceMixReplayViewController: UIViewController {
     
     lazy var videoPreview = VideoPreviewView()
     
-    lazy var whiteboardView: WhiteBoardView = {
-        let view = WhiteBoardView()
-        view.isUserInteractionEnabled = false
-        return view
-    }()
+    var whiteboardView: WhiteBoardView?
     
     lazy var overlay: ReplayOverlay = {
         let overlay = ReplayOverlay()

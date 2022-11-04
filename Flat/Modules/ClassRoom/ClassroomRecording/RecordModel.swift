@@ -15,7 +15,7 @@ fileprivate let singleWidth = Int(CGFloat(84) / ClassRoomLayoutRatioConfig.rtcIt
 fileprivate let margin = Float(20)
 fileprivate let videoWidth = singleWidth * maxUserCount + ((maxUserCount + 1) * Int(margin))
 fileprivate let singleUserRatio: Float = Float(singleWidth) / Float(videoWidth)
-fileprivate let marginRatio = margin / Float(videoWidth)
+fileprivate let marginRatioInRecord = margin / Float(videoWidth)
 fileprivate let defaultAvatarUrl = "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg"
 fileprivate let defaultBackgroundColor = "#F3F6F9"
 
@@ -116,11 +116,18 @@ class RecordModel: Codable {
     
     func updateLayout(users: [RoomUser]) -> Observable<Void> {
         let joinedUsers = Array(users.prefix(maxUserCount))
-        let backgroundConfig: [BackgroundConfig] = joinedUsers.map {
+        let sortedUsers = joinedUsers.sorted { u1, u2 in
+            let isTeacher = u1.rtmUUID == AuthStore.shared.user?.userUUID
+            if isTeacher {
+                return true
+            }
+            return u1.rtcUID > u2.rtcUID
+        }
+        let backgroundConfig: [BackgroundConfig] = sortedUsers.map {
             .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
         }
-        let layoutConfig: [LayoutConfig] = joinedUsers.enumerated().map { index, _ in
-            let x = (Float(index + 1) * marginRatio) + (Float(index) * singleUserRatio)
+        let layoutConfig: [LayoutConfig] = sortedUsers.enumerated().map { index, _ in
+            let x = (Float(index + 1) * marginRatioInRecord) + (Float(index) * singleUserRatio)
             return .init(x_axis: x, y_axis: 0, width: singleUserRatio, height: 1)
         }
         let clientRequest = UpdateLayoutRequest.ClientRequest(mixedVideoLayout: .custom,
@@ -157,7 +164,7 @@ class RecordModel: Codable {
     -> Observable<StartRecordResponse> {
         let displayUsers = Array(users.prefix(maxUserCount))
         let layoutConfigs: [LayoutConfig] = displayUsers.enumerated().map { (index, _) in
-            let x = (Float(index + 1) * marginRatio) + (Float(index) * singleUserRatio)
+            let x = (Float(index + 1) * marginRatioInRecord) + (Float(index) * singleUserRatio)
             return .init(x_axis: x, y_axis: 0, width: singleUserRatio, height: 1)
         }
         let backgroundConfigs: [BackgroundConfig] = displayUsers.map {

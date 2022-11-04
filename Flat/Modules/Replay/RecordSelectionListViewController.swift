@@ -121,5 +121,8 @@ class RecordSelectionListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         clickHandler?(indexPath.row)
+        sections = sections.enumerated().map { i, e in
+            return (e.0, i == indexPath.row)
+        }
     }
 }

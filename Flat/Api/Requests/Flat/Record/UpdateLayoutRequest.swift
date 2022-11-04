@@ -22,8 +22,8 @@ struct UpdateLayoutRequest: FlatRequest, Encodable {
     
     struct ClientRequest: Codable {
         let mixedVideoLayout: MixedVideoLayout
-        let backgroundColor: String // "#000000"
-        let defaultUserBackgroundImage: String // https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg",
+        let backgroundColor: String
+        let defaultUserBackgroundImage: String
         let backgroundConfig: [BackgroundConfig]
         let layoutConfig: [LayoutConfig]
     }
