@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import CropViewController
+import Photos
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let cellIdentifier = "profileCellIdentifier"
@@ -70,9 +71,25 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // MARK: - Actions
     func onClickAvatar() {
-        let vc = UIImagePickerController()
-        vc.delegate = self
-        mainContainer?.concreteViewController.present(vc, animated: true)
+        switch PHPhotoLibrary.authorizationStatus() {
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { [weak self] s in
+                DispatchQueue.main.async {
+                    if s == .denied {
+                        self?.toast("permission denied".localizedDescription)
+                        return
+                    }
+                    self?.onClickAvatar()
+                }
+            }
+            return
+        case .denied:
+            toast("permission denied".localizedDescription)
+        default:
+            let vc = UIImagePickerController()
+            vc.delegate = self
+            mainContainer?.concreteViewController.present(vc, animated: true)
+        }
     }
     
     func onClickNickName() {
