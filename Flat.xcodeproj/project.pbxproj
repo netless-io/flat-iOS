@@ -105,6 +105,8 @@
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
 		8A4BF2D528C58AD800021D2A /* WhiteboardAppsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4BF2D428C58AD800021D2A /* WhiteboardAppsViewController.swift */; };
 		8A4BF2D728C58BB000021D2A /* WhiteboardAppsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4BF2D628C58BB000021D2A /* WhiteboardAppsCell.swift */; };
+		8A4D35BD2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4D35BC2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift */; };
+		8A4D35BF2913C33400AFA5DE /* AdvanceMixReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4D35BE2913C33400AFA5DE /* AdvanceMixReplayViewController.swift */; };
 		8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */; };
 		8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55F1B1273A710000D4DA0F /* AnyRequest.swift */; };
 		8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */; };
@@ -409,6 +411,8 @@
 		8A4C7A7427F2E4B3006988C6 /* FlatFlint_Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatFlint_Release.entitlements; sourceTree = "<group>"; };
 		8A4C7A7527F2E53B006988C6 /* Flint_Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Develop.xcconfig; sourceTree = "<group>"; };
 		8A4C7A7627F2E544006988C6 /* Flint_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Release.xcconfig; sourceTree = "<group>"; };
+		8A4D35BC2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceMixReplayViewModel.swift; sourceTree = "<group>"; };
+		8A4D35BE2913C33400AFA5DE /* AdvanceMixReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceMixReplayViewController.swift; sourceTree = "<group>"; };
 		8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextfield+Rx.swift"; sourceTree = "<group>"; };
 		8A55F1B1273A710000D4DA0F /* AnyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequest.swift; sourceTree = "<group>"; };
 		8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageCreateDirectoryRequest.swift; sourceTree = "<group>"; };
@@ -906,6 +910,7 @@
 		8A21DAAA279E58E70060E25D /* Replay */ = {
 			isa = PBXGroup;
 			children = (
+				8A4D35BB2913C31200AFA5DE /* AdvanceMixReplay */,
 				8AE59C7D28D30F0F00BAC8FC /* AdvanceReplay */,
 				8A21DAAB279E58F80060E25D /* ReplayViewController.swift */,
 				8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */,
@@ -1064,6 +1069,15 @@
 				8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */,
 			);
 			path = RoomOperation;
+			sourceTree = "<group>";
+		};
+		8A4D35BB2913C31200AFA5DE /* AdvanceMixReplay */ = {
+			isa = PBXGroup;
+			children = (
+				8A4D35BC2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift */,
+				8A4D35BE2913C33400AFA5DE /* AdvanceMixReplayViewController.swift */,
+			);
+			path = AdvanceMixReplay;
 			sourceTree = "<group>";
 		};
 		8A73309228C843BB00404B2D /* UITableView */ = {
@@ -1811,6 +1825,7 @@
 				8A8020892754697500F5691C /* RtcViewModel.swift in Sources */,
 				8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */,
 				8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */,
+				8A4D35BD2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift in Sources */,
 				8A05C34227604576009BCA79 /* UploadFinishRequest.swift in Sources */,
 				8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */,
 				8A21DAB6279F9EEF0060E25D /* RecordAcquireRequest.swift in Sources */,
@@ -1826,6 +1841,7 @@
 				8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */,
 				8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
+				8A4D35BF2913C33400AFA5DE /* AdvanceMixReplayViewController.swift in Sources */,
 				8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */,
 				8A2D0B9A27158FCD00123207 /* Request.swift in Sources */,
 				8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */,

@@ -9,8 +9,8 @@
 import Foundation
 import RxSwift
 
+let singleRecordHeight: Int = 84
 fileprivate let maxUserCount = 17
-fileprivate let singleHeight: Int = 84
 fileprivate let singleWidth = Int(CGFloat(84) / ClassRoomLayoutRatioConfig.rtcItemRatio)
 fileprivate let margin = Float(20)
 fileprivate let videoWidth = singleWidth * maxUserCount + ((maxUserCount + 1) * Int(margin))
@@ -164,7 +164,7 @@ class RecordModel: Codable {
             return .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
         }
         let transCodingConfig = TranscodingConfig(width: videoWidth,
-                                                  height: singleHeight,
+                                                  height: singleRecordHeight,
                                                   fps: 15,
                                                   bitrate: 500,
                                                   mixedVideoLayout: .custom,
