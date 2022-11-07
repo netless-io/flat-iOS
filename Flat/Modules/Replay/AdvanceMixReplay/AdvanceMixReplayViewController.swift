@@ -73,6 +73,7 @@ class AdvanceMixReplayViewController: UIViewController {
             make.top.equalTo(videoScrollView.snp.bottom)
         }
         
+        overlay.updateIsBuffering(true)
         viewModel.setupWhite(newWhiteView, index: index)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { weakSelf, record in
@@ -120,14 +121,13 @@ class AdvanceMixReplayViewController: UIViewController {
     var playerTimeObserver: Any?
     func listen(to player: SyncPlayer, duration: TimeInterval) {
         syncPlayer = player
-        overlay.updateIsBuffering(true)
         player.addStatusListener { [weak self] status in
             guard let self = self else { return }
             switch status {
             case .ready:
                 if self.isSeeking { return }
-                self.overlay.update(isPause: true)
                 self.overlay.updateIsBuffering(false)
+                self.overlay.update(isPause: true)
             case .playing:
                 self.overlay.update(isPause: false)
                 self.overlay.updateIsBuffering(false)
@@ -139,6 +139,7 @@ class AdvanceMixReplayViewController: UIViewController {
                 self.overlay.update(isPause: true)
                 self.overlay.showAlways()
             case .error:
+                self.overlay.updateIsBuffering(false)
                 self.overlay.update(isPause: false)
             }
         }

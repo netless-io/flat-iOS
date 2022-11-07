@@ -287,13 +287,9 @@ class ClassRoomViewModel {
         let stopTask = input.stopInteractingTap
             .flatMap { [unowned self] _ -> Single<ActionResult> in
                 guard self.isOwner else { return .just(.success(())) }
-                let stopRecordCommand: Single<Void> = self.recordModel == nil ? .just(()) : self.recordModel!.endRecord().asSingle()
                 let stopCommand = self.stateHandler.send(command: .stopInteraction)
                     .map { _ -> ActionResult in .success(()) }
-                
-                return stopRecordCommand.flatMap { _ -> Single<ActionResult> in
-                    return stopCommand
-                }
+                return stopCommand
             }.asDriver(onErrorJustReturn: .success(()))
         
         let acceptRaiseHandTask = input.tapSomeUserRaiseHand
@@ -369,8 +365,14 @@ class ClassRoomViewModel {
                 // destructive only show when teacher can stop classroom
                 if model.style == .cancel { return .just(false) }
                 if model.style == .destructive {
-                    return self.stateHandler.send(command: .updateRoomStartStatus(.Stopped))
-                        .asObservable().map { true }
+                    let stopRecordCommand: Single<Void> = self.recordModel == nil ? .just(()) : self.recordModel!.endRecord().asSingle()
+                    return stopRecordCommand
+                        .flatMap({ [weak self] _ in
+                            guard let self = self else { return .error("self not exist") }
+                            return self.stateHandler.send(command: .updateRoomStartStatus(.Stopped))
+                        })
+                        .asObservable()
+                        .map { true }
                 } else {
                     
                     return .just(true)
