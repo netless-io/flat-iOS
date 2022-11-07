@@ -17,7 +17,7 @@ fileprivate let videoWidth = singleWidth * maxUserCount + ((maxUserCount + 1) * 
 fileprivate let singleUserRatio: Float = Float(singleWidth) / Float(videoWidth)
 fileprivate let marginRatioInRecord = margin / Float(videoWidth)
 fileprivate let defaultAvatarUrl = "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg"
-fileprivate let defaultBackgroundColor = "#F3F6F9"
+fileprivate let defaultBackgroundColor = "#FFFFFF"
 
 fileprivate let savedRecordModelKey = "RecordModelKey"
 fileprivate let defaultRecordMode: AgoraRecordMode = .mix
