@@ -73,6 +73,7 @@ class AdvanceMixReplayViewController: UIViewController {
             make.top.equalTo(videoScrollView.snp.bottom)
         }
         
+        overlay.displayState = .showDelayHide
         overlay.updateIsBuffering(true)
         viewModel.setupWhite(newWhiteView, index: index)
             .observe(on: MainScheduler.instance)

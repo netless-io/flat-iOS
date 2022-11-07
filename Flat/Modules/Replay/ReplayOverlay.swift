@@ -25,7 +25,7 @@ class ReplayOverlay: NSObject {
     let toolBarHeight: CGFloat = 50
     let hideDelayTIme: TimeInterval
     
-    init(hideDelayTIme: TimeInterval = 5) {
+    init(hideDelayTIme: TimeInterval = 10) {
         self.hideDelayTIme = hideDelayTIme
         super.init()
     }
@@ -78,18 +78,18 @@ class ReplayOverlay: NSObject {
             make.leading.top.equalToSuperview().inset(44)
             make.width.height.equalTo(44)
         }
-        
         closeButton.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
         toolBar.snp.makeConstraints { make in
             make.height.equalTo(toolBarHeight)
-            make.width.equalToSuperview().multipliedBy(0.667)
-            make.bottom.equalToSuperview().inset(44)
             make.centerX.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview().priority(.high)
+            make.width.equalToSuperview().multipliedBy(0.9).priority(.medium)
+            make.width.equalTo(667).priority(.low)
+            make.bottom.equalToSuperview().inset(44)
         }
-        
         toolBar.addSubview(toolStackView)
         toolStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -122,6 +122,7 @@ class ReplayOverlay: NSObject {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
         tap.delegate = self
+        
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap))
         doubleTap.numberOfTapsRequired = 2
         parent.addGestureRecognizer(doubleTap)
@@ -300,9 +301,12 @@ class ReplayOverlay: NSObject {
         }
     }()
     
-    lazy var toolBar: UIToolbar = {
-        let bar = UIToolbar()
-        bar.barStyle = .black
+    lazy var toolBar: UIView = {
+        let bar = UIView()
+        let effect = UIBlurEffect(style: .dark)
+        let effectView = UIVisualEffectView(effect: effect)
+        bar.addSubview(effectView)
+        effectView.snp.makeConstraints { $0.edges.equalToSuperview() }
         bar.clipsToBounds = true
         bar.layer.cornerRadius = 10
         return bar
@@ -315,9 +319,12 @@ class ReplayOverlay: NSObject {
         return view
     }()
     
-    lazy var closeToolBar: UIToolbar = {
-        let bar = UIToolbar()
-        bar.barStyle = .black
+    lazy var closeToolBar: UIView = {
+        let bar = UIView()
+        let effect = UIBlurEffect(style: .dark)
+        let effectView = UIVisualEffectView(effect: effect)
+        bar.addSubview(effectView)
+        effectView.snp.makeConstraints { $0.edges.equalToSuperview() }
         bar.clipsToBounds = true
         if #available(iOS 13.0, *) {
             bar.layer.cornerRadius = 22
