@@ -121,7 +121,7 @@ class RecordModel: Codable {
             if isTeacher {
                 return true
             }
-            return u1.rtcUID > u2.rtcUID
+            return u1.rtcUID < u2.rtcUID
         }
         let backgroundConfig: [BackgroundConfig] = sortedUsers.map {
             .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
