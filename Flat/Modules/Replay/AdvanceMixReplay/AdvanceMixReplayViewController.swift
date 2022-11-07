@@ -40,6 +40,10 @@ class AdvanceMixReplayViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        syncPlayer?.destroy()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
