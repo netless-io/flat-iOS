@@ -9,9 +9,9 @@
 import Foundation
 import RxSwift
 
-let singleRecordHeight: Int = 84
+let singleRecordHeight: Int = 108
 fileprivate let maxUserCount = 17
-fileprivate let singleWidth = Int(CGFloat(84) / ClassRoomLayoutRatioConfig.rtcItemRatio)
+fileprivate let singleWidth = Int(CGFloat(singleRecordHeight) / ClassRoomLayoutRatioConfig.rtcItemRatio)
 fileprivate let margin = Float(0)
 fileprivate let videoWidth = singleWidth * maxUserCount + ((maxUserCount + 1) * Int(margin))
 fileprivate let singleUserRatio: Float = Float(singleWidth) / Float(videoWidth)
@@ -26,11 +26,12 @@ fileprivate let defaultRecordMode: AgoraRecordMode = .mix
 // The model will saved in userDefaults. (The model will be cleaned when stop function was called or the model was queried as a stoped record)
 // Try query saved model, every time before create new record model.
 class RecordModel: Codable {
-    internal init(resourceId: String, sid: String, roomUUID: String, startDate: Date) {
+    internal init(resourceId: String, sid: String, roomUUID: String, startDate: Date, currentLayout: MixLayout) {
         self.resourceId = resourceId
         self.sid = sid
         self.roomUUID = roomUUID
         self.startDate = startDate
+        self.currentLayout = currentLayout
         loopToUpdateServerEndTime()
     }
     
@@ -88,7 +89,9 @@ class RecordModel: Codable {
         return ApiProvider.shared
             .request(fromApi: RecordAcquireRequest(agoraData: acquireAgoraData, roomUUID: uuid))
             .flatMap { start(fromRoomUUID: uuid, resourceId: $0.resourceId, users: users) }
-            .map { RecordModel(resourceId: $0.resourceId, sid: $0.sid, roomUUID: uuid, startDate: Date()) }
+            .map { response, layout in
+                RecordModel(resourceId: response.resourceId, sid: response.sid, roomUUID: uuid, startDate: Date(), currentLayout: layout)
+            }
             .retry(when: { error in
                 return error.enumerated().flatMap { index, _  -> Observable<Int> in
                     let times = index + 1
@@ -114,7 +117,7 @@ class RecordModel: Codable {
             .asObservable()
     }
     
-    func updateLayout(users: [RoomUser]) -> Observable<Void> {
+    static func usersConfigs(from users: [RoomUser]) -> MixLayout {
         let joinedUsers = Array(users.prefix(maxUserCount))
         let sortedUsers = joinedUsers.sorted { u1, u2 in
             let isTeacher = u1.rtmUUID == AuthStore.shared.user?.userUUID
@@ -130,15 +133,34 @@ class RecordModel: Codable {
             let x = (Float(index + 1) * marginRatioInRecord) + (Float(index) * singleUserRatio)
             return .init(x_axis: x, y_axis: 0, width: singleUserRatio, height: 1)
         }
+        return .init(layouts: layoutConfig, backgrounds: backgroundConfig)
+    }
+
+    struct MixLayout: Codable, Equatable {
+        let layouts: [LayoutConfig]
+        let backgrounds: [BackgroundConfig]
+    }
+
+    var currentLayout: MixLayout
+    func updateLayout(users: [RoomUser]) -> Observable<Void> {
+        let newLayout = Self.usersConfigs(from: users)
+        if currentLayout == newLayout {
+            return .just(())
+        }
         let clientRequest = UpdateLayoutRequest.ClientRequest(mixedVideoLayout: .custom,
                                                               backgroundColor: defaultBackgroundColor,
                                                               defaultUserBackgroundImage: defaultAvatarUrl,
-                                                              backgroundConfig: backgroundConfig,
-                                                              layoutConfig: layoutConfig)
+                                                              backgroundConfig: newLayout.backgrounds,
+                                                              layoutConfig: newLayout.layouts)
         let agoraData = UpdateLayoutRequest.AgoraData(clientRequest: clientRequest)
         let agoraParams = UpdateLayoutRequest.AgoraParams(resourceid: resourceId, mode: .mix, sid: sid)
         let request = UpdateLayoutRequest(roomUUID: roomUUID, agoraData: agoraData, agoraParams: agoraParams)
-        return ApiProvider.shared.request(fromApi: request).mapToVoid()
+        return ApiProvider.shared
+            .request(fromApi: request)
+            .mapToVoid()
+            .do(onCompleted: { [weak self] in
+                self?.currentLayout = newLayout
+            })
     }
     
     fileprivate func loopToUpdateServerEndTime() {
@@ -161,15 +183,8 @@ class RecordModel: Codable {
         fromRoomUUID uuid: String,
         resourceId: String,
         users: [RoomUser])
-    -> Observable<StartRecordResponse> {
-        let displayUsers = Array(users.prefix(maxUserCount))
-        let layoutConfigs: [LayoutConfig] = displayUsers.enumerated().map { (index, _) in
-            let x = (Float(index + 1) * marginRatioInRecord) + (Float(index) * singleUserRatio)
-            return .init(x_axis: x, y_axis: 0, width: singleUserRatio, height: 1)
-        }
-        let backgroundConfigs: [BackgroundConfig] = displayUsers.map {
-            return .init(uid: $0.rtcUID.description, image_url: $0.avatarURL?.absoluteString ?? "")
-        }
+    -> Observable<(StartRecordResponse, MixLayout)> {
+        let layout = usersConfigs(from: users)
         let transCodingConfig = TranscodingConfig(width: videoWidth,
                                                   height: singleRecordHeight,
                                                   fps: 15,
@@ -177,8 +192,8 @@ class RecordModel: Codable {
                                                   mixedVideoLayout: .custom,
                                                   backgroundColor: defaultBackgroundColor,
                                                   defaultUserBackgroundImage: defaultAvatarUrl,
-                                                  backgroundConfig: backgroundConfigs,
-                                                  layoutConfig: layoutConfigs)
+                                                  backgroundConfig: layout.backgrounds,
+                                                  layoutConfig: layout.layouts)
         let recordingConfig = StartRecordRequest.RecordingConfig(channelType: .communication,
                                                                  maxIdleTime: 5 * 60,
                                                                  subscribeUidGroup: 2,
@@ -188,5 +203,6 @@ class RecordModel: Codable {
         let agoraParams = StartRecordRequest.AgoraParams(resourceid: resourceId, mode: defaultRecordMode)
         let startRequest = StartRecordRequest(roomUUID: uuid, agoraData: agoraData, agoraParams: agoraParams)
         return ApiProvider.shared.request(fromApi: startRequest)
+            .map { return ($0, layout) }
     }
 }

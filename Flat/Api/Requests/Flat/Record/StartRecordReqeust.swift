@@ -15,12 +15,12 @@ enum MixedVideoLayout: Int, Codable {
     case custom = 3
 }
 
-struct BackgroundConfig: Codable {
+struct BackgroundConfig: Codable, Equatable {
     let uid: String
     let image_url: String
 }
 
-struct LayoutConfig: Codable {
+struct LayoutConfig: Codable, Equatable {
     let x_axis: Float
     let y_axis: Float
     let width: Float
