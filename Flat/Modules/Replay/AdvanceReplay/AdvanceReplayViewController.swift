@@ -344,6 +344,10 @@ class AdvanceReplayViewController: UIViewController {
 }
 
 extension AdvanceReplayViewController: ReplayOverlayDelegate {
+    func replayOverlayDidUpdatePanGestureState(_ overlay: ReplayOverlay, sender: UIPanGestureRecognizer) {
+        
+    }
+    
     
     func replayOverlayDidClickClose(_ overlay: ReplayOverlay) {
         dismiss(animated: true, completion: nil)

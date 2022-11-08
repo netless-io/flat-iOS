@@ -230,6 +230,8 @@ class AdvanceMixReplayViewController: UIViewController {
         }
         return vc
     }()
+    
+    var drakSeekingPercent: Float?
 }
 
 extension AdvanceMixReplayViewController: ReplayOverlayDelegate {
@@ -273,6 +275,39 @@ extension AdvanceMixReplayViewController: ReplayOverlayDelegate {
         let seconds = syncPlayer.totalTime.seconds * Double(percent)
         guard !seconds.isNaN else { return }
         seekTo(seconds)
+    }
+    
+    func replayOverlayDidUpdatePanGestureState(_ overlay: ReplayOverlay, sender: UIPanGestureRecognizer) {
+        switch sender.state {
+        case .began:
+            isSeeking = true
+        case .changed:
+            guard let view = sender.view else { return }
+            let x = sender.location(in: view).x
+            let percent = Float(x / view.bounds.width)
+            let boundsPercent = min(max(0, percent), 1)
+            drakSeekingPercent = boundsPercent
+            if let seconds = syncPlayer?.totalTime.seconds {
+                let t = seconds * Double(boundsPercent)
+                overlay.updateCurrentTime(t)
+            }
+        case .ended:
+            if let p = drakSeekingPercent {
+                if let seconds = syncPlayer?.totalTime.seconds {
+                    let t = seconds * Double(p)
+                    seekTo(t)
+                }
+            }
+            drakSeekingPercent = nil
+        case .failed, .cancelled:
+            if let s = syncPlayer?.currentTime.seconds {
+                overlay.updateCurrentTime(s)
+            }
+            drakSeekingPercent = nil
+            isSeeking = false
+        default:
+            return
+        }
     }
     
     func seekTo(_ seconds: TimeInterval) {

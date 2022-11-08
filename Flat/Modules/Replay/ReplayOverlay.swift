@@ -13,6 +13,8 @@ protocol ReplayOverlayDelegate: AnyObject {
     
     func replayOverlayDidClickPlayOrPause(_ overlay: ReplayOverlay)
     
+    func replayOverlayDidUpdatePanGestureState(_ overlay: ReplayOverlay, sender: UIPanGestureRecognizer)
+    
     func replayOverlayDidClickSeekToPercent(_ overlay: ReplayOverlay, percent: Float)
     
     func replayOverlayDidClickForward(_ overlay: ReplayOverlay)
@@ -217,13 +219,7 @@ class ReplayOverlay: NSObject {
     
     @objc
     func onDrag(_ sender: UIPanGestureRecognizer) {
-        if sender.state == .ended {
-            guard let view = sender.view else { return }
-            let x = sender.location(in: view).x
-            let width = view.bounds.width
-            let progress = x / width
-            delegate?.replayOverlayDidClickSeekToPercent(self, percent: Float(progress))
-        }
+        delegate?.replayOverlayDidUpdatePanGestureState(self, sender: sender)
     }
     
     @objc
