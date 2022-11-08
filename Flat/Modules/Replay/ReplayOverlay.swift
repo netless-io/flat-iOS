@@ -375,14 +375,9 @@ class ReplayOverlay: NSObject {
     }()
     
     lazy var closeButton: UIButton = {
-        if #available(iOS 13.0, *) {
-            let btn = UIButton(type: .close)
-            btn.tintColor = .white
-            btn.addTarget(self, action: #selector(onClose), for: .touchUpInside)
-            return btn
-        }
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "close"), for: .normal)
+        btn.imageEdgeInsets = .init(inset: 14)
         btn.addTarget(self, action: #selector(onClose), for: .touchUpInside)
         return btn
     }()
