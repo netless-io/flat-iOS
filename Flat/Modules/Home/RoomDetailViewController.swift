@@ -202,8 +202,8 @@ class RoomDetailViewController: UIViewController {
             self.stopActivityIndicator()
             switch result {
             case .success(let recordInfo):
-                let viewModel = AdvanceMixReplayViewModel(roomInfo: info, recordDetail: recordInfo)
-                let vc = AdvanceMixReplayViewController(viewModel: viewModel)
+                let viewModel = MixReplayViewModel(roomInfo: info, recordDetail: recordInfo)
+                let vc = MixReplayViewController(viewModel: viewModel)
                 self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
             case .failure(let error):
                 self.toast(error.localizedDescription)

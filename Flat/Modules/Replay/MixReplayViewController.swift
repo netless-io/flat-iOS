@@ -11,7 +11,7 @@ import Whiteboard
 import RxSwift
 import SyncPlayer
 
-class AdvanceMixReplayViewController: UIViewController {
+class MixReplayViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return traitCollection.hasCompact ? .landscapeRight : .landscape
@@ -25,12 +25,12 @@ class AdvanceMixReplayViewController: UIViewController {
         }
     }
     
-    let viewModel: AdvanceMixReplayViewModel
+    let viewModel: MixReplayViewModel
     var rtcPlayer: AVPlayer?
     var syncPlayer: SyncPlayer?
     
     // MARK: - LifeCycle
-    init(viewModel: AdvanceMixReplayViewModel) {
+    init(viewModel: MixReplayViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
@@ -234,7 +234,7 @@ class AdvanceMixReplayViewController: UIViewController {
     var drakSeekingPercent: Float?
 }
 
-extension AdvanceMixReplayViewController: ReplayOverlayDelegate {
+extension MixReplayViewController: ReplayOverlayDelegate {
     func replayOverlayDidClickClose(_ overlay: ReplayOverlay) {
         dismiss(animated: true, completion: nil)
     }

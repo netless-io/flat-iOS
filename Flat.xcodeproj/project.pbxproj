@@ -37,7 +37,7 @@
 		8A0CA22328BC73FE0035F71A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0CA22228BC73FE0035F71A /* QuartzCore.framework */; };
 		8A0CA22628BC98180035F71A /* FlatPopoverAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */; };
 		8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */; };
-		8A0CA22A28BCC4380035F71A /* FlatCompactAlertController copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */; };
+		8A0CA22A28BCC4380035F71A /* FlatCompactAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22928BCC4380035F71A /* FlatCompactAlertController.swift */; };
 		8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */; };
 		8A0CA23028BE11A10035F71A /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22F28BE11A10035F71A /* Global.swift */; };
 		8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */; };
@@ -61,7 +61,6 @@
 		8A1BF0C7280E563A00D76F22 /* CancellationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */; };
 		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
 		8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A92797AB3E00024040 /* Theme.swift */; };
-		8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAB279E58F80060E25D /* ReplayViewController.swift */; };
 		8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */; };
 		8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */; };
 		8A21DAB2279F86A00060E25D /* ReplayOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */; };
@@ -105,15 +104,14 @@
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
 		8A4BF2D528C58AD800021D2A /* WhiteboardAppsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4BF2D428C58AD800021D2A /* WhiteboardAppsViewController.swift */; };
 		8A4BF2D728C58BB000021D2A /* WhiteboardAppsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4BF2D628C58BB000021D2A /* WhiteboardAppsCell.swift */; };
-		8A4D35BD2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4D35BC2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift */; };
-		8A4D35BF2913C33400AFA5DE /* AdvanceMixReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4D35BE2913C33400AFA5DE /* AdvanceMixReplayViewController.swift */; };
+		8A4D35BD2913C32E00AFA5DE /* MixReplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4D35BC2913C32E00AFA5DE /* MixReplayViewModel.swift */; };
+		8A4D35BF2913C33400AFA5DE /* MixReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4D35BE2913C33400AFA5DE /* MixReplayViewController.swift */; };
 		8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */; };
 		8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55F1B1273A710000D4DA0F /* AnyRequest.swift */; };
 		8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */; };
 		8A59FF8628D8410C00318407 /* JoinRoomInputAccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */; };
 		8A59FF8828D96D3600318407 /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8728D96D3600318407 /* WKWebViewController.swift */; };
 		8A59FF8B28DAA28600318407 /* UIViewController+screenSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59FF8A28DAA28600318407 /* UIViewController+screenSize.swift */; };
-		8A5B91FC28D06C120032C4C6 /* AdvanceReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5B91FB28D06C120032C4C6 /* AdvanceReplayViewController.swift */; };
 		8A5DCFA3273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */; };
 		8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC87272A74FB006216AD /* CommandEncoder.swift */; };
 		8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DDC89272A7502006216AD /* CommandDecoder.swift */; };
@@ -268,7 +266,6 @@
 		8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */; };
 		8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */; };
 		8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */; };
-		8AE59C7A28D1E21C00BAC8FC /* AdvanceReplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7928D1E21C00BAC8FC /* AdvanceReplayViewModel.swift */; };
 		8AE59C7C28D302D500BAC8FC /* VideoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */; };
 		8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* RtmCommandType.swift */; };
 		8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */; };
@@ -336,7 +333,7 @@
 		8A0CA22228BC73FE0035F71A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatPopoverAlertController.swift; sourceTree = "<group>"; };
 		8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatCustomAlertSetable.swift; sourceTree = "<group>"; };
-		8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlatCompactAlertController copy.swift"; sourceTree = "<group>"; };
+		8A0CA22928BCC4380035F71A /* FlatCompactAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatCompactAlertController.swift; sourceTree = "<group>"; };
 		8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularSideBarViewController.swift; sourceTree = "<group>"; };
 		8A0CA22F28BE11A10035F71A /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+oldDark.swift"; sourceTree = "<group>"; };
@@ -360,7 +357,6 @@
 		8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationViewController.swift; sourceTree = "<group>"; };
 		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
 		8A20A3A92797AB3E00024040 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		8A21DAAB279E58F80060E25D /* ReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayViewController.swift; sourceTree = "<group>"; };
 		8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailInfo.swift; sourceTree = "<group>"; };
 		8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailRequest.swift; sourceTree = "<group>"; };
 		8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayOverlay.swift; sourceTree = "<group>"; };
@@ -411,15 +407,14 @@
 		8A4C7A7427F2E4B3006988C6 /* FlatFlint_Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatFlint_Release.entitlements; sourceTree = "<group>"; };
 		8A4C7A7527F2E53B006988C6 /* Flint_Develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Develop.xcconfig; sourceTree = "<group>"; };
 		8A4C7A7627F2E544006988C6 /* Flint_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Flint_Release.xcconfig; sourceTree = "<group>"; };
-		8A4D35BC2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceMixReplayViewModel.swift; sourceTree = "<group>"; };
-		8A4D35BE2913C33400AFA5DE /* AdvanceMixReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceMixReplayViewController.swift; sourceTree = "<group>"; };
+		8A4D35BC2913C32E00AFA5DE /* MixReplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixReplayViewModel.swift; sourceTree = "<group>"; };
+		8A4D35BE2913C33400AFA5DE /* MixReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixReplayViewController.swift; sourceTree = "<group>"; };
 		8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextfield+Rx.swift"; sourceTree = "<group>"; };
 		8A55F1B1273A710000D4DA0F /* AnyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequest.swift; sourceTree = "<group>"; };
 		8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageCreateDirectoryRequest.swift; sourceTree = "<group>"; };
 		8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomInputAccessView.swift; sourceTree = "<group>"; };
 		8A59FF8728D96D3600318407 /* WKWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		8A59FF8A28DAA28600318407 /* UIViewController+screenSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+screenSize.swift"; sourceTree = "<group>"; };
-		8A5B91FB28D06C120032C4C6 /* AdvanceReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceReplayViewController.swift; sourceTree = "<group>"; };
 		8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDevicePreferredStatusStore.swift; sourceTree = "<group>"; };
 		8A5DDC87272A74FB006216AD /* CommandEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandEncoder.swift; sourceTree = "<group>"; };
 		8A5DDC89272A7502006216AD /* CommandDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDecoder.swift; sourceTree = "<group>"; };
@@ -581,7 +576,6 @@
 		8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Level.swift"; sourceTree = "<group>"; };
 		8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordQueryRequest.swift; sourceTree = "<group>"; };
 		8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+loading.swift"; sourceTree = "<group>"; };
-		8AE59C7928D1E21C00BAC8FC /* AdvanceReplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvanceReplayViewModel.swift; sourceTree = "<group>"; };
 		8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreviewView.swift; sourceTree = "<group>"; };
 		8AE892FA2727E99D009C71DA /* RtmCommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmCommandType.swift; sourceTree = "<group>"; };
 		8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationValidateRequest.swift; sourceTree = "<group>"; };
@@ -809,7 +803,7 @@
 			isa = PBXGroup;
 			children = (
 				8A0CA22728BC9CB10035F71A /* FlatCustomAlertSetable.swift */,
-				8A0CA22928BCC4380035F71A /* FlatCompactAlertController copy.swift */,
+				8A0CA22928BCC4380035F71A /* FlatCompactAlertController.swift */,
 				8A0CA22528BC98180035F71A /* FlatPopoverAlertController.swift */,
 			);
 			path = Alert;
@@ -828,7 +822,6 @@
 			children = (
 				8A0CA22428BC97FC0035F71A /* Alert */,
 				8AD2EF742775664C00087280 /* Share */,
-				8A8020AC275864A200F5691C /* PageContainer */,
 				8A0BD7B1274B345900383E9D /* Button */,
 				8A7741C22734CF8E009FAADA /* Label */,
 			);
@@ -910,9 +903,8 @@
 		8A21DAAA279E58E70060E25D /* Replay */ = {
 			isa = PBXGroup;
 			children = (
-				8A4D35BB2913C31200AFA5DE /* AdvanceMixReplay */,
-				8AE59C7D28D30F0F00BAC8FC /* AdvanceReplay */,
-				8A21DAAB279E58F80060E25D /* ReplayViewController.swift */,
+				8A4D35BC2913C32E00AFA5DE /* MixReplayViewModel.swift */,
+				8A4D35BE2913C33400AFA5DE /* MixReplayViewController.swift */,
 				8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */,
 				8A62D35828D445710046910B /* RecordSelectionListViewController.swift */,
 			);
@@ -1071,13 +1063,12 @@
 			path = RoomOperation;
 			sourceTree = "<group>";
 		};
-		8A4D35BB2913C31200AFA5DE /* AdvanceMixReplay */ = {
+		8A6898DD2919FF77002DD089 /* Generic */ = {
 			isa = PBXGroup;
 			children = (
-				8A4D35BC2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift */,
-				8A4D35BE2913C33400AFA5DE /* AdvanceMixReplayViewController.swift */,
+				8A8020AC275864A200F5691C /* PageContainer */,
 			);
-			path = AdvanceMixReplay;
+			path = Generic;
 			sourceTree = "<group>";
 		};
 		8A73309228C843BB00404B2D /* UITableView */ = {
@@ -1150,6 +1141,7 @@
 		8A97EBBB271D180600965185 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8A6898DD2919FF77002DD089 /* Generic */,
 				8A9ACBF9271D602600E7E7CE /* Views */,
 				8A11CBE0271FEBB1001D0B1F /* UIComponents */,
 				8AAC69BD271810CB00F9A3B4 /* Stores */,
@@ -1518,15 +1510,6 @@
 			path = UITraitCollection;
 			sourceTree = "<group>";
 		};
-		8AE59C7D28D30F0F00BAC8FC /* AdvanceReplay */ = {
-			isa = PBXGroup;
-			children = (
-				8AE59C7928D1E21C00BAC8FC /* AdvanceReplayViewModel.swift */,
-				8A5B91FB28D06C120032C4C6 /* AdvanceReplayViewController.swift */,
-			);
-			path = AdvanceReplay;
-			sourceTree = "<group>";
-		};
 		8AE892F92727E98B009C71DA /* Command */ = {
 			isa = PBXGroup;
 			children = (
@@ -1792,7 +1775,7 @@
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
 				8A05C322275E05BC009BCA79 /* MethodExchange.swift in Sources */,
 				8AF244DC287C243C00E6B2AF /* WechatBinding.swift in Sources */,
-				8A0CA22A28BCC4380035F71A /* FlatCompactAlertController copy.swift in Sources */,
+				8A0CA22A28BCC4380035F71A /* FlatCompactAlertController.swift in Sources */,
 				8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,
@@ -1825,7 +1808,7 @@
 				8A8020892754697500F5691C /* RtcViewModel.swift in Sources */,
 				8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */,
 				8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */,
-				8A4D35BD2913C32E00AFA5DE /* AdvanceMixReplayViewModel.swift in Sources */,
+				8A4D35BD2913C32E00AFA5DE /* MixReplayViewModel.swift in Sources */,
 				8A05C34227604576009BCA79 /* UploadFinishRequest.swift in Sources */,
 				8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */,
 				8A21DAB6279F9EEF0060E25D /* RecordAcquireRequest.swift in Sources */,
@@ -1841,7 +1824,7 @@
 				8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */,
 				8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
-				8A4D35BF2913C33400AFA5DE /* AdvanceMixReplayViewController.swift in Sources */,
+				8A4D35BF2913C33400AFA5DE /* MixReplayViewController.swift in Sources */,
 				8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */,
 				8A2D0B9A27158FCD00123207 /* Request.swift in Sources */,
 				8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */,
@@ -1883,7 +1866,6 @@
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
 				8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */,
-				8A21DAAC279E58F80060E25D /* ReplayViewController.swift in Sources */,
 				8A92194828ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift in Sources */,
 				8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */,
 				8A05A1562834EA7A002DE9B9 /* AttributedString.swift in Sources */,
@@ -1917,7 +1899,6 @@
 				8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */,
 				8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */,
 				8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */,
-				8A5B91FC28D06C120032C4C6 /* AdvanceReplayViewController.swift in Sources */,
 				8A270B9F2719681F00450DC6 /* Bundle+Language.swift in Sources */,
 				8A9FB3C127229A6200F6F06F /* FlatRequest.swift in Sources */,
 				8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */,
@@ -1953,7 +1934,6 @@
 				8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */,
 				8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
-				8AE59C7A28D1E21C00BAC8FC /* AdvanceReplayViewModel.swift in Sources */,
 				8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */,
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
 				8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */,

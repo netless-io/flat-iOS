@@ -1,5 +1,5 @@
 //
-//  AdvanceMixReplayViewModel.swift
+//  MixReplayViewModel.swift
 //  Flat
 //
 //  Created by xuyunshi on 2022/11/3.
@@ -11,7 +11,7 @@ import Whiteboard
 import SyncPlayer
 import RxSwift
 
-class AdvanceMixReplayViewModel {
+class MixReplayViewModel {
     struct PlayRecord {
         let player: SyncPlayer
         let rtcPlayer: AVPlayer
