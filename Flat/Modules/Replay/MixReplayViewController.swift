@@ -65,6 +65,9 @@ class MixReplayViewController: UIViewController {
         whiteboardView = nil
         
         let newWhiteView = WhiteBoardView()
+        newWhiteView.setTraitRelatedBlock { v in
+            v.backgroundColor = .color(type: .background).resolveDynamicColorPatchiOS13With(v.traitCollection)
+        }
         newWhiteView.isUserInteractionEnabled = false
         whiteboardView = newWhiteView
         view.insertSubview(newWhiteView, belowSubview: videoScrollView)
