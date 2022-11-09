@@ -49,56 +49,54 @@ enum ThemeStyle: String, Codable, CaseIterable {
 
 class Theme {
     static let shared = Theme()
-    private init() {}
-    weak var window: UIWindow? = nil {
-        didSet {
-            apply(userPreferredStyle ?? .default)
-        }
-    }
-    
-    var isDarkBeforeIOS13: Bool {
-        if #available(iOS 13.0, *) {
-        } else if let style = userPreferredStyle, style == .dark {
-            return true
-        }
-        return false
-    }
-    
-    private(set) var userPreferredStyle: ThemeStyle? {
-        get {
+    private(set) var style: ThemeStyle
+    private init() {
+        func getPreferredStyle() -> ThemeStyle {
             guard let data = UserDefaults.standard.value(forKey: "userPreferredStyle") as? Data
-            else { return nil }
+            else { return .default }
             do {
                 let info = try JSONDecoder().decode([String: ThemeStyle].self, from: data)
                 if let style = info["style"] {
                     return style
                 }
-                return nil
+                return .default
             }
             catch {
                 logger.error("get userPreferredStyle, \(error)")
-                return nil
+                return .default
             }
         }
-        set {
-            if let userPreferredStyle = newValue {
-                do {
-                    let encoder = JSONEncoder()
-                    let data = try encoder.encode(["style": userPreferredStyle])
-                    UserDefaults.standard.setValue(data, forKey: "userPreferredStyle")
-                }
-                catch {
-                    logger.error("set userPreferredStyle, \(error)")
-                }
-            } else {
-                UserDefaults.standard.setValue(nil, forKey: "userPreferredStyle")
-            }
+        style = getPreferredStyle()
+    }
+    weak var window: UIWindow? = nil {
+        didSet {
+            apply(style)
+        }
+    }
+    
+    var isDarkBeforeIOS13: Bool {
+        if #available(iOS 13.0, *) {
+        } else if style == .dark {
+            return true
+        }
+        return false
+    }
+    
+    fileprivate func setStoredPreferredStyle(_ newValue: ThemeStyle) {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(["style": newValue])
+            UserDefaults.standard.setValue(data, forKey: "userPreferredStyle")
+        }
+        catch {
+            logger.error("set userPreferredStyle, \(error)")
         }
     }
     
     func updateUserPreferredStyle(_ style: ThemeStyle) {
-        userPreferredStyle = style
+        self.style = style
         apply(style)
+        setStoredPreferredStyle(style)
     }
     
     fileprivate func apply(_ style: ThemeStyle) {
@@ -116,6 +114,7 @@ class Theme {
         }
         applyNavigationBar()
         configProgressHUDAppearance()
+        applyFastboard(style)
         commitUpdate()
     }
     
@@ -141,5 +140,32 @@ class Theme {
                 .foregroundColor: UIColor.color(type: .text)
             ]
         }
+    }
+    
+    fileprivate func applyFastboard(_ style: ThemeStyle) {
+        let flatTheme: FastRoomThemeAsset
+        switch style {
+        case .dark:
+            flatTheme = FastRoomDefaultTheme.defaultDarkTheme
+        case .light:
+            flatTheme = FastRoomDefaultTheme.defaultLightTheme
+        case .auto:
+            if #available(iOS 13, *) {
+                flatTheme = FastRoomDefaultTheme.defaultAutoTheme
+            } else {
+                fatalError("never")
+            }
+        }
+        
+        flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
+        flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
+        flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8
+        flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .color(type: .primary, .weak)
+        
+        flatTheme.controlBarAssets.borderColor = .borderColor
+        flatTheme.controlBarAssets.effectStyle = nil
+        flatTheme.controlBarAssets.backgroundColor = .color(type: .background)
+        
+        FastRoomThemeManager.shared.apply(flatTheme)
     }
 }

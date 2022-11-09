@@ -41,24 +41,6 @@ var globalLaunchCoordinator: LaunchCoordinator? {
 
 func configAppearance() {
     FastRoomThemeManager.shared.updateIcons(using: Bundle.main)
-    let flatTheme: FastRoomThemeAsset
-    if #available(iOS 13, *) {
-        flatTheme = FastRoomDefaultTheme.defaultAutoTheme
-    } else {
-        flatTheme = FastRoomDefaultTheme.defaultLightTheme
-    }
-    flatTheme.whiteboardAssets.whiteboardBackgroundColor = .color(type: .background)
-    
-    flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
-    flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
-    flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8
-    flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .color(type: .primary, .weak)
-    
-    flatTheme.controlBarAssets.borderColor = .borderColor
-    flatTheme.controlBarAssets.effectStyle = nil
-    flatTheme.controlBarAssets.backgroundColor = .color(type: .background)
-    
-    FastRoomThemeManager.shared.apply(flatTheme)
     
     FastRoomControlBar.appearance().commonRadius = isCompact() ? 8 : 4
     FastRoomControlBar.appearance().itemWidth = isCompact() ? 40 : 48

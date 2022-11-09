@@ -65,7 +65,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                   targetAction: (self, #selector(self.onClickLanguage(sender:)))),
             .init(image: UIImage(named: "theme")!,
                   title: NSLocalizedString("Theme", comment: ""),
-                  detail: (Theme.shared.userPreferredStyle ?? ThemeStyle.default).description,
+                  detail: Theme.shared.style.description,
                   targetAction: (self, #selector(self.onClickTheme(sender:)))),
             .init(image: UIImage(named: "update_version")!,
                   title: NSLocalizedString("Version", comment: ""),
@@ -175,7 +175,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func onClickTheme(sender: Any?) {
         let alertController = UIAlertController(title: NSLocalizedString("Select Theme", comment: ""), message: nil, preferredStyle: .actionSheet)
         let manager = Theme.shared
-        let current = manager.userPreferredStyle ?? ThemeStyle.default
+        let current = manager.style
         for i in ThemeStyle.allCases {
             let selected = NSLocalizedString("selected", comment: "")
             alertController.addAction(.init(title: i.description + ((current == i) ? selected : ""), style: .default, handler: { _ in

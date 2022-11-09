@@ -20,16 +20,14 @@ class ClassRoomViewController: UIViewController {
     }
     override var prefersStatusBarHidden: Bool { traitCollection.verticalSizeClass == .compact }
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if let pStyle = Theme.shared.userPreferredStyle {
-            switch pStyle {
-            case .dark:
-                return .lightContent
-            case .light:
-                if #available(iOS 13.0, *) {
-                    return .darkContent
-                }
-            default: break
+        switch Theme.shared.style {
+        case .dark:
+            return .lightContent
+        case .light:
+            if #available(iOS 13.0, *) {
+                return .darkContent
             }
+        default: break
         }
         return .default
     }

@@ -66,7 +66,6 @@ struct ClassroomFactory {
         fastRoomConfiguration.whiteRoomConfig.windowParams?.collectorStyles = ["top": "8px", "right": "8px"]
         fastRoomConfiguration.whiteRoomConfig.windowParams?.scrollVerticalOnly = true
         fastRoomConfiguration.whiteRoomConfig.windowParams?.stageStyle = "box-shadow: 0 0 0"
-        fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
         fastRoomConfiguration.whiteRoomConfig.disableCameraTransform = !userPermissionEnable
         fastRoomConfiguration.whiteSdkConfiguration.log = false
