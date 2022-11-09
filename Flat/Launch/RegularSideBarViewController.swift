@@ -87,8 +87,11 @@ class RegularSideBarViewController: UIViewController {
         avatarButton.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.width.height.equalTo(64)
+            make.width.height.equalTo(width)
         }
+        let avatarMask = CAShapeLayer()
+        avatarMask.path = UIBezierPath(arcCenter: .init(x: width / 2, y: width / 2), radius: width / 4, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
+        avatarButton.layer.mask = avatarMask
         
         view.addSubview(foldButton)
         foldButton.snp.makeConstraints { make in
@@ -119,17 +122,9 @@ class RegularSideBarViewController: UIViewController {
     ]
     
     // Line for splitViewController
-    lazy var cloudStorageViewController: CloudStorageViewController = {
-        let cloudStorage = CloudStorageViewController()
-//        cloudStorage.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
-        return cloudStorage
-    }()
+    lazy var cloudStorageViewController = CloudStorageViewController()
     
-    lazy var homeViewController: HomeViewController = {
-        let home = HomeViewController()
-//        home.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
-        return home
-    }()
+    lazy var homeViewController = HomeViewController()
     
     func addBtn(imageName: String, title: String, tag: Int) {
         let btn = UIButton(type: .custom)
@@ -167,12 +162,10 @@ class RegularSideBarViewController: UIViewController {
     
     func applyAvatar() {
         let scale = UIScreen.main.scale
-        let containerWidth = CGFloat(64)
-        let width = CGFloat(32)
+        let containerWidth = width
+        let width = width / 2
         let size = CGSize(width: width, height: width).applying(.init(scaleX: scale, y: scale))
-        let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5),
-                                               backgroundColor: .clear)
-        let processor = ResizingImageProcessor(referenceSize: size).append(another: corner)
+        let processor = ResizingImageProcessor(referenceSize: size)
         avatarButton.imageEdgeInsets = .init(inset: (containerWidth - width) / 2)
         avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
                                  for: .normal,
@@ -211,7 +204,7 @@ class RegularSideBarViewController: UIViewController {
     lazy var foldButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setTraitRelatedBlock { button in
-            button.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text)), for: .normal)
+            button.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
         }
         btn.addTarget(self, action: #selector(onClickFold), for: .touchUpInside)
         return btn

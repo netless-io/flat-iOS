@@ -201,8 +201,8 @@ class ChatViewController: UIViewController {
     lazy var sendButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTraitRelatedBlock({ button in
-            button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .strong)), for: .normal)
-            button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .weak)), for: .disabled)
+            button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
+            button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .weak).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .disabled)
         })
         button.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return button
@@ -230,8 +230,8 @@ class ChatViewController: UIViewController {
     lazy var banTextButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setTraitRelatedBlock({  button in
-            button.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text)), for: .normal)
-            button.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger)), for: .selected)
+            button.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
+            button.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .selected)
         })
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
@@ -255,7 +255,7 @@ class ChatViewController: UIViewController {
         view.backgroundColor = .classroomChildBG
         let leftIcon = UIImageView()
         leftIcon.setTraitRelatedBlock { iconView in
-            iconView.image = UIImage(named: "chat")?.tintColor(.color(type: .text, .strong))
+            iconView.image = UIImage(named: "chat")?.tintColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(iconView.traitCollection))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
@@ -354,7 +354,7 @@ extension ChatViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        UIImage(named: "message_empty")
+        UIImage(named: "room_empty", in: nil, compatibleWith: traitCollection)
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {

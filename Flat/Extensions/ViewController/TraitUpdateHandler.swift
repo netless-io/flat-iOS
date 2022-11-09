@@ -38,8 +38,8 @@ extension UIView {
     }
     
     @objc func exchangedTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        self.exchangedTraitCollectionDidChange(previousTraitCollection)
-        traitCollectionUpdateHandler?(previousTraitCollection)
+        self.exchangedTraitCollectionDidChange(traitCollection)
+        traitCollectionUpdateHandler?(traitCollection)
     }
     
 }

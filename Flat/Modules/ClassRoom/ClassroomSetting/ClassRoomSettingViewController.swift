@@ -138,9 +138,9 @@ class ClassRoomSettingViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 16)
         button.setTraitRelatedBlock({ button in 
-            button.setTitleColor(.color(type: .danger), for: .normal)
-            button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger)), for: .normal)
-            button.layer.borderColor = UIColor.color(type: .danger).cgColor
+            button.setTitleColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
+            button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
+            button.layer.borderColor = UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection).cgColor
         })
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 4
@@ -156,7 +156,7 @@ class ClassRoomSettingViewController: UIViewController {
         
         let leftIcon = UIImageView()
         leftIcon.setTraitRelatedBlock { iconView in
-            iconView.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong))
+            iconView.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(iconView.traitCollection))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)

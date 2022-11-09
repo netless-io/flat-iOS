@@ -151,8 +151,8 @@ class CreateClassRoomViewController: UIViewController {
         let button = SpringButton(type: .custom)
         let image = UIImage(named: type.rawValue)
         button.setTraitRelatedBlock({ button in
-            button.setImage(image?.tintColor(.color(type: .text, .weak)), for: .normal)
-            button.setImage(image?.tintColor(.color(type: .primary)), for: .selected)
+            button.setImage(image?.tintColor(.color(type: .text, .weak).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
+            button.setImage(image?.tintColor(.color(type: .primary).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .selected)
         })
         button.setTitle(type.rawValue, for: .normal)
         button.setTitleColor(.color(type: .text), for: .normal)

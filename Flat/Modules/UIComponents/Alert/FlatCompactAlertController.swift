@@ -121,15 +121,15 @@ class FlatCompactAlertController: UIViewController {
             btn.titleLabel?.font = .systemFont(ofSize: 20)
             if value.element.style == .destructive {
                 btn.setTraitRelatedBlock { button in
-                    button.setTitleColor(.color(type: .danger), for: .normal)
+                    button.setTitleColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
                 }
             } else if value.element.isCancelAction() {
                 btn.setTraitRelatedBlock { button in
-                    button.setTitleColor(.color(type: .text, .strong), for: .normal)
+                    button.setTitleColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
                 }
             } else {
                 btn.setTraitRelatedBlock { button in
-                    button.setTitleColor(.color(type: .text), for: .normal)
+                    button.setTitleColor(.color(type: .text).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
                 }
             }
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)

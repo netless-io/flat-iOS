@@ -145,7 +145,7 @@ class RtcVideoItemView: UIView {
         let view = UIImageView()
         view.contentMode = .center
         view.setTraitRelatedBlock { v in
-            v.image = UIImage(named: "silence")?.tintColor(.color(type: .danger))
+            v.image = UIImage(named: "silence")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(v.traitCollection))
         }
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         return view

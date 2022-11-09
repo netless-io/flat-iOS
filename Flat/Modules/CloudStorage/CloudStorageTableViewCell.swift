@@ -123,8 +123,14 @@ class CloudStorageTableViewCell: UITableViewCell {
     lazy var moreActionButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setTraitRelatedBlock { btn in
-            btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(light: .init(hexString: "#1A1E21"), dark: .grey3)), for: .normal)
-            btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(.color(type: .primary)), for: .selected)
+            btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(
+                .color(light: .init(hexString: "#1A1E21"), dark: .grey3)
+                .resolveDynamicColorPatchiOS13With(btn.traitCollection)
+            ), for: .normal)
+            btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(
+                .color(type: .primary)
+                .resolveDynamicColorPatchiOS13With(btn.traitCollection)
+            ), for: .selected)
         }
         return btn
     }()
@@ -132,7 +138,7 @@ class CloudStorageTableViewCell: UITableViewCell {
     lazy var rightArrowImageView:UIImageView = {
         let view = UIImageView()
         view.setTraitRelatedBlock { v in
-            v.image = UIImage(named: "arrowRight")?.tintColor(.color(type: .text))
+            v.image = UIImage(named: "arrowRight")?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(v.traitCollection))
         }
         view.contentMode = .scaleAspectFit
         return view

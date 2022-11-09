@@ -177,7 +177,7 @@ class ClassRoomUsersViewController: UIViewController {
         
         let leftIcon = UIImageView()
         leftIcon.setTraitRelatedBlock { iconView in
-            iconView.image = UIImage(named: "users")?.tintColor(.color(type: .text, .strong))
+            iconView.image = UIImage(named: "users")?.tintColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(iconView.traitCollection))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
