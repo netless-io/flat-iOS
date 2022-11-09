@@ -237,13 +237,10 @@ class HomeViewController: UIViewController {
     
     func applyAvatar() {
         guard avatarButton.superview != nil else { return }
-        let containerWidth: CGFloat = 44
         let scale = UIScreen.main.scale
-        let width = CGFloat(24)
-        let size = CGSize(width: width, height: width).applying(.init(scaleX: scale, y: scale))
-        let corner = RoundCornerImageProcessor(radius: .heightFraction(0.5), backgroundColor: .clear)
-        let processor = ResizingImageProcessor(referenceSize: size).append(another: corner)
-        avatarButton.imageEdgeInsets = .init(inset: (containerWidth - width) / 2)
+        let size = CGSize(width: avatarWidth, height: avatarWidth).applying(.init(scaleX: scale, y: scale))
+        let processor = ResizingImageProcessor(referenceSize: size)
+        avatarButton.imageEdgeInsets = .init(inset: (tableHeaderItemWidth - avatarWidth) / 2)
         avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
                                  for: .normal,
                                  options: [.processor(processor)])
@@ -267,6 +264,9 @@ class HomeViewController: UIViewController {
         ])
         return avatarButton
     }()
+    
+    let tableHeaderItemWidth: CGFloat = 44
+    let avatarWidth: CGFloat = 24
     
     lazy var tableHeader: UIView = {
         let header = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 166)))
@@ -298,6 +298,9 @@ class HomeViewController: UIViewController {
         let operationStack = UIStackView(arrangedSubviews: [historyButton])
         if let hasSideBar = mainContainer?.hasSideBar, !hasSideBar {
             operationStack.addArrangedSubview(avatarButton)
+            let avatarMask = CAShapeLayer()
+            avatarMask.path = UIBezierPath(arcCenter: .init(x: tableHeaderItemWidth / 2, y: tableHeaderItemWidth / 2), radius: avatarWidth / 2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
+            avatarButton.layer.mask = avatarMask
             applyAvatar()
         }
         operationStack.axis = .horizontal
@@ -306,8 +309,8 @@ class HomeViewController: UIViewController {
         operationStack.snp.makeConstraints { make in
             make.centerY.equalTo(titleLabel)
             make.right.equalToSuperview()
-            make.height.equalTo(44)
-            make.width.equalTo(CGFloat(operationStack.arrangedSubviews.count) * 44)
+            make.height.equalTo(tableHeaderItemWidth)
+            make.width.equalTo(CGFloat(operationStack.arrangedSubviews.count) * tableHeaderItemWidth)
         }
         return header
     }()
