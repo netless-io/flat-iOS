@@ -49,7 +49,7 @@ class MixReplayViewModel {
         windowParams.scrollVerticalOnly = true
         windowParams.stageStyle = "box-shadow: 0 0 0"
         windowParams.prefersColorScheme = .auto
-        windowParams.containerSizeRatio = NSNumber(value: 1 / ClassRoomLayoutRatioConfig.whiteboardRatio)
+        windowParams.containerSizeRatio = NSNumber(value: ClassRoomLayoutRatioConfig.whiteboardRatio)
         
         whitePlayerConfig.windowParams = windowParams
         
