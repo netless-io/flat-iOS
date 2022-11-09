@@ -63,6 +63,7 @@ struct ClassroomFactory {
         let payload: [String: String] = ["cursorName": userName]
         let userPermissionEnable = detailInfo.isOwner
         fastRoomConfiguration.whiteRoomConfig.userPayload = payload
+        fastRoomConfiguration.whiteRoomConfig.windowParams?.collectorStyles = ["top": "8px", "right": "8px"]
         fastRoomConfiguration.whiteRoomConfig.windowParams?.scrollVerticalOnly = true
         fastRoomConfiguration.whiteRoomConfig.windowParams?.stageStyle = "box-shadow: 0 0 0"
         fastRoomConfiguration.whiteRoomConfig.windowParams?.prefersColorScheme = .auto
