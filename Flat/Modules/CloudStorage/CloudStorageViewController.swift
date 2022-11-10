@@ -241,7 +241,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard !tableView.isEditing else { return nil }
         let item = container.items[indexPath.row]
-        let directoryProvider = { [unowned self] in
+        let directoryProvider = { [unowned self] () -> UIViewController? in
             let controller = self.directoryControllerFor(item: item)
             let size = self.view.bounds.size.applying(.init(scaleX: 0.9, y: 0.5))
             controller.preferredContentSize = size
