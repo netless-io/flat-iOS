@@ -45,19 +45,25 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       - name: FillSLSSec
         env:
-          SLS_AK: ${{SLS_AK}}
-          SLS_SK: ${{SLS_SK}}
+          SLS_AK: ${{ secrets.SLS_AK }}
+          SLS_SK: ${{ secrets.SLS_SK }}
         run: |
           sh FillSecret.sh SLS_AK $SLS_AK ./Flat/EnvConfigs/Release.xcconfig
           sh FillSecret.sh SLS_SK $SLS_SK ./Flat/EnvConfigs/Release.xcconfig
       - name: PodInstall
         run: |
+          pod repo update
           pod install
       - name: BuildNumber
         uses: yanamura/ios-bump-version@v1
         with:
           version: ''
           build-number: ${{github.run_number}}
+      - name: GenerateGooglePlist
+        env:
+          S: ${{ secrets.GOOGLE_SERVICE_BASE64 }}
+        run: |
+          echo $S | base64 -d > Flat/GoogleService-Info.plist
       - name: Create action log
         env:
           RUN_ID: ${{github.run_id}}
