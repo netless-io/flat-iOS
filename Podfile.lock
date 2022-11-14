@@ -129,31 +129,31 @@ PODS:
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.17.0-alpha.9):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.9)
-  - Whiteboard/Base (2.17.0-alpha.9):
+  - Whiteboard (2.17.0-alpha.10):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.10)
+  - Whiteboard/Base (2.17.0-alpha.10):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.9):
+  - Whiteboard/Converter (2.17.0-alpha.10):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.17.0-alpha.9):
+  - Whiteboard/fpa (2.17.0-alpha.10):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.17.0-alpha.9):
+  - Whiteboard/Model (2.17.0-alpha.10):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.9):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.10):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.9):
+  - Whiteboard/Object (2.17.0-alpha.10):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.9):
+  - Whiteboard/Replayer (2.17.0-alpha.10):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.9)
-  - Whiteboard/Room (2.17.0-alpha.9):
+  - Whiteboard/Resource (2.17.0-alpha.10)
+  - Whiteboard/Room (2.17.0-alpha.10):
     - Whiteboard/Base
-  - Whiteboard/SyncPlayer (2.17.0-alpha.9):
+  - Whiteboard/SyncPlayer (2.17.0-alpha.10):
     - SyncPlayer
     - Whiteboard/Replayer
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.9):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.10):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -186,8 +186,8 @@ DEPENDENCIES:
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - WechatOpenSDK
-  - Whiteboard
-  - Whiteboard/SyncPlayer
+  - Whiteboard (= 2.17.0-alpha.10)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.10)
   - Zip
 
 SPEC REPOS:
@@ -267,10 +267,10 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: f1b584c6a8cd173f2f651850975a991ad25230a8
+  Whiteboard: 88135d57f463caa0ac0b7a7a1ee8c02b68df75a1
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: e6fb31cd3e21b4440284c66f597f3903379568e5
+PODFILE CHECKSUM: b2eb71443d1c850019ab300a79392834be525eb6
 
 COCOAPODS: 1.11.3
