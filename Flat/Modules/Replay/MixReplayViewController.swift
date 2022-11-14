@@ -121,6 +121,7 @@ class MixReplayViewController: UIViewController {
         }
     }
     
+    var isDraging = false
     var isSeeking = false
     var playerTimeObserver: Any?
     func listen(to player: SyncPlayer, duration: TimeInterval) {
@@ -152,6 +153,7 @@ class MixReplayViewController: UIViewController {
         playerTimeObserver = player.addPeriodicTimeObserver(forInterval: .init(value: 1000, timescale: 1000), queue: nil) { [weak self] t in
             guard let self = self else { return }
             if self.isSeeking { return }
+            if self.isDraging { return }
             self.overlay.updateCurrentTime(floor(t.seconds))
         }
     }
@@ -283,31 +285,29 @@ extension MixReplayViewController: ReplayOverlayDelegate {
     func replayOverlayDidUpdatePanGestureState(_ overlay: ReplayOverlay, sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .began:
-            isSeeking = true
+            overlay.apply(displayState: .showAlways)
+            isDraging = true
         case .changed:
-            guard let view = sender.view else { return }
+            let view = overlay.progressView
             let x = sender.location(in: view).x
             let percent = Float(x / view.bounds.width)
             let boundsPercent = min(max(0, percent), 1)
             drakSeekingPercent = boundsPercent
-            if let seconds = syncPlayer?.totalTime.seconds {
-                let t = seconds * Double(boundsPercent)
-                overlay.updateCurrentTime(t)
-            }
+            overlay.updateCurrentTime(overlay.duration * Double(boundsPercent))
         case .ended:
             if let p = drakSeekingPercent {
-                if let seconds = syncPlayer?.totalTime.seconds {
-                    let t = seconds * Double(p)
-                    seekTo(t)
-                }
+                seekTo(Double(p) * overlay.duration)
             }
             drakSeekingPercent = nil
+            isDraging = false
+            overlay.apply(displayState: .showDelayHide)
         case .failed, .cancelled:
             if let s = syncPlayer?.currentTime.seconds {
                 overlay.updateCurrentTime(s)
             }
             drakSeekingPercent = nil
-            isSeeking = false
+            isDraging = false
+            overlay.apply(displayState: .showDelayHide)
         default:
             return
         }
