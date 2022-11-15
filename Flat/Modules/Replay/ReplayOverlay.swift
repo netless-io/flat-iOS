@@ -290,7 +290,7 @@ class ReplayOverlay: NSObject {
     lazy var indicator: UIActivityIndicatorView = {
         if #available(iOS 13.0, *) {
             let view = UIActivityIndicatorView(style: .medium)
-            view.tintColor = .white
+            view.color = .white
             return view
         } else {
             return UIActivityIndicatorView(style: .white)
