@@ -187,14 +187,18 @@ class RoomDetailViewController: UIViewController {
         roomTypeLabel.text = NSLocalizedString(roomType.rawValue, comment: "")
         
         if status == .Stopped {
-            replayButton.isHidden = info.hasRecord
+            replayButton.isHidden = !info.hasRecord
             roomOperationStackView.arrangedSubviews.forEach {
-                $0.isHidden = $0 === replayButton ? false : true
+                if ($0 !== replayButton) {
+                    $0.isHidden = true
+                }
             }
         } else {
             replayButton.isHidden = true
             roomOperationStackView.arrangedSubviews.forEach {
-                $0.isHidden = $0 === replayButton ? true : false
+                if ($0 !== replayButton) {
+                    $0.isHidden = false
+                }
             }
         }
         
