@@ -212,7 +212,7 @@
                     <subviews>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IAT-Qa-awO" customClass="SpringButton" customModule="DEV_Flat" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="366" height="40"/>
-                            <color key="backgroundColor" name="whiteBG"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="NeG-Xr-S0f"/>
                             </constraints>
@@ -259,7 +259,7 @@
                         </button>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a70-nE-myW" customClass="SpringButton" customModule="DEV_Flat" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="96" width="366" height="40"/>
-                            <color key="backgroundColor" name="whiteBG"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="j4Y-NP-QAa"/>
                             </constraints>
@@ -315,9 +315,6 @@
         </namedColor>
         <namedColor name="Text">
             <color red="0.10196078431372549" green="0.11764705882352941" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="whiteBG">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBrownColor">
             <color red="0.63529411764705879" green="0.51764705882352946" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

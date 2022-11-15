@@ -49,12 +49,6 @@ class RoomDetailViewController: UIViewController {
         mainStackView.axis = view.bounds.width <= 428 ? .vertical : .horizontal
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        inviteButton.layer.borderColor = UIColor.borderColor.cgColor
-        replayButton.layer.borderColor = UIColor.borderColor.cgColor
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -139,6 +133,20 @@ class RoomDetailViewController: UIViewController {
             make.left.right.equalTo(mainStackView)
             make.top.equalTo(mainStackView.snp.bottom).offset(16)
             make.height.equalTo(1)
+        }
+        
+        inviteButton.setTraitRelatedBlock { btn in
+            btn.layer.borderColor = UIColor.borderColor.cgColor
+            btn.setTitleColor(UIColor.color(light: .grey6, dark: .grey3)
+                .resolveDynamicColorPatchiOS13With(btn.traitCollection),
+                              for: .normal)
+        }
+        
+        replayButton.setTraitRelatedBlock { btn in
+            btn.layer.borderColor = UIColor.borderColor.cgColor
+            btn.setTitleColor(UIColor.color(light: .grey6, dark: .grey3)
+                .resolveDynamicColorPatchiOS13With(btn.traitCollection),
+                              for: .normal)
         }
     }
     
