@@ -16,8 +16,8 @@ target 'Flat' do
   pod 'AgoraRtcEngine_iOS'
   pod 'Fastboard', '2.0.0-alpha.4'
   pod 'Fastboard/fpa', '2.0.0-alpha.4'
-  pod 'Whiteboard', '2.17.0-alpha.10'
-  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.10'
+  pod 'Whiteboard', :git => 'https://github.com/netless-io/Whiteboard-iOS', :tag=> '2.17.0-alpha.11'
+  pod 'Whiteboard/SyncPlayer', :git => 'https://github.com/netless-io/Whiteboard-iOS', :tag=> '2.17.0-alpha.11'
   pod 'SyncPlayer', '0.3.3'
   
   pod 'MBProgressHUD', '~> 1.2.0'
