@@ -17,6 +17,7 @@ struct ClassroomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
                                             detailInfo: RoomBasicInfo,
                                             deviceStatus: DeviceState) -> ClassRoomViewController {
+        FastRoom.followSystemPencilBehavior = ShortcutsManager.shared.shortcuts[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
         let region: Region
         switch FlatRegion(rawValue: detailInfo.region) ?? .CN_HZ {
@@ -59,6 +60,7 @@ struct ClassroomFactory {
         }
         fastRoomConfiguration.whiteSdkConfiguration.userCursor = true
         fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
+        fastRoomConfiguration.whiteSdkConfiguration.disableNewPencilStroke = !(ShortcutsManager.shared.shortcuts[.pencilTail] ?? true)
         let userName = AuthStore.shared.user?.name ?? ""
         let payload: [String: String] = ["cursorName": userName]
         let userPermissionEnable = detailInfo.isOwner

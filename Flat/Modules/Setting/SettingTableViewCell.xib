@@ -35,7 +35,7 @@
                             </imageView>
                         </subviews>
                     </stackView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YXl-bd-eGe">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YXl-bd-eGe">
                         <rect key="frame" x="16" y="21.5" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="24" id="RLl-bf-VNm"/>
@@ -76,7 +76,7 @@
                 <outlet property="settingTitleLabel" destination="kii-l4-55a" id="Llc-0D-9mr"/>
                 <outlet property="switch" destination="aRJ-TP-bUG" id="76Z-Ng-arY"/>
             </connections>
-            <point key="canvasLocation" x="-110.14492753623189" y="31.808035714285712"/>
+            <point key="canvasLocation" x="165" y="0.0"/>
         </tableViewCell>
     </objects>
     <resources>

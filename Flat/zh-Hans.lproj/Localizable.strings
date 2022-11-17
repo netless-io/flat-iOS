@@ -39,6 +39,12 @@
 "All banned" = "全体禁言中";
 
 
+"ApplePencilShortcuts" = "是否跟随系统的 ApplePencil 行为";
+
+
+"ApplePencilShortcutsDetail" = "（可在系统设置-Apple Pencil 中设置）";
+
+
 "Avatar" = "头像";
 
 
@@ -366,6 +372,12 @@
 "Paused" = "暂停中";
 
 
+"PencilTail" = "开启铅笔笔锋";
+
+
+"PencilTailDetail" = "（需要重新进入房间才能生效）";
+
+
 "PeriodicIsEnded" = "周期性房间已结束";
 
 
@@ -430,6 +442,12 @@
 
 
 "Replay" = "回放";
+
+
+"ResetShortcuts" = "重置偏好设置";
+
+
+"ResetShortcutsAlert" = "该操作不可恢复，你确定要重置偏好设置吗？";
 
 
 "Resume Class" = "恢复上课";
@@ -537,6 +555,12 @@
 "Share" = "分享";
 
 
+"ShortCuts" = "";
+
+
+"Shortcuts" = "偏好设置";
+
+
 "SmallClass" = "小班课";
 
 
@@ -610,6 +634,12 @@
 
 
 "Unbound Tips" = "你是否要解除对应账号的绑定?";
+
+
+"UndoRedoShortcuts" = "禁用撤销重做";
+
+
+"UndoRedoShortcutsDetail" = "（双指和三指轻点将不会撤销或重做）";
 
 
 "Unknown error" = "未知错误";

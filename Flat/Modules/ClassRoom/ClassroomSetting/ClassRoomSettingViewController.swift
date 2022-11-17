@@ -16,21 +16,25 @@ class ClassRoomSettingViewController: UIViewController {
         case camera
         case mic
         case videoArea
+        case shortcut
         
         var description: String {
             switch self {
             case .camera:
-                return NSLocalizedString("Camera", comment: "")
+                return localizeStrings("Camera")
             case .mic:
-                return NSLocalizedString("Mic", comment: "")
+                return localizeStrings("Mic")
             case .videoArea:
-                return NSLocalizedString("Video Area", comment: "")
+                return localizeStrings("Video Area")
+            case .shortcut:
+                return localizeStrings("Shortcuts")
             }
         }
     }
     let cameraPublish: PublishRelay<Void> = .init()
     let micPublish: PublishRelay<Void> = .init()
     let videoAreaPublish: PublishRelay<Void> = .init()
+    var shortcutsPublish: PublishRelay<Void> = .init()
     
     let cellIdentifier = "cellIdentifier"
     
@@ -38,8 +42,7 @@ class ClassRoomSettingViewController: UIViewController {
     let cameraOn: BehaviorRelay<Bool>
     let micOn: BehaviorRelay<Bool>
     let videoAreaOn: BehaviorRelay<Bool>
-    
-    var models: [SettingControlType] = [.camera, .mic, .videoArea]
+    let models: [SettingControlType]
     
     // MARK: - LifeCycle
     init(cameraOn: Bool,
@@ -50,6 +53,11 @@ class ClassRoomSettingViewController: UIViewController {
         self.micOn = .init(value: micOn)
         self.videoAreaOn = .init(value: videoAreaOn)
         self.deviceUpdateEnable = .init(value: deviceUpdateEnable)
+        if #available(iOS 13.0, *) {
+            self.models = [.shortcut, .camera, .mic, .videoArea]
+        } else {
+            self.models = [.camera, .mic, .videoArea]
+        }
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
         preferredContentSize = .init(width: 320, height: 480)
@@ -70,7 +78,7 @@ class ClassRoomSettingViewController: UIViewController {
             }
             .disposed(by: rx.disposeBag)
     }
-
+    
     // MARK: - Private
     func setupViews() {
         view.backgroundColor = .classroomChildBG
@@ -104,7 +112,19 @@ class ClassRoomSettingViewController: UIViewController {
     func config(cell: ClassRoomSettingTableViewCell, type: SettingControlType) {
         cell.label.text = type.description
         cell.selectionStyle = .none
+        cell.switch.isHidden = false
+        cell.rightArrowImageView.isHidden = true
         switch type {
+        case .shortcut:
+            cell.switch.isHidden = true
+            cell.rightArrowImageView.isHidden = false
+            cell.setEnable(true)
+            if #available(iOS 13.0, *) {
+                cell.iconView.image = UIImage(systemName: "command",
+                                              withConfiguration: UIImage
+                    .SymbolConfiguration(pointSize: 15, weight: .light))?
+                    .tintColor(.color(type: .text))
+            }
         case .camera:
             if cell.switch.isOn != cameraOn.value {
                 cell.switch.isOn = cameraOn.value
@@ -137,7 +157,7 @@ class ClassRoomSettingViewController: UIViewController {
     lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.setTraitRelatedBlock({ button in 
+        button.setTraitRelatedBlock({ button in
             button.setTitleColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
             button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
             button.layer.borderColor = UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection).cgColor
@@ -155,8 +175,8 @@ class ClassRoomSettingViewController: UIViewController {
         view.backgroundColor = .classroomChildBG
         
         let leftIcon = UIImageView()
-        leftIcon.setTraitRelatedBlock { iconView in
-            iconView.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(iconView.traitCollection))
+        view.setTraitRelatedBlock { [weak leftIcon] v in
+            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(v.traitCollection))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
@@ -206,6 +226,9 @@ extension ClassRoomSettingViewController: UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if models[indexPath.row] == .shortcut {
+            shortcutsPublish.accept(())
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

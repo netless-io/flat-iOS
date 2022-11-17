@@ -54,6 +54,8 @@
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A133529288FA21000C825DE /* MessageCensorRequest.swift */; };
 		8A14EE6C28A6321D00C0CB89 /* logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14EE6B28A6321D00C0CB89 /* logger.swift */; };
+		8A172A8A29248714006E4798 /* ShortcutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8929248714006E4798 /* ShortcutsViewController.swift */; };
+		8A172A8C29249584006E4798 /* ShortcutsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8B29249584006E4798 /* ShortcutsTableViewCell.swift */; };
 		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
 		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
 		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
@@ -350,6 +352,8 @@
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A133529288FA21000C825DE /* MessageCensorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCensorRequest.swift; sourceTree = "<group>"; };
 		8A14EE6B28A6321D00C0CB89 /* logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logger.swift; sourceTree = "<group>"; };
+		8A172A8929248714006E4798 /* ShortcutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsViewController.swift; sourceTree = "<group>"; };
+		8A172A8B29249584006E4798 /* ShortcutsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsTableViewCell.swift; sourceTree = "<group>"; };
 		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
@@ -831,6 +835,7 @@
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
+				8A172A88292486F5006E4798 /* Shortcuts */,
 				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
 				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
@@ -877,6 +882,15 @@
 				8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */,
 			);
 			path = Log;
+			sourceTree = "<group>";
+		};
+		8A172A88292486F5006E4798 /* Shortcuts */ = {
+			isa = PBXGroup;
+			children = (
+				8A172A8929248714006E4798 /* ShortcutsViewController.swift */,
+				8A172A8B29249584006E4798 /* ShortcutsTableViewCell.swift */,
+			);
+			path = Shortcuts;
 			sourceTree = "<group>";
 		};
 		8A1BF0BD280D0AF400D76F22 /* Auth */ = {
@@ -1714,6 +1728,7 @@
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
 				8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */,
 				8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */,
+				8A172A8C29249584006E4798 /* ShortcutsTableViewCell.swift in Sources */,
 				8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */,
 				8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */,
 				8ABD71E427683DB5004FDC36 /* ClassRoomLayout.swift in Sources */,
@@ -1844,6 +1859,7 @@
 				8AD3627A28DC61E00086699E /* SpringButton.swift in Sources */,
 				8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */,
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
+				8A172A8A29248714006E4798 /* ShortcutsViewController.swift in Sources */,
 				8A9FB3AD2722674F00F6F06F /* FlatResponseDataHandler.swift in Sources */,
 				8AD3627E28DD49680086699E /* UIView+TableViewHeader.swift in Sources */,
 				8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */,

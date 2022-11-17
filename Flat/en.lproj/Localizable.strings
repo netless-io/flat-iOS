@@ -39,6 +39,12 @@
 "All banned" = "All banned";
 
 
+"ApplePencilShortcuts" = "Follow the System ApplePencil Behavior";
+
+
+"ApplePencilShortcutsDetail" = "(Can be set in System Settings - Apple Pencil)";
+
+
 "Avatar" = "Avatar";
 
 
@@ -366,6 +372,12 @@
 "Paused" = "Paused";
 
 
+"PencilTail" = "Pencil Tail";
+
+
+"PencilTailDetail" = "(need to re-enter the room to take effect)";
+
+
 "PeriodicIsEnded" = "Periodic room has ended";
 
 
@@ -430,6 +442,12 @@
 
 
 "Replay" = "Replay";
+
+
+"ResetShortcuts" = "Reset Preferences";
+
+
+"ResetShortcutsAlert" = "This action is not reversible, are you sure you want to reset the preferences?";
 
 
 "Resume Class" = "Resume Class";
@@ -537,6 +555,9 @@
 "Share" = "Share";
 
 
+"Shortcuts" = "Preferences";
+
+
 "SmallClass" = "SmallClass";
 
 
@@ -610,6 +631,12 @@
 
 
 "Unbound Tips" = "Do you want to unbind the corresponding account?";
+
+
+"UndoRedoShortcuts" = "Disable Undo Redo";
+
+
+"UndoRedoShortcutsDetail" = "(Two- and three-finger taps will not perform undo or redo)";
 
 
 "Unknown error" = "Unknown error";
