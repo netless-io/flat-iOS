@@ -12,11 +12,6 @@ import UIKit
 class ClassRoomSettingTableViewCell: UITableViewCell {
     var switchValueChangedHandler: ((Bool)->Void)?
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        iconView.image = iconView.image?.tintColor(.color(type: .text))
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = .classroomChildBG
@@ -24,6 +19,20 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         label.textColor = .color(type: .text)
         lineHeightConstraint.constant = 1
         borderView.backgroundColor = .borderColor
+        
+        iconView.setTraitRelatedBlock { v in
+            v.image = v.image?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(v.traitCollection))
+        }
+        
+        rightArrowImageView.setTraitRelatedBlock { v in
+            v.image = v.image?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(v.traitCollection))
+        }
+        
+        contentView.addSubview(rightArrowImageView)
+        rightArrowImageView.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(8)
+            make.centerY.equalToSuperview()
+        }
     }
     
     @IBAction func valueChanged(_ sender: UISwitch) {
@@ -41,4 +50,6 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
     @IBOutlet weak var lineHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var `switch`: UISwitch!
+    
+    lazy var rightArrowImageView = UIImageView(image: UIImage(named: "right")?.tintColor(.color(type: .text)))
 }

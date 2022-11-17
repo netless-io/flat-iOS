@@ -90,12 +90,22 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                                detail: userUseFPA ? true : false,
                                targetAction: (self, #selector(self.onClickFPA(sender:)))),
                          at: 2)
+            
+            let shortcutsImage = UIImage(systemName: "command",
+                                         withConfiguration: UIImage
+                .SymbolConfiguration(pointSize: 14, weight: .light))
+            items.insert(.init(image: shortcutsImage!,
+                               title: NSLocalizedString("Shortcuts", comment: ""),
+                               detail: "",
+                               targetAction: (self, #selector(self.onClickShortcuts(sender:)))),
+                         at: 3)
+            
         }
         tableView.reloadData()
     }
     
     func setupViews() {
-        title = NSLocalizedString("Setting", comment: "")
+        title = localizeStrings("Setting")
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -165,6 +175,11 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @objc func onClickAbout(sender: Any?) {
         navigationController?.pushViewController(AboutUsViewController(), animated: true)
+    }
+    
+    @objc func onClickShortcuts(sender: Any?) {
+        let vc = ShortcutsViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func onClickFPA(sender: Any?) {

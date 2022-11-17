@@ -95,6 +95,7 @@ class FastboardViewController: UIViewController {
         setupViews()
         joinRoom()
         bindConnecting()
+        setupGestures()
     }
     
     // MARK: - Private
@@ -110,6 +111,31 @@ class FastboardViewController: UIViewController {
                 return
             }
         }
+    }
+    
+    @objc
+    fileprivate func onUndoRedoGesture(_ g: UITapGestureRecognizer) {
+        if g === undoGesture {
+            fastRoom.room?.undo()
+        }
+        if g === redoGesture {
+            fastRoom.room?.redo()
+        }
+    }
+    
+    @objc
+    fileprivate func onUndoRedoShortcutsUpdate(notification: Notification) {
+        guard let disable = notification.userInfo?["disable"] as? Bool else { return }
+        updateUndoRedoGestureDisable(disable)
+    }
+    fileprivate func updateUndoRedoGestureDisable(_ disabled: Bool) {
+        [undoGesture, redoGesture].forEach{ $0.isEnabled = !disabled }
+    }
+    fileprivate func setupGestures() {
+        view.addGestureRecognizer(undoGesture)
+        view.addGestureRecognizer(redoGesture)
+        updateUndoRedoGestureDisable(ShortcutsManager.shared.shortcuts[.disableDefaultUndoRedo] ?? false)
+        NotificationCenter.default.addObserver(self, selector: #selector(onUndoRedoShortcutsUpdate(notification: )), name: undoRedoShortcutsUpdateNotificaton, object: nil)
     }
     
     func bindConnecting() {
@@ -144,6 +170,21 @@ class FastboardViewController: UIViewController {
             return FastRoomPanel(items: items)
         }
     }
+    
+    // MARK: - Lazy
+    lazy var undoGesture: UITapGestureRecognizer = {
+        let double = UITapGestureRecognizer(target: self, action: #selector(onUndoRedoGesture))
+        double.numberOfTouchesRequired = 2
+        double.delegate = self
+        return double
+    }()
+    
+    lazy var redoGesture: UITapGestureRecognizer = {
+        let triple = UITapGestureRecognizer(target: self, action: #selector(onUndoRedoGesture))
+        triple.numberOfTouchesRequired = 3
+        triple.delegate = self
+        return triple
+    }()
 }
 
 extension FastboardViewController: FastRoomDelegate {
@@ -245,5 +286,11 @@ extension FastRoomPhase: CustomStringConvertible {
         case .unknown:
             return "unknown \(rawValue)"
         }
+    }
+}
+
+extension FastboardViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
     }
 }

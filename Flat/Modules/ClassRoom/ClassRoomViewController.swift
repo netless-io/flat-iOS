@@ -377,6 +377,20 @@ class ClassRoomViewController: UIViewController {
         settingVC.popOverDismissHandler = { [weak self] in
             self?.settingButton.isSelected = false
         }
+        
+        settingVC.shortcutsPublish
+            .asObservable()
+            .flatMap { [unowned self] in return self.rx.dismiss(animated: true).asObservable() }
+            .subscribe(with: self, onNext: { ws, _ in
+                let vc = ShortcutsViewController()
+                vc.popOverDismissHandler = {
+                    ws.settingButton.isSelected = false
+                }
+                ws.settingButton.isSelected = true
+                ws.popoverViewController(viewController: vc, fromSource: ws.settingButton)
+            })
+            .disposed(by: rx.disposeBag)
+        
         settingButton.rx.controlEvent(.touchUpInside)
             .subscribe(with: self, onNext: { weakSelf, _ in
                 weakSelf.settingButton.isSelected = true
