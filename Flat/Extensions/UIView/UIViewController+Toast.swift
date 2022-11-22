@@ -20,6 +20,7 @@ extension UIViewController {
                timeInterval: TimeInterval = 1.5,
                preventTouching: Bool = false) {
         guard !text.isEmpty else { return }
+        MBProgressHUD.hide(for: view, animated: false)
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.bezelView.style = .solidColor
         hud.bezelView.color = UIColor.black.withAlphaComponent(0.45)
