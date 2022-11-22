@@ -21,56 +21,60 @@
 </div>
 
 # 特性
--   前后端完全开源
-    -   [x] [Flat Web][flat-web]
-    -   [x] Flat 桌面端 ([Windows][flat-homepage] and [macOS][flat-homepage])
-    -   [x] [Flat Android][flat-android]
-    -   [x] [Flat Server 服务器][flat-server]
--   多场景课堂
-    -   [x] 大班课
-    -   [x] 小班课
-    -   [x] 一对一
--   实时交互
-    -   [x] 多功能互动白板
-    -   [x] 实时音视频（RTC）通讯
-    -   [x] 即时消息（RTM）聊天
-    -   [x] 举手上麦发言
--   帐户系统
-    -   [x] 微信登陆
-    -   [x] GitHub 登陆
-    -   [ ] 谷歌登陆
--   房间管理
-    -   [x] 加入、创建
-    -   [ ] 预定房间
-    -   [ ] 支持周期性房间
-    -   [x] 查看历史房间
--   [x] 多媒体课件云盘
--   [ ] 屏幕共享
-# 开发环境
 
-Flat完全由Swift编写。
+- 前后端完全开源
+  - [X] [Flat Web][flat-web]
+  - [X] Flat 桌面端 ([Windows][flat-homepage] and [macOS][flat-homepage])
+  - [X] [Flat Android][flat-android]
+  - [X] [Flat iOS][flat-iOS]
+  - [X] [Flat Server 服务器][flat-server]
+- 多场景课堂
+  - [X] 大班课
+  - [X] 小班课
+  - [X] 一对一
+- 实时交互
+  - [X] 多功能互动白板
+  - [X] 实时音视频（RTC）通讯
+  - [X] 即时消息（RTM）聊天
+  - [X] 举手上麦发言
+- 帐户系统
+  - [X] 微信登陆
+  - [X] GitHub 登陆
+- 房间管理
+  - [X] 加入、创建
+  - [X] 支持周期性房间
+  - [X] 查看历史房间
+
+- [X] 多媒体课件云盘
+- [X] 屏幕共享
+
+# 开发环境
 
 ## 环境配置
 
-iOS 最低版本 | Xcode版本 | Swift 版本
------------- | ------------- | -------------
-12.0 | 13.0 | Swift 5
+| iOS 最低版本 | Xcode版本 | Swift 版本 |
+| ------------ | --------- | ---------- |
+| 12.0         | 13.0      | Swift 5    |
 
 ### 安装
+
 1. 安装 [CocoaPods](https://cocoapods.org)。
 2. 在终端中进入Flat目录，执行 `pod install`.
 
 ### 配置签名
+
 1. 用Xcode打开 `Flat.xcworkspace` 。
-2. 在Xcode中前往编辑'Flat-DEV'这个Target的 [Signing & Capabilities pane](https://developer.apple.com/documentation/xcode/adding_capabilities_to_your_app) 。
+2. 在Xcode中前往编辑'Flat-DEV'这个Target的 [Signing &amp; Capabilities pane](https://developer.apple.com/documentation/xcode/adding_capabilities_to_your_app) 。
 3. 切换到你的 `Team`。
 4. 换一个不一样的 `Bundle identifier`。
 
 ### 运行
+
 1. 选择Scheme Flat-DEV .
 2. 按 ⌘R 启动 app.
 
 # 免责声明
+
 你可以将 Flat 用于商业用途但请注意我们不接受商业化需求定制与部署支持以及其它客户服务。如有相关需求请前往[灵动课堂][Flexible Classroom]。
 
 本项目仅用于学习和交流使用，请遵守所在国的法律法规，切勿用于涉及政治、宗教、色情、犯罪等领域，一切违法后果请自负。
