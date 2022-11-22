@@ -18,7 +18,6 @@ class ShortcutsTableViewCell: UITableViewCell {
         stack.axis = .vertical
         stack.spacing = 4
         contentView.addSubview(stack)
-        contentView.backgroundColor = .classroomChildBG
         stack.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(14)
             make.centerY.equalToSuperview()

@@ -178,7 +178,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @objc func onClickShortcuts(sender: Any?) {
-        let vc = ShortcutsViewController()
+        let vc = ShortcutsViewController(style: .setting)
         navigationController?.pushViewController(vc, animated: true)
     }
     

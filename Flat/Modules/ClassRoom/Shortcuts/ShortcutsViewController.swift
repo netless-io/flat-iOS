@@ -13,6 +13,7 @@ let undoRedoShortcutsUpdateNotificaton: Notification.Name = .init("undoRedoShort
 let defaultShortcuts: [ShortcutsType: Bool] = isCompact() ?
 [.disableDefaultUndoRedo: false, .pencilTail: true] :
 [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true]
+
 class ShortcutsManager {
     static var key: String {
         AuthStore.shared.user!.userUUID + "-shortcuts"
@@ -62,7 +63,9 @@ class ShortcutsManager {
         UserDefaults.standard.removeObject(forKey: Self.key)
         shortcuts = defaultShortcuts
         
-        FastRoom.followSystemPencilBehavior = shortcuts[.applePencilFollowSystem]!
+        if let applePencilFollowSystem = shortcuts[.applePencilFollowSystem] {
+            FastRoom.followSystemPencilBehavior = applePencilFollowSystem
+        }
     }
     
     static let shared = ShortcutsManager()
@@ -99,10 +102,17 @@ enum ShortcutsType: Codable {
 }
 
 class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    enum Style {
+        case setting
+        case inClassroom
+    }
+    
+    let style: Style
     let cellIdentifier = "cellIdentifier"
     let itemHeight: CGFloat = 88
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    init(style: Style = .inClassroom) {
+        self.style = style
+        super.init(nibName: nil, bundle: nil)
         preferredContentSize = .init(width: 0, height: CGFloat(defaultShortcuts.count) * itemHeight)
     }
     
@@ -121,6 +131,20 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        switch style {
+        case .inClassroom:
+            tableView.backgroundColor = .classroomChildBG
+        case .setting:
+            tableView.backgroundColor = .color(type: .background)
+            let container = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 40)))
+            container.backgroundColor = .color(type: .background)
+            container.addSubview(resetButton)
+            resetButton.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.centerX.equalToSuperview()
+            }
+            tableView.tableFooterView = container
+        }
     }
     
     @objc func onClickReset() {
@@ -132,21 +156,10 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
-        view.backgroundColor = .classroomChildBG
         view.register(ShortcutsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        let container = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 40)))
-        container.backgroundColor = .color(type: .background)
-        container.addSubview(resetButton)
-        resetButton.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.centerX.equalToSuperview()
-        }
         view.separatorStyle = .none
         view.delegate = self
         view.dataSource = self
-        if !(isBeingPresented || presentingViewController != nil) {
-            view.tableFooterView = container
-        }
         view.tableHeaderView = .minHeaderView()
         return view
     }()
@@ -190,6 +203,12 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.shortcutsTitleLabel.text = item.0.title
         cell.shortcutsDetailLabel.text = item.0.detail
         cell.shortcutsSwitch.isOn = item.1
+        switch style {
+        case .inClassroom:
+            cell.contentView.backgroundColor = .classroomChildBG
+        case .setting:
+            cell.contentView.backgroundColor = .color(type: .background)
+        }
         cell.switchHandler = { [weak self] isOn in
             guard let self = self else { return }
             ShortcutsManager.shared.updateShortcuts(type: item.0, value: isOn)
