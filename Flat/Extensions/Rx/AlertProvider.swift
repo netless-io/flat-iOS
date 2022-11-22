@@ -18,8 +18,8 @@ struct AlertModel {
         var handler: ((UIAlertAction)->Void)?
         
         static let empty = ActionModel(title: "", style: .default, handler: nil)
-        static let cancel = ActionModel(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
-        static let confirm = ActionModel(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: nil)
+        static let cancel = ActionModel(title: localizeStrings("Cancel"), style: .cancel, handler: nil)
+        static let confirm = ActionModel(title: localizeStrings("Confirm"), style: .default, handler: nil)
     }
     
     var title: String?

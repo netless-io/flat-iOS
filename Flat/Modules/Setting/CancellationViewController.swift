@@ -25,7 +25,7 @@ class CancellationViewController: UIViewController {
         
         confirmButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
-                weakSelf.showCheckAlert(title: NSLocalizedString("CancelationAndLogout", comment: ""), message: "") {
+                weakSelf.showCheckAlert(title: localizeStrings("CancelationAndLogout"), message: "") {
                     weakSelf.showActivityIndicator()
                     ApiProvider.shared.request(fromApi: AccountCancelationRequest()) { result in
                         weakSelf.stopActivityIndicator()
@@ -69,18 +69,18 @@ class CancellationViewController: UIViewController {
     }
 
     func setupViews() {
-        title = NSLocalizedString("AccountCancellation", comment: "")
+        title = localizeStrings("AccountCancellation")
         
         view.backgroundColor = .color(type: .background)
         
         let tl = UILabel()
-        tl.text = NSLocalizedString("AccountCancelationInfoTitle", comment: "")
+        tl.text = localizeStrings("AccountCancelationInfoTitle")
         tl.textColor = .color(type: .text)
         tl.font = .systemFont(ofSize: 16, weight: .semibold)
         tl.textAlignment = .center
         
         let cl = UILabel()
-        cl.text = NSLocalizedString("AccountCancelationInfo", comment: "")
+        cl.text = localizeStrings("AccountCancelationInfo")
         cl.textColor = .color(type: .text)
         cl.font = .systemFont(ofSize: 14)
         cl.numberOfLines = 0
@@ -121,7 +121,7 @@ class CancellationViewController: UIViewController {
     
     lazy var confirmButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle(NSLocalizedString("CancelationAndLogout", comment: ""), for: .normal)
+        button.setTitle(localizeStrings("CancelationAndLogout"), for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
         button.setTitleColor(.color(type: .text), for: .disabled)
         button.titleLabel?.font = .systemFont(ofSize: 16)
@@ -138,7 +138,7 @@ class CancellationViewController: UIViewController {
         let btn = UIButton.checkBoxStyleButton()
         btn.setTitleColor(.color(type: .text), for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 12)
-        btn.setTitle("  " + NSLocalizedString("Have read and agree", comment: "") + " ", for: .normal)
+        btn.setTitle("  " + localizeStrings("Have read and agree") + " ", for: .normal)
         btn.contentEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
         return btn
     }()

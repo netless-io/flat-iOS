@@ -17,13 +17,13 @@ protocol XIBLocalizable {
 extension UILabel: XIBLocalizable {
     @IBInspectable var xibLocKey: String? {
         get { nil }
-        set { text = NSLocalizedString(newValue ?? "", comment: "") }
+        set { text = localizeStrings(newValue ?? "") }
     }
 }
 
 extension UIButton: XIBLocalizable {
     @IBInspectable var xibLocKey: String? {
         get { nil }
-        set { setTitle(NSLocalizedString(newValue ?? "", comment: ""), for: .normal) }
+        set { setTitle(localizeStrings(newValue ?? ""), for: .normal) }
     }
 }

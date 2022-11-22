@@ -180,11 +180,11 @@ class RoomDetailViewController: UIViewController {
         formatter.timeStyle = .none
         let dateStr = formatter.string(from: beginTime)
         timeLabel.text = dateStr + " " + timeStr
-        statusLabel.text = NSLocalizedString(status.rawValue, comment: "")
+        statusLabel.text = localizeStrings(status.rawValue)
         statusLabel.textColor = status == .Started ? .color(type: .success) : .color(type: .text)
         
         roomNumberLabel.text = info.formatterInviteCode
-        roomTypeLabel.text = NSLocalizedString(roomType.rawValue, comment: "")
+        roomTypeLabel.text = localizeStrings(roomType.rawValue)
         
         if status == .Stopped {
             replayButton.isHidden = !info.hasRecord
@@ -225,11 +225,8 @@ class RoomDetailViewController: UIViewController {
     
     @IBAction func onClickInvite(_ sender: UIButton) {
         guard let info = info else { return }
-        let vc = ShareManager.createShareActivityViewController(roomUUID: info.roomUUID,
-                                                                beginTime: info.beginTime,
-                                                                title: info.title,
-                                                                roomNumber: info.inviteCode)
-        popoverViewController(viewController: vc, fromSource: sender)
+        let vc = InviteViewController(shareInfo: .init(roomDetail: info))
+        mainContainer?.concreteViewController.present(vc, animated: true)
     }
     
     @IBAction func onClickEnterRoom(_ sender: Any) {

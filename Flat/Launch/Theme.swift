@@ -16,7 +16,7 @@ enum ThemeStyle: String, Codable, CaseIterable {
     case auto
     
     var description: String {
-        NSLocalizedString("Theme.\(rawValue)", comment: "")
+        localizeStrings("Theme.\(rawValue)")
     }
     
     static var `default`: Self {

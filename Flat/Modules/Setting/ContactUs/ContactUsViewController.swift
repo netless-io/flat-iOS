@@ -26,7 +26,7 @@ class ContactUsViewController: UIViewController {
     }
     
     func setupViews() {
-        title = NSLocalizedString("Contact Us", comment: "")
+        title = localizeStrings("Contact Us")
     }
     
     @IBOutlet weak var textView: UITextView!

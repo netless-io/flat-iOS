@@ -59,7 +59,7 @@ enum UploadStatus {
         case .reportFinish, .reporting: str = "Upload Reporting"
         default: return nil
         }
-        return NSLocalizedString(str, comment: "")
+        return localizeStrings(str)
     }
     
     var statusColor: UIColor {

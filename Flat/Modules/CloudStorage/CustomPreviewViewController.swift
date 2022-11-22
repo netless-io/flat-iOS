@@ -32,7 +32,7 @@ class CustomPreviewViewController: QLPreviewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let backItem = UIBarButtonItem.init(title: NSLocalizedString("Close", comment: ""), style: .plain, target: self, action: #selector(self.onBack))
+        let backItem = UIBarButtonItem.init(title: localizeStrings("Close"), style: .plain, target: self, action: #selector(self.onBack))
         self.navigationItem.setLeftBarButton(backItem, animated: false)
     }
     

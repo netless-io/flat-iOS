@@ -12,9 +12,9 @@ let privacyLink = "https://flat.whiteboard.agora.io/privacy.html"
 let serviceLink = "https://flat.whiteboard.agora.io/service.html"
 
 func agreementAttributedString()-> NSAttributedString {
-    let pStr = pretty(agreementTitle: NSLocalizedString("Privacy Policy", comment: ""))
-    let sStr = pretty(agreementTitle: NSLocalizedString("Service Agreement", comment: ""))
-    let str = NSLocalizedString("AgreementText", comment: "")
+    let pStr = pretty(agreementTitle: localizeStrings("Privacy Policy"))
+    let sStr = pretty(agreementTitle: localizeStrings("Service Agreement"))
+    let str = localizeStrings("AgreementText")
     let paraStyle = NSMutableParagraphStyle()
     paraStyle.lineSpacing = 2
     let attributedStr = NSMutableAttributedString(string: str, attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.color(type: .text), .paragraphStyle: paraStyle])
@@ -24,9 +24,9 @@ func agreementAttributedString()-> NSAttributedString {
 }
 
 func agreementAttributedString1()-> NSAttributedString {
-    let pStr = pretty(agreementTitle: NSLocalizedString("Privacy Policy", comment: ""))
-    let sStr = pretty(agreementTitle: NSLocalizedString("Service Agreement", comment: ""))
-    let str = NSLocalizedString("AgreementText1", comment: "")
+    let pStr = pretty(agreementTitle: localizeStrings("Privacy Policy"))
+    let sStr = pretty(agreementTitle: localizeStrings("Service Agreement"))
+    let str = localizeStrings("AgreementText1")
     let paraStyle = NSMutableParagraphStyle()
     paraStyle.lineSpacing = 2
     let attributedStr = NSMutableAttributedString(string: str, attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.color(type: .text), .paragraphStyle: paraStyle])

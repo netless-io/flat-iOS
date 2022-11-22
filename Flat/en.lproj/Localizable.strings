@@ -138,7 +138,7 @@
 "Continue" = "Continue";
 
 
-"Copy Invite Link" = "Copy Link";
+"Copy Invitation" = "Copy Invitation";
 
 
 "Copy Success" = "Copy Success";
@@ -459,19 +459,19 @@
 "Room Detail" = "Room Detail";
 
 
+"Room ID" = "Room ID";
+
+
 "Room List" = "Room List";
 
 
-"Room Number" = "Room Number";
+"Room ID Input PlaceHolder" = "Enter 10-digit room ID";
 
 
-"Room Number Input PlaceHolder" = "Enter 10-digit room number";
+"Room Theme" = "Room Theme";
 
 
-"Room Subject" = "Subject";
-
-
-"Room Subject Placeholder" = "Please enter a room subject";
+"Room Theme Placeholder" = "Please enter a room theme";
 
 
 "Room Type" = "Room Type";
@@ -553,6 +553,9 @@
 
 
 "Share" = "Share";
+
+
+"ShareMore" = "More";
 
 
 "Shortcuts" = "Preferences";

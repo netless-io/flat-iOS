@@ -24,7 +24,7 @@ class AboutUsViewController: UIViewController {
     }
 
     func setupViews() {
-        title = NSLocalizedString("About", comment: "")
+        title = localizeStrings("About")
         view.backgroundColor = .color(type: .background)
         flatLabel.textColor = .color(type: .text)
         versionLabel.text = "v\(Env().version) (\(Env().build))"

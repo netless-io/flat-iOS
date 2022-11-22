@@ -8,30 +8,42 @@
 
 import Foundation
 
-struct ShareManager {
-    static func createShareActivityViewController(
-        roomUUID: String,
-        beginTime: Date,
-        title: String,
-        roomNumber: String
-    ) -> UIViewController {
-        let link = Env().webBaseURL + "/join/\(roomUUID)"
-        let linkURL = URL(string: link)!
-        
+struct ShareInfo {
+    let time: String
+    let subject: String
+    let number: String
+    let link: URL
+    
+    init(roomDetail: RoomBasicInfo) {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
-        
-        let timeStr  = NSLocalizedString("Start Time", comment: "") + ": " + formatter.string(from: beginTime)
-        let subStr = (NSLocalizedString("Room Subject", comment: "")) + ": " + title
-        let numStr = NSLocalizedString("Room Number", comment: "") + ": " + roomNumber
-        let des =  numStr + "\n" + timeStr + "\n" + subStr
-        let vc = UIActivityViewController(activityItems: [linkURL, des], applicationActivities: nil)
-        
+        time = formatter.string(from: roomDetail.beginTime)
+        subject = roomDetail.title
+        number = roomDetail.formatterInviteCode
+        link = URL(string: Env().webBaseURL + "/join/\(roomDetail.roomUUID)")!
+    }
+    
+    var description: String {
+        let title = (AuthStore.shared.user?.name ?? "") + localizeStrings("inviteDescribe")
+        let timeStr  = localizeStrings("Start Time") + ": " + time
+        let subStr = localizeStrings("Room Theme") + ": " + subject
+        let numStr = localizeStrings("Room ID") + ": " + number
+        let linkStr = localizeStrings("Join Link") + ": " + link.absoluteString
+        let des =  title + "\n\n" + subStr + "\n" + timeStr + "\n\n" + numStr + "\n" + linkStr
+        return des
+    }
+}
+
+struct ShareManager {
+    static func createShareActivityViewController(shareInfo: ShareInfo) -> UIViewController {
+        let vc = UIActivityViewController(activityItems: [shareInfo.link, shareInfo.description], applicationActivities: nil)
+
         vc.excludedActivityTypes = [
             .airDrop,
             .mail,
-            .addToReadingList
+            .addToReadingList,
+            .copyToPasteboard
         ]
         return vc
     }

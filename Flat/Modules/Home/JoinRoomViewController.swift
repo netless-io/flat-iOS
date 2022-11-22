@@ -200,7 +200,7 @@ class JoinRoomViewController: UIViewController {
         tf.textColor = .color(type: .text, .strong)
         tf.textAlignment = .center
         tf.font = .systemFont(ofSize: 20)
-        tf.placeholder = NSLocalizedString("Room Number Input PlaceHolder", comment: "")
+        tf.placeholder = localizeStrings("Room ID Input PlaceHolder")
         tf.keyboardType = .numberPad
         tf.returnKeyType = .join
         tf.clearButtonMode = .whileEditing

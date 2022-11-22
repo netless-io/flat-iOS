@@ -138,10 +138,7 @@ struct ClassroomFactory {
         
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
         let shareViewController: () -> UIViewController = {
-            ShareManager.createShareActivityViewController(roomUUID: playInfo.roomUUID,
-                                                                                                          beginTime: detailInfo.beginTime,
-                                                                                                          title: detailInfo.title,
-                                                                                                          roomNumber: detailInfo.formatterInviteCode)
+            return InviteViewController(shareInfo: .init(roomDetail: detailInfo))
         }
         let controller = ClassRoomViewController(viewModel: vm,
                                                  fastboardViewController: fastboardViewController,

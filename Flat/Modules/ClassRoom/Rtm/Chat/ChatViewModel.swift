@@ -81,7 +81,7 @@ class ChatViewModel {
         let history = requestHistory(channelId: rtm.channelId).asObservable().share(replay: 1, scope: .whileConnected)
         let newMessage = rtm.newMessagePublish.map { [Message.user(UserMessage(userId: $0.sender, text: $0.text, time: $0.date))] }
         let noticeMessage = notice.map { [Message.notice($0)]}
-        let banMessage   = banMessagePublisher.map { [Message.notice(NSLocalizedString($0 ? "All banned" : "The ban was lifted", comment: ""))]}
+        let banMessage   = banMessagePublisher.map { [Message.notice(localizeStrings($0 ? "All banned" : "The ban was lifted"))]}
         
         let rawMessages = Observable.of(history, newMessage, noticeMessage,banMessage)
             .merge()

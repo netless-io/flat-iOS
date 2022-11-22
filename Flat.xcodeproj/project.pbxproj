@@ -198,6 +198,7 @@
 		8AA242FA289A7DDC00C306F0 /* ClassRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */; };
 		8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */; };
 		8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */; };
+		8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA268E6292B4A940065FC3C /* InviteViewController.swift */; };
 		8AA434E1277D8E9E003681E6 /* loading_without_bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */; };
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
 		8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* RtmChannel.swift */; };
@@ -504,6 +505,7 @@
 		8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewController.swift; sourceTree = "<group>"; };
 		8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
 		8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateHandlerImp.swift; sourceTree = "<group>"; };
+		8AA268E6292B4A940065FC3C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		8AA434E0277D8E9E003681E6 /* loading_without_bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading_without_bg.gif; sourceTree = "<group>"; };
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		8AA97EA12741F83A00C3F92E /* RtmChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmChannel.swift; sourceTree = "<group>"; };
@@ -1155,6 +1157,7 @@
 		8A97EBBB271D180600965185 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8AA268E5292B4A830065FC3C /* Invite */,
 				8A6898DD2919FF77002DD089 /* Generic */,
 				8A9ACBF9271D602600E7E7CE /* Views */,
 				8A11CBE0271FEBB1001D0B1F /* UIComponents */,
@@ -1339,6 +1342,14 @@
 				8A9FB3CF2722C14B00F6F06F /* AgoraMessage.swift */,
 			);
 			path = Agora;
+			sourceTree = "<group>";
+		};
+		8AA268E5292B4A830065FC3C /* Invite */ = {
+			isa = PBXGroup;
+			children = (
+				8AA268E6292B4A940065FC3C /* InviteViewController.swift */,
+			);
+			path = Invite;
 			sourceTree = "<group>";
 		};
 		8AAC69B12717E3E300F9A3B4 /* Models */ = {
@@ -1909,6 +1920,7 @@
 				8AD2EF762775665300087280 /* ShareManager.swift in Sources */,
 				8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
+				8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */,
 				8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */,
 				8A92194A28ADDFC400DDDA81 /* ScenePreviewCell.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,

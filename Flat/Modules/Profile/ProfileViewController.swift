@@ -93,15 +93,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func onClickNickName() {
-        let alert = UIAlertController(title: NSLocalizedString("Update nickname", comment: ""), message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: localizeStrings("Update nickname"), message: nil, preferredStyle: .alert)
         alert.addTextField { tf in
             tf.text = AuthStore.shared.user?.name
         }
-        alert.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
-        alert.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: { _ in
+        alert.addAction(.init(title: localizeStrings("Cancel"), style: .cancel))
+        alert.addAction(.init(title: localizeStrings("Confirm"), style: .default, handler: { _ in
             guard let text = alert.textFields?[0].text?.trimmingCharacters(in: .whitespacesAndNewlines),
                   !text.isEmpty else {
-                self.toast(NSLocalizedString("Please enter your nickname", comment: ""))
+                self.toast(localizeStrings("Please enter your nickname"))
                 return
             }
             self.showActivityIndicator()
@@ -110,7 +110,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 switch result {
                 case .success:
                     AuthStore.shared.updateName(text)
-                    self.toast(NSLocalizedString("Update nickname success", comment: ""))
+                    self.toast(localizeStrings("Update nickname success"))
                     self.tableView.reloadData()
                 case .failure(let error):
                     self.toast(error.localizedDescription)
@@ -141,7 +141,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 return
             }
         } else {
-            showCheckAlert(message: NSLocalizedString("Unbound Tips", comment: "")) {
+            showCheckAlert(message: localizeStrings("Unbound Tips")) {
                 self.showActivityIndicator()
                 ApiProvider.shared.request(fromApi: RemoveBindingRequest(type: type)) { result in
                     self.stopActivityIndicator()
@@ -241,7 +241,7 @@ extension ProfileViewController: CropViewControllerDelegate {
             let attribute = try FileManager.default.attributesOfItem(atPath: fileURL.path)
             let name = fileURL.lastPathComponent
             let size = (attribute[.size] as? NSNumber)?.intValue ?? 0
-            showActivityIndicator(text: NSLocalizedString("Uploading", comment: ""))
+            showActivityIndicator(text: localizeStrings("Uploading"))
             ApiProvider.shared.request(fromApi: PrepareAvatarUploadRequest(fileName: name, fileSize: size))
                 .flatMap { [weak self] info throws -> Observable<UploadInfo> in
                     guard let self = self else { return .error("self not exist") }
@@ -255,7 +255,7 @@ extension ProfileViewController: CropViewControllerDelegate {
                 .subscribe(with: self, onNext: { weakSelf, avatarUrl in
                     weakSelf.stopActivityIndicator()
                     AuthStore.shared.updateAvatar(avatarUrl)
-                    weakSelf.toast(NSLocalizedString("Upload Success", comment: ""))
+                    weakSelf.toast(localizeStrings("Upload Success"))
                 }, onError: { weakSelf, error in
                     weakSelf.toast(error.localizedDescription)
                 })

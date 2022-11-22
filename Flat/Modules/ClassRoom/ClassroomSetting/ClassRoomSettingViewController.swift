@@ -166,7 +166,7 @@ class ClassRoomSettingViewController: UIViewController {
         button.layer.cornerRadius = 4
         button.layer.masksToBounds = true
         button.contentEdgeInsets = .init(top: 0, left: 20, bottom: 0, right: 20)
-        button.setTitle(NSLocalizedString("Leaving Classroom", comment: ""), for: .normal)
+        button.setTitle(localizeStrings("Leaving Classroom"), for: .normal)
         return button
     }()
     

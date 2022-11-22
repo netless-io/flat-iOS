@@ -87,7 +87,7 @@ class CloudStorageDisplayViewController: UIViewController,
             switch result {
             case .success(let r):
 //                let mb = Int(Float(r.totalUsage) / 1024 / 1024)
-//                self.storageUsageLabel.text = NSLocalizedString("Used Capacity", comment: "") + " " + mb.description + " MB"
+//                self.storageUsageLabel.text = localizeStrings("Used Capacity") + " " + mb.description + " MB"
                 self.container.receive(items: r.files, withItemsPage: page)
                 if page > 1 {
                     self.loadingMoreRequest = nil
@@ -118,7 +118,7 @@ class CloudStorageDisplayViewController: UIViewController,
                 .disposed(by: rx.disposeBag)
         }
         
-        showCheckAlert( message: NSLocalizedString("Delete File Alert", comment: "")) {
+        showCheckAlert( message: localizeStrings("Delete File Alert")) {
             executeDelete()
         }
     }
@@ -178,12 +178,12 @@ class CloudStorageDisplayViewController: UIViewController,
     }
     
     func rename(_ item: StorageFileModel) {
-        let alert = UIAlertController(title: NSLocalizedString("Rename", comment: ""), message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: localizeStrings("Rename"), message: nil, preferredStyle: .alert)
         let ext = String(item.fileName.split(separator: ".").last ?? "")
         alert.addTextField { t in
             t.text = String(item.fileName.split(separator: ".").first ?? "")
         }
-        alert.addAction(.init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: { _ in
+        alert.addAction(.init(title: localizeStrings("Confirm"), style: .default, handler: { _ in
             let newName = alert.textFields?[0].text ?? ""
             let newFileName = newName + ".\(ext)"
             let req = RenameFileRequest(fileName: newFileName, fileUUID: item.fileUUID)
@@ -204,7 +204,7 @@ class CloudStorageDisplayViewController: UIViewController,
                 }
             }
         }))
-        alert.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alert.addAction(.init(title: localizeStrings("Cancel"), style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
@@ -390,7 +390,7 @@ class CloudStorageDisplayViewController: UIViewController,
     lazy var deleteAllButton: UIButton = {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 14)
-        button.setTitle(NSLocalizedString("Delete", comment: ""), for: .normal)
+        button.setTitle(localizeStrings("Delete"), for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
         button.contentEdgeInsets = .init(top: 16, left: 16, bottom: 16, right: 16)
         button.addTarget(self, action: #selector(onClickDelete), for: .touchUpInside)
@@ -456,7 +456,7 @@ class CloudStorageDisplayViewController: UIViewController,
     
     // MARK: - EmptyData
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
-        .init(string: NSLocalizedString("EmptyCloudTip", comment: ""), attributes: [
+        .init(string: localizeStrings("EmptyCloudTip"), attributes: [
             .foregroundColor: UIColor.color(type: .text),
             .font: UIFont.systemFont(ofSize: 14)
         ])

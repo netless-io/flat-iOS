@@ -338,23 +338,23 @@ class ClassRoomViewModel {
         tap
             .flatMap { [unowned self] source -> Observable<AlertModel.ActionModel> in
                 if self.isOwner {
-                    let teacherStartAlert = AlertModel(title: NSLocalizedString("Close options", comment: ""),
-                                                       message: NSLocalizedString("Teacher close class room alert detail", comment: ""),
+                    let teacherStartAlert = AlertModel(title: localizeStrings("Close options"),
+                                                       message: localizeStrings("Teacher close class room alert detail"),
                                                        preferredStyle: .actionSheet, actionModels: [
-                                                        .init(title: NSLocalizedString("Leaving for now", comment: ""), style: .default, handler: nil),
-                                                        .init(title: NSLocalizedString("End the class", comment: ""), style: .destructive, handler: nil),
-                                                        .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)])
+                                                        .init(title: localizeStrings("Leaving for now"), style: .default, handler: nil),
+                                                        .init(title: localizeStrings("End the class"), style: .destructive, handler: nil),
+                                                        .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil)])
                     return self.alertProvider
                         .showActionSheet(with: teacherStartAlert, source: source)
                         .asObservable()
                     
                 } else {
-                    let studentAlert = AlertModel(title: NSLocalizedString("Class exit confirming title", comment: ""),
-                                                  message: NSLocalizedString("Class exit confirming detail", comment: ""),
+                    let studentAlert = AlertModel(title: localizeStrings("Class exit confirming title"),
+                                                  message: localizeStrings("Class exit confirming detail"),
                                                   preferredStyle: .actionSheet,
                                                   actionModels: [
-                                                    .init(title: NSLocalizedString("Confirm", comment: ""), style: .default, handler: nil),
-                                                    .init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)]
+                                                    .init(title: localizeStrings("Confirm"), style: .default, handler: nil),
+                                                    .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil)]
                     )
                     return self.alertProvider
                         .showActionSheet(with: studentAlert, source: source)

@@ -134,7 +134,7 @@ class UploadTasksViewController: UIViewController {
                 switch status {
                 case .error(let error):
                     weakCell.progressView.progress = 0
-                    weakCell.statusLabel.text = NSLocalizedString("Upload Fail", comment: "") + " " +   error.localizedDescription
+                    weakCell.statusLabel.text = localizeStrings("Upload Fail") + " " +   error.localizedDescription
                 case .cancel:
                     weakCell.progressView.progress = 0
                 case .idle:
@@ -177,7 +177,7 @@ class UploadTasksViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .color(type: .background)
         let topLabel = UILabel(frame: .zero)
-        topLabel.text = NSLocalizedString("Uploading List", comment: "")
+        topLabel.text = localizeStrings("Uploading List")
         topLabel.textColor = .color(type: .text)
         topLabel.font = .systemFont(ofSize: 16, weight: .medium)
         

@@ -100,7 +100,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
-        showDeleteAlertWith(message: NSLocalizedString("Delete room record alert", comment: "")) {
+        showDeleteAlertWith(message: localizeStrings("Delete room record alert")) {
             self.showActivityIndicator()
             ApiProvider.shared.request(fromApi: CancelRoomHistoryRequest(roomUUID: item.roomUUID)) { result in
                 self.stopActivityIndicator()

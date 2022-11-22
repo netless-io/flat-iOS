@@ -119,7 +119,7 @@ class ClassRoomViewController: UIViewController {
                         weakSelf.setupBinding() },
                     onFailure: { weakSelf, error in
                         weakSelf.stopSubModules()
-                        weakSelf.showAlertWith(message: NSLocalizedString("Init room error", comment: "") + error.localizedDescription) {
+                        weakSelf.showAlertWith(message: localizeStrings("Init room error") + error.localizedDescription) {
                             weakSelf.leaveUIHierarchy()
                         }}
                 ).disposed(by: rx.disposeBag)
@@ -177,7 +177,7 @@ class ClassRoomViewController: UIViewController {
                 // Hide the error 'room ban'
                 weakSelf.fastboardViewController.view.isHidden = true
                 if let _ = weakSelf.presentedViewController { weakSelf.dismiss(animated: false, completion: nil) }
-                weakSelf.showAlertWith(message: NSLocalizedString("Leaving room soon", comment: "")) {
+                weakSelf.showAlertWith(message: localizeStrings("Leaving room soon")) {
                     weakSelf.stopSubModulesAndLeaveUIHierarchy()
                 }
             })
@@ -240,9 +240,7 @@ class ClassRoomViewController: UIViewController {
     func bindInvite() {
         inviteButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
-                weakSelf.popoverViewController(viewController: weakSelf.inviteViewController(),
-                                               fromSource: weakSelf.inviteButton,
-                                               permittedArrowDirections: .none)
+                weakSelf.present(weakSelf.inviteViewController(), animated: true)
             })
             .disposed(by: rx.disposeBag)
     }
@@ -348,7 +346,7 @@ class ClassRoomViewController: UIViewController {
         rtcListViewController.viewModel.rtc.screenShareJoinBehavior
             .skip(while: { !$0 })
             .subscribe(with: self, onNext: { weakSelf, isOn in
-                weakSelf.toast(NSLocalizedString(isOn ? "ScreenShare-On" : "ScreenShare-Off", comment: ""))
+                weakSelf.toast(localizeStrings(isOn ? "ScreenShare-On" : "ScreenShare-Off"))
                 weakSelf.turnScreenShare(on: isOn)
             })
             .disposed(by: rx.disposeBag)

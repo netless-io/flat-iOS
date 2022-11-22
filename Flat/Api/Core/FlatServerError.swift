@@ -55,6 +55,6 @@ enum FlatApiError: Int, LocalizedError {
     case LoginGithubAccessDenied
     
     var errorDescription: String? {
-        NSLocalizedString(String(describing: self), comment: "")
+        localizeStrings(String(describing: self))
     }
 }

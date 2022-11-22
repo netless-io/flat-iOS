@@ -128,7 +128,7 @@ class ChatViewController: UIViewController {
                         weakSelf.inputTextField.text = nil
                         weakSelf.inputTextField.sendActions(for: .valueChanged)
                     }
-                    weakSelf.inputTextField.placeholder = ban ? NSLocalizedString("All banned", comment: ""): NSLocalizedString("Say Something...", comment: "")
+                    weakSelf.inputTextField.placeholder = ban ? localizeStrings("All banned"): localizeStrings("Say Something...")
                 })
                 .disposed(by: rx.disposeBag)
         
@@ -194,7 +194,7 @@ class ChatViewController: UIViewController {
         if ban {
             inputTextField.text = nil
         }
-        inputTextField.placeholder = ban ? NSLocalizedString("All banned", comment: ""): NSLocalizedString("Say Something...", comment: "")
+        inputTextField.placeholder = ban ? localizeStrings("All banned"): localizeStrings("Say Something...")
     }
     
     // MARK: - Lazy

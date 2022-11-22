@@ -132,9 +132,9 @@ class LoginViewController: UIViewController {
             cancelClick: {
                 exit(0)
             },
-            alertTitle: NSLocalizedString("Service and privacy", comment: ""),
-            agreeTitle: NSLocalizedString("Agree and continue", comment: ""),
-            rejectTitle: NSLocalizedString("Disagree and exit", comment: ""),
+            alertTitle: localizeStrings("Service and privacy"),
+            agreeTitle: localizeStrings("Agree and continue"),
+            rejectTitle: localizeStrings("Disagree and exit"),
             attributedString: agreementAttributedString())
         vc.clickEmptyToCancel = false
         present(vc, animated: true)
@@ -176,9 +176,9 @@ class LoginViewController: UIViewController {
             cancelClick: { [unowned self] in
                 self.dismiss(animated: false)
             },
-            alertTitle: NSLocalizedString("Service and privacy", comment: ""),
-            agreeTitle: NSLocalizedString("Have read and agree", comment: ""),
-            rejectTitle: NSLocalizedString("Reject", comment: ""),
+            alertTitle: localizeStrings("Service and privacy"),
+            agreeTitle: localizeStrings("Have read and agree"),
+            rejectTitle: localizeStrings("Reject"),
             attributedString: agreementAttributedString1())
         present(vc, animated: true)
     }
@@ -226,7 +226,7 @@ class LoginViewController: UIViewController {
             case .success:
                 return
             case .failure(let error):
-                self?.showAlertWith(message: error.localizedDescription.isEmpty ? NSLocalizedString("Login fail", comment: "") : error.localizedDescription)
+                self?.showAlertWith(message: error.localizedDescription.isEmpty ? localizeStrings("Login fail") : error.localizedDescription)
             }
         }
     }
@@ -247,7 +247,7 @@ class LoginViewController: UIViewController {
                 logger.info("weChat login user: \(user.name) \(user.userUUID)")
                 return
             case .failure(let error):
-                self?.showAlertWith(message: error.localizedDescription.isEmpty ? NSLocalizedString("Login fail", comment: "") : error.localizedDescription)
+                self?.showAlertWith(message: error.localizedDescription.isEmpty ? localizeStrings("Login fail") : error.localizedDescription)
             }
         }
     }
@@ -298,7 +298,7 @@ class LoginViewController: UIViewController {
         let btn = UIButton.checkBoxStyleButton()
         btn.setTitleColor(.color(type: .text), for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 12)
-        btn.setTitle("  " + NSLocalizedString("Have read and agree", comment: "") + " ", for: .normal)
+        btn.setTitle("  " + localizeStrings("Have read and agree") + " ", for: .normal)
         btn.addTarget(self, action: #selector(onClickAgreement), for: .touchUpInside)
         btn.contentEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 0)
         return btn
@@ -309,20 +309,20 @@ class LoginViewController: UIViewController {
         privacyButton.tintColor = .color(type: .primary)
         privacyButton.setTitleColor(.color(type: .primary), for: .normal)
         privacyButton.titleLabel?.font = .systemFont(ofSize: 12)
-        privacyButton.setTitle(NSLocalizedString("Privacy Policy", comment: ""), for: .normal)
+        privacyButton.setTitle(localizeStrings("Privacy Policy"), for: .normal)
         privacyButton.addTarget(self, action: #selector(onClickPrivacy), for: .touchUpInside)
         
         let serviceAgreementButton = UIButton(type: .custom)
         serviceAgreementButton.tintColor = .color(type: .primary)
         serviceAgreementButton.titleLabel?.font = .systemFont(ofSize: 12)
-        serviceAgreementButton.setTitle(NSLocalizedString("Service Agreement", comment: ""), for: .normal)
+        serviceAgreementButton.setTitle(localizeStrings("Service Agreement"), for: .normal)
         serviceAgreementButton.setTitleColor(.color(type: .primary), for: .normal)
         serviceAgreementButton.addTarget(self, action: #selector(onClickServiceAgreement), for: .touchUpInside)
         
         let label1 = UILabel()
         label1.textColor = .color(type: .text)
         label1.font = .systemFont(ofSize: 12)
-        label1.text = " " + NSLocalizedString("and", comment: "") + " "
+        label1.text = " " + localizeStrings("and") + " "
         let view = UIStackView(arrangedSubviews: [agreementCheckButton, privacyButton, label1, serviceAgreementButton])
         view.axis = .horizontal
         view.distribution = .fill

@@ -56,7 +56,7 @@ class BindPhoneViewController: UIViewController {
             }
             
             let bindButton = FlatGeneralCrossButton()
-            bindButton.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
+            bindButton.setTitle(localizeStrings("Confirm"), for: .normal)
             mainView.addSubview(bindButton)
             bindButton.snp.makeConstraints { make in
                 make.left.right.equalToSuperview().inset(16)
@@ -78,7 +78,7 @@ class BindPhoneViewController: UIViewController {
             }
             
             let bindButton = FlatGeneralCrossButton()
-            bindButton.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
+            bindButton.setTitle(localizeStrings("Confirm"), for: .normal)
             mainView.addSubview(bindButton)
             bindButton.snp.makeConstraints { make in
                 make.left.right.equalTo(smsAuthView)
@@ -96,7 +96,7 @@ class BindPhoneViewController: UIViewController {
             let titleLabel = UILabel()
             titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
             titleLabel.textColor = .color(type: .text, .strong)
-            titleLabel.text = NSLocalizedString("BindPhone", comment: "")
+            titleLabel.text = localizeStrings("BindPhone")
             mainView.addSubview(titleLabel)
             titleLabel.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()

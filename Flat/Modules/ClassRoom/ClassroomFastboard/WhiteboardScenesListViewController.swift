@@ -108,7 +108,7 @@ extension WhiteboardScenesListViewController: UITableViewDelegate, UITableViewDa
             return
         }
         let alertController = UIAlertController(title: localizeStrings("SaveToAlbum"), message: "", preferredStyle: .alert)
-        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(.init(title: localizeStrings("Cancel"), style: .cancel, handler: nil))
         let imageAction = UIAlertAction.init(title: "", style: .default, handler: nil)
         let width = CGFloat(270)
         let height = width * 9.0 / 16.0

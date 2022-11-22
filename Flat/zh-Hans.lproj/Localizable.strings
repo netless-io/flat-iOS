@@ -138,7 +138,7 @@
 "Continue" = "继续";
 
 
-"Copy Invite Link" = "复制邀请链接";
+"Copy Invitation" = "复制邀请";
 
 
 "Copy Success" = "复制成功";
@@ -459,19 +459,19 @@
 "Room Detail" = "房间详情";
 
 
+"Room ID" = "房间号";
+
+
 "Room List" = "房间列表";
 
 
-"Room Number" = "房间号";
+"Room ID Input PlaceHolder" = "请输入10位房间号";
 
 
-"Room Number Input PlaceHolder" = "请输入10位房间号";
+"Room Theme" = "房间主题";
 
 
-"Room Subject" = "房间主题";
-
-
-"Room Subject Placeholder" = "请输入房间主题";
+"Room Theme Placeholder" = "请输入房间主题";
 
 
 "Room Type" = "房间类型";
@@ -553,6 +553,9 @@
 
 
 "Share" = "分享";
+
+
+"ShareMore" = "更多";
 
 
 "ShortCuts" = "";

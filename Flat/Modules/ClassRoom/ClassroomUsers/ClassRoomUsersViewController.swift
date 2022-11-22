@@ -115,24 +115,24 @@ class ClassRoomUsersViewController: UIViewController {
         cell.disconnectButton.isHidden = true
         cell.raiseHandButton.isHidden = true
         if isCellUserTeacher {
-            cell.nameLabel.text = user.name + "(\(NSLocalizedString("Teach", comment: "")))"
+            cell.nameLabel.text = user.name + "(\(localizeStrings("Teach")))"
             cell.statusLabel.text = nil
         } else {
             cell.nameLabel.text = user.name
             
             if user.status.isSpeak {
                 if user.isOnline {
-                    cell.statusLabel.text = "(\(NSLocalizedString("Interacting", comment: "")))"
+                    cell.statusLabel.text = "(\(localizeStrings("Interacting")))"
                     cell.statusLabel.textColor = .init(hexString: "#9FDF76")
                 } else {
-                    cell.statusLabel.text = "(\(NSLocalizedString("offline", comment: "")))"
+                    cell.statusLabel.text = "(\(localizeStrings("offline")))"
                     cell.statusLabel.textColor = .systemRed
                 }
                 cell.cameraButton.isHidden = false
                 cell.micButton.isHidden = false
                 cell.disconnectButton.isHidden = !(isOwner || user.rtmUUID == userUUID)
             } else if user.status.isRaisingHand {
-                cell.statusLabel.text = "(\(NSLocalizedString("Raised Hand", comment: "")))"
+                cell.statusLabel.text = "(\(localizeStrings("Raised Hand")))"
                 cell.statusLabel.textColor = .color(type: .primary)
                 cell.raiseHandButton.isHidden = !isOwner
             } else {
@@ -201,7 +201,7 @@ class ClassRoomUsersViewController: UIViewController {
         let btn = UIButton(type: .custom)
         btn.titleLabel?.font = .systemFont(ofSize: 12)
         btn.setTitleColor(.color(type: .text), for: .normal)
-        btn.setTitle(NSLocalizedString("Stop Interacting", comment: ""), for: .normal)
+        btn.setTitle(localizeStrings("Stop Interacting"), for: .normal)
         btn.contentEdgeInsets = .init(top: 12, left: 12, bottom: 12, right: 12)
         btn.layer.borderColor = UIColor.borderColor.cgColor
         btn.layer.borderWidth = 1 / UIScreen.main.scale
@@ -270,7 +270,7 @@ extension ClassRoomUsersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let teacher = teacher {
             teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
-            teacherLabel.text = teacher.name + " (" + NSLocalizedString("Teacher", comment: "") + ")"
+            teacherLabel.text = teacher.name + " (" + localizeStrings("Teacher") + ")"
             return teacherHeaderView
         } else {
             return nil

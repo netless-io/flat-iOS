@@ -39,8 +39,8 @@ class SMSAuthView: UIView {
                 return .failure(errorStr)
             }
         }
-        if !phoneValid { return .failure(NSLocalizedString("InvalidPhone", comment: "")) }
-        if !codeValid { return .failure(NSLocalizedString("InvalidCode", comment: "")) }
+        if !phoneValid { return .failure(localizeStrings("InvalidPhone")) }
+        if !codeValid { return .failure(localizeStrings("InvalidCode")) }
         return .success(())
     }
     
@@ -56,7 +56,7 @@ class SMSAuthView: UIView {
             return
         }
         guard phoneValid else {
-            top?.toast(NSLocalizedString("InvalidPhone", comment: ""))
+            top?.toast(localizeStrings("InvalidPhone"))
             return
         }
         top?.showActivityIndicator()
@@ -65,7 +65,7 @@ class SMSAuthView: UIView {
             .subscribe(on: MainScheduler.instance)
             .subscribe(with: self, onSuccess: { weakSelf, _ in
                 top?.stopActivityIndicator()
-                top?.toast(NSLocalizedString("CodeSend", comment: ""))
+                top?.toast(localizeStrings("CodeSend"))
                 weakSelf.startTimer()
             }, onFailure: { weakSelf, err in
                 top?.stopActivityIndicator()
@@ -137,7 +137,7 @@ class SMSAuthView: UIView {
     
     lazy var verificationCodeTextfield: BottomLineTextfield = {
         let f = BottomLineTextfield()
-        f.placeholder = NSLocalizedString("VerificationCodePlaceholder", comment: "")
+        f.placeholder = localizeStrings("VerificationCodePlaceholder")
         f.font = .systemFont(ofSize: 16)
         f.keyboardType = .numberPad
         f.textColor = .color(type: .text)
@@ -177,7 +177,7 @@ class SMSAuthView: UIView {
     
     lazy var phoneTextfield: BottomLineTextfield = {
         let f = BottomLineTextfield()
-        f.placeholder = NSLocalizedString("PhoneInputPlaceholder", comment: "")
+        f.placeholder = localizeStrings("PhoneInputPlaceholder")
         f.keyboardType = .phonePad
         f.font = .systemFont(ofSize: 16)
         f.textColor = .color(type: .text)
@@ -192,7 +192,7 @@ class SMSAuthView: UIView {
     
     lazy var smsButton: UIButton = {
         let btn = UIButton(frame: .zero)
-        btn.setTitle(NSLocalizedString("SendSMS", comment: ""), for: .normal)
+        btn.setTitle(localizeStrings("SendSMS"), for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.setTitleColor(.color(type: .primary), for: .normal)
         btn.setTitleColor(.color(type: .text, .weak), for: .disabled)

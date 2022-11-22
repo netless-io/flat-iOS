@@ -49,7 +49,7 @@ enum UploadType: String, CaseIterable {
     
     var title: String {
         let str = rawValue.first!.uppercased() + rawValue.dropFirst()
-        return NSLocalizedString("Upload " + str, comment: "")
+        return localizeStrings("Upload " + str)
     }
     
     var imageName: String { "upload_" + rawValue }

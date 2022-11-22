@@ -60,33 +60,33 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     func updateItems() {
         items = [
             .init(image: UIImage(named: "language")!,
-                  title: NSLocalizedString("Language Setting", comment: ""),
+                  title: localizeStrings("Language Setting"),
                   detail: LocaleManager.language?.name ?? "跟随系统",
                   targetAction: (self, #selector(self.onClickLanguage(sender:)))),
             .init(image: UIImage(named: "theme")!,
-                  title: NSLocalizedString("Theme", comment: ""),
+                  title: localizeStrings("Theme"),
                   detail: Theme.shared.style.description,
                   targetAction: (self, #selector(self.onClickTheme(sender:)))),
             .init(image: UIImage(named: "update_version")!,
-                  title: NSLocalizedString("Version", comment: ""),
+                  title: localizeStrings("Version"),
                   detail: "Flat v\(Env().version) (\(Env().build))",
                   targetAction: (self, #selector(onVersion(sender:)))),
             .init(image: UIImage(named: "about_us")!,
-                  title: NSLocalizedString("About", comment: ""),
+                  title: localizeStrings("About"),
                   detail: "",
                   targetAction: (self, #selector(self.onClickAbout(sender:)))),
             .init(image: UIImage(named: "export")!,
-                  title: NSLocalizedString("Export log", comment: ""),
+                  title: localizeStrings("Export log"),
                   detail: "",
                   targetAction: (self, #selector(self.onClickExportLog(sender:)))),
             .init(image: UIImage(named: "cancellation")!,
-                  title: NSLocalizedString("AccountCancellation", comment: ""),
+                  title: localizeStrings("AccountCancellation"),
                   detail: "",
                   targetAction: (self, #selector(self.onClickCancellation(sender:))))
         ]
         if #available(iOS 13.0, *) {
             items.insert(.init(image: UIImage(named: "rocket")!,
-                               title: NSLocalizedString("FPA", comment: ""),
+                               title: localizeStrings("FPA"),
                                detail: userUseFPA ? true : false,
                                targetAction: (self, #selector(self.onClickFPA(sender:)))),
                          at: 2)
@@ -95,7 +95,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                                          withConfiguration: UIImage
                 .SymbolConfiguration(pointSize: 14, weight: .light))
             items.insert(.init(image: shortcutsImage!,
-                               title: NSLocalizedString("Shortcuts", comment: ""),
+                               title: localizeStrings("Shortcuts"),
                                detail: "",
                                targetAction: (self, #selector(self.onClickShortcuts(sender:)))),
                          at: 3)
@@ -132,7 +132,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.toast(error.localizedDescription)
             case .success(let r):
                 if r.alreadyJoinedRoomCount > 0 {
-                    self.showAlertWith(title: NSLocalizedString("ClassesStillLeftTips", comment: "") + r.alreadyJoinedRoomCount.description, message: "", completionHandler: nil)
+                    self.showAlertWith(title: localizeStrings("ClassesStillLeftTips") + r.alreadyJoinedRoomCount.description, message: "", completionHandler: nil)
                 } else {
                     let vc = CancellationViewController()
                     self.navigationController?.pushViewController(vc, animated: true)
@@ -188,11 +188,11 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @objc func onClickTheme(sender: Any?) {
-        let alertController = UIAlertController(title: NSLocalizedString("Select Theme", comment: ""), message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: localizeStrings("Select Theme"), message: nil, preferredStyle: .actionSheet)
         let manager = Theme.shared
         let current = manager.style
         for i in ThemeStyle.allCases {
-            let selected = NSLocalizedString("selected", comment: "")
+            let selected = localizeStrings("selected")
             alertController.addAction(.init(title: i.description + ((current == i) ? selected : ""), style: .default, handler: { _ in
                 manager.updateUserPreferredStyle(i)
                 if #available(iOS 13.0, *) {
@@ -202,23 +202,23 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }))
         }
-        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(.init(title: localizeStrings("Cancel"), style: .cancel, handler: nil))
         if let cell = sender as? SettingTableViewCell {
             popoverViewController(viewController: alertController, fromSource: cell.settingDetailLabel)
         }
     }
     
     @objc func onClickLanguage(sender: Any?) {
-        let alertController = UIAlertController(title: NSLocalizedString("Select Language", comment: ""), message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: localizeStrings("Select Language"), message: nil, preferredStyle: .actionSheet)
         let currentLanguage = LocaleManager.language
         for l in Language.allCases {
-            alertController.addAction(.init(title: l == currentLanguage ? "\(l.name)\(NSLocalizedString("selected", comment: ""))" : l.name, style: .default, handler: { _ in
+            alertController.addAction(.init(title: l == currentLanguage ? "\(l.name)\(localizeStrings("selected"))" : l.name, style: .default, handler: { _ in
                 Bundle.set(language: l)
                 self.rebootAndTurnToSetting()
                 logger.info("local update \(LocaleManager.languageCode ?? "")")
             }))
         }
-        alertController.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+        alertController.addAction(.init(title: localizeStrings("Cancel"), style: .cancel, handler: nil))
         if let cell = sender as? SettingTableViewCell {
             popoverViewController(viewController: alertController, fromSource: cell.settingDetailLabel)
         }

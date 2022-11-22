@@ -92,11 +92,11 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
     }
     
     @objc func onClickAdd(_ sender: UIButton) {
-        let alert = UIAlertController(title: NSLocalizedString("Upload", comment: ""), message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: localizeStrings("Upload"), message: nil, preferredStyle: .actionSheet)
         UploadType.allCases.forEach { type in
             alert.addAction(.init(title: type.title, style: .default, handler: { [weak self] _ in self?.uploadActionFor(type: type)}))
         }
-        alert.addAction(.init(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+        alert.addAction(.init(title: localizeStrings("Cancel"), style: .cancel))
         popoverViewController(viewController: alert, fromSource: sender)
     }
     
@@ -186,7 +186,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                     case .finished:
                         self?.fileContentSelectedHandler?(.projectorPptx(uuid: info.uuid, prefix: info.prefix, title: item.fileName))
                     default:
-                        self?.toast(NSLocalizedString("File not ready", comment: ""))
+                        self?.toast(localizeStrings("File not ready"))
                     }
                 }
             } else {
@@ -209,7 +209,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                             self?.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
                         }
                     default:
-                        self?.toast(NSLocalizedString("File not ready", comment: ""))
+                        self?.toast(localizeStrings("File not ready"))
                     }
                 }
             }

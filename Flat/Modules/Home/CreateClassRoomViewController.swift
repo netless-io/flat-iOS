@@ -16,7 +16,7 @@ class CreateClassRoomViewController: UIViewController {
     let deviceStatusStore: UserDevicePreferredStatusStore
     
     var defaultTitle: String {
-        "\(AuthStore.shared.user?.name ?? "") " + NSLocalizedString("Created Room", comment: "")
+        "\(AuthStore.shared.user?.name ?? "") " + localizeStrings("Created Room")
     }
     
     lazy var currentRoomType = availableTypes.first! {
@@ -301,7 +301,7 @@ class CreateClassRoomViewController: UIViewController {
         let tf = BottomLineTextfield()
         tf.textColor = .color(type: .text, .strong)
         tf.font = .systemFont(ofSize: 20)
-        tf.placeholder = localizeStrings("Room Subject Placeholder")
+        tf.placeholder = localizeStrings("Room Theme Placeholder")
         tf.returnKeyType = .go
         tf.clearButtonMode = .whileEditing
         tf.placeholder = defaultTitle

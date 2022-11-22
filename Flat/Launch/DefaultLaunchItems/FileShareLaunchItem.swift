@@ -48,7 +48,7 @@ class FileShareLaunchItem: LaunchItem {
             top.toast(localizeStrings("TryLaunchUploadInClassTip"))
             return
         }
-        top.showCheckAlert(message: NSLocalizedString("Got New File Alert", comment: ""), completionHandler: {
+        top.showCheckAlert(message: localizeStrings("Got New File Alert"), completionHandler: {
             guard let mainContainer = UIApplication.shared.topViewController?.mainContainer else { return }
             if let _ = mainContainer.concreteViewController.presentedViewController {
                 mainContainer.concreteViewController.dismiss(animated: false, completion: nil)
