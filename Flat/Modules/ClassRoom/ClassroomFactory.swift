@@ -15,8 +15,8 @@ import Fastboard
 
 struct ClassroomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
-                                            detailInfo: RoomBasicInfo,
-                                            deviceStatus: DeviceState) -> ClassRoomViewController {
+                                           detailInfo: RoomBasicInfo,
+                                           deviceStatus: DeviceState) -> ClassRoomViewController {
         FastRoom.followSystemPencilBehavior = ShortcutsManager.shared.shortcuts[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
         let region: Region
@@ -34,6 +34,7 @@ struct ClassroomFactory {
         case .none:
             region = .CN
         }
+        let userName = AuthStore.shared.user?.name ?? ""
         
         if #available(iOS 13.0, *) {
             fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
@@ -41,13 +42,15 @@ struct ClassroomFactory {
                                                           roomToken: playInfo.whiteboardRoomToken,
                                                           region: region,
                                                           userUID: AuthStore.shared.user?.userUUID ?? "",
+                                                          userPayload: .init(nickName: userName),
                                                           useFPA: userUseFPA)
         } else {
             fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
-                                                      roomUUID: playInfo.whiteboardRoomUUID,
-                                                      roomToken: playInfo.whiteboardRoomToken,
-                                                      region: region,
-                                                      userUID: AuthStore.shared.user?.userUUID ?? "")
+                                                          roomUUID: playInfo.whiteboardRoomUUID,
+                                                          roomToken: playInfo.whiteboardRoomToken,
+                                                          region: region,
+                                                          userUID: AuthStore.shared.user?.userUUID ?? "",
+                                                          userPayload: .init(nickName: userName))
         }
         if var ua = fastRoomConfiguration.whiteSdkConfiguration.value(forKey: "netlessUA") as? [String] {
             let env = Env()
@@ -58,13 +61,9 @@ struct ClassroomFactory {
             ua.append(str)
             fastRoomConfiguration.whiteSdkConfiguration.setValue(ua, forKey: "netlessUA")
         }
-        fastRoomConfiguration.whiteSdkConfiguration.userCursor = true
         fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
         fastRoomConfiguration.whiteSdkConfiguration.disableNewPencilStroke = !(ShortcutsManager.shared.shortcuts[.pencilTail] ?? true)
-        let userName = AuthStore.shared.user?.name ?? ""
-        let payload: [String: String] = ["cursorName": userName]
         let userPermissionEnable = detailInfo.isOwner
-        fastRoomConfiguration.whiteRoomConfig.userPayload = payload
         fastRoomConfiguration.whiteRoomConfig.windowParams?.collectorStyles = ["top": "8px", "right": "8px"]
         fastRoomConfiguration.whiteRoomConfig.windowParams?.scrollVerticalOnly = true
         fastRoomConfiguration.whiteRoomConfig.windowParams?.stageStyle = "box-shadow: 0 0 0"
@@ -88,8 +87,8 @@ struct ClassroomFactory {
         
         // Config Rtm
         let rtm = Rtm(rtmToken: playInfo.rtmToken,
-                                rtmUserUUID: playInfo.rtmUID,
-                                agoraAppId: Env().agoraAppId)
+                      rtmUserUUID: playInfo.rtmUID,
+                      agoraAppId: Env().agoraAppId)
         let rtmChannel = rtm.joinChannelId(playInfo.rtmChannelId)
             .asObservable()
             .share(replay: 1, scope: .forever)
@@ -126,15 +125,15 @@ struct ClassroomFactory {
         
         let alertProvider = DefaultAlertProvider()
         let vm = ClassRoomViewModel(stateHandler: imp,
-                                     initDeviceState: initDeviceState,
-                                     isOwner: detailInfo.isOwner,
-                                     userUUID: playInfo.rtmUID,
-                                     roomUUID: playInfo.roomUUID,
-                                     roomType: detailInfo.roomType,
-                                     commandChannelRequest: rtmChannel,
-                                     rtm: rtm,
-                                     alertProvider: alertProvider,
-                                     preferredDeviceState: deviceStatus)
+                                    initDeviceState: initDeviceState,
+                                    isOwner: detailInfo.isOwner,
+                                    userUUID: playInfo.rtmUID,
+                                    roomUUID: playInfo.roomUUID,
+                                    roomType: detailInfo.roomType,
+                                    commandChannelRequest: rtmChannel,
+                                    rtm: rtm,
+                                    alertProvider: alertProvider,
+                                    preferredDeviceState: deviceStatus)
         
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
         let shareViewController: () -> UIViewController = {
