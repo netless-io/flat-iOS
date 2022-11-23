@@ -18,7 +18,7 @@ class BaseNavigationViewController: UINavigationController {
     func updateNaviAppearance() {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
-            appearance.backgroundColor = .color(type: .background)
+            appearance.backgroundColor = .color(type: .background, .weak)
             appearance.setBackIndicatorImage(UIImage(named: "arrowLeft"),
                                              transitionMaskImage: UIImage(named: "arrowLeft"))
             appearance.shadowImage = UIImage.imageWith(color: .borderColor)

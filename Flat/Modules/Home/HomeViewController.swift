@@ -317,11 +317,13 @@ class HomeViewController: UIViewController {
     
     lazy var historyButton: UIButton = {
         let button = UIButton(type: .custom)
-        let normalImage = UIImage(named: "history")?.tintColor(.color(type: .text))
-        let selectedImage = UIImage(named: "history")?.tintColor(.color(type: .primary))
-        button.setImage(normalImage, for: .normal)
-        button.setImage(selectedImage, for: .selected)
         button.addTarget(self, action: #selector(onClickHistory), for: .touchUpInside)
+        button.setTraitRelatedBlock { v in
+            let normalImage = UIImage(named: "history")?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(v.traitCollection))
+            let selectedImage = UIImage(named: "history")?.tintColor(.color(type: .primary).resolveDynamicColorPatchiOS13With(v.traitCollection))
+            v.setImage(normalImage, for: .normal)
+            v.setImage(selectedImage, for: .selected)
+        }
         return button
     }()
     

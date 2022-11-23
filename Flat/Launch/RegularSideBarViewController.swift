@@ -142,8 +142,8 @@ class RegularSideBarViewController: UIViewController {
 
     func syncSelected() {
         let newButton = (mainStackView.arrangedSubviews[selectedIndex] as! UIButton)
-        newButton.setImage(UIImage(named: icons[selectedIndex] + "_filled")?.tintColor(.color(type: .primary)), for: .normal)
-        newButton.setTitleColor(.color(type: .primary), for: .normal)
+        newButton.setImage(UIImage(named: icons[selectedIndex] + "_filled")?.tintColor(.blue6), for: .normal)
+        newButton.setTitleColor(.blue6, for: .normal)
         
         mainStackView.arrangedSubviews.enumerated().forEach { (offset, element) in
             if offset != selectedIndex {

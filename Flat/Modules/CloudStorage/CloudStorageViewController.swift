@@ -160,20 +160,24 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     
     lazy var normalOperationStackView: UIStackView = {
         let uploadListButton = UIButton(type: .custom)
-        uploadListButton.setImage(UIImage(named: "upload_list")?.tintColor(.color(type: .text)), for: .normal)
         uploadListButton.addTarget(self, action: #selector(presentTask), for: .touchUpInside)
         
         let selectionButton = UIButton(type: .custom)
-        selectionButton.setImage(UIImage(named: "cloud_storage_selection")?.tintColor(.color(type: .text)), for: .normal)
         selectionButton.addTarget(self, action: #selector(onClickEdit(_:)), for: .touchUpInside)
         
         let createDirectoryButton = UIButton(type: .custom)
-        createDirectoryButton.setImage(UIImage(named: "create_directory")?.tintColor(.color(type: .text)), for: .normal)
         createDirectoryButton.addTarget(self, action: #selector(onClickCreateDirectory(_:)), for: .touchUpInside)
         
         let stack = UIStackView(arrangedSubviews: [uploadListButton, selectionButton, createDirectoryButton])
         stack.axis = .horizontal
         stack.distribution = .fillEqually
+        stack.setTraitRelatedBlock { tk in
+            let imageNames = ["upload_list", "cloud_storage_selection", "create_directory"]
+            for (index, v) in tk.arrangedSubviews.enumerated() {
+                let btn = v as! UIButton
+                btn.setImage(UIImage(named: imageNames[index])?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(tk.traitCollection)), for: .normal)
+            }
+        }
         return stack
     }()
     

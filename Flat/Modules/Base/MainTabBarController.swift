@@ -40,7 +40,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func setup() {
-        tabBar.tintColor = .color(type: .primary)
+        tabBar.tintColor = .blue6
         tabBar.isTranslucent = true
         if #available(iOS 13.0, *) {
             let appearance = UITabBarAppearance()
