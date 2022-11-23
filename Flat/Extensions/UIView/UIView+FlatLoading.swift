@@ -31,7 +31,7 @@ fileprivate class FlatLoadingView: UIView {
         
         addSubview(cancelButton)
         cancelButton.layer.borderColor = UIColor.color(type: .primary).cgColor
-        cancelButton.layer.borderWidth = 1 / UIScreen.main.scale
+        cancelButton.layer.borderWidth = commonBorderWidth
         cancelButton.layer.cornerRadius = 4
         cancelButton.addTarget(self, action: #selector(onClickCancel), for: .touchUpInside)
         cancelButton.titleLabel?.font = .systemFont(ofSize: 16)

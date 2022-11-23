@@ -17,7 +17,7 @@ class ScenePreviewCell: UITableViewCell {
             make.height.equalTo(previewImageView.snp.width).multipliedBy(9.0/16.0)
         }
         previewImageView.layer.borderColor = UIColor.lightGray.cgColor
-        previewImageView.layer.borderWidth = 1 / UIScreen.main.scale
+        previewImageView.layer.borderWidth = commonBorderWidth
         previewImageView.layer.cornerRadius = 4
         previewImageView.contentMode = .scaleAspectFit
     }

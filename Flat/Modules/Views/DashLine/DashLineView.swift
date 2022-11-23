@@ -34,7 +34,7 @@ class DashLineView: UIView {
         backgroundColor = .clear
         layer.addSublayer(dashLineLayer)
         dashLineLayer.strokeColor = UIColor(hexString: "#E5E8F0").cgColor
-        dashLineLayer.lineWidth = 1 / UIScreen.main.scale
+        dashLineLayer.lineWidth = commonBorderWidth
         dashLineLayer.lineJoin = .miter
         dashLineLayer.lineDashPattern = [2, 2]
     }

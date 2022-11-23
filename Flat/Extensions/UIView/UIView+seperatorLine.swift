@@ -17,7 +17,7 @@ extension UIView {
     }
     
     @discardableResult
-    func addLine(direction: LineDirection, color: UIColor, width: CGFloat = 1, inset: UIEdgeInsets = .zero) -> UIView {
+    func addLine(direction: LineDirection, color: UIColor, width: CGFloat = commonBorderWidth, inset: UIEdgeInsets = .zero) -> UIView {
         let line = UIView()
         addSubview(line)
         line.backgroundColor = color

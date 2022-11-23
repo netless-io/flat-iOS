@@ -22,7 +22,7 @@ class BottomLineTextfield: UITextField {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let height: CGFloat = 1
+        let height: CGFloat = commonBorderWidth
         line.frame = .init(origin: .init(x: 0, y: bounds.size.height - height), size: .init(width: bounds.width, height: height))
     }
     

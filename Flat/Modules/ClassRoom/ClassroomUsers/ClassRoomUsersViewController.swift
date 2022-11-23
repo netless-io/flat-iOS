@@ -204,7 +204,7 @@ class ClassRoomUsersViewController: UIViewController {
         btn.setTitle(localizeStrings("Stop Interacting"), for: .normal)
         btn.contentEdgeInsets = .init(top: 12, left: 12, bottom: 12, right: 12)
         btn.layer.borderColor = UIColor.borderColor.cgColor
-        btn.layer.borderWidth = 1 / UIScreen.main.scale
+        btn.layer.borderWidth = commonBorderWidth
         return btn
     }()
     

@@ -8,6 +8,8 @@
 
 import Foundation
 
+let commonBorderWidth = 1 / UIScreen.main.scale
+
 func isCompact() -> Bool {
     if #available(iOS 13.0, *) {
         for scene in UIApplication.shared.connectedScenes {

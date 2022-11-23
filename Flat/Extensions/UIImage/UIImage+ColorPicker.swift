@@ -14,7 +14,7 @@ extension UIImage {
                                 size: CGSize,
                                 radius: CGFloat) -> UIImage? {
         let lineColor: CGColor = UIColor.black.withAlphaComponent(0.24).cgColor
-        let lineWidth: CGFloat = 1 / UIScreen.main.scale
+        let lineWidth: CGFloat = commonBorderWidth
         let radius: CGFloat = radius
         UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
         let current = UIGraphicsGetCurrentContext()

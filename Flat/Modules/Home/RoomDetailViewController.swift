@@ -132,9 +132,10 @@ class RoomDetailViewController: UIViewController {
         line.snp.makeConstraints { make in
             make.left.right.equalTo(mainStackView)
             make.top.equalTo(mainStackView.snp.bottom).offset(16)
-            make.height.equalTo(1)
+            make.height.equalTo(commonBorderWidth)
         }
         
+        inviteButton.layer.borderWidth = commonBorderWidth
         inviteButton.setTraitRelatedBlock { btn in
             btn.layer.borderColor = UIColor.borderColor.cgColor
             btn.setTitleColor(UIColor.color(light: .grey6, dark: .grey3)
@@ -142,6 +143,7 @@ class RoomDetailViewController: UIViewController {
                               for: .normal)
         }
         
+        replayButton.layer.borderWidth = commonBorderWidth
         replayButton.setTraitRelatedBlock { btn in
             btn.layer.borderColor = UIColor.borderColor.cgColor
             btn.setTitleColor(UIColor.color(light: .grey6, dark: .grey3)

@@ -174,7 +174,7 @@ class InviteViewController: UIViewController {
                               for: .normal)
         }
         btn.addTarget(self, action: #selector(onClickMore), for: .touchUpInside)
-        btn.layer.borderWidth = 1
+        btn.layer.borderWidth = commonBorderWidth
         btn.clipsToBounds = true
         btn.layer.cornerRadius = 6
         return btn

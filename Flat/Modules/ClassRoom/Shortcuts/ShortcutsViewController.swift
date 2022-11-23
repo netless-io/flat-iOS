@@ -166,7 +166,7 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     lazy var resetButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.layer.borderWidth = 1
+        button.layer.borderWidth = commonBorderWidth
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 4
         button.adjustsImageWhenHighlighted = false

@@ -17,7 +17,7 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         backgroundColor = .classroomChildBG
         contentView.backgroundColor = .classroomChildBG
         label.textColor = .color(type: .text)
-        lineHeightConstraint.constant = 1
+        lineHeightConstraint.constant = commonBorderWidth
         borderView.backgroundColor = .borderColor
         
         iconView.setTraitRelatedBlock { v in

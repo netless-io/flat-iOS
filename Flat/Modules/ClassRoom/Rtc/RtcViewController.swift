@@ -149,7 +149,7 @@ class RtcViewController: UIViewController {
             }
             line.snp.remakeConstraints { make in
                 make.left.top.bottom.equalToSuperview()
-                make.width.equalTo(1)
+                make.width.equalTo(commonBorderWidth)
             }
         case .top:
             videoItemsStackView.axis = .horizontal
@@ -159,7 +159,7 @@ class RtcViewController: UIViewController {
             }
             line.snp.remakeConstraints { make in
                 make.left.right.bottom.equalToSuperview()
-                make.height.equalTo(1)
+                make.height.equalTo(commonBorderWidth)
             }
         }
         videoItemsStackView.arrangedSubviews.forEach { remakeConstraintForItemView(view: $0, direction: direction) }

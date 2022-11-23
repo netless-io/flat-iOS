@@ -50,7 +50,7 @@ class PrivacyAlertViewController: UIViewController {
         titleLabel.text = alertTitle
         agreeBtn.setTitle(agreeTitle, for: .normal)
         cancelBtn.setTitle(rejectTitle, for: .normal)
-        cancelBtn.layer.borderWidth = 1 / UIScreen.main.scale
+        cancelBtn.layer.borderWidth = commonBorderWidth
         
         titleLabel.textColor = .color(type: .text)
         mainBgView.backgroundColor = .color(type: .background)

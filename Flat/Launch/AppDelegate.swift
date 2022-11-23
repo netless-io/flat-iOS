@@ -44,7 +44,7 @@ func configAppearance() {
     
     FastRoomControlBar.appearance().commonRadius = isCompact() ? 8 : 4
     FastRoomControlBar.appearance().itemWidth = isCompact() ? 40 : 48
-    FastRoomControlBar.appearance().borderWidth = 1
+    FastRoomControlBar.appearance().borderWidth = commonBorderWidth
 
     UISwitch.appearance().onTintColor = .color(type: .primary)
     
