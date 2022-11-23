@@ -94,7 +94,7 @@ class LaunchCoordinator {
         }
         
         if #available(iOS 14.0, *) {
-            if window.traitCollection.hasCompact {
+            if isCompact() {
                 return compactMain()
             }
             let vc = MainSplitViewController(style: .tripleColumn)
@@ -111,6 +111,9 @@ class LaunchCoordinator {
             vc.setViewController(vc.emptyDetailController, for: .secondary)
             return vc
         } else {
+            if isCompact() {
+                return compactMain()
+            }
             return oldPadMain()
         }
     }
