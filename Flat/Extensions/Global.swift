@@ -19,6 +19,14 @@ func isCompact() -> Bool {
                 }
             }
         }
+        // When no key window was detected. Treat the first window as key window.
+        for scene in UIApplication.shared.connectedScenes {
+            if let scene = scene as? UIWindowScene {
+                if let firstWindow = scene.windows.first {
+                    return firstWindow.traitCollection.hasCompact
+                }
+            }
+        }
     } else {
         if let has = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.traitCollection.hasCompact {
             return has
