@@ -13,6 +13,7 @@ import Fastboard
 import Siren
 import FirebaseCore
 import FirebaseAnalytics
+import FirebaseCrashlytics
 
 var globalSessionId = UUID().uuidString
 
@@ -20,6 +21,9 @@ var didStartGoogleAnalytics = false
 func startGoogleAnalytics() {
     guard !didStartGoogleAnalytics else { return }
     FirebaseApp.configure()
+    if let uid = AuthStore.shared.user?.userUUID, !uid.isEmpty {
+        Crashlytics.crashlytics().setUserID(uid)
+    }
     didStartGoogleAnalytics = true
 }
 

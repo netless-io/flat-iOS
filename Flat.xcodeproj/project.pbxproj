@@ -101,6 +101,7 @@
 		8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0BA82716859700123207 /* LoginViewController.swift */; };
 		8A2E0C4A28D03B8300CD63EE /* UIView+seperatorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */; };
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
+		8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */; };
 		8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
@@ -403,6 +404,7 @@
 		8A2D0BA82716859700123207 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+seperatorLine.swift"; sourceTree = "<group>"; };
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
+		8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsLogHandler.swift; sourceTree = "<group>"; };
 		8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomOperation.swift; sourceTree = "<group>"; };
 		8A48A9C82716D734003719DB /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
 		8A48A9CA2716D795003719DB /* FlatResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatResponse.swift; sourceTree = "<group>"; };
@@ -882,6 +884,7 @@
 				8A14EE6B28A6321D00C0CB89 /* logger.swift */,
 				8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */,
 				8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */,
+				8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */,
 			);
 			path = Log;
 			sourceTree = "<group>";
@@ -1821,6 +1824,7 @@
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
 				8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */,
+				8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */,
 				8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
@@ -2940,7 +2944,7 @@
 				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "$(inherited)";
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "$(inherited)";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "$(inherited) arm64";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flat/Info.plist;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;

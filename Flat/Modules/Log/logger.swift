@@ -18,6 +18,7 @@ func updateAliSlsLogger(uid: String) {
 }
 
 func bootstrapLogger() {
+    var loggers: [LogHandler] = [SBLogHandler(), CrashlyticsLogHandler()]
     LoggingSystem.bootstrap { label in
         if Env().containsSlsInfo {
             let identifier: AlibabaLogHandler.ClientIdentifier
@@ -27,9 +28,10 @@ func bootstrapLogger() {
                 identifier = .sessionId(globalSessionId)
             }
             aliSlsLogger = AlibabaLogHandler(identifier: identifier)
-            return MultiplexLogHandler([SBLogHandler(), aliSlsLogger!])
+            loggers.append(aliSlsLogger!)
+            return MultiplexLogHandler(loggers)
         } else {
-            return SBLogHandler()
+            return MultiplexLogHandler(loggers)
         }
     }
     logger = Logger(label: "")

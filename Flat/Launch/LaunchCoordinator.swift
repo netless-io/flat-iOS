@@ -10,6 +10,7 @@
 import Foundation
 import UIKit
 import RxSwift
+import FirebaseCrashlytics
 
 class LaunchCoordinator {
     let window: UIWindow
@@ -179,6 +180,7 @@ extension LaunchCoordinator: AuthStoreDelegate {
         hitItems = []
         observeFirstJWTExpire()
         updateAliSlsLogger(uid: user.userUUID)
+        Crashlytics.crashlytics().setUserID(user.userUUID)
     }
     
     func authStoreDidLogout(_ authStore: AuthStore) {
