@@ -14,8 +14,8 @@ target 'Flat' do
   
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
-  pod 'Fastboard', '2.0.0-alpha.5'
-  pod 'Fastboard/fpa', '2.0.0-alpha.5'
+  pod 'Fastboard', '2.0.0-alpha.6'
+  pod 'Fastboard/fpa', '2.0.0-alpha.6'
   pod 'Whiteboard', '2.17.0-alpha.12'
   pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.12'
   pod 'SyncPlayer', '0.3.3'
