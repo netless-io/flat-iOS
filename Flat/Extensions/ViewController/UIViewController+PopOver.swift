@@ -53,6 +53,8 @@ extension UIViewController {
                                completion: (()->Void)? = nil) {
         if let presentedViewController = presentedViewController {
             logger.error("can't present when there is presented \(presentedViewController)")
+            completion?()
+            return
         }
         viewController.modalPresentationStyle = .popover
         if let view = sender {

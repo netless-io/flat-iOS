@@ -15,6 +15,10 @@ class BaseNavigationViewController: UINavigationController {
         updateNaviAppearance()
     }
     
+    override var description: String {
+        "BaseNavigationViewController: \(children.map { $0.description }.joined(separator: "-"))"
+    }
+    
     func updateNaviAppearance() {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
