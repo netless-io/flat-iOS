@@ -17,6 +17,13 @@ struct ClassroomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
                                            detailInfo: RoomBasicInfo,
                                            deviceStatus: DeviceState) -> ClassRoomViewController {
+        // Config Rtc
+        let rtc = Rtc(appId: Env().agoraAppId,
+                      channelId: playInfo.roomUUID,
+                      token: playInfo.rtcToken,
+                      uid: playInfo.rtcUID,
+                      screenShareInfo: playInfo.rtcShareScreen)
+        
         FastRoom.followSystemPencilBehavior = ShortcutsManager.shared.shortcuts[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
         let region: Region
@@ -42,8 +49,9 @@ struct ClassroomFactory {
                                                           roomToken: playInfo.whiteboardRoomToken,
                                                           region: region,
                                                           userUID: AuthStore.shared.user?.userUUID ?? "",
+                                                          useFPA: userUseFPA,
                                                           userPayload: .init(nickName: userName),
-                                                          useFPA: userUseFPA)
+                                                          audioMixerDelegate: rtc)
         } else {
             fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
                                                           roomUUID: playInfo.whiteboardRoomUUID,
@@ -77,13 +85,6 @@ struct ClassroomFactory {
         let camera = userPermissionEnable ? deviceStatus.camera : false
         let mic = userPermissionEnable ? deviceStatus.mic : false
         let initDeviceState = DeviceState(mic: mic, camera: camera)
-        
-        // Config Rtc
-        let rtc = Rtc(appId: Env().agoraAppId,
-                      channelId: playInfo.roomUUID,
-                      token: playInfo.rtcToken,
-                      uid: playInfo.rtcUID,
-                      screenShareInfo: playInfo.rtcShareScreen)
         
         // Config Rtm
         let rtm = Rtm(rtmToken: playInfo.rtmToken,

@@ -271,6 +271,8 @@
 		8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */; };
 		8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */; };
 		8AE59C7C28D302D500BAC8FC /* VideoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */; };
+		8AE827FD2939AD7F00EAC63D /* Rtc+audioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE827FC2939AD7F00EAC63D /* Rtc+audioMixer.swift */; };
+		8AE827FF2939C27400EAC63D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AE827FE2939C27400EAC63D /* GoogleService-Info.plist */; };
 		8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* RtmCommandType.swift */; };
 		8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */; };
 		8AED087928113840001DEFDC /* AccountCancelationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED087728113741001DEFDC /* AccountCancelationRequest.swift */; };
@@ -585,6 +587,7 @@
 		8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordQueryRequest.swift; sourceTree = "<group>"; };
 		8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+loading.swift"; sourceTree = "<group>"; };
 		8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreviewView.swift; sourceTree = "<group>"; };
+		8AE827FC2939AD7F00EAC63D /* Rtc+audioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rtc+audioMixer.swift"; sourceTree = "<group>"; };
 		8AE892FA2727E99D009C71DA /* RtmCommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmCommandType.swift; sourceTree = "<group>"; };
 		8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationValidateRequest.swift; sourceTree = "<group>"; };
 		8AED087728113741001DEFDC /* AccountCancelationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationRequest.swift; sourceTree = "<group>"; };
@@ -861,6 +864,7 @@
 				8A8020902755B09000F5691C /* RtcViewController.swift */,
 				8A8020882754697500F5691C /* RtcViewModel.swift */,
 				8A80208A2754699300F5691C /* Rtc.swift */,
+				8AE827FC2939AD7F00EAC63D /* Rtc+audioMixer.swift */,
 				8A5DDC8D272A890D006216AD /* RtcPreviewViewController.swift */,
 				8A7741B8273287C2009FAADA /* RtcCellPopMenuView.swift */,
 				8A7741BA27328AEA009FAADA /* PopMenuView.swift */,
@@ -1790,6 +1794,7 @@
 				8ADEDB6928C601EF00482EF2 /* UIColor+FlatTheme.swift in Sources */,
 				8A4BF2D728C58BB000021D2A /* WhiteboardAppsCell.swift in Sources */,
 				8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */,
+				8AE827FD2939AD7F00EAC63D /* Rtc+audioMixer.swift in Sources */,
 				8A05C35B2761E9AD009BCA79 /* CancelUploadRequest.swift in Sources */,
 				8AA242F6289A6ABD00C306F0 /* ClassroomStateHandler.swift in Sources */,
 				8A9FB39D2721783B00F6F06F /* MemberRequest.swift in Sources */,
