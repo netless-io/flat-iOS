@@ -24,12 +24,6 @@ class EmptySplitSecondaryViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        // For before iOS 13
-        iconView.tintColor = .borderColor
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .color(type: .background, .weak)

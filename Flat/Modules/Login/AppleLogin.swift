@@ -9,7 +9,6 @@
 import Foundation
 import AuthenticationServices
 
-@available(iOS 13.0, *)
 class AppleLogin: NSObject, ASAuthorizationControllerDelegate {
     var handler: LoginHandler?
     

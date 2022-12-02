@@ -53,11 +53,7 @@ class ClassRoomSettingViewController: UIViewController {
         self.micOn = .init(value: micOn)
         self.videoAreaOn = .init(value: videoAreaOn)
         self.deviceUpdateEnable = .init(value: deviceUpdateEnable)
-        if #available(iOS 13.0, *) {
-            self.models = [.shortcut, .camera, .mic, .videoArea]
-        } else {
-            self.models = [.camera, .mic, .videoArea]
-        }
+        self.models = [.shortcut, .camera, .mic, .videoArea]
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
         preferredContentSize = .init(width: 320, height: 480)
@@ -119,12 +115,10 @@ class ClassRoomSettingViewController: UIViewController {
             cell.switch.isHidden = true
             cell.rightArrowImageView.isHidden = false
             cell.setEnable(true)
-            if #available(iOS 13.0, *) {
-                cell.iconView.image = UIImage(systemName: "command",
-                                              withConfiguration: UIImage
-                    .SymbolConfiguration(pointSize: 15, weight: .light))?
-                    .tintColor(.color(type: .text))
-            }
+            cell.iconView.image = UIImage(systemName: "command",
+                                          withConfiguration: UIImage
+                .SymbolConfiguration(pointSize: 15, weight: .light))?
+                .tintColor(.color(type: .text))
         case .camera:
             if cell.switch.isOn != cameraOn.value {
                 cell.switch.isOn = cameraOn.value
@@ -158,9 +152,9 @@ class ClassRoomSettingViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 16)
         button.setTraitRelatedBlock({ button in
-            button.setTitleColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
-            button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
-            button.layer.borderColor = UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection).cgColor
+            button.setTitleColor(.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
+            button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger).resolvedColor(with: button.traitCollection)), for: .normal)
+            button.layer.borderColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection).cgColor
         })
         button.layer.borderWidth = commonBorderWidth
         button.layer.cornerRadius = 4
@@ -176,7 +170,7 @@ class ClassRoomSettingViewController: UIViewController {
         
         let leftIcon = UIImageView()
         view.setTraitRelatedBlock { [weak leftIcon] v in
-            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(v.traitCollection))
+            leftIcon?.image = UIImage(named: "classroom_setting")?.tintColor(.color(type: .text, .strong).resolvedColor(with: v.traitCollection))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)

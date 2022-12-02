@@ -226,7 +226,7 @@ class HomeViewController: UIViewController {
     
     func createHeaderButton(title: String, imageName: String, target: Any?, action: Selector) -> UIButton {
         let button = SpringButton(type: .custom)
-        button.setImage(UIImage.init(dynamicName: imageName), for: .normal)
+        button.setImage(UIImage(named: imageName), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 12)
         button.setTitleColor(.color(type: .text), for: .normal)
         button.setTitle(title, for: .normal)
@@ -319,8 +319,8 @@ class HomeViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(onClickHistory), for: .touchUpInside)
         button.setTraitRelatedBlock { v in
-            let normalImage = UIImage(named: "history")?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(v.traitCollection))
-            let selectedImage = UIImage(named: "history")?.tintColor(.color(type: .primary).resolveDynamicColorPatchiOS13With(v.traitCollection))
+            let normalImage = UIImage(named: "history")?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
+            let selectedImage = UIImage(named: "history")?.tintColor(.color(type: .primary).resolvedColor(with: v.traitCollection))
             v.setImage(normalImage, for: .normal)
             v.setImage(selectedImage, for: .selected)
         }
@@ -381,7 +381,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         tableHeader.bounds.height
     }
 
-    @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         guard let identifier = (configuration.identifier as? NSString) else { return }
         let index = Int(identifier.intValue)
@@ -400,7 +399,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let item = list[indexPath.row]
         let actions = item.roomActions(rootController: self)

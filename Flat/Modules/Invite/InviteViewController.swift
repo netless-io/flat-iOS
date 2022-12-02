@@ -170,7 +170,7 @@ class InviteViewController: UIViewController {
         btn.setTraitRelatedBlock { btn in
             btn.layer.borderColor = UIColor.borderColor.cgColor
             btn.setTitleColor(UIColor.color(light: .grey6, dark: .grey3)
-                .resolveDynamicColorPatchiOS13With(btn.traitCollection),
+                .resolvedColor(with: btn.traitCollection),
                               for: .normal)
         }
         btn.addTarget(self, action: #selector(onClickMore), for: .touchUpInside)

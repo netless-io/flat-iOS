@@ -17,13 +17,7 @@ class MixReplayViewController: UIViewController {
         return traitCollection.hasCompact ? .landscapeRight : .landscape
     }
     override var prefersStatusBarHidden: Bool { true }
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            return .darkContent
-        } else {
-            return .default
-        }
-    }
+    override var preferredStatusBarStyle: UIStatusBarStyle { .darkContent }
     
     let viewModel: MixReplayViewModel
     var rtcPlayer: AVPlayer?
@@ -66,7 +60,7 @@ class MixReplayViewController: UIViewController {
         
         let newWhiteView = WhiteBoardView()
         newWhiteView.setTraitRelatedBlock { v in
-            v.backgroundColor = .color(type: .background).resolveDynamicColorPatchiOS13With(v.traitCollection)
+            v.backgroundColor = .color(type: .background).resolvedColor(with: v.traitCollection)
         }
         newWhiteView.isUserInteractionEnabled = false
         whiteboardView = newWhiteView
@@ -215,12 +209,8 @@ class MixReplayViewController: UIViewController {
     
     lazy var sectionListButton: UIButton = {
         let btn = UIButton(type: .system)
-        if #available(iOS 13.0, *) {
-            let img = UIImage(systemName: "list.number", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
-            btn.setImage(img, for: .normal)
-        } else {
-            btn.setTitle("List", for: .normal)
-        }
+        let img = UIImage(systemName: "list.number", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
+        btn.setImage(img, for: .normal)
         btn.tintColor = .white
         btn.addTarget(self, action: #selector(onClickSelectionList), for: .touchUpInside)
         return btn

@@ -35,12 +35,8 @@ extension UIView {
             activityView = view
         } else {
             let view: CustomActivityIndicatorView
-            if #available(iOS 13.0, *) {
-                view = CustomActivityIndicatorView(style: .large)
-                view.color = .white
-            } else {
-                view = CustomActivityIndicatorView(style: .gray)
-            }
+            view = CustomActivityIndicatorView(style: .large)
+            view.color = .white
             activityView =  view
             addSubview(activityView)
             activityView.center = center
@@ -81,12 +77,8 @@ extension UIViewController {
             activityView = view
         } else {
             let view: CustomActivityIndicatorView
-            if #available(iOS 13.0, *) {
-                view = CustomActivityIndicatorView(style: .large)
-                view.color = .white
-            } else {
-                view = CustomActivityIndicatorView(style: .gray)
-            }
+            view = CustomActivityIndicatorView(style: .large)
+            view.color = .white
             activityView =  view
             self.view.addSubview(activityView)
             activityView.center = self.view.center

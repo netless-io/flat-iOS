@@ -38,11 +38,7 @@ extension UIButton: FlatCustomAlertSetable {
     }
     
     func _onClickCommonCustomAlert() {
-        if #available(iOS 13.0, *) {
-            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        } else {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         viewContainingController()?.presentCommonCustomAlert(actions)
     }
     
@@ -91,8 +87,7 @@ extension FlatCustomAlertSetable {
     }
     
     func setupCommonCustomAlert(title: String? = nil, _ actions: [Action]) {
-        guard let trait = UIApplication.shared.keyWindow?.traitCollection else { return }
-        if trait.hasCompact {
+        if isCompact() {
             self.actions = actions
             addTarget(self, action: #selector(_onClickCommonCustomAlert))
         } else {

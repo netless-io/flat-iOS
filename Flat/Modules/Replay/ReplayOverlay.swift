@@ -288,13 +288,9 @@ class ReplayOverlay: NSObject {
     }()
     
     lazy var indicator: UIActivityIndicatorView = {
-        if #available(iOS 13.0, *) {
-            let view = UIActivityIndicatorView(style: .medium)
-            view.color = .white
-            return view
-        } else {
-            return UIActivityIndicatorView(style: .white)
-        }
+        let view = UIActivityIndicatorView(style: .medium)
+        view.color = .white
+        return view
     }()
     
     lazy var toolBar: UIView = {
@@ -322,22 +318,14 @@ class ReplayOverlay: NSObject {
         bar.addSubview(effectView)
         effectView.snp.makeConstraints { $0.edges.equalToSuperview() }
         bar.clipsToBounds = true
-        if #available(iOS 13.0, *) {
-            bar.layer.cornerRadius = 22
-        } else {
-            bar.layer.cornerRadius = 10
-        }
+        bar.layer.cornerRadius = 22
         return bar
     }()
     
     lazy var forwardButton: UIButton = {
         let btn = UIButton(type: .system)
-        if #available(iOS 13.0, *) {
-            let img = UIImage(systemName: "goforward.15", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
-            btn.setImage(img, for: .normal)
-        } else {
-            btn.setTitle("+15s", for: .normal)
-        }
+        let img = UIImage(systemName: "goforward.15", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
+        btn.setImage(img, for: .normal)
         btn.tintColor = .white
         btn.addTarget(self, action: #selector(onForward), for: .touchUpInside)
         return btn
@@ -345,12 +333,8 @@ class ReplayOverlay: NSObject {
     
     lazy var backwardButton: UIButton = {
         let btn = UIButton(type: .system)
-        if #available(iOS 13.0, *) {
-            let img = UIImage(systemName: "gobackward.15", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
-            btn.setImage(img, for: .normal)
-        } else {
-            btn.setTitle("-15s", for: .normal)
-        }
+        let img = UIImage(systemName: "gobackward.15", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
+        btn.setImage(img, for: .normal)
         btn.tintColor = .white
         btn.addTarget(self, action: #selector(onBackward), for: .touchUpInside)
         return btn

@@ -12,20 +12,13 @@ import Fastboard
 enum ThemeStyle: String, Codable, CaseIterable {
     case dark
     case light
-    @available(iOS 13, *)
     case auto
     
     var description: String {
         localizeStrings("Theme.\(rawValue)")
     }
     
-    static var `default`: Self {
-        if #available(iOS 13.0, *) {
-            return .auto
-        } else {
-            return .light
-        }
-    }
+    static var `default`: Self { .auto }
     
     var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {
@@ -38,13 +31,7 @@ enum ThemeStyle: String, Codable, CaseIterable {
         }
     }
     
-    static var allCases: [ThemeStyle] {
-        if #available(iOS 13.0, *) {
-            return [.dark, .light, .auto]
-        } else {
-            return [.dark, .light]
-        }
-    }
+    static var allCases: [ThemeStyle] { [.dark, .light, .auto] }
 }
 
 class Theme {
@@ -74,14 +61,6 @@ class Theme {
         }
     }
     
-    var isDarkBeforeIOS13: Bool {
-        if #available(iOS 13.0, *) {
-        } else if style == .dark {
-            return true
-        }
-        return false
-    }
-    
     fileprivate func setStoredPreferredStyle(_ newValue: ThemeStyle) {
         do {
             let encoder = JSONEncoder()
@@ -100,17 +79,13 @@ class Theme {
     }
     
     fileprivate func apply(_ style: ThemeStyle) {
-        if #available(iOS 13.0, *) {
-            switch style {
-            case .dark:
-                window?.overrideUserInterfaceStyle = .dark
-            case .light:
-                window?.overrideUserInterfaceStyle = .light
-            case .auto:
-                window?.overrideUserInterfaceStyle = .unspecified
-            }
-        } else {
-            
+        switch style {
+        case .dark:
+            window?.overrideUserInterfaceStyle = .dark
+        case .light:
+            window?.overrideUserInterfaceStyle = .light
+        case .auto:
+            window?.overrideUserInterfaceStyle = .unspecified
         }
         applyNavigationBar()
         configProgressHUDAppearance()
@@ -119,8 +94,7 @@ class Theme {
     }
     
     fileprivate func commitUpdate() {
-        let window = UIApplication.shared.keyWindow
-        window?.subviews.forEach {
+        keyWindow()?.subviews.forEach {
             $0.removeFromSuperview()
             window?.addSubview($0)
         }
@@ -129,17 +103,6 @@ class Theme {
     fileprivate func applyNavigationBar() {
         let proxy = UINavigationBar.appearance()
         proxy.tintColor = .color(type: .text)
-        
-        if #available(iOS 13.0, *) {} else {
-            proxy.isTranslucent = false
-            proxy.barTintColor = .color(type: .background)
-            proxy.largeTitleTextAttributes = [
-                .foregroundColor: UIColor.color(type: .text)
-            ]
-            proxy.titleTextAttributes = [
-                .foregroundColor: UIColor.color(type: .text)
-            ]
-        }
     }
     
     fileprivate func applyFastboard(_ style: ThemeStyle) {
@@ -150,11 +113,7 @@ class Theme {
         case .light:
             flatTheme = FastRoomDefaultTheme.defaultLightTheme
         case .auto:
-            if #available(iOS 13, *) {
-                flatTheme = FastRoomDefaultTheme.defaultAutoTheme
-            } else {
-                fatalError("never")
-            }
+            flatTheme = FastRoomDefaultTheme.defaultAutoTheme
         }
         
         flatTheme.panelItemAssets.normalIconColor = .color(type: .text)

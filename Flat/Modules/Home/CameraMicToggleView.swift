@@ -34,11 +34,7 @@ class CameraMicToggleView: UIView {
             cameraOnUpdate?(cameraOn)
         }
         if fireImpact {
-            if #available(iOS 13.0, *) {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-            } else {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            }
+            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         }
     }
     
@@ -49,11 +45,7 @@ class CameraMicToggleView: UIView {
             micOnUpdate?(micOn)
         }
         if fireImpact {
-            if #available(iOS 13.0, *) {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-            } else {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            }
+            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         }
     }
     internal fileprivate(set) var cameraOn: Bool

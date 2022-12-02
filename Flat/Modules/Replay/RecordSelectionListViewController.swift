@@ -73,25 +73,17 @@ class RecordSelectionListViewController: UITableViewController {
         titleLabel.textColor = .white
         titleLabel.text = localizeStrings("RecordingList")
         
-        if #available(iOS 13.0, *) {
-            let icon = UIImage(systemName: "list.number", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))?.withTintColor(.white, renderingMode: .alwaysOriginal)
-            let iconView = UIImageView(image: icon)
-            view.addSubview(iconView)
-            iconView.snp.makeConstraints { make in
-                make.left.equalToSuperview().inset(14)
-                make.centerY.equalToSuperview()
-            }
-            
-            titleLabel.snp.makeConstraints { make in
-                make.left.equalToSuperview().inset(44)
-                make.centerY.equalToSuperview()
-            }
-            
-        } else {
-            titleLabel.snp.makeConstraints { make in
-                make.left.equalToSuperview().inset(14)
-                make.centerY.equalToSuperview()
-            }
+        let icon = UIImage(systemName: "list.number", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        let iconView = UIImageView(image: icon)
+        view.addSubview(iconView)
+        iconView.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(14)
+            make.centerY.equalToSuperview()
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(44)
+            make.centerY.equalToSuperview()
         }
         
         view.addLine(direction: .bottom, color: .grey5, width: 1 / UIScreen.main.scale)

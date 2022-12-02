@@ -105,9 +105,7 @@ class LoginViewController: UIViewController {
         // Hide weChat login when weChat not installed
         weChatLoginButton.isHidden = !WXApi.isWXAppInstalled()
         syncTraitCollection(traitCollection)
-        if #available(iOS 13.0, *) {
-            setupAppleLogin()
-        }
+        setupAppleLogin()
         view.addSubview(agreementCheckStackView)
         agreementCheckStackView.snp.makeConstraints { make in
             make.centerX.equalTo(horizontalLoginTypesStackView)
@@ -195,7 +193,6 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @available(iOS 13.0, *)
     func setupAppleLogin() {
         let container = UIView()
         let button = ASAuthorizationAppleIDButton(authorizationButtonType: .default, authorizationButtonStyle: .black)
@@ -211,7 +208,6 @@ class LoginViewController: UIViewController {
         }
     }
     
-    @available(iOS 13.0, *)
     @objc func onClickAppleLogin() {
         guard checkAgreementDidAgree() else {
             showAgreementCheckAlert()

@@ -50,7 +50,7 @@ class PopMenuView: UIView {
               inset: UIEdgeInsets) {
         if source == sourceView { return }
         self.sourceView = source
-        let target: UIView = UIApplication.shared.keyWindow!
+        guard let target = keyWindow() else { return }
         if superview == nil {
             target.addSubview(bg)
             target.addSubview(self)

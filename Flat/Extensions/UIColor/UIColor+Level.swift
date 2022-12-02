@@ -254,35 +254,15 @@ extension UIColor {
     // Return dynamic color when system dynamic color is enable.
     // Return single color depends on theme when not.
     static func color(light: UIColor, dark: UIColor) -> UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor { t in
-                switch t.userInterfaceStyle {
-                case .dark:
-                    return dark
-                case .light, .unspecified:
-                    return light
-                @unknown default:
-                    return light
-                }
-            }
-        } else {
-            if Theme.shared.isDarkBeforeIOS13 {
+        return UIColor { t in
+            switch t.userInterfaceStyle {
+            case .dark:
                 return dark
-            } else {
+            case .light, .unspecified:
+                return light
+            @unknown default:
                 return light
             }
-        }
-    }
-    
-    // SystemDynamicColor works fine when it follow system userInterfaceStyle behavior,
-    // but it may get wrong color when user override window userInterfaceStyle.
-    // Using resolvedColor to fix it.
-    // https://stackoverflow.com/questions/57794583/uicolor-dynamic-provider-block-receives-wrong-userinterfacestyle-sometimes
-    func resolveDynamicColorPatchiOS13With(_ traitCollection: UITraitCollection) -> UIColor {
-        if #available(iOS 13.0, *) {
-            return resolvedColor(with: traitCollection)
-        } else {
-            return self
         }
     }
     

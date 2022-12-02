@@ -63,11 +63,11 @@ class FlatPopoverAlertController: UIViewController {
             btn.titleLabel?.font = .systemFont(ofSize: 14)
             if value.element.style == .destructive {
                 btn.setTraitRelatedBlock { button in
-                    button.setTitleColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
+                    button.setTitleColor(.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
                 }
             } else {
                 btn.setTraitRelatedBlock { button in
-                    button.setTitleColor(.color(type: .text).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
+                    button.setTitleColor(.color(type: .text).resolvedColor(with: button.traitCollection), for: .normal)
                 }
             }
             btn.addTarget(self, action: #selector(onClickAction(button:)), for: .touchUpInside)

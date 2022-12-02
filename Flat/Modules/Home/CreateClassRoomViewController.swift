@@ -151,8 +151,8 @@ class CreateClassRoomViewController: UIViewController {
         let button = SpringButton(type: .custom)
         let image = UIImage(named: type.rawValue)
         button.setTraitRelatedBlock({ button in
-            button.setImage(image?.tintColor(.color(type: .text, .weak).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
-            button.setImage(image?.tintColor(.color(type: .primary).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .selected)
+            button.setImage(image?.tintColor(.color(type: .text, .weak).resolvedColor(with: button.traitCollection)), for: .normal)
+            button.setImage(image?.tintColor(.color(type: .primary).resolvedColor(with: button.traitCollection)), for: .selected)
         })
         button.setTitle(type.rawValue, for: .normal)
         button.setTitleColor(.color(type: .text), for: .normal)
@@ -176,11 +176,7 @@ class CreateClassRoomViewController: UIViewController {
         let newType = availableTypes[sender.tag]
         if currentRoomType != newType {
             currentRoomType = newType
-            if #available(iOS 13.0, *) {
-                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-            } else {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            }
+            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
         }
     }
     

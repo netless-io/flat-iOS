@@ -43,23 +43,15 @@ struct ClassroomFactory {
         }
         let userName = AuthStore.shared.user?.name ?? ""
         
-        if #available(iOS 13.0, *) {
-            fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
-                                                          roomUUID: playInfo.whiteboardRoomUUID,
-                                                          roomToken: playInfo.whiteboardRoomToken,
-                                                          region: region,
-                                                          userUID: AuthStore.shared.user?.userUUID ?? "",
-                                                          useFPA: userUseFPA,
-                                                          userPayload: .init(nickName: userName),
-                                                          audioMixerDelegate: rtc)
-        } else {
-            fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
-                                                          roomUUID: playInfo.whiteboardRoomUUID,
-                                                          roomToken: playInfo.whiteboardRoomToken,
-                                                          region: region,
-                                                          userUID: AuthStore.shared.user?.userUUID ?? "",
-                                                          userPayload: .init(nickName: userName))
-        }
+        fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
+                                                      roomUUID: playInfo.whiteboardRoomUUID,
+                                                      roomToken: playInfo.whiteboardRoomToken,
+                                                      region: region,
+                                                      userUID: AuthStore.shared.user?.userUUID ?? "",
+                                                      useFPA: userUseFPA,
+                                                      userPayload: .init(nickName: userName),
+                                                      audioMixerDelegate: rtc)
+        
         if var ua = fastRoomConfiguration.whiteSdkConfiguration.value(forKey: "netlessUA") as? [String] {
             let env = Env()
             let isFlat = Bundle.main.bundleIdentifier == "io.agora.flat"

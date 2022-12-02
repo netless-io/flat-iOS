@@ -60,11 +60,7 @@ class CameraPreviewView: UIView {
     
     @objc func syncRotate() {
         func applicantionOrientation() -> UIInterfaceOrientation {
-            if #available(iOS 13.0, *) {
-                return (UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene }) as? UIWindowScene)?.interfaceOrientation ?? .unknown
-            } else {
-                return UIApplication.shared.statusBarOrientation
-            }
+            return (UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene }) as? UIWindowScene)?.interfaceOrientation ?? .unknown
         }
         switch applicantionOrientation() {
         case .unknown:

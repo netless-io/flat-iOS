@@ -21,11 +21,11 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         borderView.backgroundColor = .borderColor
         
         iconView.setTraitRelatedBlock { v in
-            v.image = v.image?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(v.traitCollection))
+            v.image = v.image?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
         }
         
         rightArrowImageView.setTraitRelatedBlock { v in
-            v.image = v.image?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(v.traitCollection))
+            v.image = v.image?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
         }
         
         contentView.addSubview(rightArrowImageView)

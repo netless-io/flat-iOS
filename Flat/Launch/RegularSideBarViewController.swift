@@ -204,7 +204,7 @@ class RegularSideBarViewController: UIViewController {
     lazy var foldButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setTraitRelatedBlock { button in
-            button.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(button.traitCollection)), for: .normal)
+            button.setImage(UIImage(named: "side_bar_fold")?.tintColor(.color(type: .text).resolvedColor(with: button.traitCollection)), for: .normal)
         }
         btn.addTarget(self, action: #selector(onClickFold), for: .touchUpInside)
         return btn

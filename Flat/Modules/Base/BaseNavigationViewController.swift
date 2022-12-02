@@ -20,22 +20,14 @@ class BaseNavigationViewController: UINavigationController {
     }
     
     func updateNaviAppearance() {
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.backgroundColor = .color(type: .background, .weak)
-            appearance.setBackIndicatorImage(UIImage(named: "arrowLeft"),
-                                             transitionMaskImage: UIImage(named: "arrowLeft"))
-            appearance.shadowImage = UIImage.imageWith(color: .borderColor)
-            navigationBar.standardAppearance = appearance
-            navigationBar.compactAppearance = appearance
-            navigationBar.scrollEdgeAppearance = appearance
-        } else {
-            UINavigationBar.appearance().isTranslucent = false
-            UINavigationBar.appearance().setBackgroundImage(UIImage.imageWith(color: .color(type: .background)), for: .default)
-            UINavigationBar.appearance().backgroundColor = .color(type: .background)
-            UINavigationBar.appearance().backIndicatorImage = UIImage(named: "arrowLeft")
-            UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "arrowLeft")
-        }
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .color(type: .background, .weak)
+        appearance.setBackIndicatorImage(UIImage(named: "arrowLeft"),
+                                         transitionMaskImage: UIImage(named: "arrowLeft"))
+        appearance.shadowImage = UIImage.imageWith(color: .borderColor)
+        navigationBar.standardAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
     }
     
     override func viewDidLoad() {

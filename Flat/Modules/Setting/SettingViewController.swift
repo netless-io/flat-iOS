@@ -28,9 +28,7 @@ var userUseFPA: Bool {
         guard let fpaKey = fpaKey else { return }
         UserDefaults.standard.setValue(newValue, forKey: fpaKey)
         if !newValue {
-            if #available(iOS 13.0, *) {
-                FpaProxyService.shared().stop()
-            }
+            FpaProxyService.shared().stop()
         }
     }
 }
@@ -82,25 +80,17 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             .init(image: UIImage(named: "cancellation")!,
                   title: localizeStrings("AccountCancellation"),
                   detail: "",
-                  targetAction: (self, #selector(self.onClickCancellation(sender:))))
+                  targetAction: (self, #selector(self.onClickCancellation(sender:)))),
+            .init(image: UIImage(named: "rocket")!,
+                  title: localizeStrings("FPA"),
+                  detail: userUseFPA ? true : false,
+                  targetAction: (self, #selector(self.onClickFPA(sender:)))),
+            .init(image: UIImage(systemName: "command",
+                                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .light))!,
+                  title: localizeStrings("Shortcuts"),
+                  detail: "",
+                  targetAction: (self, #selector(self.onClickShortcuts(sender:))))
         ]
-        if #available(iOS 13.0, *) {
-            items.insert(.init(image: UIImage(named: "rocket")!,
-                               title: localizeStrings("FPA"),
-                               detail: userUseFPA ? true : false,
-                               targetAction: (self, #selector(self.onClickFPA(sender:)))),
-                         at: 2)
-            
-            let shortcutsImage = UIImage(systemName: "command",
-                                         withConfiguration: UIImage
-                .SymbolConfiguration(pointSize: 14, weight: .light))
-            items.insert(.init(image: shortcutsImage!,
-                               title: localizeStrings("Shortcuts"),
-                               detail: "",
-                               targetAction: (self, #selector(self.onClickShortcuts(sender:)))),
-                         at: 3)
-            
-        }
         tableView.reloadData()
     }
     
@@ -195,11 +185,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             let selected = localizeStrings("selected")
             alertController.addAction(.init(title: i.description + ((current == i) ? selected : ""), style: .default, handler: { _ in
                 manager.updateUserPreferredStyle(i)
-                if #available(iOS 13.0, *) {
-                    self.updateItems()
-                } else {
-                    self.rebootAndTurnToSetting()
-                }
+                self.updateItems()
             }))
         }
         alertController.addAction(.init(title: localizeStrings("Cancel"), style: .cancel, handler: nil))
@@ -225,11 +211,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func rebootAndTurnToSetting() {
-        if #available(iOS 13.0, *) {
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch?.reboot()
-        } else {
-            (UIApplication.shared.delegate as? AppDelegate)?.launch?.reboot()
-        }
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch?.reboot()
         UIApplication.shared.topViewController?.mainContainer?.push(SettingViewController())
     }
     
@@ -250,8 +232,8 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
         
         button.setTraitRelatedBlock { button in
-            button.layer.borderColor = UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection).cgColor
-            button.setTitleColor(UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
+            button.layer.borderColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection).cgColor
+            button.setTitleColor(UIColor.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
             button.setImage(UIImage(named: "logout")?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
         return button

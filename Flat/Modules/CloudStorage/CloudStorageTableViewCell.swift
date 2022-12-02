@@ -97,22 +97,12 @@ class CloudStorageTableViewCell: UITableViewCell {
 
     lazy var convertingActivityView: UIActivityIndicatorView = {
         let view: UIActivityIndicatorView
-        if #available(iOS 13.0, *) {
-            view = UIActivityIndicatorView(style: .medium)
-        } else {
-            view = UIActivityIndicatorView(style: .gray)
-        }
+        view = UIActivityIndicatorView(style: .medium)
         view.color = .color(type: .primary)
         return view
     }()
     
-    lazy var activity: UIActivityIndicatorView = {
-        if #available(iOS 13.0, *) {
-            return UIActivityIndicatorView(style: .medium)
-        } else {
-            return UIActivityIndicatorView(style: .gray)
-        }
-    }()
+    lazy var activity: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
     
     lazy var iconImage: UIImageView = {
         let imageView = UIImageView()
@@ -125,11 +115,11 @@ class CloudStorageTableViewCell: UITableViewCell {
         btn.setTraitRelatedBlock { btn in
             btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(
                 .color(light: .init(hexString: "#1A1E21"), dark: .grey3)
-                .resolveDynamicColorPatchiOS13With(btn.traitCollection)
+                .resolvedColor(with: btn.traitCollection)
             ), for: .normal)
             btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(
                 .color(type: .primary)
-                .resolveDynamicColorPatchiOS13With(btn.traitCollection)
+                .resolvedColor(with: btn.traitCollection)
             ), for: .selected)
         }
         return btn
@@ -138,7 +128,7 @@ class CloudStorageTableViewCell: UITableViewCell {
     lazy var rightArrowImageView:UIImageView = {
         let view = UIImageView()
         view.setTraitRelatedBlock { v in
-            v.image = UIImage(named: "arrowRight")?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(v.traitCollection))
+            v.image = UIImage(named: "arrowRight")?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
         }
         view.contentMode = .scaleAspectFit
         return view

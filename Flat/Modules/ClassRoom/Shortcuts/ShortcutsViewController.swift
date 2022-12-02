@@ -176,8 +176,8 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
         
         button.setTraitRelatedBlock { button in
-            button.layer.borderColor = UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection).cgColor
-            button.setTitleColor(UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
+            button.layer.borderColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection).cgColor
+            button.setTitleColor(UIColor.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
         }
         return button
     }()

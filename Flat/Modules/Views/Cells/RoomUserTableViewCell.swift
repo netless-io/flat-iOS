@@ -109,8 +109,8 @@ class RoomUserTableViewCell: UITableViewCell {
     lazy var cameraButton: UIButton = {
         let cameraButton = UIButton(type: .custom)
         cameraButton.setTraitRelatedBlock { btn in
-            btn.setImage(UIImage(named: "camera_off")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(btn.traitCollection)), for: .normal)
-            btn.setImage(UIImage(named: "camera_on")?.tintColor(.color(type: .primary).resolveDynamicColorPatchiOS13With(btn.traitCollection)), for: .selected)
+            btn.setImage(UIImage(named: "camera_off")?.tintColor(.color(type: .danger).resolvedColor(with: btn.traitCollection)), for: .normal)
+            btn.setImage(UIImage(named: "camera_on")?.tintColor(.color(type: .primary).resolvedColor(with: btn.traitCollection)), for: .selected)
         }
         cameraButton.addTarget(self, action: #selector(onClickCamera), for: .touchUpInside)
         cameraButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
@@ -120,8 +120,8 @@ class RoomUserTableViewCell: UITableViewCell {
     lazy var micButton: UIButton = {
         let micButton = UIButton(type: .custom)
         micButton.setTraitRelatedBlock { btn in
-            btn.setImage(UIImage(named: "mic_off")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(btn.traitCollection)), for: .normal)
-            btn.setImage(UIImage(named: "mic_on")?.tintColor(.color(type: .primary).resolveDynamicColorPatchiOS13With(btn.traitCollection)), for: .selected)
+            btn.setImage(UIImage(named: "mic_off")?.tintColor(.color(type: .danger).resolvedColor(with: btn.traitCollection)), for: .normal)
+            btn.setImage(UIImage(named: "mic_on")?.tintColor(.color(type: .primary).resolvedColor(with: btn.traitCollection)), for: .selected)
         }
         micButton.addTarget(self, action: #selector(onClickMic), for: .touchUpInside)
         micButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)

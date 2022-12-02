@@ -169,8 +169,8 @@ DEPENDENCIES:
   - AliyunLogProducer/Core
   - CropViewController
   - DZNEmptyDataSet
-  - Fastboard (from `/Users/xuyunshi/Desktop/Fastboard`)
-  - Fastboard/fpa (from `/Users/xuyunshi/Desktop/Fastboard`)
+  - Fastboard (= 2.0.0-alpha.7)
+  - Fastboard/fpa (= 2.0.0-alpha.7)
   - Firebase/AnalyticsWithoutAdIdSupport
   - FirebaseCrashlytics
   - Hero
@@ -186,8 +186,8 @@ DEPENDENCIES:
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - WechatOpenSDK
-  - Whiteboard (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
-  - Whiteboard/SyncPlayer (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
+  - Whiteboard (= 2.17.0-alpha.13)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.13)
   - Zip
 
 SPEC REPOS:
@@ -199,6 +199,7 @@ SPEC REPOS:
     - AliyunLogProducer
     - CropViewController
     - DZNEmptyDataSet
+    - Fastboard
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -226,14 +227,9 @@ SPEC REPOS:
     - SwiftyBeaver
     - SyncPlayer
     - WechatOpenSDK
+    - Whiteboard
     - YYModel
     - Zip
-
-EXTERNAL SOURCES:
-  Fastboard:
-    :path: "/Users/xuyunshi/Desktop/Fastboard"
-  Whiteboard:
-    :path: "/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS"
 
 SPEC CHECKSUMS:
   AcknowList: 6d4faca4c3e0173377fe5649e086d627cd60b003
@@ -275,6 +271,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 88df2aa477ff56c57c3893f3b6b83a1d5f838598
+PODFILE CHECKSUM: a3940d9557804c556bfb30d88cfe44d5266b5a5e
 
 COCOAPODS: 1.11.3

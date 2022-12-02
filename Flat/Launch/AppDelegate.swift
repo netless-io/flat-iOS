@@ -36,11 +36,7 @@ func setDidFirstTimeLaunch() {
 }
 
 var globalLaunchCoordinator: LaunchCoordinator? {
-    if #available(iOS 13.0, *) {
-        return (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch
-    } else {
-        return (UIApplication.shared.delegate as? AppDelegate)?.launch
-    }
+    return (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch
 }
 
 func configAppearance() {
@@ -73,16 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tryPreloadWhiteboard()
         processMethodExchange()
         registerThirdPartSDK()
-        
-        if #available(iOS 13, *) {
-            // SceneDelegate
-        } else {
-            let url = launchOptions?[.url] as? URL
-            window = UIWindow(frame: UIScreen.main.bounds)
-            launch = LaunchCoordinator(window: window!, authStore: AuthStore.shared, defaultLaunchItems: [JoinRoomLaunchItem(), FileShareLaunchItem()])
-            launch?.start(withLaunchUrl: url)
-            configAppearance()
-        }
         
 #if DEBUG
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -131,7 +117,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: UISceneSession Lifecycle
-    @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }

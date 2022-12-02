@@ -24,12 +24,11 @@ class ClassRoomViewController: UIViewController {
         case .dark:
             return .lightContent
         case .light:
-            if #available(iOS 13.0, *) {
-                return .darkContent
-            }
-        default: break
+            return .darkContent
+        default:
+            return .default
         }
-        return .default
+        
     }
     let isOwner: Bool
     let ownerUUID: String

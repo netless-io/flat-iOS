@@ -137,14 +137,14 @@ class RoomDetailViewController: UIViewController {
         
         inviteButton.layer.borderWidth = commonBorderWidth
         inviteButton.setTraitRelatedBlock { btn in
-            let color = UIColor.color(light: .grey6, dark: .grey3).resolveDynamicColorPatchiOS13With(btn.traitCollection)
+            let color = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
             btn.layer.borderColor = color.cgColor
             btn.setTitleColor(color, for: .normal)
         }
         
         replayButton.layer.borderWidth = commonBorderWidth
         replayButton.setTraitRelatedBlock { btn in
-            let color = UIColor.color(light: .grey6, dark: .grey3).resolveDynamicColorPatchiOS13With(btn.traitCollection)
+            let color = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
             btn.layer.borderColor = color.cgColor
             btn.setTitleColor(color, for: .normal)
         }

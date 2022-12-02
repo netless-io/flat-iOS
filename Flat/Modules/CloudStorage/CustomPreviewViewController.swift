@@ -130,7 +130,6 @@ extension CustomPreviewViewController: QLPreviewControllerDataSource {
 }
 
 extension CustomPreviewViewController: QLPreviewControllerDelegate {
-    @available(iOS 13.0, *)
     func previewController(_ controller: QLPreviewController, editingModeFor previewItem: QLPreviewItem) -> QLPreviewItemEditingMode {
         .disabled
     }
