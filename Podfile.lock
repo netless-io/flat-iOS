@@ -106,7 +106,7 @@ PODS:
     - GoogleUtilities/Logger
   - Hero (1.6.1)
   - IQKeyboardManagerSwift (6.5.9)
-  - Kingfisher (7.2.0)
+  - Kingfisher (7.4.1)
   - Logging (1.4.0)
   - MBProgressHUD (1.2.0)
   - nanopb (2.30909.0):
@@ -126,6 +126,7 @@ PODS:
   - RxSwift (6.5.0)
   - Siren (5.7.1)
   - SnapKit (5.0.1)
+  - SwiftFormat/CLI (0.50.6)
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
   - WechatOpenSDK (1.8.7.1)
@@ -183,6 +184,7 @@ DEPENDENCIES:
   - RxSwift
   - Siren
   - SnapKit
+  - SwiftFormat/CLI (~> 0.49)
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - WechatOpenSDK
@@ -224,6 +226,7 @@ SPEC REPOS:
     - RxSwift
     - Siren
     - SnapKit
+    - SwiftFormat
     - SwiftyBeaver
     - SyncPlayer
     - WechatOpenSDK
@@ -252,7 +255,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
-  Kingfisher: 3ac0b75b155cabc0e544877d1a4deea29feece92
+  Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
@@ -264,6 +267,7 @@ SPEC CHECKSUMS:
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Siren: 76ac728f4f2f4a3576c322272e94a0e37955664f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SwiftFormat: d89e201c4e121554de347f764e4ed780526b5173
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
@@ -271,6 +275,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: a3940d9557804c556bfb30d88cfe44d5266b5a5e
+PODFILE CHECKSUM: bc055b1a813e1c5ab0e1083eb7f7a719b2d8ad0c
 
 COCOAPODS: 1.11.3

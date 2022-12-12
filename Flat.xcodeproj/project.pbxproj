@@ -1599,6 +1599,7 @@
 				8AD7C6B727157EA7001C4AAD /* Resources */,
 				9DCBD9AA56F7DC4165AC374C /* [CP] Embed Pods Frameworks */,
 				8A85F03A28B8CA1200C7BF98 /* Embed Frameworks */,
+				8A5A8AEC294826F6004B997C /* Swift Format */,
 			);
 			buildRules = (
 			);
@@ -1676,6 +1677,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		8A5A8AEC294826F6004B997C /* Swift Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Format";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"$SRCROOT\"\n";
+		};
 		8E76B20DC73A14DFE384120F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

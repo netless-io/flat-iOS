@@ -1,4 +1,4 @@
-platform :ios, '12.0'
+platform :ios, '13.0'
 target 'Flat' do
   use_frameworks!
   
@@ -11,6 +11,7 @@ target 'Flat' do
   pod 'Siren'
   pod 'IQKeyboardManagerSwift'
   pod 'Zip'
+  pod 'SwiftFormat/CLI', '~> 0.49'
   
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
@@ -30,12 +31,18 @@ target 'Flat' do
   pod 'SwiftyBeaver'
   pod 'AliyunLogProducer/Core'
   pod 'AliyunLogProducer/Bricks'
-
+  
   pod 'WechatOpenSDK'
   pod 'FirebaseCrashlytics'
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   
   post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+      end
+    end
+    
     installer.pods_project.targets.each do |target|
       if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
         target.build_configurations.each do |config|
