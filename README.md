@@ -54,7 +54,7 @@
 
 | iOS Deployment Target | Xcode Version | Swift Language Version |
 | --------------------- | ------------- | ---------------------- |
-| 12.0                  | 13.0          | Swift 5                |
+| 13.0                  | 14.0          | Swift 5.7                |
 
 ### Installation
 
