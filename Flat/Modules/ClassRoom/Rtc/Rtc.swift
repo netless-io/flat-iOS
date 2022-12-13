@@ -26,6 +26,10 @@ class Rtc: NSObject {
     var targetLocalCamera: Bool? = false
     var micStrenths: [UInt: PublishRelay<CGFloat>] = [:]
 
+    @objc func onClassroomSettingNeedToggleCameraNotification() {
+        agoraKit.switchCamera()
+    }
+
     // MARK: - Public
 
     func joinChannel() { joinChannelBlock?() }
@@ -148,6 +152,8 @@ class Rtc: NSObject {
                 }
             })
             .disposed(by: rx.disposeBag)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleCameraNotification), name: classroomSettingNeedToggleCameraNotification, object: nil)
     }
 }
 

@@ -81,6 +81,12 @@
 "Camera" = "Camera";
 
 
+"Camera.front" = "Front";
+
+
+"Camera.rear" = "Rear";
+
+
 "CameraDenyTip" = "You need to invoke the camera permissions to be able to video chat, click into the settings to open the camera permissions";
 
 
@@ -462,10 +468,10 @@
 "Room ID" = "Room ID";
 
 
-"Room List" = "Room List";
-
-
 "Room ID Input PlaceHolder" = "Enter 10-digit room ID";
+
+
+"Room List" = "Room List";
 
 
 "Room Theme" = "Room Theme";

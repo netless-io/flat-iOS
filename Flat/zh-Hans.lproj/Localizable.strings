@@ -81,6 +81,12 @@
 "Camera" = "摄像头";
 
 
+"Camera.front" = "前置";
+
+
+"Camera.rear" = "后置";
+
+
 "CameraDenyTip" = "需要调用摄像头权限才可以进行视频聊天，点击进入设置打开摄像头权限";
 
 
@@ -462,10 +468,10 @@
 "Room ID" = "房间号";
 
 
-"Room List" = "房间列表";
-
-
 "Room ID Input PlaceHolder" = "请输入10位房间号";
+
+
+"Room List" = "房间列表";
 
 
 "Room Theme" = "房间主题";

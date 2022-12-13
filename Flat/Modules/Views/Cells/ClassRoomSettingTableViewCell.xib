@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -46,9 +46,17 @@
                             <constraint firstAttribute="height" constant="24" id="RB5-zc-MZq"/>
                         </constraints>
                     </imageView>
+                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="o0T-uV-8ac">
+                        <rect key="frame" x="124" y="6.5" width="131" height="32"/>
+                        <segments>
+                            <segment title="First"/>
+                            <segment title="Second"/>
+                        </segments>
+                    </segmentedControl>
                 </subviews>
                 <constraints>
                     <constraint firstItem="huR-eH-g4L" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="2dA-w6-wiq"/>
+                    <constraint firstItem="huR-eH-g4L" firstAttribute="leading" secondItem="o0T-uV-8ac" secondAttribute="trailing" constant="8" id="F3s-07-VOt"/>
                     <constraint firstItem="NRz-pY-tDB" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="KxI-AG-ZUH"/>
                     <constraint firstAttribute="bottom" secondItem="vjS-8p-I6h" secondAttribute="bottom" id="MaG-S7-Szo"/>
                     <constraint firstAttribute="trailing" secondItem="huR-eH-g4L" secondAttribute="trailing" constant="8" id="TAe-q9-q6L"/>
@@ -56,12 +64,14 @@
                     <constraint firstItem="42O-Re-dDv" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Xl4-Gb-H7A"/>
                     <constraint firstItem="vjS-8p-I6h" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Yvu-IA-NAa"/>
                     <constraint firstItem="42O-Re-dDv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="bot-7r-bvM"/>
+                    <constraint firstItem="o0T-uV-8ac" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gB4-Tt-wKT"/>
                     <constraint firstItem="NRz-pY-tDB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="48" id="rXZ-2e-bfg"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="borderView" destination="vjS-8p-I6h" id="H4S-80-Mt4"/>
+                <outlet property="cameraToggleView" destination="o0T-uV-8ac" id="6gp-Wg-9XP"/>
                 <outlet property="iconView" destination="42O-Re-dDv" id="D0X-Kx-KzY"/>
                 <outlet property="label" destination="NRz-pY-tDB" id="jd6-a1-7L7"/>
                 <outlet property="lineHeightConstraint" destination="IfA-HX-YPc" id="mXZ-Ai-1bL"/>

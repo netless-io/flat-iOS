@@ -10,6 +10,7 @@ import UIKit
 
 class ClassRoomSettingTableViewCell: UITableViewCell {
     var switchValueChangedHandler: ((Bool) -> Void)?
+    var cameraFaceFrontChangedHandler: ((Bool) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,6 +33,15 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
             make.right.equalToSuperview().inset(8)
             make.centerY.equalToSuperview()
         }
+
+        cameraToggleView.setTitleTextAttributes([.foregroundColor: UIColor.color(type: .text)], for: .normal)
+        cameraToggleView.setTitle(localizeStrings("Camera.front"), forSegmentAt: 0)
+        cameraToggleView.setTitle(localizeStrings("Camera.rear"), forSegmentAt: 1)
+        cameraToggleView.addTarget(self, action: #selector(onCameraFaceUpdate), for: .valueChanged)
+    }
+
+    @objc func onCameraFaceUpdate(_ sender: UISegmentedControl) {
+        cameraFaceFrontChangedHandler?(sender.selectedSegmentIndex == 0)
     }
 
     @IBAction func valueChanged(_ sender: UISwitch) {
@@ -44,6 +54,7 @@ class ClassRoomSettingTableViewCell: UITableViewCell {
         iconView.alpha = enable ? 1 : 0.5
     }
 
+    @IBOutlet var cameraToggleView: UISegmentedControl!
     @IBOutlet var borderView: UIView!
     @IBOutlet var iconView: UIImageView!
     @IBOutlet var lineHeightConstraint: NSLayoutConstraint!

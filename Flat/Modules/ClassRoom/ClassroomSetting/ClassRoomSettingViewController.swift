@@ -11,6 +11,7 @@ import RxRelay
 import RxSwift
 import UIKit
 
+let classroomSettingNeedToggleCameraNotification = Notification.Name("classroomSettingNeedToggleCameraNotification")
 class ClassRoomSettingViewController: UIViewController {
     enum SettingControlType {
         case camera
@@ -44,6 +45,12 @@ class ClassRoomSettingViewController: UIViewController {
     let micOn: BehaviorRelay<Bool>
     let videoAreaOn: BehaviorRelay<Bool>
     let models: [SettingControlType]
+    var isCameraFront = true {
+        didSet {
+            tableView.reloadData()
+            NotificationCenter.default.post(.init(name: classroomSettingNeedToggleCameraNotification))
+        }
+    }
 
     // MARK: - LifeCycle
 
@@ -115,6 +122,7 @@ class ClassRoomSettingViewController: UIViewController {
         cell.selectionStyle = .none
         cell.switch.isHidden = false
         cell.rightArrowImageView.isHidden = true
+        cell.cameraToggleView.isHidden = true
         switch type {
         case .shortcut:
             cell.switch.isHidden = true
@@ -125,13 +133,18 @@ class ClassRoomSettingViewController: UIViewController {
                                               .SymbolConfiguration(pointSize: 15, weight: .light))?
                                                           .tintColor(.color(type: .text))
         case .camera:
+            cell.cameraToggleView.isHidden = false
             if cell.switch.isOn != cameraOn.value {
                 cell.switch.isOn = cameraOn.value
             }
+            cell.cameraToggleView.selectedSegmentIndex = isCameraFront ? 0 : 1
             cell.iconView.image = UIImage(named: "camera")?.tintColor(.color(type: .text))
             cell.setEnable(deviceUpdateEnable.value)
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.cameraPublish.accept(())
+            }
+            cell.cameraFaceFrontChangedHandler = { [weak self] _ in
+                self?.isCameraFront.toggle()
             }
         case .mic:
             if cell.switch.isOn != micOn.value {
