@@ -62,7 +62,7 @@ class ChatViewModel {
 
     func transform(input: Input) -> Output {
         let send = input.sendTap.withLatestFrom(input.textInput)
-            .filter { $0.isNotEmptyOrAllSpacing }
+            .filter(\.isNotEmptyOrAllSpacing)
             .flatMapLatest { [unowned self] text in
                 self.rtm.sendMessage(text, censor: true, appendToNewMessage: true)
                     .asDriver(onErrorJustReturn: ())
@@ -71,10 +71,10 @@ class ChatViewModel {
         let sendMessageEnable: Driver<Bool>
 
         if isOwner {
-            sendMessageEnable = input.textInput.map { $0.isNotEmptyOrAllSpacing }
+            sendMessageEnable = input.textInput.map(\.isNotEmptyOrAllSpacing)
         } else {
             sendMessageEnable = input.textInput
-                .map { $0.isNotEmptyOrAllSpacing }
+                .map(\.isNotEmptyOrAllSpacing)
                 .withLatestFrom(isBanned) { inputEnable, banned in
                     inputEnable && !banned
                 }
@@ -94,7 +94,7 @@ class ChatViewModel {
             })
 
         let nameResult = rawMessages.flatMap { message -> Observable<[String: UserBriefInfo]> in
-            let ids = message.compactMap { $0.userId }
+            let ids = message.compactMap(\.userId)
             return self.userName(userIds: ids)
         }
 
@@ -117,7 +117,7 @@ class ChatViewModel {
     }
 
     func requestHistory(channelId: String) -> Single<[Message]> {
-        return .create { observer in
+        .create { observer in
             let endTime = Date()
             let startTime = Date(timeInterval: -(3600 * 24), since: endTime)
             let request = HistoryMessageSourceRequest(filter: .init(destination: channelId,

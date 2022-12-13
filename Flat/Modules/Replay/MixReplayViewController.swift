@@ -14,7 +14,7 @@ import Whiteboard
 class MixReplayViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return traitCollection.hasCompact ? .landscapeRight : .landscape
+        traitCollection.hasCompact ? .landscapeRight : .landscape
     }
 
     override var prefersStatusBarHidden: Bool { true }
@@ -93,7 +93,7 @@ class MixReplayViewController: UIViewController {
         // Loop for asset loading
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak player, weak self] in
             guard
-                let self = self,
+                let self,
                 let capturePlayer = player,
                 let rtc = self.rtcPlayer,
                 rtc === capturePlayer,
@@ -125,7 +125,7 @@ class MixReplayViewController: UIViewController {
     func listen(to player: SyncPlayer, duration: TimeInterval) {
         syncPlayer = player
         player.addStatusListener { [weak self] status in
-            guard let self = self else { return }
+            guard let self else { return }
             switch status {
             case .ready:
                 if self.isSeeking { return }
@@ -149,7 +149,7 @@ class MixReplayViewController: UIViewController {
 
         overlay.updateDuration(floor(duration))
         playerTimeObserver = player.addPeriodicTimeObserver(forInterval: .init(value: 1000, timescale: 1000), queue: nil) { [weak self] t in
-            guard let self = self else { return }
+            guard let self else { return }
             if self.isSeeking { return }
             if self.isDraging { return }
             self.overlay.updateCurrentTime(floor(t.seconds))
@@ -225,7 +225,7 @@ class MixReplayViewController: UIViewController {
     lazy var selectionlistViewController: RecordSelectionListViewController = {
         let vc = RecordSelectionListViewController()
         vc.clickHandler = { [weak self] index in
-            guard let self = self else { return }
+            guard let self else { return }
             guard self.viewModel.currentIndex != index else { return }
             self.updateRecordIndex(index)
         }
@@ -241,7 +241,7 @@ extension MixReplayViewController: ReplayOverlayDelegate {
     }
 
     func replayOverlayDidClickPlayOrPause(_ overlay: ReplayOverlay) {
-        guard let syncPlayer = syncPlayer else { return }
+        guard let syncPlayer else { return }
         switch syncPlayer.status {
         case .pause, .ready:
             syncPlayer.play()
@@ -258,21 +258,21 @@ extension MixReplayViewController: ReplayOverlayDelegate {
     }
 
     func replayOverlayDidClickBackward(_: ReplayOverlay) {
-        guard let syncPlayer = syncPlayer else { return }
+        guard let syncPlayer else { return }
         let time = syncPlayer.currentTime
         let seconds = max(time.seconds - 15, 0)
         seekTo(seconds)
     }
 
     func replayOverlayDidClickForward(_: ReplayOverlay) {
-        guard let syncPlayer = syncPlayer else { return }
+        guard let syncPlayer else { return }
         let time = syncPlayer.currentTime
         let seconds = min(time.seconds + 15, syncPlayer.totalTime.seconds)
         seekTo(seconds)
     }
 
     func replayOverlayDidClickSeekToPercent(_: ReplayOverlay, percent: Float) {
-        guard let syncPlayer = syncPlayer else { return }
+        guard let syncPlayer else { return }
         let seconds = syncPlayer.totalTime.seconds * Double(percent)
         guard !seconds.isNaN else { return }
         seekTo(seconds)
@@ -310,7 +310,7 @@ extension MixReplayViewController: ReplayOverlayDelegate {
     }
 
     func seekTo(_ seconds: TimeInterval) {
-        guard let syncPlayer = syncPlayer else { return }
+        guard let syncPlayer else { return }
         let cmTime = CMTime(seconds: seconds, preferredTimescale: syncPlayer.totalTime.timescale)
 
         isSeeking = true

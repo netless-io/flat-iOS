@@ -66,14 +66,14 @@ class MixReplayViewModel {
         whitePlayerConfig.beginTimestamp = NSNumber(value: beginTimeStamp)
         whitePlayerConfig.duration = NSNumber(value: duration)
         let whitePlayer = Observable<WhitePlayer>.create { [weak self] observer in
-            guard let self = self else {
+            guard let self else {
                 observer.onError("self not exist")
                 return Disposables.create()
             }
             self.whiteSDK.createReplayer(with: whitePlayerConfig, callbacks: nil) { _, player, error in
-                if let error = error {
+                if let error {
                     observer.onError(error)
-                } else if let player = player {
+                } else if let player {
                     observer.onNext(player)
                 } else {
                     observer.onError("unknown player create error")

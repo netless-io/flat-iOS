@@ -30,7 +30,7 @@ class AppleLogin: NSObject, ASAuthorizationControllerDelegate {
             var name = credential.fullName?.givenName
             name?.append(credential.fullName?.familyName ?? "")
             ApiProvider.shared.request(fromApi: AppleLoginRequest(jwtToken: str, nickname: name)) { [weak self] result in
-                guard let self = self else { return }
+                guard let self else { return }
                 switch result {
                 case let .success(user):
                     AuthStore.shared.processLoginSuccessUserInfo(user)

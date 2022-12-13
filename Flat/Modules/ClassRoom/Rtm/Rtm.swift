@@ -49,7 +49,7 @@ class Rtm: NSObject {
         case .connecting, .idle, .reconnecting: return .just(())
         case .connected:
             return .create { [weak self] observer in
-                guard let self = self else {
+                guard let self else {
                     observer(.failure("self not exist"))
                     return Disposables.create()
                 }
@@ -72,8 +72,8 @@ class Rtm: NSObject {
     /// Can be called safely multi times
     func login() -> Single<Void> {
         func createLoginObserver() -> Single<Void> {
-            return .create { [weak self] observer in
-                guard let self = self else {
+            .create { [weak self] observer in
+                guard let self else {
                     observer(.failure("self not exist"))
                     return Disposables.create()
                 }
@@ -93,7 +93,7 @@ class Rtm: NSObject {
         case .idle:
             agoraKit.login(byToken: agoraGenerator.agoraToken,
                            user: agoraGenerator.agoraUserId) { [weak self] code in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.loginCallbacks.forEach { $0(code) }
                 self.loginCallbacks = []
                 self.state.accept(.connected)
@@ -121,7 +121,7 @@ class Rtm: NSObject {
 
     func joinChannelId(_ channelId: String) -> Single<RtmChannel> {
         .create { [weak self] observer in
-            guard let self = self else {
+            guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
@@ -202,7 +202,7 @@ extension Rtm: AgoraRtmDelegate {
         case .reconnecting:
             self.state.accept(.reconnecting)
             DispatchQueue.global().asyncAfter(deadline: .now() + reconnectTimeoutInterval) { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
                 if self.state.value == .reconnecting {
                     DispatchQueue.main.async {
                         self.error.accept(.reconnectingTimeout)

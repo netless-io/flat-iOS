@@ -14,7 +14,7 @@ class CancellationViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.startTimer()
         }
         agreementCheckButton.rx.tap

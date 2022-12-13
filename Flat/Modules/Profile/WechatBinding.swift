@@ -29,7 +29,7 @@ class WechatBinding: NSObject, LaunchItem {
     func immediateImplementation(withLaunchCoordinator _: LaunchCoordinator) {}
 
     func shouldHandle(url: URL?) -> Bool {
-        guard let url = url else { return false }
+        guard let url else { return false }
         if WXApi.handleOpen(url, delegate: self) {
             return true
         }

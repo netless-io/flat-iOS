@@ -410,7 +410,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         default:
             func enterWebPreview(_ vc: WKWebViewController) {
                 vc.dismissHandler = { [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.mainContainer?.removeTop()
                     self.previewingUUID = nil
                 }
@@ -444,7 +444,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     func createVideoControllerFor(url: URL? = nil) -> CustomAVPlayerViewController {
         let vc = CustomAVPlayerViewController()
         DispatchQueue.global().async {
-            if let url = url {
+            if let url {
                 let player = AVPlayer(url: url)
                 vc.player = player
                 player.play()
@@ -522,7 +522,7 @@ extension CloudStorageViewController: UploadUtilityDelegate {
 
     func uploadUtilityDidFinishVideoConverting(error: Error?) {
         stopActivityIndicator()
-        if let error = error {
+        if let error {
             toast(error.localizedDescription)
         }
     }

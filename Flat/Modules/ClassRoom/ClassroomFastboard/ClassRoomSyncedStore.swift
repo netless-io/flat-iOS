@@ -71,7 +71,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         logger.trace("connect \(deviceStateName)")
         group.enter()
         syncStore.connectStorage(deviceStateName, defaultValue: [:]) { _, err in
-            if let err = err { error = err }
+            if let err { error = err }
             logger.trace("connect \(deviceStateName) success")
             group.leave()
         }
@@ -79,7 +79,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         logger.trace("connect \(classroomStateName), default \(classroomDefaultValue)")
         group.enter()
         syncStore.connectStorage(classroomStateName, defaultValue: classroomDefaultValue) { _, err in
-            if let err = err { error = err }
+            if let err { error = err }
             logger.trace("connect \(classroomStateName) success")
             group.leave()
         }
@@ -87,13 +87,13 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         logger.trace("connect \(onStageUsersName), default \(onStageUserDefaultValue)")
         group.enter()
         syncStore.connectStorage(onStageUsersName, defaultValue: onStageUserDefaultValue) { _, err in
-            if let err = err { error = err }
+            if let err { error = err }
             logger.trace("connect \(onStageUsersName) success")
             group.leave()
         }
 
         group.notify(queue: .main) {
-            if let error = error {
+            if let error {
                 logger.error("connect fail \(error)")
                 self._fireCallbacksWith(error)
             } else {
@@ -112,7 +112,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
     }
 
     func sendCommand(_ command: Command) throws {
-        func dicFromEncodable<T: Encodable>(_ encodable: T) throws -> Any {
+        func dicFromEncodable(_ encodable: some Encodable) throws -> Any {
             let data = try JSONEncoder().encode(encodable)
             return try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
         }
@@ -131,7 +131,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
 
     func getValues() -> Single<SyncedStoreSuccessValue> {
         .create { [weak self] ob in
-            guard let self = self else {
+            guard let self else {
                 ob(.failure("self not exist"))
                 return Disposables.create()
             }
@@ -177,7 +177,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         logger.trace("start get \(deviceStateName)")
         group.enter()
         syncStore.getStorageState(deviceStateName) { values in
-            if let values = values {
+            if let values {
                 for value in values {
                     if let uid = value.key as? String {
                         if let data = (value.value as? NSDictionary)?.yy_modelToJSONData() {
@@ -215,7 +215,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         logger.info("start get \(classroomStateName)")
         group.enter()
         syncStore.getStorageState(classroomStateName) { values in
-            if let values = values {
+            if let values {
                 let raiseHandUsers = values[RoomState.Keys.raiseHandUsers.rawValue] as? [String] ?? []
                 let ban = values[RoomState.Keys.ban.rawValue] as? Bool ?? false
                 roomState = RoomState(raiseHandUsers: raiseHandUsers, ban: ban)
@@ -242,7 +242,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         logger.trace("receive partial update \(name), \(partialValue)")
         if name == deviceStateName {
             syncStore.getStorageState(name) { [weak self] value in
-                guard let self = self else { return }
+                guard let self else { return }
                 let res = (value as? [String: Any])?.compactMapValues { object -> DeviceState? in
                     if let object = object as? NSDictionary {
                         do {
@@ -255,7 +255,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                     }
                     return nil
                 }
-                if let res = res {
+                if let res {
                     self.delegate?.flatSyncedStoreDidReceiveCommand(self, command: .deviceStateUpdate(res))
                 }
             }
@@ -263,7 +263,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
 
         if name == onStageUsersName {
             syncStore.getStorageState(name) { [weak self] value in
-                guard let self = self else { return }
+                guard let self else { return }
                 if let us = value as? [String: Bool] {
                     self.delegate?.flatSyncedStoreDidReceiveCommand(self, command: .onStageUsersUpdate(us))
                 } else {

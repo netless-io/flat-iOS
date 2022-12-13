@@ -55,7 +55,7 @@ class DefaultAlertProvider: AlertProvider {
 
     // Cancel style will be called when white space clicked
     func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel> {
-        guard let root = root else {
+        guard let root else {
             return .error("root deinit")
         }
         let task = Single<AlertModel.ActionModel>.create { observer in
@@ -90,14 +90,14 @@ class DefaultAlertProvider: AlertProvider {
             .asObservable()
             .asSingle()
             .flatMap { [weak root] presenting -> Single<AlertModel.ActionModel> in
-                guard let root = root else { return .just(.empty) }
+                guard let root else { return .just(.empty) }
                 if !presenting { return task }
                 return root.rx.dismiss(animated: true).flatMap { task }
             }
     }
 
     func showAlert(with model: AlertModel) -> Single<AlertModel.ActionModel> {
-        guard let root = root else {
+        guard let root else {
             return .error("root deinit")
         }
         return .create { observer in
@@ -123,6 +123,6 @@ extension UIButton: TapSource {}
 
 extension Reactive where Base: UIButton {
     var sourceTap: ControlEvent<TapSource> {
-        return ControlEvent(events: controlEvent(.touchUpInside).map { self.base as TapSource })
+        ControlEvent(events: controlEvent(.touchUpInside).map { self.base as TapSource })
     }
 }

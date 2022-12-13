@@ -1693,7 +1693,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\"  --config \"$SRCROOT/config.swiftformat\" \"$SRCROOT\"\n";
+			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\"  --config \"$SRCROOT/config.swiftformat\"  --swiftversion 5.7 \"$SRCROOT\"\n";
 		};
 		8E76B20DC73A14DFE384120F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

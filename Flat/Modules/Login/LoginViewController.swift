@@ -147,11 +147,11 @@ class LoginViewController: UIViewController {
             .disposed(by: rx.disposeBag)
 
         smsAuthView.additionalCheck = { [weak self] sender in
-            guard let self = self else { return .failure("") }
+            guard let self else { return .failure("") }
             let agree = self.checkAgreementDidAgree()
             if agree { return .success(()) }
             self.showAgreementCheckAlert { [weak self, weak sender] in
-                guard let self = self,
+                guard let self,
                       let sender = sender as? UIButton
                 else { return }
                 self.smsAuthView.onClickSendSMS(sender: sender)

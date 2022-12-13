@@ -11,7 +11,7 @@ import UIKit
 private var bundleKey: UInt8 = 0
 final class BundleExtension: Bundle {
     override func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
-        return (objc_getAssociatedObject(self, &bundleKey) as? Bundle)?.localizedString(forKey: key, value: value, table: tableName) ?? super.localizedString(forKey: key, value: value, table: tableName)
+        (objc_getAssociatedObject(self, &bundleKey) as? Bundle)?.localizedString(forKey: key, value: value, table: tableName) ?? super.localizedString(forKey: key, value: value, table: tableName)
     }
 }
 

@@ -44,7 +44,7 @@ class RtcViewController: UIViewController {
 
         output.nonLocalUsers
             .distinctUntilChanged { i, j in
-                i.map { $0.user } == j.map { $0.user }
+                i.map(\.user) == j.map(\.user)
             }
             .drive(with: self, onNext: { weakSelf, values in
                 let oldStackCount = weakSelf.videoItemsStackView.arrangedSubviews.count
@@ -53,7 +53,7 @@ class RtcViewController: UIViewController {
                 if newStackCount != oldStackCount {
                     weakSelf.cellMenuView.dismiss()
                 }
-                let existIds = values.map { $0.user.rtcUID }
+                let existIds = values.map(\.user.rtcUID)
                 // If some user leave during preview, stop previewing
                 if let user = weakSelf.previewingUser, !existIds.contains(user.rtcUID) {
                     weakSelf.previewViewController.showAvatar(url: user.avatarURL)
@@ -250,7 +250,7 @@ class RtcViewController: UIViewController {
                     canvas: value.canvas,
                     isLocal: false)
         }
-        var existIds = values.map { $0.user.rtcUID }
+        var existIds = values.map(\.user.rtcUID)
         // Local users
         existIds.append(0)
         for view in videoItemsStackView.arrangedSubviews {
@@ -356,7 +356,7 @@ class RtcViewController: UIViewController {
         guard let user = viewModel.userFetch(UID) else { return }
         let isLocal = viewModel.localUserRegular(UID)
         if let view = videoItemsStackView.arrangedSubviews.first(where: { [weak self] in
-            guard let self = self else { return false }
+            guard let self else { return false }
             guard let view = $0 as? RtcVideoItemView else { return false }
             if isLocal {
                 return self.viewModel.localUserRegular(view.uid)
@@ -374,7 +374,7 @@ class RtcViewController: UIViewController {
     lazy var previewViewController: RtcPreviewViewController = {
         let vc = RtcPreviewViewController()
         vc.dismissHandler = { [weak self] in
-            guard let self = self,
+            guard let self,
                   let previewingUser = self.previewingUser else { return }
             self.endPreviewing(UID: previewingUser.rtcUID)
         }
@@ -406,7 +406,7 @@ class RtcViewController: UIViewController {
                 view?.nameLabel.isHidden = true
             }
             cellMenuView.clickHandler = { [weak self] op in
-                guard let self = self else { return }
+                guard let self else { return }
                 switch op {
                 case .camera:
                     self.localUserCameraClick.accept(())

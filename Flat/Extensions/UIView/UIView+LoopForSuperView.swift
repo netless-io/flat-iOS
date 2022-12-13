@@ -12,7 +12,7 @@ extension UIView {
     func searchSuperViewForType<T>(_: T.Type) -> T? where T: UIView {
         var temp = superview
         while temp != nil {
-            if let temp = temp, let tempT = temp as? T {
+            if let temp, let tempT = temp as? T {
                 return tempT
             }
             temp = temp?.superview

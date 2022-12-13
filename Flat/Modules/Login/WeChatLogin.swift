@@ -25,7 +25,7 @@ class WeChatLogin: NSObject, LaunchItem {
     }
 
     func shouldHandle(url: URL?) -> Bool {
-        guard let url = url else { return false }
+        guard let url else { return false }
         if WXApi.handleOpen(url, delegate: self) {
             return true
         }
@@ -40,7 +40,7 @@ class WeChatLogin: NSObject, LaunchItem {
 
     func startLogin(withAuthStore authStore: AuthStore, launchCoordinator: LaunchCoordinator, completionHandler: @escaping LoginHandler) {
         ApiProvider.shared.request(fromApi: SetAuthUuidRequest(uuid: uuid)) { [weak self] r in
-            guard let self = self else {
+            guard let self else {
                 completionHandler(.failure(.message(message: "self not exist")))
                 return
             }
@@ -57,7 +57,7 @@ class WeChatLogin: NSObject, LaunchItem {
                 }
                 self.authStore = authStore
                 self.handler = { [weak authStore, weak self] result in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     if case let .success(user) = result {
                         authStore?.processLoginSuccessUserInfo(user)
                     }
@@ -76,7 +76,7 @@ extension WeChatLogin: WXApiDelegate {
 
     func onResp(_ resp: BaseResp) {
         removeLaunchItemFromLaunchCoordinator?()
-        guard let handler = handler else { return }
+        guard let handler else { return }
         guard resp.isKind(of: SendAuthResp.self) else { return }
         guard resp.errCode == 0, let newResp = resp as? SendAuthResp, let code = newResp.code else {
             handler(.failure(.message(message: resp.errStr)))

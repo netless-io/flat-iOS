@@ -39,7 +39,7 @@ class RoomDetailViewController: UIViewController {
         super.viewWillAppear(animated)
         applyCurrentInfoToView()
         loadData { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             self.applyCurrentInfoToView()
         }
     }
@@ -60,7 +60,7 @@ class RoomDetailViewController: UIViewController {
     func loadData(completion: @escaping ((Result<RoomBasicInfo, ApiError>) -> Void)) {
         guard let fetchingInfo = info else { return }
         RoomBasicInfo.fetchInfoBy(uuid: fetchingInfo.roomUUID, periodicUUID: fetchingInfo.periodicUUID) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case let .success(detail):
                 if self.info?.roomUUID == detail.roomUUID {
@@ -86,7 +86,7 @@ class RoomDetailViewController: UIViewController {
     }
 
     func updateAvailableActions() {
-        guard let info = info else { return }
+        guard let info else { return }
         let actions = info.roomActions(rootController: self)
         navigationItem.rightBarButtonItem = actions.isEmpty ? nil : UIBarButtonItem(image: UIImage(named: "cloud_file_more"),
                                                                                     style: .plain,
@@ -99,7 +99,7 @@ class RoomDetailViewController: UIViewController {
     }
 
     @IBAction func onClickCopy(_: Any) {
-        guard let info = info else { return }
+        guard let info else { return }
         UIPasteboard.general.string = info.formatterInviteCode
         toast(localizeStrings("Copy Success"))
     }
@@ -152,7 +152,7 @@ class RoomDetailViewController: UIViewController {
     }
 
     func updateEnterRoomButtonTitle() {
-        guard let info = info else { return }
+        guard let info else { return }
         if info.isOwner, info.roomStatus == .Idle {
             enterRoomButton.setTitle(localizeStrings("Start Class"), for: .normal)
         } else {
@@ -161,7 +161,7 @@ class RoomDetailViewController: UIViewController {
     }
 
     func updateViewWithCurrentStatus() {
-        guard let info = info else { return }
+        guard let info else { return }
 
         title = info.title
 
@@ -209,10 +209,10 @@ class RoomDetailViewController: UIViewController {
     // MARK: - Action
 
     @IBAction func onClickReplay() {
-        guard let info = info else { return }
+        guard let info else { return }
         showActivityIndicator()
         ApiProvider.shared.request(fromApi: RecordDetailRequest(uuid: info.roomUUID)) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.stopActivityIndicator()
             switch result {
             case let .success(recordInfo):
@@ -226,17 +226,17 @@ class RoomDetailViewController: UIViewController {
     }
 
     @IBAction func onClickInvite(_: UIButton) {
-        guard let info = info else { return }
+        guard let info else { return }
         let vc = InviteViewController(shareInfo: .init(roomDetail: info))
         mainContainer?.concreteViewController.present(vc, animated: true)
     }
 
     @IBAction func onClickEnterRoom(_: Any) {
-        guard let info = info else { return }
+        guard let info else { return }
         enterRoomButton.isLoading = true
         // Join room
         RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case let .success(playInfo):
                 let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")

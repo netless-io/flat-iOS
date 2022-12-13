@@ -20,11 +20,11 @@ private var fpaKey: String? {
 /// Global value for user
 var userUseFPA: Bool {
     get {
-        guard let fpaKey = fpaKey else { return false }
+        guard let fpaKey else { return false }
         return (UserDefaults.standard.value(forKey: fpaKey) as? Bool) ?? false
     }
     set {
-        guard let fpaKey = fpaKey else { return }
+        guard let fpaKey else { return }
         UserDefaults.standard.setValue(newValue, forKey: fpaKey)
         if !newValue {
             FpaProxyService.shared().stop()
@@ -115,7 +115,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func onClickCancellation(sender _: Any?) {
         showActivityIndicator()
         ApiProvider.shared.request(fromApi: AccountCancelationValidateRequest()) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.stopActivityIndicator()
             switch result {
             case let .failure(error):

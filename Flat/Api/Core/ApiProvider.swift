@@ -106,13 +106,13 @@ class ApiProvider: NSObject {
             let reqId = req.value(forHTTPHeaderField: "x-request-id") ?? UUID().uuidString
             logger.trace("start \(reqId) \(req)")
             let task = session.dataTask(with: req) { data, response, error in
-                if let data = data {
+                if let data {
                     logger.trace("raw data \(reqId) \(String(data: data, encoding: .utf8) ?? "")")
-                } else if let error = error {
+                } else if let error {
                     logger.trace("finish error \(reqId) \(error)")
                 }
 
-                if let error = error {
+                if let error {
                     // Request was canceled
                     if (error as NSError).code == -999 {
                         return
@@ -135,7 +135,7 @@ class ApiProvider: NSObject {
                     }
                     return
                 }
-                guard let data = data else {
+                guard let data else {
                     callBackQueue.async {
                         completionHandler(.failure(.decode(message: "no data")))
                     }

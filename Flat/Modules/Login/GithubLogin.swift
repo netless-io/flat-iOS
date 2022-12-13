@@ -28,7 +28,7 @@ class GithubLogin: LaunchItem {
     }
 
     func immediateImplementation(withLaunchCoordinator _: LaunchCoordinator) {
-        guard let handler = handler else { return }
+        guard let handler else { return }
         safariVC?.showActivityIndicator()
         ApiProvider.shared.request(fromApi: AuthProcessRequest(uuid: uuid)) { [weak self] result in
             self?.safariVC?.stopActivityIndicator()
@@ -47,7 +47,7 @@ class GithubLogin: LaunchItem {
 
     func startLogin(withAuthStore authStore: AuthStore, launchCoordinator: LaunchCoordinator, completionHandler: @escaping LoginHandler) {
         ApiProvider.shared.request(fromApi: SetAuthUuidRequest(uuid: uuid)) { [weak self] r in
-            guard let self = self else { return }
+            guard let self else { return }
             switch r {
             case .success:
                 let controller = SFSafariViewController(url: self.githubLoginURL)
@@ -59,7 +59,7 @@ class GithubLogin: LaunchItem {
                     launchCoordinator?.removeLaunchItem(fromIdentifier: launchItemIdentifier)
                 }
                 self.handler = { [weak authStore, weak self] result in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     if case let .success(user) = result {
                         authStore?.processLoginSuccessUserInfo(user)
                     }

@@ -178,11 +178,11 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
             if item.resourceType == .projector {
                 WhiteProjectorPolling.checkProgress(withTaskUUID: payload.taskUUID, token: payload.taskToken, region: .init(rawValue: payload.region.rawValue)) { [weak self] info, error in
                     self?.fileSelectTask = nil
-                    if let error = error {
+                    if let error {
                         self?.toast(error.localizedDescription)
                         return
                     }
-                    guard let info = info else { return }
+                    guard let info else { return }
                     switch info.status {
                     case .finished:
                         self?.fileContentSelectedHandler?(.projectorPptx(uuid: info.uuid, prefix: info.prefix, title: item.fileName))
@@ -196,11 +196,11 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                                                region: .init(rawValue: payload.region.rawValue),
                                                taskType: taskType) { [weak self] info, error in
                     self?.fileSelectTask = nil
-                    if let error = error {
+                    if let error {
                         self?.toast(error.localizedDescription)
                         return
                     }
-                    guard let info = info else { return }
+                    guard let info else { return }
                     switch info.status {
                     case .finished:
                         let pages = info.progress?.convertedFileList.compactMap { $0 } ?? []
@@ -399,7 +399,7 @@ extension CloudStorageInClassViewController: UploadUtilityDelegate {
     }
 
     func uploadUtilityDidFinishVideoConverting(error: Error?) {
-        if let error = error {
+        if let error {
             update(isUploading: false)
             toast(error.localizedDescription)
         }

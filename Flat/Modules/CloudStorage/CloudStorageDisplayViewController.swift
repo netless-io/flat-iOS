@@ -86,7 +86,7 @@ class CloudStorageDisplayViewController: UIViewController,
     func loadData(loadMore: Bool) -> URLSessionDataTask? {
         let page = loadMore ? container.currentPage + 1 : 1
         return ApiProvider.shared.request(fromApi: StorageListRequest(input: .init(page: page, directoryPath: currentDirectoryPath))) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.tableView.refreshControl?.endRefreshing()
             switch result {
             case let .success(r):
@@ -104,7 +104,7 @@ class CloudStorageDisplayViewController: UIViewController,
     }
 
     func deleteItems(_ items: [StorageFileModel]) {
-        let request = RemoveFilesRequest(fileUUIDs: items.map { $0.fileUUID })
+        let request = RemoveFilesRequest(fileUUIDs: items.map(\.fileUUID))
 
         func executeDelete() {
             showActivityIndicator()
@@ -146,7 +146,7 @@ class CloudStorageDisplayViewController: UIViewController,
 
     // Return the target directory
     func move(items: [StorageFileModel], to indexPath: IndexPath) -> String {
-        let uuids = items.map { $0.fileUUID }
+        let uuids = items.map(\.fileUUID)
         let indices = uuids.compactMap { id in self.container.items.firstIndex(where: { $0.fileUUID == id }) }
         if !indices.isEmpty {
             var newItems = container.items
@@ -161,8 +161,8 @@ class CloudStorageDisplayViewController: UIViewController,
         }
 
         let targetDirectoryPath: String
-        if indexPath.row < container.items.count &&
-            container.items[indexPath.row].resourceType == .directory
+        if indexPath.row < container.items.count,
+           container.items[indexPath.row].resourceType == .directory
         {
             targetDirectoryPath = currentDirectoryPath + container.items[indexPath.row].fileName + "/"
         } else {
@@ -170,7 +170,7 @@ class CloudStorageDisplayViewController: UIViewController,
             // Means items from other dir.
             let insertIndex = firstNotDirectoryIndexPath.row
             container.items.insert(contentsOf: items, at: insertIndex)
-            let insertedIndexPaths = items.enumerated().map { $0.offset }.map { IndexPath(row: insertIndex + $0, section: 0) }
+            let insertedIndexPaths = items.enumerated().map(\.offset).map { IndexPath(row: insertIndex + $0, section: 0) }
             tableView.insertRows(at: insertedIndexPaths, with: .automatic)
         }
 
@@ -195,7 +195,7 @@ class CloudStorageDisplayViewController: UIViewController,
             let req = RenameFileRequest(fileName: newFileName, fileUUID: item.fileUUID)
             self.showActivityIndicator()
             ApiProvider.shared.request(fromApi: req) { [weak self] result in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.stopActivityIndicator()
                 switch result {
                 case .success:
@@ -236,7 +236,7 @@ class CloudStorageDisplayViewController: UIViewController,
 
     func observeItemsUpdate() {
         container.itemsUpdateHandler = { [weak self] newItems, _ in
-            guard let self = self else { return }
+            guard let self else { return }
 //            let noItemsWhenEdit = newItems.isEmpty && self.tableView.isEditing
 //            if noItemsWhenEdit {
 //                self.editButton.sendActions(for: .touchUpInside)
@@ -288,7 +288,7 @@ class CloudStorageDisplayViewController: UIViewController,
                 ConvertService.startConvert(fileUUID: uuid) { [weak self] r in
                     switch r {
                     case let .success(model):
-                        guard let self = self else { return }
+                        guard let self else { return }
                         if let index = self.container.items.firstIndex(where: { $0.fileUUID == uuid }),
                            let info = model.whiteConverteInfo
                         {
@@ -327,7 +327,7 @@ class CloudStorageDisplayViewController: UIViewController,
                                                                     region: .init(rawValue: payload.region.rawValue)) { progress in
                     logger.trace("task projector \(taskUUID) progress \(progress)")
                 } result: { [weak self] _, info, error in
-                    if let error = error {
+                    if let error {
                         self?.toast(error.localizedDescription)
                         return
                     }
@@ -340,7 +340,7 @@ class CloudStorageDisplayViewController: UIViewController,
                                                              taskType: $0.taskType!) { progress in
                     logger.trace("task v5 \(taskUUID) progress \(progress)")
                 } result: { [weak self] _, info, error in
-                    if let error = error {
+                    if let error {
                         self?.toast(error.localizedDescription)
                         return
                     }
@@ -358,7 +358,7 @@ class CloudStorageDisplayViewController: UIViewController,
         guard let index = container.items.firstIndex(where: { $0.fileUUID == fileUUID }) else { return }
         let item = container.items[index]
         ApiProvider.shared.request(fromApi: FinishConvertRequest(fileUUID: item.fileUUID)) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success:
                 if isFinished {
@@ -521,7 +521,7 @@ extension CloudStorageDisplayViewController: UITableViewDragDelegate {
     func tableView(_ tableView: UITableView, dragSessionDidEnd session: UIDragSession) {
         // Remove items when move items to other folders
         guard let targetDirPath = session.localContext as? String else { return }
-        guard let dragingIndex = dragingIndex else { return }
+        guard let dragingIndex else { return }
         let pathsInCurrentLevel = container.items.compactMap { item -> String? in
             if item.resourceType == .directory {
                 return self.currentDirectoryPath + item.fileName + "/"
@@ -567,7 +567,7 @@ extension CloudStorageDisplayViewController: UITableViewDropDelegate {
 
         // From other dir
         if dir != currentDirectoryPath {
-            if let destinationIndexPath = destinationIndexPath,
+            if let destinationIndexPath,
                destinationIndexPath.row < container.items.count
             {
                 let item = container.items[destinationIndexPath.row]
@@ -583,7 +583,7 @@ extension CloudStorageDisplayViewController: UITableViewDropDelegate {
             return .init(operation: .move, intent: .insertAtDestinationIndexPath)
         }
 
-        guard let destinationIndexPath = destinationIndexPath else { return .init(operation: .forbidden) }
+        guard let destinationIndexPath else { return .init(operation: .forbidden) }
         if destinationIndexPath.row >= container.items.count { return .init(operation: .forbidden) }
 
         let isDirectory = container.items[destinationIndexPath.row].resourceType == .directory

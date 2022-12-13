@@ -11,7 +11,7 @@ import RxCocoa
 import RxSwift
 
 class ClassRoomViewModel {
-    fileprivate var stateHandler: ClassroomStateHandler!
+    private var stateHandler: ClassroomStateHandler!
 
     let preferredDeviceState: DeviceState
     let alertProvider: AlertProvider
@@ -27,14 +27,14 @@ class ClassRoomViewModel {
     var rtcUsers: Observable<[RoomUser]> {
         members
             .map { users in
-                users.filter { $0.status.isSpeak }
+                users.filter(\.status.isSpeak)
             }
     }
 
     var currentUser: Observable<RoomUser> {
         members
             .map { [weak self] m in
-                guard let self = self else { throw "self not exist" }
+                guard let self else { throw "self not exist" }
                 return m.first(where: { $0.rtmUUID == self.userUUID }) ?? .empty
             }
             .distinctUntilChanged()
@@ -42,7 +42,7 @@ class ClassRoomViewModel {
 
     func transOnStageUpdate(whiteboardEnable: Observable<Bool>) -> Observable<String> {
         currentUser
-            .map { $0.status.isSpeak }
+            .map(\.status.isSpeak)
             .distinctUntilChanged()
             .skip(1)
             .flatMap { speak -> Observable<(speak: Bool, joined: Bool)> in
@@ -50,7 +50,7 @@ class ClassRoomViewModel {
             }.filter {
                 ($0.speak && $0.joined) || (!$0.speak && !$0.joined)
             }.flatMap { [weak self] speak, _ -> Observable<String> in
-                guard let self = self else { return .error("self not exist") }
+                guard let self else { return .error("self not exist") }
                 if speak {
                     let micOn = self.preferredDeviceState.mic
                     return self.stateHandler
@@ -68,17 +68,17 @@ class ClassRoomViewModel {
     var raiseHandHide: Observable<Bool> {
         Observable.combineLatest(currentUser,
                                  banState) { [weak self] currentUser, ban in
-            guard let self = self else { return true }
+            guard let self else { return true }
             if self.isOwner { return true }
             if ban { return true }
             return currentUser.status.isSpeak
         }
     }
 
-    var whiteboardEnable: Observable<Bool> { currentUser.map { $0.status.isSpeak } }
+    var whiteboardEnable: Observable<Bool> { currentUser.map(\.status.isSpeak) }
 
     var isRaisingHand: Observable<Bool> {
-        currentUser.map { $0.status.isRaisingHand }
+        currentUser.map(\.status.isRaisingHand)
     }
 
     var roomStoped: Observable<Void> {
@@ -91,7 +91,7 @@ class ClassRoomViewModel {
     var showUsersResPoint: Observable<Bool> {
         members
             .map { users -> Bool in
-                users.contains(where: { $0.status.isRaisingHand })
+                users.contains(where: \.status.isRaisingHand)
             }
     }
 
@@ -128,7 +128,7 @@ class ClassRoomViewModel {
     func initialRoomStatus() -> InitRoomOutput {
         let initRoom = stateHandler.setup()
             .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
+                guard let self else { return .error("self not exist") }
                 // Owner broadcast state when join room
                 if self.isOwner {
                     return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: self.initDeviceState))
@@ -142,17 +142,17 @@ class ClassRoomViewModel {
             .share(replay: 1, scope: .whileConnected)
 
         let autoPickMemberOnStageOnce: Single<RoomUser?>?
-        if roomType == .oneToOne && isOwner {
+        if roomType == .oneToOne, isOwner {
             autoPickMemberOnStageOnce = shareInitRoom
                 .flatMap { [weak self] _ -> Observable<[RoomUser]> in
-                    guard let self = self else { return .error("self not exist") }
+                    guard let self else { return .error("self not exist") }
                     return self.members
                 }
                 .skip(while: { $0.count < 2 })
                 .take(1)
                 .flatMap { [weak self] members -> Observable<RoomUser?> in
-                    guard let self = self else { return .error("self not exist") }
-                    let speakers = members.filter { $0.status.isSpeak }
+                    guard let self else { return .error("self not exist") }
+                    let speakers = members.filter(\.status.isSpeak)
                     if speakers.count >= 2 {
                         return .just(nil)
                     }
@@ -237,7 +237,7 @@ class ClassRoomViewModel {
     func transformLocalRtcClick(_ input: Observable<RtcInputType>) -> Driver<DeviceState> {
         input.withLatestFrom(currentUser, resultSelector: { a, b in (a, b) })
             .flatMap { [weak self] click, user -> Observable<DeviceState> in
-                guard let self = self else { return .just(.init(mic: user.status.mic, camera: user.status.camera)) }
+                guard let self else { return .just(.init(mic: user.status.mic, camera: user.status.camera)) }
                 var state: DeviceState
                 switch click {
                 case .camera:
@@ -256,7 +256,7 @@ class ClassRoomViewModel {
         input
             .withLatestFrom(stateHandler.banState, resultSelector: { _, ban in !ban })
             .flatMap { [weak self] ban -> Observable<Bool> in
-                guard let self = self else { return .error("self not exist") }
+                guard let self else { return .error("self not exist") }
                 return self.stateHandler.send(command: .ban(ban))
                     .asObservable()
                     .map { ban }
@@ -272,7 +272,7 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: .default)
             .flatMap { [weak self] status -> Driver<Bool> in
-                guard let self = self else { return .just(false) }
+                guard let self else { return .just(false) }
                 if status.isSpeak { return .just(false) }
                 return self.stateHandler
                     .send(command: .updateRaiseHand(!status.isRaisingHand))
@@ -376,7 +376,7 @@ class ClassRoomViewModel {
                     let stopRecordCommand: Single<Void> = self.recordModel == nil ? .just(()) : self.recordModel!.endRecord().asSingle()
                     return stopRecordCommand
                         .flatMap { [weak self] _ in
-                            guard let self = self else { return .error("self not exist") }
+                            guard let self else { return .error("self not exist") }
                             return self.stateHandler.send(command: .updateRoomStartStatus(.Stopped))
                         }
                         .asObservable()
@@ -398,7 +398,7 @@ class ClassRoomViewModel {
         let loading = BehaviorRelay<Bool>.init(value: true)
 
         func startAlert() -> Observable<Bool> {
-            return alertProvider
+            alertProvider
                 .showAlert(with: .init(message: localizeStrings("TurnOnRecordAlertTip"), preferredStyle: .alert, actionModels: [
                     .cancel,
                     .confirm,
@@ -409,7 +409,7 @@ class ClassRoomViewModel {
         }
 
         func finishAlert() -> Observable<Bool> {
-            return alertProvider
+            alertProvider
                 .showAlert(with: .init(message: localizeStrings("TurnOffReocrdAlertTip"), preferredStyle: .alert, actionModels: [
                     .cancel,
                     .confirm,

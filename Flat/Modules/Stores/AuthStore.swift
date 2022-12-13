@@ -76,14 +76,14 @@ class AuthStore {
 
     func updateName(_ name: String) {
         user?.name = name
-        if let user = user {
+        if let user {
             processLoginSuccessUserInfo(user)
         }
     }
 
     func updateAvatar(_ url: URL) {
         user?.avatar = url
-        if let user = user {
+        if let user {
             processLoginSuccessUserInfo(user)
         }
         NotificationCenter.default.post(name: avatarUpdateNotificationName, object: nil)
@@ -91,7 +91,7 @@ class AuthStore {
 
     func updateToken(_ token: String) {
         user?.token = token
-        if let user = user {
+        if let user {
             processLoginSuccessUserInfo(user)
         }
     }

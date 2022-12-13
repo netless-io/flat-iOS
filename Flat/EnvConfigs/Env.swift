@@ -14,7 +14,7 @@ struct Env {
         case US
     }
 
-    fileprivate func value<T>(for key: String) -> T {
+    private func value<T>(for key: String) -> T {
         guard let value = Bundle.main.infoDictionary?[key] as? T else {
             fatalError("Invalid or missing Info.plist key: \(key)")
         }
@@ -84,6 +84,6 @@ struct Env {
 
 extension Env {
     var containsSlsInfo: Bool {
-        return !slsSk.isEmpty && !slsAk.isEmpty && !slsEndpoint.isEmpty && !slsProject.isEmpty
+        !slsSk.isEmpty && !slsAk.isEmpty && !slsEndpoint.isEmpty && !slsProject.isEmpty
     }
 }

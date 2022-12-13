@@ -244,7 +244,7 @@ extension UIColor {
     // Return dynamic color when system dynamic color is enable.
     // Return single color depends on theme when not.
     static func color(light: UIColor, dark: UIColor) -> UIColor {
-        return UIColor { t in
+        UIColor { t in
             switch t.userInterfaceStyle {
             case .dark:
                 return dark

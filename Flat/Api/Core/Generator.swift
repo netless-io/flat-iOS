@@ -14,8 +14,8 @@ protocol Generator {
 }
 
 extension Generator {
-    func generateObservableRequest<T: Request>(fromApi api: T) -> Observable<URLRequest> {
-        return .create { observer in
+    func generateObservableRequest(fromApi api: some Request) -> Observable<URLRequest> {
+        .create { observer in
             do {
                 let request: URLRequest = try self.generateRequest(fromApi: api)
                 observer.onNext(request)

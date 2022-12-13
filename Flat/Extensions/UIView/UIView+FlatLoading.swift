@@ -125,7 +125,7 @@ extension UIView {
         }
     }
 
-    fileprivate var flatLoadingView: FlatLoadingView {
+    private var flatLoadingView: FlatLoadingView {
         let flatLoadingViewTag = 555
         let flatLoadingView: FlatLoadingView
         if let tagView = viewWithTag(flatLoadingViewTag) as? FlatLoadingView {

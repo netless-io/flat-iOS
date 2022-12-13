@@ -45,7 +45,7 @@ class RtcViewModel {
 
         let nonLocalUsers = users
             .map { [weak self] users -> [(user: RoomUser, canvas: AgoraRtcVideoCanvas)] in
-                guard let self = self else { return [] }
+                guard let self else { return [] }
                 let result = users
                     .filter { !self.localUserRegular($0.rtcUID) }
                     .map { user -> (RoomUser, AgoraRtcVideoCanvas) in
@@ -61,7 +61,7 @@ class RtcViewModel {
             })
 
         let localUserHide = users.map { [weak self] user -> Bool in
-            guard let self = self else { return true }
+            guard let self else { return true }
             let containsLocalUser = user.contains(where: {
                 self.localUserRegular($0.rtcUID)
             })
@@ -89,7 +89,7 @@ class RtcViewModel {
             })
             .map { [weak self] camera -> (Bool, AgoraRtcVideoCanvas) in
 
-                guard let self = self else { return (false, .init()) }
+                guard let self else { return (false, .init()) }
                 return (camera, self.rtc.localVideoCanvas)
             }
 

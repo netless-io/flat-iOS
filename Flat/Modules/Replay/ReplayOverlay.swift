@@ -244,7 +244,7 @@ class ReplayOverlay: NSObject {
     }
 
     var subviews: [UIView] {
-        return [toolBar, closeToolBar, closeButton]
+        [toolBar, closeToolBar, closeButton]
     }
 
     // MARK: - Lazy

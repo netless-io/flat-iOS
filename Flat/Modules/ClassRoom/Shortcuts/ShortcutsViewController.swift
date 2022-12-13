@@ -211,7 +211,7 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
             cell.contentView.backgroundColor = .color(type: .background)
         }
         cell.switchHandler = { [weak self] isOn in
-            guard let self = self else { return }
+            guard let self else { return }
             ShortcutsManager.shared.updateShortcuts(type: item.0, value: isOn)
             self.updateItems()
         }

@@ -86,7 +86,7 @@ extension WhiteboardAppsViewController: UICollectionViewDelegate, UICollectionVi
     }
 
     func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {
-        guard let room = room, let parent = presentingViewController, let source = clickSource else { return }
+        guard let room, let parent = presentingViewController, let source = clickSource else { return }
         let vc = WhiteboardScenesListViewController(room: room)
         dismiss(animated: true) {
             parent.popoverViewController(viewController: vc, fromSource: source)

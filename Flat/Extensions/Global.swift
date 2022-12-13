@@ -30,5 +30,5 @@ func keyWindow() -> UIWindow? {
 }
 
 func isCompact() -> Bool {
-    return keyWindow()?.traitCollection.hasCompact ?? true
+    keyWindow()?.traitCollection.hasCompact ?? true
 }

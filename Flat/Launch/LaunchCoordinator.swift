@@ -21,7 +21,7 @@ class LaunchCoordinator {
 
     var authStore: AuthStore
     // All the registered launchItem will be stored here
-    fileprivate var launchItems: [String: LaunchItem] = [:] {
+    private var launchItems: [String: LaunchItem] = [:] {
         didSet {
             logger.info("launchItems update, \(launchItems)")
         }
@@ -52,7 +52,7 @@ class LaunchCoordinator {
         if window.rootViewController == nil {
             configRootWith(user: authStore.user)
         }
-        hitItems = launchItems.map { $0.value }.filter { $0.shouldHandle(userActivity: userActivity) }
+        hitItems = launchItems.map(\.value).filter { $0.shouldHandle(userActivity: userActivity) }
         hitItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
         if authStore.isLogin, let user = authStore.user {
             hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user) }
@@ -66,7 +66,7 @@ class LaunchCoordinator {
         if window.rootViewController == nil {
             configRootWith(user: authStore.user)
         }
-        hitItems = launchItems.map { $0.value }.filter { $0.shouldHandle(url: launchUrl) }
+        hitItems = launchItems.map(\.value).filter { $0.shouldHandle(url: launchUrl) }
         hitItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
         if authStore.isLogin, let user = authStore.user {
             hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user) }
@@ -80,7 +80,7 @@ class LaunchCoordinator {
 
     func createMainContainer() -> UIViewController {
         func compactMain() -> UIViewController {
-            return MainTabBarController()
+            MainTabBarController()
         }
 
         func oldPadMain() -> UIViewController {
@@ -120,8 +120,8 @@ class LaunchCoordinator {
 
     // MARK: - Private
 
-    fileprivate func configRootWith(user: User?) {
-        if let user = user {
+    private func configRootWith(user: User?) {
+        if let user {
             startGoogleAnalytics()
             if user.hasPhone {
                 guard let _ = window.rootViewController as? MainContainer else {

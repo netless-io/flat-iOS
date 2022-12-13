@@ -167,7 +167,7 @@ struct StorageFileModel: Codable, Equatable {
     }
 
     var usable: Bool {
-        return !ConvertService.shouldConvertFile(withFile: self)
+        !ConvertService.shouldConvertFile(withFile: self)
     }
 
     var converting: Bool {

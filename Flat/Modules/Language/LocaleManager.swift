@@ -18,6 +18,6 @@ struct LocaleManager {
     }
 
     static var language: Language? {
-        return Language(languageCode: languageCode)
+        Language(languageCode: languageCode)
     }
 }

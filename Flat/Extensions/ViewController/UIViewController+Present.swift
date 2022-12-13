@@ -37,7 +37,7 @@ extension UIViewController {
     }
 
     @objc func onClose() {
-        if let closeBlock = closeBlock {
+        if let closeBlock {
             closeBlock()
         } else {
             dismiss(animated: true)

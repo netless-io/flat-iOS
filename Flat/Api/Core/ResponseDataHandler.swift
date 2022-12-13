@@ -15,7 +15,7 @@ protocol ResponseDataHandler {
 
 extension ResponseDataHandler {
     func processObservableResponseData<T>(_ data: Data, decoder: JSONDecoder, forResponseType _: T.Type) -> Observable<T> where T: Decodable {
-        return .create { observer in
+        .create { observer in
             do {
                 let result: T = try self.processResponseData(data, decoder: decoder, forResponseType: T.self)
                 observer.onNext(result)

@@ -27,7 +27,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
 
     func sendRawData(_ data: Data) -> Single<Void> {
         .create { [weak self] observer in
-            guard let self = self else {
+            guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
@@ -45,7 +45,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
 
     func sendMessage(_ text: String, censor: Bool = false, appendToNewMessage: Bool = false) -> Single<Void> {
         let send = Single<Void>.create { [weak self] observer in
-            guard let self = self else {
+            guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
@@ -59,7 +59,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
             }
             return Disposables.create()
         }.do(onSuccess: { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             if appendToNewMessage {
                 self.newMessagePublish.accept((text, Date(), self.userUUID))
             }
@@ -74,8 +74,8 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
     }
 
     func getMembers() -> Single<[String]> {
-        return .create { [weak self] observer in
-            guard let self = self else {
+        .create { [weak self] observer in
+            guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
@@ -87,7 +87,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
                     logger.error("\(strError)")
                     return
                 }
-                let memberIds = members?.map { $0.userId } ?? []
+                let memberIds = members?.map(\.userId) ?? []
                 logger.info("success get members \(memberIds)")
                 observer(.success(memberIds))
             }

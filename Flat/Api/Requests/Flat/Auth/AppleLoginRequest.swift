@@ -13,7 +13,7 @@ struct AppleLoginRequest: FlatRequest {
     let nickname: String?
 
     var task: Task {
-        if let nickname = nickname {
+        if let nickname {
             return .requestJSONEncodable(encodable: ["jwtToken": jwtToken, "nickname": nickname])
         } else {
             return .requestJSONEncodable(encodable: ["jwtToken": jwtToken])

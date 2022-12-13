@@ -12,7 +12,7 @@ class FileShareLaunchItem: LaunchItem {
     var url: URL!
 
     func shouldHandle(url: URL?) -> Bool {
-        guard let url = url, url.isFileURL else {
+        guard let url, url.isFileURL else {
             return false
         }
         var temp = FileManager.default.temporaryDirectory

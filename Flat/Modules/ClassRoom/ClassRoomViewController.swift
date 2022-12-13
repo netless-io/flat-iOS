@@ -16,7 +16,7 @@ let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
 class ClassRoomViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return traitCollection.hasCompact ? .landscapeRight : .landscape
+        traitCollection.hasCompact ? .landscapeRight : .landscape
     }
 
     override var prefersStatusBarHidden: Bool { traitCollection.verticalSizeClass == .compact }
@@ -133,7 +133,7 @@ class ClassRoomViewController: UIViewController {
 
         result.autoPickMemberOnStageOnce?
             .subscribe(with: self, onSuccess: { weakSelf, user in
-                if let user = user {
+                if let user {
                     weakSelf.toast(localizeStrings("ownerAutoOnStageTips") + user.name, timeInterval: 3, preventTouching: false)
                 }
             }).disposed(by: rx.disposeBag)
@@ -367,7 +367,7 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
 
         fastboardViewController.appsClickHandler = { [weak self] room, button in
-            guard let self = self else { return }
+            guard let self else { return }
             let vc = WhiteboardAppsViewController()
             vc.clickSource = button
             vc.room = room
@@ -427,19 +427,19 @@ class ClassRoomViewController: UIViewController {
         })
         .disposed(by: rx.disposeBag)
 
-        viewModel.currentUser.map { $0.status.isSpeak }
+        viewModel.currentUser.map(\.status.isSpeak)
             .asDriver(onErrorJustReturn: false)
             .drive(settingVC.deviceUpdateEnable)
             .disposed(by: rx.disposeBag)
 
         viewModel.currentUser
-            .map { $0.status.camera }
+            .map(\.status.camera)
             .asDriver(onErrorJustReturn: false)
             .drive(settingVC.cameraOn)
             .disposed(by: rx.disposeBag)
 
         viewModel.currentUser
-            .map { $0.status.mic }
+            .map(\.status.mic)
             .asDriver(onErrorJustReturn: false)
             .drive(settingVC.micOn)
             .disposed(by: rx.disposeBag)
@@ -609,7 +609,7 @@ class ClassRoomViewController: UIViewController {
     lazy var cloudStorageListViewController: CloudStorageInClassViewController = {
         let vc = CloudStorageInClassViewController()
         vc.fileContentSelectedHandler = { [weak self] fileContent in
-            guard let self = self else { return }
+            guard let self else { return }
             switch fileContent {
             case let .image(url: url, image: image):
                 self.fastboardViewController.fastRoom.insertImg(url, imageSize: image.size)

@@ -57,7 +57,7 @@ struct MemberRequest: FlatRequest, Encodable {
     var decoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
-        if let usersUUID = usersUUID {
+        if let usersUUID {
             decoder.userInfo = [.init(rawValue: "ids")!: usersUUID]
         }
         return decoder

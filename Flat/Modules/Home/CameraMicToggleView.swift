@@ -109,7 +109,7 @@ class CameraMicToggleView: UIView {
         }
 
         if sender === cameraButton {
-            if let delegate = delegate, !cameraOn {
+            if let delegate, !cameraOn {
                 if delegate.cameraMicToggleViewCouldUpdate(self, cameraOn: !cameraOn) {
                     toggleCamera()
                 }
@@ -117,7 +117,7 @@ class CameraMicToggleView: UIView {
                 toggleCamera()
             }
         } else {
-            if let delegate = delegate, !micOn {
+            if let delegate, !micOn {
                 if delegate.cameraMicToggleViewCouldUpdate(self, micOn: !micOn) {
                     toggleMic()
                 }

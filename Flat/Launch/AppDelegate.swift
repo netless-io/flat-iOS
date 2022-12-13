@@ -36,7 +36,7 @@ func setDidFirstTimeLaunch() {
 }
 
 var globalLaunchCoordinator: LaunchCoordinator? {
-    return (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch
+    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch
 }
 
 func configAppearance() {
@@ -86,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
             URLSession.shared.dataTask(with: request) { data, _, _ in
                 URLCache.shared.removeCachedResponse(for: request)
-                if let data = data,
+                if let data,
                    let obj = try? JSONSerialization.jsonObject(with: data) as? [String: String],
                    let force_min_version = obj["force_min_version"],
                    let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: UISceneSession Lifecycle
 
     func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options _: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
     func application(_: UIApplication, open url: URL, options _: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {

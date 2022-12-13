@@ -51,7 +51,7 @@ class RecordModel: Codable {
         }
         set {
             do {
-                if let newValue = newValue {
+                if let newValue {
                     let data = try JSONEncoder().encode(newValue)
                     UserDefaults.standard.setValue(data, forKey: savedRecordModelKey)
                     logger.info("set savedRecord \(newValue)")
@@ -163,7 +163,7 @@ class RecordModel: Codable {
 
     fileprivate func loopToUpdateServerEndTime() {
         DispatchQueue.global().asyncAfter(deadline: .now() + 5) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             ApiProvider.shared.request(fromApi: UpdateRecordEndTimeRequest(roomUUID: self.roomUUID)) { _ in }
             self.loopToUpdateServerEndTime()
         }
@@ -172,7 +172,7 @@ class RecordModel: Codable {
     fileprivate func queryIfStop() -> Observable<Bool> {
         let request = RecordQueryRequest(roomUUID: roomUUID, agoraParams: .init(resourceid: resourceId, sid: sid, mode: defaultRecordMode))
         return ApiProvider.shared.request(fromApi: request)
-            .map { $0.serverResponse.status.isStop }
+            .map(\.serverResponse.status.isStop)
             .asInfallible(onErrorJustReturn: true)
             .asObservable()
     }

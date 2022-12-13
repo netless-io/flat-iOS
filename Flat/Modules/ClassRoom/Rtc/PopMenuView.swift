@@ -60,7 +60,7 @@ class PopMenuView: UIView {
         }
         let x: CGFloat
         let y: CGFloat
-        if let source = source {
+        if let source {
             let sOrigin = source.convert(CGPoint.zero, to: target)
             switch direction {
             case .left:

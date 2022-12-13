@@ -33,7 +33,7 @@ class SMSAuthView: UIView {
     }
 
     func allValidCheck(sender: UIView?) -> Result<Void, String> {
-        if let additionalCheck = additionalCheck {
+        if let additionalCheck {
             switch additionalCheck(sender ?? self) {
             case .success: break
             case let .failure(errorStr):
@@ -132,7 +132,7 @@ class SMSAuthView: UIView {
     }
 
     override var intrinsicContentSize: CGSize {
-        return .init(width: 375, height: 0)
+        .init(width: 375, height: 0)
     }
 
     lazy var verificationCodeTextfield: BottomLineTextfield = {

@@ -130,7 +130,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 showActivityIndicator()
                 let binding = WechatBinding { [weak self] error in
                     self?.stopActivityIndicator()
-                    if let error = error {
+                    if let error {
                         self?.toast(error.localizedDescription)
                     } else {
                         self?.updateBindingInfo(showIndicator: true)
@@ -200,7 +200,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.profileDetailTextLabel.isHidden = false
             let type = BindingType(rawValue: indexPath.row - 2)!
             cell.profileTitleLabel.text = localizeStrings(type.identifierString)
-            if let bindInfo = bindInfo {
+            if let bindInfo {
                 let binded = bindInfo[type] ?? false
                 cell.profileDetailTextLabel.text = localizeStrings(binded ? "Binded" : "Unbound")
                 cell.profileDetailTextLabel.textColor = binded ? .color(type: .success) : .color(type: .text)
@@ -248,7 +248,7 @@ extension ProfileViewController: CropViewControllerDelegate {
             showActivityIndicator(text: localizeStrings("Uploading"))
             ApiProvider.shared.request(fromApi: PrepareAvatarUploadRequest(fileName: name, fileSize: size))
                 .flatMap { [weak self] info throws -> Observable<UploadInfo> in
-                    guard let self = self else { return .error("self not exist") }
+                    guard let self else { return .error("self not exist") }
                     return try self.upload(info: info, fileURL: fileURL).map { info }
                 }
                 .flatMap { info -> Observable<URL> in

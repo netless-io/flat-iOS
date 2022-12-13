@@ -66,7 +66,7 @@ class CustomPreviewViewController: QLPreviewController {
             return
         case let .image(url: url, fileExtension: fileExtension, fileName: fileName):
             KingfisherManager.shared.retrieveImageDiskCachePath(fromURL: url) { [weak self] result in
-                guard let self = self else { return }
+                guard let self else { return }
                 if self.source != loadingSource {
                     return
                 }

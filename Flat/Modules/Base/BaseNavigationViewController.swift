@@ -15,7 +15,7 @@ class BaseNavigationViewController: UINavigationController {
     }
 
     override var description: String {
-        "BaseNavigationViewController: \(children.map { $0.description }.joined(separator: "-"))"
+        "BaseNavigationViewController: \(children.map(\.description).joined(separator: "-"))"
     }
 
     func updateNaviAppearance() {

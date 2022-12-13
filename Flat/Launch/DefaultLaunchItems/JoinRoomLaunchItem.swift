@@ -15,7 +15,7 @@ class JoinRoomLaunchItem: LaunchItem {
     var disposeBag = RxSwift.DisposeBag()
 
     func shouldHandle(url: URL?) -> Bool {
-        if let url = url {
+        if let url {
             if url.scheme == "x-agora-flat-client",
                url.host == "joinRoom",
                let roomId = URLComponents(url: url, resolvingAgainstBaseURL: false)?

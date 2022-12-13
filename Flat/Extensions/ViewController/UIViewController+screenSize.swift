@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIViewController {
-    fileprivate var mainWindowBounds: CGRect { UIScreen.main.bounds }
+    private var mainWindowBounds: CGRect { UIScreen.main.bounds }
 
     var greatWindowSide: CGFloat {
         guard let bounds = view.window?.windowScene?.screen.bounds else {

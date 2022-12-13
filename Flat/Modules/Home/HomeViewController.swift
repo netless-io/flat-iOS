@@ -114,7 +114,7 @@ class HomeViewController: UIViewController {
 
     func loadRooms(_: Any?, completion: @escaping ((Error?) -> Void) = { _ in }) {
         ApiProvider.shared.request(fromApi: RoomListRequest(page: 1)) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case let .success(list):
                 self.list = list
@@ -453,7 +453,7 @@ extension HomeViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     }
 
     func image(forEmptyDataSet _: UIScrollView) -> UIImage? {
-        return UIImage(named: "room_empty", in: nil, compatibleWith: traitCollection)
+        UIImage(named: "room_empty", in: nil, compatibleWith: traitCollection)
     }
 
     func emptyDataSetShouldAllowScroll(_: UIScrollView) -> Bool {

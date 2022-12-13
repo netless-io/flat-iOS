@@ -88,16 +88,16 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     func setup() -> Single<Void> {
         rtm.login()
             .flatMap { [weak self] _ -> Single<RtmChannel> in
-                guard let self = self else { return .error("self not exist") }
+                guard let self else { return .error("self not exist") }
                 return self.commandChannelRequest
             }.do(onSuccess: { [weak self] channel in
-                if let self = self {
+                if let self {
                     self.commandChannel = channel
 
                     PublishRelay.of(channel.rawDataPublish, self.rtm.p2pMessage)
                         .merge()
                         .flatMap { [weak self] value -> Observable<RtmCommand?> in
-                            guard let self = self else { return .error("self not exist") }
+                            guard let self else { return .error("self not exist") }
                             return self.processCommandMessage(data: value.data, senderId: value.sender)
                         }
                         .subscribe()
@@ -105,9 +105,9 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 }
             })
             .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
+                guard let self else { return .error("self not exist") }
                 return .create { [weak self] ob in
-                    guard let self = self else {
+                    guard let self else {
                         ob(.failure("self deinit"))
                         return Disposables.create()
                     }
@@ -124,7 +124,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 }
             }
             .flatMap { [weak self] _ -> Single<Void> in
-                guard let self = self else { return .error("self not exist") }
+                guard let self else { return .error("self not exist") }
                 if !self.isOwner { return .just(()) }
                 return self.send(command: .updateRoomStartStatus(.Started))
             }
@@ -134,7 +134,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         deviceState.accept(result.deviceState)
         banState.accept(result.roomState.ban)
         raisingHandIds.accept(result.roomState.raiseHandUsers)
-        onStageIds.accept(result.onStageUsers.filter { $0.value }.map { $0.key })
+        onStageIds.accept(result.onStageUsers.filter(\.value).map(\.key))
         logger.info("initialize state from synced store \(result)")
     }
 
@@ -149,8 +149,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 if banState.value { return .just(nil) }
                 return syncedStore.getValues()
                     .flatMap { [weak self] result in
-                        guard let self = self else { return .error("self not exist") }
-                        let onStageUsersCount = result.onStageUsers.filter { $0.value }.count
+                        guard let self else { return .error("self not exist") }
+                        let onStageUsersCount = result.onStageUsers.filter(\.value).count
                         if onStageUsersCount >= self.maxOnstageUserCount { return .error("can't accept more onstage users") }
                         var users = result.roomState.raiseHandUsers
                         if raise, !users.contains(senderId) {
@@ -188,7 +188,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 let serverRequest = RoomStatusUpdateRequest(newStatus: status, roomUUID: roomUUID)
                 return ApiProvider.shared.request(fromApi: serverRequest).asSingle()
                     .flatMap { [weak self] _ -> Single<Void> in
-                        guard let self = self else { return .error("self not exist") }
+                        guard let self else { return .error("self not exist") }
                         return self.commandChannel.sendRawData(msgData)
                     }.do(onSuccess: { [weak self] _ in
                         self?.roomStartStatus.accept(status)
@@ -201,7 +201,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             case let .disconnectUser(uuid):
                 return syncedStore.getValues()
                     .flatMap { [weak self] _ -> Single<Void> in
-                        guard let self = self else { return .error("self not exist ") }
+                        guard let self else { return .error("self not exist ") }
                         try self.syncedStore.sendCommand(.deviceStateUpdate([uuid: .init(mic: false, camera: false)]))
                         try self.syncedStore.sendCommand(.onStageUsersUpdate([uuid: false]))
                         return .just(())
@@ -212,7 +212,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             case let .acceptRaiseHand(uuid):
                 return syncedStore.getValues()
                     .flatMap { [weak self] result -> Single<Void> in
-                        guard let self = self else { return .error("self not exist") }
+                        guard let self else { return .error("self not exist") }
                         if result.roomState.raiseHandUsers.contains(uuid) {
                             var raiseHandUsers = result.roomState.raiseHandUsers
                             raiseHandUsers.removeAll(where: { $0 == uuid })
@@ -230,7 +230,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             case .stopInteraction:
                 return syncedStore.getValues()
                     .flatMap { [weak self] result -> Single<Void> in
-                        guard let self = self else { return .just(()) }
+                        guard let self else { return .just(()) }
                         var deviceState = result.deviceState
                         for key in deviceState.keys {
                             if key != self.ownerUUID {
@@ -252,8 +252,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     }
 
     func memberNameQueryProvider() -> UserInfoQueryProvider {
-        return { [weak self] ids -> Observable<[String: UserBriefInfo]> in
-            guard let self = self else {
+        { [weak self] ids -> Observable<[String: UserBriefInfo]> in
+            guard let self else {
                 return .error("self not exist")
             }
             let noCacheIds = ids.filter { self.roomUserInfoCache[$0] == nil }
@@ -293,7 +293,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     var roomUserInfoCache: [String: RoomUserInfo] = [:]
     var observableMembers: Observable<[RoomUser]>?
     func members() -> Observable<[RoomUser]> {
-        if let observableMembers = observableMembers {
+        if let observableMembers {
             return observableMembers
         }
         let initMembers = commandChannel
@@ -325,7 +325,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 .merging(joinedValue, uniquingKeysWith: +)
                 .merging(leftValue, uniquingKeysWith: +)
                 .filter { $0.value > 0 }
-                .map { $0.key }
+                .map(\.key)
         }
 
         let sharedStageIds = onStageIds.share(replay: 1, scope: .forever)
@@ -344,8 +344,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         }
 
         let members = memberIds.flatMap { [weak self] idPairs -> Observable<[RoomUser]> in
-            guard let self = self else { return .error("self not exist") }
-            let ids = idPairs.map { $0.key }
+            guard let self else { return .error("self not exist") }
+            let ids = idPairs.map(\.key)
             let noCacheIds = ids.filter { self.roomUserInfoCache[$0] == nil }
             let cachedUsers = ids.compactMap { self.roomUserInfoCache[$0]?.toRoomUser(uid: $0, isOnline: idPairs[$0] ?? false) }
             if noCacheIds.isEmpty { return .just(cachedUsers) }
@@ -368,7 +368,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             return totalUsers
         }
 
-        let ownerUUID = self.ownerUUID
+        let ownerUUID = ownerUUID
         let result = Observable.combineLatest(
             members,
             deviceState.asObservable(),
@@ -414,7 +414,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         }
         .debug()
         .do(onNext: { [weak self] users in
-            let usersPair = users.filter { $0.status.isSpeak }.map { ($0.rtmUUID, $0) }
+            let usersPair = users.filter(\.status.isSpeak).map { ($0.rtmUUID, $0) }
             self?.currentOnStageUsers = .init(uniqueKeysWithValues: usersPair)
         })
         observableMembers = result.share(replay: 1, scope: .forever)
@@ -440,7 +440,7 @@ extension ClassroomStateHandlerImp: FlatSyncedStoreCommandDelegate {
     func flatSyncedStoreDidReceiveCommand(_: ClassRoomSyncedStore, command: ClassRoomSyncedStore.Command) {
         switch command {
         case let .onStageUsersUpdate(idMap):
-            onStageIds.accept(idMap.filter { $0.value }.map { $0.key })
+            onStageIds.accept(idMap.filter(\.value).map(\.key))
         case let .banUpdate(isBan):
             banState.accept(isBan)
         case let .deviceStateUpdate(state):

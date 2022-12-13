@@ -31,7 +31,7 @@ class ClassRoomUsersViewController: UIViewController {
 
     var users: Observable<[RoomUser]>? {
         didSet {
-            guard let users = users else {
+            guard let users else {
                 return
             }
             let ownerId = roomOwnerRtmUUID
@@ -151,7 +151,7 @@ class ClassRoomUsersViewController: UIViewController {
         cell.cameraButton.isEnabled = user.status.camera || isUserSelf
         cell.micButton.isEnabled = user.status.mic || isUserSelf
         cell.clickHandler = { [weak self] type in
-            guard let self = self else { return }
+            guard let self else { return }
             switch type {
             case .camera:
                 self.cameraTap.accept(user)
@@ -272,7 +272,7 @@ extension ClassRoomUsersViewController: UITableViewDelegate {
     }
 
     func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        if let teacher = teacher {
+        if let teacher {
             teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
             teacherLabel.text = teacher.name + " (" + localizeStrings("Teacher") + ")"
             return teacherHeaderView

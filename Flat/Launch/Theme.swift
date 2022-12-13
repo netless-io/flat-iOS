@@ -61,7 +61,7 @@ class Theme {
         }
     }
 
-    fileprivate func setStoredPreferredStyle(_ newValue: ThemeStyle) {
+    private func setStoredPreferredStyle(_ newValue: ThemeStyle) {
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(["style": newValue])
@@ -77,7 +77,7 @@ class Theme {
         setStoredPreferredStyle(style)
     }
 
-    fileprivate func apply(_ style: ThemeStyle) {
+    private func apply(_ style: ThemeStyle) {
         switch style {
         case .dark:
             window?.overrideUserInterfaceStyle = .dark
@@ -92,19 +92,19 @@ class Theme {
         commitUpdate()
     }
 
-    fileprivate func commitUpdate() {
+    private func commitUpdate() {
         keyWindow()?.subviews.forEach {
             $0.removeFromSuperview()
             window?.addSubview($0)
         }
     }
 
-    fileprivate func applyNavigationBar() {
+    private func applyNavigationBar() {
         let proxy = UINavigationBar.appearance()
         proxy.tintColor = .color(type: .text)
     }
 
-    fileprivate func applyFastboard(_ style: ThemeStyle) {
+    private func applyFastboard(_ style: ThemeStyle) {
         let flatTheme: FastRoomThemeAsset
         switch style {
         case .dark:

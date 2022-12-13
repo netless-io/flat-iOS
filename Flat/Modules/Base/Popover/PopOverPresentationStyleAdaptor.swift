@@ -13,7 +13,7 @@ private var anyPopOverDelegateKey: Void?
 
 extension UIViewController {
     var adaptivePresentationStyleAdaptor: PresentationStyleGet? {
-        return nil
+        nil
     }
 
     var anyPopOverDelegate: AnyPopOverDelegate? {

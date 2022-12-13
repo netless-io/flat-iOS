@@ -101,7 +101,7 @@ class JoinRoomViewController: UIViewController {
 
     func bindJoinEnable() {
         subjectTextField.rx.text.orEmpty.asDriver()
-            .map { $0.isNotEmptyOrAllSpacing }
+            .map(\.isNotEmptyOrAllSpacing)
             .drive(with: self, onNext: { weakSelf, joinEnable in
                 weakSelf.joinButton.isEnabled = joinEnable
                 weakSelf.roomInputAccessView.enterEnable = joinEnable

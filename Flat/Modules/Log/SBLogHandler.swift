@@ -64,7 +64,7 @@ struct SBLogHandler: LogHandler {
 
     subscript(metadataKey key: String) -> Logger.Metadata.Value? {
         get {
-            return metadata[key]
+            metadata[key]
         }
         set(newValue) {
             metadata[key] = newValue

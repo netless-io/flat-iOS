@@ -45,15 +45,15 @@ extension UIViewController {
                               completion: completion)
     }
 
-    fileprivate func popoverViewController(viewController: UIViewController,
-                                           fromSource sender: UIView? = nil,
-                                           fromItem item: UIBarButtonItem? = nil,
-                                           sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-15, 0),
-                                           permittedArrowDirections: UIPopoverArrowDirection = .unknown,
-                                           animated: Bool = true,
-                                           completion: (() -> Void)? = nil)
+    private func popoverViewController(viewController: UIViewController,
+                                       fromSource sender: UIView? = nil,
+                                       fromItem item: UIBarButtonItem? = nil,
+                                       sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-15, 0),
+                                       permittedArrowDirections: UIPopoverArrowDirection = .unknown,
+                                       animated: Bool = true,
+                                       completion: (() -> Void)? = nil)
     {
-        if let presentedViewController = presentedViewController {
+        if let presentedViewController {
             logger.error("can't present when there is presented \(presentedViewController)")
             completion?()
             return
@@ -90,7 +90,7 @@ extension UIViewController {
                 viewController.popoverPresentationController?.sourceRect = view.bounds.insetBy(dx: sourceBoundsInset.dx, dy: sourceBoundsInset.dy)
             }
         }
-        if let item = item {
+        if let item {
             viewController.popoverPresentationController?.barButtonItem = item
         }
         viewController.popoverPresentationController?.permittedArrowDirections = permittedArrowDirections

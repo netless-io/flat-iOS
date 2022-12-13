@@ -142,7 +142,7 @@ class UploadService {
             .do(onNext: { _ in
                 tracker.accept(.uploadFinish)
             }, onError: { error in
-                if let fileUUID = fileUUID {
+                if let fileUUID {
                     logger.error("cancel task by error \(error) \(fileUUID)")
                     ApiProvider.shared.request(fromApi: CancelUploadRequest(fileUUIDs: [fileUUID]), completionHandler: { _ in })
                 }
@@ -177,7 +177,7 @@ class UploadService {
                     if shouldAccessingSecurityScopedResource {
                         fileURL.stopAccessingSecurityScopedResource()
                     }
-                    if let fileUUID = fileUUID {
+                    if let fileUUID {
                         logger.info("cancel task manual \(fileUUID)")
                         ApiProvider.shared.request(fromApi: CancelUploadRequest(fileUUIDs: [fileUUID]), completionHandler: { _ in })
                     }
@@ -186,7 +186,7 @@ class UploadService {
         return (task, tracker)
     }
 
-    fileprivate func prepare(fileURL: URL, region _: FlatRegion, targetDirectoryPath: String) -> Observable<UploadInfo> {
+    private func prepare(fileURL: URL, region _: FlatRegion, targetDirectoryPath: String) -> Observable<UploadInfo> {
         do {
             let attribute = try FileManager.default.attributesOfItem(atPath: fileURL.path)
             let name = fileURL.lastPathComponent
@@ -202,7 +202,7 @@ class UploadService {
         ApiProvider.shared.request(fromApi: UploadFinishRequest(fileUUID: fileUUID)).mapToVoid()
     }
 
-    fileprivate func upload(fileURL: URL, info: UploadInfo) throws -> Observable<Void> {
+    private func upload(fileURL: URL, info: UploadInfo) throws -> Observable<Void> {
         let session = URLSession(configuration: .default)
         let boundary = UUID().uuidString
         var request = URLRequest(url: info.ossDomain, timeoutInterval: 60 * 10)

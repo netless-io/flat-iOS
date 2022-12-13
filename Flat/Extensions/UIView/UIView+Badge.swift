@@ -27,7 +27,7 @@ private class BadgeView: UIView {
 }
 
 extension UIView {
-    fileprivate func getBadageView() -> BadgeView {
+    private func getBadageView() -> BadgeView {
         let badgeView: BadgeView
         if let view = subviews.first(where: { $0 is BadgeView }) as? BadgeView {
             badgeView = view

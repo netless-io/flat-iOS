@@ -9,7 +9,7 @@
 import Foundation
 
 func localizeStrings(_ strs: String...) -> String {
-    return strs.reduce(into: "") { partialResult, str in
+    strs.reduce(into: "") { partialResult, str in
         if LocaleManager.language == .Chinese {
             return partialResult += NSLocalizedString(str, comment: "")
         } else {

@@ -48,7 +48,7 @@ class HistoryViewController: UIViewController {
 
     func loadRooms(_: Any?, completion: @escaping ((Error?) -> Void) = { _ in }) {
         ApiProvider.shared.request(fromApi: RoomHistoryRequest(page: 1)) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case let .success(list):
                 self.list = list
@@ -141,7 +141,7 @@ extension HistoryViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate 
     }
 
     func image(forEmptyDataSet _: UIScrollView) -> UIImage? {
-        return UIImage(named: "history_empty", in: nil, compatibleWith: traitCollection)
+        UIImage(named: "history_empty", in: nil, compatibleWith: traitCollection)
     }
 
     func emptyDataSetShouldAllowScroll(_: UIScrollView) -> Bool {

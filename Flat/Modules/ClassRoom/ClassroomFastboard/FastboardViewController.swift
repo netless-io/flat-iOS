@@ -41,13 +41,13 @@ class FastboardViewController: UIViewController {
         logger.info("update writable \(writable)")
         if w != writable {
             return .create { [weak self] ob in
-                guard let self = self else {
+                guard let self else {
                     ob(.failure("self not exist"))
                     return Disposables.create()
                 }
                 logger.info("update writable \(writable)")
                 self.fastRoom.updateWritable(writable) { [weak self] error in
-                    if let error = error {
+                    if let error {
                         ob(.failure(error))
                     } else {
                         ob(.success(writable))
@@ -64,11 +64,11 @@ class FastboardViewController: UIViewController {
 
     func bind(observableWritable: Observable<Bool>) -> Observable<Bool> {
         Observable.combineLatest(observableWritable, isRoomJoined)
-            .filter { $0.1 }
-            .map { $0.0 }
+            .filter(\.1)
+            .map(\.0)
             .distinctUntilChanged()
             .concatMap { [weak self] writable -> Observable<Bool> in
-                guard let self = self else { return .error("self not exist") }
+                guard let self else { return .error("self not exist") }
                 return self.updateWritable(writable).asObservable()
             }.do(onNext: { [weak self] writable in
                 self?.fastRoom.setAllPanel(hide: !writable)

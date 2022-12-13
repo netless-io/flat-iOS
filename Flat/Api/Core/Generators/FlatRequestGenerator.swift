@@ -20,12 +20,12 @@ class FlatRequestGenerator: Generator {
         self.sessionId = sessionId
     }
 
-    func generateRequest<T: Request>(fromApi api: T) throws -> URLRequest {
+    func generateRequest(fromApi api: some Request) throws -> URLRequest {
         let fullPath = "\(host)\(api.path)"
         let url = URL(string: fullPath)!
         var request = URLRequest(url: url, timeoutInterval: timeoutInterval)
         request.httpMethod = api.method.rawValue
-        if let token = token {
+        if let token {
             request.addValue("Bearer " + token, forHTTPHeaderField: "authorization")
         }
         request.addValue(UUID().uuidString, forHTTPHeaderField: "x-request-id")

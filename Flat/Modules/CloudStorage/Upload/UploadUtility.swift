@@ -124,7 +124,7 @@ extension UploadUtility: UIImagePickerControllerDelegate, UINavigationController
             let fileName = UUID().uuidString
             delegate?.uploadUtilityDidStartVideoConverting()
             let task = VideoConvertService.convert(url: url, convertedFileName: fileName) { [weak self] result in
-                guard let self = self else { return }
+                guard let self else { return }
                 do {
                     try FileManager.default.removeItem(at: url)
                 } catch {
@@ -175,7 +175,7 @@ extension UploadUtility: PHPickerViewControllerDelegate {
                         self.delegate?.uploadUtilityDidMeet(error: "load image fail")
                         return
                     }
-                    if let error = error {
+                    if let error {
                         self.delegate?.uploadUtilityDidMeet(error: error)
                         return
                     }
@@ -198,14 +198,14 @@ extension UploadUtility: PHPickerViewControllerDelegate {
             return
         } else {
             item.itemProvider.loadFileRepresentation(forTypeIdentifier: typeIdentifier) { [weak self] url, error in
-                guard let self = self else { return }
-                guard let url = url else {
+                guard let self else { return }
+                guard let url else {
                     DispatchQueue.main.async {
                         self.delegate?.uploadUtilityDidMeet(error: "load url fail")
                     }
                     return
                 }
-                if let error = error {
+                if let error {
                     DispatchQueue.main.async {
                         self.delegate?.uploadUtilityDidMeet(error: error.localizedDescription)
                     }
@@ -232,7 +232,7 @@ extension UploadUtility: PHPickerViewControllerDelegate {
                         fileName = url.lastPathComponent
                     }
                     let task = VideoConvertService.convert(url: cp, convertedFileName: fileName) { [weak self] result in
-                        guard let self = self else { return }
+                        guard let self else { return }
                         do {
                             try FileManager.default.removeItem(at: cp)
                         } catch {

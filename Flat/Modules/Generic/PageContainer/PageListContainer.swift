@@ -15,7 +15,7 @@ class PageListContainer<T> {
     var currentPage: Int
     var canLoadMore: Bool
 
-    fileprivate let maxItemsPerPage: Int = 50
+    private let maxItemsPerPage: Int = 50
 
     func receive(items: [T], withItemsPage page: Int) {
         if page == 1 {

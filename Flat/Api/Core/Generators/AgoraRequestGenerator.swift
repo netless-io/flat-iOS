@@ -22,7 +22,7 @@ class AgoraRequestGenerator: Generator {
         self.timeoutInterval = timeoutInterval
     }
 
-    func generateRequest<T: Request>(fromApi api: T) throws -> URLRequest {
+    func generateRequest(fromApi api: some Request) throws -> URLRequest {
         let fullPath = "\(agoraApi)\(api.path)"
         let url = URL(string: fullPath)!
         var request = URLRequest(url: url, timeoutInterval: timeoutInterval)

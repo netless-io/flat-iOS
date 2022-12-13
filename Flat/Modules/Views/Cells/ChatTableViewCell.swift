@@ -33,14 +33,14 @@ class ChatTableViewCell: UITableViewCell {
         var backgroundColor: UIColor {
             switch self {
             case .other: return .color(light: .blue0, dark: .grey9)
-            case .`self`: return .color(type: .primary)
+            case .self: return .color(type: .primary)
             }
         }
 
         var textColor: UIColor {
             switch self {
             case .other: return .color(light: .blue8, dark: .blue0)
-            case .`self`: return .init(hexString: "#F4F8FF")
+            case .self: return .init(hexString: "#F4F8FF")
             }
         }
     }
