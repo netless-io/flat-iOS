@@ -6,17 +6,16 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class SettingTableViewCell: UITableViewCell {
-    @IBOutlet weak var settingDetailLabel: UILabel!
-    @IBOutlet weak var settingTitleLabel: UILabel!
-    @IBOutlet weak var popOverAnchorView: UIView!
-    @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var `switch`: UISwitch!
-    @IBOutlet weak var rightArrowView: UIImageView!
-    
+    @IBOutlet var settingDetailLabel: UILabel!
+    @IBOutlet var settingTitleLabel: UILabel!
+    @IBOutlet var popOverAnchorView: UIView!
+    @IBOutlet var iconImageView: UIImageView!
+    @IBOutlet var `switch`: UISwitch!
+    @IBOutlet var rightArrowView: UIImageView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
@@ -27,7 +26,7 @@ class SettingTableViewCell: UITableViewCell {
 
         rightArrowView.tintColor = .color(type: .text)
         iconImageView.tintColor = .color(type: .text)
-        
+
         addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
     }
 }

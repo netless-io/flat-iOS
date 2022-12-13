@@ -6,16 +6,15 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
-fileprivate let defaultFlatDecoder: JSONDecoder = {
+private let defaultFlatDecoder: JSONDecoder = {
     let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .millisecondsSince1970
     return decoder
 }()
 
-fileprivate let defaultAgoraDecoder: JSONDecoder = {
+private let defaultAgoraDecoder: JSONDecoder = {
     let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .iso8601
     return decoder
@@ -25,7 +24,7 @@ extension JSONDecoder {
     static var flatDecoder: JSONDecoder {
         defaultFlatDecoder
     }
-    
+
     static var agoraDecoder: JSONDecoder {
         defaultAgoraDecoder
     }

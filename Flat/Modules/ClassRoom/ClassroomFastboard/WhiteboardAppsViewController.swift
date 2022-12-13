@@ -14,7 +14,7 @@ class WhiteboardAppsViewController: UIViewController {
         let title: String
         let imageName: String
     }
-    
+
     let items: [WhiteboardAppItem] = [
         .init(title: localizeStrings("whiteboard_save_annotation"), imageName: "whiteboard_save_annotation"),
     ]
@@ -28,17 +28,19 @@ class WhiteboardAppsViewController: UIViewController {
         preferredContentSize = .init(width: layout.itemSize.width * numberPerRow + layout.sectionInset.left + layout.sectionInset.right,
                                      height: layout.itemSize.height * rows + layout.sectionInset.top + layout.sectionInset.bottom)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
-    
+
     // MARK: - Private
+
     func setupViews() {
         view.backgroundColor = .classroomChildBG
         view.addSubview(collectionView)
@@ -46,11 +48,11 @@ class WhiteboardAppsViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
-    
-    
+
     // MARK: - Lazy
+
     let numberPerRow: CGFloat = 3
-    
+
     lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = .init(width: 120, height: 66 + 8)
@@ -59,7 +61,7 @@ class WhiteboardAppsViewController: UIViewController {
         layout.sectionInset = .init(inset: 16)
         return layout
     }()
-    
+
     lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .classroomChildBG
@@ -71,19 +73,19 @@ class WhiteboardAppsViewController: UIViewController {
 }
 
 extension WhiteboardAppsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { items.count }
-    
+    func numberOfSections(in _: UICollectionView) -> Int { 1 }
+    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int { items.count }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WhiteboardAppsCell.self), for: indexPath) as! WhiteboardAppsCell
         let item = items[indexPath.row]
         cell.appTitleLabel.text = item.title
         cell.appIconView.image = UIImage(named: item.imageName)
-        cell.appIconView.backgroundColor = UIColor.init(hexString: "#00C35A")
+        cell.appIconView.backgroundColor = UIColor(hexString: "#00C35A")
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+    func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {
         guard let room = room, let parent = presentingViewController, let source = clickSource else { return }
         let vc = WhiteboardScenesListViewController(room: room)
         dismiss(animated: true) {

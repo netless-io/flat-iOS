@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct RoomStartStatus: RawRepresentable, Codable, Equatable {
@@ -14,9 +13,9 @@ struct RoomStartStatus: RawRepresentable, Codable, Equatable {
     static let Started = RoomStartStatus(rawValue: "Started")
     static let Stopped = RoomStartStatus(rawValue: "Stopped")
     static let Paused = RoomStartStatus(rawValue: "Paused")
-    
+
     let rawValue: String
-    
+
     func getDisplayStatus() -> Self {
         self == .Paused ? RoomStartStatus.Started : self
     }

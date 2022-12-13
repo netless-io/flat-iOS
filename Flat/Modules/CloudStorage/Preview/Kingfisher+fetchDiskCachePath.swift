@@ -6,11 +6,11 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import Kingfisher
 import Foundation
+import Kingfisher
 
 extension KingfisherManager {
-    func retrieveImageDiskCachePath(fromURL url: URL, handler: @escaping (Result<String, Error>)->Void) {
+    func retrieveImageDiskCachePath(fromURL url: URL, handler: @escaping (Result<String, Error>) -> Void) {
         let source = Kingfisher.Source.network(url)
         let isCache = KingfisherManager.shared.cache.isCached(forKey: source.cacheKey)
         let path = KingfisherManager.shared.cache.cachePath(forKey: source.cacheKey)
@@ -24,11 +24,11 @@ extension KingfisherManager {
                         switch cacheResult {
                         case .success:
                             handler(.success(path))
-                        case .failure(let error):
+                        case let .failure(error):
                             handler(.failure(error))
                         }
                     }
-                case .failure(let error):
+                case let .failure(error):
                     handler(.failure(error))
                 }
             }

@@ -9,21 +9,22 @@
 import UIKit
 
 class BindPhoneViewController: UIViewController {
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override init(nibName _: String?, bundle _: Bundle?) {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .crossDissolve
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
-    
+
     func setupViews() {
         view.backgroundColor = .color(type: .background)
 
@@ -40,21 +41,20 @@ class BindPhoneViewController: UIViewController {
             stack.addArrangedSubview(leftView)
         }
         stack.addArrangedSubview(mainView)
-        
+
         if traitCollection.hasCompact {
-            
             addPresentTitle(localizeStrings("BindPhone"))
             addPresentCloseButton {
                 AuthStore.shared.logout()
             }
-            
+
             mainView.addSubview(smsAuthView)
             smsAuthView.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()
                 make.left.right.equalToSuperview().inset(16)
                 make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(66)
             }
-            
+
             let bindButton = FlatGeneralCrossButton()
             bindButton.setTitle(localizeStrings("Confirm"), for: .normal)
             mainView.addSubview(bindButton)
@@ -64,7 +64,7 @@ class BindPhoneViewController: UIViewController {
                 make.top.equalTo(smsAuthView.snp.bottom).offset(28)
             }
             bindButton.addTarget(self, action: #selector(onLogin), for: .touchUpInside)
-            
+
             smsAuthView
                 .loginEnable
                 .asDriver(onErrorJustReturn: true)
@@ -76,7 +76,7 @@ class BindPhoneViewController: UIViewController {
                 make.center.equalToSuperview()
                 make.width.equalToSuperview().multipliedBy(0.72)
             }
-            
+
             let bindButton = FlatGeneralCrossButton()
             bindButton.setTitle(localizeStrings("Confirm"), for: .normal)
             mainView.addSubview(bindButton)
@@ -86,13 +86,13 @@ class BindPhoneViewController: UIViewController {
                 make.top.equalTo(smsAuthView.snp.bottom).offset(32)
             }
             bindButton.addTarget(self, action: #selector(onLogin), for: .touchUpInside)
-            
+
             smsAuthView
                 .loginEnable
                 .asDriver(onErrorJustReturn: true)
                 .drive(bindButton.rx.isEnabled)
                 .disposed(by: rx.disposeBag)
-                
+
             let titleLabel = UILabel()
             titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
             titleLabel.textColor = .color(type: .text, .strong)
@@ -102,7 +102,7 @@ class BindPhoneViewController: UIViewController {
                 make.centerX.equalToSuperview()
                 make.bottom.equalTo(smsAuthView.snp.top).offset(-100)
             }
-            
+
             let bindPhoneDetailLabel = UILabel()
             bindPhoneDetailLabel.text = localizeStrings("Bind Phone Detail")
             bindPhoneDetailLabel.font = .systemFont(ofSize: 14)
@@ -112,7 +112,7 @@ class BindPhoneViewController: UIViewController {
                 make.centerX.equalToSuperview()
                 make.top.equalTo(titleLabel.snp.bottom).offset(10)
             }
-            
+
             let closeButton = UIButton(type: .custom)
             closeButton.setTitleColor(.color(type: .primary), for: .normal)
             closeButton.setTitle(localizeStrings("Back"), for: .normal)
@@ -126,10 +126,10 @@ class BindPhoneViewController: UIViewController {
             closeButton.addTarget(self, action: #selector(onClose), for: .touchUpInside)
         }
     }
-    
+
     @objc
     func onLogin(sender: UIButton) {
-        if case .failure(let errStr) = smsAuthView.allValidCheck(sender: sender) {
+        if case let .failure(errStr) = smsAuthView.allValidCheck(sender: sender) {
             toast(errStr)
             return
         }
@@ -140,16 +140,16 @@ class BindPhoneViewController: UIViewController {
             switch result {
             case .success:
                 AuthStore.shared.processBindPhoneSuccess()
-            case .failure(let error):
+            case let .failure(error):
                 self?.toast(error.localizedDescription)
             }
         }
     }
-    
+
     lazy var smsAuthView: SMSAuthView = {
         let view = SMSAuthView()
         view.smsRequestMaker = { phone in
-            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind, phone: phone))
+            ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind, phone: phone))
         }
         return view
     }()

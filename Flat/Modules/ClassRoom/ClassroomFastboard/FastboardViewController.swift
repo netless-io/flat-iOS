@@ -6,11 +6,11 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
 import Fastboard
-import Whiteboard
-import RxSwift
 import RxRelay
+import RxSwift
+import UIKit
+import Whiteboard
 
 func tryPreloadWhiteboard() {
     DispatchQueue.main.async {
@@ -25,16 +25,17 @@ class FastboardViewController: UIViewController {
     let isRoomBanned: BehaviorRelay<Bool> = .init(value: false)
     let isRoomWritable: BehaviorRelay<Bool>
     let roomError: PublishRelay<FastRoomError> = .init()
-    
+
     /// Setup this store after whiteboard joined
     weak var bindStore: ClassRoomSyncedStore?
-    var appsClickHandler: ((WhiteRoom, UIButton)->Void)?
-    
+    var appsClickHandler: ((WhiteRoom, UIButton) -> Void)?
+
     // MARK: Public
+
     func leave() {
         fastRoom.disconnectRoom()
     }
-    
+
     func updateWritable(_ writable: Bool) -> Single<Bool> {
         guard let w = fastRoom.room?.isWritable else { return .just(writable) }
         logger.info("update writable \(writable)")
@@ -60,36 +61,37 @@ class FastboardViewController: UIViewController {
             return .just(writable)
         }
     }
-    
+
     func bind(observableWritable: Observable<Bool>) -> Observable<Bool> {
         Observable.combineLatest(observableWritable, isRoomJoined)
             .filter { $0.1 }
             .map { $0.0 }
             .distinctUntilChanged()
-            .concatMap { [weak self]  writable -> Observable<Bool> in
-                guard let self = self else { return .error("self not exist")}
+            .concatMap { [weak self] writable -> Observable<Bool> in
+                guard let self = self else { return .error("self not exist") }
                 return self.updateWritable(writable).asObservable()
             }.do(onNext: { [weak self] writable in
                 self?.fastRoom.setAllPanel(hide: !writable)
             })
     }
-    
+
     init(fastRoomConfiguration: FastRoomConfiguration) {
-        self.fastRoom = Fastboard.createFastRoom(withFastRoomConfig: fastRoomConfiguration)
-        self.isRoomWritable = .init(value: fastRoomConfiguration.whiteRoomConfig.isWritable)
+        fastRoom = Fastboard.createFastRoom(withFastRoomConfig: fastRoomConfiguration)
+        isRoomWritable = .init(value: fastRoomConfiguration.whiteRoomConfig.isWritable)
         super.init(nibName: nil, bundle: nil)
-        self.fastRoom.delegate = self
+        fastRoom.delegate = self
         logger.trace("\(self)")
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     deinit {
         logger.trace("\(self), deinit")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -97,12 +99,13 @@ class FastboardViewController: UIViewController {
         bindConnecting()
         setupGestures()
     }
-    
+
     // MARK: - Private
+
     func joinRoom() {
         fastRoom.joinRoom { [weak self] result in
             switch result {
-            case .success(let room):
+            case let .success(room):
                 self?.isRoomJoined.accept(true)
                 if let relatedStore = self?.bindStore {
                     relatedStore.setup(with: room)
@@ -112,7 +115,7 @@ class FastboardViewController: UIViewController {
             }
         }
     }
-    
+
     @objc
     fileprivate func onUndoRedoGesture(_ g: UITapGestureRecognizer) {
         if g === undoGesture {
@@ -122,22 +125,24 @@ class FastboardViewController: UIViewController {
             fastRoom.room?.redo()
         }
     }
-    
+
     @objc
     fileprivate func onUndoRedoShortcutsUpdate(notification: Notification) {
         guard let disable = notification.userInfo?["disable"] as? Bool else { return }
         updateUndoRedoGestureDisable(disable)
     }
+
     fileprivate func updateUndoRedoGestureDisable(_ disabled: Bool) {
-        [undoGesture, redoGesture].forEach{ $0.isEnabled = !disabled }
+        [undoGesture, redoGesture].forEach { $0.isEnabled = !disabled }
     }
+
     fileprivate func setupGestures() {
         view.addGestureRecognizer(undoGesture)
         view.addGestureRecognizer(redoGesture)
         updateUndoRedoGestureDisable(ShortcutsManager.shared.shortcuts[.disableDefaultUndoRedo] ?? false)
-        NotificationCenter.default.addObserver(self, selector: #selector(onUndoRedoShortcutsUpdate(notification: )), name: undoRedoShortcutsUpdateNotificaton, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onUndoRedoShortcutsUpdate(notification:)), name: undoRedoShortcutsUpdateNotificaton, object: nil)
     }
-    
+
     func bindConnecting() {
         isRoomJoined
             .asDriver()
@@ -151,34 +156,34 @@ class FastboardViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func setupViews() {
         view.addSubview(fastRoom.view)
         fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }
-        
+
         let appsItem = JustExecutionItem(image: UIImage(named: "whiteboard_apps")!, action: { [weak self] room, value in
             self?.fastRoom.view.overlay?.dismissAllSubPanels()
             if let button = value as? UIButton {
                 self?.appsClickHandler?(room, button)
             }
         }, identifier: "whiteboard_apps")
-        
-        
+
         RegularFastRoomOverlay.customOperationPanel = {
             var items = RegularFastRoomOverlay.defaultOperationPanelItems
             items.append(appsItem)
             return FastRoomPanel(items: items)
         }
     }
-    
+
     // MARK: - Lazy
+
     lazy var undoGesture: UITapGestureRecognizer = {
         let double = UITapGestureRecognizer(target: self, action: #selector(onUndoRedoGesture))
         double.numberOfTouchesRequired = 2
         double.delegate = self
         return double
     }()
-    
+
     lazy var redoGesture: UITapGestureRecognizer = {
         let triple = UITapGestureRecognizer(target: self, action: #selector(onUndoRedoGesture))
         triple.numberOfTouchesRequired = 3
@@ -188,16 +193,14 @@ class FastboardViewController: UIViewController {
 }
 
 extension FastboardViewController: FastRoomDelegate {
-    func fastboardDidJoinRoomSuccess(_ fastboard: FastRoom, room: WhiteRoom) {
-        
-    }
-    
-    func fastboardUserKickedOut(_ fastboard: FastRoom, reason: String) {
+    func fastboardDidJoinRoomSuccess(_: FastRoom, room _: WhiteRoom) {}
+
+    func fastboardUserKickedOut(_: FastRoom, reason _: String) {
         // For this error is caused by server closing, it should be noticed by teacher.
         isRoomBanned.accept(true)
     }
-    
-    func fastboardPhaseDidUpdate(_ fastboard: FastRoom, phase: FastRoomPhase) {
+
+    func fastboardPhaseDidUpdate(_: FastRoom, phase: FastRoomPhase) {
         logger.info("phase update \(phase)")
         switch phase {
         case .connecting, .reconnecting, .disconnecting, .disconnected:
@@ -208,8 +211,8 @@ extension FastboardViewController: FastRoomDelegate {
             return
         }
     }
-    
-    func fastboardDidOccurError(_ fastboard: FastRoom, error: FastRoomError) {
+
+    func fastboardDidOccurError(_: FastRoom, error: FastRoomError) {
         roomError.accept(error)
     }
 
@@ -220,23 +223,23 @@ extension FastboardViewController: FastRoomDelegate {
                 make.centerY.equalTo(fastboard.view.whiteboardView)
                 make.left.equalTo(fastboard.view.whiteboardView).inset(8)
             }
-            
-            overlay.deleteSelectionPanel.view?.snp.makeConstraints({ make in
+
+            overlay.deleteSelectionPanel.view?.snp.makeConstraints { make in
                 make.left.equalTo(overlay.operationPanel.view!)
                 make.bottom.equalTo(overlay.operationPanel.view!.snp.top).offset(-8)
-            })
-            
+            }
+
             overlay.undoRedoPanel.view?.snp.makeConstraints { make in
                 make.bottom.equalTo(fastboard.view.whiteboardView).inset(8)
                 make.left.equalToSuperview().inset(8)
             }
-            
+
             overlay.scenePanel.view?.snp.makeConstraints { make in
                 make.bottom.equalTo(fastboard.view.whiteboardView).inset(8)
                 make.right.equalToSuperview().inset(8)
             }
         }
-        
+
         if let overlay = overlay as? CompactFastRoomOverlay {
             overlay.undoRedoPanel.view?.direction = .vertical
 
@@ -290,7 +293,7 @@ extension FastRoomPhase: CustomStringConvertible {
 }
 
 extension FastboardViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith _: UIGestureRecognizer) -> Bool {
         true
     }
 }

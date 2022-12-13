@@ -14,6 +14,6 @@ class AnyPreview: NSObject, QLPreviewItem {
     let previewItemTitle: String?
     init(previewItemURL: URL, title: String) {
         self.previewItemURL = previewItemURL
-        self.previewItemTitle = title
+        previewItemTitle = title
     }
 }

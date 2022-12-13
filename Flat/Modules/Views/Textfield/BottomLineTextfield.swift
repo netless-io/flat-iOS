@@ -14,28 +14,28 @@ class BottomLineTextfield: UITextField {
         super.init(frame: frame)
         setupViews()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupViews()
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         let height: CGFloat = commonBorderWidth
         line.frame = .init(origin: .init(x: 0, y: bounds.size.height - height), size: .init(width: bounds.width, height: height))
     }
-    
+
     func setupViews() {
         addSubview(line)
-        
+
         rx.editing
             .drive(with: self, onNext: { weakSelf, edit in
                 weakSelf.setLineSelected(edit)
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func setLineSelected(_ selected: Bool) {
         let color = selected ? UIColor.color(type: .primary) : UIColor.borderColor
         UIView.animate(withDuration: 0.15) {
@@ -50,8 +50,8 @@ class BottomLineTextfield: UITextField {
             }
         }
     }
-    
-    var line: UIView =  {
+
+    var line: UIView = {
         let view = UIView()
         view.backgroundColor = .borderColor
         return view

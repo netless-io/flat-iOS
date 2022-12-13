@@ -13,7 +13,7 @@ struct ShareInfo {
     let subject: String
     let number: String
     let link: URL
-    
+
     init(roomDetail: RoomBasicInfo) {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -23,19 +23,19 @@ struct ShareInfo {
         number = roomDetail.formatterInviteCode
         link = URL(string: Env().webBaseURL + "/join/\(roomDetail.roomUUID)")!
     }
-    
+
     var description: String {
         let title = (AuthStore.shared.user?.name ?? "") + localizeStrings("inviteDescribe")
-        let timeStr  = localizeStrings("Start Time") + ": " + time
+        let timeStr = localizeStrings("Start Time") + ": " + time
         let subStr = localizeStrings("Room Theme") + ": " + subject
         let numStr = localizeStrings("Room ID") + ": " + number
         let linkStr = localizeStrings("Join Link") + ": " + link.absoluteString
-        let des =  title + "\n\n" + subStr + "\n" + timeStr + "\n\n" + numStr + "\n" + linkStr
+        let des = title + "\n\n" + subStr + "\n" + timeStr + "\n\n" + numStr + "\n" + linkStr
         return des
     }
 }
 
-struct ShareManager {
+enum ShareManager {
     static func createShareActivityViewController(shareInfo: ShareInfo) -> UIViewController {
         let vc = UIActivityViewController(activityItems: [shareInfo.link, shareInfo.description], applicationActivities: nil)
 
@@ -43,7 +43,7 @@ struct ShareManager {
             .airDrop,
             .mail,
             .addToReadingList,
-            .copyToPasteboard
+            .copyToPasteboard,
         ]
         return vc
     }

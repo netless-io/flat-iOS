@@ -6,10 +6,9 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
-import UIKit
-import Kingfisher
 import DZNEmptyDataSet
+import Kingfisher
+import UIKit
 
 extension RoomStartStatus {
     var textColor: UIColor {
@@ -24,21 +23,22 @@ extension RoomStartStatus {
 
 class HomeViewController: UIViewController {
     let roomTableViewCellIdentifier = "roomTableViewCellIdentifier"
-    
+
     var showingHistory: Bool = false {
         didSet {
             historyButton.isSelected = showingHistory
         }
     }
-    
+
     lazy var list: [RoomBasicInfo] = [] {
         didSet {
             guard list != oldValue else { return }
             tableView.reloadData()
         }
     }
-    
+
     // MARK: - LifeCycle
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -50,51 +50,52 @@ class HomeViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         tableView.reloadEmptyDataSet()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         observeNotification()
         observeClassLeavingNotification()
     }
-    
+
     // MARK: - Action
+
     @objc func onClickSetting() {
         mainContainer?.push(SettingViewController())
     }
-    
+
     @objc func onClickProfile() {
         mainContainer?.push(ProfileViewController())
     }
-    
+
     @objc func onClickCreate() {
         mainContainer?.concreteViewController.present(CreateClassRoomViewController(), animated: true)
     }
-    
+
     @objc func onClickJoin() {
         mainContainer?.concreteViewController.present(JoinRoomViewController(), animated: true)
     }
-    
+
     @objc func onClickBook() {
         showAlertWith(message: localizeStrings("Coming soon"))
     }
-    
+
     @objc func onRefresh(_ sender: UIRefreshControl) {
         // Update for sometimes network doesn't work
         applyAvatar()
-        
+
         loadRooms(sender) { _ in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 sender.endRefreshing()
             }
         }
     }
-    
+
     @objc func onClickHistory() {
         //  Just push on iPhone device
         if isCompact() {
@@ -108,22 +109,23 @@ class HomeViewController: UIViewController {
             mainSplitViewController?.cleanSecondary()
         }
     }
-    
+
     // MARK: - Data
-    func loadRooms(_ sender: Any?, completion: @escaping ((Error?)->Void) = { _ in }) {
+
+    func loadRooms(_: Any?, completion: @escaping ((Error?) -> Void) = { _ in }) {
         ApiProvider.shared.request(fromApi: RoomListRequest(page: 1)) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(let list):
+            case let .success(list):
                 self.list = list
                 self.tableView.showLoadedAll(!list.isEmpty)
                 completion(nil)
-            case.failure(let error):
+            case let .failure(error):
                 completion(error)
             }
         }
     }
-    
+
     @objc func onClassLeavingNotification(_ notification: Notification) {
         guard
             let startStatus = notification.userInfo?["startStatus"] as? RoomStartStatus,
@@ -136,11 +138,12 @@ class HomeViewController: UIViewController {
                 vc.show(vc.emptyDetailController)
             } else {
                 if !vc.viewControllers
-                    .map ({ ($0 as? UINavigationController)?.topViewController ?? $0 })
-                    .contains(where: { ($0 as? RoomDetailViewController)?.info?.roomUUID == roomUUID }) {
+                    .map({ ($0 as? UINavigationController)?.topViewController ?? $0 })
+                    .contains(where: { ($0 as? RoomDetailViewController)?.info?.roomUUID == roomUUID })
+                {
                     RoomBasicInfo.fetchInfoBy(uuid: roomUUID, periodicUUID: nil) { result in
                         switch result {
-                        case .success(let r):
+                        case let .success(r):
                             let roomDetailController = RoomDetailViewController()
                             roomDetailController.updateInfo(r)
                             vc.push(roomDetailController)
@@ -152,9 +155,9 @@ class HomeViewController: UIViewController {
         } else if vc is MainTabBarController, let navi = navigationController {
             var vcs = navi.viewControllers
             vcs = vcs.filter {
-                if ($0 is JoinRoomViewController) { return false }
-                if ($0 is CreateClassRoomViewController) { return false }
-                if isStop, ($0 is RoomDetailViewController) { return false }
+                if $0 is JoinRoomViewController { return false }
+                if $0 is CreateClassRoomViewController { return false }
+                if isStop, $0 is RoomDetailViewController { return false }
                 return true
             }
             if !isStop {
@@ -166,7 +169,7 @@ class HomeViewController: UIViewController {
                     } else {
                         RoomBasicInfo.fetchInfoBy(uuid: roomUUID, periodicUUID: nil) { result in
                             switch result {
-                            case .success(let r):
+                            case let .success(r):
                                 let roomDetailController = RoomDetailViewController()
                                 roomDetailController.updateInfo(r)
                                 vcs.append(roomDetailController)
@@ -180,7 +183,7 @@ class HomeViewController: UIViewController {
             navi.setViewControllers(vcs, animated: false)
         }
     }
-    
+
     @objc func onRoomRemovedNotification(_ noti: Notification) {
         guard
             let roomUUID = noti.userInfo?["roomUUID"] as? String,
@@ -191,8 +194,9 @@ class HomeViewController: UIViewController {
         tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
         tableView.endUpdates()
     }
-    
+
     // MARK: - Private
+
     func observeNotification() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(onRoomRemovedNotification(_:)),
@@ -205,25 +209,25 @@ class HomeViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func observeClassLeavingNotification() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(onClassLeavingNotification(_:)),
                                                name: classRoomLeavingNotificationName,
                                                object: nil)
     }
-    
+
     func setupViews() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         tableView.refreshControl = .init(frame: .zero)
         tableView.refreshControl?.addTarget(self, action: #selector(onRefresh(_:)), for: .valueChanged)
         fillTopSafeAreaWith(color: .color(type: .background))
     }
-    
+
     func createHeaderButton(title: String, imageName: String, target: Any?, action: Selector) -> UIButton {
         let button = SpringButton(type: .custom)
         button.setImage(UIImage(named: imageName), for: .normal)
@@ -234,7 +238,7 @@ class HomeViewController: UIViewController {
         button.addTarget(target, action: action, for: .touchUpInside)
         return button
     }
-    
+
     func applyAvatar() {
         guard avatarButton.superview != nil else { return }
         let scale = UIScreen.main.scale
@@ -245,8 +249,9 @@ class HomeViewController: UIViewController {
                                  for: .normal,
                                  options: [.processor(processor)])
     }
-    
+
     // MARK: - Lazy
+
     lazy var avatarButton: UIButton = {
         let avatarButton = SpringButton(type: .custom)
         avatarButton.clipsToBounds = true
@@ -260,31 +265,31 @@ class HomeViewController: UIViewController {
             .init(title: localizeStrings("Setting"), image: UIImage(named: "setting"), style: .default, handler: { _ in
                 self.onClickSetting()
             }),
-            .cancel
+            .cancel,
         ])
         return avatarButton
     }()
-    
+
     let tableHeaderItemWidth: CGFloat = 44
     let avatarWidth: CGFloat = 24
-    
+
     lazy var tableHeader: UIView = {
         let header = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 166)))
         header.backgroundColor = .color(type: .background)
         let stack = UIStackView(arrangedSubviews: [
             createHeaderButton(title: localizeStrings("Join Room"), imageName: "room_join", target: self, action: #selector(onClickJoin)),
             createHeaderButton(title: localizeStrings("Start Now"), imageName: "room_create", target: self, action: #selector(onClickCreate)),
-            createHeaderButton(title: localizeStrings("Book Room"), imageName: "room_book", target: self, action: #selector(onClickBook))
+            createHeaderButton(title: localizeStrings("Book Room"), imageName: "room_book", target: self, action: #selector(onClickBook)),
         ])
         stack.distribution = .fillEqually
         stack.axis = .horizontal
         header.addSubview(stack)
-        stack.snp.makeConstraints({
+        stack.snp.makeConstraints {
             $0.left.right.equalToSuperview()
             $0.bottom.equalToSuperview().inset(16)
             $0.height.equalTo(82)
-        })
-        
+        }
+
         let titleLabel = UILabel()
         titleLabel.text = localizeStrings("Home")
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -294,7 +299,7 @@ class HomeViewController: UIViewController {
             make.left.equalToSuperview().offset(16)
             make.top.equalTo(header.safeAreaLayoutGuide).offset(16)
         }
-        
+
         let operationStack = UIStackView(arrangedSubviews: [historyButton])
         if let hasSideBar = mainContainer?.hasSideBar, !hasSideBar {
             operationStack.addArrangedSubview(avatarButton)
@@ -314,7 +319,7 @@ class HomeViewController: UIViewController {
         }
         return header
     }()
-    
+
     lazy var historyButton: UIButton = {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(onClickHistory), for: .touchUpInside)
@@ -326,9 +331,9 @@ class HomeViewController: UIViewController {
         }
         return button
     }()
-    
+
     lazy var historyViewController = HistoryViewController()
-    
+
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.separatorStyle = .none
@@ -348,26 +353,27 @@ class HomeViewController: UIViewController {
         }
         return table
     }()
-    
+
     lazy var detailViewController = RoomDetailViewController()
 }
 
 // MARK: - Tableview
+
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in _: UITableView) -> Int {
         1
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         list.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: roomTableViewCellIdentifier, for: indexPath) as! RoomTableViewCell
         cell.render(info: list[indexPath.row])
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isCompact() {
             tableView.deselectRow(at: indexPath, animated: true)
@@ -376,30 +382,31 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         detailViewController.updateInfo(item)
         mainContainer?.push(detailViewController)
     }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
+    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
         tableHeader.bounds.height
     }
 
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         guard let identifier = (configuration.identifier as? NSString) else { return }
         let index = Int(identifier.intValue)
-        
+
         if !isCompact() {
             if let selected = tableView.indexPathForSelectedRow {
                 tableView.deselectRow(at: selected, animated: true)
             }
             tableView.selectRow(at: .init(row: index, section: 0), animated: true, scrollPosition: .none)
         }
-        
+
         if let controller = animator.previewViewController as? RoomDetailViewController,
-           let item = controller.info {
+           let item = controller.info
+        {
             detailViewController.updateInfo(item)
             mainContainer?.push(detailViewController)
         }
     }
-    
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+
+    func tableView(_: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point _: CGPoint) -> UIContextMenuConfiguration? {
         let item = list[indexPath.row]
         let actions = item.roomActions(rootController: self)
         let previewProvider: UIContextMenuContentPreviewProvider = { [unowned self] in
@@ -424,35 +431,36 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             return UIMenu(title: "", children: uiActions)
         }
     }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+
+    func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
         0
     }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
         tableHeader
     }
 }
 
 // MARK: - EmptyData
+
 extension HomeViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    func title(forEmptyDataSet _: UIScrollView) -> NSAttributedString? {
         .init(string: localizeStrings("No room at the moment"),
               attributes: [
-                .foregroundColor: UIColor.color(type: .text),
-                    .font: UIFont.systemFont(ofSize: 14)
+                  .foregroundColor: UIColor.color(type: .text),
+                  .font: UIFont.systemFont(ofSize: 14),
               ])
     }
-    
-    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+
+    func image(forEmptyDataSet _: UIScrollView) -> UIImage? {
         return UIImage(named: "room_empty", in: nil, compatibleWith: traitCollection)
     }
-    
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+
+    func emptyDataSetShouldAllowScroll(_: UIScrollView) -> Bool {
         true
     }
-    
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+
+    func verticalOffset(forEmptyDataSet _: UIScrollView) -> CGFloat {
         tableHeader.bounds.height / 2
     }
 }
@@ -467,20 +475,22 @@ extension HomeViewController: MainSplitViewControllerDetailUpdateDelegate {
             return (split.viewControllers.last as? UINavigationController)?.topViewController as? RoomDetailViewController
         }
     }
-    
-    func mainSplitViewControllerDidUpdateDetail(_ vc: UIViewController, sender: Any?) {
+
+    func mainSplitViewControllerDidUpdateDetail(_ vc: UIViewController, sender _: Any?) {
         let isHistory = (vc as? HistoryViewController) != nil
-        self.showingHistory = isHistory
+        showingHistory = isHistory
 
         // If select a vc is not the room detail, deselect the tableview
         if let selectedItem = tableView.indexPathForSelectedRow {
             let item = list[selectedItem.row]
             if let vc = ((vc as? UINavigationController)?.topViewController as? RoomDetailViewController),
-               vc.info?.roomUUID == item.roomUUID {
+               vc.info?.roomUUID == item.roomUUID
+            {
                 return
             }
             if let vc = vc as? RoomDetailViewController,
-               vc.info?.roomUUID == item.roomUUID {
+               vc.info?.roomUUID == item.roomUUID
+            {
                 return
             }
             tableView.deselectRow(at: selectedItem, animated: true)

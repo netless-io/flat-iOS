@@ -14,11 +14,11 @@ struct StopRecordRequest: FlatRequest, Encodable {
         let sid: String
         let mode: AgoraRecordMode
     }
-    
+
     var path: String { "/v1/room/record/agora/stopped" }
     let roomUUID: String
     let agoraParams: AgoraParams
-    
+
     var task: Task { .requestJSONEncodable(encodable: self) }
     var method: HttpMethod { .post }
     var responseType: EmptyResponse.Type { EmptyResponse.self }

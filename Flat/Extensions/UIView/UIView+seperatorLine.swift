@@ -15,7 +15,7 @@ extension UIView {
         case left
         case right
     }
-    
+
     @discardableResult
     func addLine(direction: LineDirection, color: UIColor, width: CGFloat = commonBorderWidth, inset: UIEdgeInsets = .zero) -> UIView {
         let line = UIView()

@@ -13,30 +13,31 @@ class CloudStorageTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if animated {
             selectionView.layer.backgroundColor = selected ? UIColor.color(type: .primary, .weaker).cgColor : UIColor.color(type: .background).cgColor
         } else {
-            selectionView.backgroundColor = selected ?  .color(type: .primary, .weaker) : .color(type: .background)
+            selectionView.backgroundColor = selected ? .color(type: .primary, .weaker) : .color(type: .background)
         }
         moreActionButton.isSelected = selected
     }
-    
+
     func setupViews() {
         backgroundColor = .color(type: .background)
         contentView.backgroundColor = .color(type: .background)
-        
+
         let textStack = UIStackView(arrangedSubviews: [fileNameLabel, sizeAndTimeLabel])
         textStack.axis = .vertical
         textStack.distribution = .fillEqually
         textStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        
+
         let stackView = UIStackView(arrangedSubviews: [iconImage, textStack, rightArrowImageView, moreActionButton])
         stackView.spacing = 12
         stackView.axis = .horizontal
@@ -48,7 +49,7 @@ class CloudStorageTableViewCell: UITableViewCell {
         iconImage.snp.makeConstraints { $0.width.equalTo(20) }
         rightArrowImageView.snp.makeConstraints { $0.width.equalTo(24) }
         moreActionButton.snp.makeConstraints { $0.width.equalTo(44) }
-        
+
         contentView.addSubview(convertingActivityView)
         convertingActivityView.snp.makeConstraints { make in
             make.centerX.equalTo(iconImage.snp.right).inset(2)
@@ -56,12 +57,12 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.width.height.equalTo(10)
         }
         convertingActivityView.transform = .init(scaleX: 0.5, y: 0.5)
-        
+
         contentView.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 52, bottom: 0, right: 16))
-        
+
         moreActionButton.isHidden = true
         rightArrowImageView.isHidden = true
-        
+
         contentView.insertSubview(selectionView, at: 0)
         selectionView.clipsToBounds = true
         selectionView.layer.cornerRadius = 6
@@ -69,17 +70,17 @@ class CloudStorageTableViewCell: UITableViewCell {
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8))
         }
     }
-    
+
     func stopConvertingAnimation() {
         convertingActivityView.isHidden = true
         convertingActivityView.stopAnimating()
     }
-    
+
     func startConvertingAnimation() {
         convertingActivityView.isHidden = false
         convertingActivityView.startAnimating()
     }
-    
+
     func updateActivityAnimate(_ animate: Bool) {
         if animate {
             if activity.superview == nil {
@@ -101,31 +102,31 @@ class CloudStorageTableViewCell: UITableViewCell {
         view.color = .color(type: .primary)
         return view
     }()
-    
-    lazy var activity: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
-    
+
+    lazy var activity: UIActivityIndicatorView = .init(style: .medium)
+
     lazy var iconImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    
+
     lazy var moreActionButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setTraitRelatedBlock { btn in
             btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(
                 .color(light: .init(hexString: "#1A1E21"), dark: .grey3)
-                .resolvedColor(with: btn.traitCollection)
+                    .resolvedColor(with: btn.traitCollection)
             ), for: .normal)
             btn.setImage(UIImage(named: "cloud_file_more")?.tintColor(
                 .color(type: .primary)
-                .resolvedColor(with: btn.traitCollection)
+                    .resolvedColor(with: btn.traitCollection)
             ), for: .selected)
         }
         return btn
     }()
-    
-    lazy var rightArrowImageView:UIImageView = {
+
+    lazy var rightArrowImageView: UIImageView = {
         let view = UIImageView()
         view.setTraitRelatedBlock { v in
             v.image = UIImage(named: "arrowRight")?.tintColor(.color(type: .text).resolvedColor(with: v.traitCollection))
@@ -133,14 +134,14 @@ class CloudStorageTableViewCell: UITableViewCell {
         view.contentMode = .scaleAspectFit
         return view
     }()
-    
+
     lazy var sizeAndTimeLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 12)
         label.textColor = .color(type: .text, .weak)
         return label
     }()
-    
+
     lazy var fileNameLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 16)
@@ -148,6 +149,6 @@ class CloudStorageTableViewCell: UITableViewCell {
         label.lineBreakMode = .byTruncatingMiddle
         return label
     }()
-    
+
     lazy var selectionView = UIView()
 }

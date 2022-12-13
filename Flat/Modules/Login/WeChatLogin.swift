@@ -11,19 +11,19 @@ import Foundation
 class WeChatLogin: NSObject, LaunchItem {
     var handler: LoginHandler?
     weak var authStore: AuthStore?
-    var removeLaunchItemFromLaunchCoordinator: (()->Void)?
-    
+    var removeLaunchItemFromLaunchCoordinator: (() -> Void)?
+
     func shouldHandle(userActivity: NSUserActivity) -> Bool {
         if WXApi.handleOpenUniversalLink(userActivity, delegate: self) {
             return true
         }
         return false
     }
-    
+
     deinit {
         logger.trace("\(self), deinit")
     }
-    
+
     func shouldHandle(url: URL?) -> Bool {
         guard let url = url else { return false }
         if WXApi.handleOpen(url, delegate: self) {
@@ -31,16 +31,16 @@ class WeChatLogin: NSObject, LaunchItem {
         }
         return false
     }
-    
+
     let uuid: String = UUID().uuidString
-    
-    func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) { }
-    
-    func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {}
-    
+
+    func afterLoginSuccessImplementation(withLaunchCoordinator _: LaunchCoordinator, user _: User) {}
+
+    func immediateImplementation(withLaunchCoordinator _: LaunchCoordinator) {}
+
     func startLogin(withAuthStore authStore: AuthStore, launchCoordinator: LaunchCoordinator, completionHandler: @escaping LoginHandler) {
         ApiProvider.shared.request(fromApi: SetAuthUuidRequest(uuid: uuid)) { [weak self] r in
-            guard let self = self  else {
+            guard let self = self else {
                 completionHandler(.failure(.message(message: "self not exist")))
                 return
             }
@@ -58,13 +58,13 @@ class WeChatLogin: NSObject, LaunchItem {
                 self.authStore = authStore
                 self.handler = { [weak authStore, weak self] result in
                     guard let self = self else { return }
-                    if case .success(let user) = result {
+                    if case let .success(user) = result {
                         authStore?.processLoginSuccessUserInfo(user)
                     }
                     completionHandler(result)
                     self.removeLaunchItemFromLaunchCoordinator?()
                 }
-            case .failure(let error):
+            case let .failure(error):
                 completionHandler(.failure(error))
             }
         }
@@ -72,11 +72,11 @@ class WeChatLogin: NSObject, LaunchItem {
 }
 
 extension WeChatLogin: WXApiDelegate {
-    func onReq(_ req: BaseReq) {}
-    
+    func onReq(_: BaseReq) {}
+
     func onResp(_ resp: BaseResp) {
         removeLaunchItemFromLaunchCoordinator?()
-        guard let handler = self.handler else { return }
+        guard let handler = handler else { return }
         guard resp.isKind(of: SendAuthResp.self) else { return }
         guard resp.errCode == 0, let newResp = resp as? SendAuthResp, let code = newResp.code else {
             handler(.failure(.message(message: resp.errStr)))

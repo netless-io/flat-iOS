@@ -6,10 +6,10 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import Foundation
 import AgoraRtmKit
-import RxSwift
+import Foundation
 import RxRelay
+import RxSwift
 
 /// Rtm state control
 class Rtm: NSObject {
@@ -17,22 +17,23 @@ class Rtm: NSObject {
         case remoteLogin
         case reconnectingTimeout
     }
-    
+
     enum State {
         case idle
         case connecting
         case reconnecting
         case connected
     }
-    
+
     let p2pMessage: PublishRelay<(data: Data, sender: String)> = .init()
     let error: PublishRelay<RtmError> = .init()
     let state: BehaviorRelay<State> = .init(value: .idle)
     let reconnectTimeoutInterval: DispatchTimeInterval = .seconds(5)
-    
+
     init(rtmToken: String,
          rtmUserUUID: String,
-         agoraAppId: String) {
+         agoraAppId: String)
+    {
         super.init()
         agoraKit = AgoraRtmKit(appId: agoraAppId, delegate: self)!
         agoraGenerator.agoraToken = rtmToken
@@ -41,7 +42,7 @@ class Rtm: NSObject {
     }
 
     deinit { logger.trace("\(self) deinit") }
-    
+
     func sendP2PMessage(data: Data, toUUID UUID: String) -> Single<Void> {
         logger.info("send p2p raw message data, to \(UUID)")
         switch state.value {
@@ -66,8 +67,8 @@ class Rtm: NSObject {
             }
         }
     }
-    
-    var loginCallbacks: [(AgoraRtmLoginErrorCode)->Void] = []
+
+    var loginCallbacks: [(AgoraRtmLoginErrorCode) -> Void] = []
     /// Can be called safely multi times
     func login() -> Single<Void> {
         func createLoginObserver() -> Single<Void> {
@@ -90,8 +91,8 @@ class Rtm: NSObject {
         case .connected, .reconnecting: return .just(())
         case .connecting: return createLoginObserver()
         case .idle:
-            self.agoraKit.login(byToken: agoraGenerator.agoraToken,
-                                user: agoraGenerator.agoraUserId) { [weak self] code in
+            agoraKit.login(byToken: agoraGenerator.agoraToken,
+                           user: agoraGenerator.agoraUserId) { [weak self] code in
                 guard let self = self else { return }
                 self.loginCallbacks.forEach { $0(code) }
                 self.loginCallbacks = []
@@ -100,7 +101,7 @@ class Rtm: NSObject {
             return createLoginObserver()
         }
     }
-    
+
     func leave() -> Single<Void> {
         switch state.value {
         case .idle, .connecting, .reconnecting: return .just(())
@@ -117,7 +118,7 @@ class Rtm: NSObject {
             }
         }
     }
-    
+
     func joinChannelId(_ channelId: String) -> Single<RtmChannel> {
         .create { [weak self] observer in
             guard let self = self else {
@@ -142,7 +143,7 @@ class Rtm: NSObject {
             return Disposables.create()
         }
     }
-    
+
     fileprivate var agoraKit: AgoraRtmKit!
 }
 
@@ -191,7 +192,7 @@ extension AgoraRtmConnectionChangeReason: CustomStringConvertible {
 }
 
 extension Rtm: AgoraRtmDelegate {
-    func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
+    func rtmKit(_: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
         logger.info("state \(state), reason \(reason)")
         switch state {
         case .connected:
@@ -215,8 +216,8 @@ extension Rtm: AgoraRtmDelegate {
             return
         }
     }
-    
-    func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
+
+    func rtmKit(_: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
         logger.info("receive p2p message \(message.text)")
         if let rawMessage = message as? AgoraRtmRawMessage {
             p2pMessage.accept((rawMessage.rawData, peerId))

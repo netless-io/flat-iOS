@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import Whiteboard
 import RxSwift
+import Whiteboard
 
 protocol FlatSyncedStoreCommandDelegate: AnyObject {
     func flatSyncedStoreDidReceiveCommand(_ store: ClassRoomSyncedStore, command: ClassRoomSyncedStore.Command)
@@ -30,34 +30,36 @@ private let onStageUserDefaultValue: [AnyHashable: Any] = [:]
 class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
     typealias SyncedStoreSuccessValue = (deviceState: [String: DeviceState], roomState: RoomState, onStageUsers: [String: Bool])
     typealias SyncedStoreResult = Result<SyncedStoreSuccessValue, Error>
-    typealias SyncedStoreValuesCallback = (SyncedStoreResult)->Void
-    
+    typealias SyncedStoreValuesCallback = (SyncedStoreResult) -> Void
+
     struct UserDeviceState: Encodable {
         let uid: String
         let state: DeviceState
     }
+
     struct RoomState {
         enum Keys: String {
             case raiseHandUsers
             case ban
         }
-        
+
         let raiseHandUsers: [String]
         let ban: Bool
     }
+
     enum Command {
         case raiseHandUsersUpdate([String])
         case onStageUsersUpdate([String: Bool])
         case banUpdate(Bool)
-        
+
         case deviceStateUpdate([String: DeviceState])
     }
-    
+
     fileprivate var isConnected = false
     fileprivate var syncStore: SyncedStore!
     fileprivate var waitingCallbacks: [SyncedStoreValuesCallback] = []
     weak var delegate: FlatSyncedStoreCommandDelegate?
-    
+
     func setup(with displayer: WhiteDisplayer) {
         logger.info("setup room")
         isConnected = false
@@ -65,31 +67,31 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         syncStore.delegate = self
         let group = DispatchGroup()
         var error: Error?
-        
+
         logger.trace("connect \(deviceStateName)")
         group.enter()
-        syncStore.connectStorage(deviceStateName, defaultValue: [:]) { initState, err in
+        syncStore.connectStorage(deviceStateName, defaultValue: [:]) { _, err in
             if let err = err { error = err }
             logger.trace("connect \(deviceStateName) success")
             group.leave()
         }
-        
+
         logger.trace("connect \(classroomStateName), default \(classroomDefaultValue)")
         group.enter()
-        syncStore.connectStorage(classroomStateName, defaultValue: classroomDefaultValue) { initState, err in
+        syncStore.connectStorage(classroomStateName, defaultValue: classroomDefaultValue) { _, err in
             if let err = err { error = err }
             logger.trace("connect \(classroomStateName) success")
             group.leave()
         }
-        
+
         logger.trace("connect \(onStageUsersName), default \(onStageUserDefaultValue)")
         group.enter()
-        syncStore.connectStorage(onStageUsersName, defaultValue: onStageUserDefaultValue) { initState, err in
+        syncStore.connectStorage(onStageUsersName, defaultValue: onStageUserDefaultValue) { _, err in
             if let err = err { error = err }
             logger.trace("connect \(onStageUsersName) success")
             group.leave()
         }
-        
+
         group.notify(queue: .main) {
             if let error = error {
                 logger.error("connect fail \(error)")
@@ -101,14 +103,14 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             }
         }
     }
-    
+
     func destroy() {
         if isConnected {
             syncStore.disconnectStorage(deviceStateName)
             syncStore.disconnectStorage(classroomStateName)
         }
     }
-    
+
     func sendCommand(_ command: Command) throws {
         func dicFromEncodable<T: Encodable>(_ encodable: T) throws -> Any {
             let data = try JSONEncoder().encode(encodable)
@@ -116,17 +118,17 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         }
         logger.info("try send command \(command)")
         switch command {
-        case .raiseHandUsersUpdate(let raiseHandUsers):
+        case let .raiseHandUsersUpdate(raiseHandUsers):
             try syncStore.setStorageState(classroomStateName, partialState: [RoomState.Keys.raiseHandUsers.rawValue: dicFromEncodable(raiseHandUsers)])
-        case .onStageUsersUpdate(let stageUsers):
-            try syncStore.setStorageState(onStageUsersName, partialState: dicFromEncodable(stageUsers) as! [AnyHashable : Any])
-        case .banUpdate(let ban):
+        case let .onStageUsersUpdate(stageUsers):
+            try syncStore.setStorageState(onStageUsersName, partialState: dicFromEncodable(stageUsers) as! [AnyHashable: Any])
+        case let .banUpdate(ban):
             try syncStore.setStorageState(classroomStateName, partialState: [RoomState.Keys.ban.rawValue: dicFromEncodable(ban)])
-        case .deviceStateUpdate(let dic):
+        case let .deviceStateUpdate(dic):
             try syncStore.setStorageState(deviceStateName, partialState: dicFromEncodable(dic) as! [AnyHashable: Any])
         }
     }
-    
+
     func getValues() -> Single<SyncedStoreSuccessValue> {
         .create { [weak self] ob in
             guard let self = self else {
@@ -135,16 +137,16 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             }
             self.getValues { r in
                 switch r {
-                case .success(let response):
+                case let .success(response):
                     ob(.success(response))
-                case .failure(let error):
+                case let .failure(error):
                     ob(.failure(error))
                 }
             }
             return Disposables.create()
         }
     }
-    
+
     /// Get syncedStore value synchrony
     func getValues(completionHandler: @escaping SyncedStoreValuesCallback) {
         waitingCallbacks.append(completionHandler)
@@ -152,24 +154,24 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             _getValues()
         }
     }
-    
+
     fileprivate func _fireCallbacksWith(_ error: Error) {
-        waitingCallbacks.forEach { $0(.failure(error))}
+        waitingCallbacks.forEach { $0(.failure(error)) }
         waitingCallbacks = []
     }
-    
+
     fileprivate func _fireCallbacksWith(_ value: SyncedStoreSuccessValue) {
-        waitingCallbacks.forEach { $0(.success(value))}
+        waitingCallbacks.forEach { $0(.success(value)) }
         waitingCallbacks = []
     }
-    
+
     fileprivate func _getValues() {
         var getValuesError: Error?
         var deviceState: [String: DeviceState] = [:]
         var roomState: RoomState!
         var onStageUsers: [String: Bool]!
         let decoder = JSONDecoder()
-        
+
         let group = DispatchGroup()
 
         logger.trace("start get \(deviceStateName)")
@@ -183,8 +185,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                                 let state = try decoder.decode(DeviceState.self, from: data)
                                 deviceState[uid] = state
                                 logger.trace("start \(deviceStateName) success \(state)")
-                            }
-                            catch {
+                            } catch {
                                 getValuesError = error
                                 logger.error("get \(deviceStateName) error \(error)")
                             }
@@ -197,7 +198,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             }
             group.leave()
         }
-        
+
         logger.info("start get \(onStageUsersName)")
         group.enter()
         syncStore.getStorageState(onStageUsersName) { value in
@@ -210,7 +211,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             }
             group.leave()
         }
-        
+
         logger.info("start get \(classroomStateName)")
         group.enter()
         syncStore.getStorageState(classroomStateName) { values in
@@ -225,7 +226,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             }
             group.leave()
         }
-        
+
         group.notify(queue: .main) {
             if let error = getValuesError {
                 self._fireCallbacksWith(error)
@@ -236,8 +237,8 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             }
         }
     }
-    
-    func syncedStoreDidUpdateStoreName(_ name: String, partialValue: [AnyHashable : Any]) {
+
+    func syncedStoreDidUpdateStoreName(_ name: String, partialValue: [AnyHashable: Any]) {
         logger.trace("receive partial update \(name), \(partialValue)")
         if name == deviceStateName {
             syncStore.getStorageState(name) { [weak self] value in
@@ -248,8 +249,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                             let data = try JSONSerialization.data(withJSONObject: object, options: .fragmentsAllowed)
                             let state = try JSONDecoder().decode(DeviceState.self, from: data)
                             return state
-                        }
-                        catch {
+                        } catch {
                             logger.error("device state synced store update error: \(error)")
                         }
                     }
@@ -260,7 +260,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                 }
             }
         }
-        
+
         if name == onStageUsersName {
             syncStore.getStorageState(name) { [weak self] value in
                 guard let self = self else { return }
@@ -271,20 +271,23 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                 }
             }
         }
-        
+
         if name == classroomStateName {
             for partial in partialValue {
                 if let key = partial.key as? String,
-                   let roomStateKey = RoomState.Keys(rawValue: key) {
+                   let roomStateKey = RoomState.Keys(rawValue: key)
+                {
                     switch roomStateKey {
                     case .raiseHandUsers:
                         if let dic = partial.value as? NSDictionary,
-                           let raiseHandUserIds = dic[newValueKey] as? [String] {
+                           let raiseHandUserIds = dic[newValueKey] as? [String]
+                        {
                             delegate?.flatSyncedStoreDidReceiveCommand(self, command: .raiseHandUsersUpdate(raiseHandUserIds))
                         }
                     case .ban:
                         if let dic = partial.value as? NSDictionary,
-                           let isBan = dic[newValueKey] as? Bool {
+                           let isBan = dic[newValueKey] as? Bool
+                        {
                             delegate?.flatSyncedStoreDidReceiveCommand(self, command: .banUpdate(isBan))
                         }
                     }

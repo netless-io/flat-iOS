@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class BorderLabelView: UIView {
@@ -17,12 +16,12 @@ class BorderLabelView: UIView {
             }
         }
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = bounds.height / 2
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         clipsToBounds = true
@@ -32,11 +31,12 @@ class BorderLabelView: UIView {
             make.edges.equalToSuperview()
         }
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     lazy var label: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 12)

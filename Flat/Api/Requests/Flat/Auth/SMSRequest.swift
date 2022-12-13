@@ -6,14 +6,13 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct SMSRequest: FlatRequest {
     enum Scenario {
         case login
         case bind
-        
+
         var path: String {
             switch self {
             case .login:
@@ -23,12 +22,11 @@ struct SMSRequest: FlatRequest {
             }
         }
     }
-    
+
     let scenario: Scenario
     let phone: String
-    
+
     var path: String { scenario.path }
     var task: Task { .requestJSONEncodable(encodable: ["phone": phone]) }
     let responseType = EmptyResponse.self
 }
-

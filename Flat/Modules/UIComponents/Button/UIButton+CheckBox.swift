@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIButton {
-    static func checkBoxStyleButton() ->UIButton {
+    static func checkBoxStyleButton() -> UIButton {
         let btn = UIButton(type: .custom)
         btn.tintColor = .white
         btn.setImage(UIImage(named: "checklist_normal"), for: .normal)

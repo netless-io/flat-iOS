@@ -6,27 +6,27 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import CropViewController
 import Photos
+import RxSwift
+import UIKit
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let cellIdentifier = "profileCellIdentifier"
-    
+
     var bindInfo: [BindingType: Bool]? {
         didSet {
             tableView.reloadData()
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupObserver()
         updateBindingInfo()
     }
-    
+
     func setupObserver() {
         NotificationCenter.default.rx
             .notification(avatarUpdateNotificationName)
@@ -35,22 +35,22 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func setupViews() {
         title = localizeStrings("Profile")
         view.addSubview(tableView)
         tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
         tableView.reloadData()
     }
-    
+
     func updateBindingInfo(showIndicator: Bool = false) {
-        if (showIndicator) {
+        if showIndicator {
             showActivityIndicator()
         }
         ApiProvider.shared.request(fromApi: BindListRequest()) { result in
             self.stopActivityIndicator()
             switch result {
-            case .success(let list):
+            case let .success(list):
                 var info = self.bindInfo ?? [:]
                 for type in BindingType.allCases {
                     switch type {
@@ -63,13 +63,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
                 }
                 self.bindInfo = info
-            case .failure(let error):
+            case let .failure(error):
                 self.toast(error.localizedDescription)
             }
         }
     }
-    
+
     // MARK: - Actions
+
     func onClickAvatar() {
         switch PHPhotoLibrary.authorizationStatus() {
         case .notDetermined:
@@ -91,7 +92,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             mainContainer?.concreteViewController.present(vc, animated: true)
         }
     }
-    
+
     func onClickNickName() {
         let alert = UIAlertController(title: localizeStrings("Update nickname"), message: nil, preferredStyle: .alert)
         alert.addTextField { tf in
@@ -100,7 +101,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         alert.addAction(.init(title: localizeStrings("Cancel"), style: .cancel))
         alert.addAction(.init(title: localizeStrings("Confirm"), style: .default, handler: { _ in
             guard let text = alert.textFields?[0].text?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  !text.isEmpty else {
+                  !text.isEmpty
+            else {
                 self.toast(localizeStrings("Please enter your nickname"))
                 return
             }
@@ -112,14 +114,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     AuthStore.shared.updateName(text)
                     self.toast(localizeStrings("Update nickname success"))
                     self.tableView.reloadData()
-                case .failure(let error):
+                case let .failure(error):
                     self.toast(error.localizedDescription)
                 }
             }
         }))
         present(alert, animated: true)
     }
-    
+
     func onClickBindType(_ type: BindingType) {
         guard let binded = bindInfo?[type] else { return }
         if !binded {
@@ -146,18 +148,19 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 ApiProvider.shared.request(fromApi: RemoveBindingRequest(type: type)) { result in
                     self.stopActivityIndicator()
                     switch result {
-                    case .success(let value):
+                    case let .success(value):
                         AuthStore.shared.updateToken(value.token)
                         self.updateBindingInfo()
-                    case .failure(let error):
+                    case let .failure(error):
                         self.toast(error.localizedDescription)
                     }
                 }
             }
         }
     }
-    
+
     // MARK: - Lazy
+
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.backgroundColor = .color(type: .background)
@@ -168,16 +171,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.tableHeaderView = .minHeaderView()
         return view
     }()
-    
+
     // MARK: - Table view data source
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         3
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+    func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         indexPath.row == 0 ? 68 : 48
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ProfileTableViewCell
         switch indexPath.row {
@@ -207,8 +211,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
             onClickAvatar()
@@ -221,7 +225,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 }
 
 extension ProfileViewController: CropViewControllerDelegate {
-    func cropViewController(_ cropViewController: CropViewController, didCropToCircularImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
+    func cropViewController(_: CropViewController, didCropToCircularImage image: UIImage, withRect _: CGRect, angle _: Int) {
         var targetImage = image
         let maxSize = CGSize(width: 244, height: 244)
         if image.size.width > maxSize.width || image.size.height > maxSize.height {
@@ -232,7 +236,7 @@ extension ProfileViewController: CropViewControllerDelegate {
             }
             UIGraphicsEndImageContext()
         }
-        
+
         let data = targetImage.pngData()
         let path = NSTemporaryDirectory() + UUID().uuidString + ".png"
         FileManager.default.createFile(atPath: path, contents: data)
@@ -245,7 +249,7 @@ extension ProfileViewController: CropViewControllerDelegate {
             ApiProvider.shared.request(fromApi: PrepareAvatarUploadRequest(fileName: name, fileSize: size))
                 .flatMap { [weak self] info throws -> Observable<UploadInfo> in
                     guard let self = self else { return .error("self not exist") }
-                    return try self.upload(info: info, fileURL: fileURL).map { info}
+                    return try self.upload(info: info, fileURL: fileURL).map { info }
                 }
                 .flatMap { info -> Observable<URL> in
                     let finishRequest = UploadAvatarFinishRequest(fileUUID: info.fileUUID)
@@ -260,8 +264,7 @@ extension ProfileViewController: CropViewControllerDelegate {
                     weakSelf.toast(error.localizedDescription)
                 })
                 .disposed(by: rx.disposeBag)
-        }
-        catch {
+        } catch {
             toast(error.localizedDescription)
         }
         dismiss(animated: true)
@@ -269,7 +272,7 @@ extension ProfileViewController: CropViewControllerDelegate {
 }
 
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[.originalImage] as? UIImage else { return }
         let vc = CropViewController(croppingStyle: .circular, image: image)
         vc.delegate = self
@@ -277,19 +280,19 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
             self.mainContainer?.concreteViewController.present(vc, animated: true)
         }
     }
-    
+
     private func upload(info: UploadInfo, fileURL: URL) throws -> Observable<Void> {
         let session = URLSession(configuration: .default)
         let boundary = UUID().uuidString
         var request = URLRequest(url: info.ossDomain, timeoutInterval: 60 * 10)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
+
         let encodedFileName = String(URLComponents(url: fileURL, resolvingAgainstBaseURL: false)?
             .percentEncodedPath
             .split(separator: "/")
             .last ?? "")
-        
+
         let partFormData = MultipartFormData(fileManager: FileManager.default, boundary: boundary)
         let headers: [(String, String)] = [
             ("key", info.ossFilePath),
@@ -299,7 +302,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
             ("success_action_status", "200"),
             ("callback", ""),
             ("signature", info.signature),
-            ("Content-Disposition", "attachment; filename=\"\(encodedFileName)\"; filename*=UTF-8''\(encodedFileName)")
+            ("Content-Disposition", "attachment; filename=\"\(encodedFileName)\"; filename*=UTF-8''\(encodedFileName)"),
         ]
         for (key, value) in headers {
             let d = value.data(using: .utf8)!
@@ -308,7 +311,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         partFormData.append(fileURL, withName: "file")
         let data = try partFormData.encode()
         return .create { s in
-            let task = session.uploadTask(with: request, from: data) { data, response, error in
+            let task = session.uploadTask(with: request, from: data) { _, response, error in
                 guard error == nil else {
                     s.onError(error!)
                     s.onCompleted()

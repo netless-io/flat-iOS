@@ -33,7 +33,7 @@ struct StorageFileModel: Codable, Equatable {
         case word
         case unknown
         case directory
-        
+
         var iconImageName: String {
             switch self {
             case .directory:
@@ -54,7 +54,7 @@ struct StorageFileModel: Codable, Equatable {
                 return "storage_type_doc"
             }
         }
-        
+
         var availableSuffix: [String] {
             switch self {
             case .img:
@@ -73,7 +73,7 @@ struct StorageFileModel: Codable, Equatable {
                 return []
             }
         }
-        
+
         init(fileName: String) {
             self = Self.allCases.first(where: { type in
                 for eachSuffix in type.availableSuffix {
@@ -85,46 +85,47 @@ struct StorageFileModel: Codable, Equatable {
             }) ?? .unknown
         }
     }
-    
+
     struct WhiteboardFilePayload: Codable, Equatable {
         let convertStep: StorageCovertStep
         let region: FlatRegion
         let taskToken: String
         let taskUUID: String
     }
+
     enum Payload: Codable, Equatable {
         case whiteboardProjector(WhiteboardFilePayload)
         case whiteboardConvert(WhiteboardFilePayload)
         case empty
-        
+
         var whiteConverteInfo: WhiteboardFilePayload? {
             switch self {
-            case .whiteboardProjector(let whiteboardFilePayload):
+            case let .whiteboardProjector(whiteboardFilePayload):
                 return whiteboardFilePayload
-            case .whiteboardConvert(let whiteboardFilePayload):
+            case let .whiteboardConvert(whiteboardFilePayload):
                 return whiteboardFilePayload
             case .empty:
                 return nil
             }
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case whiteboardConvert
             case whiteboardProjector
         }
-        
+
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .whiteboardProjector(let payload):
+            case let .whiteboardProjector(payload):
                 try container.encode(payload, forKey: .whiteboardProjector)
-            case .whiteboardConvert(let payload):
+            case let .whiteboardConvert(payload):
                 try container.encode(payload, forKey: .whiteboardConvert)
             case .empty:
                 return
             }
         }
-        
+
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             if let value = try? container.decode(WhiteboardFilePayload.self, forKey: .whiteboardConvert) {
@@ -139,10 +140,11 @@ struct StorageFileModel: Codable, Equatable {
             self = .empty
         }
     }
-    
+
     var urlOrEmpty: URL {
         URL(string: fileURL) ?? .init(fileURLWithPath: "")
     }
+
     let fileURL: String
     let fileUUID: String
     let createAt: Date
@@ -150,40 +152,44 @@ struct StorageFileModel: Codable, Equatable {
     let fileSize: Int
     let resourceType: ResourceType
     var meta: Payload
-    
+
     var fileType: FileType {
         if resourceType == .directory { return .directory }
         return .init(fileName: fileName)
     }
+
     var fileSizeDescription: String {
         String(format: "%.2fMB", Float(fileSize) / 1024 / 1024)
     }
+
     var taskType: WhiteConvertTypeV5? {
         ConvertService.convertingTaskTypeFor(url: urlOrEmpty)
     }
+
     var usable: Bool {
         return !ConvertService.shouldConvertFile(withFile: self)
     }
+
     var converting: Bool {
         switch meta {
         case .empty: return false
-        case .whiteboardConvert(let payload): return payload.convertStep == .converting
-        case .whiteboardProjector(let payload): return payload.convertStep == .converting
+        case let .whiteboardConvert(payload): return payload.convertStep == .converting
+        case let .whiteboardProjector(payload): return payload.convertStep == .converting
         }
     }
-    
+
     mutating func updateConvert(step: StorageCovertStep, taskUUID: String? = nil, taskToken: String? = nil) {
         switch meta {
-        case .whiteboardProjector(let whiteboardFilePayload):
-            self.meta = .whiteboardProjector(.init(convertStep: step,
+        case let .whiteboardProjector(whiteboardFilePayload):
+            meta = .whiteboardProjector(.init(convertStep: step,
                                               region: whiteboardFilePayload.region,
                                               taskToken: taskToken ?? whiteboardFilePayload.taskToken,
                                               taskUUID: taskUUID ?? whiteboardFilePayload.taskUUID))
-        case .whiteboardConvert(let whiteboardFilePayload):
-            self.meta = .whiteboardConvert(.init(convertStep: step,
-                                              region: whiteboardFilePayload.region,
-                                              taskToken: taskToken ?? whiteboardFilePayload.taskToken,
-                                              taskUUID: taskUUID ?? whiteboardFilePayload.taskUUID))
+        case let .whiteboardConvert(whiteboardFilePayload):
+            meta = .whiteboardConvert(.init(convertStep: step,
+                                            region: whiteboardFilePayload.region,
+                                            taskToken: taskToken ?? whiteboardFilePayload.taskToken,
+                                            taskUUID: taskUUID ?? whiteboardFilePayload.taskUUID))
         case .empty:
             return
         }

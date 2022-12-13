@@ -14,17 +14,18 @@ class ScenePreviewCell: UITableViewCell {
         contentView.addSubview(previewImageView)
         previewImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(14)
-            make.height.equalTo(previewImageView.snp.width).multipliedBy(9.0/16.0)
+            make.height.equalTo(previewImageView.snp.width).multipliedBy(9.0 / 16.0)
         }
         previewImageView.layer.borderColor = UIColor.lightGray.cgColor
         previewImageView.layer.borderWidth = commonBorderWidth
         previewImageView.layer.cornerRadius = 4
         previewImageView.contentMode = .scaleAspectFit
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     lazy var previewImageView = UIImageView()
 }

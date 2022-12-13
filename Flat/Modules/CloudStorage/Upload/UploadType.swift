@@ -14,7 +14,7 @@ enum UploadType: String, CaseIterable {
     case video
     case audio
     case doc
-    
+
     @available(iOS 14.0, *)
     var utTypes: [UTType] {
         switch self {
@@ -29,7 +29,7 @@ enum UploadType: String, CaseIterable {
             return fileExtensions.compactMap { UTType(filenameExtension: $0) }
         }
     }
-    
+
     var allowedUTStrings: [String] {
         switch self {
         case .image:
@@ -46,14 +46,14 @@ enum UploadType: String, CaseIterable {
                     "org.openxmlformats.presentationml.presentation"]
         }
     }
-    
+
     var title: String {
         let str = rawValue.first!.uppercased() + rawValue.dropFirst()
         return localizeStrings("Upload " + str)
     }
-    
+
     var imageName: String { "upload_" + rawValue }
-    
+
     var bgColor: UIColor {
         switch self {
         case .image:

@@ -7,12 +7,12 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
 class ClassRoomViewModel {
     fileprivate var stateHandler: ClassroomStateHandler!
-    
+
     let preferredDeviceState: DeviceState
     let alertProvider: AlertProvider
     let rtm: Rtm
@@ -30,15 +30,16 @@ class ClassRoomViewModel {
                 users.filter { $0.status.isSpeak }
             }
     }
+
     var currentUser: Observable<RoomUser> {
         members
             .map { [weak self] m in
                 guard let self = self else { throw "self not exist" }
-                return m.first(where: { $0.rtmUUID == self.userUUID}) ?? .empty
+                return m.first(where: { $0.rtmUUID == self.userUUID }) ?? .empty
             }
             .distinctUntilChanged()
     }
-    
+
     func transOnStageUpdate(whiteboardEnable: Observable<Bool>) -> Observable<String> {
         currentUser
             .map { $0.status.isSpeak }
@@ -47,8 +48,8 @@ class ClassRoomViewModel {
             .flatMap { speak -> Observable<(speak: Bool, joined: Bool)> in
                 whiteboardEnable.map { (speak, $0) }
             }.filter {
-                return ($0.speak && $0.joined) || (!$0.speak && !$0.joined)
-            }.flatMap { [weak self] (speak, _) -> Observable<String> in
+                ($0.speak && $0.joined) || (!$0.speak && !$0.joined)
+            }.flatMap { [weak self] speak, _ -> Observable<String> in
                 guard let self = self else { return .error("self not exist") }
                 if speak {
                     let micOn = self.preferredDeviceState.mic
@@ -63,7 +64,7 @@ class ClassRoomViewModel {
                 }
             }
     }
-    
+
     var raiseHandHide: Observable<Bool> {
         Observable.combineLatest(currentUser,
                                  banState) { [weak self] currentUser, ban in
@@ -73,27 +74,27 @@ class ClassRoomViewModel {
             return currentUser.status.isSpeak
         }
     }
-    
+
     var whiteboardEnable: Observable<Bool> { currentUser.map { $0.status.isSpeak } }
-    
+
     var isRaisingHand: Observable<Bool> {
         currentUser.map { $0.status.isRaisingHand }
     }
-    
+
     var roomStoped: Observable<Void> {
         stateHandler.roomStartStatus
             .filter { $0 == .Stopped }
             .mapToVoid()
             .asObservable()
     }
-    
+
     var showUsersResPoint: Observable<Bool> {
         members
             .map { users -> Bool in
                 users.contains(where: { $0.status.isRaisingHand })
             }
     }
-    
+
     init(stateHandler: ClassroomStateHandler,
          initDeviceState: DeviceState,
          isOwner: Bool,
@@ -103,7 +104,8 @@ class ClassRoomViewModel {
          commandChannelRequest: Single<RtmChannel>,
          rtm: Rtm,
          alertProvider: AlertProvider,
-         preferredDeviceState: DeviceState) {
+         preferredDeviceState: DeviceState)
+    {
         self.stateHandler = stateHandler
         self.initDeviceState = initDeviceState
         self.isOwner = isOwner
@@ -115,15 +117,16 @@ class ClassRoomViewModel {
         self.alertProvider = alertProvider
         self.preferredDeviceState = preferredDeviceState
     }
-    
+
     struct InitRoomOutput {
         let initRoomResult: Single<Void>
         let roomError: Observable<ClassroomStateError>
         /// enable when user is an owner and roomType is oneToOne
         let autoPickMemberOnStageOnce: Single<RoomUser?>?
     }
+
     func initialRoomStatus() -> InitRoomOutput {
-        let initRoom =  stateHandler.setup()
+        let initRoom = stateHandler.setup()
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self = self else { return .error("self not exist") }
                 // Owner broadcast state when join room
@@ -133,31 +136,31 @@ class ClassRoomViewModel {
                     return .just(())
                 }
             }
-        
+
         let shareInitRoom = initRoom
             .asObservable()
             .share(replay: 1, scope: .whileConnected)
-        
+
         let autoPickMemberOnStageOnce: Single<RoomUser?>?
         if roomType == .oneToOne && isOwner {
             autoPickMemberOnStageOnce = shareInitRoom
-                .flatMap { [weak self] _ -> Observable<[RoomUser]>  in
+                .flatMap { [weak self] _ -> Observable<[RoomUser]> in
                     guard let self = self else { return .error("self not exist") }
                     return self.members
                 }
                 .skip(while: { $0.count < 2 })
                 .take(1)
-                .flatMap { [weak self ] members -> Observable<RoomUser?> in
+                .flatMap { [weak self] members -> Observable<RoomUser?> in
                     guard let self = self else { return .error("self not exist") }
                     let speakers = members.filter { $0.status.isSpeak }
                     if speakers.count >= 2 {
                         return .just(nil)
                     }
-                    
-                    let nonSpeakers = members.filter({
+
+                    let nonSpeakers = members.filter {
                         $0.rtmUUID != self.userUUID &&
-                        !$0.status.isSpeak
-                    })
+                            !$0.status.isSpeak
+                    }
                     if let target = nonSpeakers.first {
                         return self.stateHandler
                             .send(command: .pickUserOnStage(target.rtmUUID))
@@ -171,12 +174,12 @@ class ClassRoomViewModel {
         } else {
             autoPickMemberOnStageOnce = nil
         }
-        
+
         let error = stateHandler.error.asObservable()
-        
+
         return .init(initRoomResult: shareInitRoom.asSingle(), roomError: error, autoPickMemberOnStageOnce: autoPickMemberOnStageOnce)
     }
-    
+
     struct ChatChannelInitValue {
         let channel: RtmChannel
         let userNameProvider: UserInfoQueryProvider
@@ -185,20 +188,22 @@ class ClassRoomViewModel {
         let banMessagePublisher: PublishRelay<Bool>
         let chatButtonShowRedPoint: Driver<Bool>
     }
+
     struct ChatInput {
         let chatButtonTap: ControlEvent<Void>
-        let chatControllerPresentedFetch: (()->Driver<Bool>)
+        let chatControllerPresentedFetch: () -> Driver<Bool>
     }
+
     func initChatChannel(_ input: ChatInput) -> Single<ChatChannelInitValue> {
-        let channel = self.commandChannelRequest
+        let channel = commandChannelRequest
             .asObservable()
             .share(replay: 1, scope: .forever)
-        
+
         let provider = stateHandler.memberNameQueryProvider()
         let isBanned = banState.asDriver(onErrorJustReturn: true)
         let notice = stateHandler.noticePublisher.asObservable()
         let banMessagePublisher = stateHandler.banMessagePublisher
-        
+
         let newMessageWhenChatControllerHide = channel
             .flatMap { channel -> Observable<Void> in
                 channel.newMessagePublish.asObservable().mapToVoid()
@@ -209,27 +214,28 @@ class ClassRoomViewModel {
             .map { !$0 }
             .asDriver(onErrorJustReturn: false)
         let tapChat = input.chatButtonTap.map { false }.asDriver(onErrorJustReturn: false)
-        
+
         let chatButtonShowRedPoint = Driver.of(newMessageWhenChatControllerHide, tapChat)
             .merge()
-        
+
         return channel.asSingle()
             .map { channel -> ChatChannelInitValue in
-                return .init(channel: channel,
-                             userNameProvider: provider,
-                             notice: notice,
-                             isBanned: isBanned,
-                             banMessagePublisher: banMessagePublisher,
-                             chatButtonShowRedPoint: chatButtonShowRedPoint)
+                .init(channel: channel,
+                      userNameProvider: provider,
+                      notice: notice,
+                      isBanned: isBanned,
+                      banMessagePublisher: banMessagePublisher,
+                      chatButtonShowRedPoint: chatButtonShowRedPoint)
             }
     }
-    
+
     enum RtcInputType {
         case camera
         case mic
     }
-    func transformLocalRtcClick(_ input: Observable<RtcInputType>) ->  Driver<DeviceState> {
-        input.withLatestFrom(currentUser, resultSelector: { a, b in return (a,b) })
+
+    func transformLocalRtcClick(_ input: Observable<RtcInputType>) -> Driver<DeviceState> {
+        input.withLatestFrom(currentUser, resultSelector: { a, b in (a, b) })
             .flatMap { [weak self] click, user -> Observable<DeviceState> in
                 guard let self = self else { return .just(.init(mic: user.status.mic, camera: user.status.camera)) }
                 var state: DeviceState
@@ -245,10 +251,10 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: .init(mic: false, camera: false))
     }
-    
+
     func transformBanClick(_ input: ControlEvent<Void>) -> Observable<Bool> {
         input
-            .withLatestFrom(stateHandler.banState, resultSelector: { _, ban in return !ban })
+            .withLatestFrom(stateHandler.banState, resultSelector: { _, ban in !ban })
             .flatMap { [weak self] ban -> Observable<Bool> in
                 guard let self = self else { return .error("self not exist") }
                 return self.stateHandler.send(command: .ban(ban))
@@ -256,13 +262,13 @@ class ClassRoomViewModel {
                     .map { ban }
             }
     }
-    
+
     func transformRaiseHandClick(_ input: ControlEvent<Void>) -> Driver<Bool> {
         guard !isOwner else { return .just(false) }
         return input
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .withLatestFrom(currentUser) { _, user in
-                return user.status
+                user.status
             }
             .asDriver(onErrorJustReturn: .default)
             .flatMap { [weak self] status -> Driver<Bool> in
@@ -274,7 +280,7 @@ class ClassRoomViewModel {
                     .map { !status.isRaisingHand }
             }
     }
-    
+
     struct UserListInput {
         let stopInteractingTap: Observable<Void>
         let disconnectTap: Observable<RoomUser>
@@ -282,6 +288,7 @@ class ClassRoomViewModel {
         let tapSomeUserCamera: Observable<RoomUser>
         let tapSomeUserMic: Observable<RoomUser>
     }
+
     typealias ActionResult = Result<Void, String>
     func transformUserListInput(_ input: UserListInput) -> Driver<ActionResult> {
         let stopTask = input.stopInteractingTap
@@ -291,11 +298,11 @@ class ClassRoomViewModel {
                     .map { _ -> ActionResult in .success(()) }
                 return stopCommand
             }.asDriver(onErrorJustReturn: .success(()))
-        
+
         let acceptRaiseHandTask = input.tapSomeUserRaiseHand
             .flatMap { [unowned self] user -> Single<(RoomUser, Bool)> in
-                return self.stateHandler.checkIfOnStageUserOverMaxCount()
-                    .map { r in (user, r)}
+                self.stateHandler.checkIfOnStageUserOverMaxCount()
+                    .map { r in (user, r) }
             }
             .flatMap { [unowned self] user, overCount -> Single<ActionResult> in
                 guard self.isOwner else { return .just(.success(())) }
@@ -305,34 +312,34 @@ class ClassRoomViewModel {
                 return self.stateHandler.send(command: .acceptRaiseHand(user.rtmUUID))
                     .map { _ -> ActionResult in .success(()) }
             }.asDriver(onErrorJustReturn: .success(()))
-        
+
         let disconnectTask = input.disconnectTap
             .flatMap { [unowned self] user in
                 self.stateHandler.send(command: .disconnectUser(user.rtmUUID))
                     .map { _ -> ActionResult in .success(()) }
             }.asDriver(onErrorJustReturn: .success(()))
-        
+
         let cameraTask = input.tapSomeUserCamera
             .flatMap { [unowned self] user -> Single<ActionResult> in
-                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(.success(()))}
+                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(.success(())) }
                 return self.stateHandler
                     .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera)))
                     .map { _ -> ActionResult in .success(()) }
             }
             .asDriver(onErrorJustReturn: .success(()))
-        
+
         let micTask = input.tapSomeUserMic
             .flatMap { [unowned self] user -> Single<ActionResult> in
-                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(.success(()))}
+                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(.success(())) }
                 return self.stateHandler
                     .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: !user.status.mic, camera: user.status.camera)))
                     .map { _ -> ActionResult in .success(()) }
             }
             .asDriver(onErrorJustReturn: .success(()))
-        
+
         return Driver.of(stopTask, acceptRaiseHandTask, disconnectTask, cameraTask, micTask).merge()
     }
-    
+
     /// Return should dismiss
     func transformLogoutTap(_ tap: Observable<TapSource>) -> Observable<Bool> {
         tap
@@ -341,21 +348,22 @@ class ClassRoomViewModel {
                     let teacherStartAlert = AlertModel(title: localizeStrings("Close options"),
                                                        message: localizeStrings("Teacher close class room alert detail"),
                                                        preferredStyle: .actionSheet, actionModels: [
-                                                        .init(title: localizeStrings("Leaving for now"), style: .default, handler: nil),
-                                                        .init(title: localizeStrings("End the class"), style: .destructive, handler: nil),
-                                                        .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil)])
+                                                           .init(title: localizeStrings("Leaving for now"), style: .default, handler: nil),
+                                                           .init(title: localizeStrings("End the class"), style: .destructive, handler: nil),
+                                                           .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil),
+                                                       ])
                     return self.alertProvider
                         .showActionSheet(with: teacherStartAlert, source: source)
                         .asObservable()
-                    
+
                 } else {
                     let studentAlert = AlertModel(title: localizeStrings("Class exit confirming title"),
                                                   message: localizeStrings("Class exit confirming detail"),
                                                   preferredStyle: .actionSheet,
                                                   actionModels: [
-                                                    .init(title: localizeStrings("Confirm"), style: .default, handler: nil),
-                                                    .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil)]
-                    )
+                                                      .init(title: localizeStrings("Confirm"), style: .default, handler: nil),
+                                                      .init(title: localizeStrings("Cancel"), style: .cancel, handler: nil),
+                                                  ])
                     return self.alertProvider
                         .showActionSheet(with: studentAlert, source: source)
                         .asObservable()
@@ -367,50 +375,50 @@ class ClassRoomViewModel {
                 if model.style == .destructive {
                     let stopRecordCommand: Single<Void> = self.recordModel == nil ? .just(()) : self.recordModel!.endRecord().asSingle()
                     return stopRecordCommand
-                        .flatMap({ [weak self] _ in
+                        .flatMap { [weak self] _ in
                             guard let self = self else { return .error("self not exist") }
                             return self.stateHandler.send(command: .updateRoomStartStatus(.Stopped))
-                        })
+                        }
                         .asObservable()
                         .map { true }
                 } else {
-                    
                     return .just(true)
                 }
             }
     }
-    
+
     var recordModel: RecordModel?
     struct RecordingOutput {
         let recording: Observable<Bool>
         let loading: Observable<Bool>
         let layoutUpdate: Observable<Void>
     }
+
     func transformRecordTap(_ tap: ControlEvent<Void>) -> RecordingOutput {
         let loading = BehaviorRelay<Bool>.init(value: true)
-        
+
         func startAlert() -> Observable<Bool> {
             return alertProvider
                 .showAlert(with: .init(message: localizeStrings("TurnOnRecordAlertTip"), preferredStyle: .alert, actionModels: [
                     .cancel,
-                    .confirm
+                    .confirm,
                 ]))
                 .asObservable()
                 .map { $0.style == .default }
                 .filter { $0 }
         }
-        
+
         func finishAlert() -> Observable<Bool> {
             return alertProvider
                 .showAlert(with: .init(message: localizeStrings("TurnOffReocrdAlertTip"), preferredStyle: .alert, actionModels: [
                     .cancel,
-                    .confirm
+                    .confirm,
                 ]))
                 .asObservable()
                 .map { $0.style == .default }
                 .filter { $0 }
         }
-        
+
         let userOperation = tap
             .asObservable()
             .flatMap { [unowned self] _ -> Observable<Bool> in
@@ -421,13 +429,13 @@ class ClassRoomViewModel {
                 return alert.map { _ in recording }
             }
             .withLatestFrom(rtcUsers, resultSelector: { recording, users in
-                return (recording, users)
+                (recording, users)
             })
-            .flatMap { [unowned self] (recording, users) -> Observable<Bool> in
+            .flatMap { [unowned self] recording, users -> Observable<Bool> in
                 loading.accept(true)
                 if recording {
                     return self.recordModel!.endRecord()
-                        .do(onNext: { [weak self] model in
+                        .do(onNext: { [weak self] _ in
                             loading.accept(false)
                             self?.recordModel = nil
                         })
@@ -440,29 +448,29 @@ class ClassRoomViewModel {
                         }).map { _ in true }
                 }
             }
-        
+
         let recording = RecordModel
             .fetchSavedRecordModel().do(onSuccess: { [weak self] model in
                 self?.recordModel = model
                 loading.accept(false)
             })
-                .map { $0 != nil }
-                .asObservable()
-                .concat(userOperation)
-        
+            .map { $0 != nil }
+            .asObservable()
+            .concat(userOperation)
+
         let layoutUpdate = rtcUsers
             .distinctUntilChanged()
             .filter { [weak self] _ in
-                return self?.recordModel != nil
+                self?.recordModel != nil
             }
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .flatMap { [unowned self] users -> Observable<Void> in
                 self.recordModel!.updateLayout(users: users)
             }
-        
+
         return .init(recording: recording, loading: loading.asObservable(), layoutUpdate: layoutUpdate)
     }
-    
+
     func destroy() {
         // Manual deinit it to remove update timer. In case of memory leak
         recordModel = nil

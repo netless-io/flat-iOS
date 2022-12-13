@@ -6,8 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct EmptyResponse: Codable {}
-//typealias EmptyResponse = [String: String]

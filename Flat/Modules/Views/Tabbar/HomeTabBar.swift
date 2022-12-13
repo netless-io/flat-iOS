@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class HomeTabBar: UITabBar {
@@ -14,25 +13,26 @@ class HomeTabBar: UITabBar {
         super.init(frame: frame)
         setupAppearance()
     }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+
+    override func traitCollectionDidChange(_: UITraitCollection?) {
         setupAppearance()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-        
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        items?.forEach({ item in
+        items?.forEach { item in
             if let title = item.title, let attribute = item.titleTextAttributes(for: .normal) {
                 let textHeight = NSString(string: title).size(withAttributes: attribute).height
                 item.titlePositionAdjustment = .init(horizontal: 0, vertical: -((bounds.height - textHeight) / 2))
             }
-        })
+        }
     }
-    
+
     func setupAppearance() {
         tintColor = .color(type: .text)
         unselectedItemTintColor = .color(type: .text)
@@ -43,7 +43,7 @@ class HomeTabBar: UITabBar {
                                                            size: .init(width: 44, height: 44),
                                                            lineHeight: 2)
     }
-    
+
     func createSelectionIndicator(color: UIColor, size: CGSize, lineHeight: CGFloat) -> UIImage {
         UIGraphicsBeginImageContext(size)
         color.setFill()
@@ -52,9 +52,9 @@ class HomeTabBar: UITabBar {
         UIGraphicsEndImageContext()
         return image!
     }
-    
+
     func addItem(title: String, tag: Int) -> UITabBarItem {
-        let item = UITabBarItem.init(title: title, image: nil, tag: tag)
+        let item = UITabBarItem(title: title, image: nil, tag: tag)
         item.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 14, weight: .medium)], for: .normal)
         return item
     }

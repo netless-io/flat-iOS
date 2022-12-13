@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class ChatNoticeTableViewCell: UITableViewCell {
@@ -14,11 +13,12 @@ class ChatNoticeTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     func setupViews() {
         selectionStyle = .none
         backgroundColor = .classroomChildBG
@@ -29,6 +29,6 @@ class ChatNoticeTableViewCell: UITableViewCell {
         }
         labelView.edge = .init(top: 6, left: 12, bottom: 6, right: 12)
     }
-    
+
     lazy var labelView = BorderLabelView()
 }

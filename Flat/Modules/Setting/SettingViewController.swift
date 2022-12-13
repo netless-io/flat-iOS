@@ -6,10 +6,9 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
+import Siren
 import UIKit
 import Whiteboard
-import Siren
 import Zip
 
 private var fpaKey: String? {
@@ -36,35 +35,35 @@ var userUseFPA: Bool {
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let cellIdentifier = "cellIdentifier"
     var items: [Item] = []
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.largeTitleDisplayMode = .never
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         updateItems()
     }
-    
+
     struct Item {
         let image: UIImage
         let title: String
         let detail: Any
         let targetAction: (NSObject, Selector)?
     }
-    
+
     func updateItems() {
         items = [
             .init(image: UIImage(named: "language")!,
                   title: localizeStrings("Language Setting"),
                   detail: LocaleManager.language?.name ?? "跟随系统",
-                  targetAction: (self, #selector(self.onClickLanguage(sender:)))),
+                  targetAction: (self, #selector(onClickLanguage(sender:)))),
             .init(image: UIImage(named: "theme")!,
                   title: localizeStrings("Theme"),
                   detail: Theme.shared.style.description,
-                  targetAction: (self, #selector(self.onClickTheme(sender:)))),
+                  targetAction: (self, #selector(onClickTheme(sender:)))),
             .init(image: UIImage(named: "update_version")!,
                   title: localizeStrings("Version"),
                   detail: "Flat v\(Env().version) (\(Env().build))",
@@ -72,28 +71,28 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             .init(image: UIImage(named: "about_us")!,
                   title: localizeStrings("About"),
                   detail: "",
-                  targetAction: (self, #selector(self.onClickAbout(sender:)))),
+                  targetAction: (self, #selector(onClickAbout(sender:)))),
             .init(image: UIImage(named: "export")!,
                   title: localizeStrings("Export log"),
                   detail: "",
-                  targetAction: (self, #selector(self.onClickExportLog(sender:)))),
+                  targetAction: (self, #selector(onClickExportLog(sender:)))),
             .init(image: UIImage(named: "cancellation")!,
                   title: localizeStrings("AccountCancellation"),
                   detail: "",
-                  targetAction: (self, #selector(self.onClickCancellation(sender:)))),
+                  targetAction: (self, #selector(onClickCancellation(sender:)))),
             .init(image: UIImage(named: "rocket")!,
                   title: localizeStrings("FPA"),
                   detail: userUseFPA ? true : false,
-                  targetAction: (self, #selector(self.onClickFPA(sender:)))),
+                  targetAction: (self, #selector(onClickFPA(sender:)))),
             .init(image: UIImage(systemName: "command",
                                  withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .light))!,
                   title: localizeStrings("Shortcuts"),
                   detail: "",
-                  targetAction: (self, #selector(self.onClickShortcuts(sender:))))
+                  targetAction: (self, #selector(onClickShortcuts(sender:)))),
         ]
         tableView.reloadData()
     }
-    
+
     func setupViews() {
         title = localizeStrings("Setting")
         view.addSubview(tableView)
@@ -101,26 +100,27 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             make.edges.equalToSuperview()
         }
     }
-    
+
     // MARK: - Action
+
     @objc func onClickLogout() {
         AuthStore.shared.logout()
     }
-    
-    @objc func onVersion(sender: Any?) {
+
+    @objc func onVersion(sender _: Any?) {
         let url = URL(string: "https://itunes.apple.com/app/id1598891661")!
         UIApplication.shared.open(url)
     }
-    
-    @objc func onClickCancellation(sender: Any?) {
+
+    @objc func onClickCancellation(sender _: Any?) {
         showActivityIndicator()
         ApiProvider.shared.request(fromApi: AccountCancelationValidateRequest()) { [weak self] result in
             guard let self = self else { return }
             self.stopActivityIndicator()
             switch result {
-            case .failure(let error):
+            case let .failure(error):
                 self.toast(error.localizedDescription)
-            case .success(let r):
+            case let .success(r):
                 if r.alreadyJoinedRoomCount > 0 {
                     self.showAlertWith(title: localizeStrings("ClassesStillLeftTips") + r.alreadyJoinedRoomCount.description, message: "", completionHandler: nil)
                 } else {
@@ -130,7 +130,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
     }
-    
+
     @objc func onClickExportLog(sender: Any?) {
         let files = sbLogURLs()
         if files.isEmpty {
@@ -157,26 +157,25 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
                 }
             }
-        }
-        catch {
+        } catch {
             toast("error happen \(error)")
         }
     }
-    
-    @objc func onClickAbout(sender: Any?) {
+
+    @objc func onClickAbout(sender _: Any?) {
         navigationController?.pushViewController(AboutUsViewController(), animated: true)
     }
-    
-    @objc func onClickShortcuts(sender: Any?) {
+
+    @objc func onClickShortcuts(sender _: Any?) {
         let vc = ShortcutsViewController(style: .setting)
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     @objc func onClickFPA(sender: Any?) {
         guard let sender = sender as? UISwitch else { return }
         userUseFPA = sender.isOn
     }
-    
+
     @objc func onClickTheme(sender: Any?) {
         let alertController = UIAlertController(title: localizeStrings("Select Theme"), message: nil, preferredStyle: .actionSheet)
         let manager = Theme.shared
@@ -193,7 +192,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             popoverViewController(viewController: alertController, fromSource: cell.settingDetailLabel)
         }
     }
-    
+
     @objc func onClickLanguage(sender: Any?) {
         let alertController = UIAlertController(title: localizeStrings("Select Language"), message: nil, preferredStyle: .actionSheet)
         let currentLanguage = LocaleManager.language
@@ -209,17 +208,18 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             popoverViewController(viewController: alertController, fromSource: cell.settingDetailLabel)
         }
     }
-    
+
     func rebootAndTurnToSetting() {
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch?.reboot()
         UIApplication.shared.topViewController?.mainContainer?.push(SettingViewController())
     }
-    
+
     @objc func onClickContactUs() {
         navigationController?.pushViewController(ContactUsViewController(), animated: true)
     }
-    
+
     // MARK: - Lazy
+
     lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.layer.borderWidth = commonBorderWidth
@@ -230,7 +230,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         button.setTitle("  " + localizeStrings("Logout"), for: .normal)
         button.addTarget(self, action: #selector(onClickLogout), for: .touchUpInside)
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
-        
+
         button.setTraitRelatedBlock { button in
             button.layer.borderColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection).cgColor
             button.setTitleColor(UIColor.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
@@ -238,8 +238,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         return button
     }()
-    
-    
+
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.backgroundColor = .color(type: .background)
@@ -258,16 +257,17 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.tableHeaderView = .minHeaderView()
         return view
     }()
-    
+
     // MARK: - Tableview
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+    func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         48
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         items.count
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         let item = items[indexPath.row]
@@ -275,7 +275,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             pairs.0.performSelector(onMainThread: pairs.1, with: cell, waitUntilDone: true)
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SettingTableViewCell
@@ -288,7 +288,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.rightArrowView.isHidden = true
             if let pair = item.targetAction {
                 cell.switch.addTarget(pair.0, action: pair.1, for: .valueChanged)
-                    }
+            }
         }
         if let description = item.detail as? String {
             cell.rightArrowView.isHidden = false

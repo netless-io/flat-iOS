@@ -6,16 +6,16 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import RxSwift
-import RxRelay
 import Fastboard
+import RxRelay
+import RxSwift
 
 enum ClassroomStateError {
     case rtmRemoteLogin
     case rtmReconnectingTimeout
     case rtcConnectLost
     case whiteboardError(FastRoomError)
-    
+
     var uiAlertString: String {
         switch self {
         case .rtcConnectLost:
@@ -24,7 +24,7 @@ enum ClassroomStateError {
             return localizeStrings("Rtm reconnecting timeout tips")
         case .rtmRemoteLogin:
             return localizeStrings("Rtm abort tips")
-        case .whiteboardError(let error):
+        case let .whiteboardError(error):
             return localizeStrings(error.localizedDescription)
         }
     }
@@ -47,7 +47,7 @@ protocol ClassroomStateHandler {
     var banState: BehaviorRelay<Bool> { get }
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }
     var currentOnStageUsers: [String: RoomUser] { get }
-    
+
     func checkIfOnStageUserOverMaxCount() -> Single<Bool>
     func send(command: ClassroomCommand) -> Single<Void>
     func members() -> Observable<[RoomUser]>
@@ -55,6 +55,6 @@ protocol ClassroomStateHandler {
 
     func setup() -> Single<Void>
     func destroy()
-    
+
     var error: PublishRelay<ClassroomStateError> { get }
 }

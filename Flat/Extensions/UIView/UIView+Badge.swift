@@ -6,22 +6,22 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
-fileprivate class BadgeView: UIView {
+private class BadgeView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         clipsToBounds = true
         backgroundColor = .systemRed
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = bounds.width / 2
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
 }
@@ -38,7 +38,7 @@ extension UIView {
         }
         return badgeView
     }
-    
+
     func setupBadgeView(rightInset: CGFloat, topInset: CGFloat) {
         let view = getBadageView()
         view.snp.makeConstraints { make in
@@ -48,7 +48,7 @@ extension UIView {
         }
         view.isHidden = true
     }
-    
+
     func updateBadgeHide(_ hide: Bool) {
         let view = getBadageView()
         view.isHidden = hide

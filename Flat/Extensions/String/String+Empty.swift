@@ -12,7 +12,7 @@ extension String {
     var isNotEmptyOrAllSpacing: Bool {
         !isEmptyOrAllSpacing
     }
-    
+
     var isEmptyOrAllSpacing: Bool {
         trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }

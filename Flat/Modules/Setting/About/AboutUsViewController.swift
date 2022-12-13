@@ -6,10 +6,9 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
-import UIKit
-import SafariServices
 import AcknowList
+import SafariServices
+import UIKit
 import Whiteboard
 
 class AboutUsViewController: UIViewController {
@@ -18,7 +17,7 @@ class AboutUsViewController: UIViewController {
         setupViews()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTap)))
     }
-    
+
     @objc func onTap() {
         versionLabel.text = versionLabel.text == "v\(Env().version) (\(Env().build))" ? "Whiteboard v\(WhiteSDK.version())" : "v\(Env().version) (\(Env().build))"
     }
@@ -29,24 +28,24 @@ class AboutUsViewController: UIViewController {
         flatLabel.textColor = .color(type: .text)
         versionLabel.text = "v\(Env().version) (\(Env().build))"
     }
-    
-    @IBAction func onClickPrivacyPolicy(_ sender: Any) {
+
+    @IBAction func onClickPrivacyPolicy(_: Any) {
         let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/privacy.html")!)
         present(controller, animated: true, completion: nil)
     }
-    
-    @IBAction func onClickServiceAgreement(_ sender: Any) {
+
+    @IBAction func onClickServiceAgreement(_: Any) {
         let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/service.html")!)
         present(controller, animated: true, completion: nil)
     }
-    
-    @IBAction func onClickAcknowledgement(_ sender: Any) {
+
+    @IBAction func onClickAcknowledgement(_: Any) {
         guard let path = Bundle.main.path(forResource: "Pods-Flat-acknowledgements", ofType: "plist")
         else { return }
         let vc = AcknowListViewController(plistPath: path)
         present(BaseNavigationViewController(rootViewController: vc), animated: true)
     }
-    
-    @IBOutlet weak var flatLabel: UILabel!
-    @IBOutlet weak var versionLabel: UILabel!
+
+    @IBOutlet var flatLabel: UILabel!
+    @IBOutlet var versionLabel: UILabel!
 }

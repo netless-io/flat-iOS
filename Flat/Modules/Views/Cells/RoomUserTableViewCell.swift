@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class RoomUserTableViewCell: UITableViewCell {
@@ -16,20 +15,22 @@ class RoomUserTableViewCell: UITableViewCell {
         case disconnect
         case raiseHand
     }
-    var clickHandler: ((OperationType)->Void)?
-    
+
+    var clickHandler: ((OperationType) -> Void)?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     func setupViews() {
         contentView.backgroundColor = .classroomChildBG
-        
+
         contentView.addSubview(avatarImageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(statusLabel)
@@ -52,27 +53,28 @@ class RoomUserTableViewCell: UITableViewCell {
             make.top.bottom.equalToSuperview()
             make.right.equalToSuperview().inset(14)
         }
-        
+
         contentView.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
     }
-    
+
     // MARK: - Action
+
     @objc func onClickCamera() {
         clickHandler?(.camera)
     }
-    
+
     @objc func onClickMic() {
         clickHandler?(.mic)
     }
-    
+
     @objc func onClickDisconnect() {
         clickHandler?(.disconnect)
     }
-    
+
     @objc func onClickRaiseHand() {
         clickHandler?(.raiseHand)
     }
-    
+
     lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.font = .systemFont(ofSize: 14)
@@ -80,14 +82,14 @@ class RoomUserTableViewCell: UITableViewCell {
         nameLabel.textColor = .color(type: .text)
         return nameLabel
     }()
-    
+
     lazy var statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.font = .systemFont(ofSize: 12)
         statusLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         return statusLabel
     }()
-    
+
     lazy var disconnectButton: UIButton = {
         let disconnectButton = UIButton(type: .custom)
         disconnectButton.setImage(UIImage(named: "disconnect_speak"), for: .normal)
@@ -96,7 +98,7 @@ class RoomUserTableViewCell: UITableViewCell {
         disconnectButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return disconnectButton
     }()
-    
+
     lazy var raiseHandButton: UIButton = {
         let raiseHandButton = UIButton(type: .custom)
         raiseHandButton.setImage(UIImage(named: "raisehand_small_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -105,7 +107,7 @@ class RoomUserTableViewCell: UITableViewCell {
         raiseHandButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return raiseHandButton
     }()
-    
+
     lazy var cameraButton: UIButton = {
         let cameraButton = UIButton(type: .custom)
         cameraButton.setTraitRelatedBlock { btn in
@@ -116,7 +118,7 @@ class RoomUserTableViewCell: UITableViewCell {
         cameraButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return cameraButton
     }()
-    
+
     lazy var micButton: UIButton = {
         let micButton = UIButton(type: .custom)
         micButton.setTraitRelatedBlock { btn in
@@ -127,7 +129,7 @@ class RoomUserTableViewCell: UITableViewCell {
         micButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return micButton
     }()
-    
+
     lazy var operationStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [cameraButton, micButton, raiseHandButton, disconnectButton])
         view.axis = .horizontal
@@ -135,7 +137,7 @@ class RoomUserTableViewCell: UITableViewCell {
         view.spacing = 0
         return view
     }()
-    
+
     lazy var avatarImageView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true

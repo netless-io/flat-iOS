@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct CommandEncoder {
@@ -14,19 +13,19 @@ struct CommandEncoder {
         let t: RtmCommandType
         let v: NSDictionary
         switch command {
-        case .raiseHand(roomUUID: let roomUUID, raiseHand: let raiseHand):
+        case let .raiseHand(roomUUID: roomUUID, raiseHand: raiseHand):
             t = .raiseHand
             v = ["roomUUID": roomUUID, "raiseHand": raiseHand]
-        case .ban(roomUUID: let roomUUID, status: let status):
+        case let .ban(roomUUID: roomUUID, status: status):
             t = .ban
             v = ["roomUUID": roomUUID, "status": status]
-        case .notice(roomUUID: let roomUUID, text: let text):
+        case let .notice(roomUUID: roomUUID, text: text):
             t = .notice
             v = ["roomUUID": roomUUID, "text": text]
-        case .undefined(reason: let reason):
+        case let .undefined(reason: reason):
             t = .undefine
             v = ["reason": reason]
-        case .updateRoomStatus(roomUUID: let roomUUID, status: let status):
+        case let .updateRoomStatus(roomUUID: roomUUID, status: status):
             t = .updateRoomStatus
             v = ["roomUUID": roomUUID, "status": status.rawValue]
         }

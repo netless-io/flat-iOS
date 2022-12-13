@@ -11,6 +11,7 @@ target 'Flat' do
   pod 'Siren'
   pod 'IQKeyboardManagerSwift'
   pod 'Zip'
+  
   pod 'SwiftFormat/CLI', '~> 0.49'
   
   pod 'AgoraRtm_iOS'

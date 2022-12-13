@@ -8,7 +8,7 @@
 
 import UIKit
 
-typealias TraitCollectionUpdateHandler = ((UITraitCollection?)->Void)
+typealias TraitCollectionUpdateHandler = (UITraitCollection?) -> Void
 
 private var traitCollectionUpdateKey: Void?
 extension UIViewController {
@@ -20,9 +20,9 @@ extension UIViewController {
             objc_setAssociatedObject(self, &traitCollectionUpdateKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
-    
+
     @objc func exchangedTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        self.exchangedTraitCollectionDidChange(previousTraitCollection)
+        exchangedTraitCollectionDidChange(previousTraitCollection)
         traitCollectionUpdateHandler?(previousTraitCollection)
     }
 }
@@ -36,21 +36,20 @@ extension UIView {
             objc_setAssociatedObject(self, &traitCollectionUpdateKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
-    
-    @objc func exchangedTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        self.exchangedTraitCollectionDidChange(traitCollection)
+
+    @objc func exchangedTraitCollectionDidChange(_: UITraitCollection?) {
+        exchangedTraitCollectionDidChange(traitCollection)
         traitCollectionUpdateHandler?(traitCollection)
     }
-    
 }
 
 protocol TraitRelatedBlockSetable {}
 extension UIView: TraitRelatedBlockSetable {}
 extension TraitRelatedBlockSetable where Self: UIView {
     /// Conflict with traitCollectionUpdateHandler
-    func setTraitRelatedBlock(_ block: @escaping (Self)->Void) {
+    func setTraitRelatedBlock(_ block: @escaping (Self) -> Void) {
         block(self)
-        self.traitCollectionUpdateHandler = { [weak self] _ in
+        traitCollectionUpdateHandler = { [weak self] _ in
             guard let strongSelf = self else { return }
             block(strongSelf)
         }

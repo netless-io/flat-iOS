@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class BaseNavigationViewController: UINavigationController {
@@ -14,11 +13,11 @@ class BaseNavigationViewController: UINavigationController {
         super.traitCollectionDidChange(previousTraitCollection)
         updateNaviAppearance()
     }
-    
+
     override var description: String {
         "BaseNavigationViewController: \(children.map { $0.description }.joined(separator: "-"))"
     }
-    
+
     func updateNaviAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .color(type: .background, .weak)
@@ -29,13 +28,13 @@ class BaseNavigationViewController: UINavigationController {
         navigationBar.compactAppearance = appearance
         navigationBar.scrollEdgeAppearance = appearance
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
         updateNaviAppearance()
     }
-    
+
     override func show(_ vc: UIViewController, sender: Any?) {
         if let sender = sender as? Bool {
             pushViewController(vc, animated: sender)
@@ -43,18 +42,18 @@ class BaseNavigationViewController: UINavigationController {
             pushViewController(vc, animated: true)
         }
     }
-    
+
     override func popViewController(animated: Bool) -> UIViewController? {
         super.popViewController(animated: animated)
     }
-    
+
     override func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
         if viewControllers.count > 1 {
             viewControllers.last?.hidesBottomBarWhenPushed = true
         }
         super.setViewControllers(viewControllers, animated: animated)
     }
-    
+
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if #available(iOS 14.0, *) {
             viewController.navigationItem.backButtonDisplayMode = .minimal
@@ -70,7 +69,7 @@ class BaseNavigationViewController: UINavigationController {
 }
 
 extension BaseNavigationViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizerShouldBegin(_: UIGestureRecognizer) -> Bool {
         viewControllers.count > 1
     }
 }

@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 import RxSwift
 
@@ -21,12 +20,10 @@ extension Generator {
                 let request: URLRequest = try self.generateRequest(fromApi: api)
                 observer.onNext(request)
                 observer.onCompleted()
-            }
-            catch {
+            } catch {
                 observer.onError(error)
             }
             return Disposables.create()
         }
-
     }
 }

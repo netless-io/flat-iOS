@@ -9,30 +9,30 @@
 import Foundation
 
 class PageListContainer<T> {
-    var itemsUpdateHandler: (([T], Bool)->Void)?
-    
+    var itemsUpdateHandler: (([T], Bool) -> Void)?
+
     var items: [T]
     var currentPage: Int
     var canLoadMore: Bool
-    
+
     fileprivate let maxItemsPerPage: Int = 50
-    
+
     func receive(items: [T], withItemsPage page: Int) {
         if page == 1 {
-            self.currentPage = page
-            self.canLoadMore = items.count >= maxItemsPerPage
+            currentPage = page
+            canLoadMore = items.count >= maxItemsPerPage
             self.items = items
         } else {
             // Is Next page
-            if self.currentPage + 1 == page {
-                self.currentPage = page
-                self.canLoadMore = items.count >= maxItemsPerPage
+            if currentPage + 1 == page {
+                currentPage = page
+                canLoadMore = items.count >= maxItemsPerPage
                 self.items.append(contentsOf: items)
             }
         }
-        itemsUpdateHandler?(self.items, self.canLoadMore)
+        itemsUpdateHandler?(self.items, canLoadMore)
     }
-    
+
     init() {
         items = []
         currentPage = 1

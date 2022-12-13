@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 let anyCodingKeyIdentifier = CodingUserInfoKey(rawValue: "anyCodingKey")!
@@ -23,7 +22,7 @@ let anyCodingKeyIdentifier = CodingUserInfoKey(rawValue: "anyCodingKey")!
 ///  ' decode.decode(AnyDecodable<Int>.self, from data) '
 struct AnyKeyDecodable<T: Decodable>: Decodable {
     let result: T
-    
+
     init(from decoder: Decoder) throws {
         guard let key = decoder.userInfo[anyCodingKeyIdentifier] as? AnyCodingKey else {
             throw "anyCodingKey does not exist"

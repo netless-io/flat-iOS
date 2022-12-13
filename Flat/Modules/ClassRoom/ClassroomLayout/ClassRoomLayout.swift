@@ -20,12 +20,12 @@ class ClassRoomLayout {
         case top
         case right
     }
-    
+
     enum WhiteboardLayoutStyle {
         case fixedWidth(CGFloat)
         case fixedHeight(CGFloat)
     }
-    
+
     /// If direction is top, the margin is top and bottom; Or the margin is left and right for right
     let rtcMargin: CGFloat = 0
     /// If estimate rtc height less than minRtcHeight, it turn to .right
@@ -34,18 +34,18 @@ class ClassRoomLayout {
     let rtcRatio = ClassRoomLayoutRatioConfig.rtcItemRatio
     let rtcMinRatio: CGFloat = 0.1
     let rtcMaxRatio: CGFloat = 0.3
-    let whiteboardRatio: CGFloat = CGFloat(ClassRoomLayoutRatioConfig.whiteboardRatio)
-    
+    let whiteboardRatio: CGFloat = .init(ClassRoomLayoutRatioConfig.whiteboardRatio)
+
     func update(rtcHide: Bool, contentSize: CGSize) -> OutPut {
 //        print("ClassRoomLayout update from \(rtcHide), \(contentSize)")
         let value = resize(preferredStyle: .fixedWidth(contentSize.width), isRtcHide: rtcHide, contentSize: contentSize)
 //        print("ClassRoomLayout \(value.0), \(value.1)")
         return value.0
     }
-    
+
     private func resize(preferredStyle: WhiteboardLayoutStyle, isRtcHide: Bool, contentSize: CGSize) -> (OutPut, WhiteboardLayoutStyle) {
         switch preferredStyle {
-        case .fixedWidth(let width):
+        case let .fixedWidth(width):
             let estimateRtcHeight: CGFloat = isRtcHide ? 0 : (rtcMinRatio * contentSize.height + (2 * rtcMargin))
             let rtcDirection: RtcDirection = estimateRtcHeight == 0 ? .top : (estimateRtcHeight < minRtcHeight ? .right : .top)
             switch rtcDirection {
@@ -56,7 +56,7 @@ class ClassRoomLayout {
                     return resize(preferredStyle: .fixedHeight(contentSize.height), isRtcHide: isRtcHide, contentSize: contentSize)
                 } else {
                     let heightDelta = contentSize.height - estimateHeight
-                    let realRtcHeight = min((isRtcHide ? 0 : heightDelta + estimateRtcHeight), rtcMaxRatio * contentSize.height)
+                    let realRtcHeight = min(isRtcHide ? 0 : heightDelta + estimateRtcHeight, rtcMaxRatio * contentSize.height)
                     let realWhiteboardHeight = contentSize.height - realRtcHeight
                     let output = OutPut(rtcSize: .init(width: contentSize.width, height: realRtcHeight),
                                         rtcDirection: rtcDirection,
@@ -76,7 +76,7 @@ class ClassRoomLayout {
                                         inset: .init(top: 0, left: 0, bottom: 0, right: 0))
                     return (output, preferredStyle)
                 }
-                
+
                 estimateWhiteWidth = contentSize.width - estimateRtcWidth
                 estimateWhiteHeight = estimateWhiteWidth * whiteboardRatio
                 if estimateWhiteHeight > contentSize.height {
@@ -91,7 +91,7 @@ class ClassRoomLayout {
                     return (output, preferredStyle)
                 }
             }
-        case .fixedHeight(let height):
+        case let .fixedHeight(height):
             let estimateRtcHeight: CGFloat = isRtcHide ? 0 : rtcMinRatio * contentSize.height + (2 * rtcMargin)
             let rtcDirection: RtcDirection = estimateRtcHeight == 0 ? .top : (estimateRtcHeight < minRtcHeight ? .right : .top)
             switch rtcDirection {

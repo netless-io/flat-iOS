@@ -22,18 +22,19 @@ class WhiteboardAppsCell: UICollectionViewCell {
             make.width.height.equalTo(40)
             make.centerX.equalToSuperview()
         }
-        
+
         appTitleLabel.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
             make.left.right.lessThanOrEqualToSuperview().inset(4)
         }
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     lazy var appIconView = UIImageView()
     lazy var appTitleLabel: UILabel = {
         let label = UILabel()

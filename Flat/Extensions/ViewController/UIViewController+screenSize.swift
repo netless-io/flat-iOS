@@ -10,7 +10,7 @@ import UIKit
 
 extension UIViewController {
     fileprivate var mainWindowBounds: CGRect { UIScreen.main.bounds }
-    
+
     var greatWindowSide: CGFloat {
         guard let bounds = view.window?.windowScene?.screen.bounds else {
             let bounds = mainWindowBounds
@@ -18,7 +18,7 @@ extension UIViewController {
         }
         return max(bounds.width, bounds.height)
     }
-    
+
     var smallerWindowSide: CGFloat {
         guard let bounds = view.window?.windowScene?.screen.bounds else {
             let bounds = mainWindowBounds
@@ -27,4 +27,3 @@ extension UIViewController {
         return min(bounds.width, bounds.height)
     }
 }
-

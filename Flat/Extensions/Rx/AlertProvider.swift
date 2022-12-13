@@ -7,51 +7,52 @@
 //
 
 import Foundation
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
 struct AlertModel {
     struct ActionModel {
         var title: String
         var style: UIAlertAction.Style
-        var handler: ((UIAlertAction)->Void)?
-        
+        var handler: ((UIAlertAction) -> Void)?
+
         static let empty = ActionModel(title: "", style: .default, handler: nil)
         static let cancel = ActionModel(title: localizeStrings("Cancel"), style: .cancel, handler: nil)
         static let confirm = ActionModel(title: localizeStrings("Confirm"), style: .default, handler: nil)
     }
-    
+
     var title: String?
     var message: String?
     var preferredStyle: UIAlertController.Style
     var actionModels: [ActionModel]
 }
 
-struct AlertBuilder {
+enum AlertBuilder {
     static func buildAlertController(for model: AlertModel) -> UIAlertController {
-           let controller = UIAlertController(title: model.title,
-                                              message: model.message,
-                                              preferredStyle: model.preferredStyle)
-           model.actionModels.forEach({
-               controller.addAction(UIAlertAction(title: $0.title,
-                                                  style: $0.style,
-                                                  handler: $0.handler)) })
-           return controller
+        let controller = UIAlertController(title: model.title,
+                                           message: model.message,
+                                           preferredStyle: model.preferredStyle)
+        model.actionModels.forEach {
+            controller.addAction(UIAlertAction(title: $0.title,
+                                               style: $0.style,
+                                               handler: $0.handler))
+        }
+        return controller
     }
 }
 
 protocol AlertProvider {
     func showAlert(with model: AlertModel) -> Single<AlertModel.ActionModel>
-    
+
     func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel>
 }
 
 class DefaultAlertProvider: AlertProvider {
     weak var root: UIViewController?
-    
+
     var customPopOverSourceProvider: ((AlertModel) -> (UIView, (dx: CGFloat, dy: CGFloat)))?
-    
+
     // Cancel style will be called when white space clicked
     func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel> {
         guard let root = root else {
@@ -84,7 +85,7 @@ class DefaultAlertProvider: AlertProvider {
             }
             return Disposables.create()
         }
-        
+
         return root.rx.isPresenting
             .asObservable()
             .asSingle()
@@ -94,7 +95,7 @@ class DefaultAlertProvider: AlertProvider {
                 return root.rx.dismiss(animated: true).flatMap { task }
             }
     }
-    
+
     func showAlert(with model: AlertModel) -> Single<AlertModel.ActionModel> {
         guard let root = root else {
             return .error("root deinit")

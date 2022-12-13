@@ -6,9 +6,8 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
-import UIKit
 import MBProgressHUD
+import UIKit
 
 func configProgressHUDAppearance() {
     MBProgressHUD.appearance().margin = 10
@@ -18,7 +17,8 @@ func configProgressHUDAppearance() {
 extension UIViewController {
     func toast(_ text: String,
                timeInterval: TimeInterval = 1.5,
-               preventTouching: Bool = false) {
+               preventTouching: Bool = false)
+    {
         guard !text.isEmpty else { return }
         DispatchQueue.main.async { [weak view] in
             guard let view = view else { return }

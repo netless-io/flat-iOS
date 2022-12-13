@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 enum RtmCommand {
@@ -23,7 +22,7 @@ struct RtmCommandType: RawRepresentable, Codable, Equatable {
     static let notice = RtmCommandType(rawValue: "notice")
     static let undefine = RtmCommandType(rawValue: "undefined")
     static let updateRoomStatus = RtmCommandType(rawValue: "update-room-status")
-    
+
     var rawValue: String
     init(rawValue: String) {
         self.rawValue = rawValue

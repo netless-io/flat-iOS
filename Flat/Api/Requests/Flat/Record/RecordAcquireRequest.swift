@@ -12,18 +12,18 @@ struct RecordAcquireRequest: FlatRequest, Encodable {
     struct Response: Codable {
         let resourceId: String
     }
-    
+
     struct ClientRequest: Codable {
 //        let region: RecordAcquireRequest.Region
         let resourceExpiredHour: Int
-        
-        static let `default` = Self.init(resourceExpiredHour: 24)
+
+        static let `default` = Self(resourceExpiredHour: 24)
     }
-    
+
     struct AgoraData: Codable {
         let clientRequest: ClientRequest
     }
-    
+
 //    enum Region: String, Codable {
 //        /// 中国区
 //        case CN

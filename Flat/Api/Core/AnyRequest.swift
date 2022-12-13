@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct AnyRequest<Response: Decodable>: Request {
@@ -15,12 +14,12 @@ struct AnyRequest<Response: Decodable>: Request {
     var method: HttpMethod
     var task: Task
     var decoder: JSONDecoder
-    
+
     init<T: Request>(request: T) where T.Response == Response {
-        self.path = request.path
-        self.responseType = request.responseType
-        self.method = request.method
-        self.task = request.task
-        self.decoder = request.decoder
+        path = request.path
+        responseType = request.responseType
+        method = request.method
+        task = request.task
+        decoder = request.decoder
     }
 }

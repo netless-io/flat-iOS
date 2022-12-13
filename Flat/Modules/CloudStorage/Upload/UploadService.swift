@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import RxSwift
 import RxRelay
+import RxSwift
 
 enum UploadTaskOperation {
     case reUpload
@@ -26,7 +26,7 @@ enum UploadStatus {
     case reporting
     case reportFinish
     case finish
-    
+
     var availableOperation: UploadTaskOperation? {
         switch self {
         case .error:
@@ -37,7 +37,7 @@ enum UploadStatus {
             return .cancel
         }
     }
-    
+
     var statusOperationImageName: String {
         switch self {
         case .finish:
@@ -48,7 +48,7 @@ enum UploadStatus {
             return "upload_cancel"
         }
     }
-    
+
     var statusDescription: String? {
         let str: String
         switch self {
@@ -61,7 +61,7 @@ enum UploadStatus {
         }
         return localizeStrings(str)
     }
-    
+
     var statusColor: UIColor {
         switch self {
         case .finish:
@@ -72,7 +72,7 @@ enum UploadStatus {
             return .color(type: .text)
         }
     }
-    
+
     var progressBarColor: UIColor {
         switch self {
         case .finish, .reportFinish, .uploadFinish:
@@ -95,30 +95,31 @@ extension URL {
 class UploadService {
     static let shared = UploadService()
     private init() {}
-    
+
     var taskIdentifierMap: [URL: Int] = [:]
     var pendingRequests: [URLSessionUploadTask] = []
     var trackers: [URL: BehaviorRelay<UploadStatus>] = [:]
-    
+
     func getRequestProgress(fromFileURL: URL) -> Observable<Double>? {
         guard let identifier = taskIdentifierMap[fromFileURL],
-              let task = pendingRequests.first(where: { $0.taskIdentifier == identifier }) else {
-                  return nil
-              }
+              let task = pendingRequests.first(where: { $0.taskIdentifier == identifier })
+        else {
+            return nil
+        }
         return Observable<Int>.interval(.milliseconds(500), scheduler: ConcurrentDispatchQueueScheduler(queue: .global()))
             .map { _ in task.progress.fractionCompleted }
             .take(until: { $0 >= 1 || task.progress.isFinished || task.progress.isCancelled })
     }
-    
+
     func removeTask(fromURL: URL) {
         guard let identifier = taskIdentifierMap[fromURL] else { return }
         taskIdentifierMap.removeValue(forKey: fromURL)
         pendingRequests.removeAll(where: { $0.taskIdentifier == identifier })
         trackers.removeValue(forKey: fromURL)
     }
-    
+
     ///   - shouldAccessingSecurityScopedResource: If the file is outside of the app, it should be 'true'
-    func createUploadTaskFrom(fileURL: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool, targetDirectoryPath: String) throws -> (task: Single<String>,  tracker: BehaviorRelay<UploadStatus>)  {
+    func createUploadTaskFrom(fileURL: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool, targetDirectoryPath: String) throws -> (task: Single<String>, tracker: BehaviorRelay<UploadStatus>) {
         if shouldAccessingSecurityScopedResource {
             let accessing = fileURL.startAccessingSecurityScopedResource()
             guard accessing else { throw "access file error, \(fileURL)" }
@@ -133,7 +134,7 @@ class UploadService {
                 fileUUID = info.fileUUID
             })
             .flatMap { [unowned self] info -> Observable<Void> in
-                return try self.upload(fileURL: fileURL, info: info)
+                try self.upload(fileURL: fileURL, info: info)
                     .do(onSubscribed: {
                         tracker.accept(.uploading)
                     })
@@ -147,10 +148,11 @@ class UploadService {
                 }
             })
             .flatMap { [unowned self] _ -> Observable<String> in
-                return self.reportFinish(fileUUID: fileUUID!, region: region, isWhiteboardProjector: ConvertService.isDynamicPpt(url: fileURL))
+                self.reportFinish(fileUUID: fileUUID!, region: region, isWhiteboardProjector: ConvertService.isDynamicPpt(url: fileURL))
                     .do(onSubscribed: {
                         tracker.accept(.reporting)
-                    }).map { _ in return fileUUID! }}
+                    }).map { _ in fileUUID! }
+            }
             .asSingle()
             .do(onSuccess: { _ in
                 tracker.accept(.reportFinish)
@@ -166,9 +168,10 @@ class UploadService {
             }, onDispose: { [unowned self] in
                 // If task canceled, this code should executed before task remove
                 guard let identifier = self.taskIdentifierMap[fileURL],
-                      let task = self.pendingRequests.first(where: { $0.taskIdentifier == identifier }) else {
-                          return
-                      }
+                      let task = self.pendingRequests.first(where: { $0.taskIdentifier == identifier })
+                else {
+                    return
+                }
                 if task.error == nil, !task.progress.isFinished, task.progress.isCancelled {
                     tracker.accept(.cancel)
                     if shouldAccessingSecurityScopedResource {
@@ -180,38 +183,37 @@ class UploadService {
                     }
                 }
             })
-            return (task, tracker)
+        return (task, tracker)
     }
-    
-    fileprivate func prepare(fileURL: URL, region: FlatRegion, targetDirectoryPath: String) -> Observable<UploadInfo> {
+
+    fileprivate func prepare(fileURL: URL, region _: FlatRegion, targetDirectoryPath: String) -> Observable<UploadInfo> {
         do {
             let attribute = try FileManager.default.attributesOfItem(atPath: fileURL.path)
             let name = fileURL.lastPathComponent
             let size = (attribute[.size] as? NSNumber)?.intValue ?? 0
             let request = PrepareUploadRequest(fileName: name, fileSize: size, targetDirectoryPath: targetDirectoryPath)
             return ApiProvider.shared.request(fromApi: request)
-        }
-        catch {
+        } catch {
             return .error(error)
         }
     }
-    
-    fileprivate func reportFinish(fileUUID: String, region: FlatRegion, isWhiteboardProjector: Bool) -> Observable<Void> {
+
+    fileprivate func reportFinish(fileUUID: String, region _: FlatRegion, isWhiteboardProjector _: Bool) -> Observable<Void> {
         ApiProvider.shared.request(fromApi: UploadFinishRequest(fileUUID: fileUUID)).mapToVoid()
     }
-    
+
     fileprivate func upload(fileURL: URL, info: UploadInfo) throws -> Observable<Void> {
         let session = URLSession(configuration: .default)
         let boundary = UUID().uuidString
         var request = URLRequest(url: info.ossDomain, timeoutInterval: 60 * 10)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
+
         let encodedFileName = String(URLComponents(url: fileURL, resolvingAgainstBaseURL: false)?
-                                        .percentEncodedPath
-                                        .split(separator: "/")
-                                        .last ?? "")
-        
+            .percentEncodedPath
+            .split(separator: "/")
+            .last ?? "")
+
         let partFormData = MultipartFormData(fileManager: FileManager.default, boundary: boundary)
         let headers: [(String, String)] = [
             ("key", info.ossFilePath),
@@ -221,7 +223,7 @@ class UploadService {
             ("success_action_status", "200"),
             ("callback", ""),
             ("signature", info.signature),
-            ("Content-Disposition", "attachment; filename=\"\(encodedFileName)\"; filename*=UTF-8''\(encodedFileName)")
+            ("Content-Disposition", "attachment; filename=\"\(encodedFileName)\"; filename*=UTF-8''\(encodedFileName)"),
         ]
         for (key, value) in headers {
             let d = value.data(using: .utf8)!
@@ -230,7 +232,7 @@ class UploadService {
         partFormData.append(fileURL, withName: "file")
         let data = try partFormData.encode()
         return .create { s in
-            let task = session.uploadTask(with: request, from: data) { data, response, error in
+            let task = session.uploadTask(with: request, from: data) { _, response, error in
                 guard error == nil else {
                     s.onError(error!)
                     s.onCompleted()

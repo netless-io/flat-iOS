@@ -12,6 +12,6 @@ struct UpdateRecordEndTimeRequest: FlatRequest {
     let roomUUID: String
     var path: String { "/v1/room/record/update-end-time" }
     var method: HttpMethod { .post }
-    var task: Task { .requestJSONEncodable(encodable: ["roomUUID": roomUUID])}
+    var task: Task { .requestJSONEncodable(encodable: ["roomUUID": roomUUID]) }
     let responseType = EmptyResponse.self
 }

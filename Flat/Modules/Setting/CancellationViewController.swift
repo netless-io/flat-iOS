@@ -6,8 +6,8 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
 import RxSwift
+import UIKit
 
 class CancellationViewController: UIViewController {
     override func viewDidLoad() {
@@ -22,7 +22,7 @@ class CancellationViewController: UIViewController {
             .asDriverOnErrorJustComplete()
             .drive(agreementCheckButton.rx.isSelected)
             .disposed(by: rx.disposeBag)
-        
+
         confirmButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
                 weakSelf.showCheckAlert(title: localizeStrings("CancelationAndLogout"), message: "") {
@@ -30,7 +30,7 @@ class CancellationViewController: UIViewController {
                     ApiProvider.shared.request(fromApi: AccountCancelationRequest()) { result in
                         weakSelf.stopActivityIndicator()
                         switch result {
-                        case .failure(let error):
+                        case let .failure(error):
                             weakSelf.toast(error.localizedDescription)
                         case .success:
                             AuthStore.shared.logout()
@@ -40,10 +40,10 @@ class CancellationViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func bindEnable() {
         agreementCheckButton.rx.tap
-            .map { [unowned self] in !self.confirmButton.isEnabled}
+            .map { [unowned self] in !self.confirmButton.isEnabled }
             .asDriver(onErrorJustReturn: true)
             .startWith(agreementCheckButton.isSelected)
             .drive(with: confirmButton, onNext: { btn, enable in
@@ -52,7 +52,7 @@ class CancellationViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func startTimer() {
         let start = confirmButton.title(for: .normal) ?? ""
         let count = 12
@@ -70,15 +70,15 @@ class CancellationViewController: UIViewController {
 
     func setupViews() {
         title = localizeStrings("AccountCancellation")
-        
+
         view.backgroundColor = .color(type: .background)
-        
+
         let tl = UILabel()
         tl.text = localizeStrings("AccountCancelationInfoTitle")
         tl.textColor = .color(type: .text)
         tl.font = .systemFont(ofSize: 16, weight: .semibold)
         tl.textAlignment = .center
-        
+
         let cl = UILabel()
         cl.text = localizeStrings("AccountCancelationInfo")
         cl.textColor = .color(type: .text)
@@ -86,9 +86,9 @@ class CancellationViewController: UIViewController {
         cl.numberOfLines = 0
         let stackView = UIStackView(arrangedSubviews: [tl, cl])
         stackView.axis = .vertical
-        
+
         tl.snp.makeConstraints { $0.height.equalTo(56) }
-        
+
         let bottomHeight: CGFloat = 40
         let margin = CGFloat(16)
         let srcView = UIScrollView()
@@ -103,7 +103,7 @@ class CancellationViewController: UIViewController {
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin))
             make.width.equalTo(view).offset(-(2 * margin))
         }
-        
+
         let bottomStack = UIStackView(arrangedSubviews: [agreementCheckButton, confirmButton])
         bottomStack.backgroundColor = .color(type: .background)
         bottomStack.axis = .horizontal
@@ -118,7 +118,7 @@ class CancellationViewController: UIViewController {
             make.height.equalTo(bottomHeight)
         }
     }
-    
+
     lazy var confirmButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle(localizeStrings("CancelationAndLogout"), for: .normal)
@@ -133,7 +133,7 @@ class CancellationViewController: UIViewController {
         button.isEnabled = false
         return button
     }()
-    
+
     lazy var agreementCheckButton: UIButton = {
         let btn = UIButton.checkBoxStyleButton()
         btn.setTitleColor(.color(type: .text), for: .normal)

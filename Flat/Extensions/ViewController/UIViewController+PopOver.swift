@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 extension UIPopoverArrowDirection {
@@ -19,7 +18,8 @@ extension UIViewController {
                                sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-15, 0),
                                permittedArrowDirections: UIPopoverArrowDirection = .unknown,
                                animated: Bool = true,
-                               completion: (()->Void)? = nil) {
+                               completion: (() -> Void)? = nil)
+    {
         popoverViewController(viewController: viewController,
                               fromSource: sender,
                               fromItem: nil,
@@ -28,13 +28,14 @@ extension UIViewController {
                               animated: animated,
                               completion: completion)
     }
-    
+
     func popoverViewController(viewController: UIViewController,
                                fromItem item: UIBarButtonItem?,
                                sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-15, 0),
                                permittedArrowDirections: UIPopoverArrowDirection = .unknown,
                                animated: Bool = true,
-                               completion: (()->Void)? = nil) {
+                               completion: (() -> Void)? = nil)
+    {
         popoverViewController(viewController: viewController,
                               fromSource: nil,
                               fromItem: item,
@@ -43,14 +44,15 @@ extension UIViewController {
                               animated: animated,
                               completion: completion)
     }
-    
+
     fileprivate func popoverViewController(viewController: UIViewController,
-                               fromSource sender: UIView? = nil,
-                               fromItem item: UIBarButtonItem? = nil,
-                               sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-15, 0),
-                               permittedArrowDirections: UIPopoverArrowDirection = .unknown,
-                               animated: Bool = true,
-                               completion: (()->Void)? = nil) {
+                                           fromSource sender: UIView? = nil,
+                                           fromItem item: UIBarButtonItem? = nil,
+                                           sourceBoundsInset: (dx: CGFloat, dy: CGFloat) = (-15, 0),
+                                           permittedArrowDirections: UIPopoverArrowDirection = .unknown,
+                                           animated: Bool = true,
+                                           completion: (() -> Void)? = nil)
+    {
         if let presentedViewController = presentedViewController {
             logger.error("can't present when there is presented \(presentedViewController)")
             completion?()
@@ -59,20 +61,20 @@ extension UIViewController {
         viewController.modalPresentationStyle = .popover
         if let view = sender {
             viewController.popoverPresentationController?.sourceView = view
-            
+
             if permittedArrowDirections == .none {
                 var isOnRight = true
                 if let window = view.window {
                     let originInWindow = view.convert(CGPoint.zero, to: window)
                     isOnRight = originInWindow.x >= window.bounds.width / 2
                 }
-                
+
                 if let navi = viewController as? UINavigationController, let root = navi.topViewController {
                     let xInset: CGFloat
                     if isOnRight {
                         xInset = (-root.preferredContentSize.width / 2) + sourceBoundsInset.dx
                     } else {
-                        xInset = (viewController.preferredContentSize.width / 2)  + (-sourceBoundsInset.dx) + view.bounds.width
+                        xInset = (viewController.preferredContentSize.width / 2) + (-sourceBoundsInset.dx) + view.bounds.width
                     }
                     viewController.popoverPresentationController?.sourceRect = .init(x: xInset, y: 0, width: 0, height: 0)
                 } else {
@@ -80,7 +82,7 @@ extension UIViewController {
                     if isOnRight {
                         xInset = (-viewController.preferredContentSize.width / 2) + sourceBoundsInset.dx
                     } else {
-                        xInset = (viewController.preferredContentSize.width / 2)  + (-sourceBoundsInset.dx) + view.bounds.width
+                        xInset = (viewController.preferredContentSize.width / 2) + (-sourceBoundsInset.dx) + view.bounds.width
                     }
                     viewController.popoverPresentationController?.sourceRect = .init(x: xInset, y: 0, width: 0, height: 0)
                 }

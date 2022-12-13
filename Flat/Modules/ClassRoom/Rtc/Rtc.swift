@@ -6,10 +6,10 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import Foundation
 import AgoraRtcKit
-import RxSwift
+import Foundation
 import RxRelay
+import RxSwift
 
 enum RtcError {
     case connectionLost
@@ -20,15 +20,16 @@ class Rtc: NSObject {
     let screenShareInfo: ShareScreenInfo?
     let screenShareJoinBehavior: BehaviorRelay<Bool> = .init(value: false)
     let errorPublisher = PublishRelay<RtcError>.init()
-    private var joinChannelBlock: (()->Void)?
+    private var joinChannelBlock: (() -> Void)?
     let isJoined = BehaviorRelay<Bool>.init(value: false)
     var targetLocalMic: Bool? = false
     var targetLocalCamera: Bool? = false
     var micStrenths: [UInt: PublishRelay<CGFloat>] = [:]
-    
+
     // MARK: - Public
+
     func joinChannel() { joinChannelBlock?() }
-    
+
     func leave() -> Single<Void> {
         agoraKit.setupLocalVideo(nil)
         agoraKit.leaveChannel(nil)
@@ -37,16 +38,16 @@ class Rtc: NSObject {
         isJoined.accept(false)
         return .just(())
     }
-    
+
     func updateRemoteUserStreamType(rtcUID: UInt, type: AgoraVideoStreamType) {
         agoraKit.setRemoteVideoStream(rtcUID, type: type)
     }
-    
+
     func updateRemoteUser(rtcUID: UInt, cameraOn: Bool, micOn: Bool) {
         agoraKit.muteRemoteVideoStream(rtcUID, mute: !cameraOn)
         agoraKit.muteRemoteAudioStream(rtcUID, mute: !micOn)
     }
-    
+
     func updateLocalUser(cameraOn: Bool) {
         if isJoined.value {
             targetLocalCamera = nil
@@ -58,7 +59,7 @@ class Rtc: NSObject {
             logger.trace("update local user status camera: \(cameraOn) to target")
         }
     }
-    
+
     func updateLocalUser(micOn: Bool) {
         if isJoined.value {
             targetLocalMic = nil
@@ -70,7 +71,7 @@ class Rtc: NSObject {
             logger.trace("update local user status mic: \(micOn) to target")
         }
     }
-    
+
     func createOrFetchFromCacheCanvas(for uid: UInt) -> AgoraRtcVideoCanvas {
         if let canvas = remoteCanvas[uid] {
             return canvas
@@ -83,7 +84,7 @@ class Rtc: NSObject {
             return canvas
         }
     }
-    
+
     var remoteCanvas: [UInt: AgoraRtcVideoCanvas] = [:]
     lazy var screenShareCanvas: AgoraRtcVideoCanvas = {
         let canvas = AgoraRtcVideoCanvas()
@@ -91,20 +92,22 @@ class Rtc: NSObject {
         canvas.renderMode = AgoraVideoRenderMode.fit
         return canvas
     }()
+
     var localVideoCanvas: AgoraRtcVideoCanvas!
-    
+
     init(appId: String,
          channelId: String,
          token: String,
          uid: UInt,
-         screenShareInfo: ShareScreenInfo?) {
+         screenShareInfo: ShareScreenInfo?)
+    {
         self.screenShareInfo = screenShareInfo
         super.init()
         agoraKit = .sharedEngine(withAppId: appId, delegate: self)
-        
+
         agoraKit.setLogFile("") // set to default path
         agoraKit.setLogFilter(AgoraLogFilter.error.rawValue)
-        
+
         // 大流720P视频
         let config = AgoraVideoEncoderConfiguration(size: .init(width: 1280, height: 720), frameRate: .fps15, bitrate: 1130, orientationMode: .adaptative)
         agoraKit.setVideoEncoderConfiguration(config)
@@ -116,7 +119,7 @@ class Rtc: NSObject {
         agoraKit.setParameters("{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":5,\"bitRate\":140}}")
         agoraKit.enableVideo()
         agoraKit.enableAudioVolumeIndication(500, smooth: 3, report_vad: true)
-        
+
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
             canvas.uid = uid
@@ -127,10 +130,10 @@ class Rtc: NSObject {
             self?.agoraKit.joinChannel(byToken: token,
                                        channelId: channelId,
                                        info: nil,
-                                       uid: uid, joinSuccess: { [weak self] msg, uid, elapsed in
-                logger.info("end join \(msg), elapsed \(elapsed)")
-                self?.isJoined.accept(true)
-            })
+                                       uid: uid, joinSuccess: { [weak self] msg, _, elapsed in
+                                           logger.info("end join \(msg), elapsed \(elapsed)")
+                                           self?.isJoined.accept(true)
+                                       })
         }
         joinChannel()
 
@@ -149,20 +152,20 @@ class Rtc: NSObject {
 }
 
 extension Rtc: AgoraRtcEngineDelegate {
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurWarning warningCode: AgoraWarningCode) {
+    func rtcEngine(_: AgoraRtcEngineKit, didOccurWarning warningCode: AgoraWarningCode) {
         logger.warning("didOccurWarning \(warningCode)")
     }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOccurError errorCode: AgoraErrorCode) {
+
+    func rtcEngine(_: AgoraRtcEngineKit, didOccurError errorCode: AgoraErrorCode) {
         logger.error("didOccurError \(errorCode)")
     }
-    
-    func rtcEngineConnectionDidLost(_ engine: AgoraRtcEngineKit) {
+
+    func rtcEngineConnectionDidLost(_: AgoraRtcEngineKit) {
         logger.error("lost connection")
         errorPublisher.accept(.connectionLost)
     }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionStateType, reason: AgoraConnectionChangedReason) {
+
+    func rtcEngine(_: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionStateType, reason: AgoraConnectionChangedReason) {
         switch state {
         case .disconnected, .connecting, .reconnecting, .failed:
             isJoined.accept(false)
@@ -172,8 +175,8 @@ extension Rtc: AgoraRtcEngineDelegate {
         }
         logger.info("connectionChangedTo \(state) \(reason)")
     }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], totalVolume: Int) {
+
+    func rtcEngine(_: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], totalVolume _: Int) {
         for speaker in speakers {
             let strenth = CGFloat(speaker.volume) / 255
             if let p = micStrenths[speaker.uid] {
@@ -184,23 +187,23 @@ extension Rtc: AgoraRtcEngineDelegate {
             }
         }
     }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didApiCallExecute error: Int, api: String, result: String) {}
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {}
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didLeaveChannelWith stats: AgoraChannelStats) {}
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
+
+    func rtcEngine(_: AgoraRtcEngineKit, didApiCallExecute _: Int, api _: String, result _: String) {}
+    func rtcEngine(_: AgoraRtcEngineKit, didJoinChannel _: String, withUid _: UInt, elapsed _: Int) {}
+    func rtcEngine(_: AgoraRtcEngineKit, didLeaveChannelWith _: AgoraChannelStats) {}
+
+    func rtcEngine(_: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason _: AgoraUserOfflineReason) {
         if isScreenShareUid(uid: uid) {
             screenShareJoinBehavior.accept(false)
         }
     }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+
+    func rtcEngine(_: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed _: Int) {
         if isScreenShareUid(uid: uid) {
             screenShareJoinBehavior.accept(true)
         }
     }
-    
+
     func isScreenShareUid(uid: UInt) -> Bool {
         if let id = screenShareInfo?.uid, id == uid { return true }
         return false

@@ -6,25 +6,25 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import UIKit
 import RxSwift
+import UIKit
 
 class UploadTaskTableViewCell: UITableViewCell {
     var progressObserveDisposeBag: DisposeBag?
-    var operationClickHandler: (()->Void)?
-    
+    var operationClickHandler: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .color(type: .background)
     }
-    
-    @IBAction func operationButton(_ sender: Any) {
+
+    @IBAction func operationButton(_: Any) {
         operationClickHandler?()
     }
-    
-    @IBOutlet weak var operationButton: UIButton!
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var fileNameLabel: UILabel!
-    @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var progressView: UIProgressView!
+
+    @IBOutlet var operationButton: UIButton!
+    @IBOutlet var statusLabel: UILabel!
+    @IBOutlet var fileNameLabel: UILabel!
+    @IBOutlet var iconImageView: UIImageView!
+    @IBOutlet var progressView: UIProgressView!
 }

@@ -6,24 +6,25 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
-import UIKit
 import RxSwift
+import UIKit
 
 class JoinRoomViewController: UIViewController {
     let deviceStatusStore: UserDevicePreferredStatusStore
-    
+
     // MARK: - LifeCycle
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         modalPresentationStyle = .formSheet
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewWillLayoutSubviews() {
         guard !fireKeyboardFirstTime else { return }
         if view.window != nil, view.bounds.width > 0 {
@@ -31,9 +32,9 @@ class JoinRoomViewController: UIViewController {
             subjectTextField.becomeFirstResponder()
         }
     }
-    
+
     var fireKeyboardFirstTime = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -41,8 +42,9 @@ class JoinRoomViewController: UIViewController {
         setupJoinRoomInputAccessView()
         simulatorUserDeviceStateSelect()
     }
-    
+
     // MARK: - Action
+
     @objc func onClickJoin(_ sender: UIButton) {
         guard let uuid = subjectTextField.text?.replacingOccurrences(of: " ", with: ""), !uuid.isEmpty else {
             return
@@ -50,7 +52,7 @@ class JoinRoomViewController: UIViewController {
         sender.isLoading = true
         let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: uuid, periodicUUID: nil).share(replay: 1, scope: .whileConnected)
         let roomInfo = playInfo.flatMap { info in
-            return RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil)
+            RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil)
         }
         Observable.zip(playInfo, roomInfo)
             .asSingle()
@@ -64,7 +66,7 @@ class JoinRoomViewController: UIViewController {
                                                                      deviceStatus: deviceStatus)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
                 weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
-                
+
                 let parent = weakSelf.mainContainer?.concreteViewController
                 parent?.view.showActivityIndicator()
                 parent?.dismiss(animated: true) {
@@ -75,17 +77,18 @@ class JoinRoomViewController: UIViewController {
                 sender.isLoading = false
                 weakSelf.showAlertWith(message: error.localizedDescription)
             }, onDisposed: { _ in
-                return
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     // MARK: - Private
+
     fileprivate func getRoomUUIDFrom(_ str: String) -> String? {
         if !str.isEmpty {
             if let r = try? str.matchExpressionPattern("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"),
                let url = URL(string: r),
-               Env().webBaseURL.contains(url.host ?? "") {
+               Env().webBaseURL.contains(url.host ?? "")
+            {
                 let id = url.lastPathComponent
                 return id
             } else if let num = try? str.matchExpressionPattern("(\\d ?){10}") {
@@ -95,7 +98,7 @@ class JoinRoomViewController: UIViewController {
         }
         return nil
     }
-    
+
     func bindJoinEnable() {
         subjectTextField.rx.text.orEmpty.asDriver()
             .map { $0.isNotEmptyOrAllSpacing }
@@ -105,7 +108,7 @@ class JoinRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func simulatorUserDeviceStateSelect() {
         // Simulator click to fire permission alert
         let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
@@ -117,14 +120,14 @@ class JoinRoomViewController: UIViewController {
             deviceView.onButtonClick(deviceView.microphoneButton)
         }
     }
-    
+
     func setupViews() {
         addPresentCloseButton()
         addPresentTitle(localizeStrings("Join Room"))
         view.backgroundColor = .color(type: .background)
-        
+
         let bottomStackItemHeight: CGFloat = 44
-        
+
         if isCompact() {
             let centerStack = UIStackView(arrangedSubviews: [subjectTextField, previewView, deviceView])
             centerStack.axis = .vertical
@@ -134,19 +137,19 @@ class JoinRoomViewController: UIViewController {
             centerStack.snp.makeConstraints { make in
                 make.center.equalToSuperview()
             }
-            
+
             subjectTextField.snp.makeConstraints { make in
                 make.width.equalTo(320)
                 make.height.equalTo(66)
             }
-            
+
             previewView.snp.makeConstraints { make in
                 make.height.equalTo(previewView.snp.width)
                 make.width.equalToSuperview().priority(.medium)
                 make.width.greaterThanOrEqualTo(280)
             }
             previewView.transform = .init(scaleX: 0.95, y: 0.95)
-            
+
             view.addSubview(joinButton)
             joinButton.snp.makeConstraints { make in
                 make.height.equalTo(bottomStackItemHeight)
@@ -155,8 +158,7 @@ class JoinRoomViewController: UIViewController {
             }
             return
         }
-        
-        
+
         let bottomStack = UIStackView(arrangedSubviews: [deviceView, joinButton])
         let verticalStack = UIStackView(arrangedSubviews: [subjectTextField, previewView, bottomStack])
         verticalStack.axis = .vertical
@@ -166,20 +168,20 @@ class JoinRoomViewController: UIViewController {
         verticalStack.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide).inset(UIEdgeInsets(top: 56, left: 16, bottom: 16, right: 16))
         }
-        
+
         subjectTextField.setContentHuggingPriority(.defaultLow, for: .vertical)
         subjectTextField.snp.makeConstraints { make in
             make.width.equalTo(320)
             make.height.equalTo(66)
         }
-        
+
         previewView.snp.makeConstraints { make in
-            make.width.equalTo(previewView.snp.height).multipliedBy(16.0/9)
+            make.width.equalTo(previewView.snp.height).multipliedBy(16.0 / 9)
             make.width.equalToSuperview().priority(.medium)
             make.width.greaterThanOrEqualTo(280)
         }
         previewView.transform = .init(scaleX: 0.9, y: 0.9)
-        
+
         bottomStack.axis = .horizontal
         bottomStack.spacing = isCompact() ? 8 : 16
         bottomStack.distribution = .equalCentering
@@ -190,11 +192,12 @@ class JoinRoomViewController: UIViewController {
         joinButton.snp.makeConstraints { make in
             make.height.equalTo(bottomStackItemHeight)
         }
-        
+
         preferredContentSize = .init(width: 480, height: 424)
     }
-    
+
     // MARK: - Lazy
+
     lazy var subjectTextField: BottomLineTextfield = {
         let tf = BottomLineTextfield()
         tf.textColor = .color(type: .text, .strong)
@@ -226,10 +229,10 @@ class JoinRoomViewController: UIViewController {
             }
         }
     }
-    
+
     func setupJoinRoomInputAccessView() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handle(keyboardShowNotification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(handle(keyboardShowNotification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+
         roomInputAccessView.deviceStateView.delegate = deviceAutorizationHelper
         roomInputAccessView.deviceStateView.cameraOnUpdate = { [weak self] camera in
             self?.deviceView.set(cameraOn: camera)
@@ -242,20 +245,20 @@ class JoinRoomViewController: UIViewController {
         roomInputAccessView.joinButton.isHidden = !isCompact()
         roomInputAccessView.enterHandler = onClickJoin(_:)
     }
-    
+
     lazy var roomInputAccessView = JoinRoomInputAccessView(cameraOn: deviceView.cameraOn,
-                                                               micOn: deviceView.micOn,
-                                                               enterTitle: localizeStrings("Join"))
-    
+                                                           micOn: deviceView.micOn,
+                                                           enterTitle: localizeStrings("Join"))
+
     lazy var joinButton: UIButton = {
         let btn = FlatGeneralCrossButton(type: .custom)
         btn.setTitle(localizeStrings("Join"), for: .normal)
         btn.addTarget(self, action: #selector(onClickJoin(_:)), for: .touchUpInside)
         return btn
     }()
-    
+
     lazy var previewView = CameraPreviewView()
-    
+
     lazy var deviceView: CameraMicToggleView = {
         let view = CameraMicToggleView(cameraOn: false, micOn: false)
         view.delegate = deviceAutorizationHelper
@@ -268,7 +271,7 @@ class JoinRoomViewController: UIViewController {
         }
         return view
     }()
-    
+
     lazy var deviceAutorizationHelper = DeviceAutorizationHelper(rootController: self)
 }
 
@@ -278,8 +281,8 @@ extension JoinRoomViewController: UITextFieldDelegate {
         onClickJoin(joinButton)
         return true
     }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn _: NSRange, replacementString string: String) -> Bool {
         if let uuid = getRoomUUIDFrom(string) {
             textField.text = uuid
             textField.sendActions(for: .valueChanged)

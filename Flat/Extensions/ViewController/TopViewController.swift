@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 import UIKit
 
@@ -15,7 +14,7 @@ extension UIApplication {
         guard let rootViewController = keyWindow?.rootViewController else { return nil }
         return topWith(root: rootViewController)
     }
-    
+
     func topWith(root: UIViewController?) -> UIViewController? {
         if let split = root as? UISplitViewController {
             return topWith(root: split.viewControllers.last)

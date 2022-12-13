@@ -7,16 +7,17 @@
 //
 
 import Foundation
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
 extension Reactive where Base: UIViewController {
     func dismiss(animated: Bool) -> Single<Void> {
         Single<Void>.create { observer in
             if let top = self.base.presentedViewController,
                top.modalPresentationStyle == .popover,
-               let popOverPresentationController = top.popoverPresentationController {
+               let popOverPresentationController = top.popoverPresentationController
+            {
                 top.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(popOverPresentationController)
             }
             self.base.dismiss(animated: animated) {
@@ -25,7 +26,7 @@ extension Reactive where Base: UIViewController {
             return Disposables.create()
         }
     }
-    
+
     var isPresenting: Driver<Bool> {
         Single<Bool>.create { ob in
             let vc = self.base
@@ -37,7 +38,7 @@ extension Reactive where Base: UIViewController {
             return Disposables.create()
         }.asDriver(onErrorJustReturn: false)
     }
-    
+
     var isPresented: Driver<Bool> {
         Single<Bool>.create { ob in
             let vc = self.base

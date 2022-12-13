@@ -6,13 +6,12 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 class URLEncoder: ParameterEncoder {
     static let `default` = URLEncoder()
-    
-    func encode(request: URLRequest, _ parameters: [String : Any]) throws -> URLRequest {
+
+    func encode(request: URLRequest, _ parameters: [String: Any]) throws -> URLRequest {
         var request = request
         guard let url = request.url else {
             throw ApiError.encode(message: "url encode without url")
@@ -27,11 +26,11 @@ class URLEncoder: ParameterEncoder {
         }
         return request
     }
-    
+
     func query(_ parameters: [String: Any]) -> String {
         parameters.map { queryComponents(fromKey: $0.key, value: $0.value) }.map { "\($0.0)=\($0.1)" }.joined(separator: "&")
     }
-    
+
     func queryComponents(fromKey key: String, value: Any) -> (String, String) {
         switch value {
         case let bool as Bool:

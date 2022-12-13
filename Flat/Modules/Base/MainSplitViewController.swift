@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 protocol MainSplitViewControllerDetailUpdateDelegate: AnyObject {
@@ -15,7 +14,7 @@ protocol MainSplitViewControllerDetailUpdateDelegate: AnyObject {
 
 extension UISplitViewController {
     /// hidePrimary will only effect when style is triple column
-    @objc func show(_ vc: UIViewController, hidePrimary: Bool = false) {
+    @objc func show(_ vc: UIViewController, hidePrimary _: Bool = false) {
         showDetailViewController(vc, sender: nil)
     }
 }
@@ -26,7 +25,7 @@ extension UIViewController {
         if let tab = navigationController?.tabBarController as? MainTabBarController { return tab }
         return presentingViewController as? MainContainer
     }
-    
+
     var mainSplitViewController: MainSplitViewController? {
         if let vc = presentingViewController as? MainSplitViewController {
             return vc
@@ -43,7 +42,7 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
             return .all
         }
     }
-    
+
     var canShowDetail: Bool {
         if #available(iOS 14.0, *) {
             if style == .unspecified { return false }
@@ -51,9 +50,9 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         if isCollapsed || displayMode == .secondaryOnly { return false }
         return true
     }
-    
+
     weak var detailUpdateDelegate: MainSplitViewControllerDetailUpdateDelegate?
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if canShowDetail {
@@ -63,13 +62,13 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
         view.backgroundColor = .color(light: .grey1, dark: UIColor(hexString: "#2B2F38"))
     }
-    
+
     override func show(_ vc: UIViewController, hidePrimary: Bool = false) {
         detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(vc, sender: nil)
         if #available(iOS 14.0, *) {
@@ -90,7 +89,7 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
             showDetailViewController(vc, sender: nil)
         }
     }
-    
+
     func cleanSecondary() {
         if canShowDetail {
             if #available(iOS 14.0, *) {
@@ -101,10 +100,10 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
             }
         }
     }
-    
+
     lazy var emptyDetailController = EmptySplitSecondaryViewController()
-    
-    func splitViewController(_ splitViewController: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
+
+    func splitViewController(_: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
         // Wrap a navigation controller for split show a single vc
         if canShowDetail {
             if vc is UINavigationController {
@@ -118,4 +117,3 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         }
     }
 }
-

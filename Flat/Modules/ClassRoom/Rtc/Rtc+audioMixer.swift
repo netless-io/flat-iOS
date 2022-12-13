@@ -6,10 +6,10 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import Foundation
-import Fastboard
-import Whiteboard
 import AgoraRtcKit
+import Fastboard
+import Foundation
+import Whiteboard
 
 private let agoraSuccessStateCode = 0
 
@@ -27,7 +27,7 @@ extension Rtc: FastAudioMixerDelegate {
             audioBridge.setMediaState(agoraPlayErrorStateCode, errorCode: errorCode)
         }
     }
-    
+
     func stopAudioMixing(audioBridge: WhiteAudioMixerBridge) {
         let errorCode = Int(agoraKit.stopAudioMixing())
         logger.info("mixing stop code: \(errorCode)")
@@ -35,7 +35,7 @@ extension Rtc: FastAudioMixerDelegate {
             audioBridge.setMediaState(agoraPlaceholderStateCode, errorCode: errorCode)
         }
     }
-    
+
     func pauseAudioMixing(audioBridge: WhiteAudioMixerBridge) {
         let errorCode = Int(agoraKit.pauseAudioMixing())
         logger.info("mixing pause code: \(errorCode)")
@@ -43,7 +43,7 @@ extension Rtc: FastAudioMixerDelegate {
             audioBridge.setMediaState(agoraPlaceholderStateCode, errorCode: errorCode)
         }
     }
-    
+
     func resumeAudioMixing(audioBridge: WhiteAudioMixerBridge) {
         let errorCode = Int(agoraKit.resumeAudioMixing())
         logger.info("mixing resume code: \(errorCode)")
@@ -51,7 +51,7 @@ extension Rtc: FastAudioMixerDelegate {
             audioBridge.setMediaState(agoraPlaceholderStateCode, errorCode: errorCode)
         }
     }
-    
+
     func setAudioMixingPosition(audioBridge: WhiteAudioMixerBridge, _ position: Int) {
         let errorCode = Int(agoraKit.setAudioMixingPosition(position))
         logger.info("mixing set position: \(position), code: \(errorCode)")
@@ -71,8 +71,8 @@ extension Rtc {
             objc_setAssociatedObject(self, &currentAudioBridgeKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, localAudioMixingStateDidChanged state: AgoraAudioMixingStateCode, reason: AgoraAudioMixingReasonCode) {
+
+    func rtcEngine(_: AgoraRtcEngineKit, localAudioMixingStateDidChanged state: AgoraAudioMixingStateCode, reason: AgoraAudioMixingReasonCode) {
         logger.info("mixing rtc state update state: \(state.rawValue), errorCode: \(reason.rawValue) ")
         currentAudioBridge?.setMediaState(state.rawValue, errorCode: reason.rawValue)
     }

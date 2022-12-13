@@ -6,12 +6,11 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 protocol Request {
     associatedtype Response: Decodable
-    
+
     var path: String { get }
     var method: HttpMethod { get }
     var responseType: Response.Type { get }

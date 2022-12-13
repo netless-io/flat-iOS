@@ -6,8 +6,8 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
 import AVFoundation
+import UIKit
 
 extension UIDeviceOrientation {
     func toInterfaceOrientation() -> UIInterfaceOrientation {
@@ -40,24 +40,25 @@ class CameraPreviewView: UIView {
         syncRotate()
         NotificationCenter.default.addObserver(self, selector: #selector(syncRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func didMoveToWindow() {
         super.didMoveToWindow()
         // Turn off device
-        if window == nil, self.isOn {
+        if window == nil, isOn {
             turnCamera(on: false)
         }
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         previewLayer.frame = bounds
     }
-    
+
     @objc func syncRotate() {
         func applicantionOrientation() -> UIInterfaceOrientation {
             return (UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene }) as? UIWindowScene)?.interfaceOrientation ?? .unknown
@@ -77,19 +78,19 @@ class CameraPreviewView: UIView {
             return
         }
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         previewLayer.backgroundColor = UIColor.color(type: .primary, .weaker).cgColor
     }
-    
+
     func setupViews() {
         previewLayer.backgroundColor = UIColor.color(type: .primary, .weaker).cgColor
         layer.addSublayer(previewLayer)
         previewLayer.videoGravity = .resizeAspectFill
         clipsToBounds = true
         layer.cornerRadius = 8
-        
+
         addSubview(avatarContainer)
         avatarContainer.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -103,9 +104,9 @@ class CameraPreviewView: UIView {
         }
         avatarImageView.kf.setImage(with: AuthStore.shared.user?.avatar)
     }
-    
+
     var isOn = false
-    
+
     func turnCamera(on: Bool) {
         if on == isOn { return }
         if on {
@@ -129,7 +130,7 @@ class CameraPreviewView: UIView {
         }
         isOn = on
     }
-    
+
     var didSetupCapture = false
     func setupCapture() {
         do {
@@ -156,26 +157,25 @@ class CameraPreviewView: UIView {
             }
             syncRotate()
             didSetupCapture = true
-        }
-        catch {
+        } catch {
             logger.error("setup capture error \(error)")
         }
     }
-    
+
     lazy var avatarImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         return view
     }()
-    
+
     lazy var avatarContainer: UIView = {
         let view = UIView()
         view.backgroundColor = .color(type: .primary, .weaker)
         return view
     }()
-    
+
     lazy var previewLayer = AVCaptureVideoPreviewLayer(session: session)
-    
+
     lazy var session: AVCaptureSession = {
         let session = AVCaptureSession()
         session.sessionPreset = .medium

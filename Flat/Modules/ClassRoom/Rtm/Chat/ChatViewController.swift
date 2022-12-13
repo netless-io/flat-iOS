@@ -6,17 +6,17 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import UIKit
-import RxSwift
-import RxRelay
-import RxCocoa
 import DZNEmptyDataSet
+import RxCocoa
+import RxRelay
+import RxSwift
+import UIKit
 
 class ChatViewController: UIViewController {
     let noticeCellIdentifier = "noticeCellIdentifier"
     let cellIdentifier = "cellIdentifier"
     let viewModel: ChatViewModel
-    
+
     let ownerRtmId: String
     let userRtmId: String
     /// If message is banning now
@@ -25,14 +25,14 @@ class ChatViewController: UIViewController {
             banTextButton.isSelected = isInMessageBan
         }
     }
-    
+
     /// Is message been banned
     var isMessageBaned = false {
         didSet {
             updateDidMessageBan(isMessageBaned)
         }
     }
-    
+
     var messages: [DisplayMessage] = [] {
         didSet {
             tableView.reloadData()
@@ -44,9 +44,11 @@ class ChatViewController: UIViewController {
     }
 
     // MARK: - LifeCycle
+
     init(viewModel: ChatViewModel,
          userRtmId: String,
-         ownerRtmId: String) {
+         ownerRtmId: String)
+    {
         self.ownerRtmId = ownerRtmId
         self.viewModel = viewModel
         self.userRtmId = userRtmId
@@ -54,48 +56,50 @@ class ChatViewController: UIViewController {
         modalPresentationStyle = .popover
         preferredContentSize = .init(width: UIScreen.main.bounds.width / 2, height: 560)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         bind()
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.contentInset = .init(top: topView.bounds.height, left: 0, bottom: inputStackView.bounds.height + 14, right: 0)
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         tableView.reloadEmptyDataSet()
     }
-    
+
     // MARK: - Private
+
     func bind() {
         let returnKey = inputTextField.rx.controlEvent(.editingDidEndOnExit)
         let send = Driver.of(returnKey.asDriver(),
                              sendButton.rx.tap.asDriver())
             .merge()
-        
+
         let output = viewModel.transform(input: .init(sendTap: send,
-                                                     textInput: inputTextField.rx.text.orEmpty.asDriver()))
-        
+                                                      textInput: inputTextField.rx.text.orEmpty.asDriver()))
+
         output.sendMessageEnable
             .drive(sendButton.rx.isEnabled)
             .disposed(by: rx.disposeBag)
-        
+
         output.sendMessage
             .drive(with: self, onNext: { weakSelf, _ in
                 weakSelf.inputTextField.text = nil
                 weakSelf.inputTextField.sendActions(for: .valueChanged)
             })
             .disposed(by: rx.disposeBag)
-        
+
         output.message.asDriver(onErrorJustReturn: [])
             .do(onNext: { [weak self] _ in
                 self?.view.endFlatLoading()
@@ -106,35 +110,34 @@ class ChatViewController: UIViewController {
                 weakSelf.messages = msgs
             })
             .disposed(by: rx.disposeBag)
-        
-                
+
         // Outside
-                
-                viewModel.isBanned
-                .drive(banTextButton.rx.isSelected)
-                .disposed(by: rx.disposeBag)
-                
-                viewModel.isBanned
-                .map { [weak self] ban -> Bool in
-                    if let isOwner = self?.viewModel.isOwner, isOwner {
-                        return false
-                    } else {
-                        return ban
-                    }
+
+        viewModel.isBanned
+            .drive(banTextButton.rx.isSelected)
+            .disposed(by: rx.disposeBag)
+
+        viewModel.isBanned
+            .map { [weak self] ban -> Bool in
+                if let isOwner = self?.viewModel.isOwner, isOwner {
+                    return false
+                } else {
+                    return ban
                 }
-                .drive(with: self, onNext: { weakSelf, ban in
-                    weakSelf.inputTextField.isEnabled = !ban
-                    if ban {
-                        weakSelf.inputTextField.text = nil
-                        weakSelf.inputTextField.sendActions(for: .valueChanged)
-                    }
-                    weakSelf.inputTextField.placeholder = ban ? localizeStrings("All banned"): localizeStrings("Say Something...")
-                })
-                .disposed(by: rx.disposeBag)
-        
+            }
+            .drive(with: self, onNext: { weakSelf, ban in
+                weakSelf.inputTextField.isEnabled = !ban
+                if ban {
+                    weakSelf.inputTextField.text = nil
+                    weakSelf.inputTextField.sendActions(for: .valueChanged)
+                }
+                weakSelf.inputTextField.placeholder = ban ? localizeStrings("All banned") : localizeStrings("Say Something...")
+            })
+            .disposed(by: rx.disposeBag)
+
         updateBanTextButtonEnable(viewModel.isOwner)
     }
-    
+
     func setupViews() {
         view.backgroundColor = .classroomChildBG
         view.addSubview(tableView)
@@ -148,11 +151,11 @@ class ChatViewController: UIViewController {
             make.left.right.top.equalToSuperview()
             make.height.equalTo(40)
         }
-        
+
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         view.addLayoutGuide(leftMarginGuide)
         leftMarginGuide.snp.makeConstraints { make in
             make.bottom.height.equalTo(inputStackView)
@@ -164,22 +167,22 @@ class ChatViewController: UIViewController {
             make.right.bottom.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(48)
         }
-        
+
         inputBg.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(inputStackView)
         }
-        
+
         let line = UIView()
         line.backgroundColor = .borderColor
         view.addSubview(line)
         line.snp.makeConstraints { make in
             make.left.right.equalTo(inputStackView)
             make.bottom.equalTo(inputStackView.snp.top)
-            make.height.equalTo(1/UIScreen.main.scale)
+            make.height.equalTo(1 / UIScreen.main.scale)
         }
     }
-    
+
     // Call it after view did load
     func updateBanTextButtonEnable(_ enable: Bool) {
         banTextButton.isHidden = !enable
@@ -187,29 +190,30 @@ class ChatViewController: UIViewController {
             make.width.equalTo(enable ? 0 : 8)
         }
     }
-    
+
     fileprivate func updateDidMessageBan(_ ban: Bool) {
         sendButton.isEnabled = !ban
         inputTextField.isEnabled = !ban
         if ban {
             inputTextField.text = nil
         }
-        inputTextField.placeholder = ban ? localizeStrings("All banned"): localizeStrings("Say Something...")
+        inputTextField.placeholder = ban ? localizeStrings("All banned") : localizeStrings("Say Something...")
     }
-    
+
     // MARK: - Lazy
+
     lazy var sendButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTraitRelatedBlock({ button in
+        button.setTraitRelatedBlock { button in
             button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .strong).resolvedColor(with: button.traitCollection)), for: .normal)
             button.setImage(UIImage(named: "send_message")?.tintColor(.color(type: .text, .weak).resolvedColor(with: button.traitCollection)), for: .disabled)
-        })
+        }
         button.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return button
     }()
-    
+
     lazy var leftMarginGuide = UILayoutGuide()
-    
+
     lazy var inputStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [banTextButton, textFieldContainer, sendButton])
         view.axis = .horizontal
@@ -217,28 +221,28 @@ class ChatViewController: UIViewController {
         sendButton.snp.makeConstraints { $0.width.equalTo(44) }
         return view
     }()
-    
+
     lazy var textFieldContainer: UIView = {
         let container = UIView()
         container.addSubview(inputTextField)
         inputTextField.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets.init(top: 8, left: 0, bottom: 8, right: 0))
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
         }
         return container
     }()
-    
+
     lazy var banTextButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setTraitRelatedBlock({  button in
+        btn.setTraitRelatedBlock { button in
             button.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .text).resolvedColor(with: button.traitCollection)), for: .normal)
             button.setImage(UIImage(named: "message_ban")?.tintColor(.color(type: .danger).resolvedColor(with: button.traitCollection)), for: .selected)
-        })
+        }
         btn.contentEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 8)
         return btn
     }()
-    
+
     lazy var inputTextField: UITextField = {
-        let inputTextField = UITextField.init(frame: .zero)
+        let inputTextField = UITextField(frame: .zero)
         inputTextField.backgroundColor = .classroomChildBG
         inputTextField.textColor = .color(type: .text, .strong)
         inputTextField.clipsToBounds = true
@@ -249,7 +253,7 @@ class ChatViewController: UIViewController {
         inputTextField.leftViewMode = .always
         return inputTextField
     }()
-    
+
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
@@ -264,7 +268,7 @@ class ChatViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(8)
         }
-        
+
         let topLabel = UILabel(frame: .zero)
         topLabel.text = localizeStrings("Chat")
         topLabel.textColor = .color(type: .text, .strong)
@@ -277,7 +281,7 @@ class ChatViewController: UIViewController {
         view.addLine(direction: .bottom, color: .borderColor)
         return view
     }()
-    
+
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
         view.backgroundColor = .classroomChildBG
@@ -297,7 +301,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
         switch message {
-        case .user(message: let message, info: let info):
+        case let .user(message: message, info: info):
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ChatTableViewCell
             let formatter = DateFormatter()
             formatter.timeStyle = .short
@@ -310,26 +314,26 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
                         isTeach: message.userId == ownerRtmId,
                         style: message.userId == userRtmId ? .self : .other)
             return cell
-        case .notice(let notice):
+        case let .notice(notice):
             let cell = tableView.dequeueReusableCell(withIdentifier: noticeCellIdentifier, for: indexPath) as! ChatNoticeTableViewCell
             cell.labelView.label.text = notice
             return cell
         }
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
+
+    func numberOfSections(in _: UITableView) -> Int {
         1
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         messages.count
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+    func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let message = messages[indexPath.row]
         switch message {
-        case .user(message: let message, _):
-            let width = view.bounds.width - (2*ChatTableViewCell.textMargin) - ChatTableViewCell.textEdge.left - ChatTableViewCell.textEdge.right
+        case let .user(message: message, _):
+            let width = view.bounds.width - (2 * ChatTableViewCell.textMargin) - ChatTableViewCell.textEdge.left - ChatTableViewCell.textEdge.right
             let textSize = message.text.boundingRect(with: .init(width: width,
                                                                  height: .greatestFiniteMagnitude),
                                                      options: [.usesLineFragmentOrigin, .usesFontLeading],
@@ -344,20 +348,21 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - EmptyData
+
 extension ChatViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    func title(forEmptyDataSet _: UIScrollView) -> NSAttributedString? {
         nil
     }
-    
-    func backgroundColor(forEmptyDataSet scrollView: UIScrollView!) -> UIColor! {
+
+    func backgroundColor(forEmptyDataSet _: UIScrollView!) -> UIColor! {
         .classroomChildBG
     }
-    
-    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+
+    func image(forEmptyDataSet _: UIScrollView) -> UIImage? {
         UIImage(named: "room_empty", in: nil, compatibleWith: traitCollection)
     }
-    
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+
+    func emptyDataSetShouldAllowScroll(_: UIScrollView) -> Bool {
         true
     }
 }

@@ -6,38 +6,37 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
-import UIKit
-import QuartzCore
 import Foundation
+import QuartzCore
+import UIKit
 
 class ChatTableViewCell: UITableViewCell {
     static let nickNameHeight: CGFloat = 22
     static let textFont = UIFont.systemFont(ofSize: 14)
-    static let textEdge: UIEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    static let textEdge: UIEdgeInsets = .init(top: 8, left: 12, bottom: 8, right: 12)
     static let textMargin: CGFloat = 52
     static let textTopMargin: CGFloat = 34
     static let topMargin: CGFloat = 12
-    static let textAttribute: [NSAttributedString.Key : Any] = [
+    static let textAttribute: [NSAttributedString.Key: Any] = [
         .font: ChatTableViewCell.textFont,
         .paragraphStyle: {
             let paraStyle = NSMutableParagraphStyle()
             paraStyle.lineSpacing = 6
             return paraStyle
-        }()
+        }(),
     ]
-    
+
     enum Style {
         case other
         case `self`
-        
+
         var backgroundColor: UIColor {
             switch self {
             case .other: return .color(light: .blue0, dark: .grey9)
             case .`self`: return .color(type: .primary)
             }
         }
-        
+
         var textColor: UIColor {
             switch self {
             case .other: return .color(light: .blue8, dark: .blue0)
@@ -45,18 +44,19 @@ class ChatTableViewCell: UITableViewCell {
             }
         }
     }
-    
+
     var chatStyle: Style = .other
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     func setupViews() {
         selectionStyle = .none
         backgroundColor = .classroomChildBG
@@ -73,12 +73,12 @@ class ChatTableViewCell: UITableViewCell {
         contentView.addSubview(triangleContainer)
         triangleContainer.layer.addSublayer(triangleLayer)
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         triangleLayer.fillColor = chatStyle.backgroundColor.cgColor
     }
-    
+
     func update(nickName: String, text: String, time: String, avatar: URL?, isTeach: Bool, style: Style) {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
@@ -89,7 +89,7 @@ class ChatTableViewCell: UITableViewCell {
         bubbleView.backgroundColor = style.backgroundColor
         triangleLayer.fillColor = style.backgroundColor.cgColor
         teacherIcon.isHidden = !isTeach
-        
+
         var attr = ChatTableViewCell.textAttribute
         attr[.foregroundColor] = style.textColor
         chatContentLabel.attributedText = NSAttributedString(string: text, attributes: attr)
@@ -147,7 +147,7 @@ class ChatTableViewCell: UITableViewCell {
         }
         CATransaction.commit()
     }
-    
+
     lazy var nickNameLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 12)
@@ -155,14 +155,14 @@ class ChatTableViewCell: UITableViewCell {
         label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
-    
+
     lazy var avatarView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
         return view
     }()
-    
+
     lazy var timeLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 12)
@@ -176,24 +176,24 @@ class ChatTableViewCell: UITableViewCell {
         view.layer.cornerRadius = 6
         return view
     }()
-    
+
     lazy var chatContentLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
         return label
     }()
-    
+
     lazy var teacherIcon = UIImageView(image: UIImage(named: "teach_icon"))
-    
+
     lazy var infoStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [nickNameLabel, timeLabel, teacherIcon])
         stack.axis = .horizontal
         stack.spacing = 4
         return stack
     }()
-    
+
     lazy var triangleContainer = UIView(frame: .init(origin: .zero, size: .init(width: 8, height: 8)))
-    
+
     lazy var triangleLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         let path = CGMutablePath()

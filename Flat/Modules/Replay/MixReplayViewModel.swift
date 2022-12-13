@@ -7,9 +7,9 @@
 //
 
 import Foundation
-import Whiteboard
-import SyncPlayer
 import RxSwift
+import SyncPlayer
+import Whiteboard
 
 class MixReplayViewModel {
     struct PlayRecord {
@@ -17,32 +17,32 @@ class MixReplayViewModel {
         let rtcPlayer: AVPlayer
         let duration: TimeInterval
     }
-    
+
     let roomInfo: RoomBasicInfo
     let recordDetail: RecordDetailInfo
-    
-    var currentIndex: Int? = nil
+
+    var currentIndex: Int?
     var whiteSDK: WhiteSDK!
-    
+
     internal init(roomInfo: RoomBasicInfo, recordDetail: RecordDetailInfo) {
         self.roomInfo = roomInfo
         self.recordDetail = recordDetail
     }
-    
+
     func setupWhite(_ whiteboardView: WhiteBoardView, index: Int) -> Single<PlayRecord> {
         showLog = true
-        
+
         currentIndex = index
         let config = WhiteSdkConfiguration(app: Env().netlessAppId)
         config.region = .CN
         config.userCursor = true
         config.useMultiViews = true
         config.log = false
-        
+
         whiteSDK = WhiteSDK(whiteBoardView: whiteboardView,
                             config: config,
                             commonCallbackDelegate: nil)
-        
+
         let whitePlayerConfig = WhitePlayerConfig(room: recordDetail.whiteboardRoomUUID,
                                                   roomToken: recordDetail.whiteboardRoomToken)
         let windowParams = WhiteWindowParams()
@@ -57,9 +57,9 @@ class MixReplayViewModel {
             windowParams.prefersColorScheme = .auto
         }
         windowParams.containerSizeRatio = NSNumber(value: ClassRoomLayoutRatioConfig.whiteboardRatio)
-        
+
         whitePlayerConfig.windowParams = windowParams
-        
+
         let record = recordDetail.recordInfo[index]
         let beginTimeStamp = record.beginTime.timeIntervalSince1970
         let duration = record.endTime.timeIntervalSince(record.beginTime)
@@ -70,7 +70,7 @@ class MixReplayViewModel {
                 observer.onError("self not exist")
                 return Disposables.create()
             }
-            self.whiteSDK.createReplayer(with: whitePlayerConfig, callbacks: nil) { success, player, error in
+            self.whiteSDK.createReplayer(with: whitePlayerConfig, callbacks: nil) { _, player, error in
                 if let error = error {
                     observer.onError(error)
                 } else if let player = player {
@@ -82,7 +82,7 @@ class MixReplayViewModel {
             }
             return Disposables.create()
         }
-        
+
         return whitePlayer
             .map { whitePlayer -> PlayRecord in
                 let rtcPlayer = AVPlayer(url: record.videoURL)

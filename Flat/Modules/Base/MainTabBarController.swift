@@ -6,20 +6,20 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         traitCollection.hasCompact ? .portrait : .all
     }
-    
+
     override var shouldAutorotate: Bool { true }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         setup()
@@ -30,7 +30,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             navi.show(vc, sender: sender)
         }
     }
-    
+
     func setup() {
         tabBar.tintColor = .blue6
         tabBar.isTranslucent = true
@@ -41,7 +41,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         if #available(iOS 15.0, *) {
             tabBar.scrollEdgeAppearance = appearance
         }
-        
+
         let home = makeSubController(fromViewController: HomeViewController(),
                                      image: UIImage(named: "side_home")!,
                                      selectedImage: UIImage(named: "side_home_filled")!,
@@ -52,10 +52,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
                                              selectedImage: UIImage(named: "side_cloud_filled")!,
                                              title: localizeStrings("Cloud Storage"))
         addChild(cloudStorage)
-        
+
         delegate = self
     }
-    
+
     func makeSubController(
         fromViewController controller: UIViewController,
         image: UIImage,
@@ -68,8 +68,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         let navi = BaseNavigationViewController(rootViewController: controller)
         return navi
     }
-    
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+
+    func tabBarController(_: UITabBarController, didSelect _: UIViewController) {
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
     }
 }

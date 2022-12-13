@@ -6,14 +6,13 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 private var popOverDismissHandlerKey: Void?
 
 // Set popoverPresentationController?.delegate to self, to make sure the dismiss be notified
 extension UIViewController: UIPopoverPresentationControllerDelegate {
-    typealias PopOverDismissHandler = ()->Void
+    typealias PopOverDismissHandler = () -> Void
     var popOverDismissHandler: PopOverDismissHandler? {
         get {
             objc_getAssociatedObject(self, &popOverDismissHandlerKey) as? PopOverDismissHandler
@@ -22,7 +21,7 @@ extension UIViewController: UIPopoverPresentationControllerDelegate {
             objc_setAssociatedObject(self, &popOverDismissHandlerKey, newValue, .OBJC_ASSOCIATION_COPY)
         }
     }
-    
+
     public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         if let style = adaptivePresentationStyleAdaptor?(controller, traitCollection) {
             return style
@@ -30,12 +29,12 @@ extension UIViewController: UIPopoverPresentationControllerDelegate {
             return .none
         }
     }
-    
-    public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+
+    public func presentationControllerDidDismiss(_: UIPresentationController) {
         popOverDismissHandler?()
     }
-    
-    public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+
+    public func popoverPresentationControllerDidDismissPopover(_: UIPopoverPresentationController) {
         popOverDismissHandler?()
     }
 }

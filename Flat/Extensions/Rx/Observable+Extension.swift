@@ -7,35 +7,35 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
 extension ObservableType {
     func mapToVoid() -> Observable<Void> {
-        map { _ -> Void in return () }
+        map { _ in () }
     }
-    
+
     func asDriverOnErrorJustComplete() -> Driver<Element> {
-        return asDriver { error in
-            return Driver.empty()
+        return asDriver { _ in
+            Driver.empty()
         }
     }
 }
 
 extension PrimitiveSequenceType where Trait == SingleTrait {
     func mapToVoid() -> Single<Void> {
-        map { _ -> Void in return () }
+        map { _ in () }
     }
 }
 
 extension PrimitiveSequenceType where Trait == MaybeTrait {
     func mapToVoid() -> Maybe<Void> {
-        map { _ -> Void in return () }
+        map { _ in () }
     }
 }
 
 extension SharedSequenceConvertibleType {
     func mapToVoid() -> SharedSequence<SharingStrategy, Void> {
-        map { _ -> Void in return () }
+        map { _ in () }
     }
 }

@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct CommandDecoder {
@@ -24,17 +23,17 @@ struct CommandDecoder {
         case .ban:
             guard let isBan = info["status"] as? Bool else { return .undefined(reason: "decode command ban error") }
             return .ban(roomUUID: roomUUID, status: isBan)
-        case.notice:
+        case .notice:
             guard let text = info["text"] as? String else { return .undefined(reason: "decode command notice error") }
             return .notice(roomUUID: roomUUID, text: text)
         case .updateRoomStatus:
-            guard let statusStr = info["status"] as? String else { return .undefined(reason: "decode command update status error")}
+            guard let statusStr = info["status"] as? String else { return .undefined(reason: "decode command update status error") }
             let status = RoomStartStatus(rawValue: statusStr)
             return .updateRoomStatus(roomUUID: roomUUID, status: status)
         default:
             return .undefined(reason: "won't happen")
         }
     }
-    
+
     let decode = JSONDecoder()
 }

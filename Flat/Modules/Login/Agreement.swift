@@ -11,7 +11,7 @@ import Foundation
 let privacyLink = "https://flat.whiteboard.agora.io/privacy.html"
 let serviceLink = "https://flat.whiteboard.agora.io/service.html"
 
-func agreementAttributedString()-> NSAttributedString {
+func agreementAttributedString() -> NSAttributedString {
     let pStr = pretty(agreementTitle: localizeStrings("Privacy Policy"))
     let sStr = pretty(agreementTitle: localizeStrings("Service Agreement"))
     let str = localizeStrings("AgreementText")
@@ -23,7 +23,7 @@ func agreementAttributedString()-> NSAttributedString {
     return attributedStr
 }
 
-func agreementAttributedString1()-> NSAttributedString {
+func agreementAttributedString1() -> NSAttributedString {
     let pStr = pretty(agreementTitle: localizeStrings("Privacy Policy"))
     let sStr = pretty(agreementTitle: localizeStrings("Service Agreement"))
     let str = localizeStrings("AgreementText1")
@@ -35,7 +35,7 @@ func agreementAttributedString1()-> NSAttributedString {
     return attributedStr
 }
 
-func pretty(agreementTitle: String)-> String {
+func pretty(agreementTitle: String) -> String {
     if LocaleManager.language == .Chinese { return "《\(agreementTitle)》" }
     return agreementTitle
 }

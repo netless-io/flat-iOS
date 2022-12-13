@@ -6,13 +6,13 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
 import RxSwift
+import UIKit
 
-fileprivate let activityTag = 888
+private let activityTag = 888
 extension Reactive where Base: UIButton {
     var isLoading: Binder<Bool> {
-        Binder(self.base) { button, loading in
+        Binder(base) { button, loading in
             button.isLoading = loading
         }
     }
@@ -35,7 +35,7 @@ extension UIButton {
                 if let selected = savedSelectedText {
                     setTitle(selected, for: .selected)
                 }
-                
+
                 activityView.stopAnimating()
                 isUserInteractionEnabled = true
                 return
@@ -50,7 +50,7 @@ extension UIButton {
             var white: CGFloat = 0
             backgroundColor?.getWhite(&white, alpha: nil)
             activityView.color = white > 0.45 ? .white : .color(type: .text)
-            
+
             savedNormalImage = image(for: .normal)
             savedSelectedImage = image(for: .selected)
             savedNormalText = title(for: .normal)
@@ -59,7 +59,7 @@ extension UIButton {
             setImage(nil, for: .selected)
             setTitle("", for: .normal)
             setTitle("", for: .selected)
-            
+
             activityView.startAnimating()
             isUserInteractionEnabled = false
         }
@@ -70,8 +70,8 @@ private var savedNormalImageKey: Void?
 private var savedSelectedImageKey: Void?
 private var savedNormalTextKey: Void?
 private var savedSelectedTextKey: Void?
-extension UIButton {
-    fileprivate var savedNormalImage: UIImage? {
+private extension UIButton {
+    var savedNormalImage: UIImage? {
         get {
             objc_getAssociatedObject(self, &savedNormalImageKey) as? UIImage
         }
@@ -79,8 +79,8 @@ extension UIButton {
             objc_setAssociatedObject(self, &savedNormalImageKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
-    fileprivate var savedSelectedImage: UIImage? {
+
+    var savedSelectedImage: UIImage? {
         get {
             objc_getAssociatedObject(self, &savedSelectedImageKey) as? UIImage
         }
@@ -88,8 +88,8 @@ extension UIButton {
             objc_setAssociatedObject(self, &savedSelectedImageKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
-    fileprivate var savedNormalText: String? {
+
+    var savedNormalText: String? {
         get {
             objc_getAssociatedObject(self, &savedNormalTextKey) as? String
         }
@@ -97,8 +97,8 @@ extension UIButton {
             objc_setAssociatedObject(self, &savedNormalTextKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
-    
-    fileprivate var savedSelectedText: String? {
+
+    var savedSelectedText: String? {
         get {
             objc_getAssociatedObject(self, &savedSelectedTextKey) as? String
         }
@@ -108,8 +108,8 @@ extension UIButton {
     }
 }
 
-extension UIView {
-    fileprivate var activityView: UIActivityIndicatorView {
+private extension UIView {
+    var activityView: UIActivityIndicatorView {
         let activityView: UIActivityIndicatorView
         if let tagView = viewWithTag(activityTag) as? UIActivityIndicatorView {
             activityView = tagView

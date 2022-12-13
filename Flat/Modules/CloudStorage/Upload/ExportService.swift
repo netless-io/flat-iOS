@@ -6,11 +6,11 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import Foundation
 import AVFoundation
+import Foundation
 
 struct VideoConvertService {
-    static func convert(url: URL, convertedFileName: String, handler: @escaping ((Result<URL, Error>)->Void)) -> AVAssetExportSession? {
+    static func convert(url: URL, convertedFileName: String, handler: @escaping ((Result<URL, Error>) -> Void)) -> AVAssetExportSession? {
         let asset = AVAsset(url: url)
         let export = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)
         export?.outputFileType = .mp4
@@ -32,8 +32,7 @@ struct VideoConvertService {
                 }
             })
             return export
-        }
-        catch {
+        } catch {
             handler(.failure("error file remove fail"))
             return nil
         }

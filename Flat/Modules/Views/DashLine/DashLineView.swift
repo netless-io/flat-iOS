@@ -13,23 +13,23 @@ class DashLineView: UIView {
         super.init(frame: frame)
         setupViews()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupViews()
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         dashLineLayer.frame = bounds
         let path = CGMutablePath()
         path.addLines(between: [
             .init(x: 0, y: bounds.height / 2),
-            .init(x: bounds.width, y: bounds.height / 2)
+            .init(x: bounds.width, y: bounds.height / 2),
         ])
         dashLineLayer.path = path
     }
-    
+
     func setupViews() {
         backgroundColor = .clear
         layer.addSublayer(dashLineLayer)
@@ -38,6 +38,6 @@ class DashLineView: UIView {
         dashLineLayer.lineJoin = .miter
         dashLineLayer.lineDashPattern = [2, 2]
     }
-    
+
     lazy var dashLineLayer = CAShapeLayer()
 }

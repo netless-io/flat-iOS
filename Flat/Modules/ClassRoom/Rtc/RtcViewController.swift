@@ -6,22 +6,22 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import UIKit
-import RxSwift
-import RxRelay
-import Hero
 import AgoraRtcKit
+import Hero
 import RxCocoa
+import RxRelay
+import RxSwift
+import UIKit
 
 class RtcViewController: UIViewController {
     let viewModel: RtcViewModel
-    
+
     let localUserCameraClick: PublishRelay<Void> = .init()
     let localUserMicClick: PublishRelay<Void> = .init()
-    
+
     var localCameraOn = false
     var localMicOn = false
-    
+
     var preferredMargin: CGFloat = 0 {
         didSet {
             guard preferredMargin != oldValue else { return }
@@ -29,9 +29,9 @@ class RtcViewController: UIViewController {
             updateScrollViewInset()
         }
     }
-    
+
     let itemRatio: CGFloat = ClassRoomLayoutRatioConfig.rtcItemRatio
-    
+
     func bindUsers(_ users: Driver<[RoomUser]>, withTeacherRtmUUID uuid: String) {
         let output = viewModel.transform(users: users, teacherRtmUUID: uuid)
         output.noTeacherViewHide
@@ -41,11 +41,11 @@ class RtcViewController: UIViewController {
             })
             .drive(noTeacherPlaceHolderView.rx.isHidden)
             .disposed(by: rx.disposeBag)
-        
+
         output.nonLocalUsers
-            .distinctUntilChanged({ i, j in
-                return i.map { $0.user } == j.map { $0.user }
-            })
+            .distinctUntilChanged { i, j in
+                i.map { $0.user } == j.map { $0.user }
+            }
             .drive(with: self, onNext: { weakSelf, values in
                 let oldStackCount = weakSelf.videoItemsStackView.arrangedSubviews.count
                 weakSelf.updateWith(nonTeacherValues: values)
@@ -61,8 +61,7 @@ class RtcViewController: UIViewController {
                 weakSelf.updateScrollViewInset()
             })
             .disposed(by: rx.disposeBag)
-                
-            
+
         output.localUserHide
             .do(afterNext: { [weak self] _ in
                 self?.updateScrollViewInset()
@@ -70,11 +69,11 @@ class RtcViewController: UIViewController {
             .drive(localVideoItemView.rx.isHidden)
             .disposed(by: rx.disposeBag)
     }
-    
+
     var localUserMicVolumeBag: DisposeBag = .init()
     func bindLocalUser(_ user: Driver<RoomUser>) {
         let output = viewModel.transformLocalUser(user: user)
-        
+
         output.user
             .drive(with: self, onNext: { weakSelf, user in
                 weakSelf.localMicOn = user.status.isSpeak && user.status.mic
@@ -98,21 +97,23 @@ class RtcViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     // MARK: - LifeCycle
+
     init(viewModel: RtcViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        
+
         viewModel.rtc.isJoined.asDriver()
             .drive(with: self, onNext: { weakSelf, joined in
                 if joined {
@@ -123,21 +124,22 @@ class RtcViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         direction = view.bounds.width > view.bounds.height ? .top : .right
         updateScrollViewInset()
     }
-    
+
     // MARK: - Direction
+
     fileprivate var direction: ClassRoomLayout.RtcDirection = .top {
         didSet {
             guard direction != oldValue else { return }
             sync(direction: direction)
         }
     }
-    
+
     fileprivate func sync(direction: ClassRoomLayout.RtcDirection) {
         let marginInset = preferredMargin * 2
         switch direction {
@@ -164,8 +166,9 @@ class RtcViewController: UIViewController {
         }
         videoItemsStackView.arrangedSubviews.forEach { remakeConstraintForItemView(view: $0, direction: direction) }
     }
-    
+
     // MARK: - Private
+
     func setupViews() {
         view.backgroundColor = .color(type: .background)
         view.addSubview(mainScrollView)
@@ -176,7 +179,7 @@ class RtcViewController: UIViewController {
         }
         sync(direction: direction)
     }
-    
+
     var otherUsersVolumeDisposeBag = DisposeBag()
     func update(itemView: RtcVideoItemView, user: RoomUser, volumeBag: DisposeBag) {
         itemView.heroID = nil
@@ -191,7 +194,7 @@ class RtcViewController: UIViewController {
         itemView.silenceImageView.isHidden = user.status.mic
         itemView.alwaysShowName = !user.isOnline
         itemView.showMicVolum(user.status.mic)
-        
+
         if user.status.mic {
             viewModel.strenthFor(uid: user.rtcUID)
                 .asDriver(onErrorJustReturn: 0)
@@ -201,20 +204,21 @@ class RtcViewController: UIViewController {
                 .disposed(by: volumeBag)
         }
     }
-    
+
     func refresh(view: RtcVideoItemView,
                  user: RoomUser,
                  canvas: AgoraRtcVideoCanvas,
-                 isLocal: Bool) {
+                 isLocal: Bool)
+    {
         update(itemView: view, user: user, volumeBag: isLocal ? otherUsersVolumeDisposeBag : otherUsersVolumeDisposeBag)
         view.showAvatar(!user.status.camera || !user.isOnline)
-        
+
         viewModel.rtc.updateRemoteUserStreamType(rtcUID: user.rtcUID, type: viewModel.userThumbnailStream(user.rtcUID))
         apply(canvas: canvas,
               toView: user.status.camera ? view.videoContainerView : nil,
               isLocal: isLocal)
     }
-    
+
     func remakeConstraintForItemView(view: UIView, direction: ClassRoomLayout.RtcDirection) {
         switch direction {
         case .right:
@@ -227,7 +231,7 @@ class RtcViewController: UIViewController {
             }
         }
     }
-    
+
     func updateWith(nonTeacherValues values: [(user: RoomUser, canvas: AgoraRtcVideoCanvas)]) {
         // Reset voluem spy
         otherUsersVolumeDisposeBag = DisposeBag()
@@ -251,7 +255,7 @@ class RtcViewController: UIViewController {
         existIds.append(0)
         for view in videoItemsStackView.arrangedSubviews {
             if let itemView = view as? RtcVideoItemView {
-                if !existIds.contains(itemView.uid){
+                if !existIds.contains(itemView.uid) {
                     itemView.removeFromSuperview()
                     videoItemsStackView.removeArrangedSubview(itemView)
                 }
@@ -259,10 +263,10 @@ class RtcViewController: UIViewController {
         }
         updateScrollViewInset()
     }
-    
+
     func updateScrollViewInset() {
         switch direction {
-        case.right:
+        case .right:
             let widthInset = preferredMargin * 2
             let itemWidth = view.bounds.width - widthInset
             let itemHeight = itemWidth * itemRatio
@@ -288,7 +292,7 @@ class RtcViewController: UIViewController {
             }
         }
     }
-    
+
     func apply(canvas: AgoraRtcVideoCanvas, toView view: UIView?, isLocal: Bool) {
         if canvas.view == view { return }
         canvas.view = view
@@ -298,7 +302,7 @@ class RtcViewController: UIViewController {
             viewModel.rtc.agoraKit.setupRemoteVideo(canvas)
         }
     }
-    
+
     func itemViewForUid(_ uid: UInt) -> RtcVideoItemView {
         if let view = videoItemsStackView.arrangedSubviews.compactMap({ v -> RtcVideoItemView? in
             v as? RtcVideoItemView
@@ -308,8 +312,9 @@ class RtcViewController: UIViewController {
             return RtcVideoItemView(uid: uid)
         }
     }
-    
+
     // MARK: - Preview
+
     var previewingUser: RoomUser?
     func preview(view: RtcVideoItemView) {
         let uid = view.uid
@@ -321,7 +326,7 @@ class RtcViewController: UIViewController {
         view.heroID = heroId
         if user.status.camera {
             previewViewController.showVideoPreview()
-            
+
             if viewModel.localUserRegular(uid) {
                 viewModel.rtc.localVideoCanvas.view = previewViewController.contentView
                 viewModel.rtc.agoraKit.setupLocalVideo(viewModel.rtc.localVideoCanvas)
@@ -340,13 +345,13 @@ class RtcViewController: UIViewController {
             previewViewController.avatarContainer.heroID = heroId
             previewViewController.contentView.heroID = nil
         }
-        
+
         previewViewController.hero.isEnabled = true
         previewViewController.hero.modalAnimationType = .none
         previewViewController.view.heroModifiers = [.fade, .useNoSnapshot]
         present(previewViewController, animated: true, completion: nil)
     }
-    
+
     func endPreviewing(UID: UInt) {
         guard let user = viewModel.userFetch(UID) else { return }
         let isLocal = viewModel.localUserRegular(UID)
@@ -365,7 +370,7 @@ class RtcViewController: UIViewController {
                     isLocal: isLocal)
         }
     }
-    
+
     lazy var previewViewController: RtcPreviewViewController = {
         let vc = RtcPreviewViewController()
         vc.dismissHandler = { [weak self] in
@@ -376,14 +381,15 @@ class RtcViewController: UIViewController {
         vc.modalPresentationStyle = .fullScreen
         return vc
     }()
-    
+
     // MARK: - Lazy View
+
     lazy var noTeacherPlaceHolderView: UIImageView = {
         let view = UIImageView(image: UIImage(named: "teach_not_showup"))
         view.contentMode = .scaleAspectFill
         return view
     }()
-    
+
     func respondToVideoItemVideoTap(view: RtcVideoItemView, isLocal: Bool) {
         videoItemsStackView.arrangedSubviews.forEach {
             if let itemView = $0 as? RtcVideoItemView {
@@ -393,7 +399,7 @@ class RtcViewController: UIViewController {
             }
         }
         view.nameLabel.isHidden = !view.nameLabel.isHidden
-        
+
         if isLocal {
             cellMenuView.show(fromSource: view, direction: .bottom, inset: .init(top: -10, left: -10, bottom: -10, right: -10))
             cellMenuView.dismissHandle = { [weak view] in
@@ -411,10 +417,10 @@ class RtcViewController: UIViewController {
                 }
             }
         } else {
-            self.preview(view: view)
+            preview(view: view)
         }
     }
-    
+
     lazy var localVideoItemView: RtcVideoItemView = {
         let view = RtcVideoItemView(uid: 0)
         view.tapHandler = { [weak self] in
@@ -422,24 +428,24 @@ class RtcViewController: UIViewController {
         }
         return view
     }()
-    
+
     lazy var mainScrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsHorizontalScrollIndicator = false
         return view
     }()
-    
+
     lazy var videoItemsStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [noTeacherPlaceHolderView, localVideoItemView])
         view.axis = .horizontal
         return view
     }()
-    
+
     lazy var cellMenuView: RtcCellPopMenuView = {
         let view = RtcCellPopMenuView()
         return view
     }()
-    
+
     lazy var line: UIView = {
         let view = UIView()
         view.backgroundColor = .borderColor
