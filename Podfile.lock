@@ -126,7 +126,6 @@ PODS:
   - RxSwift (6.5.0)
   - Siren (5.7.1)
   - SnapKit (5.0.1)
-  - SwiftFormat/CLI (0.50.6)
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
   - WechatOpenSDK (1.8.7.1)
@@ -184,7 +183,6 @@ DEPENDENCIES:
   - RxSwift
   - Siren
   - SnapKit
-  - SwiftFormat/CLI (~> 0.49)
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - WechatOpenSDK
@@ -226,7 +224,6 @@ SPEC REPOS:
     - RxSwift
     - Siren
     - SnapKit
-    - SwiftFormat
     - SwiftyBeaver
     - SyncPlayer
     - WechatOpenSDK
@@ -267,7 +264,6 @@ SPEC CHECKSUMS:
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Siren: 76ac728f4f2f4a3576c322272e94a0e37955664f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SwiftFormat: d89e201c4e121554de347f764e4ed780526b5173
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
@@ -275,6 +271,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 8ff014f0c67f7f3265b8db9b498adf85a483662a
+PODFILE CHECKSUM: 18fb1040d96150990d56f6308eeb946555e4df45
 
 COCOAPODS: 1.11.3

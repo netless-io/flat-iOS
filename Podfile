@@ -12,8 +12,6 @@ target 'Flat' do
   pod 'IQKeyboardManagerSwift'
   pod 'Zip'
   
-  pod 'SwiftFormat/CLI', '~> 0.49'
-  
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS'
   pod 'Fastboard', '2.0.0-alpha.7'
