@@ -129,31 +129,31 @@ PODS:
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.17.0-alpha.13):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.13)
-  - Whiteboard/Base (2.17.0-alpha.13):
+  - Whiteboard (2.17.0-alpha.15):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.15)
+  - Whiteboard/Base (2.17.0-alpha.15):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.13):
+  - Whiteboard/Converter (2.17.0-alpha.15):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.17.0-alpha.13):
+  - Whiteboard/fpa (2.17.0-alpha.15):
     - AgoraFPA_iOS (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.17.0-alpha.13):
+  - Whiteboard/Model (2.17.0-alpha.15):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.13):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.15):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.13):
+  - Whiteboard/Object (2.17.0-alpha.15):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.13):
+  - Whiteboard/Replayer (2.17.0-alpha.15):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.13)
-  - Whiteboard/Room (2.17.0-alpha.13):
+  - Whiteboard/Resource (2.17.0-alpha.15)
+  - Whiteboard/Room (2.17.0-alpha.15):
     - Whiteboard/Base
-  - Whiteboard/SyncPlayer (2.17.0-alpha.13):
+  - Whiteboard/SyncPlayer (2.17.0-alpha.15):
     - SyncPlayer
     - Whiteboard/Replayer
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.13):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.15):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -186,8 +186,8 @@ DEPENDENCIES:
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - WechatOpenSDK
-  - Whiteboard (= 2.17.0-alpha.13)
-  - Whiteboard/SyncPlayer (= 2.17.0-alpha.13)
+  - Whiteboard (= 2.17.0-alpha.15)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.15)
   - Zip
 
 SPEC REPOS:
@@ -267,10 +267,10 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 6094f6155bec93bae45a4a4ad3896d09afac77ff
+  Whiteboard: 774f2d3c973dc314dabdbe735eb91efc808bf51e
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 18fb1040d96150990d56f6308eeb946555e4df45
+PODFILE CHECKSUM: d7d53a50a20d0e1a72c2819d64575b5f010050cd
 
 COCOAPODS: 1.11.3
