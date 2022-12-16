@@ -15,9 +15,6 @@
 "AccountCancellation" = "Account Cancellation";
 
 
-"AccpetRaiseHandOverOnStageCountTip" = "The maximum number of people allowed on stage in the current room type has been reached.";
-
-
 "Acknowledgement" = "Libraries We Use";
 
 
@@ -324,6 +321,9 @@
 "Logout" = "Logout";
 
 
+"MaxWritableUsersTips" = "The current room type has reached its maximum number of people who can go on stage and open whiteboard permissions.";
+
+
 "Mic" = "Mic";
 
 
@@ -349,6 +349,9 @@
 
 
 "NotPermission" = "No permission to operate";
+
+
+"On/Off stage" = "On/off stage";
 
 
 "OneToOne" = "OneToOne";
@@ -597,6 +600,9 @@
 "Stopped" = "Stopped";
 
 
+"Students" = "Students";
+
+
 "Submit" = "Submit";
 
 
@@ -727,6 +733,9 @@
 
 
 "WelcomeFlat" = "Welcome to Flat";
+
+
+"Whiteboard Permissions" = "Whiteboard";
 
 
 "and" = "and";

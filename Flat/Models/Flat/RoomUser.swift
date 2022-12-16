@@ -25,6 +25,8 @@ struct RoomUser: Hashable, CustomStringConvertible {
     var status: RoomUserStatus
     let isOnline: Bool
 
+    var isUsingWhiteboardWritable: Bool { status.isSpeak || status.whiteboard }
+    
     static let empty: Self = .init(rtmUUID: "", rtcUID: 0, name: "", avatarURL: nil, isOnline: false)
 
     init(rtmUUID: String,
@@ -48,21 +50,23 @@ struct RoomUserStatus: Hashable, CustomStringConvertible {
     var isRaisingHand: Bool
     var camera: Bool
     var mic: Bool
+    var whiteboard: Bool
 
     var deviceState: DeviceState { .init(mic: mic, camera: camera) }
 
-    static let `default` = RoomUserStatus(isSpeak: false, isRaisingHand: false, camera: false, mic: false)
+    static let `default` = RoomUserStatus(isSpeak: false, isRaisingHand: false, camera: false, mic: false, whiteboard: false)
 
     var description: String {
         let r = "✅"
         let f = "❌"
-        return "⬆️: \(isSpeak ? r : f) 🙋‍♂️: \(isRaisingHand ? r : f) 📷: \(camera ? r : f) 🎤: \(mic ? r : f)"
+        return "⬆️: \(isSpeak ? r : f) 📝 : \(whiteboard ? r : f) 🙋‍♂️: \(isRaisingHand ? r : f) 📷: \(camera ? r : f) 🎤: \(mic ? r : f)"
     }
 
-    init(isSpeak: Bool, isRaisingHand: Bool, camera: Bool, mic: Bool) {
+    init(isSpeak: Bool, isRaisingHand: Bool, camera: Bool, mic: Bool, whiteboard: Bool) {
         self.isSpeak = isSpeak
         self.isRaisingHand = isRaisingHand
         self.camera = camera
         self.mic = mic
+        self.whiteboard = whiteboard
     }
 }

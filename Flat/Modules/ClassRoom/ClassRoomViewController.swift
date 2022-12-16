@@ -237,7 +237,7 @@ class ClassRoomViewController: UIViewController {
             .drive(raiseHandButton.rx.isSelected)
             .disposed(by: rx.disposeBag)
 
-        viewModel.transOnStageUpdate(whiteboardEnable: fastboardViewController.isRoomWritable.asObservable())
+        viewModel.transOnStageUpdate(whiteboardEnable: fastboardViewController.roomPermission.map(\.writable).asObservable())
             .subscribe(with: self, onNext: { weakSelf, toastString in
                 weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
             })
@@ -321,14 +321,15 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
 
         viewModel.transformUserListInput(.init(stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
-                                               disconnectTap: userListViewController.disconnectTap.asObservable(),
+                                               tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
+                                               tapSomeUserWhiteboard: userListViewController.whiteboardTap.asObservable(),
                                                tapSomeUserRaiseHand: userListViewController.raiseHandTap.asObservable(),
                                                tapSomeUserCamera: userListViewController.cameraTap.asObservable(),
                                                tapSomeUserMic: userListViewController.micTap.asObservable()))
             .drive(with: self, onNext: { weakSelf, r in
                 switch r {
                 case let .failure(tips):
-                    weakSelf.toast(tips, timeInterval: 3, preventTouching: false)
+                    (weakSelf.presentedViewController ?? weakSelf).toast(tips, timeInterval: 3, preventTouching: false)
                 case .success:
                     return
                 }
@@ -360,9 +361,9 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindWhiteboard() {
-        fastboardViewController.bind(observableWritable: viewModel.whiteboardEnable)
-            .subscribe(with: self, onNext: { weakSelf, writable in
-                weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: writable)
+        fastboardViewController.bind(observablePermission: viewModel.whiteboardPermission)
+            .subscribe(with: self, onNext: { weakSelf, permission in
+                weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: permission.inputEnable)
             })
             .disposed(by: rx.disposeBag)
 

@@ -19,11 +19,16 @@ func tryPreloadWhiteboard() {
     }
 }
 
+struct WhiteboardPermission: Equatable {
+    let writable: Bool
+    let inputEnable: Bool
+}
+
 class FastboardViewController: UIViewController {
     let fastRoom: FastRoom
     let isRoomJoined: BehaviorRelay<Bool> = .init(value: false)
     let isRoomBanned: BehaviorRelay<Bool> = .init(value: false)
-    let isRoomWritable: BehaviorRelay<Bool>
+    let roomPermission: BehaviorRelay<WhiteboardPermission>
     let roomError: PublishRelay<FastRoomError> = .init()
 
     /// Setup this store after whiteboard joined
@@ -35,49 +40,51 @@ class FastboardViewController: UIViewController {
     func leave() {
         fastRoom.disconnectRoom()
     }
-
-    func updateWritable(_ writable: Bool) -> Single<Bool> {
-        guard let w = fastRoom.room?.isWritable else { return .just(writable) }
-        logger.info("update writable \(writable)")
-        if w != writable {
+    
+    func updateRoomPermission(_ permission: WhiteboardPermission) -> Single<(WhiteboardPermission)> {
+        guard let w = fastRoom.room?.isWritable else { return .just(permission) }
+        logger.info("update whiteboard permission \(permission)")
+        fastRoom.room?.disableDeviceInputs(!permission.inputEnable)
+        if w != permission.writable {
             return .create { [weak self] ob in
                 guard let self else {
                     ob(.failure("self not exist"))
                     return Disposables.create()
                 }
-                logger.info("update writable \(writable)")
-                self.fastRoom.updateWritable(writable) { [weak self] error in
+                logger.info("update writable success \(permission.writable)")
+                self.fastRoom.updateWritable(permission.writable) { [weak self] error in
                     if let error {
                         ob(.failure(error))
                     } else {
-                        ob(.success(writable))
-                        self?.isRoomWritable.accept(writable)
-                        self?.fastRoom.room?.disableCameraTransform(!writable)
+                        ob(.success(permission))
+                        self?.roomPermission.accept(permission)
                     }
                 }
                 return Disposables.create()
             }
         } else {
-            return .just(writable)
+            return .just(permission)
         }
     }
 
-    func bind(observableWritable: Observable<Bool>) -> Observable<Bool> {
-        Observable.combineLatest(observableWritable, isRoomJoined)
+    func bind(observablePermission: Observable<WhiteboardPermission>) -> Observable<WhiteboardPermission> {
+        Observable.combineLatest(observablePermission, isRoomJoined)
             .filter(\.1)
             .map(\.0)
             .distinctUntilChanged()
-            .concatMap { [weak self] writable -> Observable<Bool> in
+            .concatMap { [weak self] permission -> Observable<WhiteboardPermission> in
                 guard let self else { return .error("self not exist") }
-                return self.updateWritable(writable).asObservable()
-            }.do(onNext: { [weak self] writable in
-                self?.fastRoom.setAllPanel(hide: !writable)
+                return self.updateRoomPermission(permission).asObservable()
+            }.do(onNext: { [weak self] permission in
+                self?.fastRoom.setAllPanel(hide: !permission.inputEnable)
+                self?.fastRoom.room?.disableCameraTransform(!permission.inputEnable)
             })
     }
 
     init(fastRoomConfiguration: FastRoomConfiguration) {
         fastRoom = Fastboard.createFastRoom(withFastRoomConfig: fastRoomConfiguration)
-        isRoomWritable = .init(value: fastRoomConfiguration.whiteRoomConfig.isWritable)
+        roomPermission = .init(value: .init(writable: fastRoomConfiguration.whiteRoomConfig.isWritable,
+                                            inputEnable: fastRoomConfiguration.whiteRoomConfig.isWritable))
         super.init(nibName: nil, bundle: nil)
         fastRoom.delegate = self
         logger.trace("\(self)")
@@ -101,7 +108,6 @@ class FastboardViewController: UIViewController {
     }
 
     // MARK: - Private
-
     func joinRoom() {
         fastRoom.joinRoom { [weak self] result in
             switch result {

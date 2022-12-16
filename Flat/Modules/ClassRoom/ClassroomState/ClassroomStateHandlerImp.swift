@@ -14,7 +14,7 @@ import Whiteboard
 // The classroom state combined from syncedStore and rtm
 // But rtc connection can also fire error
 class ClassroomStateHandlerImp: ClassroomStateHandler {
-    let maxOnstageUserCount: Int
+    let maxWritableUsersCount: Int
     let roomUUID: String
     let ownerUUID: String
     let isOwner: Bool
@@ -27,6 +27,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let roomStartStatus: BehaviorRelay<RoomStartStatus>
     let banState: BehaviorRelay<Bool> = .init(value: true)
     let onStageIds: BehaviorRelay<[String]> = .init(value: [])
+    let whiteboardIds: BehaviorRelay<[String]> = .init(value: [])
     let raisingHandIds: BehaviorRelay<[String]> = .init(value: [])
     let deviceState: BehaviorRelay<[String: DeviceState]> = .init(value: [:])
     let noticePublisher: PublishRelay<String> = .init()
@@ -42,7 +43,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
          roomUUID: String,
          ownerUUID: String,
          isOwner: Bool,
-         maxOnstageUserCount: Int,
+         maxWritableUsersCount: Int,
          roomStartStatus: RoomStartStatus,
          whiteboardBannedAction: Observable<Void>,
          whiteboardRoomError: Observable<FastRoomError>,
@@ -54,7 +55,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         self.roomUUID = roomUUID
         self.ownerUUID = ownerUUID
         self.isOwner = isOwner
-        self.maxOnstageUserCount = maxOnstageUserCount
+        self.maxWritableUsersCount = maxWritableUsersCount
         self.roomStartStatus = .init(value: roomStartStatus)
         syncedStore.delegate = self
 
@@ -135,6 +136,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         banState.accept(result.roomState.ban)
         raisingHandIds.accept(result.roomState.raiseHandUsers)
         onStageIds.accept(result.onStageUsers.filter(\.value).map(\.key))
+        whiteboardIds.accept(result.whiteboardUsers.filter(\.value).map(\.key))
         logger.info("initialize state from synced store \(result)")
     }
 
@@ -151,7 +153,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     .flatMap { [weak self] result in
                         guard let self else { return .error("self not exist") }
                         let onStageUsersCount = result.onStageUsers.filter(\.value).count
-                        if onStageUsersCount >= self.maxOnstageUserCount { return .error("can't accept more onstage users") }
+                        if onStageUsersCount >= self.maxWritableUsersCount { return .error("can't accept more onstage users") }
                         var users = result.roomState.raiseHandUsers
                         if raise, !users.contains(senderId) {
                             users.append(senderId)
@@ -206,19 +208,23 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         try self.syncedStore.sendCommand(.onStageUsersUpdate([uuid: false]))
                         return .just(())
                     }
+            case let .updateUserWhiteboardEnable(uuid: uuid, enable: enable):
+                return syncedStore.getValues()
+                    .flatMap { [weak self] _ -> Single<Void> in
+                        guard let self else { return .error("self not exist ") }
+                        try self.syncedStore.sendCommand(.whiteboardUsersUpdate([uuid: enable]))
+                        return .just(())
+                    }
             case let .pickUserOnStage(uuid):
-                try syncedStore.sendCommand(.onStageUsersUpdate([uuid: true]))
-                return .just(())
-            case let .acceptRaiseHand(uuid):
                 return syncedStore.getValues()
                     .flatMap { [weak self] result -> Single<Void> in
-                        guard let self else { return .error("self not exist") }
+                        guard let self else { return .error("self not exist ") }
                         if result.roomState.raiseHandUsers.contains(uuid) {
                             var raiseHandUsers = result.roomState.raiseHandUsers
                             raiseHandUsers.removeAll(where: { $0 == uuid })
                             try self.syncedStore.sendCommand(.raiseHandUsersUpdate(raiseHandUsers))
-                            try self.syncedStore.sendCommand(.onStageUsersUpdate([uuid: true]))
                         }
+                        try self.syncedStore.sendCommand(.onStageUsersUpdate([uuid: true]))
                         return .just(())
                     }
             case let .updateRaiseHand(raiseHand):
@@ -286,6 +292,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         }
     }
 
+    var currentWhiteboardWritableUsers: [String] = []
     var currentOnStageUsers: [String: RoomUser] = [:]
     // Get members from initMembers / newMember / leftMember
     // Get member basic info (id, name, avatar)
@@ -330,6 +337,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
 
         let sharedStageIds = onStageIds.share(replay: 1, scope: .forever)
 
+        // Get member ids from stage ids and online member ids
+        // For offline onstage users can display on the list
         let memberIds = Observable.combineLatest(sharedStageIds, onlineMemberIds) { onStage, online -> [String: Bool] in
             var result: [String: Bool] = [:]
             for id in online {
@@ -373,8 +382,9 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             members,
             deviceState.asObservable(),
             raisingHandIds.asObservable(),
-            sharedStageIds
-        ) { onlineMembers, currentDeviceState, raiseHands, onStageIds -> [RoomUser] in
+            sharedStageIds,
+            whiteboardIds.asObservable()
+        ) { onlineMembers, currentDeviceState, raiseHands, onStageIds, whiteboardIds -> [RoomUser] in
             let updatedUsers = onlineMembers.map { user -> RoomUser in
                 var newUser = user
                 if let deviceState = currentDeviceState[newUser.rtmUUID] {
@@ -383,6 +393,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 }
                 newUser.status.isSpeak = ownerUUID == newUser.rtmUUID || onStageIds.contains(newUser.rtmUUID)
                 newUser.status.isRaisingHand = raiseHands.contains(newUser.rtmUUID)
+                newUser.status.whiteboard = ownerUUID == newUser.rtmUUID || whiteboardIds.contains(newUser.rtmUUID)
                 return newUser
             }
 
@@ -416,13 +427,27 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         .do(onNext: { [weak self] users in
             let usersPair = users.filter(\.status.isSpeak).map { ($0.rtmUUID, $0) }
             self?.currentOnStageUsers = .init(uniqueKeysWithValues: usersPair)
+            self?.currentWhiteboardWritableUsers = users
+                .filter { $0.status.whiteboard || $0.status.isSpeak }
+                .map(\.rtmUUID)
         })
         observableMembers = result.share(replay: 1, scope: .forever)
         return observableMembers!
     }
 
-    func checkIfOnStageUserOverMaxCount() -> Single<Bool> {
-        .just(currentOnStageUsers.count >= maxOnstageUserCount)
+    func checkIfWritableUserOverMaxCount() -> Single<Bool> {
+        if let observableMembers {
+            return observableMembers
+                .map { users in
+                    users.filter(\.isUsingWhiteboardWritable).count
+                }
+                .map { [unowned self] in
+                    $0 >= self.maxWritableUsersCount
+                }
+                .take(1)
+                .asSingle()
+        }
+        return .just(true)
     }
 
     func destroy() {
@@ -441,6 +466,8 @@ extension ClassroomStateHandlerImp: FlatSyncedStoreCommandDelegate {
         switch command {
         case let .onStageUsersUpdate(idMap):
             onStageIds.accept(idMap.filter(\.value).map(\.key))
+        case let .whiteboardUsersUpdate(idMap):
+            whiteboardIds.accept(idMap.filter(\.value).map(\.key))
         case let .banUpdate(isBan):
             banState.accept(isBan)
         case let .deviceStateUpdate(state):

@@ -22,7 +22,7 @@ struct ClassRoomType: RawRepresentable, Codable, Equatable {
         }
     }
 
-    var maxOnstageUserCount: Int {
+    var maxWritableUsersCount: Int {
         switch self {
         case .bigClass: return 2
         case .oneToOne: return 2

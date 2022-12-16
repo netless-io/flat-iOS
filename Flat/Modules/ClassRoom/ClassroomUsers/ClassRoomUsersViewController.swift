@@ -17,7 +17,8 @@ class ClassRoomUsersViewController: UIViewController {
     let roomOwnerRtmUUID: String
     let isOwner: Bool
 
-    let disconnectTap: PublishRelay<RoomUser> = .init()
+    let whiteboardTap: PublishRelay<RoomUser> = .init()
+    let onStageTap: PublishRelay<RoomUser> = .init()
     let raiseHandTap: PublishRelay<RoomUser> = .init()
     let cameraTap: PublishRelay<RoomUser> = .init()
     let micTap: PublishRelay<RoomUser> = .init()
@@ -31,9 +32,8 @@ class ClassRoomUsersViewController: UIViewController {
 
     var users: Observable<[RoomUser]>? {
         didSet {
-            guard let users else {
-                return
-            }
+            guard let users else { return }
+
             let ownerId = roomOwnerRtmUUID
             let displayUsers = users
                 .do(onNext: { [weak self] users in
@@ -41,6 +41,19 @@ class ClassRoomUsersViewController: UIViewController {
                 })
                 .map { $0.filter { user in user.rtmUUID != ownerId } }
                 .asDriver(onErrorJustReturn: [])
+
+            let raiseHandUserCount = displayUsers.map { $0.filter(\.status.isRaisingHand).count }
+
+            displayUsers
+                .map { localizeStrings("Students") + " (\($0.count))" }
+                .asDriver()
+                .drive(studentCountLabel.rx.text)
+                .disposed(by: rx.disposeBag)
+
+            Driver.combineLatest(raiseHandUserCount, displayUsers.map(\.count))
+                .map { localizeStrings("Raised Hand") + " (\($0)/\($1))" }
+                .drive(raisedHandCountLabel.rx.text)
+                .disposed(by: rx.disposeBag)
 
             displayUsers.drive(tableView.rx.items(cellIdentifier: cellIdentifier, cellType: RoomUserTableViewCell.self)) { [weak self] _, item, cell in
                 self?.config(cell: cell, user: item)
@@ -71,7 +84,7 @@ class ClassRoomUsersViewController: UIViewController {
         isOwner = roomOwnerRtmUUID == userUUID
         super.init(nibName: nil, bundle: nil)
 
-        preferredContentSize = .init(width: greatWindowSide / 2, height: 560)
+        preferredContentSize = .init(width: greatWindowSide / 1.5, height: 560)
     }
 
     @available(*, unavailable)
@@ -112,44 +125,33 @@ class ClassRoomUsersViewController: UIViewController {
     }
 
     func config(cell: RoomUserTableViewCell, user: RoomUser) {
-        cell.cameraButton.isHidden = true
-        cell.micButton.isHidden = true
-
-        let isCellUserTeacher = user.rtmUUID == roomOwnerRtmUUID
-        cell.disconnectButton.isHidden = true
-        cell.raiseHandButton.isHidden = true
-        if isCellUserTeacher {
-            cell.nameLabel.text = user.name + "(\(localizeStrings("Teach")))"
-            cell.statusLabel.text = nil
-        } else {
-            cell.nameLabel.text = user.name
-
-            if user.status.isSpeak {
-                if user.isOnline {
-                    cell.statusLabel.text = "(\(localizeStrings("Interacting")))"
-                    cell.statusLabel.textColor = .init(hexString: "#9FDF76")
-                } else {
-                    cell.statusLabel.text = "(\(localizeStrings("offline")))"
-                    cell.statusLabel.textColor = .systemRed
-                }
-                cell.cameraButton.isHidden = false
-                cell.micButton.isHidden = false
-                cell.disconnectButton.isHidden = !(isOwner || user.rtmUUID == userUUID)
-            } else if user.status.isRaisingHand {
-                cell.statusLabel.text = "(\(localizeStrings("Raised Hand")))"
-                cell.statusLabel.textColor = .color(type: .primary)
-                cell.raiseHandButton.isHidden = !isOwner
-            } else {
-                cell.statusLabel.text = nil
-            }
-        }
         cell.avatarImageView.kf.setImage(with: user.avatarURL)
+        cell.nameLabel.text = user.name
         cell.cameraButton.isSelected = user.status.camera
         cell.micButton.isSelected = user.status.mic
-
+        cell.statusLabel.text = nil
+        cell.onStageSwitch.isOn = user.status.isSpeak
+        cell.whiteboardSwitch.isOn = user.status.whiteboard
+        cell.set(operationType: .mic, empty: !user.status.isSpeak)
+        cell.set(operationType: .camera, empty: !user.status.isSpeak)
+        cell.set(operationType: .raiseHand, empty: !user.status.isRaisingHand)
+        if user.status.isSpeak, !user.isOnline {
+            cell.statusLabel.text = "(\(localizeStrings("offline")))"
+            cell.statusLabel.textColor = .systemRed
+        }
+        
         let isUserSelf = user.rtmUUID == userUUID
-        cell.cameraButton.isEnabled = user.status.camera || isUserSelf
-        cell.micButton.isEnabled = user.status.mic || isUserSelf
+        if isOwner {
+            cell.cameraButton.isEnabled = user.status.camera
+            cell.micButton.isEnabled = user.status.mic
+            cell.onStageSwitch.isEnabled = true
+            cell.whiteboardSwitch.isEnabled = true
+        } else {
+            cell.cameraButton.isEnabled = isUserSelf
+            cell.micButton.isEnabled = isUserSelf
+            cell.onStageSwitch.isEnabled = user.status.isSpeak
+            cell.whiteboardSwitch.isEnabled = user.status.whiteboard
+        }
         cell.clickHandler = { [weak self] type in
             guard let self else { return }
             switch type {
@@ -157,8 +159,10 @@ class ClassRoomUsersViewController: UIViewController {
                 self.cameraTap.accept(user)
             case .mic:
                 self.micTap.accept(user)
-            case .disconnect:
-                self.disconnectTap.accept(user)
+            case .onStage:
+                self.onStageTap.accept(user)
+            case .whiteboard:
+                self.whiteboardTap.accept(user)
             case .raiseHand:
                 self.raiseHandTap.accept(user)
             }
@@ -217,33 +221,81 @@ class ClassRoomUsersViewController: UIViewController {
         let view = UIImageView()
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = 12
         return view
     }()
 
     lazy var teacherHeaderView: UITableViewHeaderFooterView = {
         let view = UITableViewHeaderFooterView()
         view.contentView.backgroundColor = .classroomChildBG
-        view.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
         view.addSubview(teachAvatarImageView)
         view.addSubview(teacherLabel)
         view.addSubview(stopInteractingButton)
+        view.addSubview(headerItemStackView)
         teachAvatarImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(32)
+            make.top.equalToSuperview().inset(12)
+            make.width.height.equalTo(24)
         }
         teacherLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(56)
-            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(48)
+            make.centerY.equalTo(teachAvatarImageView)
             make.right.lessThanOrEqualTo(stopInteractingButton.snp.left).offset(-10)
         }
         stopInteractingButton.snp.makeConstraints { make in
             make.right.equalTo(view.safeAreaLayoutGuide).inset(12)
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(teachAvatarImageView)
             make.height.equalTo(28)
         }
         stopInteractingButton.layer.cornerRadius = 14
+
+        headerItemStackView.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        return view
+    }()
+
+    func createHeaderItem(title: String) -> UILabel {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .color(type: .text)
+        label.text = title
+        return label
+    }
+
+    lazy var studentCountLabel = createHeaderItem(title: localizeStrings("Students"))
+    lazy var raisedHandCountLabel = createHeaderItem(title: localizeStrings("Students"))
+
+    func insertSpacing(spacing: CGFloat, to stack: UIStackView) {
+        if let first = stack.arrangedSubviews.first {
+            stack.arrangedSubviews.dropFirst().forEach { i in
+                i.snp.makeConstraints { make in
+                    make.width.equalTo(first)
+                }
+            }
+        }
+        let indices = stack.arrangedSubviews.enumerated().map { i, _ in
+            i + i
+        }
+        for i in indices {
+            let v = UIView()
+            stack.insertArrangedSubview(v, at: i)
+            v.snp.makeConstraints { $0.width.equalTo(spacing) }
+        }
+    }
+
+    lazy var headerItemStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [studentCountLabel,
+                                                  createHeaderItem(title: localizeStrings("On/Off stage")),
+                                                  createHeaderItem(title: localizeStrings("Whiteboard Permissions")),
+                                                  createHeaderItem(title: localizeStrings("Camera")),
+                                                  createHeaderItem(title: localizeStrings("Mic")),
+                                                  raisedHandCountLabel])
+        view.axis = .horizontal
+        view.distribution = .fillProportionally
+        view.backgroundColor = .color(type: .background, .strong)
+        insertSpacing(spacing: 16, to: view)
         return view
     }()
 
@@ -253,7 +305,7 @@ class ClassRoomUsersViewController: UIViewController {
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        view.rowHeight = 56
+        view.rowHeight = 48
         if #available(iOS 15.0, *) {
             // F apple
             view.sectionHeaderTopPadding = 0
@@ -265,7 +317,7 @@ class ClassRoomUsersViewController: UIViewController {
 extension ClassRoomUsersViewController: UITableViewDelegate {
     func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
         if let _ = teacher {
-            return 56
+            return 88
         } else {
             return .leastNonzeroMagnitude
         }
@@ -274,7 +326,7 @@ extension ClassRoomUsersViewController: UITableViewDelegate {
     func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
         if let teacher {
             teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
-            teacherLabel.text = teacher.name + " (" + localizeStrings("Teacher") + ")"
+            teacherLabel.text = localizeStrings("Teacher") + ": " + teacher.name
             return teacherHeaderView
         } else {
             return nil

@@ -15,9 +15,6 @@
 "AccountCancellation" = "注销账号";
 
 
-"AccpetRaiseHandOverOnStageCountTip" = "当前房间类型内可上台人数已达上限。";
-
-
 "Acknowledgement" = "我们使用的库";
 
 
@@ -324,6 +321,9 @@
 "Logout" = "退出登录";
 
 
+"MaxWritableUsersTips" = "当前房间类型内可上台与开启白板权限人数已达上限。";
+
+
 "Mic" = "麦克风";
 
 
@@ -349,6 +349,9 @@
 
 
 "NotPermission" = "没有权限操作";
+
+
+"On/Off stage" = "上/下台";
 
 
 "OneToOne" = "一对一";
@@ -417,7 +420,7 @@
 "Profile" = "个人资料";
 
 
-"Raised Hand" = "已举手";
+"Raised Hand" = "举手";
 
 
 "Reconnect" = "重新连接";
@@ -600,6 +603,9 @@
 "Stopped" = "已结束";
 
 
+"Students" = "学生";
+
+
 "Submit" = "提交";
 
 
@@ -730,6 +736,9 @@
 
 
 "WelcomeFlat" = "欢迎使用Flat";
+
+
+"Whiteboard Permissions" = "白板权限";
 
 
 "and" = "和";

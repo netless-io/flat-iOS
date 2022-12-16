@@ -97,7 +97,7 @@ struct ClassroomFactory {
                                            roomUUID: playInfo.roomUUID,
                                            ownerUUID: playInfo.ownerUUID,
                                            isOwner: playInfo.rtmUID == playInfo.ownerUUID,
-                                           maxOnstageUserCount: detailInfo.roomType.maxOnstageUserCount,
+                                           maxWritableUsersCount: detailInfo.roomType.maxWritableUsersCount,
                                            roomStartStatus: detailInfo.roomStatus,
                                            whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),

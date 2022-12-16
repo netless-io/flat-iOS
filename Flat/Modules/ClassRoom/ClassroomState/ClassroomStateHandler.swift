@@ -32,8 +32,8 @@ enum ClassroomStateError {
 
 enum ClassroomCommand {
     case disconnectUser(String)
-    case acceptRaiseHand(String)
     case pickUserOnStage(String)
+    case updateUserWhiteboardEnable(uuid: String, enable: Bool)
     case updateDeviceState(uuid: String, state: DeviceState)
     case updateRaiseHand(Bool)
     case ban(Bool)
@@ -48,7 +48,7 @@ protocol ClassroomStateHandler {
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }
     var currentOnStageUsers: [String: RoomUser] { get }
 
-    func checkIfOnStageUserOverMaxCount() -> Single<Bool>
+    func checkIfWritableUserOverMaxCount() -> Single<Bool>
     func send(command: ClassroomCommand) -> Single<Void>
     func members() -> Observable<[RoomUser]>
     func memberNameQueryProvider() -> UserInfoQueryProvider

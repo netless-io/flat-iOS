@@ -40,6 +40,7 @@ class ClassRoomViewModel {
             .distinctUntilChanged()
     }
 
+    // Show tips when user's whiteboard permission is ready
     func transOnStageUpdate(whiteboardEnable: Observable<Bool>) -> Observable<String> {
         currentUser
             .map(\.status.isSpeak)
@@ -75,7 +76,7 @@ class ClassRoomViewModel {
         }
     }
 
-    var whiteboardEnable: Observable<Bool> { currentUser.map(\.status.isSpeak) }
+    var whiteboardPermission: Observable<WhiteboardPermission> { currentUser.map { .init(writable: $0.status.whiteboard || $0.status.isSpeak, inputEnable: $0.status.whiteboard) }}
 
     var isRaisingHand: Observable<Bool> {
         currentUser.map(\.status.isRaisingHand)
@@ -283,7 +284,8 @@ class ClassRoomViewModel {
 
     struct UserListInput {
         let stopInteractingTap: Observable<Void>
-        let disconnectTap: Observable<RoomUser>
+        let tapSomeUserOnStage: Observable<RoomUser>
+        let tapSomeUserWhiteboard: Observable<RoomUser>
         let tapSomeUserRaiseHand: Observable<RoomUser>
         let tapSomeUserCamera: Observable<RoomUser>
         let tapSomeUserMic: Observable<RoomUser>
@@ -299,24 +301,56 @@ class ClassRoomViewModel {
                 return stopCommand
             }.asDriver(onErrorJustReturn: .success(()))
 
-        let acceptRaiseHandTask = input.tapSomeUserRaiseHand
+        let onStageTask = Observable.merge(input.tapSomeUserRaiseHand, input.tapSomeUserOnStage)
             .flatMap { [unowned self] user -> Single<(RoomUser, Bool)> in
-                self.stateHandler.checkIfOnStageUserOverMaxCount()
+                if user.isUsingWhiteboardWritable {
+                    return .just((user, false))
+                }
+                return self.stateHandler.checkIfWritableUserOverMaxCount()
                     .map { r in (user, r) }
             }
             .flatMap { [unowned self] user, overCount -> Single<ActionResult> in
-                guard self.isOwner else { return .just(.success(())) }
                 if overCount {
-                    return .just(.failure(localizeStrings("AccpetRaiseHandOverOnStageCountTip")))
+                    return .just(.failure(localizeStrings("MaxWritableUsersTips")))
                 }
-                return self.stateHandler.send(command: .acceptRaiseHand(user.rtmUUID))
-                    .map { _ -> ActionResult in .success(()) }
+                if user.status.isSpeak {
+                    if user.rtmUUID == self.userUUID || self.isOwner {
+                        return self.stateHandler.send(command: .disconnectUser(user.rtmUUID))
+                            .map { _ -> ActionResult in .success(()) }
+                    }
+                } else {
+                    if self.isOwner {
+                        return self.stateHandler.send(command: .pickUserOnStage(user.rtmUUID))
+                            .map { _ -> ActionResult in .success(()) }
+                    }
+                }
+                return .just(.success(()))
             }.asDriver(onErrorJustReturn: .success(()))
 
-        let disconnectTask = input.disconnectTap
-            .flatMap { [unowned self] user in
-                self.stateHandler.send(command: .disconnectUser(user.rtmUUID))
-                    .map { _ -> ActionResult in .success(()) }
+        let whiteboardTask = input.tapSomeUserWhiteboard
+            .flatMap { [unowned self] user -> Single<(RoomUser, Bool)> in
+                if user.isUsingWhiteboardWritable {
+                    return .just((user, false))
+                }
+                return self.stateHandler.checkIfWritableUserOverMaxCount()
+                    .map { r in (user, r) }
+            }
+            .flatMap { [unowned self] user, overCount -> Single<ActionResult> in
+                if overCount {
+                    return .just(.failure(localizeStrings("MaxWritableUsersTips")))
+                }
+                if user.status.whiteboard {
+                    if user.rtmUUID == self.userUUID || self.isOwner {
+                        return self.stateHandler.send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: false))
+                            .map { _ -> ActionResult in .success(()) }
+                    }
+                } else {
+                    if self.isOwner {
+                        return self.stateHandler.send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
+                            .map { _ -> ActionResult in .success(()) }
+                    }
+                }
+                return .just(.success(()))
             }.asDriver(onErrorJustReturn: .success(()))
 
         let cameraTask = input.tapSomeUserCamera
@@ -337,7 +371,7 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: .success(()))
 
-        return Driver.of(stopTask, acceptRaiseHandTask, disconnectTask, cameraTask, micTask).merge()
+        return Driver.of(stopTask, onStageTask, whiteboardTask, cameraTask, micTask).merge()
     }
 
     /// Return should dismiss
