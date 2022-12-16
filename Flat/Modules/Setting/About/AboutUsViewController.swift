@@ -42,7 +42,7 @@ class AboutUsViewController: UIViewController {
     @IBAction func onClickAcknowledgement(_: Any) {
         guard let path = Bundle.main.path(forResource: "Pods-Flat-acknowledgements", ofType: "plist")
         else { return }
-        let vc = AcknowListViewController(plistPath: path)
+        let vc = AcknowListViewController(plistFileURL: URL(fileURLWithPath: path), style: .grouped)
         present(BaseNavigationViewController(rootViewController: vc), animated: true)
     }
 

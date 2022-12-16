@@ -835,10 +835,10 @@
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
-				8A172A88292486F5006E4798 /* Shortcuts */,
 				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
 				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
+				8A172A88292486F5006E4798 /* Shortcuts */,
 				8A92196128AF3BE700DDDA81 /* ClassroomUsers */,
 				8A92195E28AF3B9B00DDDA81 /* ClassroomState */,
 				8A21DAC2279FCB5D0060E25D /* ClassroomRecording */,
