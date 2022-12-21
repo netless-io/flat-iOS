@@ -50,11 +50,6 @@ class ClassRoomUsersViewController: UIViewController {
                 .drive(studentCountLabel.rx.text)
                 .disposed(by: rx.disposeBag)
 
-            Driver.combineLatest(raiseHandUserCount, displayUsers.map(\.count))
-                .map { localizeStrings("Raised Hand") + " (\($0)/\($1))" }
-                .drive(raisedHandCountLabel.rx.text)
-                .disposed(by: rx.disposeBag)
-
             displayUsers.drive(tableView.rx.items(cellIdentifier: cellIdentifier, cellType: RoomUserTableViewCell.self)) { [weak self] _, item, cell in
                 self?.config(cell: cell, user: item)
             }
@@ -86,8 +81,12 @@ class ClassRoomUsersViewController: UIViewController {
 
         preferredContentSize = .init(width: greatWindowSide / 1.5, height: 560)
     }
-
-    @available(*, unavailable)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        closeButton.isHidden = modalPresentationStyle == .popover
+    }
+    
     required init?(coder _: NSCoder) {
         fatalError()
     }
@@ -115,12 +114,12 @@ class ClassRoomUsersViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(topView)
         topView.snp.makeConstraints { make in
-            make.left.right.top.equalToSuperview()
+            make.left.right.top.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(40)
         }
         tableView.snp.makeConstraints { make in
             make.top.equalTo(topView.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
+            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
@@ -169,6 +168,10 @@ class ClassRoomUsersViewController: UIViewController {
         }
     }
 
+    @objc func onClickClose() {
+        dismiss(animated: true)
+    }
+    
     // MARK: - Lazy
 
     lazy var topView: UIView = {
@@ -195,10 +198,25 @@ class ClassRoomUsersViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(8)
         }
+        
+        view.addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
+            make.right.top.bottom.equalToSuperview()
+            make.width.equalTo(66)
+        }
+        
         view.addLine(direction: .bottom, color: .borderColor)
         return view
     }()
 
+    lazy var closeButton: UIButton = {
+        let closeButton = UIButton(type: .custom)
+        closeButton.setImage(UIImage(named: "close-bold"), for: .normal)
+        closeButton.tintColor = .color(type: .text)
+        closeButton.addTarget(self, action: #selector(onClickClose), for: .touchUpInside)
+        return closeButton
+    }()
+    
     lazy var teacherLabel: UILabel = {
         let label = UILabel()
         label.textColor = .color(type: .text)
@@ -265,7 +283,6 @@ class ClassRoomUsersViewController: UIViewController {
     }
 
     lazy var studentCountLabel = createHeaderItem(title: localizeStrings("Students"))
-    lazy var raisedHandCountLabel = createHeaderItem(title: localizeStrings("Students"))
 
     func insertSpacing(spacing: CGFloat, to stack: UIStackView) {
         if let first = stack.arrangedSubviews.first {
@@ -291,7 +308,8 @@ class ClassRoomUsersViewController: UIViewController {
                                                   createHeaderItem(title: localizeStrings("Whiteboard Permissions")),
                                                   createHeaderItem(title: localizeStrings("Camera")),
                                                   createHeaderItem(title: localizeStrings("Mic")),
-                                                  raisedHandCountLabel])
+                                                  createHeaderItem(title: localizeStrings("Raised Hand"))
+                                                  ])
         view.axis = .horizontal
         view.distribution = .fillProportionally
         view.backgroundColor = .color(type: .background, .strong)

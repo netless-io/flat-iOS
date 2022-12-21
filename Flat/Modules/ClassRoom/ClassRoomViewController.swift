@@ -1,5 +1,5 @@
 //
-//  ClassRoomViewControllerV2.swift
+//  ClassRoomViewController.swift
 //  Flat
 //
 //  Created by xuyunshi on 2022/8/3.
@@ -305,10 +305,14 @@ class ClassRoomViewController: UIViewController {
 
         usersButton.rx.tap
             .subscribe(with: self, onNext: { weakSelf, _ in
-                weakSelf.usersButton.isSelected = true
-                weakSelf.popoverViewController(viewController: weakSelf.userListViewController,
-                                               fromSource: weakSelf.usersButton,
-                                               permittedArrowDirections: .none)
+                if weakSelf.traitCollection.hasCompact {
+                    weakSelf.present(weakSelf.userListViewController, animated: true)
+                } else {
+                    weakSelf.usersButton.isSelected = true
+                    weakSelf.popoverViewController(viewController: weakSelf.userListViewController,
+                                                   fromSource: weakSelf.usersButton,
+                                                   permittedArrowDirections: .none)
+                }
             })
             .disposed(by: rx.disposeBag)
 
