@@ -7,6 +7,7 @@
 //
 
 import Fastboard
+import Whiteboard
 import RxCocoa
 import RxSwift
 import UIKit
@@ -617,7 +618,19 @@ class ClassRoomViewController: UIViewController {
             guard let self else { return }
             switch fileContent {
             case let .image(url: url, image: image):
-                self.fastboardViewController.fastRoom.insertImg(url, imageSize: image.size)
+                let imageSize = image.size
+                let cameraScale = self.fastboardViewController.fastRoom.room?.state.cameraState?.scale.floatValue ?? 1
+                let containerWidth = self.fastboardViewController.fastRoom.view.bounds.width / 4 / CGFloat(cameraScale)
+                if imageSize.width > containerWidth {
+                    let ratio = imageSize.width / imageSize.height
+                    self.fastboardViewController.fastRoom.insertImg(url, imageSize: .init(width: containerWidth, height: containerWidth / ratio))
+                } else {
+                    self.fastboardViewController.fastRoom.insertImg(url, imageSize: image.size)
+                }
+                let newMemberState = WhiteMemberState()
+                newMemberState.currentApplianceName = .ApplianceSelector
+                self.fastboardViewController.fastRoom.room?.setMemberState(newMemberState)
+                self.fastboardViewController.fastRoom.view.overlay?.initUIWith(appliance: .ApplianceSelector, shape: nil)
             case let .media(url: url, title: title):
                 self.fastboardViewController.fastRoom.insertMedia(url, title: title, completionHandler: nil)
             case let .multiPages(pages: pages, title: title):
