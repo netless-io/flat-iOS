@@ -11,6 +11,10 @@ import UIKit
 import Whiteboard
 
 class CloudStorageInClassViewController: CloudStorageDisplayViewController {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        presentingViewController?.supportedInterfaceOrientations ?? .all
+    }
+    
     enum CloudStorageFileContent {
         case image(url: URL, image: UIImage)
         /// video or music
