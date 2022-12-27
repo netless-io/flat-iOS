@@ -25,6 +25,36 @@ class Rtc: NSObject {
     var targetLocalMic: Bool? = false
     var targetLocalCamera: Bool? = false
     var micStrenths: [UInt: PublishRelay<CGFloat>] = [:]
+    lazy var isBroadcaster: Bool = false
+    lazy var localCameraOn: Bool = false {
+        didSet {
+            updateClienRoleIfNeed()
+        }
+    }
+    lazy var localAudioOn: Bool = false {
+        didSet {
+            updateClienRoleIfNeed()
+        }
+    }
+    
+    func updateClienRoleIfNeed() {
+        if localCameraOn || localAudioOn {
+            if !isBroadcaster {
+                isBroadcaster = true
+                let result = agoraKit.setClientRole(.broadcaster)
+                logger.info("set client role broadcaster \(result)")
+                return
+            }
+        }
+        if !localAudioOn && !localAudioOn {
+            if isBroadcaster {
+                isBroadcaster = false
+                let result = agoraKit.setClientRole(.audience)
+                logger.info("set client role audience \(result)")
+                return
+            }
+        }
+    }
 
     @objc func onClassroomSettingNeedToggleCameraNotification() {
         agoraKit.switchCamera()
@@ -37,6 +67,8 @@ class Rtc: NSObject {
     func leave() -> Single<Void> {
         agoraKit.setupLocalVideo(nil)
         agoraKit.leaveChannel(nil)
+        agoraKit.disableAudio()
+        agoraKit.disableVideo()
         agoraKit.stopPreview()
         AgoraRtcEngineKit.destroy()
         isJoined.accept(false)
@@ -57,6 +89,12 @@ class Rtc: NSObject {
             targetLocalCamera = nil
             agoraKit.enableLocalVideo(cameraOn)
             agoraKit.muteLocalVideoStream(!cameraOn)
+            if cameraOn {
+                agoraKit.startPreview()
+            } else {
+                agoraKit.stopPreview()
+            }
+            localCameraOn = cameraOn
             logger.info("update local user status camera: \(cameraOn)")
         } else {
             targetLocalCamera = cameraOn
@@ -69,6 +107,7 @@ class Rtc: NSObject {
             targetLocalMic = nil
             agoraKit.enableLocalAudio(micOn)
             agoraKit.muteLocalAudioStream(!micOn)
+            localAudioOn = micOn
             logger.info("update local user status mic: \(micOn)")
         } else {
             targetLocalMic = micOn
@@ -82,7 +121,6 @@ class Rtc: NSObject {
         } else {
             let canvas = AgoraRtcVideoCanvas()
             canvas.uid = uid
-            canvas.mirrorMode = .enabled
             canvas.renderMode = .hidden
             remoteCanvas[uid] = canvas
             return canvas
@@ -103,17 +141,23 @@ class Rtc: NSObject {
          channelId: String,
          token: String,
          uid: UInt,
+         communication: Bool,
          screenShareInfo: ShareScreenInfo?)
     {
         self.screenShareInfo = screenShareInfo
         super.init()
-        agoraKit = .sharedEngine(withAppId: appId, delegate: self)
+        
+        let agoraKitConfig = AgoraRtcEngineConfig()
+        agoraKitConfig.appId = appId
+        agoraKitConfig.areaCode = .CN
+        agoraKitConfig.channelProfile = communication ? .communication : .liveBroadcasting
+        agoraKit = .sharedEngine(with: agoraKitConfig, delegate: self)
 
         agoraKit.setLogFile("") // set to default path
         agoraKit.setLogFilter(AgoraLogFilter.error.rawValue)
 
         // 大流720P视频
-        let config = AgoraVideoEncoderConfiguration(size: .init(width: 1280, height: 720), frameRate: .fps15, bitrate: 1130, orientationMode: .adaptative)
+        let config = AgoraVideoEncoderConfiguration(size: .init(width: 1280, height: 720), frameRate: .fps15, bitrate: 1130, orientationMode: .adaptative, mirrorMode: .auto)
         agoraKit.setVideoEncoderConfiguration(config)
         // 各发流端在加入频道前或者后，都可以调用 enableDualStreamMode 方法开启双流模式。
         agoraKit.enableDualStreamMode(true)
@@ -121,8 +165,9 @@ class Rtc: NSObject {
         agoraKit.setParameters("{\"che.audio.live_for_comm\": true}")
         // Agora 建议自定义的小流分辨率不超过 320 × 180 px，码率不超过 140 Kbps，且小流帧率不能超过大流帧率。
         agoraKit.setParameters("{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":5,\"bitRate\":140}}")
+        
         agoraKit.enableVideo()
-        agoraKit.enableAudioVolumeIndication(500, smooth: 3, report_vad: true)
+        agoraKit.enableAudio()
 
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
@@ -171,7 +216,7 @@ extension Rtc: AgoraRtcEngineDelegate {
         errorPublisher.accept(.connectionLost)
     }
 
-    func rtcEngine(_: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionStateType, reason: AgoraConnectionChangedReason) {
+    func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionState, reason: AgoraConnectionChangedReason) {
         switch state {
         case .disconnected, .connecting, .reconnecting, .failed:
             isJoined.accept(false)
@@ -216,7 +261,7 @@ extension Rtc: AgoraRtcEngineDelegate {
     }
 }
 
-extension AgoraConnectionStateType: CustomStringConvertible {
+extension AgoraConnectionState: CustomStringConvertible {
     public var description: String {
         switch self {
         case .disconnected:
@@ -237,23 +282,27 @@ extension AgoraConnectionStateType: CustomStringConvertible {
 extension AgoraConnectionChangedReason: CustomStringConvertible {
     public var description: String {
         switch self {
-        case .connecting: return "connecting"
-        case .joinSuccess: return "joinSuccess"
-        case .interrupted: return "interrupted"
-        case .bannedByServer: return "bannedByServer"
-        case .joinFailed: return "joinFailed"
-        case .leaveChannel: return "leaveChannel"
-        case .invalidAppId: return "invalidAppId"
-        case .invalidChannelName: return "invalidChannelName"
-        case .invalidToken: return "invalidToken"
-        case .tokenExpired: return "tokenExpired"
-        case .rejectedByServer: return "rejectedByServer"
-        case .settingProxyServer: return "settingProxyServer"
-        case .renewToken: return "renewToken"
-        case .clientIpAddressChanged: return "clientIpAddressChanged"
-        case .keepAliveTimeout: return "keepAliveTimeout"
+        case .reasonConnecting: return "connecting"
+        case .reasonJoinSuccess: return "joinSuccess"
+        case .reasonInterrupted: return "interrupted"
+        case .reasonBannedByServer: return "bannedByServer"
+        case .reasonJoinFailed: return "joinFailed"
+        case .reasonLeaveChannel: return "leaveChannel"
+        case .reasonInvalidAppId: return "invalidAppId"
+        case .reasonInvalidChannelName: return "invalidChannelName"
+        case .reasonInvalidToken: return "invalidToken"
+        case .reasonTokenExpired: return "tokenExpired"
+        case .reasonRejectedByServer: return "rejectedByServer"
+        case .reasonSettingProxyServer: return "settingProxyServer"
+        case .reasonRenewToken: return "renewToken"
+        case .reasonClientIpAddressChanged: return "clientIpAddressChanged"
+        case .reasonKeepAliveTimeout: return "keepAliveTimeout"
         case .sameUidLogin: return "sameUidLogin"
         case .tooManyBroadcasters: return "tooManyBroadcasters"
+        case .reasonRejoinSuccess: return "rejoinSuccess"
+        case .reasonLost: return "lost"
+        case .reasonEchoTest: return "echoTest"
+        case .clientIpAddressChangedByUser: return "clientIpAddressChangedByUser"
         @unknown default: return "unknown \(rawValue)"
         }
     }

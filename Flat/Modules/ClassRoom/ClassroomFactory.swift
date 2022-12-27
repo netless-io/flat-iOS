@@ -22,6 +22,7 @@ struct ClassroomFactory {
                       channelId: playInfo.roomUUID,
                       token: playInfo.rtcToken,
                       uid: playInfo.rtcUID,
+                      communication: detailInfo.roomType == .oneToOne,
                       screenShareInfo: playInfo.rtcShareScreen)
 
         FastRoom.followSystemPencilBehavior = ShortcutsManager.shared.shortcuts[.applePencilFollowSystem] ?? true
