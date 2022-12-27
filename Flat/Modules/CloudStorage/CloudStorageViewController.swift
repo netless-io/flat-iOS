@@ -468,6 +468,10 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
 
 extension CloudStorageViewController: UploadUtilityDelegate {
     @objc func presentTask() {
+        if let presentedViewController {
+            logger.info("prevent present taskViewController for \(presentedViewController)")
+            return
+        }
         mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
     }
 
