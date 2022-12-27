@@ -93,7 +93,7 @@ class Theme {
     }
 
     private func commitUpdate() {
-        keyWindow()?.subviews.forEach {
+        fetchKeyWindow()?.subviews.forEach {
             $0.removeFromSuperview()
             window?.addSubview($0)
         }

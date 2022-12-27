@@ -42,8 +42,6 @@ class ClassRoomUsersViewController: UIViewController {
                 .map { $0.filter { user in user.rtmUUID != ownerId } }
                 .asDriver(onErrorJustReturn: [])
 
-            let raiseHandUserCount = displayUsers.map { $0.filter(\.status.isRaisingHand).count }
-
             displayUsers
                 .map { localizeStrings("Students") + " (\($0.count))" }
                 .asDriver()

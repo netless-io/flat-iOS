@@ -11,7 +11,7 @@ import UIKit
 
 extension UIApplication {
     var topViewController: UIViewController? {
-        guard let rootViewController = keyWindow?.rootViewController else { return nil }
+        guard let rootViewController = fetchKeyWindow()?.rootViewController else { return nil }
         return topWith(root: rootViewController)
     }
 

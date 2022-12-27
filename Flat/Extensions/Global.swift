@@ -10,7 +10,7 @@ import Foundation
 
 let commonBorderWidth = 1 / UIScreen.main.scale
 
-func keyWindow() -> UIWindow? {
+func fetchKeyWindow() -> UIWindow? {
     for scene in UIApplication.shared.connectedScenes {
         if let scene = scene as? UIWindowScene {
             if let keyWindow = scene.windows.first(where: { $0.isKeyWindow }) {
@@ -30,5 +30,5 @@ func keyWindow() -> UIWindow? {
 }
 
 func isCompact() -> Bool {
-    keyWindow()?.traitCollection.hasCompact ?? true
+    fetchKeyWindow()?.traitCollection.hasCompact ?? true
 }
