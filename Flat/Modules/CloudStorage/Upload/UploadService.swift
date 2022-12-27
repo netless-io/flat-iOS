@@ -135,6 +135,7 @@ class UploadService {
             })
             .flatMap { [unowned self] info -> Observable<Void> in
                 try self.upload(fileURL: fileURL, info: info)
+                    .observe(on: MainScheduler.instance)
                     .do(onSubscribed: {
                         tracker.accept(.uploading)
                     })
