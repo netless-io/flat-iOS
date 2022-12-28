@@ -38,6 +38,7 @@ enum ClassroomCommand {
     case updateRaiseHand(Bool)
     case ban(Bool)
     case stopInteraction
+    case allMute
     case updateRoomStartStatus(RoomStartStatus)
 }
 

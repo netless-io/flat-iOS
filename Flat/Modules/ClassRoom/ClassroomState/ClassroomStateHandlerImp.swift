@@ -233,6 +233,20 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             case let .updateDeviceState(uuid: uuid, state: state):
                 try syncedStore.sendCommand(.deviceStateUpdate([uuid: state]))
                 return .just(())
+            case .allMute:
+                return syncedStore.getValues()
+                    .flatMap { [weak self] result -> Single<Void> in
+                        guard let self else { return .just(()) }
+                        var deviceState = result.deviceState
+                        for key in deviceState.keys {
+                            if key != self.ownerUUID {
+                                let state = deviceState[key]!
+                                deviceState[key] = .init(mic: false, camera: state.camera)
+                            }
+                        }
+                        try self.syncedStore.sendCommand(.deviceStateUpdate(deviceState))
+                        return .just(())
+                    }
             case .stopInteraction:
                 return syncedStore.getValues()
                     .flatMap { [weak self] result -> Single<Void> in

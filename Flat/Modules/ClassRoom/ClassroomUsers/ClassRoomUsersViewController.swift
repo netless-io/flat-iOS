@@ -23,6 +23,7 @@ class ClassRoomUsersViewController: UIViewController {
     let cameraTap: PublishRelay<RoomUser> = .init()
     let micTap: PublishRelay<RoomUser> = .init()
     let stopInteractingTap: PublishRelay<Void> = .init()
+    let allMuteTap: PublishRelay<Void> = .init()
 
     var teacher: RoomUser? {
         didSet {
@@ -55,6 +56,7 @@ class ClassRoomUsersViewController: UIViewController {
 
             if !isOwner {
                 stopInteractingButton.isHidden = true
+                allMuteButton.isHidden = true
             } else {
                 users.map {
                     $0.first(where: {
@@ -62,6 +64,14 @@ class ClassRoomUsersViewController: UIViewController {
                     }).map { _ in false } ?? true
                 }.asDriver(onErrorJustReturn: true)
                     .drive(stopInteractingButton.rx.isHidden)
+                    .disposed(by: rx.disposeBag)
+                
+                users.map {
+                    $0.first(where: {
+                        $0.rtmUUID != ownerId && $0.status.mic
+                    }).map { _ in false } ?? true
+                }.asDriver(onErrorJustReturn: true)
+                    .drive(allMuteButton.rx.isHidden)
                     .disposed(by: rx.disposeBag)
             }
         }
@@ -100,6 +110,10 @@ class ClassRoomUsersViewController: UIViewController {
     func bind() {
         stopInteractingButton.rx.tap
             .bind(to: stopInteractingTap)
+            .disposed(by: rx.disposeBag)
+        
+        allMuteButton.rx.tap
+            .bind(to: allMuteTap)
             .disposed(by: rx.disposeBag)
 
         tableView
@@ -232,6 +246,17 @@ class ClassRoomUsersViewController: UIViewController {
         btn.layer.borderWidth = commonBorderWidth
         return btn
     }()
+    
+    lazy var allMuteButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.titleLabel?.font = .systemFont(ofSize: 12)
+        btn.setTitleColor(.color(type: .text), for: .normal)
+        btn.setTitle(localizeStrings("All mute"), for: .normal)
+        btn.contentEdgeInsets = .init(top: 12, left: 12, bottom: 12, right: 12)
+        btn.layer.borderColor = UIColor.borderColor.cgColor
+        btn.layer.borderWidth = commonBorderWidth
+        return btn
+    }()
 
     lazy var teachAvatarImageView: UIImageView = {
         let view = UIImageView()
@@ -241,12 +266,20 @@ class ClassRoomUsersViewController: UIViewController {
         return view
     }()
 
+    lazy var globalOperationStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [stopInteractingButton, allMuteButton])
+        view.axis = .horizontal
+        view.spacing = 12
+        view.distribution = .fillProportionally
+        return view
+    }()
+    
     lazy var teacherHeaderView: UITableViewHeaderFooterView = {
         let view = UITableViewHeaderFooterView()
         view.contentView.backgroundColor = .classroomChildBG
         view.addSubview(teachAvatarImageView)
         view.addSubview(teacherLabel)
-        view.addSubview(stopInteractingButton)
+        view.addSubview(globalOperationStackView)
         view.addSubview(headerItemStackView)
         teachAvatarImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
@@ -258,12 +291,13 @@ class ClassRoomUsersViewController: UIViewController {
             make.centerY.equalTo(teachAvatarImageView)
             make.right.lessThanOrEqualTo(stopInteractingButton.snp.left).offset(-10)
         }
-        stopInteractingButton.snp.makeConstraints { make in
+        globalOperationStackView.snp.makeConstraints { make in
             make.right.equalTo(view.safeAreaLayoutGuide).inset(12)
             make.centerY.equalTo(teachAvatarImageView)
             make.height.equalTo(28)
         }
         stopInteractingButton.layer.cornerRadius = 14
+        allMuteButton.layer.cornerRadius = 14
 
         headerItemStackView.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()

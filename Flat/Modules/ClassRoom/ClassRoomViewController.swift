@@ -7,10 +7,10 @@
 //
 
 import Fastboard
-import Whiteboard
 import RxCocoa
 import RxSwift
 import UIKit
+import Whiteboard
 
 let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
 
@@ -325,7 +325,8 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
 
-        viewModel.transformUserListInput(.init(stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
+        viewModel.transformUserListInput(.init(allMuteTap: userListViewController.allMuteTap.asObservable(),
+                                               stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
                                                tapSomeUserWhiteboard: userListViewController.whiteboardTap.asObservable(),
                                                tapSomeUserRaiseHand: userListViewController.raiseHandTap.asObservable(),

@@ -283,6 +283,7 @@ class ClassRoomViewModel {
     }
 
     struct UserListInput {
+        let allMuteTap: Observable<Void>
         let stopInteractingTap: Observable<Void>
         let tapSomeUserOnStage: Observable<RoomUser>
         let tapSomeUserWhiteboard: Observable<RoomUser>
@@ -293,6 +294,13 @@ class ClassRoomViewModel {
 
     typealias ActionResult = Result<Void, String>
     func transformUserListInput(_ input: UserListInput) -> Driver<ActionResult> {
+        let allMuteTask = input.allMuteTap
+            .flatMap { [unowned self] _ -> Single<ActionResult> in
+                guard self.isOwner else { return .just(.success(())) }
+                return self.stateHandler.send(command: .allMute)
+                    .map { _ -> ActionResult in .success(()) }
+            }.asDriver(onErrorJustReturn: .success(()))
+
         let stopTask = input.stopInteractingTap
             .flatMap { [unowned self] _ -> Single<ActionResult> in
                 guard self.isOwner else { return .just(.success(())) }
@@ -371,7 +379,7 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: .success(()))
 
-        return Driver.of(stopTask, onStageTask, whiteboardTask, cameraTask, micTask).merge()
+        return Driver.of(allMuteTask, stopTask, onStageTask, whiteboardTask, cameraTask, micTask).merge()
     }
 
     /// Return should dismiss

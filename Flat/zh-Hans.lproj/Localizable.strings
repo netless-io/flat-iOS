@@ -36,6 +36,9 @@
 "All banned" = "全体禁言中";
 
 
+"All mute" = "全体禁音";
+
+
 "ApplePencilShortcuts" = "是否跟随系统的 ApplePencil 行为";
 
 
@@ -598,6 +601,9 @@
 
 
 "Stop Class" = "结束上课";
+
+
+"Stop Interacting" = "停止互动";
 
 
 "Stopped" = "已结束";

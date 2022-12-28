@@ -36,6 +36,9 @@
 "All banned" = "All banned";
 
 
+"All mute" = "All mute";
+
+
 "ApplePencilShortcuts" = "Follow the System ApplePencil Behavior";
 
 
@@ -595,6 +598,9 @@
 
 
 "Stop Class" = "End Class";
+
+
+"Stop Interacting" = "Stop Interacting";
 
 
 "Stopped" = "Stopped";
