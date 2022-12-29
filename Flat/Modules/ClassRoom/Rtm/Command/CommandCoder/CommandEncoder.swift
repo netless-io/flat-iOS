@@ -28,6 +28,22 @@ struct CommandEncoder {
         case let .updateRoomStatus(roomUUID: roomUUID, status: status):
             t = .updateRoomStatus
             v = ["roomUUID": roomUUID, "status": status.rawValue]
+        case .requestDevice(roomUUID: let roomUUID, deviceType: let type):
+            t = .requestDevice
+            switch type {
+            case .camera:
+                v = ["roomUUID": roomUUID, "camera": true]
+            case .mic:
+                v = ["roomUUID": roomUUID, "mic": true]
+            }
+        case .requestDeviceResponse(roomUUID: let roomUUID, deviceType: let type, on: let on):
+            t = .requestDeviceResponse
+            switch type {
+            case .camera:
+                v = ["roomUUID": roomUUID, "camera": on]
+            case .mic:
+                v = ["roomUUID": roomUUID, "mic": on]
+            }
         }
         let dic: NSDictionary = ["t": t.rawValue, "v": v]
         let data = try JSONSerialization.data(withJSONObject: dic)

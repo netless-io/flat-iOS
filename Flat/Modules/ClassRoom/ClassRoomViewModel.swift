@@ -282,6 +282,73 @@ class ClassRoomViewModel {
             }
     }
 
+    func listeningDeviceResponse() -> Driver<String> {
+        stateHandler.requestDeviceResponsePublisher
+            .map(\.toast)
+            .asDriver(onErrorJustReturn: "")
+    }
+
+    func listeningDeviceRequest() -> Driver<Void> {
+        let micAlert = AlertModel(title: localizeStrings("TeacherRequestMic"), preferredStyle: .alert, actionModels: [.confirm, .cancel])
+        let cameraAlert = AlertModel(title: localizeStrings("TeacherRequestCamera"), preferredStyle: .alert, actionModels: [.confirm, .cancel])
+        return stateHandler
+            .requestDevicePublisher
+            .asObservable()
+            .flatMap { [weak self] type -> Observable<(RequestDeviceType, Bool)?> in
+                guard let self else { return .error("self not exist") }
+                switch type {
+                case .camera:
+                    return self.alertProvider
+                        .showAlert(with: cameraAlert, tag: "requestCamera")
+                        .map { model in
+                            if let model {
+                                return (.camera, model.style == .default)
+                            }
+                            return nil
+                        }
+                        .asObservable()
+                case .mic:
+                    return self.alertProvider
+                        .showAlert(with: micAlert, tag: "requestMic")
+                        .map { model in
+                            if let model {
+                                return (.mic, model.style == .default)
+                            }
+                            return nil
+                        }
+                        .asObservable()
+                }
+            }
+            .flatMap { [weak self] deviceRequest -> Observable<Void> in
+                guard let (type, isOn) = deviceRequest else { return .just(()) }
+                guard let self else { return .error("self not exist") }
+                let responseCommand = self.stateHandler
+                    .send(command: .requestDeviceResponse(type: type, on: isOn))
+                    .asObservable()
+                if isOn {
+                    return responseCommand
+                        .flatMap { [weak self] _ -> Observable<RoomUser> in
+                            guard let self else { return .error("self not exist") }
+                            return self.currentUser.take(1)
+                        }.flatMap { [weak self] user -> Observable<Void> in
+                            guard let self else { return .error("self not exist") }
+                            switch type {
+                            case .camera:
+                                return self.stateHandler
+                                    .send(command: .updateDeviceState(uuid: self.userUUID, state: .init(mic: user.status.mic, camera: true)))
+                                    .asObservable()
+                            case .mic:
+                                return self.stateHandler
+                                    .send(command: .updateDeviceState(uuid: self.userUUID, state: .init(mic: true, camera: user.status.camera)))
+                                    .asObservable()
+                            }
+                        }
+                }
+                return responseCommand
+            }
+            .asDriver(onErrorJustReturn: ())
+    }
+
     struct UserListInput {
         let allMuteTap: Observable<Void>
         let stopInteractingTap: Observable<Void>
@@ -292,22 +359,22 @@ class ClassRoomViewModel {
         let tapSomeUserMic: Observable<RoomUser>
     }
 
-    typealias ActionResult = Result<Void, String>
-    func transformUserListInput(_ input: UserListInput) -> Driver<ActionResult> {
+    func transformUserListInput(_ input: UserListInput) -> Driver<String> {
         let allMuteTask = input.allMuteTap
-            .flatMap { [unowned self] _ -> Single<ActionResult> in
-                guard self.isOwner else { return .just(.success(())) }
-                return self.stateHandler.send(command: .allMute)
-                    .map { _ -> ActionResult in .success(()) }
-            }.asDriver(onErrorJustReturn: .success(()))
+            .flatMap { [unowned self] _ -> Single<String> in
+                guard self.isOwner else { return .just("") }
+                return self.stateHandler
+                    .send(command: .allMute)
+                    .map { "" }
+            }.asDriver(onErrorJustReturn: "all mute task error")
 
         let stopTask = input.stopInteractingTap
-            .flatMap { [unowned self] _ -> Single<ActionResult> in
-                guard self.isOwner else { return .just(.success(())) }
-                let stopCommand = self.stateHandler.send(command: .stopInteraction)
-                    .map { _ -> ActionResult in .success(()) }
-                return stopCommand
-            }.asDriver(onErrorJustReturn: .success(()))
+            .flatMap { [unowned self] _ -> Single<String> in
+                guard self.isOwner else { return .just("") }
+                return self.stateHandler
+                    .send(command: .stopInteraction)
+                    .map { "" }
+            }.asDriver(onErrorJustReturn: "stop interaction error")
 
         let onStageTask = Observable.merge(input.tapSomeUserRaiseHand, input.tapSomeUserOnStage)
             .flatMap { [unowned self] user -> Single<(RoomUser, Bool)> in
@@ -317,23 +384,25 @@ class ClassRoomViewModel {
                 return self.stateHandler.checkIfWritableUserOverMaxCount()
                     .map { r in (user, r) }
             }
-            .flatMap { [unowned self] user, overCount -> Single<ActionResult> in
+            .flatMap { [unowned self] user, overCount -> Single<String> in
                 if overCount {
-                    return .just(.failure(localizeStrings("MaxWritableUsersTips")))
+                    return .just(localizeStrings("MaxWritableUsersTips"))
                 }
                 if user.status.isSpeak {
                     if user.rtmUUID == self.userUUID || self.isOwner {
-                        return self.stateHandler.send(command: .disconnectUser(user.rtmUUID))
-                            .map { _ -> ActionResult in .success(()) }
+                        return self.stateHandler
+                            .send(command: .disconnectUser(user.rtmUUID))
+                            .map { "" }
                     }
                 } else {
                     if self.isOwner {
-                        return self.stateHandler.send(command: .pickUserOnStage(user.rtmUUID))
-                            .map { _ -> ActionResult in .success(()) }
+                        return self.stateHandler
+                            .send(command: .pickUserOnStage(user.rtmUUID))
+                            .map { "" }
                     }
                 }
-                return .just(.success(()))
-            }.asDriver(onErrorJustReturn: .success(()))
+                return .just("")
+            }.asDriver(onErrorJustReturn: "stage task error")
 
         let whiteboardTask = input.tapSomeUserWhiteboard
             .flatMap { [unowned self] user -> Single<(RoomUser, Bool)> in
@@ -343,41 +412,54 @@ class ClassRoomViewModel {
                 return self.stateHandler.checkIfWritableUserOverMaxCount()
                     .map { r in (user, r) }
             }
-            .flatMap { [unowned self] user, overCount -> Single<ActionResult> in
+            .flatMap { [unowned self] user, overCount -> Single<String> in
                 if overCount {
-                    return .just(.failure(localizeStrings("MaxWritableUsersTips")))
+                    return .just(localizeStrings("MaxWritableUsersTips"))
                 }
                 if user.status.whiteboard {
                     if user.rtmUUID == self.userUUID || self.isOwner {
-                        return self.stateHandler.send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: false))
-                            .map { _ -> ActionResult in .success(()) }
+                        return self.stateHandler
+                            .send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: false))
+                            .map { "" }
                     }
                 } else {
                     if self.isOwner {
-                        return self.stateHandler.send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
-                            .map { _ -> ActionResult in .success(()) }
+                        return self.stateHandler
+                            .send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
+                            .map { "" }
                     }
                 }
-                return .just(.success(()))
-            }.asDriver(onErrorJustReturn: .success(()))
+                return .just("")
+            }.asDriver(onErrorJustReturn: "whiteboard task error")
 
         let cameraTask = input.tapSomeUserCamera
-            .flatMap { [unowned self] user -> Single<ActionResult> in
-                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(.success(())) }
+            .flatMap { [unowned self] user -> Single<String> in
                 return self.stateHandler
-                    .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera)))
-                    .map { _ -> ActionResult in .success(()) }
+                    .send(command:.updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera)))
+                    .map { [weak self] _ -> String in
+                        guard let self else { return "" }
+                        if user.rtmUUID != self.userUUID, !user.status.deviceState.camera { // Toast for send device request
+                            return localizeStrings("SentInvitation")
+                        }
+                        return ""
+                    }
             }
-            .asDriver(onErrorJustReturn: .success(()))
+            .asDriver(onErrorJustReturn: "camera task error")
 
         let micTask = input.tapSomeUserMic
-            .flatMap { [unowned self] user -> Single<ActionResult> in
-                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just(.success(())) }
+            .flatMap { [unowned self] user -> Single<String> in
+                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just("") }
                 return self.stateHandler
                     .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: !user.status.mic, camera: user.status.camera)))
-                    .map { _ -> ActionResult in .success(()) }
+                    .map { [weak self] _ -> String in
+                        guard let self else { return "" }
+                        if user.rtmUUID != self.userUUID, !user.status.deviceState.mic { // Toast for send device request
+                            return localizeStrings("SentInvitation")
+                        }
+                        return ""
+                    }
             }
-            .asDriver(onErrorJustReturn: .success(()))
+            .asDriver(onErrorJustReturn: "mic task error")
 
         return Driver.of(allMuteTask, stopTask, onStageTask, whiteboardTask, cameraTask, micTask).merge()
     }
@@ -397,7 +479,6 @@ class ClassRoomViewModel {
                     return self.alertProvider
                         .showActionSheet(with: teacherStartAlert, source: source)
                         .asObservable()
-
                 } else {
                     let studentAlert = AlertModel(title: localizeStrings("Class exit confirming title"),
                                                   message: localizeStrings("Class exit confirming detail"),

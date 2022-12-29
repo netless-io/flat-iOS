@@ -90,6 +90,9 @@
 "CameraDenyTip" = "需要调用摄像头权限才可以进行视频聊天，点击进入设置打开摄像头权限";
 
 
+"CameraRequestReject" = "拒绝开启摄像头";
+
+
 "Cancel" = "取消";
 
 
@@ -333,6 +336,9 @@
 "MicDenyTip" = "需要调用麦克风权限才可以进行语音聊天，点击进入设置打开麦克风权限";
 
 
+"MicRequestReject" = "拒绝开启麦克风";
+
+
 "Modify Room" = "修改房间";
 
 
@@ -552,6 +558,9 @@
 "SendSMS" = "发送验证码";
 
 
+"SentInvitation" = "Invitation sent";
+
+
 "ServerFail" = "请求失败";
 
 
@@ -619,6 +628,12 @@
 
 
 "Teacher close class room alert detail" = "课堂正在继续，你是暂时离开还是结束上课？";
+
+
+"TeacherRequestCamera" = "老师请求开启摄像头";
+
+
+"TeacherRequestMic" = "老师请求开启麦克风";
 
 
 "The ban was lifted" = "禁言已解除";

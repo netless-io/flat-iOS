@@ -17,6 +17,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let maxWritableUsersCount: Int
     let roomUUID: String
     let ownerUUID: String
+    let userUUID: String
     let isOwner: Bool
     let syncedStore: ClassRoomSyncedStore
     let rtm: Rtm
@@ -32,6 +33,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let deviceState: BehaviorRelay<[String: DeviceState]> = .init(value: [:])
     let noticePublisher: PublishRelay<String> = .init()
     let banMessagePublisher: PublishRelay<Bool> = .init()
+    let requestDevicePublisher: PublishRelay<RequestDeviceType> = .init()
+    let requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> = .init()
 
     var bag = DisposeBag()
     let commandEncoder = CommandEncoder()
@@ -42,6 +45,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
          commandChannelRequest: Single<RtmChannel>,
          roomUUID: String,
          ownerUUID: String,
+         userUUID: String,
          isOwner: Bool,
          maxWritableUsersCount: Int,
          roomStartStatus: RoomStartStatus,
@@ -54,6 +58,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         self.commandChannelRequest = commandChannelRequest
         self.roomUUID = roomUUID
         self.ownerUUID = ownerUUID
+        self.userUUID = userUUID
         self.isOwner = isOwner
         self.maxWritableUsersCount = maxWritableUsersCount
         self.roomStartStatus = .init(value: roomStartStatus)
@@ -173,6 +178,17 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             case .notice(roomUUID: _, text: let notice):
                 noticePublisher.accept(notice)
             case .undefined: break
+            case .requestDevice(_, deviceType: let type):
+                requestDevicePublisher.accept(type)
+            case .requestDeviceResponse(_, deviceType: let deviceType, on: let on):
+                return memberNameQueryProvider()([senderId])
+                    .flatMap { [weak self] userDic -> Observable<Void> in
+                        guard let self else { return .error("self not exist") }
+                        guard let info = userDic[senderId] else { return .error("user not exist") }
+                        self.requestDeviceResponsePublisher.accept(.init(type: deviceType, userUUID: senderId, userName: info.name, isOn: on))
+                        return .just(())
+                    }
+                    .map { command }
             }
             return .just(command)
         } catch {
@@ -231,7 +247,33 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 let msgData = try commandEncoder.encode(.raiseHand(roomUUID: roomUUID, raiseHand: raiseHand))
                 return rtm.sendP2PMessage(data: msgData, toUUID: ownerUUID)
             case let .updateDeviceState(uuid: uuid, state: state):
-                try syncedStore.sendCommand(.deviceStateUpdate([uuid: state]))
+                if userUUID == uuid { // Do anything to self is okay
+                    try syncedStore.sendCommand(.deviceStateUpdate([uuid: state]))
+                    return .just(())
+                } else if isOwner {
+                    return syncedStore.getValues()
+                        .flatMap { [weak self] result -> Single<Void> in
+                            guard let self else { return .just(()) }
+                            let currentDeviceState = result.deviceState
+                            guard let currentUserState = currentDeviceState[uuid] else { return .just(()) }
+                            let turnOnMic = !currentUserState.mic && state.mic
+                            let turnOnCamera = !currentUserState.camera && state.camera
+                            if !turnOnMic, !turnOnCamera { // Do when command not contains open device
+                                try self.syncedStore.sendCommand(.deviceStateUpdate([uuid: state]))
+                                return .just(())
+                            } else { // It only send the first command
+                                if turnOnMic {
+                                    let msgData = try self.commandEncoder.encode(.requestDevice(roomUUID: self.roomUUID, deviceType: .mic))
+                                    return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
+                                }
+                                if turnOnCamera {
+                                    let msgData = try self.commandEncoder.encode(.requestDevice(roomUUID: self.roomUUID, deviceType: .camera))
+                                    return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
+                                }
+                                return .just(())
+                            }
+                        }
+                }
                 return .just(())
             case .allMute:
                 return syncedStore.getValues()
@@ -264,6 +306,9 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         try self.syncedStore.sendCommand(.deviceStateUpdate(deviceState))
                         return .just(())
                     }
+            case .requestDeviceResponse(type: let type, on: let on):
+                let msgData = try self.commandEncoder.encode(.requestDeviceResponse(roomUUID: self.roomUUID, deviceType: type, on: on))
+                return self.rtm.sendP2PMessage(data: msgData, toUUID: ownerUUID)
             }
         } catch {
             logger.error("classroomStateImp send command \(command)")

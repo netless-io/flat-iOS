@@ -165,6 +165,7 @@ class ClassRoomViewController: UIViewController {
         bindChat()
         bindTerminate()
         bindInvite()
+        bindDeviceRequest()
 
         if isOwner {
             bindRecording()
@@ -175,6 +176,23 @@ class ClassRoomViewController: UIViewController {
         if !isOwner {
             bindStoped()
             bindRaiseHand()
+        }
+    }
+    
+    func bindDeviceRequest() {
+        if isOwner {
+            viewModel
+                .listeningDeviceResponse()
+                .drive(with: self) { weakSelf, toast in
+                    if toast.isEmpty { return }
+                    weakSelf.toast(toast)
+                }
+                .disposed(by: rx.disposeBag)
+        } else {
+            viewModel
+                .listeningDeviceRequest()
+                .drive()
+                .disposed(by: rx.disposeBag)
         }
     }
 
@@ -191,7 +209,7 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-
+    
     func bindRecording() {
         let output = viewModel.transformRecordTap(recordButton.rx.tap)
 
@@ -332,13 +350,8 @@ class ClassRoomViewController: UIViewController {
                                                tapSomeUserRaiseHand: userListViewController.raiseHandTap.asObservable(),
                                                tapSomeUserCamera: userListViewController.cameraTap.asObservable(),
                                                tapSomeUserMic: userListViewController.micTap.asObservable()))
-            .drive(with: self, onNext: { weakSelf, r in
-                switch r {
-                case let .failure(tips):
-                    (weakSelf.presentedViewController ?? weakSelf).toast(tips, timeInterval: 3, preventTouching: false)
-                case .success:
-                    return
-                }
+            .drive(with: self, onNext: { weakSelf, s in
+                weakSelf.toast(s, timeInterval: 3, preventTouching: false)
             })
             .disposed(by: rx.disposeBag)
     }

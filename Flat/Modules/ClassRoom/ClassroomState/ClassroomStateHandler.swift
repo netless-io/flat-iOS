@@ -10,6 +10,30 @@ import Fastboard
 import RxRelay
 import RxSwift
 
+enum RequestDeviceType {
+    case camera
+    case mic
+}
+
+struct DeviceRequestResponse {
+    let type: RequestDeviceType
+    let userUUID: String
+    let userName: String
+    let isOn: Bool
+    
+    var toast: String {
+        if !isOn {
+            switch type {
+            case .camera:
+                return userName + " " + localizeStrings("CameraRequestReject")
+            case .mic:
+                return userName + " " + localizeStrings("MicRequestReject")
+            }
+        }
+        return ""
+    }
+}
+
 enum ClassroomStateError {
     case rtmRemoteLogin
     case rtmReconnectingTimeout
@@ -40,9 +64,12 @@ enum ClassroomCommand {
     case stopInteraction
     case allMute
     case updateRoomStartStatus(RoomStartStatus)
+    case requestDeviceResponse(type: RequestDeviceType, on: Bool)
 }
 
 protocol ClassroomStateHandler {
+    var requestDevicePublisher: PublishRelay<RequestDeviceType> { get }
+    var requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> { get }
     var banMessagePublisher: PublishRelay<Bool> { get }
     var noticePublisher: PublishRelay<String> { get }
     var banState: BehaviorRelay<Bool> { get }

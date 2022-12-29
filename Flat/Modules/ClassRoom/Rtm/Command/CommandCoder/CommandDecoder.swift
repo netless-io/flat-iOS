@@ -30,6 +30,22 @@ struct CommandDecoder {
             guard let statusStr = info["status"] as? String else { return .undefined(reason: "decode command update status error") }
             let status = RoomStartStatus(rawValue: statusStr)
             return .updateRoomStatus(roomUUID: roomUUID, status: status)
+        case .requestDevice:
+            if let camera = info["camera"] {
+                return .requestDevice(roomUUID: roomUUID, deviceType: .camera)
+            }
+            if let mic = info["mic"] {
+                return .requestDevice(roomUUID: roomUUID, deviceType: .mic)
+            }
+            fatalError("can't get this type")
+        case .requestDeviceResponse:
+            if let camera = info["camera"] as? Bool {
+                return .requestDeviceResponse(roomUUID: roomUUID, deviceType: .camera, on: camera)
+            }
+            if let mic = info["mic"] as? Bool {
+                return .requestDeviceResponse(roomUUID: roomUUID, deviceType: .mic, on: mic)
+            }
+            fatalError("can't get this type")
         default:
             return .undefined(reason: "won't happen")
         }

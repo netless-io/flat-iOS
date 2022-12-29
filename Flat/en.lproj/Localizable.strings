@@ -90,6 +90,9 @@
 "CameraDenyTip" = "You need to invoke the camera permissions to be able to video chat, click into the settings to open the camera permissions";
 
 
+"CameraRequestReject" = "refused to turn on camera";
+
+
 "Cancel" = "Cancel";
 
 
@@ -333,6 +336,9 @@
 "MicDenyTip" = "You need to invoke microphone permission for voice chat, click into settings to open microphone permission";
 
 
+"MicRequestReject" = "refused to turn on microphone";
+
+
 "Modify Room" = "Modify Room";
 
 
@@ -552,6 +558,9 @@
 "SendSMS" = "Send Code";
 
 
+"SentInvitation" = "已发送邀请";
+
+
 "ServerFail" = "Request failed";
 
 
@@ -616,6 +625,12 @@
 
 
 "Teacher close class room alert detail" = "The class is continuing, will you leave for now or end the class?";
+
+
+"TeacherRequestCamera" = "Teacher requests to turn on camera";
+
+
+"TeacherRequestMic" = "Teacher requests to turn on microphone";
 
 
 "The ban was lifted" = "The ban was lifted";

@@ -97,6 +97,7 @@ struct ClassroomFactory {
                                            commandChannelRequest: rtmChannel,
                                            roomUUID: playInfo.roomUUID,
                                            ownerUUID: playInfo.ownerUUID,
+                                           userUUID: AuthStore.shared.user?.userUUID ?? "",
                                            isOwner: playInfo.rtmUID == playInfo.ownerUUID,
                                            maxWritableUsersCount: detailInfo.roomType.maxWritableUsersCount,
                                            roomStartStatus: detailInfo.roomStatus,

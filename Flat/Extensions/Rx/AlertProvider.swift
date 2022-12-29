@@ -44,22 +44,57 @@ enum AlertBuilder {
 
 protocol AlertProvider {
     func showAlert(with model: AlertModel) -> Single<AlertModel.ActionModel>
-
     func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel>
+    /// When show the alert with same tag before last one return. It just return a nil signal
+    func showAlert(with model: AlertModel, tag: String) -> Single<AlertModel.ActionModel?>
+    func showActionSheet(with model: AlertModel, tag: String, source: TapSource?) -> Single<AlertModel.ActionModel?>
 }
 
 class DefaultAlertProvider: AlertProvider {
     weak var root: UIViewController?
 
     var customPopOverSourceProvider: ((AlertModel) -> (UIView, (dx: CGFloat, dy: CGFloat)))?
+    var presentingTagAlerts: Set<String> = .init()
+
+    func showActionSheet(with model: AlertModel, tag: String, source: TapSource?) -> Single<AlertModel.ActionModel?> {
+        if presentingTagAlerts.contains(tag) {
+            logger.info("present showActionSheet \(model) was presenting")
+            return .just(nil)
+        }
+        presentingTagAlerts.insert(tag)
+        let newActionModels = model.actionModels.map { m -> AlertModel.ActionModel in
+            .init(title: m.title, style: m.style) { [weak self] action in
+                m.handler?(action)
+                self?.presentingTagAlerts.remove(tag)
+            }
+        }
+        var replacedModel = model
+        replacedModel.actionModels = newActionModels
+        return showActionSheet(with: replacedModel, source: source).map { $0 as AlertModel.ActionModel? }
+    }
+
+    func showAlert(with model: AlertModel, tag: String) -> Single<AlertModel.ActionModel?> {
+        if presentingTagAlerts.contains(tag) {
+            logger.info("present showAlert \(model) was presenting")
+            return .just(nil)
+        }
+        presentingTagAlerts.insert(tag)
+        let newActionModels = model.actionModels.map { m -> AlertModel.ActionModel in
+            .init(title: m.title, style: m.style) { [weak self] action in
+                m.handler?(action)
+                self?.presentingTagAlerts.remove(tag)
+            }
+        }
+        var replacedModel = model
+        replacedModel.actionModels = newActionModels
+        return showAlert(with: replacedModel).map { $0 as AlertModel.ActionModel? }
+    }
 
     // Cancel style will be called when white space clicked
-    func showActionSheet(with model: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel> {
-        guard let root else {
-            return .error("root deinit")
-        }
+    func showActionSheet(with alertModel: AlertModel, source: TapSource?) -> Single<AlertModel.ActionModel> {
+        guard let root else { return .error("root deinit") }
         let task = Single<AlertModel.ActionModel>.create { observer in
-            let models = model.actionModels.map { model -> AlertModel.ActionModel in
+            let models = alertModel.actionModels.map { model -> AlertModel.ActionModel in
                 var newModel = model
                 newModel.handler = { action in
                     model.handler?(action)
@@ -67,12 +102,12 @@ class DefaultAlertProvider: AlertProvider {
                 }
                 return newModel
             }
-            var newModel = model
+            var newModel = alertModel
             newModel.actionModels = models
             let vc = AlertBuilder.buildAlertController(for: newModel)
 
             if let customPopOverSourceProvider = self.customPopOverSourceProvider {
-                let p = customPopOverSourceProvider(model)
+                let p = customPopOverSourceProvider(alertModel)
                 root.popoverViewController(viewController: vc,
                                            fromSource: p.0,
                                            sourceBoundsInset: p.1)
@@ -96,12 +131,10 @@ class DefaultAlertProvider: AlertProvider {
             }
     }
 
-    func showAlert(with model: AlertModel) -> Single<AlertModel.ActionModel> {
-        guard let root else {
-            return .error("root deinit")
-        }
+    func showAlert(with alertModel: AlertModel) -> Single<AlertModel.ActionModel> {
+        guard let root else { return .error("root deinit") }
         return .create { observer in
-            let models = model.actionModels.map { model -> AlertModel.ActionModel in
+            let models = alertModel.actionModels.map { model -> AlertModel.ActionModel in
                 var newModel = model
                 newModel.handler = { action in
                     model.handler?(action)
@@ -109,10 +142,10 @@ class DefaultAlertProvider: AlertProvider {
                 }
                 return newModel
             }
-            var newModel = model
+            var newModel = alertModel
             newModel.actionModels = models
             let vc = AlertBuilder.buildAlertController(for: newModel)
-            root.present(vc, animated: true, completion: nil)
+            modalTopViewControllerFrom(root: root).present(vc, animated: true, completion: nil)
             return Disposables.create()
         }
     }

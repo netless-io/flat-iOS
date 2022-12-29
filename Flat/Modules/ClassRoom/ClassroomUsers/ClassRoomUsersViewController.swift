@@ -27,6 +27,11 @@ class ClassRoomUsersViewController: UIViewController {
 
     var teacher: RoomUser? {
         didSet {
+            guard teacher != oldValue else { return }
+            if let teacher {
+                teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
+                teacherLabel.text = localizeStrings("Teacher") + ": " + teacher.name
+            }
             tableView.reloadData()
         }
     }
@@ -153,8 +158,8 @@ class ClassRoomUsersViewController: UIViewController {
         
         let isUserSelf = user.rtmUUID == userUUID
         if isOwner {
-            cell.cameraButton.isEnabled = user.status.camera
-            cell.micButton.isEnabled = user.status.mic
+            cell.cameraButton.isEnabled = true
+            cell.micButton.isEnabled = true
             cell.onStageSwitch.isEnabled = true
             cell.whiteboardSwitch.isEnabled = true
         } else {
@@ -274,13 +279,11 @@ class ClassRoomUsersViewController: UIViewController {
         return view
     }()
     
-    lazy var teacherHeaderView: UITableViewHeaderFooterView = {
-        let view = UITableViewHeaderFooterView()
-        view.contentView.backgroundColor = .classroomChildBG
+    lazy var teacherInfoView: UIView = {
+        let view = UIView()
         view.addSubview(teachAvatarImageView)
         view.addSubview(teacherLabel)
         view.addSubview(globalOperationStackView)
-        view.addSubview(headerItemStackView)
         teachAvatarImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
             make.top.equalToSuperview().inset(12)
@@ -298,9 +301,20 @@ class ClassRoomUsersViewController: UIViewController {
         }
         stopInteractingButton.layer.cornerRadius = 14
         allMuteButton.layer.cornerRadius = 14
-
+        return view
+    }()
+    
+    lazy var teacherHeaderView: UITableViewHeaderFooterView = {
+        let view = UITableViewHeaderFooterView()
+        view.contentView.backgroundColor = .classroomChildBG
+        let stack = UIStackView(arrangedSubviews: [teacherInfoView, headerItemStackView])
+        stack.axis = .vertical
+        stack.distribution = .fill
+        view.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         headerItemStackView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
             make.height.equalTo(40)
         }
         return view
@@ -366,21 +380,13 @@ class ClassRoomUsersViewController: UIViewController {
 
 extension ClassRoomUsersViewController: UITableViewDelegate {
     func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        if let _ = teacher {
-            return 88
-        } else {
-            return .leastNonzeroMagnitude
-        }
+        if teacher == nil { return 40 }
+        return 88
     }
 
     func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        if let teacher {
-            teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
-            teacherLabel.text = localizeStrings("Teacher") + ": " + teacher.name
-            return teacherHeaderView
-        } else {
-            return nil
-        }
+        teacherInfoView.isHidden = teacher == nil
+        return teacherHeaderView
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -9,6 +9,13 @@
 import Foundation
 import UIKit
 
+func modalTopViewControllerFrom(root: UIViewController) -> UIViewController {
+    if let present = root.presentedViewController {
+        return modalTopViewControllerFrom(root: present)
+    }
+    return root
+}
+
 extension UIApplication {
     var topViewController: UIViewController? {
         guard let rootViewController = fetchKeyWindow()?.rootViewController else { return nil }

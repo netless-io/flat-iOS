@@ -21,9 +21,9 @@ extension UIViewController {
     {
         guard !text.isEmpty else { return }
         DispatchQueue.main.async { [weak view] in
-            guard let view else { return }
-            MBProgressHUD.hide(for: view, animated: false)
-            let hud = MBProgressHUD.showAdded(to: view, animated: true)
+            guard let window = view?.window else { return }
+            MBProgressHUD.hide(for: window, animated: false)
+            let hud = MBProgressHUD.showAdded(to: window, animated: true)
             hud.bezelView.style = .solidColor
             hud.bezelView.color = UIColor.black.withAlphaComponent(0.45)
             hud.backgroundView.style = .solidColor
