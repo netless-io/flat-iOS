@@ -119,6 +119,7 @@ class Theme {
         flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
         flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8
         flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .color(type: .primary, .weak)
+        flatTheme.panelItemAssets.selectedColorItemBgColor = .color(type: .primary, .weak)
 
         flatTheme.controlBarAssets.borderColor = .borderColor
         flatTheme.controlBarAssets.effectStyle = nil
