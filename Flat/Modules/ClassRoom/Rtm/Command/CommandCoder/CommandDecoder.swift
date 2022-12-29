@@ -46,6 +46,14 @@ struct CommandDecoder {
                 return .requestDeviceResponse(roomUUID: roomUUID, deviceType: .mic, on: mic)
             }
             fatalError("can't get this type")
+        case .notifyDeviceOff:
+            if let _ = info["camera"] as? Bool {
+                return .notifyDeviceOff(roomUUID: roomUUID, deviceType: .camera)
+            }
+            if let _ = info["mic"] as? Bool {
+                return .notifyDeviceOff(roomUUID: roomUUID, deviceType: .mic)
+            }
+            fatalError("can't get this type")
         default:
             return .undefined(reason: "won't happen")
         }

@@ -282,6 +282,19 @@ class ClassRoomViewModel {
             }
     }
 
+    func listeningDeviceNotifyOff() -> Driver<String> {
+        stateHandler.notifyDeviceOffPublisher
+            .map { type -> String in
+                switch type {
+                case .camera:
+                    return localizeStrings("TeacherTurnOffCamera")
+                case .mic:
+                    return localizeStrings("TeacherTurnOffMic")
+                }
+            }
+            .asDriver(onErrorJustReturn: "")
+    }
+    
     func listeningDeviceResponse() -> Driver<String> {
         stateHandler.requestDeviceResponsePublisher
             .map(\.toast)

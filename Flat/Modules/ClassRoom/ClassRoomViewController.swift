@@ -165,35 +165,43 @@ class ClassRoomViewController: UIViewController {
         bindChat()
         bindTerminate()
         bindInvite()
-        bindDeviceRequest()
-
+        
         if isOwner {
+            bindDeviceResponse()
             bindRecording()
-        }
-
-        // Only Teacher can stop the class,
-        // So Teacher do not have to receive the alert
-        if !isOwner {
+        } else {
+            bindDeviceRequest()
+            bindDeviceNotifyOff()
+            // Only Teacher can stop the class,
+            // So Teacher do not have to receive the alert
             bindStoped()
             bindRaiseHand()
         }
     }
+
+    func bindDeviceNotifyOff() {
+        viewModel.listeningDeviceNotifyOff()
+            .drive(with: self) { weakSelf, s in
+                weakSelf.toast(s)
+            }
+            .disposed(by: rx.disposeBag)
+    }
     
+    func bindDeviceResponse() {
+        viewModel
+            .listeningDeviceResponse()
+            .drive(with: self) { weakSelf, toast in
+                if toast.isEmpty { return }
+                weakSelf.toast(toast)
+            }
+            .disposed(by: rx.disposeBag)
+    }
+
     func bindDeviceRequest() {
-        if isOwner {
-            viewModel
-                .listeningDeviceResponse()
-                .drive(with: self) { weakSelf, toast in
-                    if toast.isEmpty { return }
-                    weakSelf.toast(toast)
-                }
-                .disposed(by: rx.disposeBag)
-        } else {
-            viewModel
-                .listeningDeviceRequest()
-                .drive()
-                .disposed(by: rx.disposeBag)
-        }
+        viewModel
+            .listeningDeviceRequest()
+            .drive()
+            .disposed(by: rx.disposeBag)
     }
 
     func bindStoped() {
@@ -209,7 +217,7 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func bindRecording() {
         let output = viewModel.transformRecordTap(recordButton.rx.tap)
 

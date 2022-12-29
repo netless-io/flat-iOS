@@ -35,6 +35,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let banMessagePublisher: PublishRelay<Bool> = .init()
     let requestDevicePublisher: PublishRelay<RequestDeviceType> = .init()
     let requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> = .init()
+    let notifyDeviceOffPublisher: PublishRelay<RequestDeviceType> = .init()
 
     var bag = DisposeBag()
     let commandEncoder = CommandEncoder()
@@ -189,6 +190,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         return .just(())
                     }
                     .map { command }
+            case .notifyDeviceOff(_, deviceType: let type):
+                notifyDeviceOffPublisher.accept(type)
             }
             return .just(command)
         } catch {
@@ -260,6 +263,15 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                             let turnOnCamera = !currentUserState.camera && state.camera
                             if !turnOnMic, !turnOnCamera { // Do when command not contains open device
                                 try self.syncedStore.sendCommand(.deviceStateUpdate([uuid: state]))
+                                // Notify the user who's device was turned off
+                                if !turnOnMic {
+                                    let msgData = try self.commandEncoder.encode(.notifyDeviceOff(roomUUID: self.roomUUID, deviceType: .mic))
+                                    return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
+                                }
+                                if !turnOnCamera {
+                                    let msgData = try self.commandEncoder.encode(.notifyDeviceOff(roomUUID: self.roomUUID, deviceType: .camera))
+                                    return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
+                                }
                                 return .just(())
                             } else { // It only send the first command
                                 if turnOnMic {
@@ -277,17 +289,29 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 return .just(())
             case .allMute:
                 return syncedStore.getValues()
-                    .flatMap { [weak self] result -> Single<Void> in
-                        guard let self else { return .just(()) }
+                    .flatMap { [weak self] result -> Single<[String]> in
+                        guard let self else { return .just([]) }
                         var deviceState = result.deviceState
+                        var muteUsers: [String] = []
                         for key in deviceState.keys {
                             if key != self.ownerUUID {
                                 let state = deviceState[key]!
+                                if state.mic {
+                                    muteUsers.append(key)
+                                }
                                 deviceState[key] = .init(mic: false, camera: state.camera)
                             }
                         }
                         try self.syncedStore.sendCommand(.deviceStateUpdate(deviceState))
-                        return .just(())
+                        return .just(muteUsers)
+                    }
+                    .flatMap { [weak self] users -> Single<Void> in
+                        guard let self else { return .just(()) }
+                        let msgs: [(data: Data, uuid: String)] = try users.map {
+                            let data = try self.commandEncoder.encode(.notifyDeviceOff(roomUUID: self.roomUUID, deviceType: .mic))
+                            return (data, $0)
+                        }
+                        return self.rtm.sendP2PMessageFromArray(msgs)
                     }
             case .stopInteraction:
                 return syncedStore.getValues()

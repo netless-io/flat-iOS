@@ -16,6 +16,7 @@ enum RtmCommand {
     case updateRoomStatus(roomUUID: String, status: RoomStartStatus)
     case requestDevice(roomUUID: String, deviceType: RequestDeviceType)
     case requestDeviceResponse(roomUUID: String, deviceType: RequestDeviceType, on: Bool)
+    case notifyDeviceOff(roomUUID: String, deviceType: RequestDeviceType)
 }
 
 struct RtmCommandType: RawRepresentable, Codable, Equatable {
@@ -26,6 +27,7 @@ struct RtmCommandType: RawRepresentable, Codable, Equatable {
     static let updateRoomStatus = RtmCommandType(rawValue: "update-room-status")
     static let requestDevice = RtmCommandType(rawValue: "request-device")
     static let requestDeviceResponse = RtmCommandType(rawValue: "request-device-response")
+    static let notifyDeviceOff = RtmCommandType(rawValue: "notify-device-off")
 
     var rawValue: String
     init(rawValue: String) {

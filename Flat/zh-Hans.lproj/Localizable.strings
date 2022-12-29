@@ -639,6 +639,12 @@
 "TeacherRequestMic" = "老师请求开启麦克风";
 
 
+"TeacherTurnOffCamera" = "老师已关闭你的摄像头";
+
+
+"TeacherTurnOffMic" = "老师已关闭你的麦克风";
+
+
 "The ban was lifted" = "禁言已解除";
 
 

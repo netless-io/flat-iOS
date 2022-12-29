@@ -44,6 +44,14 @@ struct CommandEncoder {
             case .mic:
                 v = ["roomUUID": roomUUID, "mic": on]
             }
+        case .notifyDeviceOff(roomUUID: let roomUUID, deviceType: let type):
+            t = .notifyDeviceOff
+            switch type {
+            case .camera:
+                v = ["roomUUID": roomUUID, "camera": false]
+            case .mic:
+                v = ["roomUUID": roomUUID, "mic": false]
+            }
         }
         let dic: NSDictionary = ["t": t.rawValue, "v": v]
         let data = try JSONSerialization.data(withJSONObject: dic)

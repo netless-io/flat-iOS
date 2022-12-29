@@ -68,6 +68,7 @@ enum ClassroomCommand {
 }
 
 protocol ClassroomStateHandler {
+    var notifyDeviceOffPublisher: PublishRelay<RequestDeviceType> { get }
     var requestDevicePublisher: PublishRelay<RequestDeviceType> { get }
     var requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> { get }
     var banMessagePublisher: PublishRelay<Bool> { get }

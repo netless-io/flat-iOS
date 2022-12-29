@@ -636,6 +636,12 @@
 "TeacherRequestMic" = "Teacher requests to turn on microphone";
 
 
+"TeacherTurnOffCamera" = "Teacher has turned your camera off";
+
+
+"TeacherTurnOffMic" = "Teacher has turned your microphone off";
+
+
 "The ban was lifted" = "The ban was lifted";
 
 

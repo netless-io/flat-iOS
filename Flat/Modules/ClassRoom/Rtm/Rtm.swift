@@ -43,6 +43,15 @@ class Rtm: NSObject {
 
     deinit { logger.trace("\(self) deinit") }
 
+    func sendP2PMessageFromArray(_ array: [(data: Data, uuid: String)]) -> Single<Void> {
+        array.reduce(Single<Void>.just(())) { [weak self] partial, part -> Single<Void> in
+            guard let self else { return .error("self not exist") }
+            return partial.flatMap { _ -> Single<Void> in
+                return self.sendP2PMessage(data: part.data, toUUID: part.uuid)
+            }
+        }
+    }
+    
     func sendP2PMessage(data: Data, toUUID UUID: String) -> Single<Void> {
         logger.info("send p2p raw message data, to \(UUID)")
         switch state.value {
