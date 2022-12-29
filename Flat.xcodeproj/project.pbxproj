@@ -212,9 +212,10 @@
 		8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */; };
 		8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */; };
 		8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */; };
+		8AAE2549295D795D007D5507 /* RaiseHandListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */; };
+		8AAE254B295D7A0C007D5507 /* RaiseHandTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */; };
 		8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */; };
 		8AAE53D127311D7E00C35796 /* String+ReguarExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */; };
-		8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */; };
 		8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */; };
 		8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */; };
 		8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */; };
@@ -519,10 +520,11 @@
 		8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Activity.swift"; sourceTree = "<group>"; };
 		8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCoordinator.swift; sourceTree = "<group>"; };
 		8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStoreDelegate.swift; sourceTree = "<group>"; };
+		8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandListViewController.swift; sourceTree = "<group>"; };
+		8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandTableViewCell.swift; sourceTree = "<group>"; };
 		8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Circle.swift"; sourceTree = "<group>"; };
 		8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
 		8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ReguarExpression.swift"; sourceTree = "<group>"; };
-		8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandButton.swift; sourceTree = "<group>"; };
 		8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveBindingRequest.swift; sourceTree = "<group>"; };
 		8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRenameRequest.swift; sourceTree = "<group>"; };
 		8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareAvatarUploadRequest.swift; sourceTree = "<group>"; };
@@ -835,6 +837,7 @@
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
+				8AAE2547295D794E007D5507 /* RaiseHand */,
 				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
 				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
@@ -1209,7 +1212,6 @@
 			children = (
 				8A99EC4128B5C0580066CFF3 /* DashLine */,
 				8A99EC3E28B5BA300066CFF3 /* Textfield */,
-				8A9ACC0F271EAE2800E7E7CE /* Button */,
 				8A9ACBFD271D689800E7E7CE /* Cells */,
 				8A9ACBFA271D602C00E7E7CE /* Tabbar */,
 			);
@@ -1236,14 +1238,6 @@
 				8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		8A9ACC0F271EAE2800E7E7CE /* Button */ = {
-			isa = PBXGroup;
-			children = (
-				8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */,
-			);
-			path = Button;
 			sourceTree = "<group>";
 		};
 		8A9FB3A027224E3F00F6F06F /* Flat */ = {
@@ -1392,6 +1386,15 @@
 				8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */,
 			);
 			path = Stores;
+			sourceTree = "<group>";
+		};
+		8AAE2547295D794E007D5507 /* RaiseHand */ = {
+			isa = PBXGroup;
+			children = (
+				8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */,
+				8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */,
+			);
+			path = RaiseHand;
 			sourceTree = "<group>";
 		};
 		8ABF362827464543000D5003 /* ClassroomLayout */ = {
@@ -1735,6 +1738,7 @@
 				8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */,
 				8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */,
 				8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */,
+				8AAE254B295D7A0C007D5507 /* RaiseHandTableViewCell.swift in Sources */,
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
 				8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */,
@@ -1762,6 +1766,7 @@
 				8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */,
 				8A270B8B27192FEE00450DC6 /* BaseNavigationViewController.swift in Sources */,
 				8A05A1532834C756002DE9B9 /* PrivacyAlertViewController.swift in Sources */,
+				8AAE2549295D795D007D5507 /* RaiseHandListViewController.swift in Sources */,
 				8A9FB3C727229E4600F6F06F /* Task.swift in Sources */,
 				8A9FB3B5272290AB00F6F06F /* URLRequest+Extension.swift in Sources */,
 				8A270BC7271989FB00450DC6 /* UIView+DidLayoutBlock.swift in Sources */,
@@ -1822,7 +1827,6 @@
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
 				8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */,
 				8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */,
-				8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
 				8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */,

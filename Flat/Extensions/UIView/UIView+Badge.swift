@@ -13,6 +13,10 @@ private class BadgeView: UIView {
         super.init(frame: frame)
         clipsToBounds = true
         backgroundColor = .systemRed
+        addSubview(countLabel)
+        countLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     override func layoutSubviews() {
@@ -24,6 +28,15 @@ private class BadgeView: UIView {
     required init?(coder _: NSCoder) {
         fatalError()
     }
+    
+    lazy var countLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 12)
+        label.textAlignment = .center
+        label.minimumScaleFactor = 0.5
+        return label
+    }()
 }
 
 extension UIView {
@@ -39,18 +52,19 @@ extension UIView {
         return badgeView
     }
 
-    func setupBadgeView(rightInset: CGFloat, topInset: CGFloat) {
+    func setupBadgeView(rightInset: CGFloat, topInset: CGFloat, width: CGFloat = 6) {
         let view = getBadageView()
         view.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(rightInset)
             make.top.equalToSuperview().inset(topInset)
-            make.width.height.equalTo(6)
+            make.width.height.equalTo(width)
         }
         view.isHidden = true
     }
 
-    func updateBadgeHide(_ hide: Bool) {
+    func updateBadgeHide(_ hide: Bool, count: Int = 0) {
         let view = getBadageView()
         view.isHidden = hide
+        view.countLabel.text = count > 0 ? count.description : nil
     }
 }

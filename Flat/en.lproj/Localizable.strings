@@ -357,6 +357,9 @@
 "NoHistoryTip" = "No history item";
 
 
+"NoRaiseHandUsers" = "No users raised their hands at the moment";
+
+
 "NotEnoughTotalUsage" = "Reaching capacity limit";
 
 
@@ -760,6 +763,9 @@
 
 
 "Video Converting" = "Video Converting ...";
+
+
+"View All" = "View All";
 
 
 "WelcomeFlat" = "Welcome to Flat";

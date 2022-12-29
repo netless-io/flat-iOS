@@ -44,6 +44,7 @@ class ClassRoomViewController: UIViewController {
     let inviteViewController: () -> UIViewController
     let userListViewController: ClassRoomUsersViewController
     var chatVC: ChatViewController?
+    lazy var raiseHandListViewController = RaiseHandListViewController()
 
     // MARK: - LifeCycle
 
@@ -165,17 +166,18 @@ class ClassRoomViewController: UIViewController {
         bindChat()
         bindTerminate()
         bindInvite()
-        
+
         if isOwner {
             bindDeviceResponse()
             bindRecording()
+            bindRaiseHandList()
         } else {
             bindDeviceRequest()
             bindDeviceNotifyOff()
             // Only Teacher can stop the class,
             // So Teacher do not have to receive the alert
             bindStoped()
-            bindRaiseHand()
+            bindUserRaiseHand()
         }
     }
 
@@ -186,7 +188,7 @@ class ClassRoomViewController: UIViewController {
             }
             .disposed(by: rx.disposeBag)
     }
-    
+
     func bindDeviceResponse() {
         viewModel
             .listeningDeviceResponse()
@@ -214,6 +216,32 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.showAlertWith(message: localizeStrings("Leaving room soon")) {
                     weakSelf.stopSubModulesAndLeaveUIHierarchy()
                 }
+            })
+            .disposed(by: rx.disposeBag)
+    }
+
+    func bindRaiseHandList() {
+        let raiseHandUsers = viewModel.members
+            .map { ms in
+                ms.filter(\.status.isRaisingHand)
+            }
+        raiseHandListViewController.raiseHandUsers = raiseHandUsers
+        
+        raiseHandUsers
+            .asDriver(onErrorJustReturn: [])
+            .map { $0.count }
+            .drive(with: self, onNext: { weakSelf, c in
+                weakSelf.raiseHandListButton.isSelected = c > 0
+                weakSelf.raiseHandListButton.updateBadgeHide(c <= 0, count: c)
+            })
+            .disposed(by: rx.disposeBag)
+
+        raiseHandListButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { weakSelf, _ in
+                weakSelf.popoverViewController(viewController: weakSelf.raiseHandListViewController,
+                                               fromSource: weakSelf.raiseHandListButton,
+                                               permittedArrowDirections: .none)
             })
             .disposed(by: rx.disposeBag)
     }
@@ -250,7 +278,7 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
 
-    func bindRaiseHand() {
+    func bindUserRaiseHand() {
         viewModel.transformRaiseHandClick(raiseHandButton.rx.tap)
             .drive()
             .disposed(by: rx.disposeBag)
@@ -330,7 +358,15 @@ class ClassRoomViewController: UIViewController {
             self?.usersButton.isSelected = false
         }
 
-        usersButton.rx.tap
+        let raiseHandCheckAll = raiseHandListViewController.checkAllPublisher
+            .asObservable()
+            .flatMap { [weak self] _ -> Observable<Void> in
+                guard let self else { return .error("self not exist") }
+                return self.rx.dismiss(animated: false).asObservable()
+            }
+
+        // Click raisehand list check all or click users will trigger user list viewcontroller
+        Observable.merge(usersButton.rx.tap.asObservable(), raiseHandCheckAll)
             .subscribe(with: self, onNext: { weakSelf, _ in
                 if weakSelf.traitCollection.hasCompact {
                     weakSelf.present(weakSelf.userListViewController, animated: true)
@@ -355,7 +391,11 @@ class ClassRoomViewController: UIViewController {
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
                                                tapSomeUserWhiteboard: userListViewController.whiteboardTap.asObservable(),
-                                               tapSomeUserRaiseHand: userListViewController.raiseHandTap.asObservable(),
+                                               tapSomeUserRaiseHand:
+                                               Observable.merge([
+                                                   userListViewController.raiseHandTap.asObservable(),
+                                                   raiseHandListViewController.acceptRaiseHandPublisher.asObservable()
+                                               ]),
                                                tapSomeUserCamera: userListViewController.cameraTap.asObservable(),
                                                tapSomeUserMic: userListViewController.micTap.asObservable()))
             .drive(with: self, onNext: { weakSelf, s in
@@ -512,7 +552,16 @@ class ClassRoomViewController: UIViewController {
         if !isOwner {
             view.addSubview(raiseHandButton)
             raiseHandButton.snp.makeConstraints { make in
-                make.bottom.right.equalTo(view.safeAreaLayoutGuide).inset(28)
+                make.width.height.equalTo(40)
+                make.centerX.equalTo(rightToolBar)
+                make.top.equalTo(rightToolBar.snp.bottom).offset(12)
+            }
+        } else {
+            view.addSubview(raiseHandListButton)
+            raiseHandListButton.snp.makeConstraints { make in
+                make.width.height.equalTo(40)
+                make.centerX.equalTo(rightToolBar)
+                make.top.equalTo(rightToolBar.snp.bottom).offset(12)
             }
         }
     }
@@ -603,8 +652,43 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
-    lazy var raiseHandButton: RaiseHandButton = {
-        let button = RaiseHandButton(type: .custom)
+    lazy var raiseHandListButton: UIButton = {
+        let button = UIButton(type: .custom)
+        let circle = UIView()
+        button.addSubview(circle)
+        circle.layer.borderWidth = commonBorderWidth
+        circle.layer.cornerRadius = 20
+        circle.clipsToBounds = true
+        circle.isUserInteractionEnabled = false
+        circle.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        button.setupBadgeView(rightInset: -6, topInset: -6, width: 20)
+        button.setTraitRelatedBlock { btn in
+            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .text)), for: .normal)
+            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .primary)), for: .selected)
+            circle.layer.borderColor = UIColor.borderColor.cgColor
+        }
+        return button
+    }()
+
+    lazy var raiseHandButton: UIButton = {
+        let button = UIButton(type: .custom)
+        let circle = UIView()
+        button.addSubview(circle)
+        circle.layer.borderWidth = commonBorderWidth
+        circle.layer.cornerRadius = 20
+        circle.clipsToBounds = true
+        circle.isUserInteractionEnabled = false
+        circle.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        button.setTraitRelatedBlock { btn in
+            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .text)), for: .normal)
+            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .primary)), for: .highlighted)
+            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .primary)), for: .selected)
+            circle.layer.borderColor = UIColor.borderColor.cgColor
+        }
         return button
     }()
 

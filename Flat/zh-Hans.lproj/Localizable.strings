@@ -357,6 +357,9 @@
 "NoHistoryTip" = "暂无历史记录";
 
 
+"NoRaiseHandUsers" = "暂时没有用户举手";
+
+
 "NotEnoughTotalUsage" = "没有足够容量";
 
 
@@ -763,6 +766,9 @@
 
 
 "Video Converting" = "视频转码中 ...";
+
+
+"View All" = "查看全部";
 
 
 "WelcomeFlat" = "欢迎使用Flat";
