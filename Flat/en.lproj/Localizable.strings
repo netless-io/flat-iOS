@@ -39,6 +39,9 @@
 "All mute" = "All mute";
 
 
+"All mute toast" = "All users are muted";
+
+
 "ApplePencilShortcuts" = "Follow the System ApplePencil Behavior";
 
 
@@ -558,7 +561,7 @@
 "SendSMS" = "Send Code";
 
 
-"SentInvitation" = "已发送邀请";
+"SentInvitation" = "Invitation sent";
 
 
 "ServerFail" = "Request failed";

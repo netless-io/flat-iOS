@@ -36,7 +36,10 @@
 "All banned" = "全体禁言中";
 
 
-"All mute" = "全体禁音";
+"All mute" = "全体静音";
+
+
+"All mute toast" = "全体学生已静音";
 
 
 "ApplePencilShortcuts" = "是否跟随系统的 ApplePencil 行为";
@@ -558,7 +561,7 @@
 "SendSMS" = "发送验证码";
 
 
-"SentInvitation" = "Invitation sent";
+"SentInvitation" = "已发送邀请";
 
 
 "ServerFail" = "请求失败";

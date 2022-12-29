@@ -365,7 +365,7 @@ class ClassRoomViewModel {
                 guard self.isOwner else { return .just("") }
                 return self.stateHandler
                     .send(command: .allMute)
-                    .map { "" }
+                    .map { localizeStrings("All mute toast") }
             }.asDriver(onErrorJustReturn: "all mute task error")
 
         let stopTask = input.stopInteractingTap
