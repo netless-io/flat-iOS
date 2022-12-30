@@ -33,7 +33,7 @@ class ClassRoomLayout {
     let verticalRtcFixedHeight: CGFloat = 84
     let rtcRatio = ClassRoomLayoutRatioConfig.rtcItemRatio
     let rtcMinRatio: CGFloat = 0.1
-    let rtcMaxRatio: CGFloat = 0.3
+    let rtcMaxRatio: CGFloat = 0.2
     let whiteboardRatio: CGFloat = .init(ClassRoomLayoutRatioConfig.whiteboardRatio)
 
     func update(rtcHide: Bool, contentSize: CGSize) -> OutPut {
@@ -57,11 +57,11 @@ class ClassRoomLayout {
                 } else {
                     let heightDelta = contentSize.height - estimateHeight
                     let realRtcHeight = min(isRtcHide ? 0 : heightDelta + estimateRtcHeight, rtcMaxRatio * contentSize.height)
-                    let realWhiteboardHeight = contentSize.height - realRtcHeight
+                    let heightRemaining = contentSize.height - estimateWhiteHeight - realRtcHeight
                     let output = OutPut(rtcSize: .init(width: contentSize.width, height: realRtcHeight),
                                         rtcDirection: rtcDirection,
-                                        whiteboardSize: .init(width: width, height: realWhiteboardHeight),
-                                        inset: .zero)
+                                        whiteboardSize: .init(width: width, height: estimateWhiteHeight),
+                                        inset: .init(top: heightRemaining / 2, left: 0, bottom: heightRemaining / 2, right: 0))
                     return (output, preferredStyle)
                 }
             case .right:
