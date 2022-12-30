@@ -313,8 +313,16 @@ class ClassRoomViewModel {
     }
 
     func listeningDeviceRequest() -> Driver<Void> {
-        let micAlert = AlertModel(title: localizeStrings("TeacherRequestMic"), preferredStyle: .alert, actionModels: [.confirm, .cancel])
-        let cameraAlert = AlertModel(title: localizeStrings("TeacherRequestCamera"), preferredStyle: .alert, actionModels: [.confirm, .cancel])
+        let micAlert = AlertModel(title: localizeStrings("Alert"),
+                                  message: localizeStrings("TeacherRequestMic"),
+                                  preferredStyle: .alert,
+                                  actionModels: [.init(title: localizeStrings("Agree"), style: .default),
+                                                 .init(title: localizeStrings("Reject"), style: .cancel)])
+        let cameraAlert = AlertModel(title: localizeStrings("Alert"),
+                                     message: localizeStrings("TeacherRequestCamera"),
+                                     preferredStyle: .alert,
+                                     actionModels: [.init(title: localizeStrings("Agree"), style: .default),
+                                                    .init(title: localizeStrings("Reject"), style: .cancel)])
         return stateHandler
             .requestDevicePublisher
             .asObservable()
