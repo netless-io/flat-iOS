@@ -6,20 +6,20 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
-fileprivate class FlatLoadingView: UIView {
-    var cancelHandler: (()->Void)?
-    
+private class FlatLoadingView: UIView {
+    var cancelHandler: (() -> Void)?
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         let isDark = traitCollection.userInterfaceStyle == .dark
-        let path = Bundle.main.url(forResource:  isDark ? "loading_without_bg" : "loading", withExtension: "gif")!
+        let path = Bundle.main.url(forResource: isDark ? "loading_without_bg" : "loading", withExtension: "gif")!
         let resource = LocalFileImageDataProvider(fileURL: path)
         loadingView.kf.setImage(with: resource)
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .color(type: .background)
@@ -28,7 +28,7 @@ fileprivate class FlatLoadingView: UIView {
             make.center.equalToSuperview()
             make.width.lessThanOrEqualTo(self.snp.width).multipliedBy(0.2)
         }
-        
+
         addSubview(cancelButton)
         cancelButton.layer.borderColor = UIColor.color(type: .primary).cgColor
         cancelButton.layer.borderWidth = commonBorderWidth
@@ -43,25 +43,26 @@ fileprivate class FlatLoadingView: UIView {
             make.top.equalTo(loadingView.snp.bottom)
         }
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func onClickCancel() {
         cancelHandler?()
     }
-    
+
     func startAnimating() {
         loadingView.startAnimating()
     }
-    
+
     func stopAnimating() {
         loadingView.stopAnimating()
     }
-    
+
     lazy var cancelButton = UIButton(type: .custom)
-    
+
     lazy var loadingView: AnimatedImageView = {
         let path = Bundle.main.url(forResource: "loading_without_bg", withExtension: "gif")!
         let resource = LocalFileImageDataProvider(fileURL: path)
@@ -76,7 +77,8 @@ fileprivate class FlatLoadingView: UIView {
 
 extension UIView {
     func startFlatLoading(showCancelDelay: TimeInterval = .infinity,
-                          cancelCompletion: (()->Void)? = nil) {
+                          cancelCompletion: (() -> Void)? = nil)
+    {
         if flatLoadingView.superview == nil {
             addSubview(flatLoadingView)
             flatLoadingView.snp.makeConstraints { make in
@@ -86,7 +88,7 @@ extension UIView {
         bringSubviewToFront(flatLoadingView)
         flatLoadingView.isHidden = false
         flatLoadingView.alpha = 1
-        
+
         flatLoadingView.startAnimating()
         flatLoadingView.cancelButton.isHidden = true
         flatLoadingView.cancelHandler = { [weak self] in
@@ -104,7 +106,7 @@ extension UIView {
             }
         }
     }
-    
+
     func endFlatLoading(withDelay delay: TimeInterval = 0.5) {
         if delay <= 0 {
             flatLoadingView.stopAnimating()
@@ -122,8 +124,8 @@ extension UIView {
             }
         }
     }
-    
-    fileprivate var flatLoadingView: FlatLoadingView {
+
+    private var flatLoadingView: FlatLoadingView {
         let flatLoadingViewTag = 555
         let flatLoadingView: FlatLoadingView
         if let tagView = viewWithTag(flatLoadingViewTag) as? FlatLoadingView {

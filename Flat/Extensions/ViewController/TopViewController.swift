@@ -6,16 +6,22 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 import UIKit
 
+func modalTopViewControllerFrom(root: UIViewController) -> UIViewController {
+    if let present = root.presentedViewController {
+        return modalTopViewControllerFrom(root: present)
+    }
+    return root
+}
+
 extension UIApplication {
     var topViewController: UIViewController? {
-        guard let rootViewController = keyWindow?.rootViewController else { return nil }
+        guard let rootViewController = fetchKeyWindow()?.rootViewController else { return nil }
         return topWith(root: rootViewController)
     }
-    
+
     func topWith(root: UIViewController?) -> UIViewController? {
         if let split = root as? UISplitViewController {
             return topWith(root: split.viewControllers.last)

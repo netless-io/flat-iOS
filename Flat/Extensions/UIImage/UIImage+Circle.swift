@@ -6,16 +6,16 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 extension UIImage {
     static func circleImage() -> UIImage {
         UIImage(named: "circle")!.tintColor(.borderColor)
     }
-    
+
     static func filledCircleImage(radius: CGFloat,
-                                  bigLineWidth: CGFloat = 1) -> UIImage {
+                                  bigLineWidth: CGFloat = 1) -> UIImage
+    {
         let path = UIBezierPath(arcCenter: .init(x: radius, y: radius),
                                 radius: radius - bigLineWidth,
                                 startAngle: 0,
@@ -33,11 +33,11 @@ extension UIImage {
         context?.setLineWidth(bigLineWidth)
         context?.addPath(path.cgPath)
         context?.strokePath()
-        
+
         UIColor.color(type: .primary).setFill()
         context?.addPath(center.cgPath)
         context?.fillPath()
-        
+
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return result!

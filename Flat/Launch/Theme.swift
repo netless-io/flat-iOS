@@ -6,27 +6,20 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import Foundation
 import Fastboard
+import Foundation
 
 enum ThemeStyle: String, Codable, CaseIterable {
     case dark
     case light
-    @available(iOS 13, *)
     case auto
-    
+
     var description: String {
         localizeStrings("Theme.\(rawValue)")
     }
-    
-    static var `default`: Self {
-        if #available(iOS 13.0, *) {
-            return .auto
-        } else {
-            return .light
-        }
-    }
-    
+
+    static var `default`: Self { .auto }
+
     var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {
         case .dark:
@@ -37,14 +30,8 @@ enum ThemeStyle: String, Codable, CaseIterable {
             return .unspecified
         }
     }
-    
-    static var allCases: [ThemeStyle] {
-        if #available(iOS 13.0, *) {
-            return [.dark, .light, .auto]
-        } else {
-            return [.dark, .light]
-        }
-    }
+
+    static var allCases: [ThemeStyle] { [.dark, .light, .auto] }
 }
 
 class Theme {
@@ -60,89 +47,64 @@ class Theme {
                     return style
                 }
                 return .default
-            }
-            catch {
+            } catch {
                 logger.error("get userPreferredStyle, \(error)")
                 return .default
             }
         }
         style = getPreferredStyle()
     }
-    weak var window: UIWindow? = nil {
+
+    weak var window: UIWindow? {
         didSet {
             apply(style)
         }
     }
-    
-    var isDarkBeforeIOS13: Bool {
-        if #available(iOS 13.0, *) {
-        } else if style == .dark {
-            return true
-        }
-        return false
-    }
-    
-    fileprivate func setStoredPreferredStyle(_ newValue: ThemeStyle) {
+
+    private func setStoredPreferredStyle(_ newValue: ThemeStyle) {
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(["style": newValue])
             UserDefaults.standard.setValue(data, forKey: "userPreferredStyle")
-        }
-        catch {
+        } catch {
             logger.error("set userPreferredStyle, \(error)")
         }
     }
-    
+
     func updateUserPreferredStyle(_ style: ThemeStyle) {
         self.style = style
         apply(style)
         setStoredPreferredStyle(style)
     }
-    
-    fileprivate func apply(_ style: ThemeStyle) {
-        if #available(iOS 13.0, *) {
-            switch style {
-            case .dark:
-                window?.overrideUserInterfaceStyle = .dark
-            case .light:
-                window?.overrideUserInterfaceStyle = .light
-            case .auto:
-                window?.overrideUserInterfaceStyle = .unspecified
-            }
-        } else {
-            
+
+    private func apply(_ style: ThemeStyle) {
+        switch style {
+        case .dark:
+            window?.overrideUserInterfaceStyle = .dark
+        case .light:
+            window?.overrideUserInterfaceStyle = .light
+        case .auto:
+            window?.overrideUserInterfaceStyle = .unspecified
         }
         applyNavigationBar()
         configProgressHUDAppearance()
         applyFastboard(style)
         commitUpdate()
     }
-    
-    fileprivate func commitUpdate() {
-        let window = UIApplication.shared.keyWindow
-        window?.subviews.forEach {
+
+    private func commitUpdate() {
+        fetchKeyWindow()?.subviews.forEach {
             $0.removeFromSuperview()
             window?.addSubview($0)
         }
     }
-    
-    fileprivate func applyNavigationBar() {
+
+    private func applyNavigationBar() {
         let proxy = UINavigationBar.appearance()
         proxy.tintColor = .color(type: .text)
-        
-        if #available(iOS 13.0, *) {} else {
-            proxy.isTranslucent = false
-            proxy.barTintColor = .color(type: .background)
-            proxy.largeTitleTextAttributes = [
-                .foregroundColor: UIColor.color(type: .text)
-            ]
-            proxy.titleTextAttributes = [
-                .foregroundColor: UIColor.color(type: .text)
-            ]
-        }
     }
-    
-    fileprivate func applyFastboard(_ style: ThemeStyle) {
+
+    private func applyFastboard(_ style: ThemeStyle) {
         let flatTheme: FastRoomThemeAsset
         switch style {
         case .dark:
@@ -150,22 +112,19 @@ class Theme {
         case .light:
             flatTheme = FastRoomDefaultTheme.defaultLightTheme
         case .auto:
-            if #available(iOS 13, *) {
-                flatTheme = FastRoomDefaultTheme.defaultAutoTheme
-            } else {
-                fatalError("never")
-            }
+            flatTheme = FastRoomDefaultTheme.defaultAutoTheme
         }
-        
+
         flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
         flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
         flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8
         flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .color(type: .primary, .weak)
-        
+        flatTheme.panelItemAssets.selectedColorItemBgColor = .color(type: .primary, .weak)
+
         flatTheme.controlBarAssets.borderColor = .borderColor
         flatTheme.controlBarAssets.effectStyle = nil
         flatTheme.controlBarAssets.backgroundColor = .color(type: .background)
-        
+
         FastRoomThemeManager.shared.apply(flatTheme)
     }
 }

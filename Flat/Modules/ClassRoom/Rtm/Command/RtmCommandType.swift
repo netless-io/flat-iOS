@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 enum RtmCommand {
@@ -15,6 +14,9 @@ enum RtmCommand {
     case notice(roomUUID: String, text: String)
     case undefined(reason: String)
     case updateRoomStatus(roomUUID: String, status: RoomStartStatus)
+    case requestDevice(roomUUID: String, deviceType: RequestDeviceType)
+    case requestDeviceResponse(roomUUID: String, deviceType: RequestDeviceType, on: Bool)
+    case notifyDeviceOff(roomUUID: String, deviceType: RequestDeviceType)
 }
 
 struct RtmCommandType: RawRepresentable, Codable, Equatable {
@@ -23,7 +25,10 @@ struct RtmCommandType: RawRepresentable, Codable, Equatable {
     static let notice = RtmCommandType(rawValue: "notice")
     static let undefine = RtmCommandType(rawValue: "undefined")
     static let updateRoomStatus = RtmCommandType(rawValue: "update-room-status")
-    
+    static let requestDevice = RtmCommandType(rawValue: "request-device")
+    static let requestDeviceResponse = RtmCommandType(rawValue: "request-device-response")
+    static let notifyDeviceOff = RtmCommandType(rawValue: "notify-device-off")
+
     var rawValue: String
     init(rawValue: String) {
         self.rawValue = rawValue

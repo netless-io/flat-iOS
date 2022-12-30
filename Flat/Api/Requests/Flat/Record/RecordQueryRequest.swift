@@ -30,7 +30,7 @@ struct RecordQueryResponse: Codable {
         case exit = 8
         // 0: The cloud service exits abnormally.
         case abnormallyExit = 20
-        
+
         var isStop: Bool {
             switch self {
             case .receiveToStop, .stop, .exit, .abnormallyExit:
@@ -40,10 +40,11 @@ struct RecordQueryResponse: Codable {
             }
         }
     }
-    
+
     struct ServerResponse: Codable {
         let status: Status
     }
+
     let resourceId: String
     let sid: String
     let serverResponse: ServerResponse
@@ -55,11 +56,11 @@ struct RecordQueryRequest: FlatRequest, Encodable {
         let sid: String
         let mode: AgoraRecordMode
     }
-    
+
     let roomUUID: String
     let agoraParams: AgoraParams
     var path: String { "/v1/room/record/agora/query" }
-    
+
     var task: Task { .requestJSONEncodable(encodable: self) }
     var method: HttpMethod { .post }
     var responseType: RecordQueryResponse.Type { RecordQueryResponse.self }

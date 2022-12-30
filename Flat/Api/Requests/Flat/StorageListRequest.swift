@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct StorageListResponse: Decodable {
@@ -20,8 +19,9 @@ struct StorageListRequest: FlatRequest {
         let directoryPath: String
         let order: String = "DESC"
     }
+
     let input: Input
-    
+
     var path: String { "/v2/cloud-storage/list" }
     var task: Task { .requestJSONEncodable(encodable: input) }
     let responseType = StorageListResponse.self

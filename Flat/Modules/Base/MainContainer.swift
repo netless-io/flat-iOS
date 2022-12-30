@@ -10,13 +10,13 @@ import UIKit
 
 protocol MainContainer: AnyObject {
     func push(_ vc: UIViewController)
-    
+
     func pushOnSplitPresentOnCompact(_ vc: UIViewController)
-    
+
     func removeTop()
-    
+
     var hasSideBar: Bool { get }
-    
+
     var concreteViewController: UIViewController { get }
 }
 
@@ -28,19 +28,19 @@ extension MainTabBarController: MainContainer {
     var hasSideBar: Bool {
         false
     }
-    
+
     func removeTop() {
         (selectedViewController as? UINavigationController)?.popViewController(animated: true)
     }
-    
+
     func pushOnSplitPresentOnCompact(_ vc: UIViewController) {
         present(vc, animated: true, completion: nil)
     }
-    
+
     func push(_ vc: UIViewController) {
         (selectedViewController as? UINavigationController)?.pushViewController(vc, animated: true)
     }
-    
+
     func cleanSecondary() {}
 }
 
@@ -52,15 +52,15 @@ extension MainSplitViewController: MainContainer {
             return false
         }
     }
-    
+
     func removeTop() {
         cleanSecondary()
     }
-    
+
     func pushOnSplitPresentOnCompact(_ vc: UIViewController) {
         push(vc)
     }
-    
+
     func push(_ vc: UIViewController) {
         show(vc)
     }

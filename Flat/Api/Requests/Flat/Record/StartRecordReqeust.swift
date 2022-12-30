@@ -34,7 +34,7 @@ struct TranscodingConfig: Codable {
     let bitrate: Int
     let mixedVideoLayout: MixedVideoLayout
     let backgroundColor: String // #000000
-    let defaultUserBackgroundImage: String  //https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg"
+    let defaultUserBackgroundImage: String // https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg"
     let backgroundConfig: [BackgroundConfig]
     let layoutConfig: [LayoutConfig]
 }
@@ -55,35 +55,36 @@ struct StartRecordRequest: FlatRequest, Encodable {
         let resourceid: String
         let mode: AgoraRecordMode
     }
-    
+
     enum ChannelType: Int, Codable {
         case communication = 0
         case boardcast
     }
-    
+
     struct RecordingConfig: Codable {
         let channelType: ChannelType
         let maxIdleTime: Int
-        ///（选填）Number 类型，预估的订阅人数峰值。
+        /// （选填）Number 类型，预估的订阅人数峰值。
         let subscribeUidGroup: Int
         let transcodingConfig: TranscodingConfig
     }
-    
+
     struct ClientRequest: Codable {
         let recordingConfig: RecordingConfig
     }
-    
+
     struct AgoraData: Codable {
         let clientRequest: ClientRequest
     }
-    
+
     var path: String {
         "/v1/room/record/agora/started"
     }
+
     let roomUUID: String
     let agoraData: AgoraData
     let agoraParams: AgoraParams
-    
+
     var task: Task { .requestJSONEncodable(encodable: self) }
     var method: HttpMethod { .post }
     var responseType: StartRecordResponse.Type { StartRecordResponse.self }

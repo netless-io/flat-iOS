@@ -6,72 +6,73 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
-import UIKit
 import RxSwift
+import UIKit
 
 class RoomDetailViewController: UIViewController {
     var info: RoomBasicInfo?
     var hideAllActions = false
-    
+
     func updateStatus(_ status: RoomStartStatus) {
         info?.roomStatus = status
         if isViewLoaded {
             updateEnterRoomButtonTitle()
         }
     }
-    
+
     func updateInfo(_ info: RoomBasicInfo) {
         self.info = info
         if isViewLoaded {
             applyCurrentInfoToView()
         }
     }
-    
+
     func applyCurrentInfoToView() {
         updateViewWithCurrentStatus()
         updateAvailableActions()
         updateEnterRoomButtonTitle()
     }
-    
+
     // MARK: - LifeCycle
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         applyCurrentInfoToView()
         loadData { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             self.applyCurrentInfoToView()
         }
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         mainStackView.axis = view.bounds.width <= 428 ? .vertical : .horizontal
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         observeRoomRemoved()
     }
-    
+
     // MARK: - Private
-    func loadData(completion: @escaping ((Result<RoomBasicInfo, ApiError>)->Void)) {
+
+    func loadData(completion: @escaping ((Result<RoomBasicInfo, ApiError>) -> Void)) {
         guard let fetchingInfo = info else { return }
         RoomBasicInfo.fetchInfoBy(uuid: fetchingInfo.roomUUID, periodicUUID: fetchingInfo.periodicUUID) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
-            case .success(let detail):
+            case let .success(detail):
                 if self.info?.roomUUID == detail.roomUUID {
                     self.info = detail
                     completion(.success(detail))
                 }
-            case .failure(let error):
+            case let .failure(error):
                 completion(.failure(error))
             }
         }
     }
-    
+
     @objc func onRoomRemoved(_ notification: Notification) {
         guard
             let roomUUID = notification.userInfo?["roomUUID"] as? String,
@@ -79,30 +80,30 @@ class RoomDetailViewController: UIViewController {
         else { return }
         mainContainer?.removeTop()
     }
-    
+
     func observeRoomRemoved() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onRoomRemoved(_:)), name: .init(roomRemovedNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRoomRemoved(_:)), name: .init(roomRemovedNotification), object: nil)
     }
-    
+
     func updateAvailableActions() {
-        guard let info = info else { return }
+        guard let info else { return }
         let actions = info.roomActions(rootController: self)
         navigationItem.rightBarButtonItem = actions.isEmpty ? nil : UIBarButtonItem(image: UIImage(named: "cloud_file_more"),
                                                                                     style: .plain,
                                                                                     target: nil,
                                                                                     action: nil)
         navigationItem.rightBarButtonItem?.viewContainingControllerProvider = { [unowned self] in
-            return self
+            self
         }
         navigationItem.rightBarButtonItem?.setupCommonCustomAlert(actions)
     }
-    
-    @IBAction func onClickCopy(_ sender: Any) {
-        guard let info = info else { return }
+
+    @IBAction func onClickCopy(_: Any) {
+        guard let info else { return }
         UIPasteboard.general.string = info.formatterInviteCode
         toast(localizeStrings("Copy Success"))
     }
-    
+
     func setupViews() {
         view.backgroundColor = .color(type: .background, .weak)
         func loopTextColor(view: UIView) {
@@ -123,9 +124,9 @@ class RoomDetailViewController: UIViewController {
                 view.subviews.forEach { loopTextColor(view: $0) }
             }
         }
-        
+
         loopTextColor(view: mainStackView)
-        
+
         let line = UIView()
         line.backgroundColor = .borderColor
         view.addSubview(line)
@@ -134,36 +135,36 @@ class RoomDetailViewController: UIViewController {
             make.top.equalTo(mainStackView.snp.bottom).offset(16)
             make.height.equalTo(commonBorderWidth)
         }
-        
+
         inviteButton.layer.borderWidth = commonBorderWidth
         inviteButton.setTraitRelatedBlock { btn in
-            let color = UIColor.color(light: .grey6, dark: .grey3).resolveDynamicColorPatchiOS13With(btn.traitCollection)
+            let color = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
             btn.layer.borderColor = color.cgColor
             btn.setTitleColor(color, for: .normal)
         }
-        
+
         replayButton.layer.borderWidth = commonBorderWidth
         replayButton.setTraitRelatedBlock { btn in
-            let color = UIColor.color(light: .grey6, dark: .grey3).resolveDynamicColorPatchiOS13With(btn.traitCollection)
+            let color = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
             btn.layer.borderColor = color.cgColor
             btn.setTitleColor(color, for: .normal)
         }
     }
-    
+
     func updateEnterRoomButtonTitle() {
-        guard let info = info else { return }
+        guard let info else { return }
         if info.isOwner, info.roomStatus == .Idle {
-            self.enterRoomButton.setTitle(localizeStrings("Start Class"), for: .normal)
+            enterRoomButton.setTitle(localizeStrings("Start Class"), for: .normal)
         } else {
-            self.enterRoomButton.setTitle(localizeStrings("Enter Room"), for: .normal)
+            enterRoomButton.setTitle(localizeStrings("Enter Room"), for: .normal)
         }
     }
-    
+
     func updateViewWithCurrentStatus() {
-        guard let info = info else { return }
-        
+        guard let info else { return }
+
         title = info.title
-        
+
         let beginTime: Date
         let endTime: Date
         let status: RoomStartStatus
@@ -172,7 +173,7 @@ class RoomDetailViewController: UIViewController {
         endTime = info.endTime
         status = info.roomStatus
         roomType = info.roomType
-        
+
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         let timeStr = formatter.string(from: beginTime) + "~" + formatter.string(from: endTime)
@@ -182,61 +183,62 @@ class RoomDetailViewController: UIViewController {
         timeLabel.text = dateStr + " " + timeStr
         statusLabel.text = localizeStrings(status.rawValue)
         statusLabel.textColor = status == .Started ? .color(type: .success) : .color(type: .text)
-        
+
         roomNumberLabel.text = info.formatterInviteCode
         roomTypeLabel.text = localizeStrings(roomType.rawValue)
-        
+
         if status == .Stopped {
             replayButton.isHidden = !info.hasRecord
             roomOperationStackView.arrangedSubviews.forEach {
-                if ($0 !== replayButton) {
+                if $0 !== replayButton {
                     $0.isHidden = true
                 }
             }
         } else {
             replayButton.isHidden = true
             roomOperationStackView.arrangedSubviews.forEach {
-                if ($0 !== replayButton) {
+                if $0 !== replayButton {
                     $0.isHidden = false
                 }
             }
         }
-        
+
         roomOperationStackView.isHidden = hideAllActions
     }
-    
+
     // MARK: - Action
+
     @IBAction func onClickReplay() {
-        guard let info = info else { return }
+        guard let info else { return }
         showActivityIndicator()
         ApiProvider.shared.request(fromApi: RecordDetailRequest(uuid: info.roomUUID)) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.stopActivityIndicator()
             switch result {
-            case .success(let recordInfo):
+            case let .success(recordInfo):
                 let viewModel = MixReplayViewModel(roomInfo: info, recordDetail: recordInfo)
                 let vc = MixReplayViewController(viewModel: viewModel)
                 self.mainContainer?.concreteViewController.present(vc, animated: true, completion: nil)
-            case .failure(let error):
+            case let .failure(error):
                 self.toast(error.localizedDescription)
             }
         }
     }
-    
-    @IBAction func onClickInvite(_ sender: UIButton) {
-        guard let info = info else { return }
+
+    @IBAction func onClickInvite(_: UIButton) {
+        guard let info else { return }
         let vc = InviteViewController(shareInfo: .init(roomDetail: info))
         mainContainer?.concreteViewController.present(vc, animated: true)
     }
-    
-    @IBAction func onClickEnterRoom(_ sender: Any) {
-        guard let info = info else { return }
+
+    @IBAction func onClickEnterRoom(_: Any) {
+        guard let info else { return }
         enterRoomButton.isLoading = true
         // Join room
         RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
-            case .success(let playInfo):
+            case let .success(playInfo):
                 let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
                 let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
                 let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
@@ -246,21 +248,21 @@ class RoomDetailViewController: UIViewController {
                 self.mainContainer?.concreteViewController.present(vc, animated: true) {
                     self.enterRoomButton.isLoading = false
                 }
-            case .failure(let error):
+            case let .failure(error):
                 self.showAlertWith(message: error.localizedDescription)
                 self.enterRoomButton.isLoading = false
             }
         }
     }
-    
-    @IBOutlet weak var inviteButton: UIButton!
-    @IBOutlet weak var roomNumberTitleLabel: UILabel!
-    @IBOutlet weak var enterRoomButton: UIButton!
-    @IBOutlet weak var mainStackView: UIStackView!
-    @IBOutlet weak var roomTypeLabel: UILabel!
-    @IBOutlet weak var roomNumberLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var roomOperationStackView: UIStackView!
-    @IBOutlet weak var replayButton: UIButton!
+
+    @IBOutlet var inviteButton: UIButton!
+    @IBOutlet var roomNumberTitleLabel: UILabel!
+    @IBOutlet var enterRoomButton: UIButton!
+    @IBOutlet var mainStackView: UIStackView!
+    @IBOutlet var roomTypeLabel: UILabel!
+    @IBOutlet var roomNumberLabel: UILabel!
+    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var statusLabel: UILabel!
+    @IBOutlet var roomOperationStackView: UIStackView!
+    @IBOutlet var replayButton: UIButton!
 }

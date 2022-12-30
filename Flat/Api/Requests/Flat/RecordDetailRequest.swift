@@ -10,7 +10,7 @@ import Foundation
 
 struct RecordDetailRequest: FlatRequest {
     let uuid: String
-    
+
     var path: String { "/v1/room/record/info" }
     var task: Task { .requestJSONEncodable(encodable: ["roomUUID": uuid]) }
     let responseType = RecordDetailInfo.self

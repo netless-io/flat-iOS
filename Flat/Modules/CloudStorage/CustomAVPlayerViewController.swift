@@ -6,12 +6,12 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import UIKit
 import AVKit
+import UIKit
 
 class CustomAVPlayerViewController: AVPlayerViewController {
-    var dismissHandler: (()->Void)?
-    
+    var dismissHandler: (() -> Void)?
+
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         super.dismiss(animated: flag, completion: completion)
         dismissHandler?()

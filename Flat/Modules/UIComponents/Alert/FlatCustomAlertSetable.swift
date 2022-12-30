@@ -11,8 +11,8 @@ import UIKit
 @objc
 protocol FlatCustomAlertSetable: AnyObject {
     @available(iOS 14.0, *)
-    var menu: UIMenu? { get  set }
-    var viewContainingControllerProvider: (()->UIViewController?)? { get set }
+    var menu: UIMenu? { get set }
+    var viewContainingControllerProvider: (() -> UIViewController?)? { get set }
     func viewContainingController() -> UIViewController?
     func addTarget(_ target: AnyObject?, action: Selector)
     @available(iOS 14.0, *)
@@ -25,10 +25,9 @@ extension UIButton: FlatCustomAlertSetable {
         get {
             nil
         }
-        set {
-        }
+        set {}
     }
-    
+
     func _buildMenu() {
         if #available(iOS 14.0, *) {
             showsMenuAsPrimaryAction = true
@@ -36,16 +35,12 @@ extension UIButton: FlatCustomAlertSetable {
             // Fallback on earlier versions
         }
     }
-    
+
     func _onClickCommonCustomAlert() {
-        if #available(iOS 13.0, *) {
-            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        } else {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        }
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         viewContainingController()?.presentCommonCustomAlert(actions)
     }
-    
+
     func addTarget(_ target: AnyObject?, action: Selector) {
         addTarget(target, action: action, for: .touchUpInside)
     }
@@ -61,19 +56,18 @@ extension UIBarButtonItem: FlatCustomAlertSetable {
             objc_setAssociatedObject(self, &viewContainingControllerProviderKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
-    
+
     func viewContainingController() -> UIViewController? {
         viewContainingControllerProvider?()
     }
-    
+
     func addTarget(_ target: AnyObject?, action: Selector) {
         self.target = target
         self.action = action
     }
-    
-    func _buildMenu() {
-    }
-    
+
+    func _buildMenu() {}
+
     func _onClickCommonCustomAlert() {
         viewContainingController()?.presentCommonCustomAlert(actions)
     }
@@ -89,10 +83,9 @@ extension FlatCustomAlertSetable {
             objc_setAssociatedObject(self, &customActionsKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
-    
+
     func setupCommonCustomAlert(title: String? = nil, _ actions: [Action]) {
-        guard let trait = UIApplication.shared.keyWindow?.traitCollection else { return }
-        if trait.hasCompact {
+        if isCompact() {
             self.actions = actions
             addTarget(self, action: #selector(_onClickCommonCustomAlert))
         } else {
@@ -107,10 +100,10 @@ extension FlatCustomAlertSetable {
                     }
                     return realAction
                 }
-                menu = UIMenu.init(title: title ?? "",
-                                   image: nil,
-                                   identifier: nil,
-                                   children: systemActions)
+                menu = UIMenu(title: title ?? "",
+                              image: nil,
+                              identifier: nil,
+                              children: systemActions)
                 _buildMenu()
             } else {
                 self.actions = actions
@@ -125,7 +118,7 @@ extension UIViewController {
         let vc = FlatCompactAlertController(actions)
         mainContainer?.concreteViewController.present(vc, animated: true)
     }
-    
+
     func popOverCommonCustomAlert(_ actions: [Action], fromSource: UIView?, permittedArrowDirections: UIPopoverArrowDirection = .unknown) {
         let vc = FlatPopoverAlertController(actions)
         mainContainer?.concreteViewController.popoverViewController(viewController: vc, fromSource: fromSource, permittedArrowDirections: permittedArrowDirections)

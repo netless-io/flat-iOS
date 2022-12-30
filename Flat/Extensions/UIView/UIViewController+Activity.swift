@@ -6,13 +6,13 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 extension UIView {
     @discardableResult
     func showActivityIndicator(text: String? = nil,
-                               forSeconds seconds: TimeInterval = 0) -> CustomActivityIndicatorView {
+                               forSeconds seconds: TimeInterval = 0) -> CustomActivityIndicatorView
+    {
         activityView.textLabel.text = text
         activityView.startAnimating()
         activityView.setNeedsLayout()
@@ -23,11 +23,11 @@ extension UIView {
         }
         return activityView
     }
-    
+
     func stopActivityIndicator() {
         activityView.stopAnimating()
     }
-    
+
     fileprivate var activityView: CustomActivityIndicatorView {
         let activityViewTag = 999
         let activityView: CustomActivityIndicatorView
@@ -35,19 +35,15 @@ extension UIView {
             activityView = view
         } else {
             let view: CustomActivityIndicatorView
-            if #available(iOS 13.0, *) {
-                view = CustomActivityIndicatorView(style: .large)
-                view.color = .white
-            } else {
-                view = CustomActivityIndicatorView(style: .gray)
-            }
-            activityView =  view
+            view = CustomActivityIndicatorView(style: .large)
+            view.color = .white
+            activityView = view
             addSubview(activityView)
             activityView.center = center
             activityView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
-            activityView.snp.makeConstraints({
+            activityView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
-            })
+            }
             activityView.tag = activityViewTag
         }
         bringSubviewToFront(activityView)
@@ -58,7 +54,8 @@ extension UIView {
 extension UIViewController {
     @discardableResult
     func showActivityIndicator(text: String? = nil,
-                               forSeconds seconds: TimeInterval = 0) -> CustomActivityIndicatorView {
+                               forSeconds seconds: TimeInterval = 0) -> CustomActivityIndicatorView
+    {
         activityView.textLabel.text = text
         activityView.startAnimating()
         activityView.setNeedsLayout()
@@ -69,11 +66,11 @@ extension UIViewController {
         }
         return activityView
     }
-    
+
     func stopActivityIndicator() {
         activityView.stopAnimating()
     }
-    
+
     fileprivate var activityView: CustomActivityIndicatorView {
         let activityViewTag = 999
         let activityView: CustomActivityIndicatorView
@@ -81,19 +78,15 @@ extension UIViewController {
             activityView = view
         } else {
             let view: CustomActivityIndicatorView
-            if #available(iOS 13.0, *) {
-                view = CustomActivityIndicatorView(style: .large)
-                view.color = .white
-            } else {
-                view = CustomActivityIndicatorView(style: .gray)
-            }
-            activityView =  view
+            view = CustomActivityIndicatorView(style: .large)
+            view.color = .white
+            activityView = view
             self.view.addSubview(activityView)
             activityView.center = self.view.center
             activityView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
-            activityView.snp.makeConstraints({
+            activityView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
-            })
+            }
             activityView.tag = activityViewTag
         }
         view.bringSubviewToFront(activityView)
@@ -106,11 +99,12 @@ class CustomActivityIndicatorView: UIActivityIndicatorView {
         super.init(style: style)
         setupViews()
     }
-    
-    required init(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init(coder _: NSCoder) {
         fatalError()
     }
-    
+
     func setupViews() {
         addSubview(textLabel)
         textLabel.snp.makeConstraints { make in
@@ -118,7 +112,7 @@ class CustomActivityIndicatorView: UIActivityIndicatorView {
             make.centerY.equalToSuperview().offset(40)
         }
     }
-    
+
     lazy var textLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.textColor = .white

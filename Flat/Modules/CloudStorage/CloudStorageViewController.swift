@@ -6,10 +6,10 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
-import QuickLook
 import AVKit
 import Kingfisher
+import QuickLook
+import UIKit
 
 class CloudStorageViewController: CloudStorageDisplayViewController {
     var previewingUUID: String? {
@@ -20,21 +20,21 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             }
         }
     }
-    
+
     var currentPreview: AnyPreview?
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         // Reload selected
         tableView.reloadData()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAdditionalViews()
     }
-    
+
     func setupAdditionalViews() {
         view.addSubview(addButton)
         addButton.snp.makeConstraints { make in
@@ -45,8 +45,9 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         tableView.contentInset = .init(top: 0, left: 0, bottom: 88, right: 0)
         fillTopSafeAreaWith(color: .color(type: .background))
     }
-    
+
     // MARK: - Action
+
     override func onClickEdit(_ sender: UIButton) {
         super.onClickEdit(sender)
         normalOperationStackView.isHidden = tableView.isEditing
@@ -57,8 +58,8 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             tableView.delegate?.tableView?(tableView, didDeselectRowAt: .init(row: 0, section: 0))
         }
     }
-    
-    @objc func onClickCreateDirectory(_ sender: UIButton) {
+
+    @objc func onClickCreateDirectory(_: UIButton) {
         let alert = UIAlertController(title: localizeStrings("CreateDirectory"), message: nil, preferredStyle: .alert)
         alert.addTextField { tf in
             tf.placeholder = localizeStrings("CreateDirectoryPlaceholder")
@@ -76,18 +77,19 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             .disposed(by: alert.rx.disposeBag)
         mainContainer?.concreteViewController.present(alert, animated: true)
     }
-    
+
     @objc func onClickFolderBack() {
         navigationController?.popViewController(animated: true)
         (mainContainer?.concreteViewController as? MainSplitViewController)?.cleanSecondary()
     }
-    
+
     // MARK: - Lazy
+
     lazy var addButton: UIButton = {
         let addButton = SpringButton(type: .custom)
         addButton.setImage(UIImage(named: "storage_add"), for: .normal)
         var actions = UploadType.allCases.map { type -> Action in
-            return Action(title: type.title, image: UIImage(named: type.imageName), style: .default) { _ in
+            Action(title: type.title, image: UIImage(named: type.imageName), style: .default) { _ in
                 UploadUtility.shared.start(uploadType: type,
                                            fromViewController: self,
                                            delegate: self,
@@ -105,15 +107,15 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         backItem.addTarget(self, action: #selector(onClickFolderBack), for: .touchUpInside)
         return backItem
     }()
-    
+
     lazy var tableHeader: UIView = {
         let header = UIView(frame: .init(origin: .zero, size: .init(width: 0, height: 56)))
         header.backgroundColor = .color(type: .background)
-        
+
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         titleLabel.textColor = .color(type: .text, .strong)
-        
+
         let leftStack = UIStackView(arrangedSubviews: [backItem, titleLabel])
         header.addSubview(leftStack)
         header.addSubview(normalOperationStackView)
@@ -145,9 +147,9 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             make.right.equalToSuperview()
             make.centerY.equalTo(header)
         }
-        normalOperationStackView.arrangedSubviews.first?.snp.makeConstraints({ make in
+        normalOperationStackView.arrangedSubviews.first?.snp.makeConstraints { make in
             make.width.height.equalTo(44)
-        })
+        }
 
         header.addSubview(selectionStackView)
         selectionStackView.snp.makeConstraints { make in
@@ -157,17 +159,17 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         selectionStackView.isHidden = true
         return header
     }()
-    
+
     lazy var normalOperationStackView: UIStackView = {
         let uploadListButton = UIButton(type: .custom)
         uploadListButton.addTarget(self, action: #selector(presentTask), for: .touchUpInside)
-        
+
         let selectionButton = UIButton(type: .custom)
         selectionButton.addTarget(self, action: #selector(onClickEdit(_:)), for: .touchUpInside)
-        
+
         let createDirectoryButton = UIButton(type: .custom)
         createDirectoryButton.addTarget(self, action: #selector(onClickCreateDirectory(_:)), for: .touchUpInside)
-        
+
         let stack = UIStackView(arrangedSubviews: [uploadListButton, selectionButton, createDirectoryButton])
         stack.axis = .horizontal
         stack.distribution = .fillEqually
@@ -175,12 +177,12 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             let imageNames = ["upload_list", "cloud_storage_selection", "create_directory"]
             for (index, v) in tk.arrangedSubviews.enumerated() {
                 let btn = v as! UIButton
-                btn.setImage(UIImage(named: imageNames[index])?.tintColor(.color(type: .text).resolveDynamicColorPatchiOS13With(tk.traitCollection)), for: .normal)
+                btn.setImage(UIImage(named: imageNames[index])?.tintColor(.color(type: .text).resolvedColor(with: tk.traitCollection)), for: .normal)
             }
         }
         return stack
     }()
-    
+
     lazy var finishSelectionButton: UIButton = {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 14)
@@ -190,24 +192,25 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         button.contentEdgeInsets = .init(top: 16, left: 16, bottom: 16, right: 16)
         return button
     }()
-    
+
     lazy var tasksViewController: UploadTasksViewController = {
         let vc = UploadTasksViewController()
         vc.modalPresentationStyle = .pageSheet
         return vc
     }()
-    
+
     lazy var selectionStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [deleteAllButton, finishSelectionButton])
         view.axis = .horizontal
         view.distribution = .fillEqually
         return view
     }()
-    
+
     // MARK: - TableView
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell =
-                super.tableView(tableView, cellForRowAt: indexPath) as? CloudStorageTableViewCell
+            super.tableView(tableView, cellForRowAt: indexPath) as? CloudStorageTableViewCell
         else { fatalError() }
         cell.moreActionButton.isHidden = tableView.isEditing
         if !tableView.isEditing {
@@ -217,18 +220,17 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
         return cell
     }
-    
-    @available(iOS 13.0, *)
+
     func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
         guard let identifier = configuration.identifier as? NSString else { return }
         let index = Int(identifier.intValue)
         let item = container.items[index]
-        
+
         if let selected = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: selected, animated: true)
         }
         tableView.selectRow(at: .init(row: index, section: 0), animated: true, scrollPosition: .none)
-        
+
         let vc = animator.previewViewController
         if let vc = vc as? CloudStorageViewController {
             animator.addAnimations {
@@ -240,9 +242,8 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             }
         }
     }
-    
-    @available(iOS 13.0, *)
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point _: CGPoint) -> UIContextMenuConfiguration? {
         guard !tableView.isEditing else { return nil }
         let item = container.items[indexPath.row]
         let directoryProvider = { [unowned self] () -> UIViewController? in
@@ -269,7 +270,8 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
                 }
             default:
                 if let step = item.meta.whiteConverteInfo?.convertStep,
-                    step == .done {
+                   step == .done
+                {
                     provider = { self.tryCreatewebPreviewController(for: item) }
                 } else {
                     provider = nil
@@ -288,7 +290,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             return UIMenu(title: "", children: uiActions)
         }
     }
-    
+
     func actions(for item: StorageFileModel, skipPreview: Bool = false) -> [Action] {
         if item.resourceType == .directory {
             return [
@@ -298,10 +300,10 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
                 .init(title: localizeStrings("Delete"), style: .destructive, handler: { _ in
                     self.deleteItems([item])
                 }),
-                .cancel
+                .cancel,
             ]
         }
-        
+
         var actions: [Action] = [
             .init(title: localizeStrings("Rename"), style: .default, handler: { _ in
                 self.rename(item)
@@ -312,7 +314,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             .init(title: localizeStrings("Delete"), style: .destructive, handler: { _ in
                 self.deleteItems([item])
             }),
-            .cancel
+            .cancel,
         ]
         if !skipPreview {
             actions.insert(.init(title: localizeStrings("Preview"), style: .default, handler: { _ in
@@ -321,7 +323,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
         return actions
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else { return }
         if isCompact() {
@@ -348,38 +350,40 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         guard item.usable else { return }
         preview(item)
     }
-    
+
     func enterDirectoryWith(controller: CloudStorageViewController) {
         navigationController?.pushViewController(controller, animated: true)
         (mainContainer?.concreteViewController as? MainSplitViewController)?.cleanSecondary()
     }
-    
+
     func directoryControllerFor(item: StorageFileModel) -> CloudStorageViewController {
         let directory = currentDirectoryPath + item.fileName + "/"
         return CloudStorageViewController(currentDirectoryPath: directory)
     }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
+    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
         tableHeader.bounds.height
     }
 
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
         0
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
         tableHeader
     }
-    
+
     // MARK: - Actions
+
     func share(_ item: StorageFileModel) {
         guard let index = container.items.firstIndex(of: item) else { return }
         let cell = tableView.cellForRow(at: .init(row: index, section: 0))
         let vc = UIActivityViewController(activityItems: [item.fileURL], applicationActivities: nil)
         mainContainer?.concreteViewController.popoverViewController(viewController: vc, fromSource: cell)
     }
-    
+
     // MARK: - Preview
+
     func preview(_ item: StorageFileModel, existController: UIViewController? = nil) {
         previewingUUID = item.fileUUID
         switch item.fileType {
@@ -406,7 +410,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         default:
             func enterWebPreview(_ vc: WKWebViewController) {
                 vc.dismissHandler = { [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.mainContainer?.removeTop()
                     self.previewingUUID = nil
                 }
@@ -419,11 +423,11 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             }
         }
     }
-    
+
     func tryCreatewebPreviewController(for item: StorageFileModel) -> WKWebViewController? {
         do {
             let jsonData = try JSONEncoder().encode(item)
-            let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))  ?? ""
+            let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)) ?? ""
             let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
             if let url = URL(string: link) {
                 let vc = WKWebViewController(url: url)
@@ -436,11 +440,11 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
         return nil
     }
-    
+
     func createVideoControllerFor(url: URL? = nil) -> CustomAVPlayerViewController {
         let vc = CustomAVPlayerViewController()
         DispatchQueue.global().async {
-            if let url = url {
+            if let url {
                 let player = AVPlayer(url: url)
                 vc.player = player
                 player.play()
@@ -448,8 +452,9 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         }
         return vc
     }
-    
+
     // MARK: - Lazy
+
     lazy var systemPreviewController: CustomPreviewViewController = {
         let vc = CustomPreviewViewController()
         vc.clickBackHandler = { [weak self] in
@@ -460,11 +465,16 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
 }
 
 // MARK: - UploadUtilityDelegate
+
 extension CloudStorageViewController: UploadUtilityDelegate {
     @objc func presentTask() {
+        if let presentedViewController {
+            logger.info("prevent present taskViewController for \(presentedViewController)")
+            return
+        }
         mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)
     }
-    
+
     func uploadFile(url: URL, region: FlatRegion, shouldAccessingSecurityScopedResource: Bool) {
         do {
             let dir = currentDirectoryPath
@@ -479,7 +489,7 @@ extension CloudStorageViewController: UploadUtilityDelegate {
                         switch result {
                         case .success:
                             NotificationCenter.default.post(name: cloudStorageShouldUpdateNotificationName, object: nil, userInfo: ["dir": dir])
-                        case .failure(let error):
+                        case let .failure(error):
                             self?.toast(error.localizedDescription)
                         }
                     }
@@ -490,12 +500,11 @@ extension CloudStorageViewController: UploadUtilityDelegate {
             result = (newTask, result.tracker)
             tasksViewController.appendTask(task: result.task, fileURL: url, targetDirectoryPath: currentDirectoryPath, subject: result.tracker)
             presentTask()
-        }
-        catch {
+        } catch {
             toast("error create task \(error.localizedDescription)", timeInterval: 3)
         }
     }
-    
+
     func uploadUtilityDidCompletePick(type: UploadType, url: URL) {
         switch type {
         case .image:
@@ -510,18 +519,18 @@ extension CloudStorageViewController: UploadUtilityDelegate {
             uploadFile(url: url, region: .CN_HZ, shouldAccessingSecurityScopedResource: true)
         }
     }
-    
+
     func uploadUtilityDidStartVideoConverting() {
         showActivityIndicator()
     }
-    
+
     func uploadUtilityDidFinishVideoConverting(error: Error?) {
         stopActivityIndicator()
-        if let error = error {
+        if let error {
             toast(error.localizedDescription)
         }
     }
-    
+
     func uploadUtilityDidMeet(error: Error) {
         toast(error.localizedDescription)
     }

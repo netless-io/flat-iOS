@@ -6,8 +6,8 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
 import AVFoundation
+import UIKit
 
 class VideoPreviewView: UIView {
     override class var layerClass: AnyClass { AVPlayerLayer.self }

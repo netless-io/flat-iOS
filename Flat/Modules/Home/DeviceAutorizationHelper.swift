@@ -13,12 +13,12 @@ class DeviceAutorizationHelper {
         case video
         case mic
     }
-    
+
     weak var rootController: UIViewController?
     init(rootController: UIViewController) {
         self.rootController = rootController
     }
-    
+
     static func isPermissionAutorized(type: DeviceType) -> Bool {
         switch type {
         case .video:
@@ -27,8 +27,8 @@ class DeviceAutorizationHelper {
             return AVCaptureDevice.authorizationStatus(for: .audio) == .authorized
         }
     }
-    
-    static func grantPermissionFrom(controller: UIViewController, type: DeviceType, completionHandler: @escaping ((Bool)->Void)) {
+
+    static func grantPermissionFrom(controller: UIViewController, type: DeviceType, completionHandler: @escaping ((Bool) -> Void)) {
         switch type {
         case .video:
             func failCamera() {
@@ -97,7 +97,7 @@ class DeviceAutorizationHelper {
 }
 
 extension DeviceAutorizationHelper: CameraMicToggleViewDelegate {
-    func cameraMicToggleViewCouldUpdate(_ view: CameraMicToggleView, cameraOn: Bool) -> Bool {
+    func cameraMicToggleViewCouldUpdate(_ view: CameraMicToggleView, cameraOn _: Bool) -> Bool {
         if DeviceAutorizationHelper.isPermissionAutorized(type: .video) { return true }
         guard let root = rootController else { return true }
         DeviceAutorizationHelper.grantPermissionFrom(controller: root, type: .video) { granted in
@@ -109,8 +109,8 @@ extension DeviceAutorizationHelper: CameraMicToggleViewDelegate {
         }
         return false
     }
-    
-    func cameraMicToggleViewCouldUpdate(_ view: CameraMicToggleView, micOn: Bool) -> Bool {
+
+    func cameraMicToggleViewCouldUpdate(_ view: CameraMicToggleView, micOn _: Bool) -> Bool {
         if DeviceAutorizationHelper.isPermissionAutorized(type: .mic) { return true }
         guard let root = rootController else { return true }
         DeviceAutorizationHelper.grantPermissionFrom(controller: root, type: .mic) { granted in

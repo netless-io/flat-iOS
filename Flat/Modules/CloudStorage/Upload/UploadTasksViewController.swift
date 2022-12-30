@@ -6,41 +6,43 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import RxRelay
+import RxSwift
+import UIKit
 
 class UploadTasksViewController: UIViewController {
     // MARK: - Public
+
     func appendTask(task: Single<String>, fileURL: URL, targetDirectoryPath: String, subject: BehaviorRelay<UploadStatus>) {
         let disposable = task
-            .observe(on: ConcurrentDispatchQueueScheduler.init(queue: .global()))
+            .observe(on: ConcurrentDispatchQueueScheduler(queue: .global()))
             .subscribe()
         let uploadTask = UploadTask(url: fileURL, targetDirectoryPath: targetDirectoryPath, disposable: disposable)
-        
+
         tasks.append((uploadTask, subject))
         tableView.reloadData()
     }
-    
+
     struct UploadTask {
         let url: URL
         let targetDirectoryPath: String
         let disposable: Disposable
     }
-    
+
     let cellIdentifier = "cellIdentifier"
     fileprivate var tasks: [(UploadTask, BehaviorRelay<UploadStatus>)] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
-    
+
     // MARK: - Action
+
     @objc func onClickClose() {
         dismiss(animated: true, completion: nil)
     }
-    
+
     @objc func onClickCellOperationAt(indexPath: IndexPath) {
         let task = tasks[indexPath.row]
         if let operation = task.1.value.availableOperation {
@@ -61,16 +63,16 @@ class UploadTasksViewController: UIViewController {
                                               shouldAccessingSecurityScopedResource: shouldAccessingSecurityScopedResource,
                                               targetDirectoryPath: task.0.targetDirectoryPath)
                     appendTask(task: result.task, fileURL: task.0.url, targetDirectoryPath: task.0.targetDirectoryPath, subject: result.tracker)
-                }
-                catch {
+                } catch {
                     toast(error.localizedDescription)
                 }
             }
             tableView.reloadData()
         }
     }
-    
+
     // MARK: - Private
+
     func setupViews() {
         view.backgroundColor = .color(type: .background)
         view.addSubview(tableView)
@@ -79,16 +81,16 @@ class UploadTasksViewController: UIViewController {
             make.left.right.top.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(66)
         }
-        
+
         tableView.snp.makeConstraints { make in
             make.top.equalTo(topView.snp.bottom)
             make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
-    
+
     func config(cell: UploadTaskTableViewCell, task: (UploadTask, BehaviorRelay<UploadStatus>), indexPath: IndexPath) {
         let fileName = task.0.url.lastPathComponent
-        let fileType = StorageFileModel.FileType.init(fileName: fileName)
+        let fileType = StorageFileModel.FileType(fileName: fileName)
         cell.iconImageView.image = UIImage(named: fileType.iconImageName)
         cell.fileNameLabel.text = fileName
         cell.operationClickHandler = { [weak self] in
@@ -96,14 +98,14 @@ class UploadTasksViewController: UIViewController {
         }
         var i = cell
         i.rx.disposeBag = DisposeBag()
-        
+
         task.1
             .observe(on: MainScheduler.instance)
             .subscribe(with: cell, onNext: { weakCell, status in
                 func observeProgress(withStatus status: UploadStatus) {
                     guard let progress = UploadService.shared.getRequestProgress(fromFileURL: task.0.url) else {
                         switch status {
-                        case.finish:
+                        case .finish:
                             weakCell.progressView.progress = 1
                         default:
                             weakCell.progressView.progress = 0
@@ -113,28 +115,28 @@ class UploadTasksViewController: UIViewController {
                     let progressDriver = progress.subscribe(on: MainScheduler.instance)
                         .asDriver(onErrorJustReturn: 0)
                         .map { Float($0) }
-                    
+
                     progressDriver
                         .drive(weakCell.progressView.rx.progress)
                         .disposed(by: weakCell.progressObserveDisposeBag!)
-                    
+
                     progressDriver
                         .map { String(format: "%.0f %%", $0 * 100) }
                         .drive(weakCell.statusLabel.rx.text)
                         .disposed(by: weakCell.progressObserveDisposeBag!)
                 }
-                
+
                 logger.trace("upload status update \(status)")
-                
+
                 weakCell.progressView.progressTintColor = status.progressBarColor
                 weakCell.statusLabel.text = status.statusDescription
                 weakCell.statusLabel.textColor = status.statusColor
                 weakCell.operationButton.setImage(UIImage(named: status.statusOperationImageName)?.withRenderingMode(.alwaysOriginal), for: .normal)
                 weakCell.progressObserveDisposeBag = DisposeBag()
                 switch status {
-                case .error(let error):
+                case let .error(error):
                     weakCell.progressView.progress = 0
-                    weakCell.statusLabel.text = localizeStrings("Upload Fail") + " " +   error.localizedDescription
+                    weakCell.statusLabel.text = localizeStrings("Upload Fail") + " " + error.localizedDescription
                 case .cancel:
                     weakCell.progressView.progress = 0
                 case .idle:
@@ -157,8 +159,9 @@ class UploadTasksViewController: UIViewController {
             })
             .disposed(by: cell.rx.disposeBag)
     }
-    
+
     // MARK: - Lazy
+
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
         view.backgroundColor = .color(type: .background)
@@ -172,7 +175,7 @@ class UploadTasksViewController: UIViewController {
         view.showsVerticalScrollIndicator = false
         return view
     }()
-    
+
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .color(type: .background)
@@ -180,11 +183,11 @@ class UploadTasksViewController: UIViewController {
         topLabel.text = localizeStrings("Uploading List")
         topLabel.textColor = .color(type: .text)
         topLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        
+
         let closeButton = UIButton(type: .custom)
         closeButton.setImage(UIImage(named: "upload_cancel"), for: .normal)
         closeButton.addTarget(self, action: #selector(onClickClose), for: .touchUpInside)
-        
+
         view.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -205,11 +208,11 @@ extension UploadTasksViewController: UITableViewDelegate, UITableViewDataSource 
         config(cell: cell, task: task, indexPath: indexPath)
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         tasks.count
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }

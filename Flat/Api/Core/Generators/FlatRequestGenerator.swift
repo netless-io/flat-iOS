@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 class FlatRequestGenerator: Generator {
@@ -14,19 +13,19 @@ class FlatRequestGenerator: Generator {
     let host: String
     let timeoutInterval: TimeInterval
     let sessionId: String
-    
+
     init(host: String, timeoutInterval: TimeInterval, sessionId: String) {
         self.host = host
         self.timeoutInterval = timeoutInterval
         self.sessionId = sessionId
     }
-    
-    func generateRequest<T: Request>(fromApi api: T) throws -> URLRequest {
+
+    func generateRequest(fromApi api: some Request) throws -> URLRequest {
         let fullPath = "\(host)\(api.path)"
         let url = URL(string: fullPath)!
         var request = URLRequest(url: url, timeoutInterval: timeoutInterval)
         request.httpMethod = api.method.rawValue
-        if let token = token {
+        if let token {
             request.addValue("Bearer " + token, forHTTPHeaderField: "authorization")
         }
         request.addValue(UUID().uuidString, forHTTPHeaderField: "x-request-id")
@@ -47,15 +46,14 @@ class FlatRequestGenerator: Generator {
         switch api.task {
         case .requestPlain:
             return request
-        case .requestURLEncodable(parameters: let parameters):
+        case let .requestURLEncodable(parameters: parameters):
             return try URLEncoder.default.encode(request: request, parameters)
-        case .requestCustomURLEncodable(parameters: let parameters, customEncoder: let encoder):
+        case let .requestCustomURLEncodable(parameters: parameters, customEncoder: encoder):
             return try encoder.encode(request: request, parameters)
-        case .requestJSONEncodable(encodable: let encodable):
+        case let .requestJSONEncodable(encodable: encodable):
             return try request.encoded(encodable: AnyEncodable(encodable), encoder: .flatEncoder)
-        case .requestCustomJSONEncodable(encodable: let encodable, customEncoder: let customEncoder):
+        case let .requestCustomJSONEncodable(encodable: encodable, customEncoder: customEncoder):
             return try request.encoded(encodable: AnyEncodable(encodable), encoder: customEncoder)
         }
     }
 }
-

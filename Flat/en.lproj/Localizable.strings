@@ -15,9 +15,6 @@
 "AccountCancellation" = "Account Cancellation";
 
 
-"AccpetRaiseHandOverOnStageCountTip" = "The maximum number of people allowed on stage in the current room type has been reached.";
-
-
 "Acknowledgement" = "Libraries We Use";
 
 
@@ -37,6 +34,12 @@
 
 
 "All banned" = "All banned";
+
+
+"All mute" = "All mute";
+
+
+"All mute toast" = "All users are muted";
 
 
 "ApplePencilShortcuts" = "Follow the System ApplePencil Behavior";
@@ -81,7 +84,16 @@
 "Camera" = "Camera";
 
 
+"Camera.front" = "Front";
+
+
+"Camera.rear" = "Rear";
+
+
 "CameraDenyTip" = "You need to invoke the camera permissions to be able to video chat, click into the settings to open the camera permissions";
+
+
+"CameraRequestReject" = "refused to turn on camera";
 
 
 "Cancel" = "Cancel";
@@ -318,10 +330,16 @@
 "Logout" = "Logout";
 
 
+"MaxWritableUsersTips" = "The current room type has reached its maximum number of people who can go on stage and open whiteboard permissions.";
+
+
 "Mic" = "Mic";
 
 
 "MicDenyTip" = "You need to invoke microphone permission for voice chat, click into settings to open microphone permission";
+
+
+"MicRequestReject" = "refused to turn on microphone";
 
 
 "Modify Room" = "Modify Room";
@@ -339,10 +357,16 @@
 "NoHistoryTip" = "No history item";
 
 
+"NoRaiseHandUsers" = "No users raised their hands at the moment";
+
+
 "NotEnoughTotalUsage" = "Reaching capacity limit";
 
 
 "NotPermission" = "No permission to operate";
+
+
+"On/Off stage" = "On/off stage";
 
 
 "OneToOne" = "OneToOne";
@@ -462,10 +486,10 @@
 "Room ID" = "Room ID";
 
 
-"Room List" = "Room List";
-
-
 "Room ID Input PlaceHolder" = "Enter 10-digit room ID";
+
+
+"Room List" = "Room List";
 
 
 "Room Theme" = "Room Theme";
@@ -540,6 +564,9 @@
 "SendSMS" = "Send Code";
 
 
+"SentInvitation" = "Invitation sent";
+
+
 "ServerFail" = "Request failed";
 
 
@@ -588,7 +615,13 @@
 "Stop Class" = "End Class";
 
 
+"Stop Interacting" = "Stop Interacting";
+
+
 "Stopped" = "Stopped";
+
+
+"Students" = "Students";
 
 
 "Submit" = "Submit";
@@ -598,6 +631,18 @@
 
 
 "Teacher close class room alert detail" = "The class is continuing, will you leave for now or end the class?";
+
+
+"TeacherRequestCamera" = "Teacher requests to turn on camera";
+
+
+"TeacherRequestMic" = "Teacher requests to turn on microphone";
+
+
+"TeacherTurnOffCamera" = "Teacher has turned your camera off";
+
+
+"TeacherTurnOffMic" = "Teacher has turned your microphone off";
 
 
 "The ban was lifted" = "The ban was lifted";
@@ -705,6 +750,9 @@
 "UserNotFound" = "User does not exist";
 
 
+"UserNotInRoom" = "User is not in the room";
+
+
 "VerificationCode" = "VerificationCode";
 
 
@@ -720,7 +768,19 @@
 "Video Converting" = "Video Converting ...";
 
 
+"View All" = "View All";
+
+
 "WelcomeFlat" = "Welcome to Flat";
+
+
+"Whiteboard Permissions" = "Whiteboard";
+
+
+"WhiteboardPermissionCloseToast" = "Removed whiteboard permission";
+
+
+"WhiteboardPermissionOpenToast" = "Whiteboard access has been granted";
 
 
 "and" = "and";

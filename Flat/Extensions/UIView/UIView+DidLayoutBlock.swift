@@ -6,12 +6,11 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
-extension UIView {
+public extension UIView {
     ///   - warning: 本方法对scrollview无效，请注意
-    public func setDidLayoutHandle(_ handler: @escaping ((CGRect) ->Void)) {
+    func setDidLayoutHandle(_ handler: @escaping ((CGRect) -> Void)) {
         for view in subviews {
             if let inter = view as? InterView {
                 inter.didLayoutHandler = handler
@@ -22,29 +21,28 @@ extension UIView {
         let host = InterView(handler: handler)
         addSubview(host)
         host.isUserInteractionEnabled = false
-        host.snp.makeConstraints { (make) in
+        host.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
 }
 
 private class InterView: UIView {
-    
-    var didLayoutHandler: ((CGRect) ->Void)
-    
-    init(handler: @escaping ((CGRect) ->Void)) {
-        
-        self.didLayoutHandler = handler
+    var didLayoutHandler: (CGRect) -> Void
+
+    init(handler: @escaping ((CGRect) -> Void)) {
+        didLayoutHandler = handler
         super.init(frame: .zero)
     }
-    
-    required init?(coder aDecoder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         didLayoutHandler(bounds)
     }
 }

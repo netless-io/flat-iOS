@@ -9,8 +9,8 @@
 import UIKit
 
 class ShortcutsTableViewCell: UITableViewCell {
-    var switchHandler: ((Bool)->Void)?
-    
+    var switchHandler: ((Bool) -> Void)?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -30,24 +30,25 @@ class ShortcutsTableViewCell: UITableViewCell {
         }
         shortcutsSwitch.addTarget(self, action: #selector(onSwitchUpdate), for: .valueChanged)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func onSwitchUpdate(_ sender: UISwitch) {
         switchHandler?(sender.isOn)
     }
-    
+
     lazy var shortcutsSwitch = UISwitch()
-    
+
     lazy var shortcutsTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
         label.textColor = .color(type: .text)
         return label
     }()
-    
+
     lazy var shortcutsDetailLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)

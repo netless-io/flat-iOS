@@ -6,33 +6,32 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
+import Fastboard
 import Foundation
 import RxSwift
-import Fastboard
 
 /// Get from list or by 'ordinary' request
 struct RoomBasicInfo: Decodable, Equatable {
     let roomUUID: String
     let periodicUUID: String?
-    
+
     let ownerUUID: String
     let ownerName: String
     var isOwner: Bool {
         ownerUUID == AuthStore.shared.user?.userUUID ?? ""
     }
-    
+
     let title: String
     let roomType: ClassRoomType
     let beginTime: Date
     let endTime: Date
     var roomStatus: RoomStartStatus
-    
+
     let region: String
     let hasRecord: Bool
     let inviteCode: String
     let ownerAvatarURL: String
-    
+
     var formatterInviteCode: String {
         inviteCode.split(every: 3).joined(separator: " ")
     }
@@ -60,14 +59,14 @@ extension RoomBasicInfo {
                                  ownerAvatarURL: "")
         }
     }
-    
+
     /// This method can't get periodicUUID
     /// Periodic room info can be fetched either periodicUUID or a inviteUUID
-    static func fetchInfoBy(uuid: String, periodicUUID: String?, completion: @escaping ((Result<Self, ApiError>)->Void)) {
+    static func fetchInfoBy(uuid: String, periodicUUID: String?, completion: @escaping ((Result<Self, ApiError>) -> Void)) {
         let request = RoomInfoRequest(uuid: uuid)
         ApiProvider.shared.request(fromApi: request) { result in
             switch result {
-            case .success(let raw):
+            case let .success(raw):
                 let info = raw.roomInfo
                 let basicInfo = RoomBasicInfo(roomUUID: uuid,
                                               periodicUUID: periodicUUID,
@@ -83,28 +82,28 @@ extension RoomBasicInfo {
                                               inviteCode: info.inviteCode,
                                               ownerAvatarURL: "")
                 completion(.success(basicInfo))
-            case .failure(let error):
+            case let .failure(error):
                 completion(.failure(error))
             }
         }
     }
 }
 
-fileprivate struct RoomInfoRequest: FlatRequest {
+private struct RoomInfoRequest: FlatRequest {
     let uuid: String
-    
+
     var path: String { "/v1/room/info/ordinary" }
     var task: Task { .requestJSONEncodable(encodable: ["roomUUID": uuid]) }
     let responseType = RawRoomInfo.self
 }
 
 // Middle Struct
-fileprivate struct RawRoomInfo: Decodable {
+private struct RawRoomInfo: Decodable {
     let roomInfo: RoomInfo
 }
 
 // Middle Struct
-fileprivate struct RoomInfo: Decodable {
+private struct RoomInfo: Decodable {
     let title: String
     let beginTime: Date
     let endTime: Date

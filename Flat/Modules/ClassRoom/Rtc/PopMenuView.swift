@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class PopMenuView: UIView {
@@ -16,8 +15,8 @@ class PopMenuView: UIView {
         case bottom
         case right
     }
-    
-    var dismissHandle: (()->Void)?
+
+    var dismissHandle: (() -> Void)?
     weak var sourceView: UIView?
 
     func dismiss() {
@@ -34,7 +33,7 @@ class PopMenuView: UIView {
         }
     }
 
-    @objc func onTapBg(_ tapGesture: UITapGestureRecognizer) {
+    @objc func onTapBg(_: UITapGestureRecognizer) {
         dismiss()
     }
 
@@ -47,10 +46,11 @@ class PopMenuView: UIView {
 
     func show(fromSource source: UIView?,
               direction: Direction,
-              inset: UIEdgeInsets) {
+              inset: UIEdgeInsets)
+    {
         if source == sourceView { return }
-        self.sourceView = source
-        let target: UIView = UIApplication.shared.keyWindow!
+        sourceView = source
+        guard let target = fetchKeyWindow() else { return }
         if superview == nil {
             target.addSubview(bg)
             target.addSubview(self)
@@ -60,7 +60,7 @@ class PopMenuView: UIView {
         }
         let x: CGFloat
         let y: CGFloat
-        if let source = source {
+        if let source {
             let sOrigin = source.convert(CGPoint.zero, to: target)
             switch direction {
             case .left:

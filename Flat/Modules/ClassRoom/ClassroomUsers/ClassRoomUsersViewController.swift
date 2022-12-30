@@ -6,34 +6,41 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxDataSources
+import RxSwift
+import UIKit
 
 class ClassRoomUsersViewController: UIViewController {
     let cellIdentifier = "cellIdentifier"
-    
+
     let userUUID: String
     let roomOwnerRtmUUID: String
     let isOwner: Bool
-    
-    let disconnectTap: PublishRelay<RoomUser> = .init()
+
+    let whiteboardTap: PublishRelay<RoomUser> = .init()
+    let onStageTap: PublishRelay<RoomUser> = .init()
     let raiseHandTap: PublishRelay<RoomUser> = .init()
     let cameraTap: PublishRelay<RoomUser> = .init()
     let micTap: PublishRelay<RoomUser> = .init()
     let stopInteractingTap: PublishRelay<Void> = .init()
-    
+    let allMuteTap: PublishRelay<Void> = .init()
+
     var teacher: RoomUser? {
         didSet {
+            guard teacher != oldValue else { return }
+            if let teacher {
+                teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
+                teacherLabel.text = localizeStrings("Teacher") + ": " + teacher.name
+            }
             tableView.reloadData()
         }
     }
-    
+
     var users: Observable<[RoomUser]>? {
         didSet {
-            guard let users = users else {
-                return
-            }
+            guard let users else { return }
+
             let ownerId = roomOwnerRtmUUID
             let displayUsers = users
                 .do(onNext: { [weak self] users in
@@ -41,18 +48,38 @@ class ClassRoomUsersViewController: UIViewController {
                 })
                 .map { $0.filter { user in user.rtmUUID != ownerId } }
                 .asDriver(onErrorJustReturn: [])
-            
-            displayUsers.drive(tableView.rx.items(cellIdentifier: cellIdentifier, cellType: RoomUserTableViewCell.self)) { [weak self] index, item, cell in
-                self?.config(cell: cell, user: item)
+
+            displayUsers
+                .map { localizeStrings("Students") + " (\($0.count))" }
+                .asDriver()
+                .drive(studentCountLabel.rx.text)
+                .disposed(by: rx.disposeBag)
+
+            let dataSource = RxTableViewSectionedAnimatedDataSource<RoomUserRxSectionData> { [weak self] _, tableView, _, item in
+                guard let self else { return UITableViewCell() }
+                let cell = tableView.dequeueReusableCell(withIdentifier: self.cellIdentifier) as! RoomUserTableViewCell
+                self.config(cell: cell, user: item)
+                return cell
             }
-            .disposed(by: rx.disposeBag)
+            dataSource.animationConfiguration = .init(insertAnimation: .automatic,
+                                                      reloadAnimation: .none,
+                                                      deleteAnimation: .left)
             
+            displayUsers
+                .map { users -> [RoomUserRxSectionData] in
+                    [RoomUserRxSectionData(items: users)]
+                }
+                .drive(tableView.rx.items(dataSource: dataSource))
+                .disposed(by: rx.disposeBag)
+            
+
             if !isOwner {
                 stopInteractingButton.isHidden = true
+                allMuteButton.isHidden = true
             } else {
                 users.map {
                     $0.first(where: {
-                        $0.rtmUUID != ownerId && ($0.status.isSpeak || $0.status.isRaisingHand )
+                        $0.rtmUUID != ownerId && ($0.status.isSpeak || $0.status.isRaisingHand)
                     }).map { _ in false } ?? true
                 }.asDriver(onErrorJustReturn: true)
                     .drive(stopInteractingButton.rx.isHidden)
@@ -60,108 +87,120 @@ class ClassRoomUsersViewController: UIViewController {
             }
         }
     }
-    
+
     // MARK: - LifeCycle
+
     init(userUUID: String,
-         roomOwnerRtmUUID: String) {
+         roomOwnerRtmUUID: String)
+    {
         self.roomOwnerRtmUUID = roomOwnerRtmUUID
         self.userUUID = userUUID
-        self.isOwner = roomOwnerRtmUUID == userUUID
+        isOwner = roomOwnerRtmUUID == userUUID
         super.init(nibName: nil, bundle: nil)
-        
-        preferredContentSize = .init(width: greatWindowSide / 2, height: 560)
+
+        preferredContentSize = .init(width: greatWindowSide / 1.5, height: 560)
     }
-    
-    required init?(coder: NSCoder) {
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        closeButton.isHidden = modalPresentationStyle == .popover
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         bind()
     }
-    
+
     // MARK: - Private
+
     func bind() {
         stopInteractingButton.rx.tap
             .bind(to: stopInteractingTap)
             .disposed(by: rx.disposeBag)
-        
+
+        allMuteButton.rx.tap
+            .bind(to: allMuteTap)
+            .disposed(by: rx.disposeBag)
+
         tableView
             .rx.setDelegate(self)
             .disposed(by: rx.disposeBag)
     }
-    
+
     func setupViews() {
         view.backgroundColor = .classroomChildBG
         view.addSubview(tableView)
         view.addSubview(topView)
         topView.snp.makeConstraints { make in
-            make.left.right.top.equalToSuperview()
+            make.left.right.top.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(40)
         }
         tableView.snp.makeConstraints { make in
             make.top.equalTo(topView.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
+            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
-    
+
     func config(cell: RoomUserTableViewCell, user: RoomUser) {
-        cell.cameraButton.isHidden = true
-        cell.micButton.isHidden = true
-        
-        let isCellUserTeacher = user.rtmUUID == roomOwnerRtmUUID
-        cell.disconnectButton.isHidden = true
-        cell.raiseHandButton.isHidden = true
-        if isCellUserTeacher {
-            cell.nameLabel.text = user.name + "(\(localizeStrings("Teach")))"
-            cell.statusLabel.text = nil
-        } else {
-            cell.nameLabel.text = user.name
-            
-            if user.status.isSpeak {
-                if user.isOnline {
-                    cell.statusLabel.text = "(\(localizeStrings("Interacting")))"
-                    cell.statusLabel.textColor = .init(hexString: "#9FDF76")
-                } else {
-                    cell.statusLabel.text = "(\(localizeStrings("offline")))"
-                    cell.statusLabel.textColor = .systemRed
-                }
-                cell.cameraButton.isHidden = false
-                cell.micButton.isHidden = false
-                cell.disconnectButton.isHidden = !(isOwner || user.rtmUUID == userUUID)
-            } else if user.status.isRaisingHand {
-                cell.statusLabel.text = "(\(localizeStrings("Raised Hand")))"
-                cell.statusLabel.textColor = .color(type: .primary)
-                cell.raiseHandButton.isHidden = !isOwner
-            } else {
-                cell.statusLabel.text = nil
-            }
-        }
+        let isUserSelf = user.rtmUUID == userUUID
+
         cell.avatarImageView.kf.setImage(with: user.avatarURL)
+        cell.nameLabel.text = user.name
         cell.cameraButton.isSelected = user.status.camera
         cell.micButton.isSelected = user.status.mic
-        
-        let isUserSelf = user.rtmUUID == userUUID
-        cell.cameraButton.isEnabled = user.status.camera || isUserSelf
-        cell.micButton.isEnabled = user.status.mic || isUserSelf
+        cell.statusLabel.text = nil
+        cell.onStageSwitch.isOn = user.status.isSpeak
+        cell.whiteboardSwitch.isOn = user.status.whiteboard
+        cell.set(operationType: .mic, empty: !user.status.isSpeak)
+        cell.set(operationType: .camera, empty: !user.status.isSpeak)
+        cell.set(operationType: .raiseHand, empty: !user.status.isRaisingHand)
+        cell.userSelfPointer.isHidden = !isUserSelf
+
+        if user.status.isSpeak, !user.isOnline {
+            cell.statusLabel.text = "(\(localizeStrings("offline")))"
+            cell.statusLabel.textColor = .systemRed
+        }
+
+        if isOwner {
+            cell.cameraButton.isEnabled = true
+            cell.micButton.isEnabled = true
+            cell.onStageSwitch.isEnabled = true
+            cell.whiteboardSwitch.isEnabled = true
+        } else {
+            cell.cameraButton.isEnabled = isUserSelf
+            cell.micButton.isEnabled = isUserSelf
+            cell.onStageSwitch.isEnabled = isUserSelf
+            cell.whiteboardSwitch.isEnabled = isUserSelf
+        }
         cell.clickHandler = { [weak self] type in
-            guard let self = self else { return }
+            guard let self else { return }
             switch type {
             case .camera:
                 self.cameraTap.accept(user)
             case .mic:
                 self.micTap.accept(user)
-            case .disconnect:
-                self.disconnectTap.accept(user)
+            case .onStage:
+                self.onStageTap.accept(user)
+            case .whiteboard:
+                self.whiteboardTap.accept(user)
             case .raiseHand:
                 self.raiseHandTap.accept(user)
             }
         }
     }
-    
+
+    @objc func onClickClose() {
+        dismiss(animated: true)
+    }
+
     // MARK: - Lazy
+
     lazy var topView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
@@ -174,10 +213,10 @@ class ClassRoomUsersViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(40)
         }
-        
+
         let leftIcon = UIImageView()
         leftIcon.setTraitRelatedBlock { iconView in
-            iconView.image = UIImage(named: "users")?.tintColor(.color(type: .text, .strong).resolveDynamicColorPatchiOS13With(iconView.traitCollection))
+            iconView.image = UIImage(named: "users")?.tintColor(.color(type: .text, .strong).resolvedColor(with: iconView.traitCollection))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)
@@ -186,17 +225,32 @@ class ClassRoomUsersViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(8)
         }
+
+        view.addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
+            make.right.top.bottom.equalToSuperview()
+            make.width.equalTo(66)
+        }
+
         view.addLine(direction: .bottom, color: .borderColor)
         return view
     }()
-    
+
+    lazy var closeButton: UIButton = {
+        let closeButton = UIButton(type: .custom)
+        closeButton.setImage(UIImage(named: "close-bold"), for: .normal)
+        closeButton.tintColor = .color(type: .text)
+        closeButton.addTarget(self, action: #selector(onClickClose), for: .touchUpInside)
+        return closeButton
+    }()
+
     lazy var teacherLabel: UILabel = {
         let label = UILabel()
         label.textColor = .color(type: .text)
         label.font = .systemFont(ofSize: 14)
         return label
     }()
-    
+
     lazy var stopInteractingButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.titleLabel?.font = .systemFont(ofSize: 12)
@@ -207,76 +261,143 @@ class ClassRoomUsersViewController: UIViewController {
         btn.layer.borderWidth = commonBorderWidth
         return btn
     }()
-    
+
+    lazy var allMuteButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.titleLabel?.font = .systemFont(ofSize: 12)
+        btn.setTitleColor(.color(type: .text), for: .normal)
+        btn.setTitle(localizeStrings("All mute"), for: .normal)
+        btn.contentEdgeInsets = .init(top: 12, left: 12, bottom: 12, right: 12)
+        btn.layer.borderColor = UIColor.borderColor.cgColor
+        btn.layer.borderWidth = commonBorderWidth
+        return btn
+    }()
+
     lazy var teachAvatarImageView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = 12
         return view
     }()
-    
-    lazy var teacherHeaderView: UITableViewHeaderFooterView = {
-        let view = UITableViewHeaderFooterView()
-        view.contentView.backgroundColor = .classroomChildBG
-        view.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
+
+    lazy var globalOperationStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [stopInteractingButton, allMuteButton])
+        view.axis = .horizontal
+        view.spacing = 12
+        view.distribution = .fillProportionally
+        return view
+    }()
+
+    lazy var teacherInfoView: UIView = {
+        let view = UIView()
         view.addSubview(teachAvatarImageView)
         view.addSubview(teacherLabel)
-        view.addSubview(stopInteractingButton)
+        view.addSubview(globalOperationStackView)
         teachAvatarImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(32)
+            make.top.equalToSuperview().inset(12)
+            make.width.height.equalTo(24)
         }
         teacherLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(56)
-            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(48)
+            make.centerY.equalTo(teachAvatarImageView)
             make.right.lessThanOrEqualTo(stopInteractingButton.snp.left).offset(-10)
         }
-        stopInteractingButton.snp.makeConstraints { make in
+        globalOperationStackView.snp.makeConstraints { make in
             make.right.equalTo(view.safeAreaLayoutGuide).inset(12)
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(teachAvatarImageView)
             make.height.equalTo(28)
         }
         stopInteractingButton.layer.cornerRadius = 14
+        allMuteButton.layer.cornerRadius = 14
         return view
     }()
-    
+
+    lazy var teacherHeaderView: UITableViewHeaderFooterView = {
+        let view = UITableViewHeaderFooterView()
+        view.contentView.backgroundColor = .classroomChildBG
+        let stack = UIStackView(arrangedSubviews: [teacherInfoView, headerItemStackView])
+        stack.axis = .vertical
+        stack.distribution = .fill
+        view.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        headerItemStackView.snp.makeConstraints { make in
+            make.height.equalTo(40)
+        }
+        return view
+    }()
+
+    func createHeaderItem(title: String) -> UILabel {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .color(type: .text)
+        label.text = title
+        return label
+    }
+
+    lazy var studentCountLabel = createHeaderItem(title: localizeStrings("Students"))
+
+    func insertSpacing(spacing: CGFloat, to stack: UIStackView) {
+        if let first = stack.arrangedSubviews.first {
+            stack.arrangedSubviews.dropFirst().forEach { i in
+                i.snp.makeConstraints { make in
+                    make.width.equalTo(first)
+                }
+            }
+        }
+        let indices = stack.arrangedSubviews.enumerated().map { i, _ in
+            i + i
+        }
+        for i in indices {
+            let v = UIView()
+            stack.insertArrangedSubview(v, at: i)
+            v.snp.makeConstraints { $0.width.equalTo(spacing) }
+        }
+    }
+
+    lazy var headerItemStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [studentCountLabel,
+                                                  createHeaderItem(title: localizeStrings("On/Off stage")),
+                                                  createHeaderItem(title: localizeStrings("Whiteboard Permissions")),
+                                                  createHeaderItem(title: localizeStrings("Camera")),
+                                                  createHeaderItem(title: localizeStrings("Mic")),
+                                                  createHeaderItem(title: localizeStrings("Raised Hand"))])
+        view.axis = .horizontal
+        view.distribution = .fillProportionally
+        view.backgroundColor = .color(type: .background, .strong)
+        insertSpacing(spacing: 16, to: view)
+        return view
+    }()
+
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
         view.backgroundColor = .classroomChildBG
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        view.rowHeight = 56
+        view.rowHeight = 48
         if #available(iOS 15.0, *) {
             // F apple
             view.sectionHeaderTopPadding = 0
-        } else {
-        }
+        } else {}
         return view
     }()
 }
 
 extension ClassRoomUsersViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if let _ = teacher {
-            return 56
-        } else {
-            return .leastNonzeroMagnitude
-        }
+    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
+        if teacher == nil { return 40 }
+        return 88
     }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let teacher = teacher {
-            teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
-            teacherLabel.text = teacher.name + " (" + localizeStrings("Teacher") + ")"
-            return teacherHeaderView
-        } else {
-            return nil
-        }
+
+    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
+        teacherInfoView.isHidden = teacher == nil
+        return teacherHeaderView
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }

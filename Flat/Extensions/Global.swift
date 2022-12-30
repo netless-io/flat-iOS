@@ -10,27 +10,25 @@ import Foundation
 
 let commonBorderWidth = 1 / UIScreen.main.scale
 
-func isCompact() -> Bool {
-    if #available(iOS 13.0, *) {
-        for scene in UIApplication.shared.connectedScenes {
-            if let scene = scene as? UIWindowScene {
-                if let keyWindow = scene.windows.first(where: { $0.isKeyWindow }) {
-                    return keyWindow.traitCollection.hasCompact
-                }
+func fetchKeyWindow() -> UIWindow? {
+    for scene in UIApplication.shared.connectedScenes {
+        if let scene = scene as? UIWindowScene {
+            if let keyWindow = scene.windows.first(where: { $0.isKeyWindow }) {
+                return keyWindow
             }
-        }
-        // When no key window was detected. Treat the first window as key window.
-        for scene in UIApplication.shared.connectedScenes {
-            if let scene = scene as? UIWindowScene {
-                if let firstWindow = scene.windows.first {
-                    return firstWindow.traitCollection.hasCompact
-                }
-            }
-        }
-    } else {
-        if let has = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.traitCollection.hasCompact {
-            return has
         }
     }
-    return true
+    // When no key window was detected. Treat the first window as key window.
+    for scene in UIApplication.shared.connectedScenes {
+        if let scene = scene as? UIWindowScene {
+            if let firstWindow = scene.windows.first {
+                return firstWindow
+            }
+        }
+    }
+    return nil
+}
+
+func isCompact() -> Bool {
+    fetchKeyWindow()?.traitCollection.hasCompact ?? true
 }

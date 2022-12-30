@@ -10,9 +10,9 @@ import Foundation
 
 class FileShareLaunchItem: LaunchItem {
     var url: URL!
-    
+
     func shouldHandle(url: URL?) -> Bool {
-        guard let url = url, url.isFileURL else {
+        guard let url, url.isFileURL else {
             return false
         }
         var temp = FileManager.default.temporaryDirectory
@@ -27,22 +27,19 @@ class FileShareLaunchItem: LaunchItem {
             self.url = temp
             url.stopAccessingSecurityScopedResource()
             return true
-        }
-        catch {
+        } catch {
             logger.error("process share file error, \(error)")
             return false
         }
     }
-    
-    func shouldHandle(userActivity: NSUserActivity) -> Bool {
+
+    func shouldHandle(userActivity _: NSUserActivity) -> Bool {
         false
     }
-    
-    func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {
-        return
-    }
-    
-    func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) {
+
+    func immediateImplementation(withLaunchCoordinator _: LaunchCoordinator) {}
+
+    func afterLoginSuccessImplementation(withLaunchCoordinator _: LaunchCoordinator, user _: User) {
         guard let top = UIApplication.shared.topViewController else { return }
         if top is ClassRoomViewController {
             top.toast(localizeStrings("TryLaunchUploadInClassTip"))
@@ -53,12 +50,12 @@ class FileShareLaunchItem: LaunchItem {
             if let _ = mainContainer.concreteViewController.presentedViewController {
                 mainContainer.concreteViewController.dismiss(animated: false, completion: nil)
             }
-            
+
             func startWith(_ controller: CloudStorageViewController) {
                 // TODO: The temp file does not deleted, in tmp dir
                 controller.uploadFile(url: self.url, region: .CN_HZ, shouldAccessingSecurityScopedResource: false)
             }
-            
+
             // Select to storage
             if let split = mainContainer.concreteViewController as? MainSplitViewController {
                 if #available(iOS 14, *) {
@@ -72,7 +69,7 @@ class FileShareLaunchItem: LaunchItem {
                         }
                     }
                 }
-                
+
                 if let tab = split.viewControllers.first as? MainTabBarController {
                     if let index = tab.viewControllers?.firstIndex(where: { ($0 as? UINavigationController)?.topViewController is CloudStorageViewController }) {
                         tab.selectedIndex = index
@@ -82,7 +79,7 @@ class FileShareLaunchItem: LaunchItem {
                         }
                     }
                 }
-                
+
             } else if let tab = mainContainer.concreteViewController as? MainTabBarController {
                 if let index = tab.viewControllers?.firstIndex(where: { ($0 as? UINavigationController)?.topViewController is CloudStorageViewController }) {
                     tab.selectedIndex = index

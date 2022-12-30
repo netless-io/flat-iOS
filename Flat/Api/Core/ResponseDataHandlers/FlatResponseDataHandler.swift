@@ -6,22 +6,23 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
-import RxSwift
 import RxRelay
+import RxSwift
 
 class FlatResponseHandler: ResponseDataHandler {
     static var jwtExpireSignal = PublishRelay<Void>()
-    
-    func processResponseData<T>(_ data: Data, decoder: JSONDecoder, forResponseType: T.Type) throws -> T where T : Decodable {
+
+    func processResponseData<T>(_ data: Data, decoder: JSONDecoder, forResponseType _: T.Type) throws -> T where T: Decodable {
         guard let jsonObj = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-              let status = jsonObj["status"] as? Int else {
+              let status = jsonObj["status"] as? Int
+        else {
             throw ApiError.serverError(message: "unknown data type")
         }
-        
+
         if let code = jsonObj["code"] as? Int,
-            let error = FlatApiError(rawValue: code) {
+           let error = FlatApiError(rawValue: code)
+        {
             if error == .JWTSignFailed {
                 FlatResponseHandler.jwtExpireSignal.accept(())
             }

@@ -11,6 +11,6 @@ import Foundation
 struct CancelUploadRequest: FlatRequest {
     let fileUUIDs: [String]
     var path: String { "/v1/cloud-storage/upload/cancel" }
-    var task: Task { .requestJSONEncodable(encodable: ["fileUUIDs": fileUUIDs])}
+    var task: Task { .requestJSONEncodable(encodable: ["fileUUIDs": fileUUIDs]) }
     let responseType = EmptyResponse.self
 }

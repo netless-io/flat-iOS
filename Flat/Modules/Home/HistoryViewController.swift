@@ -6,59 +6,59 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
 import DZNEmptyDataSet
+import UIKit
 
 class HistoryViewController: UIViewController {
     let historyTableViewCellIdentifier = "historyTableViewCellIdentifier"
-    
+
     lazy var list: [RoomBasicInfo] = [] {
         didSet {
             tableView.reloadData()
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadRooms(nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
-    
+
     func setupViews() {
         title = localizeStrings("History")
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         tableView.refreshControl = .init(frame: .zero)
         tableView.refreshControl?.addTarget(self, action: #selector(onRefresh(_:)), for: .valueChanged)
     }
-    
+
     func removeAt(indexPath: IndexPath) {
         tableView.beginUpdates()
         list.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .right)
         tableView.endUpdates()
     }
-    
-    func loadRooms(_ sender: Any?, completion: @escaping ((Error?)->Void) = { _ in }) {
+
+    func loadRooms(_: Any?, completion: @escaping ((Error?) -> Void) = { _ in }) {
         ApiProvider.shared.request(fromApi: RoomHistoryRequest(page: 1)) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
-            case .success(let list):
+            case let .success(list):
                 self.list = list
                 completion(nil)
-            case.failure(let error):
+            case let .failure(error):
                 completion(error)
             }
         }
     }
-    
+
     @objc func onRefresh(_ sender: UIRefreshControl) {
         loadRooms(sender) { _ in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -85,27 +85,27 @@ class HistoryViewController: UIViewController {
         }
         return table
     }()
-    
+
     lazy var detailViewController = RoomDetailViewController()
 }
 
 extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in _: UITableView) -> Int {
         1
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         list.count
     }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+
+    func tableView(_: UITableView, commit _: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
         showDeleteAlertWith(message: localizeStrings("Delete room record alert")) {
             self.showActivityIndicator()
             ApiProvider.shared.request(fromApi: CancelRoomHistoryRequest(roomUUID: item.roomUUID)) { result in
                 self.stopActivityIndicator()
                 switch result {
-                case .failure(let error):
+                case let .failure(error):
                     self.toast(error.localizedDescription)
                 case .success:
                     self.removeAt(indexPath: indexPath)
@@ -113,7 +113,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: historyTableViewCellIdentifier, for: indexPath) as! RoomTableViewCell
         cell.render(info: list[indexPath.row])
@@ -121,8 +121,8 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         cell.contentView.backgroundColor = .color(type: .background, .weak)
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = list[indexPath.row]
         detailViewController.updateInfo(item)
         navigationController?.pushViewController(detailViewController, animated: true)
@@ -130,20 +130,21 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - EmptyData
+
 extension HistoryViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    func title(forEmptyDataSet _: UIScrollView) -> NSAttributedString? {
         .init(string: localizeStrings("NoHistoryTip"),
               attributes: [
-                .foregroundColor: UIColor.color(type: .text),
-                    .font: UIFont.systemFont(ofSize: 14)
+                  .foregroundColor: UIColor.color(type: .text),
+                  .font: UIFont.systemFont(ofSize: 14),
               ])
     }
-    
-    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        return UIImage(named: "history_empty", in: nil, compatibleWith: traitCollection)
+
+    func image(forEmptyDataSet _: UIScrollView) -> UIImage? {
+        UIImage(named: "history_empty", in: nil, compatibleWith: traitCollection)
     }
-    
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+
+    func emptyDataSetShouldAllowScroll(_: UIScrollView) -> Bool {
         true
     }
 }

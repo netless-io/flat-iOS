@@ -19,7 +19,7 @@ struct UpdateLayoutRequest: FlatRequest, Encodable {
         let mode: AgoraRecordMode
         let sid: String
     }
-    
+
     struct ClientRequest: Codable {
         let mixedVideoLayout: MixedVideoLayout
         let backgroundColor: String
@@ -27,15 +27,15 @@ struct UpdateLayoutRequest: FlatRequest, Encodable {
         let backgroundConfig: [BackgroundConfig]
         let layoutConfig: [LayoutConfig]
     }
-    
+
     struct AgoraData: Codable {
         let clientRequest: ClientRequest
     }
-    
+
     let roomUUID: String
     let agoraData: AgoraData
     let agoraParams: AgoraParams
-    
+
     var task: Task { .requestJSONEncodable(encodable: self) }
     var method: HttpMethod { .post }
     var responseType: UpdateLayoutResponse.Type { UpdateLayoutResponse.self }

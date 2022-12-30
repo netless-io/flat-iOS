@@ -6,28 +6,28 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import Foundation
 import AgoraRtmKit
-import RxSwift
+import Foundation
 import RxCocoa
+import RxSwift
 
 class RtmChannel: NSObject, AgoraRtmChannelDelegate {
     let newMemberPublisher: PublishRelay<String> = .init()
     let memberLeftPublisher: PublishRelay<String> = .init()
     let newMessagePublish: PublishRelay<(text: String, date: Date, sender: String)> = .init()
     let rawDataPublish: PublishRelay<(data: Data, sender: String)> = .init()
-    
+
     var userUUID: String!
     var channelId: String!
     weak var channel: AgoraRtmChannel!
-    
+
     deinit {
         logger.trace("\(self), channelId \(channelId ?? "") deinit")
     }
-    
+
     func sendRawData(_ data: Data) -> Single<Void> {
         .create { [weak self] observer in
-            guard let self = self else {
+            guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
@@ -42,14 +42,14 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
             return Disposables.create()
         }
     }
-    
+
     func sendMessage(_ text: String, censor: Bool = false, appendToNewMessage: Bool = false) -> Single<Void> {
         let send = Single<Void>.create { [weak self] observer in
-            guard let self = self else {
+            guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
-            
+
             self.channel.send(.init(text: text)) { error in
                 if error == .errorOk {
                     observer(.success(()))
@@ -59,7 +59,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
             }
             return Disposables.create()
         }.do(onSuccess: { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             if appendToNewMessage {
                 self.newMessagePublish.accept((text, Date(), self.userUUID))
             }
@@ -67,15 +67,15 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
         if censor {
             return ApiProvider.shared.request(fromApi: MessageCensorRequest(text: text))
                 .asSingle()
-                .flatMap { r in return r.valid ? send : .just(()) }
+                .flatMap { r in r.valid ? send : .just(()) }
         } else {
             return send
         }
     }
-    
+
     func getMembers() -> Single<[String]> {
-        return .create { [weak self] observer in
-            guard let self = self else {
+        .create { [weak self] observer in
+            guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
@@ -87,25 +87,25 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
                     logger.error("\(strError)")
                     return
                 }
-                let memberIds = members?.map { $0.userId } ?? []
+                let memberIds = members?.map(\.userId) ?? []
                 logger.info("success get members \(memberIds)")
                 observer(.success(memberIds))
             }
             return Disposables.create()
         }
     }
-    
-    func channel(_ channel: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
+
+    func channel(_: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
         logger.info("memberJoined \(member.userId)")
         newMemberPublisher.accept(member.userId)
     }
-    
-    func channel(_ channel: AgoraRtmChannel, memberLeft member: AgoraRtmMember) {
+
+    func channel(_: AgoraRtmChannel, memberLeft member: AgoraRtmMember) {
         logger.info("memberLeft \(member.userId)")
         memberLeftPublisher.accept(member.userId)
     }
-    
-    func channel(_ channel: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
+
+    func channel(_: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
 //        logger.info("receive \(type)
         switch message.type {
         case .text:

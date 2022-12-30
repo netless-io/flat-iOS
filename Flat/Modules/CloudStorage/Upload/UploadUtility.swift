@@ -9,7 +9,7 @@
 import Foundation
 import UniformTypeIdentifiers
 #if canImport(PhotosUI)
-import PhotosUI
+    import PhotosUI
 #endif
 
 protocol UploadUtilityDelegate: AnyObject {
@@ -26,39 +26,39 @@ enum PresentStyle {
 
 class UploadUtility: NSObject {
     static let shared = UploadUtility()
-    private override init() {}
-    
+    override private init() {}
+
     fileprivate var exportingTask: AVAssetExportSession?
     fileprivate var uploadType: UploadType?
     fileprivate weak var delegate: UploadUtilityDelegate?
-    
+
     func start(uploadType type: UploadType, fromViewController: UIViewController, delegate: UploadUtilityDelegate, presentStyle: PresentStyle) {
-        self.uploadType = type
+        uploadType = type
         self.delegate = delegate
-        
+
         func presentPicker(_ picker: UIViewController) {
             switch presentStyle {
             case .main:
                 fromViewController.mainContainer?.concreteViewController.present(picker, animated: true, completion: nil)
-            case .popOver(let parent, let source):
+            case let .popOver(parent, source):
                 parent.popoverViewController(viewController: picker, fromSource: source)
             }
         }
-        
+
         func present() {
             if #available(iOS 14.0, *) {
                 switch type {
                 case .image:
                     var config = PHPickerConfiguration()
                     config.filter = .images
-                    let vc = PHPickerViewController.init(configuration: config)
+                    let vc = PHPickerViewController(configuration: config)
                     vc.delegate = self
                     presentPicker(vc)
                     return
                 case .video:
                     var config = PHPickerConfiguration()
                     config.filter = .videos
-                    let vc = PHPickerViewController.init(configuration: config)
+                    let vc = PHPickerViewController(configuration: config)
                     vc.delegate = self
                     presentPicker(vc)
                     return
@@ -83,7 +83,7 @@ class UploadUtility: NSObject {
                 }
             }
         }
-        
+
         func presentImage() {
             switch PHPhotoLibrary.authorizationStatus() {
             case .notDetermined:
@@ -103,7 +103,7 @@ class UploadUtility: NSObject {
                 present()
             }
         }
-        
+
         switch type {
         case .image, .video:
             presentImage()
@@ -114,8 +114,9 @@ class UploadUtility: NSObject {
 }
 
 // MARK: - Image
+
 extension UploadUtility: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true, completion: nil)
         if let url = info[.imageURL] as? URL {
             delegate?.uploadUtilityDidCompletePick(type: .image, url: url)
@@ -123,32 +124,32 @@ extension UploadUtility: UIImagePickerControllerDelegate, UINavigationController
             let fileName = UUID().uuidString
             delegate?.uploadUtilityDidStartVideoConverting()
             let task = VideoConvertService.convert(url: url, convertedFileName: fileName) { [weak self] result in
-                guard let self = self else { return }
+                guard let self else { return }
                 do {
                     try FileManager.default.removeItem(at: url)
-                }
-                catch {
+                } catch {
                     logger.error("clean temp video file error, \(error)")
                 }
                 switch result {
-                case .failure(let error):
+                case let .failure(error):
                     DispatchQueue.main.async {
                         self.delegate?.uploadUtilityDidFinishVideoConverting(error: error)
                     }
-                case .success(let convertedUrl):
+                case let .success(convertedUrl):
                     DispatchQueue.main.async {
                         self.delegate?.uploadUtilityDidCompletePick(type: .video, url: convertedUrl)
                     }
                 }
             }
-            self.exportingTask = task
+            exportingTask = task
         }
     }
 }
 
 // MARK: - Document
+
 extension UploadUtility: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    func documentPicker(_: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
         guard let type = uploadType else { return }
         delegate?.uploadUtilityDidCompletePick(type: type, url: url)
@@ -156,6 +157,7 @@ extension UploadUtility: UIDocumentPickerDelegate {
 }
 
 // MARK: - PHPicker
+
 @available(iOS 14, *)
 extension UploadUtility: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
@@ -165,7 +167,7 @@ extension UploadUtility: PHPickerViewControllerDelegate {
         }
         guard let typeIdentifier = item.itemProvider.registeredTypeIdentifiers.first else { return }
         picker.dismiss(animated: true, completion: nil)
-        
+
         if picker.configuration.filter == .images {
             item.itemProvider.loadObject(ofClass: UIImage.self) { data, error in
                 DispatchQueue.main.async {
@@ -173,7 +175,7 @@ extension UploadUtility: PHPickerViewControllerDelegate {
                         self.delegate?.uploadUtilityDidMeet(error: "load image fail")
                         return
                     }
-                    if let error = error {
+                    if let error {
                         self.delegate?.uploadUtilityDidMeet(error: error)
                         return
                     }
@@ -181,7 +183,7 @@ extension UploadUtility: PHPickerViewControllerDelegate {
                         self.delegate?.uploadUtilityDidMeet(error: "compress image fail")
                         return
                     }
-                    
+
                     var path = FileManager.default.temporaryDirectory
                     let fileName = (item.itemProvider.suggestedName ?? UUID().uuidString) + ".jpeg"
                     path.appendPathComponent(fileName)
@@ -196,20 +198,20 @@ extension UploadUtility: PHPickerViewControllerDelegate {
             return
         } else {
             item.itemProvider.loadFileRepresentation(forTypeIdentifier: typeIdentifier) { [weak self] url, error in
-                guard let self = self else { return }
-                guard let url = url else {
+                guard let self else { return }
+                guard let url else {
                     DispatchQueue.main.async {
                         self.delegate?.uploadUtilityDidMeet(error: "load url fail")
                     }
                     return
                 }
-                if let error = error {
+                if let error {
                     DispatchQueue.main.async {
                         self.delegate?.uploadUtilityDidMeet(error: error.localizedDescription)
                     }
                     return
                 }
-                
+
                 // Upload video
                 do {
                     var cp = FileManager.default.temporaryDirectory
@@ -221,8 +223,8 @@ extension UploadUtility: PHPickerViewControllerDelegate {
                     DispatchQueue.main.async {
                         self.delegate?.uploadUtilityDidStartVideoConverting()
                     }
-                    
-                    let ext =  url.pathExtension
+
+                    let ext = url.pathExtension
                     let fileName: String
                     if let name = item.itemProvider.suggestedName {
                         fileName = name + ".\(ext)"
@@ -230,27 +232,25 @@ extension UploadUtility: PHPickerViewControllerDelegate {
                         fileName = url.lastPathComponent
                     }
                     let task = VideoConvertService.convert(url: cp, convertedFileName: fileName) { [weak self] result in
-                        guard let self = self else { return }
+                        guard let self else { return }
                         do {
                             try FileManager.default.removeItem(at: cp)
-                        }
-                        catch {
+                        } catch {
                             logger.error("clean temp video file error, \(error)")
                         }
-                        
+
                         DispatchQueue.main.async {
                             switch result {
-                            case .success(let url):
+                            case let .success(url):
                                 self.delegate?.uploadUtilityDidFinishVideoConverting(error: nil)
                                 self.delegate?.uploadUtilityDidCompletePick(type: .video, url: url)
-                            case .failure(let error):
+                            case let .failure(error):
                                 self.delegate?.uploadUtilityDidMeet(error: error)
                             }
                         }
                     }
                     self.exportingTask = task
-                }
-                catch {
+                } catch {
                     DispatchQueue.main.async {
                         self.delegate?.uploadUtilityDidMeet(error: error)
                     }

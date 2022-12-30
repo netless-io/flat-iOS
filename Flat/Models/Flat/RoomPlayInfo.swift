@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 import RxSwift
 
@@ -21,7 +20,7 @@ struct RoomPlayInfo: Codable {
     let rtcShareScreen: ShareScreenInfo
     let rtmToken: String
     let region: String
-    
+
     var rtmChannelId: String { roomUUID }
 }
 
@@ -29,7 +28,7 @@ extension RoomPlayInfo {
     var userInfo: User? {
         AuthStore.shared.user
     }
-    
+
     var rtmUID: String {
         userInfo?.userUUID ?? ""
     }
@@ -40,8 +39,8 @@ extension RoomPlayInfo {
         let request = JoinRoomRequest(info: .init(roomUUID: uuid, periodicUUID: periodicUUID, inviteCode: ""))
         return ApiProvider.shared.request(fromApi: request)
     }
-    
-    static func fetchByJoinWith(uuid: String, periodicUUID: String?, completion: @escaping ((Result<Self, ApiError>)->Void)) {
+
+    static func fetchByJoinWith(uuid: String, periodicUUID: String?, completion: @escaping ((Result<Self, ApiError>) -> Void)) {
         let request = JoinRoomRequest(info: .init(roomUUID: uuid, periodicUUID: periodicUUID, inviteCode: ""))
         ApiProvider.shared.request(fromApi: request, completionHandler: completion)
     }

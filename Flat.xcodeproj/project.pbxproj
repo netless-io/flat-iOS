@@ -40,7 +40,6 @@
 		8A0CA22A28BCC4380035F71A /* FlatCompactAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22928BCC4380035F71A /* FlatCompactAlertController.swift */; };
 		8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */; };
 		8A0CA23028BE11A10035F71A /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA22F28BE11A10035F71A /* Global.swift */; };
-		8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */; };
 		8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23428BF37B50035F71A /* ConvinceInit.swift */; };
 		8A0CA23728BF4A860035F71A /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */; };
 		8A0CA23928C0519A0035F71A /* DeviceAutorizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */; };
@@ -213,9 +212,11 @@
 		8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */; };
 		8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */; };
 		8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */; };
+		8AAE2549295D795D007D5507 /* RaiseHandListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */; };
+		8AAE254B295D7A0C007D5507 /* RaiseHandTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */; };
+		8AAE254D295EB88A007D5507 /* RoomUserRxSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */; };
 		8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */; };
 		8AAE53D127311D7E00C35796 /* String+ReguarExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */; };
-		8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */; };
 		8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */; };
 		8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */; };
 		8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */; };
@@ -266,7 +267,6 @@
 		8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AD7C6C527157EA7001C4AAD /* Assets.xcassets */; };
 		8AD7C6C927157EA7001C4AAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AD7C6C727157EA7001C4AAD /* LaunchScreen.storyboard */; };
 		8ADD9E0227701D05009A7050 /* UITraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD9E0127701D05009A7050 /* UITraitCollection.swift */; };
-		8ADEDB6928C601EF00482EF2 /* UIColor+FlatTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEDB6828C601EF00482EF2 /* UIColor+FlatTheme.swift */; };
 		8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */; };
 		8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */; };
 		8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */; };
@@ -341,7 +341,6 @@
 		8A0CA22928BCC4380035F71A /* FlatCompactAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatCompactAlertController.swift; sourceTree = "<group>"; };
 		8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularSideBarViewController.swift; sourceTree = "<group>"; };
 		8A0CA22F28BE11A10035F71A /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
-		8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+oldDark.swift"; sourceTree = "<group>"; };
 		8A0CA23428BF37B50035F71A /* ConvinceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvinceInit.swift; sourceTree = "<group>"; };
 		8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAutorizationHelper.swift; sourceTree = "<group>"; };
@@ -522,10 +521,12 @@
 		8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Activity.swift"; sourceTree = "<group>"; };
 		8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCoordinator.swift; sourceTree = "<group>"; };
 		8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStoreDelegate.swift; sourceTree = "<group>"; };
+		8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandListViewController.swift; sourceTree = "<group>"; };
+		8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandTableViewCell.swift; sourceTree = "<group>"; };
+		8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUserRxSectionData.swift; sourceTree = "<group>"; };
 		8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Circle.swift"; sourceTree = "<group>"; };
 		8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
 		8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ReguarExpression.swift"; sourceTree = "<group>"; };
-		8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandButton.swift; sourceTree = "<group>"; };
 		8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveBindingRequest.swift; sourceTree = "<group>"; };
 		8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRenameRequest.swift; sourceTree = "<group>"; };
 		8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareAvatarUploadRequest.swift; sourceTree = "<group>"; };
@@ -581,7 +582,6 @@
 		8AD7C6C527157EA7001C4AAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AD7C6CA27157EA7001C4AAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8ADD9E0127701D05009A7050 /* UITraitCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitCollection.swift; sourceTree = "<group>"; };
-		8ADEDB6828C601EF00482EF2 /* UIColor+FlatTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+FlatTheme.swift"; sourceTree = "<group>"; };
 		8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Level.swift"; sourceTree = "<group>"; };
 		8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordQueryRequest.swift; sourceTree = "<group>"; };
 		8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+loading.swift"; sourceTree = "<group>"; };
@@ -676,7 +676,6 @@
 		8A05C317275E03F6009BCA79 /* UIColor */ = {
 			isa = PBXGroup;
 			children = (
-				8ADEDB6828C601EF00482EF2 /* UIColor+FlatTheme.swift */,
 				8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */,
 				8A270B7327182B9300450DC6 /* UIColor+Extension.swift */,
 			);
@@ -687,7 +686,6 @@
 			isa = PBXGroup;
 			children = (
 				8A29751E2726A2DC0095F9F0 /* UIImage+tintColor.swift */,
-				8A0CA23128BF0B020035F71A /* UIImage+oldDark.swift */,
 				8A270BCA27198FBE00450DC6 /* UIImage+Color.swift */,
 				8A9ACC16271EBD9300E7E7CE /* UIImage+Appliance.swift */,
 				8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */,
@@ -841,10 +839,11 @@
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
-				8A172A88292486F5006E4798 /* Shortcuts */,
+				8AAE2547295D794E007D5507 /* RaiseHand */,
 				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
 				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
+				8A172A88292486F5006E4798 /* Shortcuts */,
 				8A92196128AF3BE700DDDA81 /* ClassroomUsers */,
 				8A92195E28AF3B9B00DDDA81 /* ClassroomState */,
 				8A21DAC2279FCB5D0060E25D /* ClassroomRecording */,
@@ -1148,6 +1147,7 @@
 			isa = PBXGroup;
 			children = (
 				8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */,
+				8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */,
 			);
 			path = ClassroomUsers;
 			sourceTree = "<group>";
@@ -1215,7 +1215,6 @@
 			children = (
 				8A99EC4128B5C0580066CFF3 /* DashLine */,
 				8A99EC3E28B5BA300066CFF3 /* Textfield */,
-				8A9ACC0F271EAE2800E7E7CE /* Button */,
 				8A9ACBFD271D689800E7E7CE /* Cells */,
 				8A9ACBFA271D602C00E7E7CE /* Tabbar */,
 			);
@@ -1242,14 +1241,6 @@
 				8A0EB7B9272BD4E300003DF7 /* RoomUserTableViewCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		8A9ACC0F271EAE2800E7E7CE /* Button */ = {
-			isa = PBXGroup;
-			children = (
-				8AAE53D227313B2F00C35796 /* RaiseHandButton.swift */,
-			);
-			path = Button;
 			sourceTree = "<group>";
 		};
 		8A9FB3A027224E3F00F6F06F /* Flat */ = {
@@ -1398,6 +1389,15 @@
 				8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */,
 			);
 			path = Stores;
+			sourceTree = "<group>";
+		};
+		8AAE2547295D794E007D5507 /* RaiseHand */ = {
+			isa = PBXGroup;
+			children = (
+				8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */,
+				8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */,
+			);
+			path = RaiseHand;
 			sourceTree = "<group>";
 		};
 		8ABF362827464543000D5003 /* ClassroomLayout */ = {
@@ -1741,6 +1741,7 @@
 				8A5DDC8E272A890D006216AD /* RtcPreviewViewController.swift in Sources */,
 				8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */,
 				8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */,
+				8AAE254B295D7A0C007D5507 /* RaiseHandTableViewCell.swift in Sources */,
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
 				8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */,
@@ -1768,12 +1769,14 @@
 				8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */,
 				8A270B8B27192FEE00450DC6 /* BaseNavigationViewController.swift in Sources */,
 				8A05A1532834C756002DE9B9 /* PrivacyAlertViewController.swift in Sources */,
+				8AAE2549295D795D007D5507 /* RaiseHandListViewController.swift in Sources */,
 				8A9FB3C727229E4600F6F06F /* Task.swift in Sources */,
 				8A9FB3B5272290AB00F6F06F /* URLRequest+Extension.swift in Sources */,
 				8A270BC7271989FB00450DC6 /* UIView+DidLayoutBlock.swift in Sources */,
 				8A80209C27570CC700F5691C /* StorageFileModel.swift in Sources */,
 				8A05C34527609207009BCA79 /* AnyPreview.swift in Sources */,
 				8AD3CDF027168F25008BD904 /* Env.swift in Sources */,
+				8AAE254D295EB88A007D5507 /* RoomUserRxSectionData.swift in Sources */,
 				8A270B8727192A6600450DC6 /* SettingTableViewCell.swift in Sources */,
 				8A7741E7273A6FA2009FAADA /* RoomCancelRequest.swift in Sources */,
 				8A80209E27570EAA00F5691C /* StorageListRequest.swift in Sources */,
@@ -1790,7 +1793,6 @@
 				8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */,
 				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
 				8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */,
-				8ADEDB6928C601EF00482EF2 /* UIColor+FlatTheme.swift in Sources */,
 				8A4BF2D728C58BB000021D2A /* WhiteboardAppsCell.swift in Sources */,
 				8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */,
 				8AE827FD2939AD7F00EAC63D /* Rtc+audioMixer.swift in Sources */,
@@ -1829,7 +1831,6 @@
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
 				8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */,
 				8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */,
-				8AAE53D327313B2F00C35796 /* RaiseHandButton.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
 				8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */,
@@ -1970,7 +1971,6 @@
 				8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */,
 				8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
-				8A0CA23228BF0B020035F71A /* UIImage+oldDark.swift in Sources */,
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
 				8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */,
 				8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */,
@@ -2089,7 +2089,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2103,7 +2103,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7911FDD3A2AC2D6E513C8FF5 /* Pods-Flat.flint_debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = FlintIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -2128,12 +2127,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportsDocumentBrowser = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2145,14 +2145,6 @@
 					"\"AVFoundation\"",
 					"-framework",
 					"\"Accelerate\"",
-					"-framework",
-					"\"AgoraAIDenoiseExtension\"",
-					"-framework",
-					"\"AgoraCore\"",
-					"-framework",
-					"\"AgoraDav1dExtension\"",
-					"-framework",
-					"\"AgoraFDExtension\"",
 					"-framework",
 					"\"AgoraRtcKit\"",
 					"-framework",
@@ -2273,7 +2265,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -2287,7 +2279,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A78E6E9044CF454435C1D360 /* Pods-Flat.flint_release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = FlintIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -2311,12 +2302,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportsDocumentBrowser = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flint;
 				PRODUCT_NAME = "$(inherited)";
 				PROVISIONING_PROFILE_SPECIFIER = Flint;
@@ -2381,7 +2373,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2395,7 +2387,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C0BB7739920E2016645E7D5A /* Pods-Flat.flat_debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -2420,12 +2411,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportsDocumentBrowser = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2438,14 +2430,6 @@
 					"\"AVFoundation\"",
 					"-framework",
 					"\"Accelerate\"",
-					"-framework",
-					"\"AgoraAIDenoiseExtension\"",
-					"-framework",
-					"\"AgoraCore\"",
-					"-framework",
-					"\"AgoraDav1dExtension\"",
-					"-framework",
-					"\"AgoraFDExtension\"",
 					"-framework",
 					"\"AgoraRtcKit\"",
 					"-framework",
@@ -2566,7 +2550,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -2580,7 +2564,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6EB5061DE7DACC73AD6C59FD /* Pods-Flat.flat_release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -2604,12 +2587,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportsDocumentBrowser = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(inherited)";
 				PROVISIONING_PROFILE_SPECIFIER = "flat-release";
@@ -2674,7 +2658,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2688,7 +2672,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DC37C1F4E4F0275D23DB54DC /* Pods-Flat.non_sign.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -2713,12 +2696,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportsDocumentBrowser = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2731,14 +2715,6 @@
 					"\"AVFoundation\"",
 					"-framework",
 					"\"Accelerate\"",
-					"-framework",
-					"\"AgoraAIDenoiseExtension\"",
-					"-framework",
-					"\"AgoraCore\"",
-					"-framework",
-					"\"AgoraDav1dExtension\"",
-					"-framework",
-					"\"AgoraFDExtension\"",
 					"-framework",
 					"\"AgoraRtcKit\"",
 					"-framework",
@@ -2865,7 +2841,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2923,7 +2899,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -2937,7 +2913,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EF4D96486875E4E663F2F2BE /* Pods-Flat.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -2962,12 +2937,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportsDocumentBrowser = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2980,14 +2956,6 @@
 					"\"AVFoundation\"",
 					"-framework",
 					"\"Accelerate\"",
-					"-framework",
-					"\"AgoraAIDenoiseExtension\"",
-					"-framework",
-					"\"AgoraCore\"",
-					"-framework",
-					"\"AgoraDav1dExtension\"",
-					"-framework",
-					"\"AgoraFDExtension\"",
 					"-framework",
 					"\"AgoraRtcKit\"",
 					"-framework",
@@ -3064,7 +3032,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C67021601AB33B564D1A5DA9 /* Pods-Flat.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -3088,12 +3055,13 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportsDocumentBrowser = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(inherited)";
 				PROVISIONING_PROFILE_SPECIFIER = "flat-release";

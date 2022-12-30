@@ -6,14 +6,13 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct AgoraMessage: Decodable {
     let message: String
     let sourceUserId: String
     let date: Date
-    
+
     enum CodingKeys: String, CodingKey {
         case message = "payload"
         case sourceUserId = "src"

@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 class RtcVideoItemView: UIView {
@@ -17,37 +16,38 @@ class RtcVideoItemView: UIView {
             }
         }
     }
-    
-    var tapHandler: ((RtcVideoItemView)->Void)?
-    
+
+    var tapHandler: ((RtcVideoItemView) -> Void)?
+
     func showAvatar(_ show: Bool) {
         largeAvatarImageView.isHidden = !show
         effectView.isHidden = !show
         avatarImageView.isHidden = !show
     }
-    
+
     func update(avatar: URL?) {
         largeAvatarImageView.kf.setImage(with: avatar)
         avatarImageView.kf.setImage(with: avatar)
     }
-    
+
     func showMicVolum(_ show: Bool) {
         micStrenthView.isHidden = !show
     }
-    
+
     var micStrenth: CGFloat = 0 {
         didSet {
             updateStrenth(micStrenth, oldStrenth: oldValue)
         }
     }
-    
+
     // MARK: - Action
+
     @objc func onTap() {
         tapHandler?(self)
     }
-    
+
     // MARK: - Private
-    
+
     // From 0-1
     fileprivate func updateStrenth(_ newStrenth: CGFloat, oldStrenth: CGFloat) {
         func pathFor(strens s: CGFloat) -> CGPath {
@@ -60,7 +60,7 @@ class RtcVideoItemView: UIView {
                                      transform: nil)
             return path
         }
-        
+
         let strengthAnimationKey = "strenthAnimation"
         if let _ = micStrenthMaskLayer.animation(forKey: strengthAnimationKey) {
             micStrenthMaskLayer.removeAnimation(forKey: strengthAnimationKey)
@@ -71,7 +71,7 @@ class RtcVideoItemView: UIView {
         animation.toValue = pathFor(strens: newStrenth)
         micStrenthMaskLayer.add(animation, forKey: strengthAnimationKey)
     }
-    
+
     let uid: UInt
     init(uid: UInt) {
         self.uid = uid
@@ -111,58 +111,60 @@ class RtcVideoItemView: UIView {
         }
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTap)))
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         videoContainerView.frame = bounds
         avatarImageView.layer.cornerRadius = avatarImageView.bounds.width / 2
     }
-    
+
     // MARK: - Lazy
+
     lazy var videoContainerView = VideoPreviewView()
-    
-    lazy var largeAvatarImageView: UIImageView  = {
+
+    lazy var largeAvatarImageView: UIImageView = {
         let view = UIImageView(frame: .zero)
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view
     }()
-    
+
     lazy var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-    
+
     lazy var avatarImageView: UIImageView = {
         let view = UIImageView(frame: .init(origin: .zero, size: .init(width: 48, height: 48)))
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view
     }()
-    
+
     lazy var silenceImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .center
         view.setTraitRelatedBlock { v in
-            v.image = UIImage(named: "silence")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(v.traitCollection))
+            v.image = UIImage(named: "silence")?.tintColor(.color(type: .danger).resolvedColor(with: v.traitCollection))
         }
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         return view
     }()
-    
+
     lazy var nameLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 14)
         label.textColor = .white
         label.textAlignment = .center
         label.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         return label
     }()
-    
+
     let micOrigin: CGPoint = .init(x: 8, y: 4)
     let micSize: CGSize = .init(width: 8, height: 14)
-    
+
     lazy var micStrenthView: UIImageView = {
         let image = UIImageView(image: UIImage(named: "microphone_volume"))
         image.tintColor = .white
@@ -175,7 +177,7 @@ class RtcVideoItemView: UIView {
         }
         return image
     }()
-    
+
     lazy var micStrenthLayer: CAShapeLayer = {
         let strenthLayer = CAShapeLayer()
         strenthLayer.frame = micStrenthView.bounds
@@ -184,6 +186,6 @@ class RtcVideoItemView: UIView {
         strenthLayer.mask = self.micStrenthMaskLayer
         return strenthLayer
     }()
-    
+
     lazy var micStrenthMaskLayer = CAShapeLayer()
 }

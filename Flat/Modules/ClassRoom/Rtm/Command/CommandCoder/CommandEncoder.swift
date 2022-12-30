@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct CommandEncoder {
@@ -14,21 +13,45 @@ struct CommandEncoder {
         let t: RtmCommandType
         let v: NSDictionary
         switch command {
-        case .raiseHand(roomUUID: let roomUUID, raiseHand: let raiseHand):
+        case let .raiseHand(roomUUID: roomUUID, raiseHand: raiseHand):
             t = .raiseHand
             v = ["roomUUID": roomUUID, "raiseHand": raiseHand]
-        case .ban(roomUUID: let roomUUID, status: let status):
+        case let .ban(roomUUID: roomUUID, status: status):
             t = .ban
             v = ["roomUUID": roomUUID, "status": status]
-        case .notice(roomUUID: let roomUUID, text: let text):
+        case let .notice(roomUUID: roomUUID, text: text):
             t = .notice
             v = ["roomUUID": roomUUID, "text": text]
-        case .undefined(reason: let reason):
+        case let .undefined(reason: reason):
             t = .undefine
             v = ["reason": reason]
-        case .updateRoomStatus(roomUUID: let roomUUID, status: let status):
+        case let .updateRoomStatus(roomUUID: roomUUID, status: status):
             t = .updateRoomStatus
             v = ["roomUUID": roomUUID, "status": status.rawValue]
+        case .requestDevice(roomUUID: let roomUUID, deviceType: let type):
+            t = .requestDevice
+            switch type {
+            case .camera:
+                v = ["roomUUID": roomUUID, "camera": true]
+            case .mic:
+                v = ["roomUUID": roomUUID, "mic": true]
+            }
+        case .requestDeviceResponse(roomUUID: let roomUUID, deviceType: let type, on: let on):
+            t = .requestDeviceResponse
+            switch type {
+            case .camera:
+                v = ["roomUUID": roomUUID, "camera": on]
+            case .mic:
+                v = ["roomUUID": roomUUID, "mic": on]
+            }
+        case .notifyDeviceOff(roomUUID: let roomUUID, deviceType: let type):
+            t = .notifyDeviceOff
+            switch type {
+            case .camera:
+                v = ["roomUUID": roomUUID, "camera": false]
+            case .mic:
+                v = ["roomUUID": roomUUID, "mic": false]
+            }
         }
         let dic: NSDictionary = ["t": t.rawValue, "v": v]
         let data = try JSONSerialization.data(withJSONObject: dic)

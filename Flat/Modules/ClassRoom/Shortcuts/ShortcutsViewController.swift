@@ -6,24 +6,24 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
 import Fastboard
+import UIKit
 
 let undoRedoShortcutsUpdateNotificaton: Notification.Name = .init("undoRedoShortcutUpdateNotificaton")
 let defaultShortcuts: [ShortcutsType: Bool] = isCompact() ?
-[.disableDefaultUndoRedo: false, .pencilTail: true] :
-[.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true]
+    [.disableDefaultUndoRedo: false, .pencilTail: true] :
+    [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true]
 
 class ShortcutsManager {
     static var key: String {
         AuthStore.shared.user!.userUUID + "-shortcuts"
     }
-    
+
     private init() {
         if let value =
             UserDefaults.standard.value(forKey: Self.key) as? Data,
-           let result = try? JSONDecoder().decode([ShortcutsType: Bool].self, from: value)
-           {
+            let result = try? JSONDecoder().decode([ShortcutsType: Bool].self, from: value)
+        {
             // To sync shortcuts
             if result.count != defaultShortcuts.count {
                 shortcuts = defaultShortcuts
@@ -37,7 +37,7 @@ class ShortcutsManager {
         }
         shortcuts = defaultShortcuts
     }
-    
+
     func updateShortcuts(type: ShortcutsType, value: Bool) {
         shortcuts[type] = value
         switch type {
@@ -52,22 +52,21 @@ class ShortcutsManager {
         do {
             let newData = try JSONEncoder().encode(shortcuts)
             UserDefaults.standard.setValue(newData, forKey: Self.key)
-        }
-        catch {
+        } catch {
             logger.error("update shortcuts error \(error)")
         }
     }
-    
+
     func resetShortcuts() {
         logger.info("reset shortcuts")
         UserDefaults.standard.removeObject(forKey: Self.key)
         shortcuts = defaultShortcuts
-        
+
         if let applePencilFollowSystem = shortcuts[.applePencilFollowSystem] {
             FastRoom.followSystemPencilBehavior = applePencilFollowSystem
         }
     }
-    
+
     static let shared = ShortcutsManager()
     private(set) var shortcuts: [ShortcutsType: Bool]
 }
@@ -77,7 +76,7 @@ enum ShortcutsType: Codable {
     case disableDefaultUndoRedo
     case applePencilFollowSystem
     case pencilTail
-    
+
     var title: String {
         switch self {
         case .disableDefaultUndoRedo:
@@ -88,7 +87,7 @@ enum ShortcutsType: Codable {
             return localizeStrings("PencilTail")
         }
     }
-    
+
     var detail: String {
         switch self {
         case .disableDefaultUndoRedo:
@@ -106,7 +105,7 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         case setting
         case inClassroom
     }
-    
+
     let style: Style
     let cellIdentifier = "cellIdentifier"
     let itemHeight: CGFloat = 88
@@ -115,11 +114,12 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         super.init(nibName: nil, bundle: nil)
         preferredContentSize = .init(width: 0, height: CGFloat(defaultShortcuts.count) * itemHeight)
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -146,14 +146,14 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
             tableView.tableFooterView = container
         }
     }
-    
+
     @objc func onClickReset() {
         showCheckAlert(message: localizeStrings("ResetShortcutsAlert")) { [unowned self] in
             ShortcutsManager.shared.resetShortcuts()
             self.updateItems()
         }
     }
-    
+
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.register(ShortcutsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -163,7 +163,7 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         view.tableHeaderView = .minHeaderView()
         return view
     }()
-    
+
     lazy var resetButton: UIButton = {
         let button = UIButton(type: .custom)
         button.layer.borderWidth = commonBorderWidth
@@ -174,29 +174,30 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         button.setTitle("  " + localizeStrings("ResetShortcuts"), for: .normal)
         button.addTarget(self, action: #selector(onClickReset), for: .touchUpInside)
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
-        
+
         button.setTraitRelatedBlock { button in
-            button.layer.borderColor = UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection).cgColor
-            button.setTitleColor(UIColor.color(type: .danger).resolveDynamicColorPatchiOS13With(button.traitCollection), for: .normal)
+            button.layer.borderColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection).cgColor
+            button.setTitleColor(UIColor.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
         }
         return button
     }()
-    
+
     lazy var items: [(ShortcutsType, Bool)] = ShortcutsManager.shared.shortcuts.map { $0 }
     func updateItems() {
         items = ShortcutsManager.shared.shortcuts.map { $0 }
         tableView.reloadData()
     }
-    
+
     // MARK: - Tableview
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+    func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         itemHeight
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         items.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! ShortcutsTableViewCell
@@ -210,13 +211,13 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
             cell.contentView.backgroundColor = .color(type: .background)
         }
         cell.switchHandler = { [weak self] isOn in
-            guard let self = self else { return }
+            guard let self else { return }
             ShortcutsManager.shared.updateShortcuts(type: item.0, value: isOn)
             self.updateItems()
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }

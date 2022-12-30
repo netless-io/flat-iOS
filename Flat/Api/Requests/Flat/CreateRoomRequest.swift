@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct CreateRoomRequest: FlatRequest, Encodable {
@@ -16,12 +15,12 @@ struct CreateRoomRequest: FlatRequest, Encodable {
         case title
         case type
     }
-    
+
     let beginTime: Date
     let region: FlatRegion = .CN_HZ
     let title: String
     let type: ClassRoomType
-    
+
     var path: String { "/v1/room/create/ordinary" }
     let responseType = JoinRoomInfo.self
 }

@@ -6,8 +6,8 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import Foundation
 import AgoraRtcKit
+import Foundation
 
 extension ClassRoomType {
     func thumbnailStreamType(isUserTeacher: Bool) -> AgoraVideoStreamType {

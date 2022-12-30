@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 import Kingfisher
 
@@ -16,7 +15,7 @@ struct RoomUserInfo: Decodable, Hashable {
     let rtcUID: UInt
     // Empty sometimes. Do not use URL type
     let avatarURL: String
-    
+
     func toRoomUser(uid: String, isOnline: Bool) -> RoomUser {
         .init(rtmUUID: uid,
               rtcUID: rtcUID,
@@ -28,7 +27,7 @@ struct RoomUserInfo: Decodable, Hashable {
 
 struct MemberResponse: Decodable {
     let response: [String: RoomUserInfo]
-    
+
     init(from decoder: Decoder) throws {
         if let ids = decoder.userInfo[.init(rawValue: "ids")!] as? [String] {
             let members = try ids.map { id -> (String, RoomUserInfo) in
@@ -38,7 +37,7 @@ struct MemberResponse: Decodable {
             response = .init(uniqueKeysWithValues: members)
             return
         }
-        
+
         response = try decoder.singleValueContainer().decode([String: RoomUserInfo].self)
     }
 }
@@ -48,17 +47,17 @@ struct MemberRequest: FlatRequest, Encodable {
         case roomUUID
         case usersUUID
     }
-    
+
     let roomUUID: String
     let usersUUID: [String]?
-    
+
     var path: String { "/v1/room/info/users" }
     let responseType = MemberResponse.self
-    
+
     var decoder: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
-        if let usersUUID = usersUUID {
+        if let usersUUID {
             decoder.userInfo = [.init(rawValue: "ids")!: usersUUID]
         }
         return decoder

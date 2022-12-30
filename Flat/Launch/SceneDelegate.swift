@@ -8,12 +8,11 @@
 
 import UIKit
 
-@available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var launch: LaunchCoordinator?
     var window: UIWindow?
-    
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+
+    func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
@@ -25,15 +24,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         configAppearance()
     }
-    
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+
+    func scene(_: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         // TODO: url to userActivity
         guard let url = URLContexts.first?.url else { return }
         launch?.start(withLaunchUrl: url)
     }
-    
-    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+
+    func scene(_: UIScene, continue userActivity: NSUserActivity) {
         _ = launch?.start(withLaunchUserActivity: userActivity)
     }
 }
-

@@ -6,15 +6,15 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 extension UIImage {
     func tintColor(_ color: UIColor,
                    backgroundColor: UIColor? = nil,
                    cornerRadius: CGFloat = 0,
-                   backgroundEdgeInset: UIEdgeInsets = .zero) -> UIImage {
-        let rect = CGRect(origin: .zero, size: self.size)
+                   backgroundEdgeInset: UIEdgeInsets = .zero) -> UIImage
+    {
+        let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
         let context = UIGraphicsGetCurrentContext()
         var bg: UIImage?

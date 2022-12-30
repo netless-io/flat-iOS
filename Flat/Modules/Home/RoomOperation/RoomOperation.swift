@@ -21,12 +21,12 @@ extension RoomBasicInfo {
                 switch result {
                 case .success:
                     NotificationCenter.default.post(name: .init(rawValue: roomRemovedNotification), object: nil, userInfo: ["roomUUID": room.roomUUID])
-                case .failure(let error):
+                case let .failure(error):
                     rootController.toast(error.localizedDescription)
                 }
             }
         }
-        
+
         let cancelAction = Action(title: localizeStrings("Cancel Room"),
                                   style: .destructive) { [weak rootController] _ in
             rootController?.showDeleteAlertWith(message: localizeStrings("Cancel Room Verbose")) {

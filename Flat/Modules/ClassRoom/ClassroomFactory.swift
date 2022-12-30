@@ -6,24 +6,25 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
-import Foundation
-import Whiteboard
-import RxCocoa
 import AgoraRtcKit
 import Fastboard
+import Foundation
+import RxCocoa
+import Whiteboard
 
 struct ClassroomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
                                            detailInfo: RoomBasicInfo,
-                                           deviceStatus: DeviceState) -> ClassRoomViewController {
+                                           deviceStatus: DeviceState) -> ClassRoomViewController
+    {
         // Config Rtc
         let rtc = Rtc(appId: Env().agoraAppId,
                       channelId: playInfo.roomUUID,
                       token: playInfo.rtcToken,
                       uid: playInfo.rtcUID,
+                      communication: detailInfo.roomType == .oneToOne,
                       screenShareInfo: playInfo.rtcShareScreen)
-        
+
         FastRoom.followSystemPencilBehavior = ShortcutsManager.shared.shortcuts[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
         let region: Region
@@ -42,24 +43,16 @@ struct ClassroomFactory {
             region = .CN
         }
         let userName = AuthStore.shared.user?.name ?? ""
-        
-        if #available(iOS 13.0, *) {
-            fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
-                                                          roomUUID: playInfo.whiteboardRoomUUID,
-                                                          roomToken: playInfo.whiteboardRoomToken,
-                                                          region: region,
-                                                          userUID: AuthStore.shared.user?.userUUID ?? "",
-                                                          useFPA: userUseFPA,
-                                                          userPayload: .init(nickName: userName),
-                                                          audioMixerDelegate: rtc)
-        } else {
-            fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
-                                                          roomUUID: playInfo.whiteboardRoomUUID,
-                                                          roomToken: playInfo.whiteboardRoomToken,
-                                                          region: region,
-                                                          userUID: AuthStore.shared.user?.userUUID ?? "",
-                                                          userPayload: .init(nickName: userName))
-        }
+
+        fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
+                                                      roomUUID: playInfo.whiteboardRoomUUID,
+                                                      roomToken: playInfo.whiteboardRoomToken,
+                                                      region: region,
+                                                      userUID: AuthStore.shared.user?.userUUID ?? "",
+                                                      useFPA: userUseFPA,
+                                                      userPayload: .init(nickName: userName),
+                                                      audioMixerDelegate: rtc)
+
         if var ua = fastRoomConfiguration.whiteSdkConfiguration.value(forKey: "netlessUA") as? [String] {
             let env = Env()
             let isFlat = Bundle.main.bundleIdentifier == "io.agora.flat"
@@ -81,11 +74,11 @@ struct ClassroomFactory {
         fastRoomConfiguration.whiteRoomConfig.isWritable = userPermissionEnable
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
-        
+
         let camera = userPermissionEnable ? deviceStatus.camera : false
         let mic = userPermissionEnable ? deviceStatus.mic : false
         let initDeviceState = DeviceState(mic: mic, camera: camera)
-        
+
         // Config Rtm
         let rtm = Rtm(rtmToken: playInfo.rtmToken,
                       rtmUserUUID: playInfo.rtmUID,
@@ -94,36 +87,37 @@ struct ClassroomFactory {
             .asObservable()
             .share(replay: 1, scope: .forever)
             .asSingle()
-        
+
         // Config State imp
         let syncedStore = ClassRoomSyncedStore()
         fastboardViewController.bindStore = syncedStore
-        
+
         let imp = ClassroomStateHandlerImp(syncedStore: syncedStore,
                                            rtm: rtm,
                                            commandChannelRequest: rtmChannel,
                                            roomUUID: playInfo.roomUUID,
                                            ownerUUID: playInfo.ownerUUID,
+                                           userUUID: AuthStore.shared.user?.userUUID ?? "",
                                            isOwner: playInfo.rtmUID == playInfo.ownerUUID,
-                                           maxOnstageUserCount: detailInfo.roomType.maxOnstageUserCount,
+                                           maxWritableUsersCount: detailInfo.roomType.maxWritableUsersCount,
                                            roomStartStatus: detailInfo.roomStatus,
                                            whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),
                                            rtcError: rtc.errorPublisher.asObservable())
-        
+
         let rtcViewController = RtcViewController(viewModel: .init(rtc: rtc,
                                                                    userRtcUid: playInfo.rtcUID,
                                                                    localUserRegular: { $0 == 0 || $0 == playInfo.rtcUID },
                                                                    userFetch: { rtcId -> RoomUser? in
-            if rtcId == 0 { return imp.currentOnStageUsers[playInfo.rtmUID] }
-            return imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value
-        },
+                                                                       if rtcId == 0 { return imp.currentOnStageUsers[playInfo.rtmUID] }
+                                                                       return imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value
+                                                                   },
                                                                    userThumbnailStream: { rtcId -> AgoraVideoStreamType in
-            guard let user = imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value else { return .low }
-            let isTeacher = user.rtmUUID == playInfo.ownerUUID
-            return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
-        }))
-        
+                                                                       guard let user = imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value else { return .low }
+                                                                       let isTeacher = user.rtmUUID == playInfo.ownerUUID
+                                                                       return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
+                                                                   }))
+
         let alertProvider = DefaultAlertProvider()
         let vm = ClassRoomViewModel(stateHandler: imp,
                                     initDeviceState: initDeviceState,
@@ -135,10 +129,10 @@ struct ClassroomFactory {
                                     rtm: rtm,
                                     alertProvider: alertProvider,
                                     preferredDeviceState: deviceStatus)
-        
+
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
         let shareViewController: () -> UIViewController = {
-            return InviteViewController(shareInfo: .init(roomDetail: detailInfo))
+            InviteViewController(shareInfo: .init(roomDetail: detailInfo))
         }
         let controller = ClassRoomViewController(viewModel: vm,
                                                  fastboardViewController: fastboardViewController,

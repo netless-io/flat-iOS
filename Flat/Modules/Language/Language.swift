@@ -21,16 +21,16 @@ extension Language {
         case .Chinese: return "zh-Hans"
         }
     }
-    
+
     var name: String {
         switch self {
         case .English: return "English"
         case .Chinese: return "简体中文"
         }
     }
-    
+
     init?(languageCode: String?) {
-        guard let languageCode = languageCode else { return nil }
+        guard let languageCode else { return nil }
         switch languageCode {
         case "en": self = .English
         case "zh": self = .Chinese

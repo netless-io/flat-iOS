@@ -11,7 +11,7 @@ import Foundation
 struct WechatCallBackRequest: FlatRequest {
     let uuid: String
     let code: String
-    
+
     var path: String { "/v1/login/weChat/mobile/callback" }
     var method: HttpMethod { .get }
     var task: Task { .requestURLEncodable(parameters: ["state": uuid, "code": code]) }

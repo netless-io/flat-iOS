@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
 extension UIImage {
@@ -17,7 +16,7 @@ extension UIImage {
         current?.fill(.init(origin: .zero, size: size))
         return UIGraphicsGetImageFromCurrentImageContext()!
     }
-    
+
     class func pointWith(color: UIColor, size: CGSize, radius: CGFloat) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
         let current = UIGraphicsGetCurrentContext()

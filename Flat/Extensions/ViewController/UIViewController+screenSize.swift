@@ -9,38 +9,21 @@
 import UIKit
 
 extension UIViewController {
-    fileprivate var mainWindowBounds: CGRect { UIScreen.main.bounds }
-    
+    private var mainWindowBounds: CGRect { UIScreen.main.bounds }
+
     var greatWindowSide: CGFloat {
-        if #available(iOS 13.0, *) {
-            guard let bounds = view.window?.windowScene?.screen.bounds else {
-                let bounds = mainWindowBounds
-                return max(bounds.width, bounds.height)
-            }
-            return max(bounds.width, bounds.height)
-        } else {
-            guard let bounds = view.window?.bounds else {
-                let bounds = mainWindowBounds
-                return max(bounds.width, bounds.height)
-            }
+        guard let bounds = view.window?.windowScene?.screen.bounds else {
+            let bounds = mainWindowBounds
             return max(bounds.width, bounds.height)
         }
+        return max(bounds.width, bounds.height)
     }
-    
+
     var smallerWindowSide: CGFloat {
-        if #available(iOS 13.0, *) {
-            guard let bounds = view.window?.windowScene?.screen.bounds else {
-                let bounds = mainWindowBounds
-                return min(bounds.width, bounds.height)
-            }
-            return min(bounds.width, bounds.height)
-        } else {
-            guard let bounds = view.window?.bounds else {
-                let bounds = mainWindowBounds
-                return min(bounds.width, bounds.height)
-            }
+        guard let bounds = view.window?.windowScene?.screen.bounds else {
+            let bounds = mainWindowBounds
             return min(bounds.width, bounds.height)
         }
+        return min(bounds.width, bounds.height)
     }
 }
-

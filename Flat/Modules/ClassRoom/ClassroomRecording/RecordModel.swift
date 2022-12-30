@@ -10,17 +10,17 @@ import Foundation
 import RxSwift
 
 let singleRecordHeight: Int = 108
-fileprivate let maxUserCount = 17
-fileprivate let singleWidth = Int(CGFloat(singleRecordHeight) / ClassRoomLayoutRatioConfig.rtcItemRatio)
-fileprivate let margin = Float(0)
-fileprivate let videoWidth = singleWidth * maxUserCount + ((maxUserCount + 1) * Int(margin))
-fileprivate let singleUserRatio: Float = Float(singleWidth) / Float(videoWidth)
-fileprivate let marginRatioInRecord = margin / Float(videoWidth)
-fileprivate let defaultAvatarUrl = "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg"
-fileprivate let defaultBackgroundColor = "#FFFFFF"
+private let maxUserCount = 17
+private let singleWidth = Int(CGFloat(singleRecordHeight) / ClassRoomLayoutRatioConfig.rtcItemRatio)
+private let margin = Float(0)
+private let videoWidth = singleWidth * maxUserCount + ((maxUserCount + 1) * Int(margin))
+private let singleUserRatio: Float = .init(singleWidth) / Float(videoWidth)
+private let marginRatioInRecord = margin / Float(videoWidth)
+private let defaultAvatarUrl = "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/cloud-recording/default-avatar.jpg"
+private let defaultBackgroundColor = "#FFFFFF"
 
-fileprivate let savedRecordModelKey = "RecordModelKey"
-fileprivate let defaultRecordMode: AgoraRecordMode = .mix
+private let savedRecordModelKey = "RecordModelKey"
+private let defaultRecordMode: AgoraRecordMode = .mix
 
 // It start record when createModel function was called.
 // The model will saved in userDefaults. (The model will be cleaned when stop function was called or the model was queried as a stoped record)
@@ -34,7 +34,7 @@ class RecordModel: Codable {
         self.currentLayout = currentLayout
         loopToUpdateServerEndTime()
     }
-    
+
     fileprivate static var savedRecord: RecordModel? {
         get {
             if let data = UserDefaults.standard.value(forKey: savedRecordModelKey) as? Data {
@@ -42,8 +42,7 @@ class RecordModel: Codable {
                     let item = try JSONDecoder().decode(Self.self, from: data)
                     logger.info("get savedRecord \(item)")
                     return item
-                }
-                catch {
+                } catch {
                     logger.error("get savedRecord error, \(error)")
                     return nil
                 }
@@ -52,7 +51,7 @@ class RecordModel: Codable {
         }
         set {
             do {
-                if let newValue = newValue {
+                if let newValue {
                     let data = try JSONEncoder().encode(newValue)
                     UserDefaults.standard.setValue(data, forKey: savedRecordModelKey)
                     logger.info("set savedRecord \(newValue)")
@@ -60,27 +59,26 @@ class RecordModel: Codable {
                     UserDefaults.standard.setValue(nil, forKey: savedRecordModelKey)
                     logger.info("set savedRecord nil")
                 }
-            }
-            catch {
+            } catch {
                 logger.error("set savedRecord error \(error)")
                 return
             }
         }
     }
-    
+
     let resourceId: String
     let sid: String
     let roomUUID: String
     let startDate: Date
-    
+
     static func fetchSavedRecordModel() -> Single<RecordModel?> {
         guard let model = savedRecord else { return .just(nil) }
         return model
             .queryIfStop()
-            .map { stop -> RecordModel? in return stop ? nil : model }
+            .map { stop -> RecordModel? in stop ? nil : model }
             .asSingle()
     }
-    
+
     static func create(fromRoomUUID uuid: String, users: [RoomUser]) -> Observable<RecordModel> {
         let maxRetryTime = 3
         let errorRetryTimeInterval = 3
@@ -93,7 +91,7 @@ class RecordModel: Codable {
                 RecordModel(resourceId: response.resourceId, sid: response.sid, roomUUID: uuid, startDate: Date(), currentLayout: layout)
             }
             .retry(when: { error in
-                return error.enumerated().flatMap { index, _  -> Observable<Int> in
+                error.enumerated().flatMap { index, _ -> Observable<Int> in
                     let times = index + 1
                     if times >= maxRetryTime {
                         return .error("over max retry time")
@@ -107,7 +105,7 @@ class RecordModel: Codable {
                 RecordModel.savedRecord = model
             })
     }
-    
+
     func endRecord() -> Observable<Void> {
         RecordModel.savedRecord = nil
         let request = StopRecordRequest(roomUUID: roomUUID, agoraParams: .init(resourceid: resourceId, sid: sid, mode: defaultRecordMode))
@@ -116,7 +114,7 @@ class RecordModel: Codable {
             .asInfallible(onErrorJustReturn: ())
             .asObservable()
     }
-    
+
     static func usersConfigs(from users: [RoomUser]) -> MixLayout {
         let joinedUsers = Array(users.prefix(maxUserCount))
         let sortedUsers = joinedUsers.sorted { u1, u2 in
@@ -162,28 +160,30 @@ class RecordModel: Codable {
                 self?.currentLayout = newLayout
             })
     }
-    
+
     fileprivate func loopToUpdateServerEndTime() {
         DispatchQueue.global().asyncAfter(deadline: .now() + 5) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             ApiProvider.shared.request(fromApi: UpdateRecordEndTimeRequest(roomUUID: self.roomUUID)) { _ in }
             self.loopToUpdateServerEndTime()
         }
     }
-    
+
     fileprivate func queryIfStop() -> Observable<Bool> {
         let request = RecordQueryRequest(roomUUID: roomUUID, agoraParams: .init(resourceid: resourceId, sid: sid, mode: defaultRecordMode))
         return ApiProvider.shared.request(fromApi: request)
-            .map { $0.serverResponse.status.isStop }
+            .map(\.serverResponse.status.isStop)
             .asInfallible(onErrorJustReturn: true)
             .asObservable()
     }
-    
+
     fileprivate static func start(
         fromRoomUUID uuid: String,
         resourceId: String,
-        users: [RoomUser])
-    -> Observable<(StartRecordResponse, MixLayout)> {
+        users: [RoomUser]
+    )
+        -> Observable<(StartRecordResponse, MixLayout)>
+    {
         let layout = usersConfigs(from: users)
         let transCodingConfig = TranscodingConfig(width: videoWidth,
                                                   height: singleRecordHeight,

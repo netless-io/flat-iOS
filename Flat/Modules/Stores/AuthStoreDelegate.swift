@@ -6,11 +6,10 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 protocol AuthStoreDelegate: AnyObject {
     func authStoreDidLoginSuccess(_ authStore: AuthStore, user: User)
-    
+
     func authStoreDidLogout(_ authStore: AuthStore)
 }

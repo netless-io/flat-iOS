@@ -19,5 +19,3 @@ struct BindListRequest: FlatRequest {
     var task: Task { .requestPlain }
     let responseType = BindingInfo.self
 }
-
-

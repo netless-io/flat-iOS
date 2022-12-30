@@ -10,7 +10,7 @@ import Foundation
 
 struct CancelRoomHistoryRequest: FlatRequest {
     let roomUUID: String
-    
+
     var path: String { "/v1/room/cancel/history" }
     var method: HttpMethod { .post }
     var task: Task { .requestJSONEncodable(encodable: ["roomUUID": roomUUID]) }

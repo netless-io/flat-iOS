@@ -14,40 +14,40 @@ class WechatBinding: NSObject, LaunchItem {
         self.handler = handler
     }
 
-    var removeLaunchItemFromLaunchCoordinator: (()->Void)?
-    
+    var removeLaunchItemFromLaunchCoordinator: (() -> Void)?
+
     let uuid = UUID().uuidString
-    var handler: ((Error?)->Void)
+    var handler: (Error?) -> Void
     weak var coordinator: LaunchCoordinator?
-    
+
     deinit {
         removeLaunchItemFromLaunchCoordinator?()
     }
-    
-    func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) {}
-    
-    func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {}
-    
+
+    func afterLoginSuccessImplementation(withLaunchCoordinator _: LaunchCoordinator, user _: User) {}
+
+    func immediateImplementation(withLaunchCoordinator _: LaunchCoordinator) {}
+
     func shouldHandle(url: URL?) -> Bool {
-        guard let url = url else { return false }
+        guard let url else { return false }
         if WXApi.handleOpen(url, delegate: self) {
             return true
         }
         return false
     }
-    
+
     func shouldHandle(userActivity: NSUserActivity) -> Bool {
         if WXApi.handleOpenUniversalLink(userActivity, delegate: self) {
             return true
         }
         return false
     }
-    
+
     func startBinding(onCoordinator coordinator: LaunchCoordinator) {
         let req = SetBindingAuthUUIDRequest(uuid: uuid)
         ApiProvider.shared.request(fromApi: req) { result in
             switch result {
-            case .success(_):
+            case .success:
                 let request = SendAuthReq()
                 request.scope = "snsapi_userinfo"
                 request.state = "flat"
@@ -57,7 +57,7 @@ class WechatBinding: NSObject, LaunchItem {
                 self.removeLaunchItemFromLaunchCoordinator = { [weak coordinator] in
                     coordinator?.removeLaunchItem(fromIdentifier: id)
                 }
-            case .failure(let error):
+            case let .failure(error):
                 self.handler(error)
             }
         }
@@ -65,8 +65,8 @@ class WechatBinding: NSObject, LaunchItem {
 }
 
 extension WechatBinding: WXApiDelegate {
-    func onReq(_ req: BaseReq) {}
-    
+    func onReq(_: BaseReq) {}
+
     func onResp(_ resp: BaseResp) {
         removeLaunchItemFromLaunchCoordinator?()
         guard resp.isKind(of: SendAuthResp.self) else { return }
@@ -74,18 +74,17 @@ extension WechatBinding: WXApiDelegate {
             handler(resp.errStr)
             return
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             let request = WechatBindingRequest(uuid: self.uuid, code: code)
             ApiProvider.shared.request(fromApi: request) { result in
                 switch result {
-                case .failure(let error):
+                case let .failure(error):
                     self.handler(error)
-                case .success(_):
+                case .success:
                     self.handler(nil)
                 }
             }
         }
     }
 }
-

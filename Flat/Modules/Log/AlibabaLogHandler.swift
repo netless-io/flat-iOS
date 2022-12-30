@@ -6,20 +6,20 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import Logging
 import AliyunLogProducer
+import Logging
 
 class AlibabaLogHandler: LogHandler {
     enum ClientIdentifier {
         case sessionId(String)
         case uid(String)
     }
-    
+
     func updateAliSLSLogger(with uid: String) {
         client.destroyLogProducer()
         client = Self.createClientWith(identifier: .uid(uid))
     }
-    
+
     static func createClientWith(identifier: ClientIdentifier) -> LogProducerClient {
         let env = Env()
         let config = LogProducerConfig(endpoint: env.slsEndpoint,
@@ -29,9 +29,9 @@ class AlibabaLogHandler: LogHandler {
                                        accessKeySecret: env.slsSk)
         config?.setTopic(env.name)
         switch identifier {
-        case .sessionId(let sessionId):
+        case let .sessionId(sessionId):
             config?.addTag("sessionId", value: sessionId)
-        case .uid(let uid):
+        case let .uid(uid):
             config?.addTag("uid", value: uid)
         }
         // 1 开启断点续传功能， 0 关闭
@@ -47,49 +47,50 @@ class AlibabaLogHandler: LogHandler {
         // 持久化文件滚动个数，建议设置成10。
         config?.setPersistentMaxFileCount(10)
         // 每个持久化文件的大小，建议设置成1-10M
-        config?.setPersistentMaxFileSize(1024*1024)
+        config?.setPersistentMaxFileSize(1024 * 1024)
         // 本地最多缓存的日志数，不建议超过1M，通常设置为65536即可
         config?.setPersistentMaxLogCount(65536)
-        config?.setGetTimeUnixFunc({
-            return UInt32(Date().timeIntervalSince1970)
-        })
+        config?.setGetTimeUnixFunc {
+            UInt32(Date().timeIntervalSince1970)
+        }
         return LogProducerClient(logProducerConfig: config!)
     }
-    
+
     var client: LogProducerClient
     let sessionId: String?
-    
+
     init(identifier: ClientIdentifier) {
         switch identifier {
-        case .sessionId(let sid):
-            self.sessionId = sid
+        case let .sessionId(sid):
+            sessionId = sid
             client = Self.createClientWith(identifier: .sessionId(sid))
-        case .uid(let uid):
-            self.sessionId = nil
+        case let .uid(uid):
+            sessionId = nil
             client = Self.createClientWith(identifier: .uid(uid))
         }
     }
-    
+
     subscript(metadataKey key: String) -> Logger.Metadata.Value? {
         get {
-            return metadata[key]
+            metadata[key]
         }
         set(newValue) {
             metadata[key] = newValue
         }
     }
-    
+
     var metadata: Logger.Metadata = [:]
-    
+
     var logLevel: Logger.Level = .trace
-    
+
     func log(level: Logger.Level,
              message: Logger.Message,
              metadata: Logger.Metadata?,
              source: String,
              file: String,
              function: String,
-             line: UInt) {
+             line: UInt)
+    {
         let aLog = AliyunLogProducer.Log()
         aLog.setTime(useconds_t(Date().timeIntervalSince1970))
         var dic: [AnyHashable: Any] = [
@@ -99,15 +100,15 @@ class AlibabaLogHandler: LogHandler {
             "File": file,
             "Message": "\(message)",
             "Line": line,
-            "context": metadata ?? [:]
+            "context": metadata ?? [:],
         ]
-        
-        if let sessionId = sessionId {
+
+        if let sessionId {
             dic["sessionId"] = sessionId
         }
-        
+
         aLog.putContents(dic)
-        
+
         switch level {
         case .trace:
             client.add(aLog)

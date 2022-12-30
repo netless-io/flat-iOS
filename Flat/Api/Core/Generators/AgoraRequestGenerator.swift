@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 class AgoraRequestGenerator: Generator {
@@ -15,15 +14,15 @@ class AgoraRequestGenerator: Generator {
     let agoraAppId: String
     let timeoutInterval: TimeInterval
     let agoraApi: String = "https://api.agora.io"
-    
+
     init(agoraAppId: String,
-        timeoutInterval: TimeInterval
-    ) {
+         timeoutInterval: TimeInterval)
+    {
         self.agoraAppId = agoraAppId
         self.timeoutInterval = timeoutInterval
     }
-    
-    func generateRequest<T: Request>(fromApi api: T) throws -> URLRequest {
+
+    func generateRequest(fromApi api: some Request) throws -> URLRequest {
         let fullPath = "\(agoraApi)\(api.path)"
         let url = URL(string: fullPath)!
         var request = URLRequest(url: url, timeoutInterval: timeoutInterval)
@@ -36,15 +35,14 @@ class AgoraRequestGenerator: Generator {
         switch api.task {
         case .requestPlain:
             return request
-        case .requestURLEncodable(parameters: let parameters):
+        case let .requestURLEncodable(parameters: parameters):
             return try URLEncoder.default.encode(request: request, parameters)
-        case .requestCustomURLEncodable(parameters: let parameters, customEncoder: let encoder):
+        case let .requestCustomURLEncodable(parameters: parameters, customEncoder: encoder):
             return try encoder.encode(request: request, parameters)
-        case .requestJSONEncodable(encodable: let encodable):
+        case let .requestJSONEncodable(encodable: encodable):
             return try request.encoded(encodable: AnyEncodable(encodable), encoder: .agoraEncoder)
-        case .requestCustomJSONEncodable(encodable: let encodable, customEncoder: let customEncoder):
+        case let .requestCustomJSONEncodable(encodable: encodable, customEncoder: customEncoder):
             return try request.encoded(encodable: AnyEncodable(encodable), encoder: customEncoder)
         }
     }
 }
-

@@ -6,73 +6,106 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
+private let mainContentTag = 1
+private let emptyContentTag = 2
 class RoomUserTableViewCell: UITableViewCell {
     enum OperationType {
         case camera
         case mic
-        case disconnect
+        case onStage
+        case whiteboard
         case raiseHand
     }
-    var clickHandler: ((OperationType)->Void)?
-    
+
+    var clickHandler: ((OperationType) -> Void)?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError()
+    }
+
+    func set(operationType: OperationType, empty: Bool) {
+        var container: UIView?
+        switch operationType {
+        case .camera:
+            container = cameraButton.superview
+        case .mic:
+            container = micButton.superview
+        case .onStage:
+            container = onStageSwitch.superview
+        case .whiteboard:
+            container = whiteboardSwitch.superview
+        case .raiseHand:
+            container = raiseHandButton.superview
+        }
+        container?.viewWithTag(mainContentTag)?.isHidden = empty
+        container?.viewWithTag(emptyContentTag)?.isHidden = !empty
     }
     
     func setupViews() {
         contentView.backgroundColor = .classroomChildBG
-        
-        contentView.addSubview(avatarImageView)
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(statusLabel)
-        contentView.addSubview(operationStackView)
-        avatarImageView.snp.makeConstraints { make in
+        contentView.addSubview(mainStackView)
+        mainStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        contentView.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
+        contentView.addSubview(userSelfPointer)
+        userSelfPointer.snp.makeConstraints { make in
+            make.centerX.equalTo(8)
+            make.width.height.equalTo(4)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    func wrapView(_ v: UIView) -> UIView {
+        let view = UIView()
+        view.addSubview(v)
+        v.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(32)
         }
-        nameLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(56)
+        v.tag = mainContentTag
+        let emptyView = UILabel()
+        emptyView.textColor = .color(type: .text, .weak)
+        emptyView.text = "- / -"
+        view.addSubview(emptyView)
+        emptyView.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
         }
-        statusLabel.snp.makeConstraints { make in
-            make.left.equalTo(nameLabel.snp.right).offset(4)
-            make.centerY.equalToSuperview()
-            make.right.lessThanOrEqualToSuperview().inset(66)
-        }
-        operationStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.right.equalToSuperview().inset(14)
-        }
-        
-        contentView.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
+        emptyView.isHidden = true
+        emptyView.tag = emptyContentTag
+        return view
     }
     
     // MARK: - Action
     @objc func onClickCamera() {
         clickHandler?(.camera)
     }
-    
+
     @objc func onClickMic() {
         clickHandler?(.mic)
     }
-    
-    @objc func onClickDisconnect() {
-        clickHandler?(.disconnect)
-    }
-    
+
     @objc func onClickRaiseHand() {
         clickHandler?(.raiseHand)
     }
     
+    @objc func onWhiteboardChanged() {
+        clickHandler?(.whiteboard)
+    }
+    
+    @objc func onStageChanged() {
+        clickHandler?(.onStage)
+    }
+
     lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.font = .systemFont(ofSize: 14)
@@ -80,23 +113,14 @@ class RoomUserTableViewCell: UITableViewCell {
         nameLabel.textColor = .color(type: .text)
         return nameLabel
     }()
-    
+
     lazy var statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.font = .systemFont(ofSize: 12)
         statusLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         return statusLabel
     }()
-    
-    lazy var disconnectButton: UIButton = {
-        let disconnectButton = UIButton(type: .custom)
-        disconnectButton.setImage(UIImage(named: "disconnect_speak"), for: .normal)
-        disconnectButton.addTarget(self, action: #selector(onClickDisconnect), for: .touchUpInside)
-        disconnectButton.tintColor = .init(hexString: "#F45454")
-        disconnectButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
-        return disconnectButton
-    }()
-    
+
     lazy var raiseHandButton: UIButton = {
         let raiseHandButton = UIButton(type: .custom)
         raiseHandButton.setImage(UIImage(named: "raisehand_small_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -105,42 +129,105 @@ class RoomUserTableViewCell: UITableViewCell {
         raiseHandButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return raiseHandButton
     }()
-    
+
     lazy var cameraButton: UIButton = {
         let cameraButton = UIButton(type: .custom)
         cameraButton.setTraitRelatedBlock { btn in
-            btn.setImage(UIImage(named: "camera_off")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(btn.traitCollection)), for: .normal)
-            btn.setImage(UIImage(named: "camera_on")?.tintColor(.color(type: .primary).resolveDynamicColorPatchiOS13With(btn.traitCollection)), for: .selected)
+            btn.setImage(UIImage(named: "camera_off")?.tintColor(.color(type: .danger).resolvedColor(with: btn.traitCollection)), for: .normal)
+            btn.setImage(UIImage(named: "camera_on")?.tintColor(.color(type: .primary).resolvedColor(with: btn.traitCollection)), for: .selected)
         }
         cameraButton.addTarget(self, action: #selector(onClickCamera), for: .touchUpInside)
         cameraButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return cameraButton
     }()
-    
+
     lazy var micButton: UIButton = {
         let micButton = UIButton(type: .custom)
         micButton.setTraitRelatedBlock { btn in
-            btn.setImage(UIImage(named: "mic_off")?.tintColor(.color(type: .danger).resolveDynamicColorPatchiOS13With(btn.traitCollection)), for: .normal)
-            btn.setImage(UIImage(named: "mic_on")?.tintColor(.color(type: .primary).resolveDynamicColorPatchiOS13With(btn.traitCollection)), for: .selected)
+            btn.setImage(UIImage(named: "mic_off")?.tintColor(.color(type: .danger).resolvedColor(with: btn.traitCollection)), for: .normal)
+            btn.setImage(UIImage(named: "mic_on")?.tintColor(.color(type: .primary).resolvedColor(with: btn.traitCollection)), for: .selected)
         }
         micButton.addTarget(self, action: #selector(onClickMic), for: .touchUpInside)
         micButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)
         return micButton
     }()
-    
-    lazy var operationStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [cameraButton, micButton, raiseHandButton, disconnectButton])
+
+    lazy var userInfoStackView: UIStackView = {
+        let nameStack = UIStackView(arrangedSubviews: [nameLabel, statusLabel])
+        nameStack.axis = .horizontal
+        nameStack.distribution = .fill
+        nameStack.spacing = 0
+        let view = UIStackView(arrangedSubviews: [avatarImageView, nameStack])
         view.axis = .horizontal
-        view.distribution = .fillEqually
-        view.spacing = 0
+        view.spacing = 8
+        view.distribution = .fill
+        avatarImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+        }
         return view
     }()
     
+    lazy var onStageContainer: UIView = {
+        let view = UIView()
+        view.addSubview(onStageSwitch)
+        onStageSwitch.snp.makeConstraints { $0.edges.equalToSuperview() }
+        let btn = UIButton()
+        view.addSubview(btn)
+        btn.snp.makeConstraints { $0.edges.equalToSuperview() }
+        btn.addTarget(self, action: #selector(onStageChanged), for: .touchUpInside)
+        return view
+    }()
+    
+    lazy var whiteboardContainer: UIView = {
+        let view = UIView()
+        view.addSubview(whiteboardSwitch)
+        whiteboardSwitch.snp.makeConstraints { $0.edges.equalToSuperview() }
+        let btn = UIButton()
+        view.addSubview(btn)
+        btn.snp.makeConstraints { $0.edges.equalToSuperview() }
+        btn.addTarget(self, action: #selector(onWhiteboardChanged), for: .touchUpInside)
+        return view
+    }()
+    
+    lazy var onStageSwitch: UISwitch = {
+        let s = UISwitch()
+        s.isUserInteractionEnabled = false
+        return s
+    }()
+    
+    lazy var whiteboardSwitch: UISwitch = {
+        let s = UISwitch()
+        s.isUserInteractionEnabled = false
+        return s
+    }()
+    
+    lazy var mainStackView: UIStackView = {
+        let views = [userInfoStackView, onStageContainer, whiteboardContainer, cameraButton, micButton, raiseHandButton]
+        let wrappedViews = views.map { wrapView($0) }
+        let view = UIStackView(arrangedSubviews: wrappedViews)
+        view.axis = .horizontal
+        view.distribution = .fillEqually
+        wrappedViews.forEach { v in
+            v.snp.makeConstraints { make in
+                make.height.equalToSuperview()
+            }
+        }
+        return view
+    }()
+
     lazy var avatarImageView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = 12
+        return view
+    }()
+    
+    lazy var userSelfPointer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .color(type: .primary)
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 2
         return view
     }()
 }

@@ -11,7 +11,7 @@ import Foundation
 extension NSMutableAttributedString {
     func add(link: String, forExistString str: String) {
         var r = string[...]
-        
+
         while let range = r.range(of: str) {
             let l = range.lowerBound.utf16Offset(in: string)
             let h = range.upperBound.utf16Offset(in: string)

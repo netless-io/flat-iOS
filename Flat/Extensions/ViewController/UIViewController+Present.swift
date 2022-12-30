@@ -10,7 +10,7 @@ import UIKit
 
 private var closeBlockKey: Void?
 extension UIViewController {
-    typealias CloseBlockType = ()->Void
+    typealias CloseBlockType = () -> Void
     var closeBlock: CloseBlockType? {
         get {
             objc_getAssociatedObject(self, &closeBlockKey) as? CloseBlockType
@@ -19,10 +19,10 @@ extension UIViewController {
             objc_setAssociatedObject(self, &closeBlockKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
-    
+
     @discardableResult
     func addPresentCloseButton(_ handler: CloseBlockType? = nil) -> UIButton {
-        self.closeBlock = handler
+        closeBlock = handler
         let closeButton = UIButton(type: .custom)
         closeButton.setImage(UIImage(named: "close-bold"), for: .normal)
         closeButton.tintColor = .color(type: .text)
@@ -35,15 +35,15 @@ extension UIViewController {
         closeButton.addTarget(self, action: #selector(onClose), for: .touchUpInside)
         return closeButton
     }
-    
+
     @objc func onClose() {
-        if let closeBlock = closeBlock {
+        if let closeBlock {
             closeBlock()
         } else {
             dismiss(animated: true)
         }
     }
-    
+
     @discardableResult
     func addPresentTitle(_ title: String) -> UILabel {
         let titleLabel = UILabel()
@@ -56,7 +56,7 @@ extension UIViewController {
             make.centerY.equalTo(view.safeAreaLayoutGuide.snp.top).offset(28)
             make.right.left.equalTo(view.safeAreaLayoutGuide).inset(44)
         }
-        
+
         if !isCompact() {
             let line = UIView()
             line.backgroundColor = .borderColor
@@ -67,7 +67,7 @@ extension UIViewController {
                 make.height.equalTo(1 / UIScreen.main.scale)
             }
         }
-        
+
         return titleLabel
     }
 }

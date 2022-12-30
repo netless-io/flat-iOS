@@ -6,9 +6,9 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
 class SMSAuthView: UIView {
     var availableCountryCodes: [Int] = [86]
@@ -17,25 +17,26 @@ class SMSAuthView: UIView {
             countryCodeSelectBtn.setTitle("+\(countryCode)", for: .normal)
         }
     }
-    var smsRequestMaker: ((String)->Observable<EmptyResponse>)?
-    var additionalCheck: ((_ sender: UIView)->Result<Void, String>)?
+
+    var smsRequestMaker: ((String) -> Observable<EmptyResponse>)?
+    var additionalCheck: ((_ sender: UIView) -> Result<Void, String>)?
     var phoneRegex: String = "1[3456789]\\d{9}$"
     var phoneValid: Bool { (try? phoneTextfield.text?.matchExpressionPattern(phoneRegex) != nil) ?? false }
-    var fullPhoneText: String { "+\(countryCode)\(phoneTextfield.text ?? "")"}
+    var fullPhoneText: String { "+\(countryCode)\(phoneTextfield.text ?? "")" }
     var codeText: String { verificationCodeTextfield.text ?? "" }
     var codeValid: Bool { codeText.count >= 4 }
     var loginEnable: Observable<Bool> {
         Observable.combineLatest(phoneTextfield.rx.text.orEmpty,
-                                 verificationCodeTextfield.rx.text.orEmpty) { [unowned self] p, c in
-            return self.phoneValid && self.codeValid
+                                 verificationCodeTextfield.rx.text.orEmpty) { [unowned self] _, _ in
+            self.phoneValid && self.codeValid
         }
     }
-    
+
     func allValidCheck(sender: UIView?) -> Result<Void, String> {
-        if let additionalCheck = additionalCheck {
+        if let additionalCheck {
             switch additionalCheck(sender ?? self) {
             case .success: break
-            case .failure(let errorStr):
+            case let .failure(errorStr):
                 return .failure(errorStr)
             }
         }
@@ -43,15 +44,14 @@ class SMSAuthView: UIView {
         if !codeValid { return .failure(localizeStrings("InvalidCode")) }
         return .success(())
     }
-    
+
     @objc
-    func onClickCountryCode() {
-    }
-    
+    func onClickCountryCode() {}
+
     @objc
     func onClickSendSMS(sender: UIButton) {
         let top = UIApplication.shared.topViewController
-        if case .failure(let errStr) = additionalCheck?(sender) {
+        if case let .failure(errStr) = additionalCheck?(sender) {
             top?.toast(errStr)
             return
         }
@@ -67,26 +67,26 @@ class SMSAuthView: UIView {
                 top?.stopActivityIndicator()
                 top?.toast(localizeStrings("CodeSend"))
                 weakSelf.startTimer()
-            }, onFailure: { weakSelf, err in
+            }, onFailure: { _, err in
                 top?.stopActivityIndicator()
                 top?.toast(err.localizedDescription)
             })
             .disposed(by: rx.disposeBag)
     }
-    
-    override init(frame: CGRect) {
+
+    override init(frame _: CGRect) {
         super.init(frame: .zero)
         setupViews()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupViews()
     }
-    
+
     func setupViews() {
         backgroundColor = .color(type: .background)
-        
+
         let margin: CGFloat = 16
         let textfieldHeight: CGFloat = 44
         let stackView = UIStackView(arrangedSubviews: [phoneTextfield])
@@ -96,18 +96,18 @@ class SMSAuthView: UIView {
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         let g0 = UIView()
         stackView.addArrangedSubview(g0)
         g0.snp.makeConstraints { make in
             make.height.equalTo(margin)
         }
         stackView.addArrangedSubview(verificationCodeTextfield)
-        
+
         phoneTextfield.snp.makeConstraints { $0.height.equalTo(textfieldHeight) }
         verificationCodeTextfield.snp.makeConstraints { $0.height.equalTo(textfieldHeight) }
     }
-    
+
     @objc
     func startTimer() {
         let count = 60
@@ -130,18 +130,18 @@ class SMSAuthView: UIView {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     override var intrinsicContentSize: CGSize {
-        return .init(width: 375, height: 0)
+        .init(width: 375, height: 0)
     }
-    
+
     lazy var verificationCodeTextfield: BottomLineTextfield = {
         let f = BottomLineTextfield()
         f.placeholder = localizeStrings("VerificationCodePlaceholder")
         f.font = .systemFont(ofSize: 16)
         f.keyboardType = .numberPad
         f.textColor = .color(type: .text)
-        
+
         f.leftViewMode = .always
         let leftContainer = UIView()
         let leftIcon = UIImageView(image: UIImage(named: "veryfication"))
@@ -151,7 +151,7 @@ class SMSAuthView: UIView {
         leftContainer.addSubview(leftIcon)
         leftContainer.frame = leftIcon.bounds
         f.leftView = leftContainer
-        
+
         f.rightViewMode = .always
         let smsContainer = UIView()
         smsContainer.frame = .init(origin: .zero, size: .init(width: 100, height: 44))
@@ -160,7 +160,7 @@ class SMSAuthView: UIView {
         f.rightView = smsContainer
         return f
     }()
-    
+
     lazy var countryCodeSelectBtn: UIButton = {
         let btn = UIButton(type: .custom)
         btn.frame = .init(origin: .zero, size: .init(width: 66, height: 48))
@@ -174,14 +174,14 @@ class SMSAuthView: UIView {
         btn.addTarget(self, action: #selector(onClickCountryCode), for: .touchUpInside)
         return btn
     }()
-    
+
     lazy var phoneTextfield: BottomLineTextfield = {
         let f = BottomLineTextfield()
         f.placeholder = localizeStrings("PhoneInputPlaceholder")
         f.keyboardType = .phonePad
         f.font = .systemFont(ofSize: 16)
         f.textColor = .color(type: .text)
-        
+
         f.leftViewMode = .always
         let leftContainer = UIView()
         leftContainer.frame = self.countryCodeSelectBtn.bounds
@@ -189,7 +189,7 @@ class SMSAuthView: UIView {
         f.leftView = leftContainer
         return f
     }()
-    
+
     lazy var smsButton: UIButton = {
         let btn = UIButton(frame: .zero)
         btn.setTitle(localizeStrings("SendSMS"), for: .normal)

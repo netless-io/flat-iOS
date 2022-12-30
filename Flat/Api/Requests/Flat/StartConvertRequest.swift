@@ -10,7 +10,7 @@ import Foundation
 
 struct StartConvertRequest: FlatRequest, Encodable {
     let fileUUID: String
-    
+
     var path: String { "/v2/cloud-storage/convert/start" }
     var task: Task { .requestJSONEncodable(encodable: self) }
     var responseType: StorageFileModel.Payload.Type { StorageFileModel.Payload.self }

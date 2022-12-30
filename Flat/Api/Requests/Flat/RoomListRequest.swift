@@ -6,13 +6,12 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 struct RoomListRequest: FlatRequest {
     let page: Int
-    
+
     var path: String { "/v1/room/list/all" }
-    var task: Task { .requestURLEncodable(parameters: ["page": page])}
+    var task: Task { .requestURLEncodable(parameters: ["page": page]) }
     let responseType = [RoomBasicInfo].self
 }

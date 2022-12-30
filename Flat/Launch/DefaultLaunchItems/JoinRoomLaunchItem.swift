@@ -11,59 +11,60 @@ import RxSwift
 
 class JoinRoomLaunchItem: LaunchItem {
     var uuid: String!
-    
+
     var disposeBag = RxSwift.DisposeBag()
-    
+
     func shouldHandle(url: URL?) -> Bool {
-        if let url = url {
+        if let url {
             if url.scheme == "x-agora-flat-client",
                url.host == "joinRoom",
                let roomId = URLComponents(url: url, resolvingAgainstBaseURL: false)?
-                .queryItems?
-                .first(where: { $0.name == "roomUUID"})?
-                .value,
-                roomId.isNotEmptyOrAllSpacing {
-                self.uuid = roomId
+               .queryItems?
+               .first(where: { $0.name == "roomUUID" })?
+               .value,
+               roomId.isNotEmptyOrAllSpacing
+            {
+                uuid = roomId
                 return true
             } else if let roomId = getUniversalLinkRoomUUID(url) {
-                self.uuid = roomId
+                uuid = roomId
                 UIApplication.shared.topViewController?.showAlertWith(message: roomId)
                 return true
             }
         }
         return false
     }
-    
+
     fileprivate func getUniversalLinkRoomUUID(_ url: URL) -> String? {
         if url.pathComponents.contains("join"),
            let roomUUID = url.pathComponents.last,
-           roomUUID.isNotEmptyOrAllSpacing {
+           roomUUID.isNotEmptyOrAllSpacing
+        {
             return roomUUID
         }
         return nil
     }
-    
+
     func shouldHandle(userActivity: NSUserActivity) -> Bool {
         guard let url = userActivity.webpageURL else { return false }
         if let roomId = getUniversalLinkRoomUUID(url) {
-            self.uuid = roomId
+            uuid = roomId
             return true
         }
         return false
     }
-    
-    func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator) {
-        return
-    }
-    
-    func afterLoginSuccessImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator, user: User) {
+
+    func immediateImplementation(withLaunchCoordinator _: LaunchCoordinator) {}
+
+    func afterLoginSuccessImplementation(withLaunchCoordinator _: LaunchCoordinator, user: User) {
         guard let id = uuid else { return }
         let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: user.userUUID)
         let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
         let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
         var mainVC: MainContainer
         if let vc = UIApplication.shared.topViewController?.presentingViewController,
-           let svc = vc as? MainContainer {
+           let svc = vc as? MainContainer
+        {
             mainVC = svc
         } else if let svc = UIApplication.shared.topViewController?.mainContainer {
             mainVC = svc
@@ -71,19 +72,19 @@ class JoinRoomLaunchItem: LaunchItem {
             return
         }
         if let existRoomVC = mainVC.concreteViewController.presentedViewController as? ClassRoomViewController,
-           existRoomVC.viewModel.roomUUID == id {
+           existRoomVC.viewModel.roomUUID == id
+        {
             return
         }
         mainVC.concreteViewController.showActivityIndicator()
 
-        
         RoomPlayInfo.fetchByJoinWith(uuid: id, periodicUUID: nil)
             .concatMap { info in
-                return RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil).map { (info, $0) }
+                RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil).map { (info, $0) }
             }
             .asSingle()
             .observe(on: MainScheduler.instance)
-            .subscribe(onSuccess: { playInfo, roomInfo  in
+            .subscribe(onSuccess: { playInfo, roomInfo in
                 let deviceStatus = DeviceState(mic: micOn, camera: cameraOn)
                 let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
                                                                      detailInfo: roomInfo,
@@ -93,9 +94,7 @@ class JoinRoomLaunchItem: LaunchItem {
             }, onFailure: { error in
                 mainVC.concreteViewController.stopActivityIndicator()
                 mainVC.concreteViewController.showAlertWith(message: error.localizedDescription)
-            }, onDisposed: {
-                return
-            })
+            }, onDisposed: {})
             .disposed(by: disposeBag)
     }
 }

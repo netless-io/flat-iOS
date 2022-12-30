@@ -1,10 +1,11 @@
-platform :ios, '12.0'
+platform :ios, '13.0'
 target 'Flat' do
   use_frameworks!
   
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'NSObject+Rx'
+  pod 'RxDataSources'
   
   pod 'AcknowList'
   pod 'CropViewController'
@@ -13,11 +14,11 @@ target 'Flat' do
   pod 'Zip'
   
   pod 'AgoraRtm_iOS'
-  pod 'AgoraRtcEngine_iOS'
-  pod 'Fastboard', '2.0.0-alpha.7'
-  pod 'Fastboard/fpa', '2.0.0-alpha.7'
-  pod 'Whiteboard', '2.17.0-alpha.13'
-  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.13'
+  pod 'AgoraRtcEngine_iOS', '4.1.0'
+  pod 'Fastboard', '2.0.0-alpha.10'
+  pod 'Fastboard/fpa', '2.0.0-alpha.10'
+  pod 'Whiteboard', '2.17.0-alpha.16'
+  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.16'
   pod 'SyncPlayer', '0.3.3'
   
   pod 'MBProgressHUD', '~> 1.2.0'
@@ -30,12 +31,18 @@ target 'Flat' do
   pod 'SwiftyBeaver'
   pod 'AliyunLogProducer/Core'
   pod 'AliyunLogProducer/Bricks'
-
+  
   pod 'WechatOpenSDK'
   pod 'FirebaseCrashlytics'
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   
   post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+      end
+    end
+    
     installer.pods_project.targets.each do |target|
       if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
         target.build_configurations.each do |config|

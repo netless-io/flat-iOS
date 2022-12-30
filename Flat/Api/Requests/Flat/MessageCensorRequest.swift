@@ -12,8 +12,9 @@ struct MessageCensorRequest: FlatRequest {
     struct Response: Decodable {
         let valid: Bool
     }
+
     let text: String
-    
+
     var path: String { "/v1/agora/rtm/censor" }
     var method: HttpMethod { .post }
     var task: Task { .requestJSONEncodable(encodable: ["text": text]) }

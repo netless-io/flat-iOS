@@ -6,8 +6,8 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import UIKit
 import AVFoundation
+import UIKit
 
 protocol CameraMicToggleViewDelegate: AnyObject {
     func cameraMicToggleViewCouldUpdate(_ view: CameraMicToggleView, cameraOn: Bool) -> Bool
@@ -16,17 +16,18 @@ protocol CameraMicToggleViewDelegate: AnyObject {
 
 class CameraMicToggleView: UIView {
     weak var delegate: CameraMicToggleViewDelegate?
-    
-    var cameraOnUpdate: ((Bool)->Void)?
-    var micOnUpdate: ((Bool)->Void)?
-    
+
+    var cameraOnUpdate: ((Bool) -> Void)?
+    var micOnUpdate: ((Bool) -> Void)?
+
     func set(cameraOn: Bool) {
         set(cameraOn: cameraOn, fireCallback: false, fireImpact: false)
     }
+
     func set(micOn: Bool) {
         set(micOn: micOn, fireCallback: false, fireImpact: false)
     }
-    
+
     fileprivate func set(cameraOn: Bool, fireCallback: Bool, fireImpact: Bool) {
         self.cameraOn = cameraOn
         cameraButton.isSelected = cameraOn
@@ -34,14 +35,10 @@ class CameraMicToggleView: UIView {
             cameraOnUpdate?(cameraOn)
         }
         if fireImpact {
-            if #available(iOS 13.0, *) {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-            } else {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            }
+            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         }
     }
-    
+
     fileprivate func set(micOn: Bool, fireCallback: Bool, fireImpact: Bool) {
         self.micOn = micOn
         microphoneButton.isSelected = micOn
@@ -49,13 +46,10 @@ class CameraMicToggleView: UIView {
             micOnUpdate?(micOn)
         }
         if fireImpact {
-            if #available(iOS 13.0, *) {
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-            } else {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            }
+            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         }
     }
+
     internal fileprivate(set) var cameraOn: Bool
     internal fileprivate(set) var micOn: Bool
 
@@ -65,32 +59,32 @@ class CameraMicToggleView: UIView {
         super.init(frame: .zero)
         setupViews()
     }
-    
+
     required init?(coder: NSCoder) {
-        self.cameraOn = false
-        self.micOn = false
+        cameraOn = false
+        micOn = false
         super.init(coder: coder)
         setupViews()
     }
 
     let itemWidth: CGFloat = 48
-    
+
     override var intrinsicContentSize: CGSize {
-        let count = CGFloat(2) //CGFloat(stackView.arrangedSubviews.count)
+        let count = CGFloat(2) // CGFloat(stackView.arrangedSubviews.count)
         if stackView.axis == .vertical {
             return .init(width: itemWidth * count, height: itemWidth)
         } else {
             return .init(width: itemWidth, height: itemWidth * count)
         }
     }
-    
+
     func setupViews() {
         addSubview(stackView)
         stackView.axis = .horizontal
         stackView.distribution = .equalCentering
         stackView.alignment = .center
         stackView.spacing = 0
-        
+
         stackView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.height.lessThanOrEqualToSuperview()
@@ -100,31 +94,31 @@ class CameraMicToggleView: UIView {
                 make.width.height.equalTo(itemWidth)
             }
         }
-        
+
         cameraButton.isSelected = cameraOn
         microphoneButton.isSelected = micOn
     }
-    
+
     @objc func onButtonClick(_ sender: UIButton) {
         func toggleCamera() {
             set(cameraOn: !cameraOn, fireCallback: true, fireImpact: true)
         }
-        
+
         func toggleMic() {
             set(micOn: !micOn, fireCallback: true, fireImpact: true)
         }
-        
+
         if sender === cameraButton {
-            if let delegate = delegate, !cameraOn {
-                if delegate.cameraMicToggleViewCouldUpdate(self, cameraOn: !self.cameraOn) {
+            if let delegate, !cameraOn {
+                if delegate.cameraMicToggleViewCouldUpdate(self, cameraOn: !cameraOn) {
                     toggleCamera()
                 }
             } else {
                 toggleCamera()
             }
         } else {
-            if let delegate = delegate, !micOn {
-                if delegate.cameraMicToggleViewCouldUpdate(self, micOn: !self.micOn) {
+            if let delegate, !micOn {
+                if delegate.cameraMicToggleViewCouldUpdate(self, micOn: !micOn) {
                     toggleMic()
                 }
             } else {
@@ -132,7 +126,7 @@ class CameraMicToggleView: UIView {
             }
         }
     }
-    
+
     lazy var cameraButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "common_camera_on")?.tintColor(.color(type: .primary)), for: .selected)
@@ -140,7 +134,7 @@ class CameraMicToggleView: UIView {
         button.addTarget(self, action: #selector(onButtonClick(_:)), for: .touchUpInside)
         return button
     }()
-    
+
     lazy var microphoneButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "common_mic_on")?.tintColor(.color(type: .primary)), for: .selected)
@@ -148,6 +142,6 @@ class CameraMicToggleView: UIView {
         button.addTarget(self, action: #selector(onButtonClick(_:)), for: .touchUpInside)
         return button
     }()
-    
+
     lazy var stackView = UIStackView(arrangedSubviews: [cameraButton, microphoneButton])
 }

@@ -6,84 +6,83 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
-import Foundation
-import UIKit
-import RxSwift
 import FirebaseCrashlytics
+import Foundation
+import RxSwift
+import UIKit
 
 class LaunchCoordinator {
     let window: UIWindow
-    
+
     var disposeBag = DisposeBag()
-    
+
     var hitItems: [LaunchItem] = []
-    var afterLoginImplementations: [((LaunchCoordinator)->Void)] = []
-    
+    var afterLoginImplementations: [(LaunchCoordinator) -> Void] = []
+
     var authStore: AuthStore
     // All the registered launchItem will be stored here
-    fileprivate var launchItems: [String: LaunchItem] = [:] {
+    private var launchItems: [String: LaunchItem] = [:] {
         didSet {
             logger.info("launchItems update, \(launchItems)")
         }
     }
-    
+
     init(window: UIWindow, authStore: AuthStore, defaultLaunchItems: [LaunchItem]) {
         self.window = window
         self.authStore = authStore
         authStore.delegate = self
         defaultLaunchItems.forEach { registerLaunchItem($0, identifier: String(describing: $0)) }
-        
+
         if authStore.isLogin {
             observeFirstJWTExpire()
         }
         Theme.shared.window = window
     }
-    
+
     func registerLaunchItem(_ item: LaunchItem, identifier: String) {
         launchItems[identifier] = item
     }
-    
+
     func removeLaunchItem(fromIdentifier identifier: String) {
         launchItems.removeValue(forKey: identifier)
     }
-    
+
     func start(withLaunchUserActivity userActivity: NSUserActivity) -> Bool {
         // If window never configured, set a root vc
         if window.rootViewController == nil {
             configRootWith(user: authStore.user)
         }
-        hitItems = launchItems.map { $0.value }.filter { $0.shouldHandle(userActivity: userActivity) }
+        hitItems = launchItems.map(\.value).filter { $0.shouldHandle(userActivity: userActivity) }
         hitItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
         if authStore.isLogin, let user = authStore.user {
-            hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+            hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user) }
             hitItems = []
         }
         return !hitItems.isEmpty
     }
-    
+
     func start(withLaunchUrl launchUrl: URL? = nil) {
         // If window never configured, set a root vc
         if window.rootViewController == nil {
             configRootWith(user: authStore.user)
         }
-        hitItems = launchItems.map { $0.value }.filter { $0.shouldHandle(url: launchUrl) }
+        hitItems = launchItems.map(\.value).filter { $0.shouldHandle(url: launchUrl) }
         hitItems.forEach { $0.immediateImplementation(withLaunchCoordinator: self) }
         if authStore.isLogin, let user = authStore.user {
-            hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+            hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user) }
             hitItems = []
         }
     }
-    
+
     func reboot() {
         window.rootViewController = authStore.isLogin ? createMainContainer() : LoginViewController()
     }
-    
+
     func createMainContainer() -> UIViewController {
         func compactMain() -> UIViewController {
-            return MainTabBarController()
+            MainTabBarController()
         }
-        
+
         func oldPadMain() -> UIViewController {
             let vc = MainSplitViewController()
             // Line for splitViewController
@@ -93,7 +92,7 @@ class LaunchCoordinator {
             vc.preferredDisplayMode = .oneBesideSecondary
             return vc
         }
-        
+
         if #available(iOS 14.0, *) {
             if isCompact() {
                 return compactMain()
@@ -118,10 +117,11 @@ class LaunchCoordinator {
             return oldPadMain()
         }
     }
-    
+
     // MARK: - Private
-    fileprivate func configRootWith(user: User?) {
-        if let user = user {
+
+    private func configRootWith(user: User?) {
+        if let user {
             startGoogleAnalytics()
             if user.hasPhone {
                 guard let _ = window.rootViewController as? MainContainer else {
@@ -155,7 +155,7 @@ class LaunchCoordinator {
             }
         }
     }
-    
+
     func observeFirstJWTExpire() {
         FlatResponseHandler
             .jwtExpireSignal
@@ -174,16 +174,16 @@ class LaunchCoordinator {
 }
 
 extension LaunchCoordinator: AuthStoreDelegate {
-    func authStoreDidLoginSuccess(_ authStore: AuthStore, user: User) {
+    func authStoreDidLoginSuccess(_: AuthStore, user: User) {
         configRootWith(user: user)
-        hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user)}
+        hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user) }
         hitItems = []
         observeFirstJWTExpire()
         updateAliSlsLogger(uid: user.userUUID)
         Crashlytics.crashlytics().setUserID(user.userUUID)
     }
-    
-    func authStoreDidLogout(_ authStore: AuthStore) {
+
+    func authStoreDidLogout(_: AuthStore) {
         configRootWith(user: nil)
     }
 }

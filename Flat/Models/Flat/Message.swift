@@ -6,15 +6,14 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 enum Message {
     case user(UserMessage)
     case notice(String)
-    
+
     var userId: String? {
-        if case .user(let i) = self {
+        if case let .user(i) = self {
             return i.userId
         }
         return nil
@@ -26,4 +25,3 @@ struct UserMessage: Codable {
     let text: String
     let time: Date
 }
-

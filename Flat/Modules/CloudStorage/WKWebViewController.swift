@@ -10,27 +10,28 @@ import UIKit
 import WebKit
 
 class WKWebViewController: UIViewController {
-    var dismissHandler: (()->Void)?
-    
+    var dismissHandler: (() -> Void)?
+
     init(url: URL) {
         super.init(nibName: nil, bundle: nil)
         webView.load(URLRequest(url: url))
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func onClickNaviBack() {
         dismissHandler?()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         presentCloseButton?.removeFromSuperview()
         presentTitleLabel?.removeFromSuperview()
-        
+
         if let _ = navigationController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: localizeStrings("Close"), style: .plain, target: self, action: #selector(onClickNaviBack))
             webView.snp.remakeConstraints { make in
@@ -45,17 +46,17 @@ class WKWebViewController: UIViewController {
             }
         }
     }
-    
+
     var presentCloseButton: UIButton?
     var presentTitleLabel: UILabel?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         webView.navigationDelegate = self
         view.startFlatLoading()
     }
-    
+
     func setupViews() {
         view.backgroundColor = .color(type: .background)
         webView.backgroundColor = .color(type: .background)
@@ -67,7 +68,7 @@ class WKWebViewController: UIViewController {
 }
 
 extension WKWebViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    func webView(_: WKWebView, didFinish _: WKNavigation!) {
         view.endFlatLoading()
     }
 }

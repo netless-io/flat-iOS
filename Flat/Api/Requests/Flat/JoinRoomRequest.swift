@@ -12,6 +12,6 @@ struct JoinRoomRequest: FlatRequest {
     let info: JoinRoomInfo
 
     var path: String { "/v1/room/join" }
-    var task: Task { .requestJSONEncodable(encodable: ["uuid": info.periodicUUID ?? info.roomUUID] )}
+    var task: Task { .requestJSONEncodable(encodable: ["uuid": info.periodicUUID ?? info.roomUUID]) }
     let responseType = RoomPlayInfo.self
 }

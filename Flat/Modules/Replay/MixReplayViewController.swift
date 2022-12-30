@@ -7,55 +7,53 @@
 //
 
 import Foundation
-import Whiteboard
 import RxSwift
 import SyncPlayer
+import Whiteboard
 
 class MixReplayViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return traitCollection.hasCompact ? .landscapeRight : .landscape
+        traitCollection.hasCompact ? .landscapeRight : .landscape
     }
+
     override var prefersStatusBarHidden: Bool { true }
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            return .darkContent
-        } else {
-            return .default
-        }
-    }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle { .darkContent }
+
     let viewModel: MixReplayViewModel
     var rtcPlayer: AVPlayer?
     var syncPlayer: SyncPlayer?
-    
+
     // MARK: - LifeCycle
+
     init(viewModel: MixReplayViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     deinit {
         syncPlayer?.destroy()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        
+
         // Select to first record
         if !viewModel.recordDetail.recordInfo.isEmpty {
             updateRecordIndex(0)
             setupSectionList()
         }
     }
-    
+
     // MARK: - Private
+
     private func updateRecordIndex(_ index: Int, autoPlay: Bool = true) {
         syncPlayer?.destroy()
         syncPlayer = nil
@@ -63,10 +61,10 @@ class MixReplayViewController: UIViewController {
         playerTimeObserver = nil
         whiteboardView?.removeFromSuperview()
         whiteboardView = nil
-        
+
         let newWhiteView = WhiteBoardView()
         newWhiteView.setTraitRelatedBlock { v in
-            v.backgroundColor = .color(type: .background).resolveDynamicColorPatchiOS13With(v.traitCollection)
+            v.backgroundColor = .color(type: .background).resolvedColor(with: v.traitCollection)
         }
         newWhiteView.isUserInteractionEnabled = false
         whiteboardView = newWhiteView
@@ -75,7 +73,7 @@ class MixReplayViewController: UIViewController {
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(videoScrollView.snp.bottom)
         }
-        
+
         overlay.displayState = .showDelayHide
         overlay.updateIsBuffering(true)
         viewModel.setupWhite(newWhiteView, index: index)
@@ -89,13 +87,13 @@ class MixReplayViewController: UIViewController {
             }
             .disposed(by: rx.disposeBag)
     }
-    
+
     func setup(forRtcPlayer player: AVPlayer) {
         rtcPlayer = player
         // Loop for asset loading
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak player, weak self] in
             guard
-                let self = self,
+                let self,
                 let capturePlayer = player,
                 let rtc = self.rtcPlayer,
                 rtc === capturePlayer,
@@ -107,7 +105,7 @@ class MixReplayViewController: UIViewController {
                 }
                 return
             }
-            
+
             let ratio = self.videoScrollView.frame.height / size.height
             let width = ratio * size.width
             if width.isNaN {
@@ -120,14 +118,14 @@ class MixReplayViewController: UIViewController {
             (self.videoPreview.layer as? AVPlayerLayer)?.videoGravity = .resizeAspectFill
         }
     }
-    
+
     var isDraging = false
     var isSeeking = false
     var playerTimeObserver: Any?
     func listen(to player: SyncPlayer, duration: TimeInterval) {
         syncPlayer = player
         player.addStatusListener { [weak self] status in
-            guard let self = self else { return }
+            guard let self else { return }
             switch status {
             case .ready:
                 if self.isSeeking { return }
@@ -148,16 +146,16 @@ class MixReplayViewController: UIViewController {
                 self.overlay.update(isPause: false)
             }
         }
-        
+
         overlay.updateDuration(floor(duration))
         playerTimeObserver = player.addPeriodicTimeObserver(forInterval: .init(value: 1000, timescale: 1000), queue: nil) { [weak self] t in
-            guard let self = self else { return }
+            guard let self else { return }
             if self.isSeeking { return }
             if self.isDraging { return }
             self.overlay.updateCurrentTime(floor(t.seconds))
         }
     }
-    
+
     func setupSectionList() {
         let currentIndex = viewModel.currentIndex
         let sections = viewModel.recordDetail.recordInfo.enumerated().map { index, item -> (String, Bool) in
@@ -168,19 +166,20 @@ class MixReplayViewController: UIViewController {
         }
         selectionlistViewController.sections = sections
     }
-    
+
     private func setupViews() {
         view.backgroundColor = .color(type: .background)
         view.addSubview(videoScrollView)
         overlay.attachTo(parent: view)
-        
+
         videoScrollView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
             make.height.equalTo(singleRecordHeight)
         }
     }
-    
+
     // MARK: - Action
+
     @objc func onClickSelectionList(_ sender: UIButton) {
         popoverViewController(viewController: selectionlistViewController, fromSource: sender)
         overlay.displayState = .showAlways
@@ -188,8 +187,9 @@ class MixReplayViewController: UIViewController {
             self?.overlay.displayState = .showDelayHide
         }
     }
-    
+
     // MARK: - Lazy
+
     lazy var videoScrollView: UIScrollView = {
         let view = UIScrollView()
         view.contentInsetAdjustmentBehavior = .never
@@ -198,11 +198,11 @@ class MixReplayViewController: UIViewController {
         view.addSubview(videoPreview)
         return view
     }()
-    
+
     lazy var videoPreview = VideoPreviewView()
-    
+
     var whiteboardView: WhiteBoardView?
-    
+
     lazy var overlay: ReplayOverlay = {
         let overlay = ReplayOverlay()
         overlay.delegate = self
@@ -212,40 +212,36 @@ class MixReplayViewController: UIViewController {
         }
         return overlay
     }()
-    
+
     lazy var sectionListButton: UIButton = {
         let btn = UIButton(type: .system)
-        if #available(iOS 13.0, *) {
-            let img = UIImage(systemName: "list.number", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
-            btn.setImage(img, for: .normal)
-        } else {
-            btn.setTitle("List", for: .normal)
-        }
+        let img = UIImage(systemName: "list.number", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
+        btn.setImage(img, for: .normal)
         btn.tintColor = .white
         btn.addTarget(self, action: #selector(onClickSelectionList), for: .touchUpInside)
         return btn
     }()
-    
+
     lazy var selectionlistViewController: RecordSelectionListViewController = {
         let vc = RecordSelectionListViewController()
         vc.clickHandler = { [weak self] index in
-            guard let self = self else { return }
+            guard let self else { return }
             guard self.viewModel.currentIndex != index else { return }
             self.updateRecordIndex(index)
         }
         return vc
     }()
-    
+
     var drakSeekingPercent: Float?
 }
 
 extension MixReplayViewController: ReplayOverlayDelegate {
-    func replayOverlayDidClickClose(_ overlay: ReplayOverlay) {
+    func replayOverlayDidClickClose(_: ReplayOverlay) {
         dismiss(animated: true, completion: nil)
     }
-    
+
     func replayOverlayDidClickPlayOrPause(_ overlay: ReplayOverlay) {
-        guard let syncPlayer = syncPlayer else { return }
+        guard let syncPlayer else { return }
         switch syncPlayer.status {
         case .pause, .ready:
             syncPlayer.play()
@@ -260,28 +256,28 @@ extension MixReplayViewController: ReplayOverlayDelegate {
         }
         overlay.show()
     }
-    
-    func replayOverlayDidClickBackward(_ overlay: ReplayOverlay) {
-        guard let syncPlayer = syncPlayer else { return }
+
+    func replayOverlayDidClickBackward(_: ReplayOverlay) {
+        guard let syncPlayer else { return }
         let time = syncPlayer.currentTime
         let seconds = max(time.seconds - 15, 0)
         seekTo(seconds)
     }
-    
-    func replayOverlayDidClickForward(_ overlay: ReplayOverlay) {
-        guard let syncPlayer = syncPlayer else { return }
+
+    func replayOverlayDidClickForward(_: ReplayOverlay) {
+        guard let syncPlayer else { return }
         let time = syncPlayer.currentTime
         let seconds = min(time.seconds + 15, syncPlayer.totalTime.seconds)
         seekTo(seconds)
     }
-    
-    func replayOverlayDidClickSeekToPercent(_ overlay: ReplayOverlay, percent: Float) {
-        guard let syncPlayer = syncPlayer else { return }
+
+    func replayOverlayDidClickSeekToPercent(_: ReplayOverlay, percent: Float) {
+        guard let syncPlayer else { return }
         let seconds = syncPlayer.totalTime.seconds * Double(percent)
         guard !seconds.isNaN else { return }
         seekTo(seconds)
     }
-    
+
     func replayOverlayDidUpdatePanGestureState(_ overlay: ReplayOverlay, sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .began:
@@ -312,11 +308,11 @@ extension MixReplayViewController: ReplayOverlayDelegate {
             return
         }
     }
-    
+
     func seekTo(_ seconds: TimeInterval) {
-        guard let syncPlayer = syncPlayer else { return }
+        guard let syncPlayer else { return }
         let cmTime = CMTime(seconds: seconds, preferredTimescale: syncPlayer.totalTime.timescale)
-        
+
         isSeeking = true
         // 这里的 buffer 和 普通的 buffer 会冲突。需要注意一下
         overlay.updateIsBuffering(true)

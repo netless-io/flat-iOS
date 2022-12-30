@@ -10,7 +10,7 @@ import Foundation
 
 struct FinishConvertRequest: FlatRequest {
     let fileUUID: String
-    
+
     var path: String { "/v2/cloud-storage/convert/finish" }
     var task: Task { .requestJSONEncodable(encodable: ["fileUUID": fileUUID]) }
     let responseType = EmptyResponse.self

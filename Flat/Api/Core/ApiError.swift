@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import Foundation
 
 enum ApiError: LocalizedError {
@@ -15,10 +14,10 @@ enum ApiError: LocalizedError {
     case message(message: String)
     case encode(message: String)
     case decode(message: String)
-    
+
     var errorDescription: String? {
         switch self {
-        case .serverError(let message):
+        case let .serverError(message):
             if let data = message.data(using: .utf8) {
                 if let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) as? [String: Any] {
                     if let code = json["code"] as? Int {
@@ -27,13 +26,13 @@ enum ApiError: LocalizedError {
                 }
             }
             return message
-        case .message(let message):
+        case let .message(message):
             return message
         case .unknown:
             return localizeStrings("Unknown error")
-        case .encode(let message):
+        case let .encode(message):
             return localizeStrings("Encode error") + " " + message
-        case .decode(let message):
+        case let .decode(message):
             if message.isEmpty { return localizeStrings("Decode error") }
             return message
         }

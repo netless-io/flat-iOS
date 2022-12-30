@@ -6,10 +6,10 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import Foundation
 import AgoraRtmKit
-import RxSwift
+import Foundation
 import RxRelay
+import RxSwift
 
 /// Rtm state control
 class Rtm: NSObject {
@@ -17,22 +17,23 @@ class Rtm: NSObject {
         case remoteLogin
         case reconnectingTimeout
     }
-    
+
     enum State {
         case idle
         case connecting
         case reconnecting
         case connected
     }
-    
+
     let p2pMessage: PublishRelay<(data: Data, sender: String)> = .init()
     let error: PublishRelay<RtmError> = .init()
     let state: BehaviorRelay<State> = .init(value: .idle)
     let reconnectTimeoutInterval: DispatchTimeInterval = .seconds(5)
-    
+
     init(rtmToken: String,
          rtmUserUUID: String,
-         agoraAppId: String) {
+         agoraAppId: String)
+    {
         super.init()
         agoraKit = AgoraRtmKit(appId: agoraAppId, delegate: self)!
         agoraGenerator.agoraToken = rtmToken
@@ -41,6 +42,15 @@ class Rtm: NSObject {
     }
 
     deinit { logger.trace("\(self) deinit") }
+
+    func sendP2PMessageFromArray(_ array: [(data: Data, uuid: String)]) -> Single<Void> {
+        array.reduce(Single<Void>.just(())) { [weak self] partial, part -> Single<Void> in
+            guard let self else { return .error("self not exist") }
+            return partial.flatMap { _ -> Single<Void> in
+                return self.sendP2PMessage(data: part.data, toUUID: part.uuid)
+            }
+        }
+    }
     
     func sendP2PMessage(data: Data, toUUID UUID: String) -> Single<Void> {
         logger.info("send p2p raw message data, to \(UUID)")
@@ -48,7 +58,7 @@ class Rtm: NSObject {
         case .connecting, .idle, .reconnecting: return .just(())
         case .connected:
             return .create { [weak self] observer in
-                guard let self = self else {
+                guard let self else {
                     observer(.failure("self not exist"))
                     return Disposables.create()
                 }
@@ -57,22 +67,26 @@ class Rtm: NSObject {
                     if error == .ok {
                         observer(.success(()))
                     } else {
-                        let errStr = "send p2p msg error \(error)"
-                        logger.error("\(errStr)")
-                        observer(.failure(errStr))
+                        let errMsg = "send p2p msg error \(error)"
+                        logger.error("\(errMsg)")
+                        if error == .peerUnreachable {
+                            observer(.failure(localizeStrings("UserNotInRoom")))
+                        } else {
+                            observer(.failure(errMsg))
+                        }
                     }
                 }
                 return Disposables.create()
             }
         }
     }
-    
-    var loginCallbacks: [(AgoraRtmLoginErrorCode)->Void] = []
+
+    var loginCallbacks: [(AgoraRtmLoginErrorCode) -> Void] = []
     /// Can be called safely multi times
     func login() -> Single<Void> {
         func createLoginObserver() -> Single<Void> {
-            return .create { [weak self] observer in
-                guard let self = self else {
+            .create { [weak self] observer in
+                guard let self else {
                     observer(.failure("self not exist"))
                     return Disposables.create()
                 }
@@ -90,9 +104,9 @@ class Rtm: NSObject {
         case .connected, .reconnecting: return .just(())
         case .connecting: return createLoginObserver()
         case .idle:
-            self.agoraKit.login(byToken: agoraGenerator.agoraToken,
-                                user: agoraGenerator.agoraUserId) { [weak self] code in
-                guard let self = self else { return }
+            agoraKit.login(byToken: agoraGenerator.agoraToken,
+                           user: agoraGenerator.agoraUserId) { [weak self] code in
+                guard let self else { return }
                 self.loginCallbacks.forEach { $0(code) }
                 self.loginCallbacks = []
                 self.state.accept(.connected)
@@ -100,7 +114,7 @@ class Rtm: NSObject {
             return createLoginObserver()
         }
     }
-    
+
     func leave() -> Single<Void> {
         switch state.value {
         case .idle, .connecting, .reconnecting: return .just(())
@@ -117,10 +131,10 @@ class Rtm: NSObject {
             }
         }
     }
-    
+
     func joinChannelId(_ channelId: String) -> Single<RtmChannel> {
         .create { [weak self] observer in
-            guard let self = self else {
+            guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
@@ -142,7 +156,7 @@ class Rtm: NSObject {
             return Disposables.create()
         }
     }
-    
+
     fileprivate var agoraKit: AgoraRtmKit!
 }
 
@@ -191,7 +205,7 @@ extension AgoraRtmConnectionChangeReason: CustomStringConvertible {
 }
 
 extension Rtm: AgoraRtmDelegate {
-    func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
+    func rtmKit(_: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
         logger.info("state \(state), reason \(reason)")
         switch state {
         case .connected:
@@ -201,7 +215,7 @@ extension Rtm: AgoraRtmDelegate {
         case .reconnecting:
             self.state.accept(.reconnecting)
             DispatchQueue.global().asyncAfter(deadline: .now() + reconnectTimeoutInterval) { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
                 if self.state.value == .reconnecting {
                     DispatchQueue.main.async {
                         self.error.accept(.reconnectingTimeout)
@@ -215,8 +229,8 @@ extension Rtm: AgoraRtmDelegate {
             return
         }
     }
-    
-    func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
+
+    func rtmKit(_: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
         logger.info("receive p2p message \(message.text)")
         if let rawMessage = message as? AgoraRtmRawMessage {
             p2pMessage.accept((rawMessage.rawData, peerId))

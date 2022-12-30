@@ -6,14 +6,13 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-
 import UIKit
 
-extension UIButton {
-    public func horizontalCenterTitleAndImageWith(_ spacing: CGFloat) {
-        setDidLayoutHandle { [weak self] (bounds) in
+public extension UIButton {
+    func horizontalCenterTitleAndImageWith(_ spacing: CGFloat) {
+        setDidLayoutHandle { [weak self] _ in
             guard let btn = self else { return }
-            guard let label  = btn.titleLabel else { return }
+            guard let label = btn.titleLabel else { return }
             let imageSize = btn.imageView?.bounds.size ?? .zero
             let text = label.text ?? ""
             let titleSize = NSString(string: text)
@@ -27,12 +26,11 @@ extension UIButton {
             btn.titleEdgeInsets = UIEdgeInsets(top: 0, left: -(totalWidth - titleSize.width) * 2, bottom: 0, right: 0)
         }
     }
-            
-    
-    public func verticalCenterImageAndTitleWith(_ spacing: CGFloat) {
-        setDidLayoutHandle { [weak self] (bounds) in
+
+    func verticalCenterImageAndTitleWith(_ spacing: CGFloat) {
+        setDidLayoutHandle { [weak self] _ in
             guard let btn = self else { return }
-            guard let label  = btn.titleLabel else { return }
+            guard let label = btn.titleLabel else { return }
             let imageSize = btn.imageView?.bounds.size ?? .zero
             let text = label.text ?? ""
             let titleSize = NSString(string: text)
