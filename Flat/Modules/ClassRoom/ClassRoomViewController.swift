@@ -292,6 +292,12 @@ class ClassRoomViewController: UIViewController {
             .drive(raiseHandButton.rx.isSelected)
             .disposed(by: rx.disposeBag)
 
+        viewModel.transWhiteboardPermissionUpdate(whiteboardEnable: fastboardViewController.roomPermission.map(\.writable).asObservable())
+            .drive(with: self, onNext: { weakSelf, toastString in
+                weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
+            })
+            .disposed(by: rx.disposeBag)
+        
         viewModel.transOnStageUpdate(whiteboardEnable: fastboardViewController.roomPermission.map(\.writable).asObservable())
             .subscribe(with: self, onNext: { weakSelf, toastString in
                 weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)

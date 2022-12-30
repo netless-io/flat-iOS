@@ -777,6 +777,12 @@
 "Whiteboard Permissions" = "白板权限";
 
 
+"WhiteboardPermissionCloseToast" = "已取消白板权限";
+
+
+"WhiteboardPermissionOpenToast" = "已获得白板权限";
+
+
 "and" = "和";
 
 

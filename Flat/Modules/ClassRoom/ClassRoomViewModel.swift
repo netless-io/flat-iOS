@@ -40,6 +40,17 @@ class ClassRoomViewModel {
             .distinctUntilChanged()
     }
 
+    func transWhiteboardPermissionUpdate(whiteboardEnable: Observable<Bool>) -> Driver<String> {
+        currentUser
+            .map(\.status.whiteboard)
+            .distinctUntilChanged()
+            .skip(1)
+            .map {
+                $0 ? localizeStrings("WhiteboardPermissionOpenToast") : localizeStrings("WhiteboardPermissionCloseToast")
+            }
+            .asDriver(onErrorJustReturn: "")
+    }
+    
     // Show tips when user's whiteboard permission is ready
     func transOnStageUpdate(whiteboardEnable: Observable<Bool>) -> Observable<String> {
         Observable

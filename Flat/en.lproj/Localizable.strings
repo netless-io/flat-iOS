@@ -774,6 +774,12 @@
 "Whiteboard Permissions" = "Whiteboard";
 
 
+"WhiteboardPermissionCloseToast" = "Removed whiteboard permission";
+
+
+"WhiteboardPermissionOpenToast" = "Whiteboard access has been granted";
+
+
 "and" = "and";
 
 
