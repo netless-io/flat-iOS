@@ -418,6 +418,11 @@ class ClassRoomViewModel {
                     }
                 } else {
                     if self.isOwner {
+                        if user.isUsingWhiteboardWritable {
+                            return self.stateHandler
+                                .send(command: .pickUserOnStage(user.rtmUUID))
+                                .map { "" }
+                        }
                         return self.stateHandler.checkIfWritableUserOverMaxCount()
                             .flatMap { overCount in
                                 if overCount {
@@ -442,6 +447,11 @@ class ClassRoomViewModel {
                     }
                 } else {
                     if self.isOwner {
+                        if user.isUsingWhiteboardWritable {
+                            return self.stateHandler
+                                .send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
+                                .map { "" }
+                        }
                         return self.stateHandler.checkIfWritableUserOverMaxCount()
                             .flatMap { overCount in
                                 if overCount {

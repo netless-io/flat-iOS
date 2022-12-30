@@ -56,6 +56,12 @@ class RoomUserTableViewCell: UITableViewCell {
             make.edges.equalToSuperview()
         }
         contentView.addLine(direction: .bottom, color: .borderColor, inset: .init(top: 0, left: 16, bottom: 0, right: 16))
+        contentView.addSubview(userSelfPointer)
+        userSelfPointer.snp.makeConstraints { make in
+            make.centerX.equalTo(8)
+            make.width.height.equalTo(4)
+            make.centerY.equalToSuperview()
+        }
     }
     
     func wrapView(_ v: UIView) -> UIView {
@@ -210,6 +216,14 @@ class RoomUserTableViewCell: UITableViewCell {
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 12
+        return view
+    }()
+    
+    lazy var userSelfPointer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .color(type: .primary)
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 2
         return view
     }()
 }

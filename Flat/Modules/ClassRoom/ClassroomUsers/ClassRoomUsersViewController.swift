@@ -133,6 +133,8 @@ class ClassRoomUsersViewController: UIViewController {
     }
 
     func config(cell: RoomUserTableViewCell, user: RoomUser) {
+        let isUserSelf = user.rtmUUID == userUUID
+        
         cell.avatarImageView.kf.setImage(with: user.avatarURL)
         cell.nameLabel.text = user.name
         cell.cameraButton.isSelected = user.status.camera
@@ -143,12 +145,13 @@ class ClassRoomUsersViewController: UIViewController {
         cell.set(operationType: .mic, empty: !user.status.isSpeak)
         cell.set(operationType: .camera, empty: !user.status.isSpeak)
         cell.set(operationType: .raiseHand, empty: !user.status.isRaisingHand)
+        cell.userSelfPointer.isHidden = !isUserSelf
+        
         if user.status.isSpeak, !user.isOnline {
             cell.statusLabel.text = "(\(localizeStrings("offline")))"
             cell.statusLabel.textColor = .systemRed
         }
         
-        let isUserSelf = user.rtmUUID == userUUID
         if isOwner {
             cell.cameraButton.isEnabled = true
             cell.micButton.isEnabled = true
