@@ -5,6 +5,7 @@ target 'Flat' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'NSObject+Rx'
+  pod 'RxDataSources'
   
   pod 'AcknowList'
   pod 'CropViewController'

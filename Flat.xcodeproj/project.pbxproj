@@ -214,6 +214,7 @@
 		8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */; };
 		8AAE2549295D795D007D5507 /* RaiseHandListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */; };
 		8AAE254B295D7A0C007D5507 /* RaiseHandTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */; };
+		8AAE254D295EB88A007D5507 /* RoomUserRxSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */; };
 		8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */; };
 		8AAE53D127311D7E00C35796 /* String+ReguarExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */; };
 		8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */; };
@@ -522,6 +523,7 @@
 		8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStoreDelegate.swift; sourceTree = "<group>"; };
 		8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandListViewController.swift; sourceTree = "<group>"; };
 		8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandTableViewCell.swift; sourceTree = "<group>"; };
+		8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUserRxSectionData.swift; sourceTree = "<group>"; };
 		8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Circle.swift"; sourceTree = "<group>"; };
 		8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
 		8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ReguarExpression.swift"; sourceTree = "<group>"; };
@@ -1145,6 +1147,7 @@
 			isa = PBXGroup;
 			children = (
 				8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */,
+				8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */,
 			);
 			path = ClassroomUsers;
 			sourceTree = "<group>";
@@ -1773,6 +1776,7 @@
 				8A80209C27570CC700F5691C /* StorageFileModel.swift in Sources */,
 				8A05C34527609207009BCA79 /* AnyPreview.swift in Sources */,
 				8AD3CDF027168F25008BD904 /* Env.swift in Sources */,
+				8AAE254D295EB88A007D5507 /* RoomUserRxSectionData.swift in Sources */,
 				8A270B8727192A6600450DC6 /* SettingTableViewCell.swift in Sources */,
 				8A7741E7273A6FA2009FAADA /* RoomCancelRequest.swift in Sources */,
 				8A80209E27570EAA00F5691C /* StorageListRequest.swift in Sources */,

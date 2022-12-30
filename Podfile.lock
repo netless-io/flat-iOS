@@ -31,6 +31,7 @@ PODS:
     - AliyunLogProducer/Core
   - AliyunLogProducer/Core (2.3.10.4)
   - CropViewController (2.6.1)
+  - Differentiator (5.0.0)
   - DZNEmptyDataSet (1.8.1)
   - Fastboard (2.0.0-alpha.10):
     - Fastboard/core (= 2.0.0-alpha.10)
@@ -123,6 +124,10 @@ PODS:
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
+  - RxDataSources (5.0.0):
+    - Differentiator (~> 5.0)
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
@@ -182,6 +187,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.2.0)
   - "NSObject+Rx"
   - RxCocoa
+  - RxDataSources
   - RxSwift
   - Siren
   - SnapKit
@@ -200,6 +206,7 @@ SPEC REPOS:
     - AgoraRtm_iOS
     - AliyunLogProducer
     - CropViewController
+    - Differentiator
     - DZNEmptyDataSet
     - Fastboard
     - Firebase
@@ -222,6 +229,7 @@ SPEC REPOS:
     - NTLBridge
     - PromisesObjC
     - RxCocoa
+    - RxDataSources
     - RxRelay
     - RxSwift
     - Siren
@@ -240,6 +248,7 @@ SPEC CHECKSUMS:
   AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
   AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
+  Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fastboard: ba1cbca306e7e22ac886954aefcf6a5656a2a7da
   Firebase: 800f16f07af493d98d017446a315c27af0552f41
@@ -262,6 +271,7 @@ SPEC CHECKSUMS:
   NTLBridge: e94dc18242476b0238c10213a5438d9b9a59fcce
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Siren: 76ac728f4f2f4a3576c322272e94a0e37955664f
@@ -273,6 +283,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: b32f7da2d01db1703da11859c4031fc95b3b6f9b
+PODFILE CHECKSUM: ec72e8fd9ca26d06c4dd6ab335fcb8b1c3ff5670
 
 COCOAPODS: 1.11.3

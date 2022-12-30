@@ -7,6 +7,7 @@
 //
 
 import RxCocoa
+import RxDataSources
 import RxSwift
 import UIKit
 
@@ -54,10 +55,23 @@ class ClassRoomUsersViewController: UIViewController {
                 .drive(studentCountLabel.rx.text)
                 .disposed(by: rx.disposeBag)
 
-            displayUsers.drive(tableView.rx.items(cellIdentifier: cellIdentifier, cellType: RoomUserTableViewCell.self)) { [weak self] _, item, cell in
-                self?.config(cell: cell, user: item)
+            let dataSource = RxTableViewSectionedAnimatedDataSource<RoomUserRxSectionData> { [weak self] _, tableView, _, item in
+                guard let self else { return UITableViewCell() }
+                let cell = tableView.dequeueReusableCell(withIdentifier: self.cellIdentifier) as! RoomUserTableViewCell
+                self.config(cell: cell, user: item)
+                return cell
             }
-            .disposed(by: rx.disposeBag)
+            dataSource.animationConfiguration = .init(insertAnimation: .automatic,
+                                                      reloadAnimation: .none,
+                                                      deleteAnimation: .left)
+            
+            displayUsers
+                .map { users -> [RoomUserRxSectionData] in
+                    [RoomUserRxSectionData(items: users)]
+                }
+                .drive(tableView.rx.items(dataSource: dataSource))
+                .disposed(by: rx.disposeBag)
+            
 
             if !isOwner {
                 stopInteractingButton.isHidden = true
@@ -86,12 +100,13 @@ class ClassRoomUsersViewController: UIViewController {
 
         preferredContentSize = .init(width: greatWindowSide / 1.5, height: 560)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         closeButton.isHidden = modalPresentationStyle == .popover
     }
-    
+
+    @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError()
     }
@@ -108,7 +123,7 @@ class ClassRoomUsersViewController: UIViewController {
         stopInteractingButton.rx.tap
             .bind(to: stopInteractingTap)
             .disposed(by: rx.disposeBag)
-        
+
         allMuteButton.rx.tap
             .bind(to: allMuteTap)
             .disposed(by: rx.disposeBag)
@@ -134,7 +149,7 @@ class ClassRoomUsersViewController: UIViewController {
 
     func config(cell: RoomUserTableViewCell, user: RoomUser) {
         let isUserSelf = user.rtmUUID == userUUID
-        
+
         cell.avatarImageView.kf.setImage(with: user.avatarURL)
         cell.nameLabel.text = user.name
         cell.cameraButton.isSelected = user.status.camera
@@ -146,12 +161,12 @@ class ClassRoomUsersViewController: UIViewController {
         cell.set(operationType: .camera, empty: !user.status.isSpeak)
         cell.set(operationType: .raiseHand, empty: !user.status.isRaisingHand)
         cell.userSelfPointer.isHidden = !isUserSelf
-        
+
         if user.status.isSpeak, !user.isOnline {
             cell.statusLabel.text = "(\(localizeStrings("offline")))"
             cell.statusLabel.textColor = .systemRed
         }
-        
+
         if isOwner {
             cell.cameraButton.isEnabled = true
             cell.micButton.isEnabled = true
@@ -183,7 +198,7 @@ class ClassRoomUsersViewController: UIViewController {
     @objc func onClickClose() {
         dismiss(animated: true)
     }
-    
+
     // MARK: - Lazy
 
     lazy var topView: UIView = {
@@ -210,13 +225,13 @@ class ClassRoomUsersViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(8)
         }
-        
+
         view.addSubview(closeButton)
         closeButton.snp.makeConstraints { make in
             make.right.top.bottom.equalToSuperview()
             make.width.equalTo(66)
         }
-        
+
         view.addLine(direction: .bottom, color: .borderColor)
         return view
     }()
@@ -228,7 +243,7 @@ class ClassRoomUsersViewController: UIViewController {
         closeButton.addTarget(self, action: #selector(onClickClose), for: .touchUpInside)
         return closeButton
     }()
-    
+
     lazy var teacherLabel: UILabel = {
         let label = UILabel()
         label.textColor = .color(type: .text)
@@ -246,7 +261,7 @@ class ClassRoomUsersViewController: UIViewController {
         btn.layer.borderWidth = commonBorderWidth
         return btn
     }()
-    
+
     lazy var allMuteButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.titleLabel?.font = .systemFont(ofSize: 12)
@@ -273,7 +288,7 @@ class ClassRoomUsersViewController: UIViewController {
         view.distribution = .fillProportionally
         return view
     }()
-    
+
     lazy var teacherInfoView: UIView = {
         let view = UIView()
         view.addSubview(teachAvatarImageView)
@@ -298,7 +313,7 @@ class ClassRoomUsersViewController: UIViewController {
         allMuteButton.layer.cornerRadius = 14
         return view
     }()
-    
+
     lazy var teacherHeaderView: UITableViewHeaderFooterView = {
         let view = UITableViewHeaderFooterView()
         view.contentView.backgroundColor = .classroomChildBG
@@ -349,8 +364,7 @@ class ClassRoomUsersViewController: UIViewController {
                                                   createHeaderItem(title: localizeStrings("Whiteboard Permissions")),
                                                   createHeaderItem(title: localizeStrings("Camera")),
                                                   createHeaderItem(title: localizeStrings("Mic")),
-                                                  createHeaderItem(title: localizeStrings("Raised Hand"))
-                                                  ])
+                                                  createHeaderItem(title: localizeStrings("Raised Hand"))])
         view.axis = .horizontal
         view.distribution = .fillProportionally
         view.backgroundColor = .color(type: .background, .strong)
