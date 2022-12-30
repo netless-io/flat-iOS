@@ -68,7 +68,7 @@ class RoomUserTableViewCell: UITableViewCell {
         v.tag = mainContentTag
         let emptyView = UILabel()
         emptyView.textColor = .color(type: .text, .weak)
-        emptyView.text = "-/-"
+        emptyView.text = "- / -"
         view.addSubview(emptyView)
         emptyView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)

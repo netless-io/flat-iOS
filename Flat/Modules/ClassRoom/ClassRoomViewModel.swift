@@ -42,15 +42,15 @@ class ClassRoomViewModel {
 
     // Show tips when user's whiteboard permission is ready
     func transOnStageUpdate(whiteboardEnable: Observable<Bool>) -> Observable<String> {
-        currentUser
-            .map(\.status.isSpeak)
+        Observable
+            .combineLatest(
+                currentUser.map(\.status.isSpeak),
+                whiteboardEnable) { speak, whiteboard -> (speak: Bool, whiteboard: Bool) in (speak, whiteboard) }
+            .filter { ($0.speak && $0.whiteboard) || !$0.speak }
+            .map { $0.speak}
             .distinctUntilChanged()
             .skip(1)
-            .flatMap { speak -> Observable<(speak: Bool, joined: Bool)> in
-                whiteboardEnable.map { (speak, $0) }
-            }.filter {
-                ($0.speak && $0.joined) || (!$0.speak && !$0.joined)
-            }.flatMap { [weak self] speak, _ -> Observable<String> in
+            .flatMap { [weak self] speak -> Observable<String> in
                 guard let self else { return .error("self not exist") }
                 if speak {
                     let micOn = self.preferredDeviceState.mic
