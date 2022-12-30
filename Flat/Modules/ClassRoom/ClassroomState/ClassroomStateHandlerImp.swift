@@ -490,9 +490,12 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     func sortNum(_ user: RoomUser) -> Int {
                         var r = 0
                         if user.rtmUUID == ownerUUID {
-                            r += (1 << 3)
+                            r += (1 << 4)
                         }
                         if user.status.isSpeak {
+                            r += (1 << 3)
+                        }
+                        if user.status.whiteboard {
                             r += (1 << 2)
                         }
                         if user.status.isRaisingHand {
