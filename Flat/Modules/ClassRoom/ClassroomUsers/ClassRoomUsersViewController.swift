@@ -70,14 +70,6 @@ class ClassRoomUsersViewController: UIViewController {
                 }.asDriver(onErrorJustReturn: true)
                     .drive(stopInteractingButton.rx.isHidden)
                     .disposed(by: rx.disposeBag)
-                
-                users.map {
-                    $0.first(where: {
-                        $0.rtmUUID != ownerId && $0.status.mic
-                    }).map { _ in false } ?? true
-                }.asDriver(onErrorJustReturn: true)
-                    .drive(allMuteButton.rx.isHidden)
-                    .disposed(by: rx.disposeBag)
             }
         }
     }
