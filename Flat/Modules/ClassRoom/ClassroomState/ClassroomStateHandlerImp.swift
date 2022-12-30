@@ -261,14 +261,16 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                             guard let currentUserState = currentDeviceState[uuid] else { return .just(()) }
                             let turnOnMic = !currentUserState.mic && state.mic
                             let turnOnCamera = !currentUserState.camera && state.camera
-                            if !turnOnMic, !turnOnCamera { // Do when command not contains open device
+                            let turnOffMic = currentUserState.mic && !state.mic
+                            let turnOffCamera = currentUserState.camera && !state.camera
+                            if turnOffMic || turnOffCamera { // Do when command contains turn off
                                 try self.syncedStore.sendCommand(.deviceStateUpdate([uuid: state]))
                                 // Notify the user who's device was turned off
-                                if !turnOnMic {
+                                if turnOffMic {
                                     let msgData = try self.commandEncoder.encode(.notifyDeviceOff(roomUUID: self.roomUUID, deviceType: .mic))
                                     return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
                                 }
-                                if !turnOnCamera {
+                                if turnOffCamera {
                                     let msgData = try self.commandEncoder.encode(.notifyDeviceOff(roomUUID: self.roomUUID, deviceType: .camera))
                                     return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
                                 }
