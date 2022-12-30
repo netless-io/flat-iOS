@@ -153,7 +153,11 @@ class RoomUserTableViewCell: UITableViewCell {
     }()
 
     lazy var userInfoStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [avatarImageView, nameLabel, statusLabel])
+        let nameStack = UIStackView(arrangedSubviews: [nameLabel, statusLabel])
+        nameStack.axis = .horizontal
+        nameStack.distribution = .fill
+        nameStack.spacing = 0
+        let view = UIStackView(arrangedSubviews: [avatarImageView, nameStack])
         view.axis = .horizontal
         view.spacing = 8
         view.distribution = .fill

@@ -67,9 +67,13 @@ class Rtm: NSObject {
                     if error == .ok {
                         observer(.success(()))
                     } else {
-                        let errStr = "send p2p msg error \(error)"
-                        logger.error("\(errStr)")
-                        observer(.failure(errStr))
+                        let errMsg = "send p2p msg error \(error)"
+                        logger.error("\(errMsg)")
+                        if error == .peerUnreachable {
+                            observer(.failure(localizeStrings("UserNotInRoom")))
+                        } else {
+                            observer(.failure(errMsg))
+                        }
                     }
                 }
                 return Disposables.create()

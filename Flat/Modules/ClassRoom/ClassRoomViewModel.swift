@@ -477,6 +477,9 @@ class ClassRoomViewModel {
                         }
                         return ""
                     }
+                    .catch({ error in
+                        return .just(error.localizedDescription)
+                    })
             }
             .asDriver(onErrorJustReturn: "camera task error")
 
@@ -492,6 +495,9 @@ class ClassRoomViewModel {
                         }
                         return ""
                     }
+                    .catch({ error in
+                        return .just(error.localizedDescription)
+                    })
             }
             .asDriver(onErrorJustReturn: "mic task error")
 

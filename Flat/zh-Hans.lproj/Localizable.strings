@@ -753,6 +753,9 @@
 "UserNotFound" = "用户不存在";
 
 
+"UserNotInRoom" = "用户不在房间内";
+
+
 "VerificationCode" = "验证码";
 
 

@@ -750,6 +750,9 @@
 "UserNotFound" = "User does not exist";
 
 
+"UserNotInRoom" = "User is not in the room";
+
+
 "VerificationCode" = "VerificationCode";
 
 
