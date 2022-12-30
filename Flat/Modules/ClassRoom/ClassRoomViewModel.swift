@@ -50,7 +50,7 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: "")
     }
-    
+
     // Show tips when user's whiteboard permission is ready
     func transOnStageUpdate(whiteboardEnable: Observable<Bool>) -> Observable<String> {
         Observable
@@ -58,7 +58,7 @@ class ClassRoomViewModel {
                 currentUser.map(\.status.isSpeak),
                 whiteboardEnable) { speak, whiteboard -> (speak: Bool, whiteboard: Bool) in (speak, whiteboard) }
             .filter { ($0.speak && $0.whiteboard) || !$0.speak }
-            .map { $0.speak}
+            .map(\.speak)
             .distinctUntilChanged()
             .skip(1)
             .flatMap { [weak self] speak -> Observable<String> in
@@ -305,7 +305,7 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: "")
     }
-    
+
     func listeningDeviceResponse() -> Driver<String> {
         stateHandler.requestDeviceResponsePublisher
             .map(\.toast)
@@ -409,17 +409,7 @@ class ClassRoomViewModel {
             }.asDriver(onErrorJustReturn: "stop interaction error")
 
         let onStageTask = Observable.merge(input.tapSomeUserRaiseHand, input.tapSomeUserOnStage)
-            .flatMap { [unowned self] user -> Single<(RoomUser, Bool)> in
-                if user.isUsingWhiteboardWritable {
-                    return .just((user, false))
-                }
-                return self.stateHandler.checkIfWritableUserOverMaxCount()
-                    .map { r in (user, r) }
-            }
-            .flatMap { [unowned self] user, overCount -> Single<String> in
-                if overCount {
-                    return .just(localizeStrings("MaxWritableUsersTips"))
-                }
+            .flatMap { [unowned self] user -> Single<String> in
                 if user.status.isSpeak {
                     if user.rtmUUID == self.userUUID || self.isOwner {
                         return self.stateHandler
@@ -428,26 +418,22 @@ class ClassRoomViewModel {
                     }
                 } else {
                     if self.isOwner {
-                        return self.stateHandler
-                            .send(command: .pickUserOnStage(user.rtmUUID))
-                            .map { "" }
+                        return self.stateHandler.checkIfWritableUserOverMaxCount()
+                            .flatMap { overCount in
+                                if overCount {
+                                    return .just(localizeStrings("MaxWritableUsersTips"))
+                                }
+                                return self.stateHandler
+                                    .send(command: .pickUserOnStage(user.rtmUUID))
+                                    .map { "" }
+                            }
                     }
                 }
                 return .just("")
             }.asDriver(onErrorJustReturn: "stage task error")
 
         let whiteboardTask = input.tapSomeUserWhiteboard
-            .flatMap { [unowned self] user -> Single<(RoomUser, Bool)> in
-                if user.isUsingWhiteboardWritable {
-                    return .just((user, false))
-                }
-                return self.stateHandler.checkIfWritableUserOverMaxCount()
-                    .map { r in (user, r) }
-            }
-            .flatMap { [unowned self] user, overCount -> Single<String> in
-                if overCount {
-                    return .just(localizeStrings("MaxWritableUsersTips"))
-                }
+            .flatMap { [unowned self] user -> Single<String> in
                 if user.status.whiteboard {
                     if user.rtmUUID == self.userUUID || self.isOwner {
                         return self.stateHandler
@@ -456,9 +442,15 @@ class ClassRoomViewModel {
                     }
                 } else {
                     if self.isOwner {
-                        return self.stateHandler
-                            .send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
-                            .map { "" }
+                        return self.stateHandler.checkIfWritableUserOverMaxCount()
+                            .flatMap { overCount in
+                                if overCount {
+                                    return .just(localizeStrings("MaxWritableUsersTips"))
+                                }
+                                return self.stateHandler
+                                    .send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
+                                    .map { "" }
+                            }
                     }
                 }
                 return .just("")
@@ -466,8 +458,8 @@ class ClassRoomViewModel {
 
         let cameraTask = input.tapSomeUserCamera
             .flatMap { [unowned self] user -> Single<String> in
-                return self.stateHandler
-                    .send(command:.updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera)))
+                self.stateHandler
+                    .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera)))
                     .map { [weak self] _ -> String in
                         guard let self else { return "" }
                         if user.rtmUUID != self.userUUID, !user.status.deviceState.camera { // Toast for send device request

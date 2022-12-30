@@ -157,8 +157,8 @@ class ClassRoomUsersViewController: UIViewController {
         } else {
             cell.cameraButton.isEnabled = isUserSelf
             cell.micButton.isEnabled = isUserSelf
-            cell.onStageSwitch.isEnabled = user.status.isSpeak
-            cell.whiteboardSwitch.isEnabled = user.status.whiteboard
+            cell.onStageSwitch.isEnabled = isUserSelf
+            cell.whiteboardSwitch.isEnabled = isUserSelf
         }
         cell.clickHandler = { [weak self] type in
             guard let self else { return }

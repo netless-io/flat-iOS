@@ -330,7 +330,7 @@
 "Logout" = "退出登录";
 
 
-"MaxWritableUsersTips" = "当前房间类型内可上台与开启白板权限人数已达上限。";
+"MaxWritableUsersTips" = "当前房间类型内可上台与开启白板权限人数已达上限";
 
 
 "Mic" = "麦克风";
