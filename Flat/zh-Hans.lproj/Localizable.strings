@@ -93,6 +93,9 @@
 "CameraDenyTip" = "需要调用摄像头权限才可以进行视频聊天，点击进入设置打开摄像头权限";
 
 
+"CameraDirection" = "方向";
+
+
 "CameraRequestReject" = "拒绝开启摄像头";
 
 

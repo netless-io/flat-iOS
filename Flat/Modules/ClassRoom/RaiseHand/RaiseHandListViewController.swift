@@ -126,10 +126,6 @@ extension RaiseHandListViewController: DZNEmptyDataSetSource {
               ])
     }
 
-    func image(forEmptyDataSet _: UIScrollView) -> UIImage? {
-        UIImage(named: "room_empty", in: nil, compatibleWith: traitCollection)
-    }
-
     func emptyDataSetShouldAllowScroll(_: UIScrollView) -> Bool {
         true
     }

@@ -138,16 +138,18 @@ class RoomDetailViewController: UIViewController {
 
         inviteButton.layer.borderWidth = commonBorderWidth
         inviteButton.setTraitRelatedBlock { btn in
-            let color = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
-            btn.layer.borderColor = color.cgColor
-            btn.setTitleColor(color, for: .normal)
+            let borderColor = UIColor.color(light: .grey3, dark: .grey6).resolvedColor(with: btn.traitCollection)
+            let titleColor = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
+            btn.layer.borderColor = borderColor.cgColor
+            btn.setTitleColor(titleColor, for: .normal)
         }
 
         replayButton.layer.borderWidth = commonBorderWidth
         replayButton.setTraitRelatedBlock { btn in
-            let color = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
-            btn.layer.borderColor = color.cgColor
-            btn.setTitleColor(color, for: .normal)
+            let borderColor = UIColor.color(light: .grey3, dark: .grey6).resolvedColor(with: btn.traitCollection)
+            let titleColor = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
+            btn.layer.borderColor = borderColor.cgColor
+            btn.setTitleColor(titleColor, for: .normal)
         }
     }
 

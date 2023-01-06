@@ -84,8 +84,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                   title: localizeStrings("FPA"),
                   detail: userUseFPA ? true : false,
                   targetAction: (self, #selector(onClickFPA(sender:)))),
-            .init(image: UIImage(systemName: "command",
-                                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .light))!,
+            .init(image: UIImage(named: "command")!,
                   title: localizeStrings("Shortcuts"),
                   detail: "",
                   targetAction: (self, #selector(onClickShortcuts(sender:)))),
@@ -230,11 +229,13 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         button.setTitle("  " + localizeStrings("Logout"), for: .normal)
         button.addTarget(self, action: #selector(onClickLogout), for: .touchUpInside)
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
-
+        button.setImage(UIImage(named: "logout"), for: .normal)
+        
         button.setTraitRelatedBlock { button in
-            button.layer.borderColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection).cgColor
-            button.setTitleColor(UIColor.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
-            button.setImage(UIImage(named: "logout")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            let color = UIColor.color(light: .red6, dark: .red5)
+            button.layer.borderColor = color.resolvedColor(with: button.traitCollection).cgColor
+            button.setTitleColor(color.resolvedColor(with: button.traitCollection), for: .normal)
+            button.tintColor = color
         }
         return button
     }()

@@ -14,6 +14,10 @@ import Whiteboard
 
 let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
 
+func raiseHandButtonWidth() -> CGFloat {
+    isCompact() ? 40 : 48
+}
+
 class ClassRoomViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -558,14 +562,14 @@ class ClassRoomViewController: UIViewController {
         if !isOwner {
             view.addSubview(raiseHandButton)
             raiseHandButton.snp.makeConstraints { make in
-                make.width.height.equalTo(40)
+                make.width.height.equalTo(raiseHandButtonWidth())
                 make.centerX.equalTo(rightToolBar)
                 make.top.equalTo(rightToolBar.snp.bottom).offset(12)
             }
         } else {
             view.addSubview(raiseHandListButton)
             raiseHandListButton.snp.makeConstraints { make in
-                make.width.height.equalTo(40)
+                make.width.height.equalTo(raiseHandButtonWidth())
                 make.centerX.equalTo(rightToolBar)
                 make.top.equalTo(rightToolBar.snp.bottom).offset(12)
             }
@@ -663,7 +667,7 @@ class ClassRoomViewController: UIViewController {
         let circle = UIView()
         button.addSubview(circle)
         circle.layer.borderWidth = commonBorderWidth
-        circle.layer.cornerRadius = 20
+        circle.layer.cornerRadius = raiseHandButtonWidth() / 2
         circle.clipsToBounds = true
         circle.isUserInteractionEnabled = false
         circle.snp.makeConstraints { make in
@@ -683,7 +687,7 @@ class ClassRoomViewController: UIViewController {
         let circle = UIView()
         button.addSubview(circle)
         circle.layer.borderWidth = commonBorderWidth
-        circle.layer.cornerRadius = 20
+        circle.layer.cornerRadius = raiseHandButtonWidth() / 2
         circle.clipsToBounds = true
         circle.isUserInteractionEnabled = false
         circle.snp.makeConstraints { make in

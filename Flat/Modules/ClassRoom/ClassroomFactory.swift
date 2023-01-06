@@ -132,7 +132,10 @@ struct ClassroomFactory {
 
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
         let shareViewController: () -> UIViewController = {
-            InviteViewController(shareInfo: .init(roomDetail: detailInfo))
+            let controller = InviteViewController(shareInfo: .init(roomDetail: detailInfo))
+            controller.contentView.backgroundColor = .classroomChildBG
+            controller.seperatorLine.backgroundColor = .classroomBorderColor
+            return controller
         }
         let controller = ClassRoomViewController(viewModel: vm,
                                                  fastboardViewController: fastboardViewController,

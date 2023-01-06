@@ -60,7 +60,7 @@ class InviteViewController: UIViewController {
             make.centerY.equalTo(28)
             make.width.lessThanOrEqualToSuperview().inset(66)
         }
-        contentView.addLine(direction: .top, color: .borderColor, inset: .init(top: 56, left: 0, bottom: 0, right: 0))
+        _ = seperatorLine
         contentView.addSubview(closeButton)
         closeButton.snp.makeConstraints { make in
             make.right.top.equalToSuperview()
@@ -79,8 +79,8 @@ class InviteViewController: UIViewController {
 
         mainStackView.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(16)
-            make.top.equalToSuperview().inset(56 + 8)
-            make.bottom.equalTo(buttonsStackView.snp.top).offset(-8)
+            make.top.equalToSuperview().inset(56 + 16)
+            make.bottom.equalTo(buttonsStackView.snp.top).offset(-16)
         }
     }
 
@@ -133,6 +133,9 @@ class InviteViewController: UIViewController {
 
     // MARK: - Lazy
 
+
+    lazy var seperatorLine = contentView.addLine(direction: .top, color: .borderColor, inset: .init(top: 56, left: 0, bottom: 0, right: 0))
+    
     lazy var contentView: UIView = {
         let view = UIView()
         view.backgroundColor = .color(type: .background)
@@ -173,8 +176,10 @@ class InviteViewController: UIViewController {
         let btn = SpringButton()
         btn.setTitle(localizeStrings("ShareMore"), for: .normal)
         btn.setTraitRelatedBlock { btn in
-            btn.layer.borderColor = UIColor.borderColor.cgColor
-            btn.setTitleColor(UIColor.color(light: .grey6, dark: .grey3)
+            let borderColor = UIColor.color(light: .grey3, dark: .grey6).resolvedColor(with: btn.traitCollection)
+            let titleColor = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
+            btn.layer.borderColor = borderColor.cgColor
+            btn.setTitleColor(titleColor
                 .resolvedColor(with: btn.traitCollection),
                 for: .normal)
         }

@@ -174,7 +174,7 @@ class ChatViewController: UIViewController {
         }
 
         let line = UIView()
-        line.backgroundColor = .borderColor
+        line.backgroundColor = .classroomBorderColor
         view.addSubview(line)
         line.snp.makeConstraints { make in
             make.left.right.equalTo(inputStackView)
@@ -278,7 +278,7 @@ class ChatViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(40)
         }
-        view.addLine(direction: .bottom, color: .borderColor)
+        view.addLine(direction: .bottom, color: .classroomBorderColor)
         return view
     }()
 
@@ -359,7 +359,11 @@ extension ChatViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     }
 
     func image(forEmptyDataSet _: UIScrollView) -> UIImage? {
-        UIImage(named: "room_empty", in: nil, compatibleWith: traitCollection)
+        UIImage(named: "message_empty", in: nil, compatibleWith: traitCollection)
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        -tableView.contentInset.top
     }
 
     func emptyDataSetShouldAllowScroll(_: UIScrollView) -> Bool {

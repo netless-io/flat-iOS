@@ -11,7 +11,7 @@ import WebKit
 
 class WKWebViewController: UIViewController {
     var dismissHandler: (() -> Void)?
-
+    
     init(url: URL) {
         super.init(nibName: nil, bundle: nil)
         webView.load(URLRequest(url: url))

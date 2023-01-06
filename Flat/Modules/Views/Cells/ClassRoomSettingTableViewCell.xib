@@ -47,7 +47,7 @@
                         </constraints>
                     </imageView>
                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="o0T-uV-8ac">
-                        <rect key="frame" x="124" y="6.5" width="131" height="32"/>
+                        <rect key="frame" x="181" y="6.5" width="131" height="32"/>
                         <segments>
                             <segment title="First"/>
                             <segment title="Second"/>
@@ -56,7 +56,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="huR-eH-g4L" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="2dA-w6-wiq"/>
-                    <constraint firstItem="huR-eH-g4L" firstAttribute="leading" secondItem="o0T-uV-8ac" secondAttribute="trailing" constant="8" id="F3s-07-VOt"/>
+                    <constraint firstAttribute="trailing" secondItem="o0T-uV-8ac" secondAttribute="trailing" constant="8" id="F3s-07-VOt"/>
                     <constraint firstItem="NRz-pY-tDB" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="KxI-AG-ZUH"/>
                     <constraint firstAttribute="bottom" secondItem="vjS-8p-I6h" secondAttribute="bottom" id="MaG-S7-Szo"/>
                     <constraint firstAttribute="trailing" secondItem="huR-eH-g4L" secondAttribute="trailing" constant="8" id="TAe-q9-q6L"/>

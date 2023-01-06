@@ -15,12 +15,15 @@ let classroomSettingNeedToggleCameraNotification = Notification.Name("classroomS
 class ClassRoomSettingViewController: UIViewController {
     enum SettingControlType {
         case camera
+        case cameraDirection
         case mic
         case videoArea
         case shortcut
 
         var description: String {
             switch self {
+            case.cameraDirection:
+                return localizeStrings("CameraDirection")
             case .camera:
                 return localizeStrings("Camera")
             case .mic:
@@ -44,12 +47,21 @@ class ClassRoomSettingViewController: UIViewController {
     let cameraOn: BehaviorRelay<Bool>
     let micOn: BehaviorRelay<Bool>
     let videoAreaOn: BehaviorRelay<Bool>
-    let models: [SettingControlType]
+    var models: [SettingControlType] = []
     var isCameraFront = true {
         didSet {
             tableView.reloadData()
             NotificationCenter.default.post(.init(name: classroomSettingNeedToggleCameraNotification))
         }
+    }
+    
+    func reloadModels() {
+        if cameraOn.value {
+            models = [.shortcut, .camera, .cameraDirection, .mic, .videoArea]
+        } else {
+            models = [.shortcut, .camera, .mic, .videoArea]
+        }
+        tableView.reloadData()
     }
 
     // MARK: - LifeCycle
@@ -63,7 +75,6 @@ class ClassRoomSettingViewController: UIViewController {
         self.micOn = .init(value: micOn)
         self.videoAreaOn = .init(value: videoAreaOn)
         self.deviceUpdateEnable = .init(value: deviceUpdateEnable)
-        models = [.shortcut, .camera, .mic, .videoArea]
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .popover
         preferredContentSize = .init(width: 320, height: 480)
@@ -81,7 +92,7 @@ class ClassRoomSettingViewController: UIViewController {
         Observable.of(cameraOn, micOn, videoAreaOn)
             .merge()
             .subscribe(with: self) { weakSelf, _ in
-                weakSelf.tableView.reloadData()
+                weakSelf.reloadModels()
             }
             .disposed(by: rx.disposeBag)
     }
@@ -124,27 +135,27 @@ class ClassRoomSettingViewController: UIViewController {
         cell.rightArrowImageView.isHidden = true
         cell.cameraToggleView.isHidden = true
         switch type {
+        case .cameraDirection:
+            cell.switch.isHidden = true
+            cell.iconView.image = nil
+            cell.cameraToggleView.isHidden = false
+            cell.cameraToggleView.selectedSegmentIndex = isCameraFront ? 0 : 1
+            cell.cameraFaceFrontChangedHandler = { [weak self] _ in
+                self?.isCameraFront.toggle()
+            }
         case .shortcut:
             cell.switch.isHidden = true
             cell.rightArrowImageView.isHidden = false
             cell.setEnable(true)
-            cell.iconView.image = UIImage(systemName: "command",
-                                          withConfiguration: UIImage
-                                              .SymbolConfiguration(pointSize: 15, weight: .light))?
-                                                          .tintColor(.color(type: .text))
+            cell.iconView.image = UIImage(named: "command")?.tintColor(.color(type: .text))
         case .camera:
-            cell.cameraToggleView.isHidden = false
             if cell.switch.isOn != cameraOn.value {
                 cell.switch.isOn = cameraOn.value
             }
-            cell.cameraToggleView.selectedSegmentIndex = isCameraFront ? 0 : 1
             cell.iconView.image = UIImage(named: "camera")?.tintColor(.color(type: .text))
             cell.setEnable(deviceUpdateEnable.value)
             cell.switchValueChangedHandler = { [weak self] _ in
                 self?.cameraPublish.accept(())
-            }
-            cell.cameraFaceFrontChangedHandler = { [weak self] _ in
-                self?.isCameraFront.toggle()
             }
         case .mic:
             if cell.switch.isOn != micOn.value {
@@ -171,9 +182,10 @@ class ClassRoomSettingViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.titleLabel?.font = .systemFont(ofSize: 16)
         button.setTraitRelatedBlock { button in
-            button.setTitleColor(.color(type: .danger).resolvedColor(with: button.traitCollection), for: .normal)
-            button.setImage(UIImage(named: "logout")?.tintColor(.color(type: .danger).resolvedColor(with: button.traitCollection)), for: .normal)
-            button.layer.borderColor = UIColor.color(type: .danger).resolvedColor(with: button.traitCollection).cgColor
+            let color = UIColor.color(light: .red6, dark: .red5)
+            button.setTitleColor(color.resolvedColor(with: button.traitCollection), for: .normal)
+            button.setImage(UIImage(named: "logout")?.tintColor(color.resolvedColor(with: button.traitCollection)), for: .normal)
+            button.layer.borderColor = color.resolvedColor(with: button.traitCollection).cgColor
         }
         button.layer.borderWidth = commonBorderWidth
         button.layer.cornerRadius = 4

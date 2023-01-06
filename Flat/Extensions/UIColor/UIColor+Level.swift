@@ -260,6 +260,10 @@ extension UIColor {
         color(light: colorTable[type]![strenth]!, dark: darkColorTable[type]![strenth]!)
     }
 
+    static var classroomBorderColor: UIColor {
+        color(light: .grey1, dark: .grey7)
+    }
+    
     static var borderColor: UIColor {
         color(light: .grey1, dark: .grey8)
     }
@@ -269,7 +273,7 @@ extension UIColor {
     }
 
     static var classroomChildBG: UIColor {
-        color(light: .white, dark: .grey7)
+        color(light: .white, dark: .init(hexString: "2E3136"))
     }
 
     static var whiteText: UIColor {

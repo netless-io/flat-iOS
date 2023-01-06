@@ -156,7 +156,7 @@ class CreateClassRoomViewController: UIViewController {
             button.setImage(image?.tintColor(.color(type: .text, .weak).resolvedColor(with: button.traitCollection)), for: .normal)
             button.setImage(image?.tintColor(.color(type: .primary).resolvedColor(with: button.traitCollection)), for: .selected)
         }
-        button.setTitle(type.rawValue, for: .normal)
+        button.setTitle(localizeStrings(type.rawValue), for: .normal)
         button.setTitleColor(.color(type: .text), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 12)
         button.verticalCenterImageAndTitleWith(2)

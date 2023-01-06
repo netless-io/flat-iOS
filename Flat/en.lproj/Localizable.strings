@@ -93,6 +93,9 @@
 "CameraDenyTip" = "You need to invoke the camera permissions to be able to video chat, click into the settings to open the camera permissions";
 
 
+"CameraDirection" = "Direction";
+
+
 "CameraRequestReject" = "refused to turn on camera";
 
 

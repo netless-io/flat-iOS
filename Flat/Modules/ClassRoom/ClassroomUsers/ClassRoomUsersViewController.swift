@@ -11,6 +11,8 @@ import RxDataSources
 import RxSwift
 import UIKit
 
+let classRoomUserNameWidth: CGFloat = 144
+let classRoomNormalItemWidth: CGFloat = 100
 class ClassRoomUsersViewController: UIViewController {
     let cellIdentifier = "cellIdentifier"
 
@@ -98,7 +100,7 @@ class ClassRoomUsersViewController: UIViewController {
         isOwner = roomOwnerRtmUUID == userUUID
         super.init(nibName: nil, bundle: nil)
 
-        preferredContentSize = .init(width: greatWindowSide / 1.5, height: 560)
+        preferredContentSize = .init(width: classRoomUserNameWidth + classRoomNormalItemWidth * 5, height: 560)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -152,9 +154,7 @@ class ClassRoomUsersViewController: UIViewController {
 
         cell.avatarImageView.kf.setImage(with: user.avatarURL)
         cell.nameLabel.text = user.name
-        cell.cameraButton.isSelected = user.status.camera
-        cell.micButton.isSelected = user.status.mic
-        cell.statusLabel.text = nil
+        cell.statusLabel.isHidden = !(user.status.isSpeak && !user.isOnline) // OnStage and not in the room
         cell.onStageSwitch.isOn = user.status.isSpeak
         cell.whiteboardSwitch.isOn = user.status.whiteboard
         cell.set(operationType: .mic, empty: !user.status.isSpeak)
@@ -162,21 +162,17 @@ class ClassRoomUsersViewController: UIViewController {
         cell.set(operationType: .raiseHand, empty: !user.status.isRaisingHand)
         cell.userSelfPointer.isHidden = !isUserSelf
 
-        if user.status.isSpeak, !user.isOnline {
-            cell.statusLabel.text = "(\(localizeStrings("offline")))"
-            cell.statusLabel.textColor = .systemRed
-        }
-
+        let cameraOperationEnable = isOwner || isUserSelf
+        let micOperationEnable = isOwner || isUserSelf
+        cell.updateCamera(on: user.status.camera, enable: cameraOperationEnable)
+        cell.updateMic(on: user.status.mic, enable: micOperationEnable)
+        
         if isOwner {
-            cell.cameraButton.isEnabled = true
-            cell.micButton.isEnabled = true
             cell.onStageSwitch.isEnabled = true
             cell.whiteboardSwitch.isEnabled = true
         } else {
-            cell.cameraButton.isEnabled = isUserSelf
-            cell.micButton.isEnabled = isUserSelf
-            cell.onStageSwitch.isEnabled = isUserSelf
-            cell.whiteboardSwitch.isEnabled = isUserSelf
+            cell.onStageSwitch.isEnabled = isUserSelf && user.status.isSpeak
+            cell.whiteboardSwitch.isEnabled = isUserSelf && user.status.whiteboard
         }
         cell.clickHandler = { [weak self] type in
             guard let self else { return }
@@ -340,35 +336,30 @@ class ClassRoomUsersViewController: UIViewController {
 
     lazy var studentCountLabel = createHeaderItem(title: localizeStrings("Students"))
 
-    func insertSpacing(spacing: CGFloat, to stack: UIStackView) {
-        if let first = stack.arrangedSubviews.first {
-            stack.arrangedSubviews.dropFirst().forEach { i in
-                i.snp.makeConstraints { make in
-                    make.width.equalTo(first)
-                }
-            }
-        }
-        let indices = stack.arrangedSubviews.enumerated().map { i, _ in
-            i + i
-        }
-        for i in indices {
-            let v = UIView()
-            stack.insertArrangedSubview(v, at: i)
-            v.snp.makeConstraints { $0.width.equalTo(spacing) }
-        }
-    }
-
     lazy var headerItemStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [studentCountLabel,
-                                                  createHeaderItem(title: localizeStrings("On/Off stage")),
-                                                  createHeaderItem(title: localizeStrings("Whiteboard Permissions")),
-                                                  createHeaderItem(title: localizeStrings("Camera")),
-                                                  createHeaderItem(title: localizeStrings("Mic")),
-                                                  createHeaderItem(title: localizeStrings("Raised Hand"))])
+        func wrapView(_ v: UIView) -> UIView {
+            let view = UIView()
+            view.addSubview(v)
+            v.snp.makeConstraints { make in
+                make.left.equalToSuperview().inset(16)
+                make.centerY.equalToSuperview()
+                make.right.lessThanOrEqualToSuperview()
+            }
+            return view
+        }
+        
+        let view = UIStackView(arrangedSubviews: [wrapView(studentCountLabel),
+                                                  wrapView(createHeaderItem(title: localizeStrings("On/Off stage"))),
+                                                  wrapView(createHeaderItem(title: localizeStrings("Whiteboard Permissions"))),
+                                                  wrapView(createHeaderItem(title: localizeStrings("Camera"))),
+                                                  wrapView(createHeaderItem(title: localizeStrings("Mic"))),
+                                                  wrapView(createHeaderItem(title: localizeStrings("Raised Hand")))])
         view.axis = .horizontal
         view.distribution = .fillProportionally
-        view.backgroundColor = .color(type: .background, .strong)
-        insertSpacing(spacing: 16, to: view)
+        view.backgroundColor = .color(light: .init(hexString: "F9F9F9"), dark: .grey8)
+        view.arrangedSubviews.enumerated().forEach { (index, v) in
+            v.snp.makeConstraints { $0.width.equalTo(index == 0 ? classRoomUserNameWidth : classRoomNormalItemWidth) }
+        }
         return view
     }()
 
@@ -378,7 +369,7 @@ class ClassRoomUsersViewController: UIViewController {
         view.contentInsetAdjustmentBehavior = .never
         view.separatorStyle = .none
         view.register(RoomUserTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        view.rowHeight = 48
+        view.rowHeight = 56
         if #available(iOS 15.0, *) {
             // F apple
             view.sectionHeaderTopPadding = 0

@@ -10,6 +10,7 @@ import AVKit
 import Kingfisher
 import QuickLook
 import UIKit
+import WebKit
 
 class CloudStorageViewController: CloudStorageDisplayViewController {
     var previewingUUID: String? {
@@ -428,7 +429,18 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         do {
             let jsonData = try JSONEncoder().encode(item)
             let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)) ?? ""
-            let link = Env().webBaseURL + "/preview/\(itemJSONStr)"
+            let schemeString: String
+            switch Theme.shared.style {
+            case .light: schemeString = "light"
+            case .dark: schemeString = "dark"
+            case .auto:
+                switch traitCollection.userInterfaceStyle {
+                case .light: schemeString = "light"
+                case .dark: schemeString = "dark"
+                default: schemeString = "light"
+                }
+            }
+            let link = Env().webBaseURL + "/preview/\(itemJSONStr)?theme=\(schemeString)"
             if let url = URL(string: link) {
                 let vc = WKWebViewController(url: url)
                 vc.modalPresentationStyle = .fullScreen
