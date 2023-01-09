@@ -12,6 +12,7 @@ target 'Flat' do
   pod 'Siren'
   pod 'IQKeyboardManagerSwift'
   pod 'Zip'
+  pod 'lottie-ios'
   
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS', '4.1.0'

@@ -111,6 +111,7 @@ PODS:
   - IQKeyboardManagerSwift (6.5.9)
   - Kingfisher (7.4.1)
   - Logging (1.4.0)
+  - lottie-ios (4.0.1)
   - MBProgressHUD (1.2.0)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
@@ -184,6 +185,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - Kingfisher
   - Logging
+  - lottie-ios
   - MBProgressHUD (~> 1.2.0)
   - "NSObject+Rx"
   - RxCocoa
@@ -223,6 +225,7 @@ SPEC REPOS:
     - IQKeyboardManagerSwift
     - Kingfisher
     - Logging
+    - lottie-ios
     - MBProgressHUD
     - nanopb
     - "NSObject+Rx"
@@ -265,6 +268,7 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
+  lottie-ios: 54d22edf55b839f0929cabbfe609c9aa548b1145
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
@@ -283,6 +287,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: ec72e8fd9ca26d06c4dd6ab335fcb8b1c3ff5670
+PODFILE CHECKSUM: 6db8ccd2c740c27a6b8cad1ee564ba2b61a6aee5
 
 COCOAPODS: 1.11.3

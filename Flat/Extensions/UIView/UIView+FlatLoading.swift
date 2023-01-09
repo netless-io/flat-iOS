@@ -8,25 +8,29 @@
 
 import Kingfisher
 import UIKit
+import Lottie
 
 private class FlatLoadingView: UIView {
     var cancelHandler: (() -> Void)?
 
+    func currentLottieFileName() -> String {
+        let isDark = traitCollection.userInterfaceStyle == .dark
+        return isDark ? "loading_dark" : "loading"
+    }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        let isDark = traitCollection.userInterfaceStyle == .dark
-        let path = Bundle.main.url(forResource: isDark ? "loading_without_bg" : "loading", withExtension: "gif")!
-        let resource = LocalFileImageDataProvider(fileURL: path)
-        loadingView.kf.setImage(with: resource)
+        loadingView.animation = LottieAnimation.named(currentLottieFileName())
+        loadingView.play()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .color(type: .background)
+        backgroundColor = .color(type: .background, .weak)
         addSubview(loadingView)
         loadingView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.lessThanOrEqualTo(self.snp.width).multipliedBy(0.2)
+            make.width.height.equalToSuperview().multipliedBy(0.2)
         }
 
         addSubview(cancelButton)
@@ -54,24 +58,20 @@ private class FlatLoadingView: UIView {
     }
 
     func startAnimating() {
-        loadingView.startAnimating()
+        loadingView.play()
     }
 
     func stopAnimating() {
-        loadingView.stopAnimating()
+        loadingView.stop()
     }
 
     lazy var cancelButton = UIButton(type: .custom)
 
-    lazy var loadingView: AnimatedImageView = {
-        let path = Bundle.main.url(forResource: "loading_without_bg", withExtension: "gif")!
-        let resource = LocalFileImageDataProvider(fileURL: path)
-        let loadingImageView = AnimatedImageView()
-        loadingImageView.framePreloadCount = 30
-        loadingImageView.backgroundDecode = true
-        loadingImageView.kf.setImage(with: resource)
-        loadingImageView.contentMode = .scaleAspectFit
-        return loadingImageView
+    lazy var loadingView: LottieAnimationView = {
+        let view = LottieAnimationView(name: currentLottieFileName())
+        view.contentMode = .scaleAspectFit
+        view.loopMode = .loop
+        return view
     }()
 }
 
