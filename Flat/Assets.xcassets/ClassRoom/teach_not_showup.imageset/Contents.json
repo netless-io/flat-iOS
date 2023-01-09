@@ -3,6 +3,16 @@
     {
       "filename" : "Group 1323.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Group 1738.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
