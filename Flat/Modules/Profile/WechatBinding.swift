@@ -28,7 +28,7 @@ class WechatBinding: NSObject, LaunchItem {
 
     func immediateImplementation(withLaunchCoordinator _: LaunchCoordinator) {}
 
-    func shouldHandle(url: URL?) -> Bool {
+    func shouldHandle(url: URL?, scene: UIScene) -> Bool {
         guard let url else { return false }
         if WXApi.handleOpen(url, delegate: self) {
             return true
@@ -36,7 +36,7 @@ class WechatBinding: NSObject, LaunchItem {
         return false
     }
 
-    func shouldHandle(userActivity: NSUserActivity) -> Bool {
+    func shouldHandle(userActivity: NSUserActivity, scene: UIScene) -> Bool {
         if WXApi.handleOpenUniversalLink(userActivity, delegate: self) {
             return true
         }

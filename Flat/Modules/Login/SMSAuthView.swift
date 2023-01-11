@@ -50,7 +50,7 @@ class SMSAuthView: UIView {
 
     @objc
     func onClickSendSMS(sender: UIButton) {
-        let top = UIApplication.shared.topViewController
+        let top = sender.viewController()
         if case let .failure(errStr) = additionalCheck?(sender) {
             top?.toast(errStr)
             return

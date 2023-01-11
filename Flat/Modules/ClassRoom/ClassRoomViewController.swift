@@ -14,10 +14,6 @@ import Whiteboard
 
 let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
 
-func raiseHandButtonWidth() -> CGFloat {
-    isCompact() ? 40 : 48
-}
-
 class ClassRoomViewController: UIViewController {
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -34,6 +30,10 @@ class ClassRoomViewController: UIViewController {
         default:
             return .default
         }
+    }
+
+    func raiseHandButtonWidth() -> CGFloat {
+        traitCollection.hasCompact ? 40 : 48
     }
 
     let isOwner: Bool
@@ -104,6 +104,7 @@ class ClassRoomViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         initRoomStatus()
+        observeScene()
     }
 
     // MARK: - Private
@@ -230,10 +231,10 @@ class ClassRoomViewController: UIViewController {
                 ms.filter(\.status.isRaisingHand)
             }
         raiseHandListViewController.raiseHandUsers = raiseHandUsers
-        
+
         raiseHandUsers
             .asDriver(onErrorJustReturn: [])
-            .map { $0.count }
+            .map(\.count)
             .drive(with: self, onNext: { weakSelf, c in
                 weakSelf.raiseHandListButton.isSelected = c > 0
                 weakSelf.raiseHandListButton.updateBadgeHide(c <= 0, count: c)
@@ -301,7 +302,7 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
             })
             .disposed(by: rx.disposeBag)
-        
+
         viewModel.transOnStageUpdate(whiteboardEnable: fastboardViewController.roomPermission.map(\.writable).asObservable())
             .subscribe(with: self, onNext: { weakSelf, toastString in
                 weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
@@ -586,16 +587,35 @@ class ClassRoomViewController: UIViewController {
     }
 
     func leaveUIHierarchy() {
+        if let session = view.window?.windowScene?.session,
+           view.window?.rootViewController === self
+        {
+            UIApplication.shared.requestSceneSessionDestruction(session,
+                                                                options: nil)
+            return
+        }
         if let presenting = presentingViewController {
             presenting.dismiss(animated: true, completion: nil)
-        } else {
-            navigationController?.popViewController(animated: true)
         }
     }
 
     func stopSubModulesAndLeaveUIHierarchy() {
         stopSubModules()
         leaveUIHierarchy()
+    }
+
+    // MARK: - Scene
+
+    func observeScene() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onSceneDisconnect(notification:)), name: UIScene.didDisconnectNotification, object: nil)
+    }
+
+    @objc func onSceneDisconnect(notification: Notification) {
+        guard let scene = notification.object as? UIWindowScene else { return }
+        if view.window?.windowScene === scene {
+            logger.info("classroom destroy by scene disconnect")
+            viewModel.destroy()
+        }
     }
 
     // MARK: - Layout

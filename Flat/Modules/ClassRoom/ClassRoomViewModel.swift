@@ -641,6 +641,7 @@ class ClassRoomViewModel {
         let startStatus = stateHandler.roomStartStatus.value
         NotificationCenter.default.post(name: classRoomLeavingNotificationName,
                                         object: nil,
-                                        userInfo: ["roomUUID": roomUUID, "startStatus": startStatus])
+                                        userInfo: ["roomUUID": roomUUID,
+                                                   "startStatus": startStatus])
     }
 }

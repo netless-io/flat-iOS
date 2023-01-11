@@ -35,6 +35,20 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         super.viewDidLoad()
         setupAdditionalViews()
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        var actions = UploadType.allCases.map { type -> Action in
+            Action(title: type.title, image: UIImage(named: type.imageName), style: .default) { _ in
+                UploadUtility.shared.start(uploadType: type,
+                                           fromViewController: self,
+                                           delegate: self,
+                                           presentStyle: .main)
+            }
+        }
+        actions.append(.cancel)
+        addButton.setupCommonCustomAlert(actions, preferContextMenu: !(view.window?.traitCollection.hasCompact ?? true))
+    }
 
     func setupAdditionalViews() {
         view.addSubview(addButton)
@@ -89,16 +103,6 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     lazy var addButton: UIButton = {
         let addButton = SpringButton(type: .custom)
         addButton.setImage(UIImage(named: "storage_add"), for: .normal)
-        var actions = UploadType.allCases.map { type -> Action in
-            Action(title: type.title, image: UIImage(named: type.imageName), style: .default) { _ in
-                UploadUtility.shared.start(uploadType: type,
-                                           fromViewController: self,
-                                           delegate: self,
-                                           presentStyle: .main)
-            }
-        }
-        actions.append(.cancel)
-        addButton.setupCommonCustomAlert(actions)
         return addButton
     }()
 
@@ -217,7 +221,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         if !tableView.isEditing {
             let item = container.items[indexPath.row]
             let actions = actions(for: item)
-            cell.moreActionButton.setupCommonCustomAlert(actions)
+            cell.moreActionButton.setupCommonCustomAlert(actions, preferContextMenu: !(view.window?.traitCollection.hasCompact ?? true))
         }
         return cell
     }
@@ -327,7 +331,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else { return }
-        if isCompact() {
+        if traitCollection.hasCompact {
             tableView.deselectRow(at: indexPath, animated: true)
         }
         let item = container.items[indexPath.row]

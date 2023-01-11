@@ -114,7 +114,7 @@ class InviteViewController: UIViewController {
     @objc
     func onClickMore(_ sender: UIButton) {
         let vc = ShareManager.createShareActivityViewController(shareInfo: shareInfo)
-        if isCompact() {
+        if sender.window?.traitCollection.hasCompact ?? true {
             present(vc, animated: true)
         } else {
             popoverViewController(viewController: vc, fromSource: sender)

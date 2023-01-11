@@ -12,12 +12,12 @@ import Foundation
 class AppleLogin: NSObject, ASAuthorizationControllerDelegate {
     var handler: LoginHandler?
 
-    func startLogin(launchCoordinator _: LaunchCoordinator, loginHandler: LoginHandler?) {
+    func startLogin(sender: UIButton, loginHandler: LoginHandler?) {
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.fullName]
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
-        controller.presentationContextProvider = globalLaunchCoordinator?.window as? ASAuthorizationControllerPresentationContextProviding
+        controller.presentationContextProvider = sender.window as? ASAuthorizationControllerPresentationContextProviding
         controller.performRequests()
         handler = loginHandler
     }

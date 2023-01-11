@@ -64,7 +64,7 @@ class LoginViewController: UIViewController {
         loadHistory()
         bind()
         #if DEBUG
-            let debugSelector = Selector(("debugLogin"))
+            let debugSelector = #selector(debugLogin(sender:))
             if responds(to: debugSelector) {
                 let doubleTap = UITapGestureRecognizer(target: self, action: debugSelector)
                 doubleTap.numberOfTapsRequired = 2
@@ -201,7 +201,7 @@ class LoginViewController: UIViewController {
         let button = ASAuthorizationAppleIDButton(authorizationButtonType: .default, authorizationButtonStyle: .black)
         container.addSubview(button)
         horizontalLoginTypesStackView.addArrangedSubview(container)
-        button.addTarget(self, action: #selector(onClickAppleLogin), for: .touchUpInside)
+        button.addTarget(self, action: #selector(onClickAppleLogin(sender: )), for: .touchUpInside)
 
         button.cornerRadius = 29
         button.removeConstraints(button.constraints)
@@ -211,15 +211,16 @@ class LoginViewController: UIViewController {
         }
     }
 
-    @objc func onClickAppleLogin() {
+    @objc func onClickAppleLogin(sender: UIButton) {
         guard checkAgreementDidAgree() else {
-            showAgreementCheckAlert()
+            showAgreementCheckAlert() { [weak self] in
+                self?.onClickAppleLogin(sender: sender)
+            }
             return
         }
-        guard let launchCoordinator = globalLaunchCoordinator else { return }
         showActivityIndicator()
         appleLogin = AppleLogin()
-        (appleLogin as! AppleLogin).startLogin(launchCoordinator: launchCoordinator) { [weak self] result in
+        (appleLogin as! AppleLogin).startLogin(sender: sender) { [weak self] result in
             self?.stopActivityIndicator()
             switch result {
             case .success:
@@ -230,9 +231,11 @@ class LoginViewController: UIViewController {
         }
     }
 
-    @IBAction func onClickWeChatButton(_: Any) {
+    @IBAction func onClickWeChatButton() {
         guard checkAgreementDidAgree() else {
-            showAgreementCheckAlert()
+            showAgreementCheckAlert() { [weak self] in
+                self?.onClickWeChatButton()
+            }
             return
         }
         guard let launchCoordinator = globalLaunchCoordinator else { return }
@@ -251,9 +254,11 @@ class LoginViewController: UIViewController {
         }
     }
 
-    @IBAction func onClickGithubButton(_: Any) {
+    @IBAction func onClickGithubButton(sender: UIButton) {
         guard checkAgreementDidAgree() else {
-            showAgreementCheckAlert()
+            showAgreementCheckAlert() { [weak self] in
+                self?.onClickGithubButton(sender: sender)
+            }
             return
         }
         guard let coordinator = globalLaunchCoordinator else { return }
@@ -261,7 +266,9 @@ class LoginViewController: UIViewController {
         githubLogin?.removeLaunchItemFromLaunchCoordinator?()
         githubLogin = GithubLogin()
         githubLogin?.startLogin(withAuthStore: AuthStore.shared,
-                                launchCoordinator: coordinator, completionHandler: { [weak self] result in
+                                launchCoordinator: coordinator,
+                                sender: sender,
+                                completionHandler: { [weak self] result in
                                     switch result {
                                     case .success:
                                         return

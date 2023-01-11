@@ -216,6 +216,9 @@
 "Exit" = "退出";
 
 
+"ExitCurrentClassroomWarning" = "你已在其他窗口中进入教室，请先退出";
+
+
 "Export log" = "导出日志";
 
 
@@ -298,6 +301,9 @@
 
 
 "Join Room" = "加入房间";
+
+
+"JoinRoomFailWarning" = "加入房间失败，请稍后重试";
 
 
 "Language Setting" = "语言设置";

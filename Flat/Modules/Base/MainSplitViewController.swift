@@ -22,11 +22,21 @@ extension UISplitViewController {
 extension UIViewController {
     var mainContainer: MainContainer? {
         if let s = mainSplitViewController { return s }
-        if let tab = navigationController?.tabBarController as? MainTabBarController { return tab }
+        if let t = mainTabBarController { return t }
         return presentingViewController as? MainContainer
     }
 
+    var mainTabBarController: MainTabBarController? {
+        if let tabbar = self as? MainTabBarController {
+            return tabbar
+        }
+        return navigationController?.tabBarController as? MainTabBarController
+    }
+    
     var mainSplitViewController: MainSplitViewController? {
+        if let split = self as? MainSplitViewController {
+            return split
+        }
         if let vc = presentingViewController as? MainSplitViewController {
             return vc
         }

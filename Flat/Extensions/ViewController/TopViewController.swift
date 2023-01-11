@@ -16,12 +16,29 @@ func modalTopViewControllerFrom(root: UIViewController) -> UIViewController {
     return root
 }
 
-extension UIApplication {
-    var topViewController: UIViewController? {
-        guard let rootViewController = fetchKeyWindow()?.rootViewController else { return nil }
-        return topWith(root: rootViewController)
+extension UIResponder {
+    func viewController() -> UIViewController? {
+        if let windowScene = self as? UIWindowScene {
+            return windowScene.windows.first(where: \.isKeyWindow)?.rootViewController
+        }
+        
+        var i: UIResponder? = self
+        while (i != nil) {
+            if let vc = i as? UIViewController { return vc }
+            i = i?.next
+        }
+        return nil
     }
+}
 
+extension UIApplication {
+    func topWith(windowScene: UIWindowScene?) -> UIViewController? {
+        if let kw = windowScene?.windows.first(where: \.isKeyWindow) {
+            return topWith(root: kw.rootViewController)
+        }
+        return nil
+    }
+    
     func topWith(root: UIViewController?) -> UIViewController? {
         if let split = root as? UISplitViewController {
             return topWith(root: split.viewControllers.last)

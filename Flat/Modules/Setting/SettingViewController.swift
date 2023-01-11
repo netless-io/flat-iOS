@@ -209,8 +209,12 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func rebootAndTurnToSetting() {
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch?.reboot()
-        UIApplication.shared.topViewController?.mainContainer?.push(SettingViewController())
+        guard let window = view.window,
+              let scene = window.windowScene else { return }
+        SceneManager.shared.reboot(scene: scene)
+        guard let root = window.rootViewController else { return }
+        let top = UIApplication.shared.topWith(root: root)
+        top?.mainContainer?.push(Self())
     }
 
     @objc func onClickContactUs() {

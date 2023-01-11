@@ -95,7 +95,7 @@ class RoomDetailViewController: UIViewController {
         navigationItem.rightBarButtonItem?.viewContainingControllerProvider = { [unowned self] in
             self
         }
-        navigationItem.rightBarButtonItem?.setupCommonCustomAlert(actions)
+        navigationItem.rightBarButtonItem?.setupCommonCustomAlert(actions, preferContextMenu: !(view.window?.traitCollection.hasCompact ?? true))
     }
 
     @IBAction func onClickCopy(_: Any) {
@@ -233,28 +233,12 @@ class RoomDetailViewController: UIViewController {
         mainContainer?.concreteViewController.present(vc, animated: true)
     }
 
-    @IBAction func onClickEnterRoom(_: Any) {
+    @IBAction func onClickEnterRoom(_ sender: UIButton) {
         guard let info else { return }
-        enterRoomButton.isLoading = true
-        // Join room
-        RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(playInfo):
-                let deviceStatusStore = UserDevicePreferredStatusStore(userUUID: AuthStore.shared.user?.userUUID ?? "")
-                let cameraOn = deviceStatusStore.getDevicePreferredStatus(.camera)
-                let micOn = deviceStatusStore.getDevicePreferredStatus(.mic)
-                let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
-                                                                     detailInfo: info,
-                                                                     deviceStatus: .init(mic: micOn, camera: cameraOn))
-                self.mainContainer?.concreteViewController.present(vc, animated: true) {
-                    self.enterRoomButton.isLoading = false
-                }
-            case let .failure(error):
-                self.showAlertWith(message: error.localizedDescription)
-                self.enterRoomButton.isLoading = false
-            }
-        }
+        ClassroomCoordinator.shared.enterClassroom(uuid: info.roomUUID,
+                                                   periodUUID: info.periodicUUID,
+                                                   basicInfo: info,
+                                                   sender: sender)
     }
 
     @IBOutlet var inviteButton: UIButton!

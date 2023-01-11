@@ -98,7 +98,7 @@ class HomeViewController: UIViewController {
 
     @objc func onClickHistory() {
         //  Just push on iPhone device
-        if isCompact() {
+        if traitCollection.hasCompact {
             mainContainer?.push(historyViewController)
             return
         }
@@ -266,7 +266,7 @@ class HomeViewController: UIViewController {
                 self.onClickSetting()
             }),
             .cancel,
-        ])
+        ], preferContextMenu: false)
         return avatarButton
     }()
 
@@ -375,7 +375,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isCompact() {
+        if isWindowCompact {
             tableView.deselectRow(at: indexPath, animated: true)
         }
         let item = list[indexPath.row]
@@ -391,7 +391,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         guard let identifier = (configuration.identifier as? NSString) else { return }
         let index = Int(identifier.intValue)
 
-        if !isCompact() {
+        if !isWindowCompact {
             if let selected = tableView.indexPathForSelectedRow {
                 tableView.deselectRow(at: selected, animated: true)
             }

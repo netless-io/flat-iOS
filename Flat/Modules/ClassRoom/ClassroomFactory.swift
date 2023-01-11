@@ -12,9 +12,9 @@ import Foundation
 import RxCocoa
 import Whiteboard
 
-struct ClassroomFactory {
+enum ClassroomFactory {
     static func getClassRoomViewController(withPlayInfo playInfo: RoomPlayInfo,
-                                           detailInfo: RoomBasicInfo,
+                                           basicInfo: RoomBasicInfo,
                                            deviceStatus: DeviceState) -> ClassRoomViewController
     {
         // Config Rtc
@@ -22,13 +22,13 @@ struct ClassroomFactory {
                       channelId: playInfo.roomUUID,
                       token: playInfo.rtcToken,
                       uid: playInfo.rtcUID,
-                      communication: detailInfo.roomType == .oneToOne,
+                      communication: basicInfo.roomType == .oneToOne,
                       screenShareInfo: playInfo.rtcShareScreen)
 
         FastRoom.followSystemPencilBehavior = ShortcutsManager.shared.shortcuts[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
         let region: Region
-        switch FlatRegion(rawValue: detailInfo.region) ?? .CN_HZ {
+        switch FlatRegion(rawValue: basicInfo.region) ?? .CN_HZ {
         case .CN_HZ:
             region = .CN
         case .US_SV:
@@ -64,7 +64,7 @@ struct ClassroomFactory {
         }
         fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
         fastRoomConfiguration.whiteSdkConfiguration.disableNewPencilStroke = !(ShortcutsManager.shared.shortcuts[.pencilTail] ?? true)
-        let userPermissionEnable = detailInfo.isOwner
+        let userPermissionEnable = basicInfo.isOwner
         fastRoomConfiguration.whiteRoomConfig.windowParams?.collectorStyles = ["top": "8px", "right": "8px"]
         fastRoomConfiguration.whiteRoomConfig.windowParams?.scrollVerticalOnly = true
         fastRoomConfiguration.whiteRoomConfig.windowParams?.stageStyle = "box-shadow: 0 0 0"
@@ -99,8 +99,8 @@ struct ClassroomFactory {
                                            ownerUUID: playInfo.ownerUUID,
                                            userUUID: AuthStore.shared.user?.userUUID ?? "",
                                            isOwner: playInfo.rtmUID == playInfo.ownerUUID,
-                                           maxWritableUsersCount: detailInfo.roomType.maxWritableUsersCount,
-                                           roomStartStatus: detailInfo.roomStatus,
+                                           maxWritableUsersCount: basicInfo.roomType.maxWritableUsersCount,
+                                           roomStartStatus: basicInfo.roomStatus,
                                            whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),
                                            rtcError: rtc.errorPublisher.asObservable())
@@ -121,10 +121,10 @@ struct ClassroomFactory {
         let alertProvider = DefaultAlertProvider()
         let vm = ClassRoomViewModel(stateHandler: imp,
                                     initDeviceState: initDeviceState,
-                                    isOwner: detailInfo.isOwner,
+                                    isOwner: basicInfo.isOwner,
                                     userUUID: playInfo.rtmUID,
                                     roomUUID: playInfo.roomUUID,
-                                    roomType: detailInfo.roomType,
+                                    roomType: basicInfo.roomType,
                                     commandChannelRequest: rtmChannel,
                                     rtm: rtm,
                                     alertProvider: alertProvider,
@@ -132,7 +132,7 @@ struct ClassroomFactory {
 
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
         let shareViewController: () -> UIViewController = {
-            let controller = InviteViewController(shareInfo: .init(roomDetail: detailInfo))
+            let controller = InviteViewController(shareInfo: .init(roomDetail: basicInfo))
             controller.contentView.backgroundColor = .classroomChildBG
             controller.seperatorLine.backgroundColor = .classroomBorderColor
             return controller
@@ -142,7 +142,7 @@ struct ClassroomFactory {
                                                  rtcListViewController: rtcViewController,
                                                  userListViewController: userListViewController,
                                                  inviteViewController: shareViewController,
-                                                 isOwner: detailInfo.isOwner,
+                                                 isOwner: basicInfo.isOwner,
                                                  ownerUUID: playInfo.ownerUUID)
         alertProvider.root = controller
         logger.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")

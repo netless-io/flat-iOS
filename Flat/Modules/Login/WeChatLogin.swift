@@ -13,7 +13,7 @@ class WeChatLogin: NSObject, LaunchItem {
     weak var authStore: AuthStore?
     var removeLaunchItemFromLaunchCoordinator: (() -> Void)?
 
-    func shouldHandle(userActivity: NSUserActivity) -> Bool {
+    func shouldHandle(userActivity: NSUserActivity, scene: UIScene) -> Bool {
         if WXApi.handleOpenUniversalLink(userActivity, delegate: self) {
             return true
         }
@@ -24,7 +24,7 @@ class WeChatLogin: NSObject, LaunchItem {
         logger.trace("\(self), deinit")
     }
 
-    func shouldHandle(url: URL?) -> Bool {
+    func shouldHandle(url: URL?, scene: UIScene) -> Bool {
         guard let url else { return false }
         if WXApi.handleOpen(url, delegate: self) {
             return true

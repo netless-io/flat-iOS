@@ -84,8 +84,8 @@ extension FlatCustomAlertSetable {
         }
     }
 
-    func setupCommonCustomAlert(title: String? = nil, _ actions: [Action]) {
-        if isCompact() {
+    func setupCommonCustomAlert(title: String? = nil, _ actions: [Action], preferContextMenu: Bool) {
+        if !preferContextMenu {
             self.actions = actions
             addTarget(self, action: #selector(_onClickCommonCustomAlert))
         } else {

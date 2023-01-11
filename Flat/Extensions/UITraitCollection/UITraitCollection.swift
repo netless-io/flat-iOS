@@ -13,3 +13,9 @@ extension UITraitCollection {
         verticalSizeClass == .compact || horizontalSizeClass == .compact
     }
 }
+
+extension UIViewController {
+    var isWindowCompact: Bool {
+        view.window?.traitCollection.hasCompact ?? true
+    }
+}

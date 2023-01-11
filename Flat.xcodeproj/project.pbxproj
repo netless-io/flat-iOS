@@ -43,6 +43,8 @@
 		8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23428BF37B50035F71A /* ConvinceInit.swift */; };
 		8A0CA23728BF4A860035F71A /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */; };
 		8A0CA23928C0519A0035F71A /* DeviceAutorizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */; };
+		8A0E1F04296D482B00C3EE24 /* ClassroomSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E1F03296D482B00C3EE24 /* ClassroomSceneDelegate.swift */; };
+		8A0E1F06296D73F900C3EE24 /* ClassroomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E1F05296D73F900C3EE24 /* ClassroomCoordinator.swift */; };
 		8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */; };
 		8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */; };
 		8A0EB7B5272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EB7B4272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift */; };
@@ -99,6 +101,7 @@
 		8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9D27159F4C00123207 /* ApiError.swift */; };
 		8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0BA82716859700123207 /* LoginViewController.swift */; };
 		8A2E0C4A28D03B8300CD63EE /* UIView+seperatorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */; };
+		8A317A9D2966D67800041D4A /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A317A9C2966D67800041D4A /* SceneManager.swift */; };
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
 		8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */; };
 		8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */; };
@@ -210,7 +213,6 @@
 		8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */; };
 		8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */; };
 		8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */; };
-		8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */; };
 		8AAE2549295D795D007D5507 /* RaiseHandListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */; };
 		8AAE254B295D7A0C007D5507 /* RaiseHandTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */; };
 		8AAE254D295EB88A007D5507 /* RoomUserRxSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */; };
@@ -344,6 +346,8 @@
 		8A0CA23428BF37B50035F71A /* ConvinceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvinceInit.swift; sourceTree = "<group>"; };
 		8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAutorizationHelper.swift; sourceTree = "<group>"; };
+		8A0E1F03296D482B00C3EE24 /* ClassroomSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomSceneDelegate.swift; sourceTree = "<group>"; };
+		8A0E1F05296D73F900C3EE24 /* ClassroomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomCoordinator.swift; sourceTree = "<group>"; };
 		8A0EB7AE272B9B4F00003DF7 /* UIImage+ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+ColorPicker.swift"; sourceTree = "<group>"; };
 		8A0EB7B0272BA39C00003DF7 /* UIImage+Compose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Compose.swift"; sourceTree = "<group>"; };
 		8A0EB7B4272BCFC300003DF7 /* UIViewController+PopoverDismissDetect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopoverDismissDetect.swift"; sourceTree = "<group>"; };
@@ -403,6 +407,7 @@
 		8A2D0B9D27159F4C00123207 /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
 		8A2D0BA82716859700123207 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+seperatorLine.swift"; sourceTree = "<group>"; };
+		8A317A9C2966D67800041D4A /* SceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
 		8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsLogHandler.swift; sourceTree = "<group>"; };
 		8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomOperation.swift; sourceTree = "<group>"; };
@@ -519,7 +524,6 @@
 		8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
 		8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Activity.swift"; sourceTree = "<group>"; };
 		8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCoordinator.swift; sourceTree = "<group>"; };
-		8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStoreDelegate.swift; sourceTree = "<group>"; };
 		8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandListViewController.swift; sourceTree = "<group>"; };
 		8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandTableViewCell.swift; sourceTree = "<group>"; };
 		8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUserRxSectionData.swift; sourceTree = "<group>"; };
@@ -843,6 +847,7 @@
 				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
 				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
+				8A0E1F05296D73F900C3EE24 /* ClassroomCoordinator.swift */,
 				8A172A88292486F5006E4798 /* Shortcuts */,
 				8A92196128AF3BE700DDDA81 /* ClassroomUsers */,
 				8A92195E28AF3B9B00DDDA81 /* ClassroomState */,
@@ -1041,6 +1046,8 @@
 				8A05C2B42759B6EC009BCA79 /* DefaultLaunchItems */,
 				8AD7C6BC27157EA7001C4AAD /* AppDelegate.swift */,
 				8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */,
+				8A0E1F03296D482B00C3EE24 /* ClassroomSceneDelegate.swift */,
+				8A317A9C2966D67800041D4A /* SceneManager.swift */,
 				8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */,
 				8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */,
 				8A270B7B2718352C00450DC6 /* LaunchItem.swift */,
@@ -1385,7 +1392,6 @@
 			isa = PBXGroup;
 			children = (
 				8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */,
-				8AAC69BE2718124000F9A3B4 /* AuthStoreDelegate.swift */,
 				8A5DCFA2273BC0D20068D5DF /* UserDevicePreferredStatusStore.swift */,
 			);
 			path = Stores;
@@ -1731,6 +1737,7 @@
 				8A05A1582834EA99002DE9B9 /* Agreement.swift in Sources */,
 				8A0CA22628BC98180035F71A /* FlatPopoverAlertController.swift in Sources */,
 				8AB3CB3028CB11D400922DEF /* StorageMoveFileRequest.swift in Sources */,
+				8A0E1F04296D482B00C3EE24 /* ClassroomSceneDelegate.swift in Sources */,
 				8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */,
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
@@ -1745,11 +1752,13 @@
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
 				8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */,
+				8A0E1F06296D73F900C3EE24 /* ClassroomCoordinator.swift in Sources */,
 				8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */,
 				8A172A8C29249584006E4798 /* ShortcutsTableViewCell.swift in Sources */,
 				8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */,
 				8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */,
 				8ABD71E427683DB5004FDC36 /* ClassRoomLayout.swift in Sources */,
+				8A317A9D2966D67800041D4A /* SceneManager.swift in Sources */,
 				8A05C33C2760411D009BCA79 /* MultipartFormData.swift in Sources */,
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
 				8A59FF8628D8410C00318407 /* JoinRoomInputAccessView.swift in Sources */,
@@ -1763,7 +1772,6 @@
 				8AE59C7C28D302D500BAC8FC /* VideoPreviewView.swift in Sources */,
 				8A21DABE279FAAC20060E25D /* StopRecordRequest.swift in Sources */,
 				8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */,
-				8AAC69BF2718124000F9A3B4 /* AuthStoreDelegate.swift in Sources */,
 				8A05C34B2760A6FD009BCA79 /* RemoveFilesRequest.swift in Sources */,
 				8A9FB3CB2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift in Sources */,
 				8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */,
@@ -2122,7 +2130,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -2297,7 +2305,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -2406,7 +2414,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -2582,7 +2590,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -2691,7 +2699,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -2776,7 +2784,7 @@
 					"-weak_framework",
 					"\"SwiftUI\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.flat.-";
+				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat.123;
 				PRODUCT_NAME = "$(inherited)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2932,7 +2940,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
@@ -3050,7 +3058,7 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;

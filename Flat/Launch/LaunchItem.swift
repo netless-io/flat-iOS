@@ -16,7 +16,7 @@ protocol LaunchItem {
     // The Task will be immediately execute when the item been handle
     func immediateImplementation(withLaunchCoordinator launchCoordinator: LaunchCoordinator)
 
-    func shouldHandle(url: URL?) -> Bool
+    func shouldHandle(url: URL?, scene: UIScene) -> Bool
 
-    func shouldHandle(userActivity: NSUserActivity) -> Bool
+    func shouldHandle(userActivity: NSUserActivity, scene: UIScene) -> Bool
 }

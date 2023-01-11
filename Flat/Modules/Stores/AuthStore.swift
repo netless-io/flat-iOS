@@ -6,10 +6,15 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
+import FirebaseCrashlytics
 import Foundation
 import UIKit
+import RxSwift
 
-let avatarUpdateNotificationName: Notification.Name = .init(rawValue: "avatarUpdateNotificationName")
+let avatarUpdateNotificationName: Notification.Name = .init(rawValue: "avatarUpdateNotification")
+let loginSuccessNotificationName: Notification.Name = .init("loginSuccessNotification")
+let logoutNotificationName: Notification.Name = .init("logoutNotification")
+let jwtExpireNotificationName: Notification.Name = .init("jwtExpireNotification")
 
 typealias LoginHandler = (Result<User, ApiError>) -> Void
 
@@ -25,20 +30,20 @@ class AuthStore {
     private let userDefaultKey = "AuthStore_user"
 
     static let shared = AuthStore()
-
-    weak var delegate: AuthStoreDelegate?
-
     private init() {
         if let data = UserDefaults.standard.data(forKey: userDefaultKey) {
             do {
                 user = try JSONDecoder().decode(User.self, from: data)
                 flatGenerator.token = user?.token
+                observeFirstJWTExpire()
             } catch {
                 logger.error("decode user error, \(error)")
             }
         }
     }
 
+    var disposeBag = DisposeBag()
+    
     var isLogin: Bool { user != nil }
 
     var user: User? {
@@ -50,7 +55,7 @@ class AuthStore {
     func logout() {
         user = nil
         UserDefaults.standard.removeObject(forKey: userDefaultKey)
-        delegate?.authStoreDidLogout(self)
+        NotificationCenter.default.post(name: logoutNotificationName, object: nil)
     }
 
     func processBindPhoneSuccess() {
@@ -69,7 +74,22 @@ class AuthStore {
             logger.error("encode user error \(error)")
         }
         self.user = user
-        delegate?.authStoreDidLoginSuccess(self, user: user)
+        Crashlytics.crashlytics().setUserID(user.userUUID)
+        NotificationCenter.default.post(name: loginSuccessNotificationName, object: nil, userInfo: ["user": user])
+        observeFirstJWTExpire()
+    }
+
+    func observeFirstJWTExpire() {
+        FlatResponseHandler
+            .jwtExpireSignal
+            .take(1)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { weakSelf, _ in
+                logger.error("post jwt expire notification")
+                ApiProvider.shared.cancelAllTasks()
+                NotificationCenter.default.post(name: jwtExpireNotificationName, object: nil)
+            })
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Update info

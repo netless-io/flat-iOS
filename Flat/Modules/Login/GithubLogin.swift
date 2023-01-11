@@ -13,7 +13,7 @@ import UIKit
 class GithubLogin: LaunchItem {
     var removeLaunchItemFromLaunchCoordinator: (() -> Void)?
 
-    func shouldHandle(url: URL?) -> Bool {
+    func shouldHandle(url: URL?, scene: UIScene) -> Bool {
         guard url?.absoluteString == "x-agora-flat-client://open",
               handler != nil else { return false }
         return true
@@ -23,7 +23,7 @@ class GithubLogin: LaunchItem {
         removeLaunchItemFromLaunchCoordinator?()
     }
 
-    func shouldHandle(userActivity _: NSUserActivity) -> Bool {
+    func shouldHandle(userActivity _: NSUserActivity, scene: UIScene) -> Bool {
         false
     }
 
@@ -45,14 +45,14 @@ class GithubLogin: LaunchItem {
 
     weak var safariVC: SFSafariViewController?
 
-    func startLogin(withAuthStore authStore: AuthStore, launchCoordinator: LaunchCoordinator, completionHandler: @escaping LoginHandler) {
+    func startLogin(withAuthStore authStore: AuthStore, launchCoordinator: LaunchCoordinator, sender: UIButton, completionHandler: @escaping LoginHandler) {
         ApiProvider.shared.request(fromApi: SetAuthUuidRequest(uuid: uuid)) { [weak self] r in
             guard let self else { return }
             switch r {
             case .success:
                 let controller = SFSafariViewController(url: self.githubLoginURL)
                 controller.modalPresentationStyle = .pageSheet
-                UIApplication.shared.topViewController?.present(controller, animated: true, completion: nil)
+                sender.viewController()?.present(controller, animated: true)
                 let launchItemIdentifier = self.uuid
                 launchCoordinator.registerLaunchItem(self, identifier: launchItemIdentifier)
                 self.removeLaunchItemFromLaunchCoordinator = { [weak launchCoordinator] in

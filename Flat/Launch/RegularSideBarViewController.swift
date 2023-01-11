@@ -12,7 +12,7 @@ import UIKit
 @available(iOS 14, *)
 class RegularSideBarViewController: UIViewController {
     let width: CGFloat = 64
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -31,11 +31,6 @@ class RegularSideBarViewController: UIViewController {
         updateGradientColors()
         syncSelected()
         applyAvatar()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        gradientBackgroundLayer.frame = view.bounds
     }
 
     // MARK: - Action
@@ -72,17 +67,37 @@ class RegularSideBarViewController: UIViewController {
     }
 
     func updateGradientColors() {
+        // To respond to `requestSceneSessionRefresh` function.
+        // It has to using image instead of CAGradientLayer
         if traitCollection.userInterfaceStyle == .light {
-            gradientBackgroundLayer.colors = [UIColor(hexString: "#FAFAFA").cgColor, UIColor(hexString: "#F6F6F6").cgColor]
+            gradientBackgroundView.image = lightGradientBgImage
         } else {
-            gradientBackgroundLayer.colors = [UIColor(hexString: "#383B42").cgColor, UIColor(hexString: "#2B2F38").cgColor]
+            gradientBackgroundView.image = darkGradientBgImage
         }
     }
 
+    func createGradientImage(startColor: UIColor, endColor: UIColor) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(.init(width: width, height: 1), true, 3)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        guard let gradient = CGGradient(
+            colorsSpace: CGColorSpaceCreateDeviceRGB(),
+            colors: [startColor.cgColor, endColor.cgColor] as CFArray,
+            locations: [0, 1.0]
+        ) else { return nil }
+        let startPoint = CGPoint.zero
+        let endPoint = CGPoint(x: width, y: 0)
+        context.drawLinearGradient(
+            gradient,
+            start: startPoint,
+            end: endPoint,
+            options: []
+        )
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+
     func setupViews() {
-        gradientBackgroundLayer.startPoint = .zero
-        gradientBackgroundLayer.endPoint = .init(x: 1, y: 0)
-        view.layer.addSublayer(gradientBackgroundLayer)
+        view.addSubview(gradientBackgroundView)
+        gradientBackgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
         updateGradientColors()
 
         view.addSubview(avatarButton)
@@ -183,6 +198,7 @@ class RegularSideBarViewController: UIViewController {
         avatarButton.translatesAutoresizingMaskIntoConstraints = false
         avatarButton.contentMode = .scaleAspectFill
         avatarButton.isUserInteractionEnabled = true
+        // TODO: not right
         avatarButton.setupCommonCustomAlert([
             .init(title: localizeStrings("Profile"), image: UIImage(named: "profile"), style: .default, handler: { _ in
                 self.onClickProfile()
@@ -191,11 +207,18 @@ class RegularSideBarViewController: UIViewController {
                 self.onClickSetting()
             }),
             .cancel,
-        ])
+        ], preferContextMenu: true)
         return avatarButton
     }()
 
-    lazy var gradientBackgroundLayer = CAGradientLayer()
+    lazy var gradientBackgroundView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleToFill
+        return view
+    }()
+    
+    lazy var lightGradientBgImage = createGradientImage(startColor: UIColor(hexString: "#FAFAFA"), endColor: UIColor(hexString: "#F6F6F6"))
+    lazy var darkGradientBgImage = createGradientImage(startColor: UIColor(hexString: "#383B42"), endColor: UIColor(hexString: "#2B2F38"))
 
     lazy var mainStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [])

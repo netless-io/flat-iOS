@@ -10,7 +10,7 @@ import Fastboard
 import UIKit
 
 let undoRedoShortcutsUpdateNotificaton: Notification.Name = .init("undoRedoShortcutUpdateNotificaton")
-let defaultShortcuts: [ShortcutsType: Bool] = isCompact() ?
+let defaultShortcuts: [ShortcutsType: Bool] = supportApplePencil() ?
     [.disableDefaultUndoRedo: false, .pencilTail: true] :
     [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true]
 

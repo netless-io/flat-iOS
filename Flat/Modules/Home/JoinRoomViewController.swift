@@ -46,39 +46,13 @@ class JoinRoomViewController: UIViewController {
     // MARK: - Action
 
     @objc func onClickJoin(_ sender: UIButton) {
-        guard let uuid = subjectTextField.text?.replacingOccurrences(of: " ", with: ""), !uuid.isEmpty else {
-            return
-        }
-        sender.isLoading = true
-        let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: uuid, periodicUUID: nil).share(replay: 1, scope: .whileConnected)
-        let roomInfo = playInfo.flatMap { info in
-            RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil)
-        }
-        Observable.zip(playInfo, roomInfo)
-            .asSingle()
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onSuccess: { weakSelf, tuple in
-                let playInfo = tuple.0
-                let roomInfo = tuple.1
-                let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
-                let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
-                                                                     detailInfo: roomInfo,
-                                                                     deviceStatus: deviceStatus)
-                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
-                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
-
-                let parent = weakSelf.mainContainer?.concreteViewController
-                parent?.view.showActivityIndicator()
-                parent?.dismiss(animated: true) {
-                    parent?.view.stopActivityIndicator()
-                    parent?.present(vc, animated: true, completion: nil)
-                }
-            }, onFailure: { weakSelf, error in
-                sender.isLoading = false
-                weakSelf.showAlertWith(message: error.localizedDescription)
-            }, onDisposed: { _ in
-            })
-            .disposed(by: rx.disposeBag)
+        guard let uuid = subjectTextField.text?.replacingOccurrences(of: " ", with: ""),
+                !uuid.isEmpty
+        else { return }
+        ClassroomCoordinator.shared.enterClassroom(uuid: uuid,
+                                                   periodUUID: nil,
+                                                   basicInfo: nil,
+                                                   sender: sender)
     }
 
     // MARK: - Private
@@ -128,7 +102,7 @@ class JoinRoomViewController: UIViewController {
 
         let bottomStackItemHeight: CGFloat = 44
 
-        if isCompact() {
+        if traitCollection.hasCompact {
             let centerStack = UIStackView(arrangedSubviews: [subjectTextField, previewView, deviceView])
             centerStack.axis = .vertical
             centerStack.alignment = .center
@@ -183,7 +157,7 @@ class JoinRoomViewController: UIViewController {
         previewView.transform = .init(scaleX: 0.9, y: 0.9)
 
         bottomStack.axis = .horizontal
-        bottomStack.spacing = isCompact() ? 8 : 16
+        bottomStack.spacing = traitCollection.hasCompact ? 8 : 16
         bottomStack.distribution = .equalCentering
         bottomStack.alignment = .center
         bottomStack.snp.makeConstraints { make in
@@ -242,7 +216,7 @@ class JoinRoomViewController: UIViewController {
             self?.deviceView.set(micOn: micOn)
         }
         // Hide join for iPad, because of the keyboard return type
-        roomInputAccessView.joinButton.isHidden = !isCompact()
+        roomInputAccessView.joinButton.isHidden = !traitCollection.hasCompact
         roomInputAccessView.enterHandler = onClickJoin(_:)
     }
 

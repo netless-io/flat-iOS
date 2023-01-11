@@ -54,13 +54,18 @@ class Theme {
         }
         style = getPreferredStyle()
     }
-
-    weak var window: UIWindow? {
-        didSet {
-            apply(style)
-        }
+    
+    func setupWindowTheme(_ window: UIWindow?) {
+        apply(style, window: window)
     }
-
+    
+    func updateUserPreferredStyle(_ style: ThemeStyle) {
+        self.style = style
+        setStoredPreferredStyle(style)
+        SceneManager.shared.windowMap.map(\.value).forEach { apply(style, window: $0) }
+        SceneManager.shared.refreshMultiWindowPreview()
+    }
+    
     private func setStoredPreferredStyle(_ newValue: ThemeStyle) {
         do {
             let encoder = JSONEncoder()
@@ -71,13 +76,7 @@ class Theme {
         }
     }
 
-    func updateUserPreferredStyle(_ style: ThemeStyle) {
-        self.style = style
-        apply(style)
-        setStoredPreferredStyle(style)
-    }
-
-    private func apply(_ style: ThemeStyle) {
+    private func apply(_ style: ThemeStyle, window: UIWindow?) {
         switch style {
         case .dark:
             window?.overrideUserInterfaceStyle = .dark
@@ -88,12 +87,12 @@ class Theme {
         }
         applyNavigationBar()
         configProgressHUDAppearance()
-        applyFastboard(style)
-        commitUpdate()
+        applyFastboard(style, for: window)
+        commitUpdate(for: window)
     }
 
-    private func commitUpdate() {
-        fetchKeyWindow()?.subviews.forEach {
+    private func commitUpdate(for window: UIWindow?) {
+        window?.subviews.forEach {
             $0.removeFromSuperview()
             window?.addSubview($0)
         }
@@ -104,7 +103,11 @@ class Theme {
         proxy.tintColor = .color(type: .text)
     }
 
-    private func applyFastboard(_ style: ThemeStyle) {
+    private func applyFastboard(_ style: ThemeStyle, for window: UIWindow?) {
+        let hasCompact = window?.traitCollection.hasCompact ?? true
+        FastRoomControlBar.appearance().commonRadius = hasCompact ? 8 : 4
+        FastRoomControlBar.appearance().itemWidth = hasCompact ? 40 : 48
+        
         let flatTheme: FastRoomThemeAsset
         switch style {
         case .dark:
@@ -116,9 +119,9 @@ class Theme {
         }
 
         flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
-        flatTheme.panelItemAssets.selectedBackgroundEdgeinset = isCompact() ? .zero : .init(inset: -4)
-        flatTheme.panelItemAssets.selectedBackgroundCornerRadius = isCompact() ? 0 : 8
-        flatTheme.panelItemAssets.selectedIconBgColor = isCompact() ? .clear : .color(type: .primary, .weak)
+        flatTheme.panelItemAssets.selectedBackgroundEdgeinset = hasCompact ? .zero : .init(inset: -4)
+        flatTheme.panelItemAssets.selectedBackgroundCornerRadius = hasCompact ? 0 : 8
+        flatTheme.panelItemAssets.selectedIconBgColor = hasCompact ? .clear : .color(type: .primary, .weak)
         flatTheme.panelItemAssets.selectedColorItemBgColor = .color(type: .primary, .weak)
 
         flatTheme.controlBarAssets.borderColor = .borderColor

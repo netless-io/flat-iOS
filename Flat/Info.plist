@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>SLS_SK</key>
-	<string>$(SLS_SK)</string>
-	<key>SLS_AK</key>
-	<string>$(SLS_AK)</string>
-	<key>SLS_ENDPOINT</key>
-	<string>$(SLS_ENDPOINT)</string>
-	<key>SLS_PROJECT</key>
-	<string>$(SLS_PROJECT)</string>
 	<key>AGORA_APP_ID</key>
 	<string>$(AGORA_APP_ID)</string>
 	<key>API_URL</key>
@@ -127,10 +119,18 @@
 	<string>$(OSS_ACCESS_KEY_ID)</string>
 	<key>REGION</key>
 	<string>$(REGION)</string>
+	<key>SLS_AK</key>
+	<string>$(SLS_AK)</string>
+	<key>SLS_ENDPOINT</key>
+	<string>$(SLS_ENDPOINT)</string>
+	<key>SLS_PROJECT</key>
+	<string>$(SLS_PROJECT)</string>
+	<key>SLS_SK</key>
+	<string>$(SLS_SK)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
+		<true/>
 		<key>UISceneConfigurations</key>
 		<dict>
 			<key>UIWindowSceneSessionRoleApplication</key>
@@ -140,6 +140,12 @@
 					<string>Default Configuration</string>
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Classroom</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).ClassroomSceneDelegate</string>
 				</dict>
 			</array>
 		</dict>

@@ -50,7 +50,7 @@ class PopMenuView: UIView {
     {
         if source == sourceView { return }
         sourceView = source
-        guard let target = fetchKeyWindow() else { return }
+        guard let target = source?.window else { return }
         if superview == nil {
             target.addSubview(bg)
             target.addSubview(self)

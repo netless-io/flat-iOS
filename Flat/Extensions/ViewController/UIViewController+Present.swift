@@ -57,7 +57,7 @@ extension UIViewController {
             make.right.left.equalTo(view.safeAreaLayoutGuide).inset(44)
         }
 
-        if !isCompact() {
+        if !traitCollection.hasCompact {
             let line = UIView()
             line.backgroundColor = .borderColor
             view.addSubview(line)

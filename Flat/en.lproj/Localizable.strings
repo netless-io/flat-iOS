@@ -216,6 +216,9 @@
 "Exit" = "Exit";
 
 
+"ExitCurrentClassroomWarning" = "You have entered the classroom in another window, please exit first";
+
+
 "Export log" = "Export log";
 
 
@@ -298,6 +301,9 @@
 
 
 "Join Room" = "Join Room";
+
+
+"JoinRoomFailWarning" = "Failed to join the room, please try again later";
 
 
 "Language Setting" = "Language";

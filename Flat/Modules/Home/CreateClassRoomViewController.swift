@@ -108,7 +108,7 @@ class CreateClassRoomViewController: UIViewController {
         previewView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(guide2.snp.bottom)
-            if isCompact() {
+            if traitCollection.hasCompact {
                 make.height.equalTo(previewView.snp.width)
                 make.width.lessThanOrEqualToSuperview().inset(margin / 2)
                 make.width.equalToSuperview().inset(margin).priority(.medium)
@@ -118,18 +118,18 @@ class CreateClassRoomViewController: UIViewController {
             }
         }
 
-        bottomStack.axis = isCompact() ? .vertical : .horizontal
+        bottomStack.axis = traitCollection.hasCompact ? .vertical : .horizontal
         bottomStack.backgroundColor = .color(type: .background)
         let bottomStackItemHeight: CGFloat = 44
         bottomStack.spacing = margin / 2
         bottomStack.distribution = .equalCentering
         bottomStack.alignment = .center
-        if !isCompact() {
+        if !traitCollection.hasCompact {
             bottomStack.spacing = margin
         }
         bottomStack.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(margin)
-            if isCompact() {
+            if traitCollection.hasCompact {
                 make.top.equalTo(previewView.snp.bottom)
                 make.height.equalTo(bottomStackItemHeight * 2 + 8)
                 make.left.right.equalToSuperview().inset(margin)
@@ -141,7 +141,7 @@ class CreateClassRoomViewController: UIViewController {
         }
         createButton.snp.makeConstraints { make in
             make.height.equalTo(bottomStackItemHeight)
-            if isCompact() {
+            if traitCollection.hasCompact {
                 make.width.equalToSuperview()
             }
         }
@@ -192,61 +192,22 @@ class CreateClassRoomViewController: UIViewController {
                                             type: currentRoomType)
         sender.isLoading = true
         ApiProvider.shared.request(fromApi: createQuest)
-            .flatMap { info -> Observable<(RoomPlayInfo, RoomBasicInfo)> in
-                let playInfo = RoomPlayInfo.fetchByJoinWith(uuid: info.roomUUID, periodicUUID: info.periodicUUID)
-                let roomInfo = RoomBasicInfo.fetchInfoBy(uuid: info.roomUUID, periodicUUID: nil)
-                return Observable.zip(playInfo, roomInfo)
-            }
             .asSingle()
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onSuccess: { weakSelf, tuple in
-                DispatchQueue.main.async {
-                    let playInfo = tuple.0
-                    let roomInfo = tuple.1
-                    let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
-                    let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
-                                                                         detailInfo: roomInfo,
-                                                                         deviceStatus: deviceStatus)
-                    weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
-                    weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
-
-                    let parent = weakSelf.mainContainer?.concreteViewController
-                    parent?.view.showActivityIndicator()
-                    parent?.dismiss(animated: true) {
-                        parent?.view.stopActivityIndicator()
-                        parent?.present(vc, animated: true, completion: nil)
-                    }
-                }
+            .subscribe(with: self, onSuccess: { weakSelf, info in
+                sender.isLoading = false
+                let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
+                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
+                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
+                ClassroomCoordinator.shared.enterClassroom(uuid: info.roomUUID,
+                                                           periodUUID: info.periodicUUID,
+                                                           basicInfo: nil,
+                                                           sender: sender)
             }, onFailure: { weakSelf, error in
                 sender.isLoading = false
                 weakSelf.showAlertWith(message: error.localizedDescription)
-            }, onDisposed: { _ in
-            })
+            }, onDisposed: { _ in })
             .disposed(by: rx.disposeBag)
-    }
-
-    func joinRoom(withUUID UUID: String, completion: ((Result<ClassRoomViewController, Error>) -> Void)?) {
-        RoomPlayInfo.fetchByJoinWith(uuid: UUID, periodicUUID: nil) { playInfoResult in
-            switch playInfoResult {
-            case let .success(playInfo):
-                RoomBasicInfo.fetchInfoBy(uuid: UUID, periodicUUID: nil) { result in
-                    switch result {
-                    case let .success(roomInfo):
-                        let vc = ClassroomFactory.getClassRoomViewController(withPlayInfo: playInfo,
-                                                                             detailInfo: roomInfo,
-                                                                             deviceStatus: .init(mic: self.deviceView.micOn,
-                                                                                                 camera: self.deviceView.cameraOn))
-                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: self.deviceView.cameraOn)
-                        self.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: self.deviceView.micOn)
-                        completion?(.success(vc))
-                    case let .failure(error):
-                        completion?(.failure(error))
-                    }
-                }
-            case let .failure(error):
-                completion?(.failure(error))
-            }
-        }
     }
 
     @objc func handle(keyboardShowNotification notification: Notification) {

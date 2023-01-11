@@ -35,17 +35,12 @@ func setDidFirstTimeLaunch() {
     UserDefaults.standard.setValue(true, forKey: "isFirstTimeLaunch")
 }
 
-var globalLaunchCoordinator: LaunchCoordinator? {
-    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.launch
-}
+var globalLaunchCoordinator: LaunchCoordinator!
 
 func configAppearance() {
     FastRoomThemeManager.shared.updateIcons(using: Bundle.main)
-
-    FastRoomControlBar.appearance().commonRadius = isCompact() ? 8 : 4
-    FastRoomControlBar.appearance().itemWidth = isCompact() ? 40 : 48
     FastRoomControlBar.appearance().borderWidth = commonBorderWidth
-
+    
     UISwitch.appearance().onTintColor = .color(type: .primary)
 
     IQKeyboardManager.shared.enable = true
@@ -56,12 +51,11 @@ func configAppearance() {
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    var launch: LaunchCoordinator?
     var checkOSSVersionObserver: NSObjectProtocol?
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         bootstrapLogger()
+        globalLaunchCoordinator = .init(authStore: AuthStore.shared, defaultLaunchItems: [JoinRoomLaunchItem(), FileShareLaunchItem()])
         if isFirstTimeLaunch {
             ApiProvider.shared.startEmptyRequestForWakingUpNetworkAlert()
             setDidFirstTimeLaunch()
@@ -69,7 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tryPreloadWhiteboard()
         processMethodExchange()
         registerThirdPartSDK()
-
+        configAppearance()
+        
         #if DEBUG
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 guard AuthStore.shared.isLogin else { return }
@@ -119,21 +114,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: UISceneSession Lifecycle
 
-    func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options _: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let activity = options.userActivities.first
+        let activityType = activity?.activityType ?? ""
+        logger.info("multiwindow: configurationForConnecting \(activityType)")
+        switch activityType {
+        case NSUserActivity.Classroom:
+            connectingSceneSession.userInfo = activity?.userInfo as? [String : Any]
+            return UISceneConfiguration(name: NSUserActivity.Classroom, sessionRole: connectingSceneSession.role)
+        default:
+            return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        }
     }
 
-    func application(_: UIApplication, open url: URL, options _: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        launch?.start(withLaunchUrl: url)
-        return true
-    }
-
-    func application(_: UIApplication, continue userActivity: NSUserActivity, restorationHandler _: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        let _ = launch?.start(withLaunchUserActivity: userActivity)
-        return true
-    }
-
+    // MARK: Orientation
+    
     func application(_: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
         .all
     }
+}
+
+extension NSUserActivity {
+    // Should keep the same as ConfigurationName value in plist
+    static var Classroom: String { "Classroom" }
 }

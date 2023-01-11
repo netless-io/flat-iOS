@@ -10,11 +10,13 @@ import Foundation
 
 class FileShareLaunchItem: LaunchItem {
     var url: URL!
+    var scene: UIWindowScene?
 
-    func shouldHandle(url: URL?) -> Bool {
+    func shouldHandle(url: URL?, scene: UIScene) -> Bool {
         guard let url, url.isFileURL else {
             return false
         }
+        self.scene = scene as? UIWindowScene
         var temp = FileManager.default.temporaryDirectory
         temp.appendPathComponent(url.lastPathComponent)
         let success = url.startAccessingSecurityScopedResource()
@@ -33,20 +35,20 @@ class FileShareLaunchItem: LaunchItem {
         }
     }
 
-    func shouldHandle(userActivity _: NSUserActivity) -> Bool {
+    func shouldHandle(userActivity _: NSUserActivity, scene: UIScene) -> Bool {
         false
     }
 
     func immediateImplementation(withLaunchCoordinator _: LaunchCoordinator) {}
 
     func afterLoginSuccessImplementation(withLaunchCoordinator _: LaunchCoordinator, user _: User) {
-        guard let top = UIApplication.shared.topViewController else { return }
+        guard let top = UIApplication.shared.topWith(windowScene: scene) else { return }
         if top is ClassRoomViewController {
             top.toast(localizeStrings("TryLaunchUploadInClassTip"))
             return
         }
         top.showCheckAlert(message: localizeStrings("Got New File Alert"), completionHandler: {
-            guard let mainContainer = UIApplication.shared.topViewController?.mainContainer else { return }
+            guard let mainContainer = UIApplication.shared.topWith(windowScene: self.scene)?.mainContainer else { return }
             if let _ = mainContainer.concreteViewController.presentedViewController {
                 mainContainer.concreteViewController.dismiss(animated: false, completion: nil)
             }
