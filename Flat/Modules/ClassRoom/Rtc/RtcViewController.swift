@@ -139,32 +139,27 @@ class RtcViewController: UIViewController {
             sync(direction: direction)
         }
     }
-
+    
     fileprivate func sync(direction: ClassRoomLayout.RtcDirection) {
-        let marginInset = preferredMargin * 2
         switch direction {
         case .right:
             videoItemsStackView.axis = .vertical
-            videoItemsStackView.snp.remakeConstraints { make in
-                make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: preferredMargin, bottom: 0, right: preferredMargin))
-                make.width.equalTo(self.view).offset(-marginInset)
-            }
             line.snp.remakeConstraints { make in
-                make.left.top.bottom.equalToSuperview()
+                make.left.equalToSuperview().inset(commonBorderWidth)
+                make.top.bottom.equalToSuperview()
                 make.width.equalTo(commonBorderWidth)
             }
         case .top:
             videoItemsStackView.axis = .horizontal
-            videoItemsStackView.snp.remakeConstraints { make in
-                make.edges.equalToSuperview().inset(UIEdgeInsets(top: preferredMargin, left: 0, bottom: preferredMargin, right: 0))
-                make.height.equalTo(self.view).offset(-marginInset)
-            }
             line.snp.remakeConstraints { make in
-                make.left.right.bottom.equalToSuperview()
+                make.bottom.equalToSuperview().inset(commonBorderWidth)
+                make.left.right.equalToSuperview()
                 make.height.equalTo(commonBorderWidth)
             }
         }
-        videoItemsStackView.arrangedSubviews.forEach { remakeConstraintForItemView(view: $0, direction: direction) }
+        videoItemsStackView.arrangedSubviews.forEach {
+            remakeConstraintForItemView(view: $0, direction: direction)
+        }
     }
 
     // MARK: - Private
@@ -278,6 +273,10 @@ class RtcViewController: UIViewController {
             } else {
                 mainScrollView.contentInset = .zero
             }
+            videoItemsStackView.frame = .init(x: preferredMargin,
+                                              y: 0,
+                                              width: itemWidth,
+                                              height: estimateHeight)
         case .top:
             let heightInset = preferredMargin * 2
             let itemHeight = view.bounds.height - heightInset
@@ -290,6 +289,10 @@ class RtcViewController: UIViewController {
             } else {
                 mainScrollView.contentInset = .zero
             }
+            videoItemsStackView.frame = .init(x: preferredMargin,
+                                              y: 0,
+                                              width: estimateWidth,
+                                              height: itemHeight)
         }
     }
 

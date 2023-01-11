@@ -87,12 +87,13 @@ class ClassRoomViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = false
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         updateLayout()
     }
 
     override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
         updateLayout()
     }
 
@@ -628,7 +629,9 @@ class ClassRoomViewController: UIViewController {
         if contentSize.height > contentSize.width {
             contentSize = .init(width: contentSize.height, height: contentSize.width)
         }
-        let layoutOutput = classRoomLayout.update(rtcHide: !settingVC.videoAreaOn.value, contentSize: contentSize)
+        let layoutOutput = classRoomLayout.getlayout(from: .init(rawContentSize: contentSize,
+                                                                 hideRtc: !settingVC.videoAreaOn.value,
+                                                                 preferredStyle: isWindowCompact ? .right : .top))
         let x = layoutOutput.inset.left + safeInset.left
         let y = layoutOutput.inset.top + safeInset.top
         rtcListViewController.preferredMargin = classRoomLayout.rtcMargin
