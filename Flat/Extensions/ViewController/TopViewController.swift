@@ -17,6 +17,15 @@ func modalTopViewControllerFrom(root: UIViewController) -> UIViewController {
 }
 
 extension UIResponder {
+    func scene() -> UIScene? {
+        var i: UIResponder? = self
+        while (i != nil) {
+            if let s = i as? UIScene { return s }
+            i = i?.next
+        }
+        return nil
+    }
+    
     func viewController() -> UIViewController? {
         if let windowScene = self as? UIWindowScene {
             return windowScene.windows.first(where: \.isKeyWindow)?.rootViewController

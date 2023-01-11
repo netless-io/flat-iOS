@@ -16,10 +16,6 @@ class ClassroomCoordinator: NSObject {
                                                selector: #selector(onClassroomLeaving),
                                                name: classRoomLeavingNotificationName,
                                                object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(onSceneConnect(notification:)),
-                                               name: UIScene.willConnectNotification,
-                                               object: nil)
     }
 
     static let shared = ClassroomCoordinator()
@@ -30,11 +26,11 @@ class ClassroomCoordinator: NSObject {
         // Just remove all the info for can't get the leaving scene identifier.
         currentClassroomUUID = nil
     }
-
-    @objc func onSceneConnect(notification: Notification) {
-        guard let windowScene = notification.object as? UIWindowScene,
-              let uuid = windowScene.session.userInfo?["roomUUID"] as? String
+    
+    func enterClassroomFrom(windowScene: UIWindowScene) {
+        guard let uuid = windowScene.session.userInfo?["roomUUID"] as? String
         else { return }
+        currentClassroomUUID = uuid
         let periodicUUID = windowScene.session.userInfo?["periodicUUID"] as? String
         let window = windowScene.windows.first(where: \.isKeyWindow)
         let emptyRoot = EmptySplitSecondaryViewController()
@@ -73,13 +69,17 @@ class ClassroomCoordinator: NSObject {
         currentClassroomUUID = uuid
         if #available(iOS 14.0, *) {
             if ProcessInfo().isiOSAppOnMac {
+                guard let main = controller?.mainContainer?.concreteViewController else { return }
+                if let _ = main.presentedViewController { main.dismiss(animated: true) }
                 // M1 Mac
                 let userActivety = NSUserActivity(activityType: NSUserActivity.Classroom)
                 userActivety.userInfo?["roomUUID"] = uuid
                 userActivety.userInfo?["periodicUUID"] = periodUUID
+                let options = UIScene.ActivationRequestOptions()
+                options.requestingScene = sender?.scene()
                 UIApplication.shared.requestSceneSessionActivation(nil,
                                                                    userActivity: userActivety,
-                                                                   options: nil)
+                                                                   options: options)
                 return
             }
         }

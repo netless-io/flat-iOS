@@ -33,6 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // MARK: - WindowSceneDelegate
     func windowScene(_ windowScene: UIWindowScene, didUpdate previousCoordinateSpace: UICoordinateSpace, interfaceOrientation previousInterfaceOrientation: UIInterfaceOrientation, traitCollection previousTraitCollection: UITraitCollection) {
+        guard UIApplication.shared.supportsMultipleScenes else { return }
         guard windowScene.activationState == .foregroundInactive || windowScene.activationState == .foregroundActive else { return }
         if previousTraitCollection.horizontalSizeClass == windowScene.traitCollection.horizontalSizeClass,
            previousTraitCollection.verticalSizeClass == windowScene.traitCollection.verticalSizeClass {
