@@ -116,7 +116,7 @@ class ClassRoomViewController: UIViewController {
             splitWarningsView.isHidden = true
         }
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateLayout()
@@ -855,7 +855,7 @@ class ClassRoomViewController: UIViewController {
         view.backgroundColor = .color(type: .background)
         return view
     }()
-    
+
     lazy var splitWarningsView: UIVisualEffectView = {
         let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         return effectView

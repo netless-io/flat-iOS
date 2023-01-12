@@ -21,7 +21,7 @@ class ClassRoomLayout {
         case right
     }
 
-    struct Input {
+    struct RoomLayoutInput: Hashable {
         let rawContentSize: CGSize
         let hideRtc: Bool
         let preferredStyle: RtcDirection
@@ -30,20 +30,33 @@ class ClassRoomLayout {
         mutating func update(actualContentSize: CGSize) {
             self.actualContentSize = actualContentSize
         }
+        
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            lhs.rawContentSize.width == rhs.rawContentSize.width &&
+            lhs.rawContentSize.height == rhs.rawContentSize.height &&
+            lhs.hideRtc == rhs.hideRtc &&
+            lhs.preferredStyle == rhs.preferredStyle
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawContentSize.width)
+            hasher.combine(rawContentSize.height)
+            hasher.combine(hideRtc)
+            hasher.combine(preferredStyle)
+        }
     }
     
     /// If direction is top, the margin is top and bottom; Or the margin is left and right for right
     let rtcMargin: CGFloat = 0
-//    /// If estimate rtc height less than minRtcHeight, it turn to .right
     private var minRtcHeight: CGFloat = 108
     private var maxRtcHeight: CGFloat = 144
     let rtcRatio = ClassRoomLayoutRatioConfig.rtcItemRatio
     let whiteboardRatio: CGFloat = .init(ClassRoomLayoutRatioConfig.whiteboardRatio)
     let reduceLevel: CGFloat = 5
     
-    var layoutCache: [Input: OutPut] = [:]
+    var layoutCache: [RoomLayoutInput: OutPut] = [:]
     
-    func getlayout(from: Input) -> OutPut {
+    func getlayout(from: RoomLayoutInput) -> OutPut {
         if let output = layoutCache[from] {
             return output
         }
@@ -57,6 +70,16 @@ class ClassRoomLayout {
                 newConfig.update(actualContentSize: .init(width: width - reduceLevel, height: height))
                 return getlayout(from: newConfig)
             } else {
+                if from.hideRtc {
+                    let xInset = ((from.rawContentSize.height - estimateWhiteHeight) / 2).rounded()
+                    let yInset = ((from.rawContentSize.width - width) / 2).rounded()
+                    let output = OutPut(rtcSize: .zero,
+                                       rtcDirection: .top,
+                                       whiteboardSize: .init(width: width, height: estimateWhiteHeight),
+                                       inset: .init(top: xInset, left: yInset, bottom: 0, right: 0))
+                    layoutCache[from] = output
+                    return output
+                }
                 let rtcHeight = height - estimateWhiteHeight
                 let rtcContentHeight = rtcHeight - (2 * rtcMargin)
                 if rtcContentHeight < minRtcHeight {
@@ -81,6 +104,16 @@ class ClassRoomLayout {
         case .right:
             let estimateWhiteHeight = height
             let estimateWhiteWidth = (estimateWhiteHeight / whiteboardRatio).rounded()
+            if from.hideRtc {
+                let xInset = ((from.rawContentSize.height - height) / 2).rounded()
+                let yInset = ((from.rawContentSize.width - estimateWhiteWidth) / 2).rounded()
+                let output = OutPut(rtcSize: .zero,
+                             rtcDirection: .right,
+                             whiteboardSize: .init(width: estimateWhiteWidth, height: estimateWhiteHeight),
+                             inset: .init(top: xInset, left: yInset, bottom: 0, right: 0))
+                layoutCache[from] = output
+                return output
+            }
             let estimateRTCWidth = width - estimateWhiteWidth
             let estimateRTCContentWidth = estimateRTCWidth - (2 * rtcMargin)
             let estimateRTCContentHeight = estimateRTCContentWidth * rtcRatio
@@ -105,13 +138,4 @@ class ClassRoomLayout {
         }
     }
 
-}
-
-extension ClassRoomLayout.Input: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(rawContentSize.width)
-        hasher.combine(rawContentSize.height)
-        hasher.combine(hideRtc)
-        hasher.combine(preferredStyle)
-    }
 }
