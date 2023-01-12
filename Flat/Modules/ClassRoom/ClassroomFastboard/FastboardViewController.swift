@@ -112,6 +112,9 @@ class FastboardViewController: UIViewController {
     var regularRightSceneMargin: Constraint?
     let boardMargin: CGFloat = 8
     func updateUndoAndSceneConstraints() {
+        if #available(iOS 14.0, *) {
+            if ProcessInfo().isiOSAppOnMac { return }
+        }
         if UIDevice.current.userInterfaceIdiom == .pad {
             if isOnPadSplitScreen {
                 regularUndoLeftMargin?.update(inset: 88)
