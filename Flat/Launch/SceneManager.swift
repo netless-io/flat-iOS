@@ -52,6 +52,10 @@ class SceneManager {
     }
     
     func updateWindowSceneTrait(_ windowScene: UIWindowScene) {
+        let top = UIApplication.shared.topWith(windowScene: windowScene)
+        if top is ClassRoomViewController || top is MixReplayViewController { // Dont reconfig when top is classroom or replay
+            return
+        }
         // To avoid the viewcontroller replace complex, only config the root viewcontroller now.
         config(windowScene: windowScene, user: AuthStore.shared.user)
     }

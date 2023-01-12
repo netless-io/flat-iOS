@@ -39,7 +39,7 @@ class ClassRoomLayout {
     private var maxRtcHeight: CGFloat = 144
     let rtcRatio = ClassRoomLayoutRatioConfig.rtcItemRatio
     let whiteboardRatio: CGFloat = .init(ClassRoomLayoutRatioConfig.whiteboardRatio)
-    let reduceLevel: CGFloat = 1
+    let reduceLevel: CGFloat = 5
     
     var layoutCache: [Input: OutPut] = [:]
     

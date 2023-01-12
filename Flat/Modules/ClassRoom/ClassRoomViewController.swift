@@ -87,6 +87,36 @@ class ClassRoomViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = false
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // Prevent iPad split compact window
+        if isOnPadSplitCompactScreen {
+            splitWarningsView.isHidden = false
+            if splitWarningsView.superview == nil {
+                // SetupWarning view one time
+                let icon = UIImageView(image: UIImage(named: "login_icon"))
+                splitWarningsView.contentView.addSubview(icon)
+                icon.snp.makeConstraints { make in
+                    make.center.equalToSuperview()
+                }
+                let label = UILabel()
+                label.text = localizeStrings("SplitScreenWarnings")
+                label.textColor = .color(type: .text)
+                splitWarningsView.contentView.addSubview(label)
+                label.snp.makeConstraints { make in
+                    make.centerX.equalToSuperview()
+                    make.top.equalTo(icon.snp.bottom).offset(14)
+                }
+                view.addSubview(splitWarningsView)
+                splitWarningsView.snp.makeConstraints { make in
+                    make.edges.equalToSuperview()
+                }
+            }
+        } else {
+            splitWarningsView.isHidden = true
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateLayout()
@@ -279,7 +309,7 @@ class ClassRoomViewController: UIViewController {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
                 logger.info("device terminate")
-                weakSelf.viewModel.destroy()
+                weakSelf.viewModel.destroy(sender: weakSelf)
             })
             .disposed(by: rx.disposeBag)
     }
@@ -579,7 +609,7 @@ class ClassRoomViewController: UIViewController {
     }
 
     func stopSubModules() {
-        viewModel.destroy()
+        viewModel.destroy(sender: self)
         fastboardViewController.leave()
         rtcListViewController.viewModel.rtc
             .leave()
@@ -615,7 +645,7 @@ class ClassRoomViewController: UIViewController {
         guard let scene = notification.object as? UIWindowScene else { return }
         if view.window?.windowScene === scene {
             logger.info("classroom destroy by scene disconnect")
-            viewModel.destroy()
+            viewModel.destroy(sender: self)
         }
     }
 
@@ -624,14 +654,18 @@ class ClassRoomViewController: UIViewController {
     let classRoomLayout = ClassRoomLayout()
     func updateLayout() {
         let safeInset = UIEdgeInsets(top: 0, left: view.safeAreaInsets.left, bottom: 0, right: 0)
-        var contentSize = view.bounds.inset(by: safeInset).size
-        // Height should be greater than width, for sometimes, user enter with portrait orientation
-        if contentSize.height > contentSize.width {
-            contentSize = .init(width: contentSize.height, height: contentSize.width)
+        let contentSize = view.bounds.inset(by: safeInset).size
+        let direction: ClassRoomLayout.RtcDirection
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            direction = .right
+        } else {
+            // Mac will restrict to be regular
+            // Pad can only using regular
+            direction = .top
         }
         let layoutOutput = classRoomLayout.getlayout(from: .init(rawContentSize: contentSize,
                                                                  hideRtc: !settingVC.videoAreaOn.value,
-                                                                 preferredStyle: isWindowCompact ? .right : .top))
+                                                                 preferredStyle: direction))
         let x = layoutOutput.inset.left + safeInset.left
         let y = layoutOutput.inset.top + safeInset.top
         rtcListViewController.preferredMargin = classRoomLayout.rtcMargin
@@ -820,5 +854,10 @@ class ClassRoomViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .color(type: .background)
         return view
+    }()
+    
+    lazy var splitWarningsView: UIVisualEffectView = {
+        let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+        return effectView
     }()
 }
