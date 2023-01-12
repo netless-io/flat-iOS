@@ -11,6 +11,7 @@ import RxRelay
 import RxSwift
 import UIKit
 import Whiteboard
+import SnapKit
 
 func tryPreloadWhiteboard() {
     DispatchQueue.main.async {
@@ -107,6 +108,26 @@ class FastboardViewController: UIViewController {
         setupGestures()
     }
 
+    var regularUndoLeftMargin: Constraint?
+    var regularRightSceneMargin: Constraint?
+    let boardMargin: CGFloat = 8
+    func updateUndoAndSceneConstraints() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if isOnPadSplitScreen {
+                regularUndoLeftMargin?.update(inset: 88)
+                regularRightSceneMargin?.update(inset: 88)
+            } else {
+                regularUndoLeftMargin?.update(inset: boardMargin)
+                regularRightSceneMargin?.update(inset: boardMargin)
+            }
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateUndoAndSceneConstraints()
+    }
+    
     // MARK: - Private
     func joinRoom() {
         fastRoom.joinRoom { [weak self] result in
@@ -163,6 +184,15 @@ class FastboardViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
 
+//    var regularUndoLeftConstraint: NSLayoutConstraint?
+//    var regularPageRightConstraint: NSLayoutConstraint?
+    
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        regularUndoLeftConstraint?.constant = isOnPadSplitScreen ? 44 : 8
+//        regularPageRightConstraint?.constant = isOnPadSplitScreen ? 44 : 8
+//    }
+    
     func setupViews() {
         view.addSubview(fastRoom.view)
         fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }
@@ -179,6 +209,16 @@ class FastboardViewController: UIViewController {
             items.append(appsItem)
             return FastRoomPanel(items: items)
         }
+        
+//        // Add addtional constraint to adapt multiwindow
+//        if let regular = fastRoom.view.overlay as? RegularFastRoomOverlay {
+//            regular.undoRedoPanel.view?.snp.makeConstraints { make in
+//                self.regularUndoLeftConstraint = make.left.equalToSuperview().inset(8).constraint.layoutConstraints[0]
+//            }
+//            regular.scenePanel.view?.snp.makeConstraints({ make in
+//                self.regularPageRightConstraint = make.right.equalToSuperview().inset(8).constraint.layoutConstraints[0]
+//            })
+//        }
     }
 
     // MARK: - Lazy
@@ -227,23 +267,24 @@ extension FastboardViewController: FastRoomDelegate {
             overlay.invalidAllLayout()
             overlay.operationPanel.view?.snp.makeConstraints { make in
                 make.centerY.equalTo(fastboard.view.whiteboardView)
-                make.left.equalTo(fastboard.view.whiteboardView).inset(8)
+                make.left.equalTo(fastboard.view.whiteboardView).inset(boardMargin)
             }
 
             overlay.deleteSelectionPanel.view?.snp.makeConstraints { make in
                 make.left.equalTo(overlay.operationPanel.view!)
-                make.bottom.equalTo(overlay.operationPanel.view!.snp.top).offset(-8)
+                make.bottom.equalTo(overlay.operationPanel.view!.snp.top).offset(-boardMargin)
             }
 
             overlay.undoRedoPanel.view?.snp.makeConstraints { make in
-                make.bottom.equalTo(fastboard.view.whiteboardView).inset(8)
-                make.left.equalToSuperview().inset(8)
+                make.bottom.equalTo(fastboard.view.whiteboardView).inset(boardMargin)
+                self.regularUndoLeftMargin = make.left.equalToSuperview().inset(boardMargin).constraint
             }
 
             overlay.scenePanel.view?.snp.makeConstraints { make in
-                make.bottom.equalTo(fastboard.view.whiteboardView).inset(8)
-                make.right.equalToSuperview().inset(8)
+                make.bottom.equalTo(fastboard.view.whiteboardView).inset(boardMargin)
+                self.regularRightSceneMargin = make.right.equalToSuperview().inset(boardMargin).constraint
             }
+            updateUndoAndSceneConstraints()
         }
 
         if let overlay = overlay as? CompactFastRoomOverlay {

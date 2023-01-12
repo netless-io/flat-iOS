@@ -15,6 +15,20 @@ extension UITraitCollection {
 }
 
 extension UIViewController {
+    var isOnPadSplitScreen: Bool {
+        let device = UIDevice.current
+        if device.userInterfaceIdiom != .pad { return false }
+        if !device.isMultitaskingSupported { return false }
+        guard let windowBounds = view.window?.bounds else { return false }
+        return windowBounds != UIScreen.main.bounds
+    }
+    
+    var isOnPadSplitCompactScreen: Bool {
+        if !isOnPadSplitScreen { return false }
+        // Pad has no compact
+        return isWindowCompact
+    }
+    
     var isWindowCompact: Bool {
         view.window?.traitCollection.hasCompact ?? true
     }
