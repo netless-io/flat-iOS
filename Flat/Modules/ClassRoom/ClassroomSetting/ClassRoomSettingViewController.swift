@@ -113,18 +113,23 @@ class ClassRoomSettingViewController: UIViewController {
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: topViewHeight, left: 0, bottom: 0, right: 0))
         }
 
-        let bottomContainer = UIView(frame: .init(origin: .zero, size: .init(width: 400, height: 96)))
+        let logoutHeight = CGFloat(40)
+        let margin = CGFloat(14)
+        let containerHeight = CGFloat(logoutHeight + margin + 30 + view.safeAreaInsets.bottom)
+        let bottomContainer = UIView(frame: .init(origin: .zero, size: .init(width: 400, height: containerHeight)))
+        bottomContainer.backgroundColor = .classroomChildBG
+        tableView.contentInset = .init(top: 0, left: 0, bottom: containerHeight, right: 0)
         bottomContainer.addSubview(logoutButton)
         view.addSubview(bottomContainer)
         bottomContainer.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.size.equalTo(CGSize(width: 400, height: 96))
+            make.bottom.equalToSuperview()
+            make.size.equalTo(CGSize(width: 400, height: containerHeight))
         }
         logoutButton.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.height.equalTo(40)
+            make.height.equalTo(logoutHeight)
+            make.top.equalToSuperview().inset(margin)
         }
     }
 
@@ -180,6 +185,7 @@ class ClassRoomSettingViewController: UIViewController {
 
     lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
+        button.backgroundColor = .classroomChildBG
         button.titleLabel?.font = .systemFont(ofSize: 16)
         button.setTraitRelatedBlock { button in
             let color = UIColor.color(light: .red6, dark: .red5)
