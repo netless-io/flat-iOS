@@ -8,7 +8,7 @@
 
 import Foundation
 
-fileprivate func randomForegroundWindow() -> UIWindow? {
+private func randomForegroundWindow() -> UIWindow? {
     let connectedWindowScenes = UIApplication.shared.connectedScenes
         .compactMap { $0 as? UIWindowScene }
     if let activeScene = connectedWindowScenes.first(where: { $0.activationState == .foregroundActive }) {
@@ -25,7 +25,6 @@ class SceneManager {
         NotificationCenter.default.addObserver(self, selector: #selector(onLoginSuccess), name: loginSuccessNotificationName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onLogout), name: logoutNotificationName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onJwtExpire), name: jwtExpireNotificationName, object: nil)
-        
     }
 
     static let shared = SceneManager()
@@ -34,7 +33,7 @@ class SceneManager {
     var windowMap: [String: UIWindow] = [:]
     // Retain the setuped scene identifiers
     var setupedSceneIdentifierSet: Set<String> = .init()
-    
+
     func startConnect(scene: UIScene, connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let identifier = windowScene.session.persistentIdentifier
@@ -50,7 +49,7 @@ class SceneManager {
             globalLaunchCoordinator.start(scene: scene, withLaunchUrl: connectionOptions.urlContexts.first?.url)
         }
     }
-    
+
     func updateWindowSceneTrait(_ windowScene: UIWindowScene) {
         let top = UIApplication.shared.topWith(windowScene: windowScene)
         if top is ClassRoomViewController || top is MixReplayViewController { // Dont reconfig when top is classroom or replay
@@ -59,7 +58,7 @@ class SceneManager {
         // To avoid the viewcontroller replace complex, only config the root viewcontroller now.
         config(windowScene: windowScene, user: AuthStore.shared.user)
     }
-    
+
     func disconnect(scene: UIScene) {
         guard let windowScene = scene as? UIWindowScene else { return }
         let identifier = windowScene.session.persistentIdentifier
@@ -67,13 +66,14 @@ class SceneManager {
         windowMap.removeValue(forKey: windowScene.session.persistentIdentifier)
         setupedSceneIdentifierSet.remove(identifier)
     }
-    
+
     func reboot(scene: UIWindowScene) {
         config(windowScene: scene, user: AuthStore.shared.user)
     }
-    
+
     func refreshMultiWindowPreview() {
-        windowMap.compactMap(\.value.windowScene?.session)
+        windowMap
+            .compactMap(\.value.windowScene?.session)
             .forEach { UIApplication.shared.requestSceneSessionRefresh($0) }
     }
 
@@ -90,12 +90,17 @@ class SceneManager {
     }
 
     @objc func onLogout() {
+        let pickedRandomScene = randomForegroundWindow()?.windowScene
         for (identifier, window) in windowMap {
             guard let scene = window.windowScene else { return }
-            logger.info("sceneManager: clean scene \(identifier)")
-            config(windowScene: scene, user: nil)
+            if scene === pickedRandomScene {
+                logger.info("sceneManager: logout keep scene \(scene)")
+                config(windowScene: scene, user: nil)
+            } else {
+                logger.info("sceneManager: destruct scene \(identifier)")
+                UIApplication.shared.requestSceneSessionDestruction(scene.session, options: nil)
+            }
         }
-        refreshMultiWindowPreview()
     }
 
     @objc func onJwtExpire() {
@@ -121,7 +126,7 @@ extension SceneManager {
         }
         Theme.shared.setupWindowTheme(window)
         defer {
-            window.makeKeyAndVisible()                                                    
+            window.makeKeyAndVisible()
         }
         if let user {
             startGoogleAnalytics()
@@ -136,7 +141,7 @@ extension SceneManager {
             window.rootViewController = LoginViewController()
         }
     }
-    
+
     func createMainContainer(for window: UIWindow) -> UIViewController {
         func compactMain() -> UIViewController {
             MainTabBarController()
