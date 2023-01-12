@@ -129,8 +129,12 @@ class HomeViewController: UIViewController {
     @objc func onClassLeavingNotification(_ notification: Notification) {
         guard
             let startStatus = notification.userInfo?["startStatus"] as? RoomStartStatus,
-            let roomUUID = notification.userInfo?["roomUUID"] as? String
+            let roomUUID = notification.userInfo?["roomUUID"] as? String,
+            let sender = notification.userInfo?["sender"] as? UIResponder
         else { return }
+        if view.scene() !== sender.scene() {
+            return
+        }
         guard let vc = mainContainer?.concreteViewController else { return }
         let isStop = startStatus == .Stopped
         if let vc = vc as? MainSplitViewController {

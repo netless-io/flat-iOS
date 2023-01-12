@@ -634,7 +634,7 @@ class ClassRoomViewModel {
         return .init(recording: recording, loading: loading.asObservable(), layoutUpdate: layoutUpdate)
     }
 
-    func destroy() {
+    func destroy(sender: Any) {
         // Manual deinit it to remove update timer. In case of memory leak
         recordModel = nil
         stateHandler.destroy()
@@ -642,6 +642,7 @@ class ClassRoomViewModel {
         NotificationCenter.default.post(name: classRoomLeavingNotificationName,
                                         object: nil,
                                         userInfo: ["roomUUID": roomUUID,
-                                                   "startStatus": startStatus])
+                                                   "startStatus": startStatus,
+                                                   "sender": sender])
     }
 }
