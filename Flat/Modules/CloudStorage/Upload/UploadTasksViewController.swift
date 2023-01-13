@@ -9,6 +9,7 @@
 import RxRelay
 import RxSwift
 import UIKit
+import DZNEmptyDataSet
 
 class UploadTasksViewController: UIViewController {
     // MARK: - Public
@@ -173,6 +174,7 @@ class UploadTasksViewController: UIViewController {
         view.dataSource = self
         view.rowHeight = 70
         view.showsVerticalScrollIndicator = false
+        view.emptyDataSetSource = self
         return view
     }()
 
@@ -215,5 +217,19 @@ extension UploadTasksViewController: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension UploadTasksViewController: DZNEmptyDataSetSource {
+    func title(forEmptyDataSet _: UIScrollView) -> NSAttributedString? {
+        .init(string: localizeStrings("NoUploadingWarnings"),
+              attributes: [
+                  .foregroundColor: UIColor.color(type: .text),
+                  .font: UIFont.systemFont(ofSize: 14),
+              ])
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        UIImage(named: "cloud_empty", in: nil, compatibleWith: traitCollection)
     }
 }
