@@ -186,15 +186,6 @@ class FastboardViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-
-//    var regularUndoLeftConstraint: NSLayoutConstraint?
-//    var regularPageRightConstraint: NSLayoutConstraint?
-    
-//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-//        super.traitCollectionDidChange(previousTraitCollection)
-//        regularUndoLeftConstraint?.constant = isOnPadSplitScreen ? 44 : 8
-//        regularPageRightConstraint?.constant = isOnPadSplitScreen ? 44 : 8
-//    }
     
     func setupViews() {
         view.addSubview(fastRoom.view)
@@ -212,16 +203,6 @@ class FastboardViewController: UIViewController {
             items.append(appsItem)
             return FastRoomPanel(items: items)
         }
-        
-//        // Add addtional constraint to adapt multiwindow
-//        if let regular = fastRoom.view.overlay as? RegularFastRoomOverlay {
-//            regular.undoRedoPanel.view?.snp.makeConstraints { make in
-//                self.regularUndoLeftConstraint = make.left.equalToSuperview().inset(8).constraint.layoutConstraints[0]
-//            }
-//            regular.scenePanel.view?.snp.makeConstraints({ make in
-//                self.regularPageRightConstraint = make.right.equalToSuperview().inset(8).constraint.layoutConstraints[0]
-//            })
-//        }
     }
 
     // MARK: - Lazy

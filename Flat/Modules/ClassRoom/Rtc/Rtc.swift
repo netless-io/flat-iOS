@@ -20,6 +20,8 @@ class Rtc: NSObject {
     let screenShareInfo: ShareScreenInfo?
     let screenShareJoinBehavior: BehaviorRelay<Bool> = .init(value: false)
     let errorPublisher = PublishRelay<RtcError>.init()
+    let lastMileDelay = BehaviorRelay<Int>.init(value: 0)
+    let networkStatusBehavior = BehaviorRelay<AgoraNetworkQuality>.init(value: .bad)
     private var joinChannelBlock: (() -> Void)?
     let isJoined = BehaviorRelay<Bool>.init(value: false)
     var targetLocalMic: Bool? = false
@@ -168,7 +170,7 @@ class Rtc: NSObject {
         
         agoraKit.enableVideo()
         agoraKit.enableAudio()
-
+        
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
             canvas.uid = uid
@@ -239,6 +241,25 @@ extension Rtc: AgoraRtcEngineDelegate {
         }
     }
 
+    func rtcEngine(_ engine: AgoraRtcEngineKit, reportRtcStats stats: AgoraChannelStats) {
+        lastMileDelay.accept(Int(stats.lastmileDelay))
+    }
+    
+    func rtcEngine(_ engine: AgoraRtcEngineKit, networkQuality uid: UInt, txQuality: AgoraNetworkQuality, rxQuality: AgoraNetworkQuality) {
+        if uid == 0 {
+            switch (rxQuality, txQuality) {
+            case (.excellent, .excellent):
+                networkStatusBehavior.accept(.excellent)
+            case (.bad, _), (_, .bad):
+                networkStatusBehavior.accept(.bad)
+            case (.unknown, let s), (let s, .unknown):
+                networkStatusBehavior.accept(s)
+            default:
+                networkStatusBehavior.accept(.good)
+            }
+        }
+    }
+    
     func rtcEngine(_: AgoraRtcEngineKit, didApiCallExecute _: Int, api _: String, result _: String) {}
     func rtcEngine(_: AgoraRtcEngineKit, didJoinChannel _: String, withUid _: UInt, elapsed _: Int) {}
     func rtcEngine(_: AgoraRtcEngineKit, didLeaveChannelWith _: AgoraChannelStats) {}

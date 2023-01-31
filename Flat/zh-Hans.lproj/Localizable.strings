@@ -804,7 +804,16 @@
 "and" = "和";
 
 
+"classroomTimePassed" = "已上课";
+
+
 "inviteDescribe" = "邀请你参加 Flat 房间";
+
+
+"latency" = "延迟";
+
+
+"network" = "网络";
 
 
 "offline" = "离线中";

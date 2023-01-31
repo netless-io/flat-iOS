@@ -801,7 +801,16 @@
 "and" = "and";
 
 
+"classroomTimePassed" = "Duration";
+
+
 "inviteDescribe" = "invite you to join the Flat classroom";
+
+
+"latency" = "Latency";
+
+
+"network" = "Network";
 
 
 "offline" = "offline";

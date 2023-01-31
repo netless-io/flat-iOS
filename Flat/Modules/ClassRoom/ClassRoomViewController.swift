@@ -15,21 +15,10 @@ import Whiteboard
 let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
 
 class ClassRoomViewController: UIViewController {
+    override var prefersStatusBarHidden: Bool { true }
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         traitCollection.hasCompact ? .landscapeRight : .landscape
-    }
-
-    override var prefersStatusBarHidden: Bool { traitCollection.verticalSizeClass == .compact }
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        switch Theme.shared.style {
-        case .dark:
-            return .lightContent
-        case .light:
-            return .darkContent
-        default:
-            return .default
-        }
     }
 
     func raiseHandButtonWidth() -> CGFloat {
@@ -58,7 +47,8 @@ class ClassRoomViewController: UIViewController {
          userListViewController: ClassRoomUsersViewController,
          inviteViewController: @escaping () -> UIViewController,
          isOwner: Bool,
-         ownerUUID: String)
+         ownerUUID: String,
+         beginTime: Date)
     {
         self.viewModel = viewModel
         self.fastboardViewController = fastboardViewController
@@ -67,6 +57,7 @@ class ClassRoomViewController: UIViewController {
         self.inviteViewController = inviteViewController
         self.isOwner = isOwner
         self.ownerUUID = ownerUUID
+        self.classroomStatusBar = .init(beginTime: beginTime)
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         logger.trace("\(self) init")
@@ -116,15 +107,12 @@ class ClassRoomViewController: UIViewController {
             splitWarningsView.isHidden = true
         }
     }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateLayout()
-    }
-
+    
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
-        updateLayout()
+        if container.superview != nil {
+            updateLayout()
+        }
     }
 
     deinit {
@@ -202,6 +190,7 @@ class ClassRoomViewController: UIViewController {
         bindChat()
         bindTerminate()
         bindInvite()
+        bindStatusBar()
 
         if isOwner {
             bindDeviceResponse()
@@ -338,6 +327,27 @@ class ClassRoomViewController: UIViewController {
             .subscribe(with: self, onNext: { weakSelf, toastString in
                 weakSelf.toast(toastString, timeInterval: 3, preventTouching: false)
             })
+            .disposed(by: rx.disposeBag)
+    }
+
+    func bindStatusBar() {
+        rtcListViewController.viewModel.rtc.lastMileDelay
+            .subscribe(with: self) { ws, v in
+                ws.classroomStatusBar.latency = v
+            }
+            .disposed(by: rx.disposeBag)
+
+        rtcListViewController.viewModel.rtc.networkStatusBehavior
+            .subscribe(with: self) { ws, q in
+                switch q {
+                case .excellent:
+                    ws.classroomStatusBar.networkStatus = .great
+                case .good:
+                    ws.classroomStatusBar.networkStatus = .good
+                default:
+                    ws.classroomStatusBar.networkStatus = .bad
+                }
+            }
             .disposed(by: rx.disposeBag)
     }
 
@@ -518,12 +528,7 @@ class ClassRoomViewController: UIViewController {
             .drive(with: self, onNext: { weakSelf, _ in
                 let isOpen = !weakSelf.settingVC.videoAreaOn.value
                 weakSelf.settingVC.videoAreaOn.accept(isOpen)
-                weakSelf.updateLayout()
-                UIView.animate(withDuration: 0.3) {
-                    weakSelf.rtcListViewController.view.alpha = isOpen ? 1 : 0
-                    weakSelf.view.setNeedsLayout()
-                    weakSelf.view.layoutIfNeeded()
-                }
+                weakSelf.performRtc(hide: !isOpen)
             })
             .disposed(by: rx.disposeBag)
 
@@ -573,14 +578,79 @@ class ClassRoomViewController: UIViewController {
         }
     }
 
+    lazy var rtcAndBoardContainer: UIStackView = {
+        let rtcView = rtcListViewController.view!
+        let boardView = fastboardViewController.view!
+        let mainContentContainer: UIStackView
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            mainContentContainer = UIStackView(arrangedSubviews: [boardView, rtcView])
+            mainContentContainer.axis = .horizontal
+        } else {
+            mainContentContainer = UIStackView(arrangedSubviews: [rtcView, boardView])
+            mainContentContainer.axis = .vertical
+        }
+        return mainContentContainer
+    }()
+
+    lazy var container: UIStackView = {
+        let container = UIStackView(arrangedSubviews: [classroomStatusBar, rtcAndBoardContainer])
+        container.axis = .vertical
+        return container
+    }()
+
     func setupViews() {
         view.backgroundColor = .color(type: .background)
         addChild(fastboardViewController)
         addChild(rtcListViewController)
-        view.addSubview(rtcListViewController.view)
-        view.addSubview(fastboardViewController.view)
+
+        let rtcView = rtcListViewController.view!
+        let boardView = fastboardViewController.view!
+
+        view.addSubview(container)
         fastboardViewController.didMove(toParent: self)
         rtcListViewController.didMove(toParent: self)
+
+        let isiPhone = UIDevice.current.userInterfaceIdiom == .phone
+        let statusBarMinHeight: CGFloat = 24
+        let statusBarMaxHeight: CGFloat = 66
+        
+        container.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview().offset(view.safeAreaInsets.left / 2)
+            make.width.lessThanOrEqualTo(view).inset(view.safeAreaInsets.left / 2)
+            make.height.lessThanOrEqualToSuperview()
+            make.width.height.equalToSuperview().priority(.high)
+        }
+        classroomStatusBar.snp.makeConstraints { make in
+            make.height.lessThanOrEqualTo(statusBarMaxHeight)
+            make.height.greaterThanOrEqualTo(statusBarMinHeight)
+            make.height.equalTo(statusBarMinHeight).priority(.low)
+        }
+
+        if isiPhone {
+            boardView.snp.makeConstraints { make in
+                make.width.equalTo(boardView.snp.height).dividedBy(ClassRoomLayoutRatioConfig.whiteboardRatio)
+                make.height.equalTo(view).offset(statusBarMinHeight).priority(.low)
+            }
+            let iPhoneMinRtcWidth: CGFloat = 120
+            rtcView.snp.makeConstraints { make in
+                make.width.greaterThanOrEqualTo(iPhoneMinRtcWidth)
+                make.width.equalTo(iPhoneMinRtcWidth).priority(.medium)
+            }
+        } else {
+            let rtcMinHeight: CGFloat = 88
+            let rtcMaxHeight: CGFloat = 190
+            rtcView.snp.makeConstraints { make in
+                make.height.lessThanOrEqualTo(rtcMaxHeight)
+                make.height.greaterThanOrEqualTo(rtcMinHeight)
+                make.height.equalTo(rtcMaxHeight).priority(.medium)
+            }
+            boardView.snp.makeConstraints { make in
+                make.height.equalTo(boardView.snp.width).multipliedBy(ClassRoomLayoutRatioConfig.whiteboardRatio)
+                make.width.equalTo(view).priority(.low)
+            }
+        }
+
         setupToolbar()
     }
 
@@ -650,57 +720,29 @@ class ClassRoomViewController: UIViewController {
     }
 
     // MARK: - Layout
-
-    let classRoomLayout = ClassRoomLayout()
     func updateLayout() {
-        let safeInset = UIEdgeInsets(top: 0, left: view.safeAreaInsets.left, bottom: 0, right: 0)
-        let contentSize = view.bounds.inset(by: safeInset).size
-        let direction: ClassRoomLayout.RtcDirection
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            direction = .right
+        if settingVC.videoAreaOn.value {
+            // Do not use the left safe area.
+            // Mostly, it was iPhone with fringe.
+            container.snp.updateConstraints { make in
+                make.centerX.equalToSuperview().offset(view.safeAreaInsets.left / 2)
+                make.width.lessThanOrEqualTo(view).inset(view.safeAreaInsets.left / 2)
+            }
         } else {
-            // Mac will restrict to be regular
-            // Pad can only using regular
-            direction = .top
+            container.snp.updateConstraints { make in
+                make.centerX.equalToSuperview()
+                make.width.lessThanOrEqualTo(view).inset(view.safeAreaInsets.left / 2)
+            }
         }
-        let layoutOutput = classRoomLayout.getlayout(from: .init(rawContentSize: contentSize,
-                                                                 hideRtc: !settingVC.videoAreaOn.value,
-                                                                 preferredStyle: direction))
-        let x = layoutOutput.inset.left + safeInset.left
-        let y = layoutOutput.inset.top + safeInset.top
-        rtcListViewController.preferredMargin = classRoomLayout.rtcMargin
-
-        switch layoutOutput.rtcDirection {
-        case .top:
-            if layoutOutput.rtcSize.height == 0 {
-                fastboardViewController.view.snp.remakeConstraints { make in
-                    make.left.equalTo(x)
-                    make.top.equalTo(y)
-                    make.size.equalTo(layoutOutput.whiteboardSize)
-                }
-            } else {
-                rtcListViewController.view.snp.remakeConstraints { make in
-                    make.left.equalTo(x)
-                    make.top.equalTo(y)
-                    make.size.equalTo(layoutOutput.rtcSize)
-                }
-                fastboardViewController.view.snp.remakeConstraints { make in
-                    make.left.equalTo(rtcListViewController.view)
-                    make.top.equalTo(rtcListViewController.view.snp.bottom)
-                    make.size.equalTo(layoutOutput.whiteboardSize)
-                }
-            }
-        case .right:
-            fastboardViewController.view.snp.remakeConstraints { make in
-                make.left.equalTo(x)
-                make.top.equalTo(y)
-                make.size.equalTo(layoutOutput.whiteboardSize)
-            }
-            rtcListViewController.view.snp.remakeConstraints { make in
-                make.left.equalTo(fastboardViewController.view.snp.right)
-                make.top.equalTo(fastboardViewController.view)
-                make.size.equalTo(layoutOutput.rtcSize)
-            }
+    }
+    
+    func performRtc(hide: Bool) {
+        rtcAndBoardContainer.sendSubviewToBack(rtcListViewController.view)
+        self.rtcListViewController.view.alpha = hide ? 1 : 0
+        UIView.animate(withDuration: 0.3) {
+            self.rtcListViewController.view.alpha = hide ? 0: 1
+            self.rtcListViewController.view.isHidden = hide
+            self.updateLayout()
         }
     }
 
@@ -860,4 +902,6 @@ class ClassRoomViewController: UIViewController {
         let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         return effectView
     }()
+
+    let classroomStatusBar: ClassroomStatusBar
 }

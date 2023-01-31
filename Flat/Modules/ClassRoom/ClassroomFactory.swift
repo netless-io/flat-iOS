@@ -143,7 +143,8 @@ enum ClassroomFactory {
                                                  userListViewController: userListViewController,
                                                  inviteViewController: shareViewController,
                                                  isOwner: basicInfo.isOwner,
-                                                 ownerUUID: playInfo.ownerUUID)
+                                                 ownerUUID: playInfo.ownerUUID,
+                                                 beginTime: basicInfo.beginTime)
         alertProvider.root = controller
         logger.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller

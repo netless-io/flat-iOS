@@ -85,7 +85,8 @@ extension UIViewController {
             activityView.center = self.view.center
             activityView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
             activityView.snp.makeConstraints {
-                $0.edges.equalToSuperview()
+                // To avoid layout constraints conflict with some vc's view as a child vc.
+                $0.edges.equalToSuperview().priority(.low)
             }
             activityView.tag = activityViewTag
         }

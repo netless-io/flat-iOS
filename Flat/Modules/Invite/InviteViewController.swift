@@ -9,6 +9,8 @@
 import UIKit
 
 class InviteViewController: UIViewController {
+    override var prefersStatusBarHidden: Bool { presentingViewController?.prefersStatusBarHidden ?? false }
+    
     let shareInfo: ShareInfo
 
     init(shareInfo: ShareInfo) {

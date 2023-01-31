@@ -155,6 +155,7 @@
 		8A8507EF27E180A00072AF49 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */; };
 		8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */; };
 		8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */; };
+		8A8A240329879F63008319BB /* ClassroomStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A240229879F63008319BB /* ClassroomStatusBar.swift */; };
 		8A92194828ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */; };
 		8A92194A28ADDFC400DDDA81 /* ScenePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */; };
 		8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBAE2719983700965185 /* CreateRoomRequest.swift */; };
@@ -228,7 +229,6 @@
 		8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */; };
 		8ABD71BF276716AA004FDC36 /* UploadType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BE276716AA004FDC36 /* UploadType.swift */; };
 		8ABD71C227682214004FDC36 /* ClassRoomLayoutRatioConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71C127682214004FDC36 /* ClassRoomLayoutRatioConfig.swift */; };
-		8ABD71E427683DB5004FDC36 /* ClassRoomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71E327683DB5004FDC36 /* ClassRoomLayout.swift */; };
 		8ABF36242745F2D8000D5003 /* AlertProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36232745F2D8000D5003 /* AlertProvider.swift */; };
 		8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362527462F93000D5003 /* Observable+Extension.swift */; };
 		8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362B27464E63000D5003 /* String+Empty.swift */; };
@@ -464,6 +464,7 @@
 		8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
 		8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageInClassViewController.swift; sourceTree = "<group>"; };
 		8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSAuthView.swift; sourceTree = "<group>"; };
+		8A8A240229879F63008319BB /* ClassroomStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStatusBar.swift; sourceTree = "<group>"; };
 		8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardScenesListViewController.swift; sourceTree = "<group>"; };
 		8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePreviewCell.swift; sourceTree = "<group>"; };
 		8A97EBAE2719983700965185 /* CreateRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomRequest.swift; sourceTree = "<group>"; };
@@ -540,7 +541,6 @@
 		8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileShareLaunchItem.swift; sourceTree = "<group>"; };
 		8ABD71BE276716AA004FDC36 /* UploadType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadType.swift; sourceTree = "<group>"; };
 		8ABD71C127682214004FDC36 /* ClassRoomLayoutRatioConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomLayoutRatioConfig.swift; sourceTree = "<group>"; };
-		8ABD71E327683DB5004FDC36 /* ClassRoomLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomLayout.swift; sourceTree = "<group>"; };
 		8ABF36232745F2D8000D5003 /* AlertProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertProvider.swift; sourceTree = "<group>"; };
 		8ABF362527462F93000D5003 /* Observable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extension.swift"; sourceTree = "<group>"; };
 		8ABF362B27464E63000D5003 /* String+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Empty.swift"; sourceTree = "<group>"; };
@@ -843,6 +843,7 @@
 		8A11CC22272019C9001D0B1F /* ClassRoom */ = {
 			isa = PBXGroup;
 			children = (
+				8A8A240129879F4C008319BB /* ClassroomStatusBar */,
 				8AAE2547295D794E007D5507 /* RaiseHand */,
 				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
@@ -1121,6 +1122,14 @@
 				8A80209F27570F4B00F5691C /* PageListContainer.swift */,
 			);
 			path = PageContainer;
+			sourceTree = "<group>";
+		};
+		8A8A240129879F4C008319BB /* ClassroomStatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				8A8A240229879F63008319BB /* ClassroomStatusBar.swift */,
+			);
+			path = ClassroomStatusBar;
 			sourceTree = "<group>";
 		};
 		8A92195E28AF3B9B00DDDA81 /* ClassroomState */ = {
@@ -1409,7 +1418,6 @@
 		8ABF362827464543000D5003 /* ClassroomLayout */ = {
 			isa = PBXGroup;
 			children = (
-				8ABD71E327683DB5004FDC36 /* ClassRoomLayout.swift */,
 				8ABD71C127682214004FDC36 /* ClassRoomLayoutRatioConfig.swift */,
 			);
 			path = ClassroomLayout;
@@ -1757,7 +1765,6 @@
 				8A172A8C29249584006E4798 /* ShortcutsTableViewCell.swift in Sources */,
 				8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */,
 				8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */,
-				8ABD71E427683DB5004FDC36 /* ClassRoomLayout.swift in Sources */,
 				8A317A9D2966D67800041D4A /* SceneManager.swift in Sources */,
 				8A05C33C2760411D009BCA79 /* MultipartFormData.swift in Sources */,
 				8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */,
@@ -1777,6 +1784,7 @@
 				8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */,
 				8A270B8B27192FEE00450DC6 /* BaseNavigationViewController.swift in Sources */,
 				8A05A1532834C756002DE9B9 /* PrivacyAlertViewController.swift in Sources */,
+				8A8A240329879F63008319BB /* ClassroomStatusBar.swift in Sources */,
 				8AAE2549295D795D007D5507 /* RaiseHandListViewController.swift in Sources */,
 				8A9FB3C727229E4600F6F06F /* Task.swift in Sources */,
 				8A9FB3B5272290AB00F6F06F /* URLRequest+Extension.swift in Sources */,
@@ -2498,6 +2506,8 @@
 					"\"Combine\"",
 					"-weak_framework",
 					"\"SwiftUI\"",
+					"-Xlinker",
+					"-interposable",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(inherited)";

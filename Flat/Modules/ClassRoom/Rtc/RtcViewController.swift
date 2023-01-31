@@ -13,6 +13,11 @@ import RxRelay
 import RxSwift
 import UIKit
 
+enum RTCDirection {
+    case top
+    case right
+}
+
 class RtcViewController: UIViewController {
     let viewModel: RtcViewModel
 
@@ -130,17 +135,17 @@ class RtcViewController: UIViewController {
         direction = view.bounds.width > view.bounds.height ? .top : .right
         updateScrollViewInset()
     }
-
+    
     // MARK: - Direction
 
-    fileprivate var direction: ClassRoomLayout.RtcDirection = .top {
+    fileprivate var direction: RTCDirection = .top {
         didSet {
             guard direction != oldValue else { return }
             sync(direction: direction)
         }
     }
     
-    fileprivate func sync(direction: ClassRoomLayout.RtcDirection) {
+    fileprivate func sync(direction: RTCDirection) {
         switch direction {
         case .right:
             videoItemsStackView.axis = .vertical
@@ -214,7 +219,7 @@ class RtcViewController: UIViewController {
               isLocal: isLocal)
     }
 
-    func remakeConstraintForItemView(view: UIView, direction: ClassRoomLayout.RtcDirection) {
+    func remakeConstraintForItemView(view: UIView, direction: RTCDirection) {
         switch direction {
         case .right:
             view.snp.remakeConstraints { make in
