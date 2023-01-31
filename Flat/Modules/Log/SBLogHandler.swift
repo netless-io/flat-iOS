@@ -36,7 +36,7 @@ struct SBLogHandler: LogHandler {
 
         #if DEBUG
             let console = ConsoleDestination()
-            console.minLevel = .verbose
+            console.minLevel = .info
             console.format = "$DHH:mm:ss.SSS$d $C$L$c - $M"
             logger.addDestination(console)
         #endif
