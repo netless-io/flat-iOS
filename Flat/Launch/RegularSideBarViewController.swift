@@ -13,6 +13,9 @@ import UIKit
 class RegularSideBarViewController: UIViewController {
     let width: CGFloat = 64
     
+    let avatarPlaceHolder = UIImage.imageWith(color: .color(type: .background),
+                                              size: .init(width: 44, height: 44))
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -187,6 +190,7 @@ class RegularSideBarViewController: UIViewController {
         avatarButton.imageEdgeInsets = .init(inset: (containerWidth - width) / 2)
         avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
                                  for: .normal,
+                                 placeholder: avatarPlaceHolder,
                                  options: [.processor(processor)])
     }
 

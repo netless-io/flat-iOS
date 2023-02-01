@@ -22,6 +22,7 @@ class RoomTableViewCell: UITableViewCell {
         contentView.backgroundColor = .color(type: .background)
         roomTitleLabel.textColor = .color(type: .text, .strong)
         roomTimeLabel.textColor = .color(type: .text)
+        ownerAvatarView.backgroundColor = .color(type: .background, .strong)
 
         contentView.layer.insertSublayer(selectionShapeLayer, at: 0)
         contentView.addLine(direction: .bottom,
@@ -80,7 +81,7 @@ class RoomTableViewCell: UITableViewCell {
         let scale = UIScreen.main.scale
         let avatarWidth: CGFloat = max(scale * 32, ownerAvatarView.bounds.width * scale)
         let avatarProcessor = ResizingImageProcessor(referenceSize: .init(width: avatarWidth, height: avatarWidth))
-        ownerAvatarView.kf.setImage(with: URL(string: room.ownerAvatarURL), options: [.processor(avatarProcessor)])
+        ownerAvatarView.kf.setImage(with: URL(string: room.ownerAvatarURL), options: [.processor(avatarProcessor), .transition(.fade(0.3))])
 
         recordIconView.isHidden = !room.hasRecord
     }

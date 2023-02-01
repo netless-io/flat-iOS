@@ -22,6 +22,9 @@ extension RoomStartStatus {
 }
 
 class HomeViewController: UIViewController {
+    let avatarPlaceHolder = UIImage.imageWith(color: .color(type: .background, .strong),
+                                              size: .init(width: 44, height: 44))
+    
     let roomTableViewCellIdentifier = "roomTableViewCellIdentifier"
 
     var showingHistory: Bool = false {
@@ -251,7 +254,8 @@ class HomeViewController: UIViewController {
         avatarButton.imageEdgeInsets = .init(inset: (tableHeaderItemWidth - avatarWidth) / 2)
         avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
                                  for: .normal,
-                                 options: [.processor(processor)])
+                                 placeholder: avatarPlaceHolder,
+                                 options: [.processor(processor), .transition(.fade(0.3))])
     }
 
     // MARK: - Lazy
