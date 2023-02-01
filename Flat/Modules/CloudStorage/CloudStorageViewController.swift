@@ -103,6 +103,16 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
     lazy var addButton: UIButton = {
         let addButton = SpringButton(type: .custom)
         addButton.setImage(UIImage(named: "storage_add"), for: .normal)
+        var actions = UploadType.allCases.map { type -> Action in
+            Action(title: type.title, image: UIImage(named: type.imageName), style: .default) { _ in
+                UploadUtility.shared.start(uploadType: type,
+                                           fromViewController: self,
+                                           delegate: self,
+                                           presentStyle: .main)
+            }
+        }
+        actions.append(.cancel)
+        addButton.setupCommonCustomAlert(actions, preferContextMenu: true)
         return addButton
     }()
 
