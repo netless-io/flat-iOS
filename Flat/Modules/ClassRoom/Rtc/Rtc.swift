@@ -170,6 +170,7 @@ class Rtc: NSObject {
         
         agoraKit.enableVideo()
         agoraKit.enableAudio()
+        agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: false)
         
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
@@ -228,7 +229,7 @@ extension Rtc: AgoraRtcEngineDelegate {
         }
         logger.info("connectionChangedTo \(state) \(reason)")
     }
-
+    
     func rtcEngine(_: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], totalVolume _: Int) {
         for speaker in speakers {
             let strenth = CGFloat(speaker.volume) / 255
