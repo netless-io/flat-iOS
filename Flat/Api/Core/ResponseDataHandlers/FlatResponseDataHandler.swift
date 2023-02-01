@@ -24,7 +24,7 @@ class FlatResponseHandler: ResponseDataHandler {
            let error = FlatApiError(rawValue: code)
         {
             if error == .JWTSignFailed {
-                if !AuthStore.shared.isLogin { // Will send only once
+                if AuthStore.shared.isLogin { // Will send only once
                     FlatResponseHandler.jwtExpireSignal.accept(())
                 }
             }
