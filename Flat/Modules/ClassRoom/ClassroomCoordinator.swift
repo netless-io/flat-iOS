@@ -104,8 +104,9 @@ class ClassroomCoordinator: NSObject {
                 } else {
                     main.present(vc, animated: true)
                 }
-            }, onFailure: { _, error in
+            }, onFailure: { weakSelf, error in
                 btn?.isLoading = false
+                weakSelf.currentClassroomUUID = nil
                 controller?.showAlertWith(message: error.localizedDescription)
             })
             .disposed(by: rx.disposeBag)
@@ -125,7 +126,7 @@ class ClassroomCoordinator: NSObject {
                 if let basicInfo {
                     return .just((p, basicInfo))
                 } else {
-                    return RoomBasicInfo.fetchInfoBy(uuid: uuid, periodicUUID: periodUUID)
+                    return RoomBasicInfo.fetchInfoBy(uuid: p.roomUUID, periodicUUID: periodUUID)
                         .map { (p, $0) }
                 }
             }
