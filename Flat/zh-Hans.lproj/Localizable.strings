@@ -432,6 +432,9 @@
 "PhoneRegistered" = "该手机已被绑定";
 
 
+"PhotoDenyTip" = "需要调用相册权限才可以上传图片，点击进入设置相册权限";
+
+
 "Please agree to the Terms of Service first" = "请先同意服务条款";
 
 

@@ -84,21 +84,31 @@ class UploadUtility: NSObject {
             }
         }
 
+        func failPhotoPermission() {
+            DispatchQueue.main.async {
+                fromViewController.showCheckAlert(checkTitle: localizeStrings("GoSetting"), message: localizeStrings("PhotoDenyTip")) {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            }
+        }
+        
         func presentImage() {
             switch PHPhotoLibrary.authorizationStatus() {
             case .notDetermined:
-                PHPhotoLibrary.requestAuthorization { [weak self] s in
+                PHPhotoLibrary.requestAuthorization { s in
+                    if s == .denied {
+                        failPhotoPermission()
+                        return
+                    }
                     DispatchQueue.main.async {
-                        if s == .denied {
-                            self?.delegate?.uploadUtilityDidMeet(error: "permission denied")
-                            return
-                        }
                         present()
                     }
                 }
                 return
             case .denied:
-                self.delegate?.uploadUtilityDidMeet(error: "permission denied")
+                failPhotoPermission()
             default:
                 present()
             }

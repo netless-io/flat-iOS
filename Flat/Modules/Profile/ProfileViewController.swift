@@ -72,20 +72,26 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Actions
 
     func onClickAvatar() {
+        func failPhotoPermission() {
+            DispatchQueue.main.async {
+                self.showCheckAlert(checkTitle: localizeStrings("GoSetting"), message: localizeStrings("PhotoDenyTip")) {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            }
+        }
         switch PHPhotoLibrary.authorizationStatus() {
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] s in
-                DispatchQueue.main.async {
-                    if s == .denied {
-                        self?.toast("permission denied".localizedDescription)
-                        return
-                    }
-                    self?.onClickAvatar()
+                if s == .denied {
+                    failPhotoPermission()
+                    return
                 }
+                self?.onClickAvatar()
             }
-            return
         case .denied:
-            toast("permission denied".localizedDescription)
+            failPhotoPermission()
         default:
             let vc = UIImagePickerController()
             vc.delegate = self

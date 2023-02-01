@@ -432,6 +432,9 @@
 "PhoneRegistered" = "The phone has already been tied";
 
 
+"PhotoDenyTip" = "You need to invoke album permissions to upload pictures, click to set album permissions";
+
+
 "Please agree to the Terms of Service first" = "Please agree to the Terms of Service first";
 
 
