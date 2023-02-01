@@ -150,14 +150,14 @@ class RtcViewController: UIViewController {
         case .right:
             videoItemsStackView.axis = .vertical
             line.snp.remakeConstraints { make in
-                make.left.equalToSuperview().inset(commonBorderWidth)
+                make.left.equalToSuperview()
                 make.top.bottom.equalToSuperview()
                 make.width.equalTo(commonBorderWidth)
             }
         case .top:
             videoItemsStackView.axis = .horizontal
             line.snp.remakeConstraints { make in
-                make.bottom.equalToSuperview().inset(commonBorderWidth)
+                make.bottom.equalToSuperview()
                 make.left.right.equalToSuperview()
                 make.height.equalTo(commonBorderWidth)
             }
