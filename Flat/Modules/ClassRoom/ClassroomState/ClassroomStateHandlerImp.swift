@@ -421,9 +421,10 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         }
 
         let sharedStageIds = onStageIds.share(replay: 1, scope: .forever)
-
-        // Get member ids from stage ids and online member ids
-        // For offline onstage users can display on the list
+        let ownerUUID = self.ownerUUID
+        // Get member ids from stage ids and online member ids.
+        // For offline onstage users can display on the list.
+        // Insert owner id always.
         let memberIds = Observable.combineLatest(sharedStageIds, onlineMemberIds) { onStage, online -> [String: Bool] in
             var result: [String: Bool] = [:]
             for id in online {
@@ -433,6 +434,9 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 if result[id] == nil {
                     result[id] = false
                 }
+            }
+            if result[ownerUUID] == nil {
+                result[ownerUUID] = false
             }
             return result
         }
@@ -462,7 +466,6 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             return totalUsers
         }
 
-        let ownerUUID = ownerUUID
         let result = Observable.combineLatest(
             members,
             deviceState.asObservable(),

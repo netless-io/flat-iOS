@@ -34,6 +34,7 @@ class ClassRoomUsersViewController: UIViewController {
             if let teacher {
                 teachAvatarImageView.kf.setImage(with: teacher.avatarURL)
                 teacherLabel.text = localizeStrings("Teacher") + ": " + teacher.name
+                teacherOfflineLabel.isHidden = teacher.isOnline
             }
             tableView.reloadData()
         }
@@ -285,17 +286,34 @@ class ClassRoomUsersViewController: UIViewController {
         return view
     }()
 
+    lazy var teacherOfflineLabel: UILabel = {
+        let statusLabel = UILabel()
+        statusLabel.font = .systemFont(ofSize: 12)
+        statusLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        statusLabel.text = "(\(localizeStrings("offline")))"
+        statusLabel.textColor = .systemRed
+        return statusLabel
+    }()
+    
+    lazy var teacherNameStackView: UIStackView = {
+        let nameStack = UIStackView(arrangedSubviews: [teacherLabel, teacherOfflineLabel])
+        nameStack.axis = .vertical
+        nameStack.distribution = .fill
+        nameStack.spacing = 2
+        return nameStack
+    }()
+    
     lazy var teacherInfoView: UIView = {
         let view = UIView()
         view.addSubview(teachAvatarImageView)
-        view.addSubview(teacherLabel)
+        view.addSubview(teacherNameStackView)
         view.addSubview(globalOperationStackView)
         teachAvatarImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
             make.top.equalToSuperview().inset(12)
             make.width.height.equalTo(24)
         }
-        teacherLabel.snp.makeConstraints { make in
+        teacherNameStackView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(48)
             make.centerY.equalTo(teachAvatarImageView)
             make.right.lessThanOrEqualTo(stopInteractingButton.snp.left).offset(-10)
