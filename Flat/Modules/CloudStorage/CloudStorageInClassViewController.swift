@@ -174,7 +174,8 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                 return
             }
             guard let payload = item.meta.whiteConverteInfo else {
-                toast("can't get the meta payload")
+                logger.info("file should convert without convert info \(item)")
+                toast(localizeStrings("FileConvertFailed"))
                 return
             }
             fileSelectTask = item

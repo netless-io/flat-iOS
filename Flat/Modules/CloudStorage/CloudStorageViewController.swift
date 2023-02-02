@@ -350,6 +350,16 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
             enterDirectoryWith(controller: controller)
             return
         }
+        
+        // Should convert but can't find convert info.
+        // Usally means file was crapped.
+        if ConvertService.isFileConvertible(withFileURL: item.urlOrEmpty),
+           item.meta.whiteConverteInfo == nil {
+            logger.info("file should convert without convert info \(item)")
+            toast(localizeStrings("FileConvertFailed"))
+            return
+        }
+        
         if let payload = item.meta.whiteConverteInfo {
             switch payload.convertStep {
             case .converting:
