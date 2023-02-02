@@ -235,8 +235,6 @@ class ClassRoomViewController: UIViewController {
         viewModel.roomStoped
             .take(1)
             .subscribe(with: self, onNext: { weakSelf, _ in
-                // Hide the error 'room ban'
-                weakSelf.fastboardViewController.view.isHidden = true
                 if let _ = weakSelf.presentedViewController { weakSelf.dismiss(animated: false, completion: nil) }
                 weakSelf.showAlertWith(message: localizeStrings("Leaving room soon")) {
                     weakSelf.stopSubModulesAndLeaveUIHierarchy()
