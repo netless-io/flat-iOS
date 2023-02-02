@@ -127,7 +127,10 @@ class RoomUserTableViewCell: UITableViewCell {
 
     lazy var raiseHandButton: UIButton = {
         let raiseHandButton = UIButton(type: .custom)
-        raiseHandButton.setImage(UIImage(named: "raisehand_small_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        raiseHandButton.setTraitRelatedBlock { btn in
+            raiseHandButton.setImage(UIImage(named: "raisehand_small_icon")?.tintColor(.color(type: .primary)), for: .normal)
+            raiseHandButton.setImage(UIImage(named: "raisehand_small_icon")?.tintColor(UIColor.color(light: .grey3, dark: .grey6)), for: .disabled)
+        }
         raiseHandButton.addTarget(self, action: #selector(onClickRaiseHand), for: .touchUpInside)
         raiseHandButton.tintColor = .color(type: .primary)
         raiseHandButton.contentEdgeInsets = .init(top: 8, left: 4, bottom: 8, right: 4)

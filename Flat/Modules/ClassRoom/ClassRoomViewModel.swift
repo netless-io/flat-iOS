@@ -436,6 +436,12 @@ class ClassRoomViewModel {
                 }
                 return .just("")
             }.asDriver(onErrorJustReturn: "stage task error")
+        
+        let cancelRaiseHandTask = input.tapSomeUserRaiseHand
+            .filter { [unowned self] in return $0.rtmUUID == self.userUUID && $0.status.isRaisingHand }
+            .flatMap { [unowned self] user in self.stateHandler.send(command: .updateRaiseHand(false)) }
+            .map { _ in "" }
+            .asDriver(onErrorJustReturn: "")
 
         let whiteboardTask = input.tapSomeUserWhiteboard
             .flatMap { [unowned self] user -> Single<String> in
@@ -501,7 +507,7 @@ class ClassRoomViewModel {
             }
             .asDriver(onErrorJustReturn: "mic task error")
 
-        return Driver.of(allMuteTask, stopTask, onStageTask, whiteboardTask, cameraTask, micTask).merge()
+        return Driver.of(allMuteTask, stopTask, onStageTask, whiteboardTask, cameraTask, micTask, cancelRaiseHandTask).merge()
     }
 
     /// Return should dismiss

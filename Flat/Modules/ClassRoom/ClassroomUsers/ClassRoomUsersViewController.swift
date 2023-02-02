@@ -161,6 +161,7 @@ class ClassRoomUsersViewController: UIViewController {
         cell.set(operationType: .mic, empty: !user.status.isSpeak)
         cell.set(operationType: .camera, empty: !user.status.isSpeak)
         cell.set(operationType: .raiseHand, empty: !user.status.isRaisingHand)
+        cell.raiseHandButton.isEnabled = isUserSelf || isOwner
         cell.userSelfPointer.isHidden = !isUserSelf
 
         let cameraOperationEnable = isOwner || isUserSelf
