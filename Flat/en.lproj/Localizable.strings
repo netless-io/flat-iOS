@@ -342,7 +342,7 @@
 "MaxWritableUsersTips" = "The current room type has reached its maximum number of people who can go on stage and open whiteboard permissions.";
 
 
-"Mic" = "Mic";
+"Mic" = "Microphone";
 
 
 "MicDenyTip" = "You need to invoke microphone permission for voice chat, click into settings to open microphone permission";
@@ -378,7 +378,7 @@
 "NotPermission" = "No permission to operate";
 
 
-"On/Off stage" = "On/off stage";
+"On/Off stage" = "On Stage";
 
 
 "OneToOne" = "OneToOne";
@@ -450,7 +450,7 @@
 "Profile" = "Profile";
 
 
-"Raised Hand" = "Raised Hand";
+"Raised Hand" = "Raised";
 
 
 "Reconnect" = "Reconnect";
