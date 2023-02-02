@@ -112,23 +112,28 @@ class FastboardViewController: UIViewController {
     var regularUndoLeftMargin: Constraint?
     var regularRightSceneMargin: Constraint?
     let boardMargin: CGFloat = 8
+    
     func updateUndoAndSceneConstraints() {
         if #available(iOS 14.0, *) {
             if ProcessInfo().isiOSAppOnMac { return }
         }
         if UIDevice.current.userInterfaceIdiom == .pad {
-            if isOnPadSplitScreen {
-                regularUndoLeftMargin?.update(inset: 88)
-                regularRightSceneMargin?.update(inset: 88)
-            } else {
+            let overlay = (fastRoom.view.overlay as? RegularFastRoomOverlay)
+            let itemCount = overlay?.operationPanel.items.count ?? 0
+            let itemHeight = FastRoomControlBar.appearance().itemWidth
+            let minHeight = itemHeight * CGFloat(itemCount + 2)
+            if view.bounds.height >= minHeight {
                 regularUndoLeftMargin?.update(inset: boardMargin)
                 regularRightSceneMargin?.update(inset: boardMargin)
+            } else {
+                regularUndoLeftMargin?.update(inset: 88)
+                regularRightSceneMargin?.update(inset: 88)
             }
         }
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         updateUndoAndSceneConstraints()
     }
     
