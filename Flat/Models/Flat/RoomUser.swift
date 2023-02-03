@@ -24,8 +24,6 @@ struct RoomUser: Hashable, CustomStringConvertible {
     let avatarURL: URL?
     var status: RoomUserStatus
     let isOnline: Bool
-
-    var isUsingWhiteboardWritable: Bool { status.isSpeak || status.whiteboard }
     
     static let empty: Self = .init(rtmUUID: "", rtcUID: 0, name: "", avatarURL: nil, isOnline: false)
 

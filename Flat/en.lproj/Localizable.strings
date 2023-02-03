@@ -339,7 +339,10 @@
 "Logout" = "Logout";
 
 
-"MaxWritableUsersTips" = "The current room type has reached its maximum number of people who can go on stage and open whiteboard permissions.";
+"MaxWritableUsersTips" = "The stage is full, please close the existing students to speak before agreeing to other students' requests to come to the stage \n (or switch the room type to small class, supporting multiple students to speak at the same time)";
+
+
+"MaxWritableUsersTipsForSmallClass" = "The stage is full, please close the existing students to speak before agreeing to other students' requests to come to the stage (small classes support up to 16 students to speak at the same time)";
 
 
 "Mic" = "Microphone";

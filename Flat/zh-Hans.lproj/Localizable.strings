@@ -339,7 +339,10 @@
 "Logout" = "退出登录";
 
 
-"MaxWritableUsersTips" = "当前房间类型内可上台与开启白板权限人数已达上限";
+"MaxWritableUsersTips" = "台上座位已满，请先关闭已有学生发言再同意其他学生的上台请求。\n（或切换房间类型为小班课，支持多位学生同时发言）";
+
+
+"MaxWritableUsersTipsForSmallClass" = "台上座位已满，请先关闭已有学生发言再同意其他学生的上台请求。（小班课最多支持16位学生同时发言）";
 
 
 "Mic" = "麦克风";

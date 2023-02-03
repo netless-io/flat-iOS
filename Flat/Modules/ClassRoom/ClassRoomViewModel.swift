@@ -418,15 +418,11 @@ class ClassRoomViewModel {
                     }
                 } else {
                     if self.isOwner {
-                        if user.isUsingWhiteboardWritable {
-                            return self.stateHandler
-                                .send(command: .pickUserOnStage(user.rtmUUID))
-                                .map { "" }
-                        }
-                        return self.stateHandler.checkIfWritableUserOverMaxCount()
+                        let isSmallClass = self.roomType == .smallClass
+                        return self.stateHandler.checkIfSpeakUserOverMaxCount()
                             .flatMap { overCount in
                                 if overCount {
-                                    return .just(localizeStrings("MaxWritableUsersTips"))
+                                    return .just(localizeStrings(isSmallClass ? "MaxWritableUsersTipsForSmallClass" : "MaxWritableUsersTips"))
                                 }
                                 return self.stateHandler
                                     .send(command: .pickUserOnStage(user.rtmUUID))
@@ -453,20 +449,9 @@ class ClassRoomViewModel {
                     }
                 } else {
                     if self.isOwner {
-                        if user.isUsingWhiteboardWritable {
-                            return self.stateHandler
-                                .send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
-                                .map { "" }
-                        }
-                        return self.stateHandler.checkIfWritableUserOverMaxCount()
-                            .flatMap { overCount in
-                                if overCount {
-                                    return .just(localizeStrings("MaxWritableUsersTips"))
-                                }
-                                return self.stateHandler
-                                    .send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
-                                    .map { "" }
-                            }
+                        return self.stateHandler
+                            .send(command: .updateUserWhiteboardEnable(uuid: user.rtmUUID, enable: true))
+                            .map { "" }
                     }
                 }
                 return .just("")

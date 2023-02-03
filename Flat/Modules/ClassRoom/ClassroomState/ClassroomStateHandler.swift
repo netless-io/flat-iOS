@@ -77,7 +77,7 @@ protocol ClassroomStateHandler {
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }
     var currentOnStageUsers: [String: RoomUser] { get }
 
-    func checkIfWritableUserOverMaxCount() -> Single<Bool>
+    func checkIfSpeakUserOverMaxCount() -> Single<Bool>
     func send(command: ClassroomCommand) -> Single<Void>
     func members() -> Observable<[RoomUser]>
     func memberNameQueryProvider() -> UserInfoQueryProvider

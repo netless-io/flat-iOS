@@ -524,11 +524,11 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         return observableMembers!
     }
 
-    func checkIfWritableUserOverMaxCount() -> Single<Bool> {
+    func checkIfSpeakUserOverMaxCount() -> Single<Bool> {
         if let observableMembers {
             return observableMembers
                 .map { users in
-                    users.filter(\.isUsingWhiteboardWritable).count
+                    users.filter(\.status.isSpeak).count
                 }
                 .map { [unowned self] in
                     $0 >= self.maxWritableUsersCount
