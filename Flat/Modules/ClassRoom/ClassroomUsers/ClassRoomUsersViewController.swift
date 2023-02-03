@@ -79,14 +79,6 @@ class ClassRoomUsersViewController: UIViewController {
             if !isOwner {
                 stopInteractingButton.isHidden = true
                 allMuteButton.isHidden = true
-            } else {
-                users.map {
-                    $0.first(where: {
-                        $0.rtmUUID != ownerId && ($0.status.isSpeak || $0.status.isRaisingHand)
-                    }).map { _ in false } ?? true
-                }.asDriver(onErrorJustReturn: true)
-                    .drive(stopInteractingButton.rx.isHidden)
-                    .disposed(by: rx.disposeBag)
             }
         }
     }

@@ -193,6 +193,7 @@ class ClassRoomSettingViewController: UIViewController {
             button.setImage(UIImage(named: "logout")?.tintColor(color.resolvedColor(with: button.traitCollection)), for: .normal)
             button.layer.borderColor = color.resolvedColor(with: button.traitCollection).cgColor
         }
+        button.adjustsImageWhenHighlighted = false
         button.layer.borderWidth = commonBorderWidth
         button.layer.cornerRadius = 4
         button.layer.masksToBounds = true

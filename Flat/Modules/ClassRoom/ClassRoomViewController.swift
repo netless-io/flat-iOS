@@ -882,7 +882,7 @@ class ClassRoomViewController: UIViewController {
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [chatButton, usersButton, inviteButton, cloudStorageButton, settingButton, recordButton])
+                                         views: [chatButton, usersButton, inviteButton, cloudStorageButton, recordButton, settingButton])
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
             bar.forceUpdate(button: recordButton, visible: isOwner)
