@@ -158,8 +158,6 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 return syncedStore.getValues()
                     .flatMap { [weak self] result in
                         guard let self else { return .error("self not exist") }
-                        let onStageUsersCount = result.onStageUsers.filter(\.value).count
-                        if onStageUsersCount >= self.maxWritableUsersCount { return .error("can't accept more onstage users") }
                         var users = result.roomState.raiseHandUsers
                         if raise, !users.contains(senderId) {
                             users.append(senderId)
