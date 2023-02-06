@@ -71,7 +71,7 @@ class RoomUserTableViewCell: UITableViewCell {
             make.left.equalToSuperview().inset(spacing)
             make.height.equalToSuperview()
             make.right.lessThanOrEqualToSuperview()
-            make.right.equalToSuperview().priority(.low)
+            make.right.equalToSuperview().priority(.medium)
         }
         v.tag = mainContentTag
         let emptyView = UILabel()
@@ -223,7 +223,9 @@ class RoomUserTableViewCell: UITableViewCell {
         }
         let btn = UIButton()
         view.addSubview(btn)
-        btn.snp.makeConstraints { $0.edges.equalToSuperview() }
+        btn.snp.makeConstraints {
+            $0.edges.equalTo(onStageSwitch)
+        }
         btn.addTarget(self, action: #selector(onStageChanged), for: .touchUpInside)
         return view
     }()
@@ -237,7 +239,9 @@ class RoomUserTableViewCell: UITableViewCell {
         }
         let btn = UIButton()
         view.addSubview(btn)
-        btn.snp.makeConstraints { $0.edges.equalToSuperview() }
+        btn.snp.makeConstraints {
+            $0.edges.equalTo(whiteboardSwitch)
+        }
         btn.addTarget(self, action: #selector(onWhiteboardChanged), for: .touchUpInside)
         return view
     }()
