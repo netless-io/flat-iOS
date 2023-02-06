@@ -48,7 +48,7 @@ class Rtc: NSObject {
                 return
             }
         }
-        if !localAudioOn && !localAudioOn {
+        if !localAudioOn && !localCameraOn {
             if isBroadcaster {
                 isBroadcaster = false
                 let result = agoraKit.setClientRole(.audience)
