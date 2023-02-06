@@ -762,6 +762,7 @@ class ClassRoomViewController: UIViewController {
     lazy var raiseHandListButton: UIButton = {
         let button = UIButton(type: .custom)
         let circle = UIView()
+        button.backgroundColor = .color(type: .background)
         button.addSubview(circle)
         circle.layer.borderWidth = commonBorderWidth
         circle.layer.cornerRadius = raiseHandButtonWidth() / 2
@@ -781,6 +782,7 @@ class ClassRoomViewController: UIViewController {
 
     lazy var raiseHandButton: UIButton = {
         let button = UIButton(type: .custom)
+        button.backgroundColor = .color(type: .background)
         let circle = UIView()
         button.addSubview(circle)
         circle.layer.borderWidth = commonBorderWidth
