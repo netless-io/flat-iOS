@@ -389,6 +389,9 @@ class ClassRoomViewController: UIViewController {
                         weakSelf.chatButton.updateBadgeHide(!show)
                     })
                     .disposed(by: weakSelf.rx.disposeBag)
+
+                // To trigger bind function
+                vc.loadViewIfNeeded()
             })
             .disposed(by: rx.disposeBag)
 
