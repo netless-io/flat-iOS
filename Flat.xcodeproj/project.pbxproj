@@ -2135,7 +2135,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册用于上传课件或更新头像";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
@@ -2310,7 +2310,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册用于上传课件或更新头像";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
@@ -2419,7 +2419,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册用于上传课件或更新头像";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
@@ -2597,7 +2597,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册用于上传课件或更新头像";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
@@ -2706,7 +2706,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册用于上传课件或更新头像";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
@@ -2947,7 +2947,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册用于上传课件或更新头像";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
@@ -3065,7 +3065,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "需要使用相机来进行视频通话";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "需要使用麦克风进行语音通话";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册以上传图片";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "访问相册用于上传课件或更新头像";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
