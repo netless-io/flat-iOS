@@ -200,11 +200,11 @@ class FastboardViewController: UIViewController {
             }
             .asDriver(onErrorJustReturn: false)
             .distinctUntilChanged()
-            .drive(with: self, onNext: { weakSelf, isJoin in
-                if isJoin {
-                    weakSelf.stopActivityIndicator()
-                } else {
+            .drive(with: self, onNext: { weakSelf, showLoading in
+                if showLoading {
                     weakSelf.showActivityIndicator()
+                } else {
+                    weakSelf.stopActivityIndicator()
                 }
             })
             .disposed(by: rx.disposeBag)
