@@ -764,43 +764,16 @@ class ClassRoomViewController: UIViewController {
 
     lazy var raiseHandListButton: UIButton = {
         let button = UIButton(type: .custom)
-        let circle = UIView()
-        button.backgroundColor = .color(type: .background)
-        button.addSubview(circle)
-        circle.layer.borderWidth = commonBorderWidth
-        circle.layer.cornerRadius = raiseHandButtonWidth() / 2
-        circle.clipsToBounds = true
-        circle.isUserInteractionEnabled = false
-        circle.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
         button.setupBadgeView(rightInset: -6, topInset: -6, width: 20)
-        button.setTraitRelatedBlock { btn in
-            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .text)), for: .normal)
-            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .primary)), for: .selected)
-            circle.layer.borderColor = UIColor.borderColor.cgColor
-        }
+        button.setImage(UIImage(named: "raisehand_normal"), for: .normal)
+        button.setImage(UIImage(named: "raisehand_selected"), for: .selected)
         return button
     }()
 
     lazy var raiseHandButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.backgroundColor = .color(type: .background)
-        let circle = UIView()
-        button.addSubview(circle)
-        circle.layer.borderWidth = commonBorderWidth
-        circle.layer.cornerRadius = raiseHandButtonWidth() / 2
-        circle.clipsToBounds = true
-        circle.isUserInteractionEnabled = false
-        circle.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        button.setTraitRelatedBlock { btn in
-            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .text)), for: .normal)
-            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .primary)), for: .highlighted)
-            btn.setImage(UIImage(named: "raisehand")?.tintColor(.color(type: .primary)), for: .selected)
-            circle.layer.borderColor = UIColor.borderColor.cgColor
-        }
+        button.setImage(UIImage(named: "raisehand_normal"), for: .normal)
+        button.setImage(UIImage(named: "raisehand_selected"), for: .selected)
         return button
     }()
 
