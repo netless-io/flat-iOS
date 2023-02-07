@@ -91,7 +91,6 @@ class ChatViewModel {
                 r.append(contentsOf: $1)
                 return r
             })
-            .debug("ccc::")
 
         let nameResult = rawMessages.flatMap { message -> Observable<[String: UserBriefInfo]> in
             let ids = message.compactMap(\.userId)

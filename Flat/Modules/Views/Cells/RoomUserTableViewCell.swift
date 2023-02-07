@@ -70,8 +70,9 @@ class RoomUserTableViewCell: UITableViewCell {
         v.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(spacing)
             make.height.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.right.lessThanOrEqualToSuperview()
-            make.right.equalToSuperview().priority(.medium)
+            make.right.equalToSuperview().priority(.low.advanced(by: -1))
         }
         v.tag = mainContentTag
         let emptyView = UILabel()
@@ -218,13 +219,14 @@ class RoomUserTableViewCell: UITableViewCell {
         let view = UIView()
         view.addSubview(onStageSwitch)
         onStageSwitch.snp.makeConstraints {
-            $0.left.equalToSuperview()
+            $0.left.right.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
         let btn = UIButton()
         view.addSubview(btn)
         btn.snp.makeConstraints {
-            $0.edges.equalTo(onStageSwitch)
+            $0.center.equalTo(onStageSwitch).priority(.low)
+            $0.width.height.equalTo(44)
         }
         btn.addTarget(self, action: #selector(onStageChanged), for: .touchUpInside)
         return view
@@ -234,13 +236,14 @@ class RoomUserTableViewCell: UITableViewCell {
         let view = UIView()
         view.addSubview(whiteboardSwitch)
         whiteboardSwitch.snp.makeConstraints {
-            $0.left.equalToSuperview()
+            $0.left.right.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
         let btn = UIButton()
         view.addSubview(btn)
         btn.snp.makeConstraints {
-            $0.edges.equalTo(whiteboardSwitch)
+            $0.center.equalTo(whiteboardSwitch).priority(.low)
+            $0.width.height.equalTo(44)
         }
         btn.addTarget(self, action: #selector(onWhiteboardChanged), for: .touchUpInside)
         return view
@@ -277,7 +280,7 @@ class RoomUserTableViewCell: UITableViewCell {
         wrappedViews.enumerated().forEach { (index, v) in
             v.snp.makeConstraints { make in
                 make.height.equalToSuperview()
-                make.width.equalTo(index == 0 ? classRoomUserNameWidth : classRoomNormalItemWidth)
+                make.width.equalTo(index == 0 ? classRoomUserNameWidth : classRoomNormalItemWidth).priority(.required)
             }
         }
         return view
