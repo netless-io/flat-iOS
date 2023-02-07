@@ -54,7 +54,9 @@ class RtcCellPopMenuView: PopMenuView {
         clipsToBounds = true
         layer.cornerRadius = 4
         layer.borderWidth = commonBorderWidth
-        layer.borderColor = UIColor.borderColor.cgColor
+        setTraitRelatedBlock { v in
+            v.layer.borderColor = UIColor.borderColor.cgColor
+        }
         backgroundColor = .color(type: .background)
         addSubview(stackView)
         stackView.snp.makeConstraints { make in

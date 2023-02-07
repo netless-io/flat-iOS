@@ -341,7 +341,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !tableView.isEditing else { return }
-        if traitCollection.hasCompact {
+        if isWindowCompact {
             tableView.deselectRow(at: indexPath, animated: true)
         }
         let item = container.items[indexPath.row]

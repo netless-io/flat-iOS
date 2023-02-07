@@ -9,9 +9,9 @@
 import Fastboard
 import RxRelay
 import RxSwift
+import SnapKit
 import UIKit
 import Whiteboard
-import SnapKit
 
 func tryPreloadWhiteboard() {
     DispatchQueue.main.async {
@@ -41,8 +41,8 @@ class FastboardViewController: UIViewController {
     func leave() {
         fastRoom.disconnectRoom()
     }
-    
-    func updateRoomPermission(_ permission: WhiteboardPermission) -> Single<(WhiteboardPermission)> {
+
+    func updateRoomPermission(_ permission: WhiteboardPermission) -> Single<WhiteboardPermission> {
         guard let w = fastRoom.room?.isWritable else { return .just(permission) }
         logger.info("update whiteboard permission \(permission)")
         fastRoom.room?.disableDeviceInputs(!permission.inputEnable)
@@ -112,7 +112,7 @@ class FastboardViewController: UIViewController {
     var regularUndoLeftMargin: Constraint?
     var regularRightSceneMargin: Constraint?
     let boardMargin: CGFloat = 8
-    
+
     func updateUndoAndSceneConstraints() {
         if #available(iOS 14.0, *) {
             if ProcessInfo().isiOSAppOnMac { return }
@@ -131,13 +131,21 @@ class FastboardViewController: UIViewController {
             }
         }
     }
-    
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // It does not affect whiteboard background color.
+        // Only for the device rotate transition
+        fastRoom.view.whiteboardView.backgroundColor = UIColor.color(type: .background).resolvedColor(with: traitCollection)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUndoAndSceneConstraints()
     }
-    
+
     // MARK: - Private
+
     func joinRoom() {
         fastRoom.joinRoom { [weak self] result in
             switch result {
@@ -167,9 +175,9 @@ class FastboardViewController: UIViewController {
         let permissionDisable = !roomPermission.value.inputEnable
         updateUndoRedoGestureDisable(preferDisable || permissionDisable)
     }
-    
+
     @objc
-    fileprivate func onUndoRedoShortcutsUpdate(notification: Notification) {
+    fileprivate func onUndoRedoShortcutsUpdate(notification _: Notification) {
         syncUndoRedoGestureEnable()
     }
 
@@ -186,7 +194,11 @@ class FastboardViewController: UIViewController {
 
     func bindConnecting() {
         isRoomJoined
-            .asDriver()
+            .withLatestFrom(isRoomBanned) { join, ban -> Bool in
+                let showLoading = !join && !ban
+                return showLoading
+            }
+            .asDriver(onErrorJustReturn: false)
             .distinctUntilChanged()
             .drive(with: self, onNext: { weakSelf, isJoin in
                 if isJoin {
@@ -197,7 +209,7 @@ class FastboardViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
     }
-    
+
     func setupViews() {
         view.addSubview(fastRoom.view)
         fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }

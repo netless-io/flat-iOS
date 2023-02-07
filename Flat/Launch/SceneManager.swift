@@ -122,6 +122,7 @@ extension SceneManager {
         } else {
             window = UIWindow(frame: windowScene.coordinateSpace.bounds)
             window.windowScene = windowScene
+            window.backgroundColor = .color(type: .background)
             windowMap[windowScene.session.persistentIdentifier] = window
         }
         Theme.shared.setupWindowTheme(window)

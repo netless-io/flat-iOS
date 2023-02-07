@@ -253,8 +253,8 @@ class ChatViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.backgroundColor = .classroomChildBG
         let leftIcon = UIImageView()
-        leftIcon.setTraitRelatedBlock { iconView in
-            iconView.image = UIImage(named: "chat")?.tintColor(.color(type: .text, .strong).resolvedColor(with: iconView.traitCollection))
+        view.setTraitRelatedBlock { [weak leftIcon] v in
+            leftIcon?.image = UIImage(named: "chat")?.tintColor(.color(type: .text, .strong).resolvedColor(with: v.traitCollection))
         }
         leftIcon.contentMode = .scaleAspectFit
         view.addSubview(leftIcon)

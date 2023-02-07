@@ -21,10 +21,11 @@ class CloudStorageTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+        let color = (selected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)).resolvedColor(with: traitCollection)
         if animated {
-            selectionView.layer.backgroundColor = selected ? UIColor.color(type: .primary, .weaker).cgColor : UIColor.color(type: .background).cgColor
+            selectionView.layer.backgroundColor = color.cgColor
         } else {
-            selectionView.backgroundColor = selected ? .color(type: .primary, .weaker) : .color(type: .background)
+            selectionView.backgroundColor = color
         }
         moreActionButton.isSelected = selected
     }
