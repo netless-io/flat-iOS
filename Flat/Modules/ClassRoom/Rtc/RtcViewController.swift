@@ -278,10 +278,9 @@ class RtcViewController: UIViewController {
             } else {
                 mainScrollView.contentInset = .zero
             }
-            videoItemsStackView.frame = .init(x: preferredMargin,
-                                              y: 0,
-                                              width: itemWidth,
-                                              height: estimateHeight)
+            let itemsSize = CGSize(width: itemWidth, height: estimateHeight)
+            videoItemsStackView.frame = .init(origin: .init(x: preferredMargin, y: 0), size: itemsSize)
+            mainScrollView.contentSize = itemsSize
         case .top:
             let heightInset = preferredMargin * 2
             let itemHeight = view.bounds.height - heightInset
@@ -294,10 +293,9 @@ class RtcViewController: UIViewController {
             } else {
                 mainScrollView.contentInset = .zero
             }
-            videoItemsStackView.frame = .init(x: preferredMargin,
-                                              y: 0,
-                                              width: estimateWidth,
-                                              height: itemHeight)
+            let itemsSize = CGSize(width: estimateWidth, height: itemHeight)
+            videoItemsStackView.frame = .init(origin: .init(x: preferredMargin, y: 0), size: itemsSize)
+            mainScrollView.contentSize = itemsSize
         }
     }
 
