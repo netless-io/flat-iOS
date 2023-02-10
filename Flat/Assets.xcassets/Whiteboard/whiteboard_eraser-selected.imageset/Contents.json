@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "eraserFilled.pdf",
+      "filename" : "eraserFilled@2x.png",
       "idiom" : "universal"
     },
     {
-      "filename" : "eraserFilled 1.pdf",
+      "filename" : "eraserFilled (1).pdf",
       "idiom" : "iphone"
     }
   ],
