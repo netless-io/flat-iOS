@@ -132,7 +132,7 @@ class SMSAuthView: UIView {
     }
 
     override var intrinsicContentSize: CGSize {
-        .init(width: 375, height: 0)
+        .init(width: 375, height: UIView.noIntrinsicMetric)
     }
 
     lazy var verificationCodeTextfield: BottomLineTextfield = {

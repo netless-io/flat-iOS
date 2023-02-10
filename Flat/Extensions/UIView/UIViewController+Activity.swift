@@ -100,11 +100,13 @@ class CustomActivityIndicatorView: UIActivityIndicatorView {
         super.init(style: style)
         setupViews()
     }
-
+    
     @available(*, unavailable)
     required init(coder _: NSCoder) {
         fatalError()
     }
+    
+    override var intrinsicContentSize: CGSize { .init(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric) }
 
     func setupViews() {
         addSubview(textLabel)
