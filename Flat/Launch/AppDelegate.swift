@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
                    currentVersion.compare(force_min_version, options: .numeric) == .orderedAscending
                 {
-                    Siren.shared.rulesManager = .init(globalRules: .critical)
+                    Siren.shared.rulesManager = .init(globalRules: .critical, showAlertAfterCurrentVersionHasBeenReleasedForDays: 0)
                     Siren.shared.wail(performCheck: .onDemand)
                 } else {
                     Siren.shared.wail()
