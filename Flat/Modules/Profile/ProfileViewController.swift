@@ -73,22 +73,22 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func onClickAvatar() {
         func failPhotoPermission() {
-            DispatchQueue.main.async {
-                self.showCheckAlert(checkTitle: localizeStrings("GoSetting"), message: localizeStrings("PhotoDenyTip")) {
-                    if let url = URL(string: UIApplication.openSettingsURLString) {
-                        UIApplication.shared.open(url)
-                    }
+            showCheckAlert(checkTitle: localizeStrings("GoSetting"), message: localizeStrings("PhotoDenyTip")) {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
                 }
             }
         }
         switch PHPhotoLibrary.authorizationStatus() {
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { [weak self] s in
-                if s == .denied {
-                    failPhotoPermission()
-                    return
+                DispatchQueue.main.async {
+                    if s == .denied {
+                        failPhotoPermission()
+                        return
+                    }
+                    self?.onClickAvatar()
                 }
-                self?.onClickAvatar()
             }
         case .denied:
             failPhotoPermission()
