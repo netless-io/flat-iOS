@@ -19,6 +19,12 @@ class CloudStorageTableViewCell: UITableViewCell {
         fatalError()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        let color = (isSelected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)).resolvedColor(with: traitCollection)
+        selectionView.backgroundColor = color
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         let color = (selected ? UIColor.color(type: .primary, .weaker) : UIColor.color(type: .background)).resolvedColor(with: traitCollection)
