@@ -1619,6 +1619,7 @@
 				8AD7C6B727157EA7001C4AAD /* Resources */,
 				9DCBD9AA56F7DC4165AC374C /* [CP] Embed Pods Frameworks */,
 				8A85F03A28B8CA1200C7BF98 /* Embed Frameworks */,
+				8A21CD57299A0EF4001F36AC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1696,6 +1697,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		8A21CD57299A0EF4001F36AC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ $ACTION == install ]; then\n\nif [ $CONFIGURATION == Flat_Release ]; then\necho \"start run upload-dsym\"\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\nfi\n\nfi\n";
+		};
 		8E76B20DC73A14DFE384120F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
