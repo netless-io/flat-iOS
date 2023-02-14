@@ -64,12 +64,14 @@ class RoomUserTableViewCell: UITableViewCell {
         }
     }
     
-    func wrapView(_ v: UIView, spacing: CGFloat) -> UIView {
+    func wrapView(_ v: UIView, spacing: CGFloat, verticalFill: Bool = true) -> UIView {
         let view = UIView()
         view.addSubview(v)
         v.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(spacing)
-            make.height.equalToSuperview()
+            if verticalFill {
+                make.height.equalToSuperview()
+            }
             make.centerY.equalToSuperview()
             make.right.lessThanOrEqualToSuperview()
             make.right.equalToSuperview().priority(.low.advanced(by: -1))
@@ -215,62 +217,31 @@ class RoomUserTableViewCell: UITableViewCell {
         return view
     }()
     
-    lazy var onStageContainer: UIView = {
-        let view = UIView()
-        view.addSubview(onStageSwitch)
-        onStageSwitch.snp.makeConstraints {
-            $0.left.right.equalToSuperview()
-            $0.centerY.equalToSuperview()
-        }
-        let btn = UIButton()
-        view.addSubview(btn)
-        btn.snp.makeConstraints {
-            $0.center.equalTo(onStageSwitch).priority(.low)
-            $0.width.height.equalTo(44)
-        }
-        btn.addTarget(self, action: #selector(onStageChanged), for: .touchUpInside)
-        return view
-    }()
-    
-    lazy var whiteboardContainer: UIView = {
-        let view = UIView()
-        view.addSubview(whiteboardSwitch)
-        whiteboardSwitch.snp.makeConstraints {
-            $0.left.right.equalToSuperview()
-            $0.centerY.equalToSuperview()
-        }
-        let btn = UIButton()
-        view.addSubview(btn)
-        btn.snp.makeConstraints {
-            $0.center.equalTo(whiteboardSwitch).priority(.low)
-            $0.width.height.equalTo(44)
-        }
-        btn.addTarget(self, action: #selector(onWhiteboardChanged), for: .touchUpInside)
-        return view
-    }()
-    
     lazy var onStageSwitch: UISwitch = {
         let s = UISwitch()
-        s.isUserInteractionEnabled = false
+        s.addTarget(self, action: #selector(onStageChanged), for: .valueChanged)
         return s
     }()
     
     lazy var whiteboardSwitch: UISwitch = {
         let s = UISwitch()
-        s.isUserInteractionEnabled = false
+        s.addTarget(self, action: #selector(onWhiteboardChanged), for: .valueChanged)
         return s
     }()
     
     lazy var mainStackView: UIStackView = {
         let views = [userInfoStackView,
-                     onStageContainer,
-                     whiteboardContainer,
+                     onStageSwitch,
+                     whiteboardSwitch,
                      cameraButton,
                      micButton,
                      raiseHandButton]
         let wrappedViews = views.enumerated().map { (index, v) -> UIView in
             if v === cameraButton || v === micButton {
                 return wrapView(v, spacing: 0)
+            }
+            if v === onStageSwitch || v === whiteboardSwitch {
+                return wrapView(v, spacing: 16, verticalFill: false)
             }
             return wrapView(v, spacing: 16)
         }
