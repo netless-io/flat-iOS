@@ -64,6 +64,7 @@
 		8A1BF0C7280E563A00D76F22 /* CancellationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */; };
 		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
 		8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A92797AB3E00024040 /* Theme.swift */; };
+		8A21CD5B299B7BA9001F36AC /* ClassroomConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21CD5A299B7BA9001F36AC /* ClassroomConfig.swift */; };
 		8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */; };
 		8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */; };
 		8A21DAB2279F86A00060E25D /* ReplayOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */; };
@@ -368,6 +369,7 @@
 		8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationViewController.swift; sourceTree = "<group>"; };
 		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
 		8A20A3A92797AB3E00024040 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		8A21CD5A299B7BA9001F36AC /* ClassroomConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomConfig.swift; sourceTree = "<group>"; };
 		8A21DAAD279E65E00060E25D /* RecordDetailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailInfo.swift; sourceTree = "<group>"; };
 		8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailRequest.swift; sourceTree = "<group>"; };
 		8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayOverlay.swift; sourceTree = "<group>"; };
@@ -860,6 +862,7 @@
 				8ABF362827464543000D5003 /* ClassroomLayout */,
 				8AE8F55C272101E600D2E0F5 /* Rtm */,
 				8A11CC23272019D6001D0B1F /* Rtc */,
+				8A21CD5A299B7BA9001F36AC /* ClassroomConfig.swift */,
 			);
 			path = ClassRoom;
 			sourceTree = "<group>";
@@ -1768,6 +1771,7 @@
 				8A05A1582834EA99002DE9B9 /* Agreement.swift in Sources */,
 				8A0CA22628BC98180035F71A /* FlatPopoverAlertController.swift in Sources */,
 				8AB3CB3028CB11D400922DEF /* StorageMoveFileRequest.swift in Sources */,
+				8A21CD5B299B7BA9001F36AC /* ClassroomConfig.swift in Sources */,
 				8A0E1F04296D482B00C3EE24 /* ClassroomSceneDelegate.swift in Sources */,
 				8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */,
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,

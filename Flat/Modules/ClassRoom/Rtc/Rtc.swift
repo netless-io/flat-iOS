@@ -15,6 +15,14 @@ enum RtcError {
     case connectionLost
 }
 
+fileprivate func encodeConfigWith(mirror: Bool) -> AgoraVideoEncoderConfiguration {
+    AgoraVideoEncoderConfiguration(size: .init(width: 1280, height: 720),
+                                                frameRate: .fps15,
+                                                bitrate: 1130,
+                                                orientationMode: .adaptative,
+                                   mirrorMode: mirror ? .enabled : .disabled)
+}
+
 class Rtc: NSObject {
     var agoraKit: AgoraRtcEngineKit!
     let screenShareInfo: ShareScreenInfo?
@@ -27,6 +35,8 @@ class Rtc: NSObject {
     var targetLocalMic: Bool? = false
     var targetLocalCamera: Bool? = false
     var micStrenths: [UInt: PublishRelay<CGFloat>] = [:]
+    var isFrontMirror: Bool
+    var isUsingFront: Bool
     lazy var isBroadcaster: Bool = false
     lazy var localCameraOn: Bool = false {
         didSet {
@@ -58,8 +68,22 @@ class Rtc: NSObject {
         }
     }
 
+    @objc func onClassroomSettingNeedToggleFronMirrorNotification() {
+        isFrontMirror.toggle()
+        agoraKit.setLocalRenderMode(.hidden, mirror: isFrontMirror ? .enabled : .disabled)
+        agoraKit.setVideoEncoderConfiguration(encodeConfigWith(mirror: isFrontMirror))
+    }
+    
     @objc func onClassroomSettingNeedToggleCameraNotification() {
+        isUsingFront.toggle()
         agoraKit.switchCamera()
+        if !isUsingFront {
+            agoraKit.setLocalRenderMode(.hidden, mirror: .disabled)
+            agoraKit.setVideoEncoderConfiguration(encodeConfigWith(mirror: false))
+        } else {
+            agoraKit.setLocalRenderMode(.hidden, mirror: isFrontMirror ? .enabled : .disabled)
+            agoraKit.setVideoEncoderConfiguration(encodeConfigWith(mirror: isFrontMirror))
+        }
     }
 
     // MARK: - Public
@@ -144,9 +168,13 @@ class Rtc: NSObject {
          token: String,
          uid: UInt,
          communication: Bool,
+         isFrontMirror: Bool,
+         isUsingFront: Bool,
          screenShareInfo: ShareScreenInfo?)
     {
         self.screenShareInfo = screenShareInfo
+        self.isFrontMirror = isFrontMirror
+        self.isUsingFront = isUsingFront
         super.init()
         
         let agoraKitConfig = AgoraRtcEngineConfig()
@@ -157,10 +185,10 @@ class Rtc: NSObject {
 
         agoraKit.setLogFile("") // set to default path
         agoraKit.setLogFilter(AgoraLogFilter.error.rawValue)
-
-        // 大流720P视频
-        let config = AgoraVideoEncoderConfiguration(size: .init(width: 1280, height: 720), frameRate: .fps15, bitrate: 1130, orientationMode: .adaptative, mirrorMode: .auto)
-        agoraKit.setVideoEncoderConfiguration(config)
+        agoraKit.setVideoEncoderConfiguration(encodeConfigWith(mirror: isFrontMirror))
+        let captureConfig = AgoraCameraCapturerConfiguration()
+        captureConfig.cameraDirection = isUsingFront ? .front : .rear
+        agoraKit.setCameraCapturerConfiguration(captureConfig)
         // 各发流端在加入频道前或者后，都可以调用 enableDualStreamMode 方法开启双流模式。
         agoraKit.enableDualStreamMode(true)
         // 启用针对多人通信场景的优化策略。
@@ -202,6 +230,7 @@ class Rtc: NSObject {
             .disposed(by: rx.disposeBag)
 
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleCameraNotification), name: classroomSettingNeedToggleCameraNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleFronMirrorNotification), name: classroomSettingNeedToggleFrontMirrorNotification, object: nil)
     }
 }
 

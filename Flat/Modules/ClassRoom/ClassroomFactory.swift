@@ -23,6 +23,8 @@ enum ClassroomFactory {
                       token: playInfo.rtcToken,
                       uid: playInfo.rtcUID,
                       communication: basicInfo.roomType == .oneToOne,
+                      isFrontMirror: ClassroomDefaultConfig.frontCameraMirror,
+                      isUsingFront: ClassroomDefaultConfig.usingFrontCamera,
                       screenShareInfo: playInfo.rtcShareScreen)
 
         FastRoom.followSystemPencilBehavior = ShortcutsManager.shared.shortcuts[.applePencilFollowSystem] ?? true

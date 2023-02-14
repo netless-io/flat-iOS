@@ -12,6 +12,7 @@ import RxSwift
 import UIKit
 
 let classroomSettingNeedToggleCameraNotification = Notification.Name("classroomSettingNeedToggleCameraNotification")
+let classroomSettingNeedToggleFrontMirrorNotification = Notification.Name("classroomSettingNeedToggleFrontMirrorNotification")
 class ClassRoomSettingViewController: UIViewController {
     enum SettingControlType {
         case camera
@@ -19,9 +20,12 @@ class ClassRoomSettingViewController: UIViewController {
         case mic
         case videoArea
         case shortcut
+        case mirror
 
         var description: String {
             switch self {
+            case .mirror:
+                return localizeStrings("Mirror")
             case.cameraDirection:
                 return localizeStrings("CameraDirection")
             case .camera:
@@ -47,19 +51,29 @@ class ClassRoomSettingViewController: UIViewController {
     let cameraOn: BehaviorRelay<Bool>
     let micOn: BehaviorRelay<Bool>
     let videoAreaOn: BehaviorRelay<Bool>
-    var models: [SettingControlType] = []
-    var isCameraFront = true {
+    var models: [[SettingControlType]] = []
+    fileprivate var frontMirror = ClassroomDefaultConfig.frontCameraMirror {
         didSet {
-            tableView.reloadData()
+            // Only update on front camera
+            NotificationCenter.default.post(.init(name: classroomSettingNeedToggleFrontMirrorNotification))
+        }
+    }
+    fileprivate var isCameraFront = ClassroomDefaultConfig.frontCameraMirror {
+        didSet {
+            reloadModels()
             NotificationCenter.default.post(.init(name: classroomSettingNeedToggleCameraNotification))
         }
     }
     
     func reloadModels() {
         if cameraOn.value {
-            models = [.shortcut, .camera, .cameraDirection, .mic, .videoArea]
+            if isCameraFront {
+                models = [[.shortcut], [.camera, .cameraDirection, .mirror], [.mic], [.videoArea]]
+            } else {
+                models = [[.shortcut], [.camera, .cameraDirection], [.mic], [.videoArea]]
+            }
         } else {
-            models = [.shortcut, .camera, .mic, .videoArea]
+            models = [[.shortcut], [.camera], [.mic], [.videoArea]]
         }
         tableView.reloadData()
     }
@@ -133,13 +147,21 @@ class ClassRoomSettingViewController: UIViewController {
         }
     }
 
-    func config(cell: ClassRoomSettingTableViewCell, type: SettingControlType) {
+    func config(cell: ClassRoomSettingTableViewCell, type: SettingControlType, hideBorder: Bool) {
         cell.label.text = type.description
         cell.selectionStyle = .none
         cell.switch.isHidden = false
         cell.rightArrowImageView.isHidden = true
         cell.cameraToggleView.isHidden = true
+        cell.borderView.isHidden = hideBorder
         switch type {
+        case .mirror:
+            cell.switch.isHidden = false
+            cell.iconView.image = nil
+            cell.switch.isOn = frontMirror
+            cell.switchValueChangedHandler = { [weak self] isOn in
+                self?.frontMirror = isOn
+            }
         case .cameraDirection:
             cell.switch.isHidden = true
             cell.iconView.image = nil
@@ -248,17 +270,20 @@ class ClassRoomSettingViewController: UIViewController {
 extension ClassRoomSettingViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ClassRoomSettingTableViewCell
-        let type = models[indexPath.row]
-        config(cell: cell, type: type)
+        let type = models[indexPath.section][indexPath.row]
+        config(cell: cell, type: type, hideBorder: indexPath.row != models[indexPath.section].count - 1)
         return cell
     }
 
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         models.count
+    }
+    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+        models[section].count
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if models[indexPath.row] == .shortcut {
+        if models[indexPath.section][indexPath.row] == .shortcut {
             shortcutsPublish.accept(())
         }
         tableView.deselectRow(at: indexPath, animated: true)
