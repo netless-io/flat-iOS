@@ -66,7 +66,6 @@ class CountryCodePicker: UIViewController {
     lazy var searchBar: UISearchBar = {
         let bar = UISearchBar(frame: .zero)
         bar.delegate = self
-        bar.placeholder = "Searching"
         return bar
     }()
     
@@ -111,7 +110,6 @@ extension CountryCodePicker: UITableViewDataSource, UITableViewDelegate {
         let country = (searching ? searchedCountry : countrys)[indexPath.row]
         cell.countryCodeLabel.text = "+" + country.phoneCode
         cell.countryNameLabel.text = country.name
-        cell.flagImageView.image = UIImage(named: country.code.lowercased())
         return cell
     }
 
@@ -126,7 +124,7 @@ class CountryCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let spacing = UIView()
-        let stack = UIStackView(arrangedSubviews: [flagImageView, countryNameLabel, spacing, countryCodeLabel])
+        let stack = UIStackView(arrangedSubviews: [countryNameLabel, spacing, countryCodeLabel])
         stack.axis = .horizontal
         stack.spacing = 14
         stack.distribution = .fill
@@ -134,16 +132,7 @@ class CountryCell: UITableViewCell {
         stack.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14))
         }
-        flagImageView.snp.makeConstraints { make in
-            make.width.equalTo(44)
-        }
     }
-    
-    lazy var flagImageView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        return view
-    }()
 
     lazy var countryNameLabel: UILabel = {
         let label = UILabel()

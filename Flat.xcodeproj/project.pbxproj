@@ -204,7 +204,6 @@
 		8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */; };
 		8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */; };
 		8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA268E6292B4A940065FC3C /* InviteViewController.swift */; };
-		8AA2BD1329ADACC9004DA53B /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AA2BD1229ADACC8004DA53B /* Flags.xcassets */; };
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
 		8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* RtmChannel.swift */; };
 		8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* Rtm.swift */; };
@@ -517,7 +516,6 @@
 		8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
 		8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateHandlerImp.swift; sourceTree = "<group>"; };
 		8AA268E6292B4A940065FC3C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
-		8AA2BD1229ADACC8004DA53B /* Flags.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Flags.xcassets; sourceTree = "<group>"; };
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		8AA97EA12741F83A00C3F92E /* RtmChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmChannel.swift; sourceTree = "<group>"; };
 		8AA97EA32741F97B00C3F92E /* Rtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rtm.swift; sourceTree = "<group>"; };
@@ -1528,7 +1526,6 @@
 		8AD7C6BB27157EA7001C4AAD /* Flat */ = {
 			isa = PBXGroup;
 			children = (
-				8AA2BD1229ADACC8004DA53B /* Flags.xcassets */,
 				8A4C7A7427F2E4B3006988C6 /* FlatFlint_Release.entitlements */,
 				8A4C7A7127F2E3B0006988C6 /* FlatFlint_Debug.entitlements */,
 				8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */,
@@ -1682,7 +1679,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */,
-				8AA2BD1329ADACC9004DA53B /* Flags.xcassets in Resources */,
 				8A05A1542834C756002DE9B9 /* PrivacyAlertViewController.xib in Resources */,
 				8ADDEAA5296C002F00F2B7BE /* loading_dark.json in Resources */,
 				8A270B942719607700450DC6 /* LoginViewController.xib in Resources */,
