@@ -101,6 +101,7 @@
 		8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9D27159F4C00123207 /* ApiError.swift */; };
 		8A2D0BAA2716859700123207 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0BA82716859700123207 /* LoginViewController.swift */; };
 		8A2E0C4A28D03B8300CD63EE /* UIView+seperatorLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */; };
+		8A303BE429AD9ADB00E0AF36 /* CountryCodePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */; };
 		8A317A9D2966D67800041D4A /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A317A9C2966D67800041D4A /* SceneManager.swift */; };
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
 		8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */; };
@@ -203,6 +204,7 @@
 		8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */; };
 		8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */; };
 		8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA268E6292B4A940065FC3C /* InviteViewController.swift */; };
+		8AA2BD1329ADACC9004DA53B /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AA2BD1229ADACC8004DA53B /* Flags.xcassets */; };
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
 		8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* RtmChannel.swift */; };
 		8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* Rtm.swift */; };
@@ -407,6 +409,7 @@
 		8A2D0B9D27159F4C00123207 /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
 		8A2D0BA82716859700123207 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8A2E0C4928D03B8300CD63EE /* UIView+seperatorLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+seperatorLine.swift"; sourceTree = "<group>"; };
+		8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCodePicker.swift; sourceTree = "<group>"; };
 		8A317A9C2966D67800041D4A /* SceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
 		8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsLogHandler.swift; sourceTree = "<group>"; };
@@ -514,6 +517,7 @@
 		8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
 		8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateHandlerImp.swift; sourceTree = "<group>"; };
 		8AA268E6292B4A940065FC3C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
+		8AA2BD1229ADACC8004DA53B /* Flags.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Flags.xcassets; sourceTree = "<group>"; };
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		8AA97EA12741F83A00C3F92E /* RtmChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmChannel.swift; sourceTree = "<group>"; };
 		8AA97EA32741F97B00C3F92E /* Rtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rtm.swift; sourceTree = "<group>"; };
@@ -1074,6 +1078,7 @@
 				8A05A1512834C756002DE9B9 /* PrivacyAlertViewController.swift */,
 				8A05A1522834C756002DE9B9 /* PrivacyAlertViewController.xib */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
+				8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */,
 				8A05A1572834EA99002DE9B9 /* Agreement.swift */,
 				8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */,
 				8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */,
@@ -1523,6 +1528,7 @@
 		8AD7C6BB27157EA7001C4AAD /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8AA2BD1229ADACC8004DA53B /* Flags.xcassets */,
 				8A4C7A7427F2E4B3006988C6 /* FlatFlint_Release.entitlements */,
 				8A4C7A7127F2E3B0006988C6 /* FlatFlint_Debug.entitlements */,
 				8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */,
@@ -1676,6 +1682,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A0EB7C4272BFB3100003DF7 /* ClassRoomSettingTableViewCell.xib in Resources */,
+				8AA2BD1329ADACC9004DA53B /* Flags.xcassets in Resources */,
 				8A05A1542834C756002DE9B9 /* PrivacyAlertViewController.xib in Resources */,
 				8ADDEAA5296C002F00F2B7BE /* loading_dark.json in Resources */,
 				8A270B942719607700450DC6 /* LoginViewController.xib in Resources */,
@@ -1794,6 +1801,7 @@
 				8AFB942C28B74EBA00B8795D /* UIViewController+Present.swift in Sources */,
 				8AD2EF6B27730A1800087280 /* FlatServerError.swift in Sources */,
 				8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */,
+				8A303BE429AD9ADB00E0AF36 /* CountryCodePicker.swift in Sources */,
 				8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */,
 				8A80208B2754699300F5691C /* Rtc.swift in Sources */,
 				8AE59C7C28D302D500BAC8FC /* VideoPreviewView.swift in Sources */,

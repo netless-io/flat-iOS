@@ -136,7 +136,9 @@ extension SceneManager {
             } else {
                 let root = LoginViewController()
                 window.rootViewController = root
-                root.present(BindPhoneViewController(), animated: true)
+                DispatchQueue.main.async {
+                    root.present(BindPhoneViewController(), animated: true)
+                }
             }
         } else {
             window.rootViewController = LoginViewController()

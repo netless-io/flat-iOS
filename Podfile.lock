@@ -108,6 +108,7 @@ PODS:
   - Hero (1.6.1)
   - IQKeyboardManagerSwift (6.5.9)
   - Kingfisher (7.4.1)
+  - libPhoneNumber-iOS (0.9.15)
   - Logging (1.4.0)
   - lottie-ios (4.0.1)
   - MBProgressHUD (1.2.0)
@@ -181,6 +182,7 @@ DEPENDENCIES:
   - Hero
   - IQKeyboardManagerSwift
   - Kingfisher
+  - libPhoneNumber-iOS
   - Logging
   - lottie-ios
   - MBProgressHUD (~> 1.2.0)
@@ -221,6 +223,7 @@ SPEC REPOS:
     - Hero
     - IQKeyboardManagerSwift
     - Kingfisher
+    - libPhoneNumber-iOS
     - Logging
     - lottie-ios
     - MBProgressHUD
@@ -264,6 +267,7 @@ SPEC CHECKSUMS:
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
+  libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   lottie-ios: 54d22edf55b839f0929cabbfe609c9aa548b1145
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
@@ -284,6 +288,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 98daae2cac356f81952955e6c802e7b69236ba69
+PODFILE CHECKSUM: 9d68dcd89a3d58ce2823f6101d95b75f21e807ad
 
 COCOAPODS: 1.11.3

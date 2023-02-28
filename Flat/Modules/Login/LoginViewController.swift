@@ -158,6 +158,9 @@ class LoginViewController: UIViewController {
             }
             return .failure("")
         }
+        smsAuthView.countryCodeClick = { [weak self] in
+            self?.presentCountryPicker()
+        }
 
         smsAuthView.smsRequestMaker = { phone in
             ApiProvider.shared.request(fromApi: SMSRequest(scenario: .login, phone: phone))
@@ -166,6 +169,17 @@ class LoginViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(onClickLogin(sender:)), for: .touchUpInside)
     }
 
+    func presentCountryPicker() {
+        let picker = CountryCodePicker()
+        picker.pickingHandler = { [weak self] country in
+            self?.dismiss(animated: true)
+            self?.smsAuthView.country = country
+        }
+        let navi = BaseNavigationViewController(rootViewController: picker)
+        navi.modalPresentationStyle = .formSheet
+        present(navi, animated: true)
+    }
+    
     func showAgreementCheckAlert(agreeAction: (() -> Void)? = nil) {
         let vc = PrivacyAlertViewController(
             agreeClick: { [unowned self] in

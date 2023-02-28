@@ -25,6 +25,17 @@ class BindPhoneViewController: UIViewController {
         setupViews()
     }
 
+    func presentCountryPicker() {
+        let picker = CountryCodePicker()
+        picker.pickingHandler = { [weak self] country in
+            self?.dismiss(animated: true)
+            self?.smsAuthView.country = country
+        }
+        let navi = BaseNavigationViewController(rootViewController: picker)
+        navi.modalPresentationStyle = .formSheet
+        present(navi, animated: true)
+    }
+    
     func setupViews() {
         view.backgroundColor = .color(type: .background)
 
@@ -150,6 +161,9 @@ class BindPhoneViewController: UIViewController {
         let view = SMSAuthView()
         view.smsRequestMaker = { phone in
             ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind, phone: phone))
+        }
+        view.countryCodeClick = { [weak self] in
+            self?.presentCountryPicker()
         }
         return view
     }()

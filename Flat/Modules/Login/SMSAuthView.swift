@@ -6,23 +6,28 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
+import libPhoneNumber_iOS
 import RxCocoa
 import RxSwift
 import UIKit
 
 class SMSAuthView: UIView {
-    var availableCountryCodes: [Int] = [86]
-    var countryCode = 86 {
+    var country = Country.currentCountry() {
         didSet {
-            countryCodeSelectBtn.setTitle("+\(countryCode)", for: .normal)
+            countryCodeSelectBtn.setTitle("+\(country.phoneCode)", for: .normal)
         }
     }
 
+    var countryCodeClick: (() -> Void)?
     var smsRequestMaker: ((String) -> Observable<EmptyResponse>)?
     var additionalCheck: ((_ sender: UIView) -> Result<Void, String>)?
-    var phoneRegex: String = "1[3456789]\\d{9}$"
-    var phoneValid: Bool { (try? phoneTextfield.text?.matchExpressionPattern(phoneRegex) != nil) ?? false }
-    var fullPhoneText: String { "+\(countryCode)\(phoneTextfield.text ?? "")" }
+    var phoneValid: Bool {
+        guard let text = phoneTextfield.text else { return false }
+        guard let phoneObj = try? NBPhoneNumberUtil.sharedInstance().parse(text, defaultRegion: country.code) else { return false }
+        return NBPhoneNumberUtil.sharedInstance().isValidNumber(forRegion: phoneObj, regionCode: country.code)
+    }
+
+    var fullPhoneText: String { "+\(country.phoneCode)\(phoneTextfield.text ?? "")" }
     var codeText: String { verificationCodeTextfield.text ?? "" }
     var codeValid: Bool { codeText.count >= 4 }
     var loginEnable: Observable<Bool> {
@@ -46,7 +51,9 @@ class SMSAuthView: UIView {
     }
 
     @objc
-    func onClickCountryCode() {}
+    func onClickCountryCode() {
+        countryCodeClick?()
+    }
 
     @objc
     func onClickSendSMS(sender: UIButton) {
@@ -164,7 +171,7 @@ class SMSAuthView: UIView {
     lazy var countryCodeSelectBtn: UIButton = {
         let btn = UIButton(type: .custom)
         btn.frame = .init(origin: .zero, size: .init(width: 66, height: 48))
-        btn.setTitle("+\(countryCode)", for: .normal)
+        btn.setTitle("+\(country.phoneCode)", for: .normal)
         btn.setTitleColor(.color(type: .text), for: .normal)
         btn.setImage(UIImage(named: "arrow_down"), for: .normal)
         btn.titleEdgeInsets = .init(top: 0, left: -20, bottom: 0, right: 20)
