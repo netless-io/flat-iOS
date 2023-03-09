@@ -110,6 +110,9 @@ PODS:
   - Kingfisher (7.4.1)
   - libPhoneNumber-iOS (0.9.15)
   - Logging (1.4.0)
+  - LookinServer (1.1.5):
+    - LookinServer/Core (= 1.1.5)
+  - LookinServer/Core (1.1.5)
   - lottie-ios (4.0.1)
   - MBProgressHUD (1.2.0)
   - nanopb (2.30909.0):

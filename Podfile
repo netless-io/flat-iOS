@@ -1,6 +1,8 @@
 platform :ios, '13.0'
 target 'Flat' do
   use_frameworks!
+
+  pod 'LookinServer', :configurations => ['Flat_Debug']
   
   pod 'RxSwift'
   pod 'RxCocoa'
