@@ -92,7 +92,9 @@ enum ClassroomFactory {
 
         // Config State imp
         let syncedStore = ClassRoomSyncedStore()
+        let videoLayoutStore = VideoLayoutStoreImp()
         fastboardViewController.bindStore = syncedStore
+        fastboardViewController.bindLayoutStore = videoLayoutStore
 
         let imp = ClassroomStateHandlerImp(syncedStore: syncedStore,
                                            rtm: rtm,
@@ -109,7 +111,9 @@ enum ClassroomFactory {
 
         let rtcViewController = RtcViewController(viewModel: .init(rtc: rtc,
                                                                    userRtcUid: playInfo.rtcUID,
+                                                                   canUpdateLayout: basicInfo.isOwner,
                                                                    localUserRegular: { $0 == 0 || $0 == playInfo.rtcUID },
+                                                                   layoutStore: videoLayoutStore,
                                                                    userFetch: { rtcId -> RoomUser? in
                                                                        if rtcId == 0 { return imp.currentOnStageUsers[playInfo.rtmUID] }
                                                                        return imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value

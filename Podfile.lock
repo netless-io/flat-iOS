@@ -134,10 +134,12 @@ PODS:
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
+  - ScreenCorners (1.0.1)
   - Siren (5.7.1)
   - SnapKit (5.0.1)
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
+  - ViewDragger (1.1.0)
   - WechatOpenSDK (1.8.7.1)
   - Whiteboard (2.17.0-alpha.20):
     - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.20)
@@ -187,16 +189,19 @@ DEPENDENCIES:
   - Kingfisher
   - libPhoneNumber-iOS
   - Logging
+  - LookinServer
   - lottie-ios
   - MBProgressHUD (~> 1.2.0)
   - "NSObject+Rx"
   - RxCocoa
   - RxDataSources
   - RxSwift
+  - ScreenCorners
   - Siren
   - SnapKit
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
+  - ViewDragger (= 1.1.0)
   - WechatOpenSDK
   - Whiteboard (= 2.17.0-alpha.20)
   - Whiteboard/SyncPlayer (= 2.17.0-alpha.20)
@@ -228,6 +233,7 @@ SPEC REPOS:
     - Kingfisher
     - libPhoneNumber-iOS
     - Logging
+    - LookinServer
     - lottie-ios
     - MBProgressHUD
     - nanopb
@@ -238,10 +244,12 @@ SPEC REPOS:
     - RxDataSources
     - RxRelay
     - RxSwift
+    - ScreenCorners
     - Siren
     - SnapKit
     - SwiftyBeaver
     - SyncPlayer
+    - ViewDragger
     - WechatOpenSDK
     - Whiteboard
     - YYModel
@@ -272,6 +280,7 @@ SPEC CHECKSUMS:
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
+  LookinServer: 2893f2bae53cbf3fd49bbe1a8ea1745582ef1317
   lottie-ios: 54d22edf55b839f0929cabbfe609c9aa548b1145
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
@@ -282,15 +291,17 @@ SPEC CHECKSUMS:
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  ScreenCorners: 9bfdf033122fb645d57cc8f9df7b8ea770720771
   Siren: 76ac728f4f2f4a3576c322272e94a0e37955664f
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
+  ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
   Whiteboard: 6c036cd33d4fb0efb34f5459645f27aad58a6874
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 9d68dcd89a3d58ce2823f6101d95b75f21e807ad
+PODFILE CHECKSUM: ac109a01849c4a74235514b863ad59a9bff311da
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0

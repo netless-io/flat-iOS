@@ -19,6 +19,7 @@ private let deviceStateName = "deviceState"
 private let classroomStateName = "classroom"
 private let whiteboardStateName = "whiteboard"
 private let onStageUsersName = "onStageUsers"
+
 private let classroomDefaultValue: [AnyHashable: Any] = [
     ClassRoomSyncedStore.RoomState.Keys.raiseHandUsers.rawValue: [],
     ClassRoomSyncedStore.RoomState.Keys.ban.rawValue: false,
@@ -70,7 +71,6 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         logger.info("setup room")
         isConnected = false
         syncStore = displayer.obtainSyncedStore()
-        syncStore.delegate = self
         let group = DispatchGroup()
         var error: Error?
 

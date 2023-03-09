@@ -1,5 +1,5 @@
 //
-//  RtcViewController1.swift
+//  RtcViewController.swift
 //  Flat
 //
 //  Created by xuyunshi on 2021/11/29.
@@ -8,24 +8,38 @@
 
 import AgoraRtcKit
 import Hero
+import MetalKit
 import RxCocoa
 import RxRelay
 import RxSwift
 import UIKit
+import ViewDragger
 
-enum RTCDirection {
+struct FreeDraggingUser {
+    let uid: UInt
+    let rect: CGRect
+}
+
+enum RtcDirection {
     case top
     case right
 }
 
+enum DraggingPossibleTargetView {
+    case minimal(UIView)
+    case grid
+}
+
+typealias UserCanvasDraggingResult = (uid: UInt, rect: CGRect)
+
+let minDraggingScaleOfCanvas = CGFloat(0.25)
+
 class RtcViewController: UIViewController {
     let viewModel: RtcViewModel
+    var draggingCanvasProvider: VideoDraggingCanvasProvider!
 
     let localUserCameraClick: PublishRelay<Void> = .init()
     let localUserMicClick: PublishRelay<Void> = .init()
-
-    var localCameraOn = false
-    var localMicOn = false
 
     var preferredMargin: CGFloat = 0 {
         didSet {
@@ -36,71 +50,44 @@ class RtcViewController: UIViewController {
     }
 
     let itemRatio: CGFloat = ClassRoomLayoutRatioConfig.rtcItemRatio
-
-    func bindUsers(_ users: Driver<[RoomUser]>, withTeacherRtmUUID uuid: String) {
-        let output = viewModel.transform(users: users, teacherRtmUUID: uuid)
-        output.noTeacherViewHide
-            .distinctUntilChanged()
-            .do(afterNext: { [weak self] _ in
-                self?.updateScrollViewInset()
-            })
-            .drive(noTeacherPlaceHolderView.rx.isHidden)
-            .disposed(by: rx.disposeBag)
-
-        output.nonLocalUsers
-            .distinctUntilChanged { i, j in
-                i.map(\.user) == j.map(\.user)
-            }
-            .drive(with: self, onNext: { weakSelf, values in
-                let oldStackCount = weakSelf.videoItemsStackView.arrangedSubviews.count
-                weakSelf.updateWith(nonTeacherValues: values)
-                let newStackCount = weakSelf.videoItemsStackView.arrangedSubviews.count
-                if newStackCount != oldStackCount {
-                    weakSelf.cellMenuView.dismiss()
-                }
-                let existIds = values.map(\.user.rtcUID)
-                // If some user leave during preview, stop previewing
-                if let user = weakSelf.previewingUser, !existIds.contains(user.rtcUID) {
-                    weakSelf.previewViewController.showAvatar(url: user.avatarURL)
-                }
-                weakSelf.updateScrollViewInset()
-            })
-            .disposed(by: rx.disposeBag)
-
-        output.localUserHide
-            .do(afterNext: { [weak self] _ in
-                self?.updateScrollViewInset()
-            })
-            .drive(localVideoItemView.rx.isHidden)
-            .disposed(by: rx.disposeBag)
+    let layoureRefreshTrigger: PublishRelay<Void> = .init()
+    let userMinimalDragging: PublishRelay<UInt> = .init()
+    let userCanvasDragging: PublishRelay<UserCanvasDraggingResult> = .init()
+    let userTap: PublishRelay<UInt> = .init()
+    let doublePublisher: PublishRelay<UInt> = .init()
+    var isGridNow = false
+    var rtcMinimalSize: CGSize = .zero
+    var draggers: [UInt: ViewDragger] = [:]
+    
+    var draggingPossibleTargetView: DraggingPossibleTargetView? {
+        willSet {
+            stopTargetViewHint()
+        }
     }
 
-    var localUserMicVolumeBag: DisposeBag = .init()
-    func bindLocalUser(_ user: Driver<RoomUser>) {
-        let output = viewModel.transformLocalUser(user: user)
-
-        output.user
-            .drive(with: self, onNext: { weakSelf, user in
-                weakSelf.localMicOn = user.status.isSpeak && user.status.mic
-                weakSelf.localCameraOn = user.status.isSpeak && user.status.camera
-                weakSelf.localUserMicVolumeBag = .init()
-                weakSelf.update(itemView: weakSelf.localVideoItemView, user: user, volumeBag: weakSelf.localUserMicVolumeBag)
-                weakSelf.cellMenuView.update(cameraOn: weakSelf.localCameraOn, micOn: weakSelf.localMicOn)
+    func bindUsers(_ users: Driver<[RoomUser]>) {
+        viewModel.trans(users)
+            .drive(with: self, onNext: { weakSelf, values in
+                weakSelf.updateWith(values)
             })
             .disposed(by: rx.disposeBag)
 
-        output.mic
-            .drive(localVideoItemView.silenceImageView.rx.isHidden)
+        viewModel.tranformLayoutInfo(.init(users: users.asObservable(),
+                                           refreshTrigger: layoureRefreshTrigger.asDriverOnErrorJustComplete()))
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(with: self) { ws, output in
+                ws.processLayoutOutput(output)
+            }
             .disposed(by: rx.disposeBag)
 
-        output.camera
-            .drive(with: self, onNext: { weakSelf, value in
-                weakSelf.localVideoItemView.showAvatar(!value.0)
-                weakSelf.apply(canvas: value.1,
-                               toView: value.0 ? weakSelf.localVideoItemView.videoContainerView : nil,
-                               isLocal: true)
-            })
-            .disposed(by: rx.disposeBag)
+        if viewModel.canUpdateLayout {
+            viewModel.tranformLayoutTask(.init(userTap: userTap.asDriverOnErrorJustComplete(),
+                                               userDoubleTap: doublePublisher.asDriverOnErrorJustComplete(),
+                                               userMinimalDragging: userMinimalDragging.asDriverOnErrorJustComplete(),
+                                               userCanvasDragging: userCanvasDragging.asDriverOnErrorJustComplete()))
+                .subscribe()
+                .disposed(by: rx.disposeBag)
+        }
     }
 
     // MARK: - LifeCycle
@@ -134,18 +121,19 @@ class RtcViewController: UIViewController {
         super.viewDidLayoutSubviews()
         direction = view.bounds.width > view.bounds.height ? .top : .right
         updateScrollViewInset()
+        layoureRefreshTrigger.accept(())
     }
-    
+
     // MARK: - Direction
 
-    fileprivate var direction: RTCDirection = .top {
+    var direction: RtcDirection = .top {
         didSet {
             guard direction != oldValue else { return }
             sync(direction: direction)
         }
     }
-    
-    fileprivate func sync(direction: RTCDirection) {
+
+    fileprivate func sync(direction: RtcDirection) {
         switch direction {
         case .right:
             videoItemsStackView.axis = .vertical
@@ -180,46 +168,58 @@ class RtcViewController: UIViewController {
         sync(direction: direction)
     }
 
-    var otherUsersVolumeDisposeBag = DisposeBag()
-    func update(itemView: RtcVideoItemView, user: RoomUser, volumeBag: DisposeBag) {
+    func processLayoutOutput(_ op: RtcViewModel.LayoutUsersInfo) {
+        let expandCount = op.expandUsers.count
+        isGridNow = !op.expandUsers.isEmpty
+        if isGridNow {
+            draggingCanvasProvider.onStartGridPreview()
+        } else {
+            draggingCanvasProvider.onEndGridPreview()
+        }
+
+        op.freeDraggingUsers.forEach {
+            let contentView = itemViewForUid($0.uid).contentView
+            move(contentView: contentView, toScaledRect: $0.rect)
+            contentView.superview?.bringSubviewToFront(contentView)
+        }
+        op.minimalUsers.forEach {
+            minimal(view: itemViewForUid($0))
+        }
+        op.expandUsers.enumerated().forEach { index, uid in
+            expand(view: itemViewForUid(uid), userIndex: index, totalCount: expandCount)
+        }
+    }
+
+    var volumesDisposeBag = DisposeBag()
+    func update(itemView: RtcVideoItemView,
+                user: RoomUser,
+                showAvatar: Bool,
+                volumeBag: DisposeBag)
+    {
         itemView.heroID = nil
         itemView.update(avatar: user.avatarURL)
+        itemView.backLabel.text = user.name
         if user.isOnline {
-            itemView.nameLabel.text = user.name
-            itemView.nameLabel.isHidden = true
+            itemView.contentView.nameLabel.text = user.name
         } else {
-            itemView.nameLabel.text = "\(user.name) (\(localizeStrings("offline")))"
-            itemView.nameLabel.isHidden = false
+            itemView.contentView.nameLabel.text = "\(user.name) (\(localizeStrings("offline")))"
         }
-        itemView.silenceImageView.isHidden = user.status.mic
-        itemView.alwaysShowName = !user.isOnline
-        itemView.showMicVolum(user.status.mic)
+        itemView.contentView.silenceImageView.isHidden = user.status.mic
+        itemView.contentView.alwaysShowName = !user.isOnline
+        itemView.contentView.showVolume = user.status.mic
+        itemView.contentView.showAvatar = showAvatar
 
         if user.status.mic {
             viewModel.strenthFor(uid: user.rtcUID)
                 .asDriver(onErrorJustReturn: 0)
                 .drive(with: itemView) { wi, strenth in
-                    wi.micStrenth = strenth
+                    wi.contentView.micStrenth = strenth
                 }
                 .disposed(by: volumeBag)
         }
     }
 
-    func refresh(view: RtcVideoItemView,
-                 user: RoomUser,
-                 canvas: AgoraRtcVideoCanvas,
-                 isLocal: Bool)
-    {
-        update(itemView: view, user: user, volumeBag: isLocal ? otherUsersVolumeDisposeBag : otherUsersVolumeDisposeBag)
-        view.showAvatar(!user.status.camera || !user.isOnline)
-
-        viewModel.rtc.updateRemoteUserStreamType(rtcUID: user.rtcUID, type: viewModel.userThumbnailStream(user.rtcUID))
-        apply(canvas: canvas,
-              toView: user.status.camera ? view.videoContainerView : nil,
-              isLocal: isLocal)
-    }
-
-    func remakeConstraintForItemView(view: UIView, direction: RTCDirection) {
+    func remakeConstraintForItemView(view: UIView, direction: RtcDirection) {
         switch direction {
         case .right:
             view.snp.remakeConstraints { make in
@@ -232,36 +232,40 @@ class RtcViewController: UIViewController {
         }
     }
 
-    func updateWith(nonTeacherValues values: [(user: RoomUser, canvas: AgoraRtcVideoCanvas)]) {
+    func updateWith(_ values: [RtcViewModel.RTCUserOutput]) {
         // Reset voluem spy
-        otherUsersVolumeDisposeBag = DisposeBag()
+        volumesDisposeBag = DisposeBag()
         for value in values {
             let itemView = itemViewForUid(value.user.rtcUID)
             if itemView.superview == nil {
                 videoItemsStackView.addArrangedSubview(itemView)
-                itemView.tapHandler = { [weak self] view in
-                    self?.respondToVideoItemVideoTap(view: view, isLocal: false)
-                }
                 remakeConstraintForItemView(view: itemView, direction: direction)
             }
             itemView.isHidden = false
-            refresh(view: itemView,
-                    user: value.user,
-                    canvas: value.canvas,
-                    isLocal: false)
-        }
-        var existIds = values.map(\.user.rtcUID)
-        // Local users
-        existIds.append(0)
-        for view in videoItemsStackView.arrangedSubviews {
-            if let itemView = view as? RtcVideoItemView {
-                if !existIds.contains(itemView.uid) {
-                    itemView.removeFromSuperview()
-                    videoItemsStackView.removeArrangedSubview(itemView)
-                }
+            update(itemView: itemView,
+                   user: value.user,
+                   showAvatar: !value.user.status.camera || !value.user.isOnline,
+                   volumeBag: volumesDisposeBag)
+
+            // Move canvas to container
+            if itemView.contentView.videoContainerView.subviews.isEmpty {
+                let cv = value.canvasView
+                itemView.contentView.videoContainerView.addSubview(cv)
             }
         }
+        let speaingIds = values.filter(\.user.status.isSpeak).map(\.user.rtcUID)
+        videoItemsStackView
+            .arrangedSubviews
+            .compactMap { $0 as? RtcVideoItemView }
+            .filter { !speaingIds.contains($0.uid) }
+            .forEach { remove(view: $0) }
         updateScrollViewInset()
+    }
+
+    func remove(view: RtcVideoItemView) {
+        view.removeFromSuperview()
+        videoItemsStackView.removeArrangedSubview(view)
+        view.contentView.removeFromSuperview()
     }
 
     func updateScrollViewInset() {
@@ -278,6 +282,7 @@ class RtcViewController: UIViewController {
             } else {
                 mainScrollView.contentInset = .zero
             }
+            rtcMinimalSize = .init(width: itemWidth, height: itemHeight)
             let itemsSize = CGSize(width: itemWidth, height: estimateHeight)
             videoItemsStackView.frame = .init(origin: .init(x: preferredMargin, y: 0), size: itemsSize)
             mainScrollView.contentSize = itemsSize
@@ -293,151 +298,51 @@ class RtcViewController: UIViewController {
             } else {
                 mainScrollView.contentInset = .zero
             }
+            rtcMinimalSize = .init(width: itemWidth, height: itemHeight)
             let itemsSize = CGSize(width: estimateWidth, height: itemHeight)
             videoItemsStackView.frame = .init(origin: .init(x: preferredMargin, y: 0), size: itemsSize)
             mainScrollView.contentSize = itemsSize
         }
     }
 
-    func apply(canvas: AgoraRtcVideoCanvas, toView view: UIView?, isLocal: Bool) {
-        if canvas.view == view { return }
-        canvas.view = view
-        if isLocal {
-            viewModel.rtc.agoraKit.setupLocalVideo(canvas)
-        } else {
-            viewModel.rtc.agoraKit.setupRemoteVideo(canvas)
-        }
-    }
-
+    // MARK: - Fetch ContentView
     func itemViewForUid(_ uid: UInt) -> RtcVideoItemView {
         if let view = videoItemsStackView.arrangedSubviews.compactMap({ v -> RtcVideoItemView? in
             v as? RtcVideoItemView
         }).first(where: { $0.uid == uid }) {
             return view
         } else {
-            return RtcVideoItemView(uid: uid)
-        }
-    }
+            let view = RtcVideoItemView(uid: uid)
+            if viewModel.canUpdateLayout {
+                let dragger = ViewDragger(animationView: view.contentView,
+                                          targetDraggingView: draggingCanvasProvider.getDraggingView(),
+                                          animationType: .frame)
+                dragger.delegate = self
+                dragger.panGesture.delegate = self
+                draggers[uid] = dragger
 
-    // MARK: - Preview
-
-    var previewingUser: RoomUser?
-    func preview(view: RtcVideoItemView) {
-        let uid = view.uid
-        logger.trace("start preview \(uid)")
-        if let presentedViewController {
-            logger.info("prevent preview because \(presentedViewController) presented")
-            return
-        }
-        guard let user = viewModel.userFetch(uid) else { return }
-        previewingUser = user
-        view.nameLabel.isHidden = true
-        let heroId = uid.description
-        view.heroID = heroId
-        if user.status.camera {
-            previewViewController.showVideoPreview()
-
-            if viewModel.localUserRegular(uid) {
-                viewModel.rtc.localVideoCanvas.view = previewViewController.contentView
-                viewModel.rtc.agoraKit.setupLocalVideo(viewModel.rtc.localVideoCanvas)
-            } else {
-                let canvas = viewModel.rtc.createOrFetchFromCacheCanvas(for: uid)
-                canvas.view = previewViewController.contentView
-                // 放大为大流
-                viewModel.rtc.updateRemoteUserStreamType(rtcUID: uid, type: .high)
-                viewModel.rtc.agoraKit.setupRemoteVideo(canvas)
+                let pinchDelegate = UIPinchGestureRecognizer(target: self, action: #selector(onPinch))
+                view.contentView.addGestureRecognizer(pinchDelegate)
+                pinchDelegate.delegate = self
             }
-            previewViewController.contentView.heroID = heroId
-            previewViewController.avatarContainer.heroID = nil
-            previewViewController.contentView.heroModifiers = [.useNoSnapshot]
-        } else {
-            previewViewController.showAvatar(url: user.avatarURL)
-            previewViewController.avatarContainer.heroID = heroId
-            previewViewController.contentView.heroID = nil
-        }
 
-        previewViewController.hero.isEnabled = true
-        previewViewController.hero.modalAnimationType = .none
-        previewViewController.view.heroModifiers = [.fade, .useNoSnapshot]
-        present(previewViewController, animated: true, completion: nil)
-    }
-
-    func endPreviewing(UID: UInt) {
-        guard let user = viewModel.userFetch(UID) else { return }
-        let isLocal = viewModel.localUserRegular(UID)
-        if let view = videoItemsStackView.arrangedSubviews.first(where: { [weak self] in
-            guard let self else { return false }
-            guard let view = $0 as? RtcVideoItemView else { return false }
-            if isLocal {
-                return self.viewModel.localUserRegular(view.uid)
-            } else {
-                return view.uid == UID
+            view.tapHandler = { [weak self] view in
+                self?.respondToVideoItemVideoTap(view: view)
             }
-        }) as? RtcVideoItemView {
-            refresh(view: view,
-                    user: user,
-                    canvas: isLocal ? viewModel.rtc.localVideoCanvas : viewModel.rtc.createOrFetchFromCacheCanvas(for: UID),
-                    isLocal: isLocal)
+            view.doubleTapHandler = { [weak self] view in
+                self?.doublePublisher.accept(view.uid)
+            }
+            return view
         }
     }
-
-    lazy var previewViewController: RtcPreviewViewController = {
-        let vc = RtcPreviewViewController()
-        vc.dismissHandler = { [weak self] in
-            guard let self,
-                  let previewingUser = self.previewingUser else { return }
-            self.endPreviewing(UID: previewingUser.rtcUID)
-        }
-        vc.modalPresentationStyle = .fullScreen
-        return vc
-    }()
 
     // MARK: - Lazy View
 
-    lazy var noTeacherPlaceHolderView: UIImageView = {
-        let view = UIImageView(image: UIImage(named: "teach_not_showup"))
-        view.contentMode = .scaleAspectFill
-        return view
-    }()
-
-    func respondToVideoItemVideoTap(view: RtcVideoItemView, isLocal: Bool) {
-        videoItemsStackView.arrangedSubviews.forEach {
-            if let itemView = $0 as? RtcVideoItemView {
-                if !itemView.alwaysShowName {
-                    itemView.nameLabel.isHidden = true
-                }
-            }
-        }
-        view.nameLabel.isHidden = !view.nameLabel.isHidden
-
-        if isLocal {
-            cellMenuView.show(fromSource: view, direction: .bottom, inset: .init(top: -10, left: -10, bottom: -10, right: -10))
-            cellMenuView.dismissHandle = { [weak view] in
-                view?.nameLabel.isHidden = true
-            }
-            cellMenuView.clickHandler = { [weak self] op in
-                guard let self else { return }
-                switch op {
-                case .camera:
-                    self.localUserCameraClick.accept(())
-                case .mic:
-                    self.localUserMicClick.accept(())
-                case .scale:
-                    self.preview(view: view)
-                }
-            }
-        } else {
-            preview(view: view)
-        }
+    func respondToVideoItemVideoTap(view: RtcItemContentView) {
+        view.toggleNameLabelDisplay()
+        view.superview?.bringSubviewToFront(view)
+        userTap.accept(view.uid)
     }
-
-    lazy var localVideoItemView: RtcVideoItemView = {
-        let view = RtcVideoItemView(uid: 0)
-        view.tapHandler = { [weak self] in
-            self?.respondToVideoItemVideoTap(view: $0, isLocal: true)
-        }
-        return view
-    }()
 
     lazy var mainScrollView: UIScrollView = {
         let view = UIScrollView()
@@ -446,13 +351,8 @@ class RtcViewController: UIViewController {
     }()
 
     lazy var videoItemsStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [noTeacherPlaceHolderView, localVideoItemView])
+        let view = UIStackView(arrangedSubviews: [])
         view.axis = .horizontal
-        return view
-    }()
-
-    lazy var cellMenuView: RtcCellPopMenuView = {
-        let view = RtcCellPopMenuView()
         return view
     }()
 
@@ -461,4 +361,155 @@ class RtcViewController: UIViewController {
         view.backgroundColor = .borderColor
         return view
     }()
+}
+
+extension RtcViewController: ViewDraggerDelegate {
+    func travelAnimationDidRecoverWith(travelAnimation: ViewDragger, view: UIView, travelState: TravelState) {}
+
+    func travelAnimationDidStartWith(travelAnimation: ViewDragger, view: UIView, travelState: TravelState) {}
+
+    func travelAnimationDidCancelWith(travelAnimation: ViewDragger, view: UIView, travelState: TravelState) {}
+
+    func travelAnimationDidUpdateProgress(travelAnimation: ViewDragger, view: UIView, travelState: TravelState, progress: CGFloat) {}
+
+    func travelAnimationDidCompleteWith(travelAnimation: ViewDragger, view: UIView, travelState: TravelState) {}
+
+    // MARK: - Free Dragging
+
+    func travelAnimationStartFreeDragging(travelAnimation: ViewDragger, view: UIView) {
+        view.superview?.bringSubviewToFront(view) // Just for local display
+        if let contentView = view as? RtcItemContentView {
+            contentView.finishCurrentAnimation()
+            contentView.startDragging(needSnapShot: true) // Only snapshot on local dragging.
+            
+            let isPartInScrollView = isContentView(contentView, partIn: mainScrollView)
+            if isPartInScrollView {
+                draggingPossibleTargetView = .grid
+            } else {
+                draggingPossibleTargetView = .minimal(itemViewForUid(contentView.uid))
+            }
+
+            // Scale to minimal size
+            let currentScale = contentView.bounds.width / draggingCanvasProvider.getDraggingView().bounds.width
+            let minimalScale = minDraggingScaleOfCanvas
+            if currentScale < minimalScale {
+                let scale = minimalScale / currentScale
+                let startFrame = contentView.frame
+                let width = startFrame.width * scale
+                let height = startFrame.height * scale
+                let xOffset = (width - startFrame.width) / 2
+                let yOffset = (height - startFrame.height) / 2
+                contentView.frame = .init(x: startFrame.origin.x - xOffset,
+                                          y: startFrame.origin.y - yOffset,
+                                          width: width,
+                                          height: height)
+            }
+        }
+    }
+
+    func travelAnimationCancelFreeDragging(travelAnimation: ViewDragger, view: UIView) {
+        if let contentView = view as? RtcItemContentView {
+            contentView.endDragging(needSnapShot: true)
+        }
+    }
+
+    func travelAnimationFreeDraggingUpdate(travelAnimation: ViewDragger, view: UIView) {
+        let contentView = view as! RtcItemContentView
+        if let draggingPossibleTargetView {
+            switch draggingPossibleTargetView {
+            case .grid:
+                let isPartInScrollView = isContentView(contentView, partIn: mainScrollView)
+                if !isPartInScrollView {
+                    startTargetViewHint(withAnimationView: contentView)
+                } else {
+                    let isCoverOverHalfScrollView = isContentView(contentView, coverOverHalf: mainScrollView)
+                    if isCoverOverHalfScrollView {
+                        stopTargetViewHint()
+                    } else {
+                        startTargetViewHint(withAnimationView: contentView)
+                    }
+                }
+            case .minimal:
+                let isTotalInScrollView = isContentView(contentView, totalInScrollView: mainScrollView)
+                if isTotalInScrollView {
+                    startTargetViewHint(withAnimationView: contentView)
+                } else {
+                    let isCoverOverHalfScrollView = isContentView(contentView, coverOverHalf: mainScrollView)
+                    if isCoverOverHalfScrollView {
+                        startTargetViewHint(withAnimationView: contentView)
+                    } else {
+                        stopTargetViewHint()
+                    }
+                }
+            }
+        }
+    }
+    
+    func travelAnimationEndFreeDragging(travelAnimation: ViewDragger, view: UIView, velocity: CGPoint) {
+        guard let contentView = view as? RtcItemContentView else { return }
+        let itemView = itemViewForUid(contentView.uid)
+        contentView.endDragging(needSnapShot: true)
+        stopTargetViewHint()
+
+        let isTotalInScrollView = isContentView(contentView, totalInScrollView: mainScrollView)
+        let isPartOfViewInScrollView = isContentView(contentView, partIn: mainScrollView)
+        let isCoverOverHalfScrollView = isContentView(contentView, coverOverHalf: mainScrollView)
+        
+        if isTotalInScrollView { // View is on the top
+            endFreeDraggingViewToMinimal(itemView)
+        } else if isPartOfViewInScrollView { // Part of view is on the edge
+            let isVelocityToMinimal: Bool = direction == .top ? (abs(velocity.y) > abs(velocity.x) && velocity.y < -66) : (abs(velocity.x) > abs(velocity.y) && velocity.x > 66)
+            let isVelocityToCanvas: Bool = direction == .top ? (abs(velocity.y) > abs(velocity.x) && velocity.y > 66) : (abs(velocity.x) > abs(velocity.y) && velocity.x < -66)
+            if isVelocityToMinimal {
+                endFreeDraggingViewToMinimal(itemView)
+            } else if isVelocityToCanvas {
+                endFreeDraggingViewToCanvas(itemView, endingVelocity: velocity)
+            } else if isCoverOverHalfScrollView {
+                endFreeDraggingViewToMinimal(itemView)
+            } else { // Drag to edge
+                endFreeDraggingViewToCanvas(itemView, endingVelocity: velocity)
+            }
+        } else {
+            endFreeDraggingViewToCanvas(itemView, endingVelocity: velocity)
+        }
+    }
+    
+    // MARK: - End free dragging
+    
+    func endFreeDraggingViewToMinimal(_ itemView: RtcVideoItemView) {
+        userMinimalDragging.accept(itemView.uid)
+        minimal(view: itemView)
+    }
+
+    func endFreeDraggingViewToCanvas(_ itemView: RtcVideoItemView, endingVelocity: CGPoint) {
+        let uid = itemView.uid
+        let contentView = itemView.contentView
+        let canvas = draggingCanvasProvider.getDraggingView()
+        let frameInCanvas = contentView.convert(contentView.bounds, to: canvas)
+
+        func scaled(_ rect: CGRect) -> CGRect {
+            CGRect(x: rect.origin.x / canvas.bounds.width,
+                   y: rect.origin.y / canvas.bounds.height,
+                   width: rect.width / canvas.bounds.width,
+                   height: rect.height / canvas.bounds.height)
+        }
+
+        var adjustFrame = frameInCanvas
+
+        // Adding velocity (Ignore low velocity)
+        let velocityXOffset = endingVelocity.x / 5
+        let velocityYOffset = endingVelocity.y / 5
+
+        let targetOriginX = adjustFrame.origin.x + velocityXOffset
+        let targetOriginY = adjustFrame.origin.y + velocityYOffset
+
+        // Keep in canvas rect
+        adjustFrame.origin.x = min(max(0, targetOriginX), canvas.bounds.width - frameInCanvas.width)
+        adjustFrame.origin.y = min(max(0, targetOriginY), canvas.bounds.height - frameInCanvas.height)
+
+        if !isGridNow {
+            move(contentView: contentView, toScaledRect: scaled(adjustFrame))
+        }
+        userCanvasDragging.accept((uid, scaled(adjustFrame)))
+    }
 }

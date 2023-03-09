@@ -24,6 +24,7 @@ fileprivate func encodeConfigWith(mirror: Bool) -> AgoraVideoEncoderConfiguratio
 }
 
 class Rtc: NSObject {
+    let displayQueue = DispatchQueue(label: "com.flat.render.rtc", qos: .userInteractive)
     var agoraKit: AgoraRtcEngineKit!
     let screenShareInfo: ShareScreenInfo?
     let screenShareJoinBehavior: BehaviorRelay<Bool> = .init(value: false)

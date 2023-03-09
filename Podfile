@@ -16,6 +16,7 @@ target 'Flat' do
   pod 'Zip'
   pod 'lottie-ios'
   pod 'libPhoneNumber-iOS'
+  pod 'ScreenCorners'
   
   pod 'AgoraRtm_iOS'
   pod 'AgoraRtcEngine_iOS', '4.1.0'
@@ -23,6 +24,7 @@ target 'Flat' do
   pod 'Whiteboard', '2.17.0-alpha.20'
   pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.20'
   pod 'SyncPlayer', '0.3.3'
+  pod 'ViewDragger', '1.1.0'
   
   pod 'MBProgressHUD', '~> 1.2.0'
   pod 'Kingfisher'

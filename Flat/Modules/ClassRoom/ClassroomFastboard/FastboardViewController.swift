@@ -9,6 +9,7 @@
 import Fastboard
 import RxRelay
 import RxSwift
+import ScreenCorners
 import SnapKit
 import UIKit
 import Whiteboard
@@ -34,6 +35,9 @@ class FastboardViewController: UIViewController {
 
     /// Setup this store after whiteboard joined
     weak var bindStore: ClassRoomSyncedStore?
+    weak var bindLayoutStore: VideoLayoutStoreImp?
+    var syncedStoreMultiDelegate = SyncedStoreMultiDelegate()
+
     var appsClickHandler: ((WhiteRoom, UIButton) -> Void)?
 
     // MARK: Public
@@ -142,18 +146,53 @@ class FastboardViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUndoAndSceneConstraints()
+
+        innerBorderMask.frame = view.bounds
+
+        let rectPath = UIBezierPath(rect: view.bounds)
+        
+        let lineWidth = CGFloat(3)
+        let radius: CGFloat
+        if let window = view.window {
+            let leftBottom = view.convert(CGPoint(x: 0, y: view.bounds.height), to: window)
+            if leftBottom.y == window.bounds.height, leftBottom.x == 0 {
+                radius = (view.window?.screen.displayCornerRadius ?? 0)
+            } else {
+                radius = 0
+            }
+        } else {
+            radius = 0
+        }
+        
+        let frame = view.bounds.inset(by: .init(inset: lineWidth))
+        let roundPath = UIBezierPath(roundedRect: frame,
+                                    byRoundingCorners: [.bottomLeft, .bottomRight],
+                                    cornerRadii: .init(width: radius, height: radius))
+        
+        rectPath.append(roundPath)
+        rectPath.usesEvenOddFillRule = true
+        innerBorderMask.fillRule = .evenOdd
+        innerBorderMask.path = rectPath.cgPath
     }
 
     // MARK: - Private
 
     func joinRoom() {
         fastRoom.joinRoom { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(room):
-                self?.isRoomJoined.accept(true)
-                if let relatedStore = self?.bindStore {
+                self.isRoomJoined.accept(true)
+
+                if let relatedStore = self.bindStore {
+                    self.syncedStoreMultiDelegate.items.add(relatedStore)
                     relatedStore.setup(with: room)
                 }
+                if let relatedLayoutStore = self.bindLayoutStore {
+                    self.syncedStoreMultiDelegate.items.add(relatedLayoutStore)
+                    relatedLayoutStore.setup(whiteboardDisplayer: room)
+                }
+                room.obtainSyncedStore().delegate = self.syncedStoreMultiDelegate
             case .failure:
                 return
             }
@@ -213,6 +252,10 @@ class FastboardViewController: UIViewController {
     func setupViews() {
         view.addSubview(fastRoom.view)
         fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }
+        view.addSubview(blackMaskView)
+        blackMaskView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        view.addSubview(innerBorderMaskView)
+        innerBorderMaskView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
         let appsItem = JustExecutionItem(image: UIImage(named: "whiteboard_apps")!, action: { [weak self] room, value in
             self?.fastRoom.view.overlay?.dismissAllSubPanels()
@@ -243,6 +286,23 @@ class FastboardViewController: UIViewController {
         triple.delegate = self
         return triple
     }()
+
+    lazy var blackMaskView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.isHidden = true
+        return view
+    }()
+    
+    lazy var innerBorderMaskView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .color(type: .primary)
+        view.isHidden = true
+        view.layer.mask = innerBorderMask
+        return view
+    }()
+    
+    lazy var innerBorderMask = CAShapeLayer()
 }
 
 extension FastboardViewController: FastRoomDelegate {
