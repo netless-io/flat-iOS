@@ -296,7 +296,7 @@ class ClassRoomViewController: UIViewController {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
                 logger.info("device terminate")
-                weakSelf.viewModel.destroy(sender: weakSelf)
+                weakSelf.stopSubModules()
             })
             .disposed(by: rx.disposeBag)
     }
@@ -716,7 +716,7 @@ class ClassRoomViewController: UIViewController {
         guard let scene = notification.object as? UIWindowScene else { return }
         if view.window?.windowScene === scene {
             logger.info("classroom destroy by scene disconnect")
-            viewModel.destroy(sender: self)
+            stopSubModules()
         }
     }
 
