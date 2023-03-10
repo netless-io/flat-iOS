@@ -201,6 +201,9 @@
 "Edit" = "编辑";
 
 
+"ElectronLinkText" = "如需更全功能可前往链接下载 Electron 桌面版本。";
+
+
 "EmptyCloudTip" = "暂无文件";
 
 
@@ -319,6 +322,9 @@
 
 
 "Leaving room soon" = "房间已经结束，你即将退出房间...";
+
+
+"Link" = "链接";
 
 
 "Loading" = "加载中";

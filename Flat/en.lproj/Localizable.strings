@@ -201,6 +201,9 @@
 "Edit" = "Edit";
 
 
+"ElectronLinkText" = "For full functionality, go to the link to download the desktop version of Electron.";
+
+
 "EmptyCloudTip" = "No file";
 
 
@@ -319,6 +322,9 @@
 
 
 "Leaving room soon" = "The room has ended and you are about to exit the room...";
+
+
+"Link" = "link";
 
 
 "Loading" = "Loading";
