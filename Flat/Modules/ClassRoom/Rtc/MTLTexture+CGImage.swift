@@ -14,7 +14,6 @@ extension MTLTexture {
         let rowBytes = self.width * 4
         let p = malloc(width * height * 4)!
         getBytes(p, bytesPerRow: rowBytes, from: MTLRegionMake2D(0, 0, width, height), mipmapLevel: 0)
-
         return p
     }
 
@@ -23,10 +22,12 @@ extension MTLTexture {
         let pColorSpace = CGColorSpaceCreateDeviceRGB()
         let rawBitmapInfo = CGImageAlphaInfo.noneSkipFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue
         let bitmapInfo = CGBitmapInfo(rawValue: rawBitmapInfo)
-
+        
         let selftureSize = self.width * self.height * 4
         let rowBytes = self.width * 4
-        if let provider = CGDataProvider(dataInfo: nil, data: p, size: selftureSize, releaseData: { _, _, _ in }) {
+        if let provider = CGDataProvider(dataInfo: nil, data: p, size: selftureSize, releaseData: { _, p, _ in
+            p.deallocate()
+        }) {
             return CGImage(width: width,
                            height: height,
                            bitsPerComponent: 8,
