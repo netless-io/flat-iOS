@@ -19,9 +19,9 @@ extension UIDeviceOrientation {
         case .portraitUpsideDown:
             return .portraitUpsideDown
         case .landscapeLeft:
-            return .landscapeLeft
-        case .landscapeRight:
             return .landscapeRight
+        case .landscapeRight:
+            return .landscapeLeft
         case .faceUp:
             return .unknown
         case .faceDown:
@@ -60,10 +60,21 @@ class CameraPreviewView: UIView {
     }
 
     @objc func syncRotate() {
-        func applicantionOrientation() -> UIInterfaceOrientation {
-            window?.windowScene?.interfaceOrientation ?? .unknown
+        let deviceOrientation = UIDevice.current.orientation.toInterfaceOrientation()
+        let windowOrientation = window?.windowScene?.interfaceOrientation ?? .unknown
+        let orientation: UIInterfaceOrientation
+        
+        switch (deviceOrientation, windowOrientation) {
+        case (.unknown, .unknown):
+            orientation = .landscapeRight
+        case (let d, .unknown):
+            orientation = d
+        case (.unknown, let w):
+            orientation = w
+        case (_, let w):
+            orientation = w
         }
-        switch applicantionOrientation() {
+        switch orientation {
         case .unknown:
             return
         case .portrait:
