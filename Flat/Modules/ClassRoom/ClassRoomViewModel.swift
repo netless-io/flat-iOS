@@ -246,23 +246,23 @@ class ClassRoomViewModel {
         case mic
     }
 
-    func transformLocalRtcClick(_ input: Observable<RtcInputType>) -> Driver<DeviceState> {
-        input.withLatestFrom(currentUser, resultSelector: { a, b in (a, b) })
-            .flatMap { [weak self] click, user -> Observable<DeviceState> in
-                guard let self else { return .just(.init(mic: user.status.mic, camera: user.status.camera)) }
-                var state: DeviceState
-                switch click {
-                case .camera:
-                    state = .init(mic: user.status.mic, camera: !user.status.camera)
-                case .mic:
-                    state = .init(mic: !user.status.mic, camera: user.status.camera)
-                }
-                return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: state))
-                    .asObservable()
-                    .map { state }
-            }
-            .asDriver(onErrorJustReturn: .init(mic: false, camera: false))
-    }
+//    func transformLocalRtcClick(_ input: Observable<RtcInputType>) -> Driver<DeviceState> {
+//        input.withLatestFrom(currentUser, resultSelector: { a, b in (a, b) })
+//            .flatMap { [weak self] click, user -> Observable<DeviceState> in
+//                guard let self else { return .just(.init(mic: user.status.mic, camera: user.status.camera)) }
+//                var state: DeviceState
+//                switch click {
+//                case .camera:
+//                    state = .init(mic: user.status.mic, camera: !user.status.camera)
+//                case .mic:
+//                    state = .init(mic: !user.status.mic, camera: user.status.camera)
+//                }
+//                return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: state))
+//                    .asObservable()
+//                    .map { state }
+//            }
+//            .asDriver(onErrorJustReturn: .init(mic: false, camera: false))
+//    }
 
     func transformBanClick(_ input: ControlEvent<Void>) -> Observable<Bool> {
         input
@@ -387,8 +387,8 @@ class ClassRoomViewModel {
         let tapSomeUserOnStage: Observable<RoomUser>
         let tapSomeUserWhiteboard: Observable<RoomUser>
         let tapSomeUserRaiseHand: Observable<RoomUser>
-        let tapSomeUserCamera: Observable<RoomUser>
-        let tapSomeUserMic: Observable<RoomUser>
+        let tapSomeUserCamera: Observable<String>
+        let tapSomeUserMic: Observable<String>
     }
 
     func transformUserListInput(_ input: UserListInput) -> Driver<String> {
@@ -432,10 +432,10 @@ class ClassRoomViewModel {
                 }
                 return .just("")
             }.asDriver(onErrorJustReturn: "stage task error")
-        
+
         let cancelRaiseHandTask = input.tapSomeUserRaiseHand
-            .filter { [unowned self] in return $0.rtmUUID == self.userUUID && $0.status.isRaisingHand }
-            .flatMap { [unowned self] user in self.stateHandler.send(command: .updateRaiseHand(false)) }
+            .filter { [unowned self] in $0.rtmUUID == self.userUUID && $0.status.isRaisingHand }
+            .flatMap { [unowned self] _ in self.stateHandler.send(command: .updateRaiseHand(false)) }
             .map { _ in "" }
             .asDriver(onErrorJustReturn: "")
 
@@ -457,10 +457,16 @@ class ClassRoomViewModel {
                 return .just("")
             }.asDriver(onErrorJustReturn: "whiteboard task error")
 
-        let cameraTask = input.tapSomeUserCamera
-            .flatMap { [unowned self] user -> Single<String> in
-                self.stateHandler
-                    .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: user.status.mic, camera: !user.status.camera)))
+        let cameraTask = input
+            .tapSomeUserCamera
+            .withLatestFrom(rtcUsers) { uuid, users in
+                users.first(where: { $0.rtmUUID == uuid })
+            }.flatMap { [unowned self] user -> Single<String> in
+                guard let user else { return .error("User not found") }
+                guard user.rtmUUID == self.userUUID || self.isOwner else { return .just("") }
+                let newDeviceState = DeviceState(mic: user.status.mic, camera: !user.status.camera)
+                let command = ClassroomCommand.updateDeviceState(uuid: user.rtmUUID, state: newDeviceState)
+                let sending = self.stateHandler.send(command: command)
                     .map { [weak self] _ -> String in
                         guard let self else { return "" }
                         if user.rtmUUID != self.userUUID, !user.status.deviceState.camera { // Toast for send device request
@@ -468,17 +474,22 @@ class ClassRoomViewModel {
                         }
                         return ""
                     }
-                    .catch({ error in
+                    .catch { error in
                         return .just(error.localizedDescription)
-                    })
-            }
-            .asDriver(onErrorJustReturn: "camera task error")
+                    }
+                return sending
+            }.asDriver(onErrorJustReturn: "Camera task error")
 
-        let micTask = input.tapSomeUserMic
-            .flatMap { [unowned self] user -> Single<String> in
+        let micTask = input
+            .tapSomeUserMic
+            .withLatestFrom(rtcUsers) { uuid, users in
+                users.first(where: { $0.rtmUUID == uuid })
+            }.flatMap { [unowned self] user -> Single<String> in
+                guard let user else { return .error("User not found") }
                 guard user.rtmUUID == self.userUUID || self.isOwner else { return .just("") }
-                return self.stateHandler
-                    .send(command: .updateDeviceState(uuid: user.rtmUUID, state: .init(mic: !user.status.mic, camera: user.status.camera)))
+                let newDeviceState = DeviceState(mic: !user.status.mic, camera: user.status.camera)
+                let command = ClassroomCommand.updateDeviceState(uuid: user.rtmUUID, state: newDeviceState)
+                let sending = self.stateHandler.send(command: command)
                     .map { [weak self] _ -> String in
                         guard let self else { return "" }
                         if user.rtmUUID != self.userUUID, !user.status.deviceState.mic { // Toast for send device request
@@ -486,13 +497,19 @@ class ClassRoomViewModel {
                         }
                         return ""
                     }
-                    .catch({ error in
+                    .catch { error in
                         return .just(error.localizedDescription)
-                    })
-            }
-            .asDriver(onErrorJustReturn: "mic task error")
+                    }
+                return sending
+            }.asDriver(onErrorJustReturn: "Mic task error")
 
-        return Driver.of(allMuteTask, stopTask, onStageTask, whiteboardTask, cameraTask, micTask, cancelRaiseHandTask).merge()
+        return Driver.of(allMuteTask,
+                         stopTask,
+                         onStageTask,
+                         whiteboardTask,
+                         cameraTask,
+                         micTask,
+                         cancelRaiseHandTask).merge()
     }
 
     /// Return should dismiss

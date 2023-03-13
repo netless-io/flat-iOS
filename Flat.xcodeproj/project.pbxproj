@@ -203,6 +203,7 @@
 		8A9FB3CB2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CA2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift */; };
 		8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CC2722C0A100F6F06F /* HistoryMessageRequest.swift */; };
 		8A9FB3D02722C14B00F6F06F /* AgoraMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9FB3CF2722C14B00F6F06F /* AgoraMessage.swift */; };
+		8AA1155B29BF11FD00CF4CDB /* InnerPermissionControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA1155A29BF11FD00CF4CDB /* InnerPermissionControlView.swift */; };
 		8AA242F6289A6ABD00C306F0 /* ClassroomStateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242F5289A6ABD00C306F0 /* ClassroomStateHandler.swift */; };
 		8AA242F8289A6D7C00C306F0 /* DeviceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242F7289A6D7C00C306F0 /* DeviceState.swift */; };
 		8AA242FA289A7DDC00C306F0 /* ClassRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */; };
@@ -525,6 +526,7 @@
 		8A9FB3CA2722BEB700F6F06F /* JSONDecoder+AnyKeyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+AnyKeyDecodable.swift"; sourceTree = "<group>"; };
 		8A9FB3CC2722C0A100F6F06F /* HistoryMessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryMessageRequest.swift; sourceTree = "<group>"; };
 		8A9FB3CF2722C14B00F6F06F /* AgoraMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraMessage.swift; sourceTree = "<group>"; };
+		8AA1155A29BF11FD00CF4CDB /* InnerPermissionControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerPermissionControlView.swift; sourceTree = "<group>"; };
 		8AA242F5289A6ABD00C306F0 /* ClassroomStateHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateHandler.swift; sourceTree = "<group>"; };
 		8AA242F7289A6D7C00C306F0 /* DeviceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceState.swift; sourceTree = "<group>"; };
 		8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewController.swift; sourceTree = "<group>"; };
@@ -1132,6 +1134,7 @@
 				8A4DA84729A4700F00B6D19B /* AgoraCanvasContainer.swift */,
 				8A80208C275473D900F5691C /* RtcVideoItemView.swift */,
 				8A6021DD29B9D248009D499C /* RtcItemContentView.swift */,
+				8AA1155A29BF11FD00CF4CDB /* InnerPermissionControlView.swift */,
 				8A6021DF29B9D2B6009D499C /* RtcItemVideoContainer.swift */,
 			);
 			path = View;
@@ -2050,6 +2053,7 @@
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,
 				8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */,
 				8A9FB3BD272298CD00F6F06F /* JSONDecoder+Extension.swift in Sources */,
+				8AA1155B29BF11FD00CF4CDB /* InnerPermissionControlView.swift in Sources */,
 				8A0CA23728BF4A860035F71A /* CameraPreviewView.swift in Sources */,
 				8ACE3A24272FED7700BC37F7 /* RoomHistoryRequest.swift in Sources */,
 				8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */,

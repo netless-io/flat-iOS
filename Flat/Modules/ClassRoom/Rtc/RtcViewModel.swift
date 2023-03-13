@@ -18,7 +18,8 @@ class RtcViewModel {
                   localUserRegular: @escaping (UInt) -> Bool,
                   layoutStore: VideoLayoutStore,
                   userFetch: @escaping (UInt) -> RoomUser?,
-                  userThumbnailStream: @escaping ((UInt) -> AgoraVideoStreamType))
+                  userThumbnailStream: @escaping ((UInt) -> AgoraVideoStreamType),
+                  canUpdateDeviceState: @escaping ((UInt) -> Bool))
     {
         self.canUpdateLayout = canUpdateLayout
         self.layoutStore = layoutStore
@@ -27,6 +28,7 @@ class RtcViewModel {
         self.userFetch = userFetch
         self.userThumbnailStream = userThumbnailStream
         self.userRtcUid = userRtcUid
+        self.canUpdateDeviceState = canUpdateDeviceState
     }
 
     let canUpdateLayout: Bool
@@ -36,6 +38,7 @@ class RtcViewModel {
     let localUserRegular: (UInt) -> Bool
     let userFetch: (UInt) -> RoomUser?
     let userThumbnailStream: (UInt) -> AgoraVideoStreamType
+    let canUpdateDeviceState: (UInt) -> Bool
 
     struct LayoutUsersInfo {
         let minimalUsers: [UInt]

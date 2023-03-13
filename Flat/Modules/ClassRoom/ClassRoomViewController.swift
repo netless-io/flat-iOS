@@ -440,6 +440,19 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
 
+        
+        let tapSomeUserCamera = Observable.merge(
+            userListViewController.cameraTap.asObservable().map(\.rtmUUID),
+            settingVC.cameraPublish.asObservable().map { [unowned self] in self.viewModel.userUUID },
+            rtcListViewController.userCameraClick.asObservable()
+        )
+        
+        let tapSomeUserMic = Observable.merge(
+            userListViewController.micTap.asObservable().map(\.rtmUUID),
+            settingVC.micPublish.asObservable().map { [unowned self] in self.viewModel.userUUID },
+            rtcListViewController.userMicClick.asObservable()
+        )
+        
         viewModel.transformUserListInput(.init(allMuteTap: userListViewController.allMuteTap.asObservable(),
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
@@ -449,8 +462,8 @@ class ClassRoomViewController: UIViewController {
                                                    userListViewController.raiseHandTap.asObservable(),
                                                    raiseHandListViewController.acceptRaiseHandPublisher.asObservable()
                                                ]),
-                                               tapSomeUserCamera: userListViewController.cameraTap.asObservable(),
-                                               tapSomeUserMic: userListViewController.micTap.asObservable()))
+                                               tapSomeUserCamera: tapSomeUserCamera,
+                                               tapSomeUserMic: tapSomeUserMic))
             .drive(with: self, onNext: { weakSelf, s in
                 weakSelf.toast(s, timeInterval: 3, preventTouching: false)
             })
@@ -461,15 +474,15 @@ class ClassRoomViewController: UIViewController {
         rtcListViewController.bindUsers(viewModel.rtcUsers.asDriver(onErrorJustReturn: []))
         rtcListViewController.draggingCanvasProvider = self
 
-        let inputSource = Observable.merge(
-            rtcListViewController.localUserMicClick.map { ClassRoomViewModel.RtcInputType.mic },
-            rtcListViewController.localUserCameraClick.map { ClassRoomViewModel.RtcInputType.camera },
-            settingVC.cameraPublish.asObservable().map { ClassRoomViewModel.RtcInputType.camera },
-            settingVC.micPublish.asObservable().map { ClassRoomViewModel.RtcInputType.mic }
-        )
-        viewModel.transformLocalRtcClick(inputSource)
-            .drive()
-            .disposed(by: rx.disposeBag)
+//        let inputSource = Observable.merge(
+//            rtcListViewController.localUserMicClick.map { ClassRoomViewModel.RtcInputType.mic },
+//            rtcListViewController.localUserCameraClick.map { ClassRoomViewModel.RtcInputType.camera },
+//            settingVC.cameraPublish.asObservable().map { ClassRoomViewModel.RtcInputType.camera },
+//            settingVC.micPublish.asObservable().map { ClassRoomViewModel.RtcInputType.mic }
+//        )
+//        viewModel.transformLocalRtcClick(inputSource)
+//            .drive()
+//            .disposed(by: rx.disposeBag)
 
         rtcListViewController.viewModel.rtc.screenShareJoinBehavior
             .skip(while: { !$0 })

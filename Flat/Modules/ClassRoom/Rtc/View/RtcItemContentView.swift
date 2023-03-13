@@ -69,22 +69,37 @@ class RtcItemContentView: UIView {
         }
     }
     
+    func toggleControlViewDisplay() {
+        if controlView.isHidden {
+            showControlViewAndHideAfter(delay: 3)
+        } else {
+            controlView.isHidden = true
+        }
+    }
+    
+    func showControlViewAndHideAfter(delay: CGFloat) {
+        controlView.isHidden = false
+        Self.cancelPreviousPerformRequests(withTarget: self)
+        perform(#selector(_delayHideFloat), with: self, afterDelay: delay)
+    }
+    
     func toggleNameLabelDisplay() {
         if !alwaysShowName {
             if nameLabel.isHidden {
                 nameLabel.isHidden = false
                 NSObject.cancelPreviousPerformRequests(withTarget: self)
-                perform(#selector(_delayHideNameLabel), with: nil, afterDelay: 3)
+                perform(#selector(_delayHideFloat), with: nil, afterDelay: 3)
             } else {
                 nameLabel.isHidden = true
             }
         }
     }
     
-    @objc func _delayHideNameLabel() {
+    @objc func _delayHideFloat() {
         if !alwaysShowName {
             nameLabel.isHidden = true
         }
+        controlView.isHidden = true
     }
     
     func updateDisplayStyle() {
@@ -123,6 +138,13 @@ class RtcItemContentView: UIView {
         addSubview(silenceImageView)
         addSubview(nameLabel)
         addSubview(micStrenthView)
+        
+        addSubview(controlView)
+        controlView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(4)
+        }
+        controlView.isHidden = true
     }
     
     fileprivate var animationCompleteBlock: ((RtcItemContentView) -> Void)?
@@ -292,6 +314,8 @@ class RtcItemContentView: UIView {
     }()
 
     lazy var micStrenthMaskLayer = CAShapeLayer()
+    
+    lazy var controlView = InnerPermissionControlView()
 }
 
 extension RtcItemContentView: CAAnimationDelegate {

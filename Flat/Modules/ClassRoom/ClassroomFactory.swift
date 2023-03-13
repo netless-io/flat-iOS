@@ -109,20 +109,26 @@ enum ClassroomFactory {
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),
                                            rtcError: rtc.errorPublisher.asObservable())
 
-        let rtcViewController = RtcViewController(viewModel: .init(rtc: rtc,
-                                                                   userRtcUid: playInfo.rtcUID,
-                                                                   canUpdateLayout: basicInfo.isOwner,
-                                                                   localUserRegular: { $0 == 0 || $0 == playInfo.rtcUID },
-                                                                   layoutStore: videoLayoutStore,
-                                                                   userFetch: { rtcId -> RoomUser? in
-                                                                       if rtcId == 0 { return imp.currentOnStageUsers[playInfo.rtmUID] }
-                                                                       return imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value
-                                                                   },
-                                                                   userThumbnailStream: { rtcId -> AgoraVideoStreamType in
-                                                                       guard let user = imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value else { return .low }
-                                                                       let isTeacher = user.rtmUUID == playInfo.ownerUUID
-                                                                       return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
-                                                                   }))
+        let isLocalUser: ((UInt) -> Bool) = { $0 == 0 || $0 == playInfo.rtcUID }
+        let rtcViewModel = RtcViewModel(rtc: rtc,
+                                        userRtcUid: playInfo.rtcUID,
+                                        canUpdateLayout: basicInfo.isOwner,
+                                        localUserRegular: isLocalUser,
+                                        layoutStore: videoLayoutStore,
+                                        userFetch: { rtcId -> RoomUser? in
+                                            if rtcId == 0 { return imp.currentOnStageUsers[playInfo.rtmUID] }
+                                            return imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value
+                                        },
+                                        userThumbnailStream: { rtcId -> AgoraVideoStreamType in
+                                            guard let user = imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value else { return .low }
+                                            let isTeacher = user.rtmUUID == playInfo.ownerUUID
+                                            return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
+            
+        }, canUpdateDeviceState: { rtcUid in
+            if isLocalUser(rtcUid) { return true }
+            return basicInfo.isOwner
+        })
+        let rtcViewController = RtcViewController(viewModel: rtcViewModel)
 
         let alertProvider = DefaultAlertProvider()
         let vm = ClassRoomViewModel(stateHandler: imp,

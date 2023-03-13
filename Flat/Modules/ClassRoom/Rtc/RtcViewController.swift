@@ -37,9 +37,9 @@ let minDraggingScaleOfCanvas = CGFloat(0.25)
 class RtcViewController: UIViewController {
     let viewModel: RtcViewModel
     var draggingCanvasProvider: VideoDraggingCanvasProvider!
-
-    let localUserCameraClick: PublishRelay<Void> = .init()
-    let localUserMicClick: PublishRelay<Void> = .init()
+    
+    let userCameraClick: PublishRelay<String> = .init()
+    let userMicClick: PublishRelay<String> = .init()
 
     var preferredMargin: CGFloat = 0 {
         didSet {
@@ -58,7 +58,7 @@ class RtcViewController: UIViewController {
     var isGridNow = false
     var rtcMinimalSize: CGSize = .zero
     var draggers: [UInt: ViewDragger] = [:]
-    
+
     var draggingPossibleTargetView: DraggingPossibleTargetView? {
         willSet {
             stopTargetViewHint()
@@ -208,6 +208,8 @@ class RtcViewController: UIViewController {
         itemView.contentView.alwaysShowName = !user.isOnline
         itemView.contentView.showVolume = user.status.mic
         itemView.contentView.showAvatar = showAvatar
+        itemView.contentView.controlView.update(cameraOn: user.status.camera,
+                                                micOn: user.status.mic)
 
         if user.status.mic {
             viewModel.strenthFor(uid: user.rtcUID)
@@ -306,6 +308,7 @@ class RtcViewController: UIViewController {
     }
 
     // MARK: - Fetch ContentView
+
     func itemViewForUid(_ uid: UInt) -> RtcVideoItemView {
         if let view = videoItemsStackView.arrangedSubviews.compactMap({ v -> RtcVideoItemView? in
             v as? RtcVideoItemView
@@ -332,6 +335,17 @@ class RtcViewController: UIViewController {
             view.doubleTapHandler = { [weak self] view in
                 self?.doublePublisher.accept(view.uid)
             }
+            view.contentView.controlView.clickHandler = { [weak self, weak view] type in
+                guard let self else { return }
+                view?.contentView.showControlViewAndHideAfter(delay: 3)
+                guard let uuid = self.viewModel.userFetch(uid)?.rtmUUID else { return }
+                switch type {
+                case .mic:
+                    self.userMicClick.accept(uuid)
+                case .camera:
+                    self.userCameraClick.accept(uuid)
+                }
+            }
             return view
         }
     }
@@ -339,6 +353,9 @@ class RtcViewController: UIViewController {
     // MARK: - Lazy View
 
     func respondToVideoItemVideoTap(view: RtcItemContentView) {
+        if viewModel.canUpdateDeviceState(view.uid) {
+            view.toggleControlViewDisplay()
+        }
         view.toggleNameLabelDisplay()
         view.superview?.bringSubviewToFront(view)
         userTap.accept(view.uid)
@@ -382,7 +399,7 @@ extension RtcViewController: ViewDraggerDelegate {
             contentView.finishCurrentAnimation()
             contentView.isDragging = true
             contentView.updateRtcSnapShot() // Snapshot on local dragging.
-            
+
             let isPartInScrollView = isContentView(contentView, partIn: mainScrollView)
             if isPartInScrollView {
                 draggingPossibleTargetView = .grid
@@ -451,20 +468,20 @@ extension RtcViewController: ViewDraggerDelegate {
             }
         }
     }
-    
+
     func travelAnimationEndFreeDragging(travelAnimation: ViewDragger, view: UIView, velocity: CGPoint) {
         guard let contentView = view as? RtcItemContentView else { return }
         let itemView = itemViewForUid(contentView.uid)
         contentView.isDragging = false
         contentView.endRtcSnapShot()
-        
+
         stopTargetViewHint()
 
         let isTotalInScrollView = isContentView(contentView, totalInScrollView: mainScrollView)
         let isPartOfViewInScrollView = isContentView(contentView, partIn: mainScrollView)
         let isCoverOverQuarterScrollView = isContentView(contentView, coverOverQuarter: mainScrollView)
         let isLeaveOverQuarterScrollView = isContentView(contentView, leaveOverQuarter: mainScrollView)
-        
+
         if isTotalInScrollView { // View is on the top
             endFreeDraggingViewToMinimal(itemView)
         } else if isPartOfViewInScrollView { // Part of view is on the edge
@@ -496,9 +513,9 @@ extension RtcViewController: ViewDraggerDelegate {
             endFreeDraggingViewToCanvas(itemView, endingVelocity: velocity)
         }
     }
-    
+
     // MARK: - End free dragging
-    
+
     func endFreeDraggingViewToMinimal(_ itemView: RtcVideoItemView) {
         userMinimalDragging.accept(itemView.uid)
         minimal(view: itemView)
@@ -509,7 +526,7 @@ extension RtcViewController: ViewDraggerDelegate {
         let contentView = itemView.contentView
         let canvas = draggingCanvasProvider.getDraggingView()
         let frameInCanvas = contentView.convert(contentView.bounds, to: canvas)
-        
+
         func scaled(_ rect: CGRect) -> CGRect {
             CGRect(x: rect.origin.x / canvas.bounds.width,
                    y: rect.origin.y / canvas.bounds.height,
@@ -518,7 +535,7 @@ extension RtcViewController: ViewDraggerDelegate {
         }
 
         var adjustFrame = frameInCanvas
-        
+
         // Adding velocity (Ignore low velocity)
         let velocityXOffset = endingVelocity.x / 5
         let velocityYOffset = endingVelocity.y / 5
