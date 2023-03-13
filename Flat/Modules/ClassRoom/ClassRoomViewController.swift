@@ -911,17 +911,19 @@ extension ClassRoomViewController: VideoDraggingCanvasProvider {
         }
         let rowCount = ceil(CGFloat(totalCount) / CGFloat(rowNum))
         let rowIndex = CGFloat(index / rowNum)
-        let colIndex = CGFloat(index % rowNum) //CGFloat(index / rowNum)
+        let colIndex = CGFloat(index % rowNum)
         let itemWidth = bounds.width / CGFloat(rowNum)
         let itemHeight = bounds.height / CGFloat(rowCount)
-        let videoSize: CGSize
-        let estimateWidth = itemHeight / ClassRoomLayoutRatioConfig.rtcItemRatio
+        var videoSize: CGSize
+        let estimateWidth = itemHeight / ClassRoomLayoutRatioConfig.rtcPreviewRatio
         if estimateWidth <= itemWidth {
             videoSize = .init(width: estimateWidth, height: itemHeight)
         } else {
-            let videoHeight = itemWidth * ClassRoomLayoutRatioConfig.rtcItemRatio
+            let videoHeight = itemWidth * ClassRoomLayoutRatioConfig.rtcPreviewRatio
             videoSize = .init(width: itemWidth, height: videoHeight)
         }
+        
+        videoSize = .init(width: floor(videoSize.width), height: floor(videoSize.height)) // Round to prevent pixel error.
         
         let needCenterLastRow = totalCount % rowNum != 0 // Center last row
         let isLastRow = rowIndex == rowCount - 1
