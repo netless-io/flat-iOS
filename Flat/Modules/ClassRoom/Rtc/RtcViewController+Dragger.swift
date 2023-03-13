@@ -118,16 +118,25 @@ extension RtcViewController {
         }
     }
     
-    func isContentView(_ contentView: UIView, coverOverHalf scrollView: UIScrollView) -> Bool {
-        let bottomRight = contentView.convert(CGPoint(x: contentView.bounds.width, y: 0), to: scrollView)
+    func isContentView(_ contentView: UIView, coverOverQuarter scrollView: UIScrollView) -> Bool {
+        let topRight = contentView.convert(CGPoint(x: contentView.bounds.width, y: 0), to: scrollView)
         switch direction {
         case .top:
-            return bottomRight.y < scrollView.bounds.height / 2
+            return topRight.y < scrollView.bounds.height / 4 * 3
         case .right:
-            return bottomRight.x > scrollView.bounds.width / 2
+            return topRight.x > scrollView.bounds.width / 4
         }
     }
     
+    func isContentView(_ contentView: UIView, leaveOverQuarter scrollView: UIScrollView) -> Bool {
+        let topRight = contentView.convert(CGPoint(x: contentView.bounds.width, y: 0), to: scrollView)
+        switch direction {
+        case .top:
+            return topRight.y > scrollView.bounds.height / 4
+        case .right:
+            return topRight.x < scrollView.bounds.width / 4 * 3
+        }
+    }
     
     // MARK: - Dragging hint
     

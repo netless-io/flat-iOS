@@ -422,11 +422,11 @@ extension RtcViewController: ViewDraggerDelegate {
                 if !isPartInScrollView {
                     startTargetViewHint(withAnimationView: contentView)
                 } else {
-                    let isCoverOverHalfScrollView = isContentView(contentView, coverOverHalf: mainScrollView)
-                    if isCoverOverHalfScrollView {
-                        stopTargetViewHint()
-                    } else {
+                    let isLeaveOverQuarterScrollView = isContentView(contentView, leaveOverQuarter: mainScrollView)
+                    if isLeaveOverQuarterScrollView {
                         startTargetViewHint(withAnimationView: contentView)
+                    } else {
+                        stopTargetViewHint()
                     }
                 }
             case .minimal:
@@ -453,7 +453,8 @@ extension RtcViewController: ViewDraggerDelegate {
 
         let isTotalInScrollView = isContentView(contentView, totalInScrollView: mainScrollView)
         let isPartOfViewInScrollView = isContentView(contentView, partIn: mainScrollView)
-        let isCoverOverHalfScrollView = isContentView(contentView, coverOverHalf: mainScrollView)
+        let isCoverOverQuarterScrollView = isContentView(contentView, coverOverQuarter: mainScrollView)
+        let isLeaveOverQuarterScrollView = isContentView(contentView, leaveOverQuarter: mainScrollView)
         
         if isTotalInScrollView { // View is on the top
             endFreeDraggingViewToMinimal(itemView)
@@ -464,8 +465,21 @@ extension RtcViewController: ViewDraggerDelegate {
                 endFreeDraggingViewToMinimal(itemView)
             } else if isVelocityToCanvas {
                 endFreeDraggingViewToCanvas(itemView, endingVelocity: velocity)
-            } else if isCoverOverHalfScrollView {
-                endFreeDraggingViewToMinimal(itemView)
+            } else if let draggingPossibleTargetView {
+                switch draggingPossibleTargetView {
+                case .grid:
+                    if isLeaveOverQuarterScrollView {
+                        endFreeDraggingViewToCanvas(itemView, endingVelocity: velocity)
+                    } else {
+                        endFreeDraggingViewToMinimal(itemView)
+                    }
+                case .minimal:
+                    if isCoverOverQuarterScrollView {
+                        endFreeDraggingViewToMinimal(itemView)
+                    } else {
+                        endFreeDraggingViewToCanvas(itemView, endingVelocity: velocity)
+                    }
+                }
             } else { // Drag to edge
                 endFreeDraggingViewToCanvas(itemView, endingVelocity: velocity)
             }
