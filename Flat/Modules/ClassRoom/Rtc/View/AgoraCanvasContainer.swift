@@ -14,6 +14,7 @@ class AgoraCanvasContainer: UIView {
         super.init(frame: frame)
         clipsToBounds = true
         translatesAutoresizingMaskIntoConstraints = false
+        layer.contentsGravity = .resizeAspectFill
     }
     
     override var frame: CGRect {
@@ -48,10 +49,25 @@ class AgoraCanvasContainer: UIView {
     
     var showSnapShot = false
     func displayLatestSnapShot(duration: TimeInterval) {
+        func resizeImage(_ img: CGImage) -> CGImage? {
+            let snapShotRatio = CGFloat(img.width) / CGFloat(img.height)
+            let viewRatio = bounds.width / bounds.height
+            if snapShotRatio > viewRatio {
+                let resizeHeight = bounds.height
+                let resizeWidth = snapShotRatio * resizeHeight
+                let resizeImage = img.resize(size: .init(width: resizeWidth, height: resizeHeight))
+                return resizeImage
+            } else {
+                let resizeWidth = bounds.width
+                let resizeHeight = resizeWidth / snapShotRatio
+                let resizeImage = img.resize(size: .init(width: resizeWidth, height: resizeHeight))
+                return resizeImage
+            }
+        }
         if let storedSnapShot {
-            layer.contents = storedSnapShot.resize(size: bounds.size)
+            layer.contents = resizeImage(storedSnapShot)
         } else if let fallbackSnapShot {
-            layer.contents = fallbackSnapShot.resize(size: bounds.size)
+            layer.contents = resizeImage(fallbackSnapShot)
         }
         
         mtk?.isHidden = true
@@ -69,12 +85,10 @@ class AgoraCanvasContainer: UIView {
     }
     
     @objc fileprivate func startSnapShot() {
-        // TODO: Small frame snapShot for bigger  - -
         if let texture = mtk?.currentDrawable?.texture {
             if let snapShot = texture.toImage() {
                 if !snapShot.isBlack {
-                    // Resize img to fit size
-                    storedSnapShot = snapShot.resize(size: bounds.size)
+                    storedSnapShot = snapShot
                     endSnapShot()
                     return
                 }
@@ -83,7 +97,7 @@ class AgoraCanvasContainer: UIView {
         perform(#selector(startSnapShot), with: nil, afterDelay: 0.1)
     }
     
-    fileprivate func endSnapShot() {
+    func endSnapShot() {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
     }
 

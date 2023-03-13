@@ -380,7 +380,8 @@ extension RtcViewController: ViewDraggerDelegate {
         view.superview?.bringSubviewToFront(view) // Just for local display
         if let contentView = view as? RtcItemContentView {
             contentView.finishCurrentAnimation()
-            contentView.startDragging(needSnapShot: true) // Only snapshot on local dragging.
+            contentView.isDragging = true
+            contentView.updateRtcSnapShot() // Snapshot on local dragging.
             
             let isPartInScrollView = isContentView(contentView, partIn: mainScrollView)
             if isPartInScrollView {
@@ -389,27 +390,33 @@ extension RtcViewController: ViewDraggerDelegate {
                 draggingPossibleTargetView = .minimal(itemViewForUid(contentView.uid))
             }
 
+            let currentRatio = contentView.bounds.height / contentView.bounds.width
+            let isPreviewRatio = abs(currentRatio - ClassRoomLayoutRatioConfig.rtcPreviewRatio) <= 0.01
             // Scale to minimal size
             let currentScale = contentView.bounds.width / draggingCanvasProvider.getDraggingView().bounds.width
             let minimalScale = minDraggingScaleOfCanvas
-            if currentScale < minimalScale {
+            if currentScale < minimalScale || !isPreviewRatio {
                 let scale = minimalScale / currentScale
                 let startFrame = contentView.frame
                 let width = startFrame.width * scale
-                let height = startFrame.height * scale
+                let height = width * ClassRoomLayoutRatioConfig.rtcPreviewRatio
                 let xOffset = (width - startFrame.width) / 2
                 let yOffset = (height - startFrame.height) / 2
                 contentView.frame = .init(x: startFrame.origin.x - xOffset,
                                           y: startFrame.origin.y - yOffset,
                                           width: width,
                                           height: height)
+                if ClassRoomLayoutRatioConfig.rtcPreviewRatio != ClassRoomLayoutRatioConfig.rtcItemRatio {
+                    contentView.tempDisplaySnapshot()
+                }
             }
         }
     }
 
     func travelAnimationCancelFreeDragging(travelAnimation: ViewDragger, view: UIView) {
         if let contentView = view as? RtcItemContentView {
-            contentView.endDragging(needSnapShot: true)
+            contentView.isDragging = false
+            contentView.endRtcSnapShot()
         }
     }
 
@@ -434,8 +441,8 @@ extension RtcViewController: ViewDraggerDelegate {
                 if isTotalInScrollView {
                     startTargetViewHint(withAnimationView: contentView)
                 } else {
-                    let isCoverOverHalfScrollView = isContentView(contentView, coverOverHalf: mainScrollView)
-                    if isCoverOverHalfScrollView {
+                    let isCoverOverQuarterScrollView = isContentView(contentView, coverOverQuarter: mainScrollView)
+                    if isCoverOverQuarterScrollView {
                         startTargetViewHint(withAnimationView: contentView)
                     } else {
                         stopTargetViewHint()
@@ -448,7 +455,9 @@ extension RtcViewController: ViewDraggerDelegate {
     func travelAnimationEndFreeDragging(travelAnimation: ViewDragger, view: UIView, velocity: CGPoint) {
         guard let contentView = view as? RtcItemContentView else { return }
         let itemView = itemViewForUid(contentView.uid)
-        contentView.endDragging(needSnapShot: true)
+        contentView.isDragging = false
+        contentView.endRtcSnapShot()
+        
         stopTargetViewHint()
 
         let isTotalInScrollView = isContentView(contentView, totalInScrollView: mainScrollView)
@@ -500,7 +509,7 @@ extension RtcViewController: ViewDraggerDelegate {
         let contentView = itemView.contentView
         let canvas = draggingCanvasProvider.getDraggingView()
         let frameInCanvas = contentView.convert(contentView.bounds, to: canvas)
-
+        
         func scaled(_ rect: CGRect) -> CGRect {
             CGRect(x: rect.origin.x / canvas.bounds.width,
                    y: rect.origin.y / canvas.bounds.height,
@@ -509,7 +518,7 @@ extension RtcViewController: ViewDraggerDelegate {
         }
 
         var adjustFrame = frameInCanvas
-
+        
         // Adding velocity (Ignore low velocity)
         let velocityXOffset = endingVelocity.x / 5
         let velocityYOffset = endingVelocity.y / 5

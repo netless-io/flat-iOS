@@ -174,22 +174,20 @@ class RtcItemContentView: UIView {
         }
     }
     
-    var canvasContainer: AgoraCanvasContainer? {
+    fileprivate var canvasContainer: AgoraCanvasContainer? {
         videoContainerView.subviews.first as? AgoraCanvasContainer
     }
     
-    func startDragging(needSnapShot: Bool) {
-        if needSnapShot {
-            canvasContainer?.tryUpdateSnpaShot()
-        }
-        isDragging = true
+    func updateRtcSnapShot() {
+        canvasContainer?.tryUpdateSnpaShot()
     }
     
-    func endDragging(needSnapShot: Bool) {
-        if needSnapShot {
-            canvasContainer?.displayLatestSnapShot(duration: 0.1)
-        }
-        isDragging = false
+    func endRtcSnapShot() {
+        canvasContainer?.endSnapShot()
+    }
+    
+    func tempDisplaySnapshot(duration: TimeInterval = 0.1) {
+        canvasContainer?.displayLatestSnapShot(duration: duration)
     }
     
     var micStrenth: CGFloat = 0 {

@@ -12,4 +12,5 @@ import Foundation
 struct ClassRoomLayoutRatioConfig {
     static let whiteboardRatio = CGFloat(9.0 / 16)
     static let rtcItemRatio = CGFloat(84 / 112.0)
+    static let rtcPreviewRatio = CGFloat(9.0 / 16.0)
 }

@@ -35,14 +35,23 @@ extension RtcViewController {
 
         let fromCenter = startFrame.origin.applying(.init(translationX: startFrame.width / 2, y: startFrame.height / 2))
         let toCenter = forwardsFrameInCanvas.origin.applying(.init(translationX: forwardsFrameInCanvas.width / 2, y: forwardsFrameInCanvas.height / 2))
+        let xScale = forwardsFrameInCanvas.width / startFrame.width
+        let yScale = forwardsFrameInCanvas.height / startFrame.height
+        let scale = min(xScale, yScale) // To keep animation scale.
         animationView.animationToFrame = forwardsFrame
-        animationView.startDragging(needSnapShot: true) // To avoid rtc size wrong
+        animationView.isDragging = true
+        animationView.updateRtcSnapShot() // To avoid rtc size wrong
         animationView.animation(x: toCenter.x - fromCenter.x,
                                 y: toCenter.y - fromCenter.y,
-                                xScale: forwardsFrameInCanvas.width / startFrame.width,
-                                yScale: forwardsFrameInCanvas.height / startFrame.height,
+                                xScale: scale,
+                                yScale: scale,
                                 animationDuration: 0.35) { c in
-            c.endDragging(needSnapShot: true)
+            let showSnapshot = scale != 1
+            c.isDragging = false
+            c.endRtcSnapShot()
+            if showSnapshot {
+                c.tempDisplaySnapshot(duration: 0.1)
+            }
             if c.superview != forwardsView {
                 forwardsView.addSubview(c)
             }
@@ -77,16 +86,15 @@ extension RtcViewController {
         guard let targetView = gesture.view as? RtcItemContentView else { return }
         let minWidth = draggingCanvasProvider.getDraggingView().bounds.width * minDraggingScaleOfCanvas
         let minScale = minWidth / targetView.bounds.width
+        let maxScale = draggingCanvasProvider.getDraggingLayoutFor(index: 0, totalCount: 1).width / targetView.bounds.width
+        let scale = min(max(minScale, gesture.scale), maxScale)
         switch gesture.state {
         case .changed:
-            let maxScale = draggingCanvasProvider.getDraggingLayoutFor(index: 0, totalCount: 1).width / targetView.bounds.width
-            let scale = min(max(minScale, gesture.scale), maxScale)
             targetView.transform = .init(scaleX: scale, y: scale)
         case .ended:
-            let maxScale = draggingCanvasProvider.getDraggingLayoutFor(index: 0, totalCount: 1).width / targetView.bounds.width
-            let scale = min(max(minScale, gesture.scale), maxScale)
             let originSize = targetView.frame.size
             let size = targetView.frame.size.applying(.init(scaleX: scale, y: scale))
+            targetView.tempDisplaySnapshot(duration: 0.1)
             targetView.frame = .init(origin: .init(x: targetView.frame.origin.x - originSize.width * (scale - 1) / 2,
                                                    y: targetView.frame.origin.y - originSize.height * (scale - 1) / 2),
                                      size: size)
