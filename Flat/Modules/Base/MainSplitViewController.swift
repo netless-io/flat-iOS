@@ -77,6 +77,67 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         super.viewDidLoad()
         delegate = self
         view.backgroundColor = .color(light: .grey1, dark: UIColor(hexString: "#2B2F38"))
+        
+        if #available(iOS 14.0, *) {
+            if ProcessInfo().isiOSAppOnMac {
+                if !showHideElectronLink {
+                    view.addSubview(linkToElectronView)
+                    linkToElectronView.snp.makeConstraints { make in
+                        make.left.right.bottom.equalToSuperview()
+                        make.height.equalTo(33)
+                    }
+                }
+            }
+        }
+    }
+    
+    var showHideElectronLink: Bool {
+        get {
+            UserDefaults.standard.bool(forKey: "showHideElectronLink")
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "showHideElectronLink")
+        }
+    }
+    
+    lazy var linkToElectronView: UIView = {
+        let strip = UIView(frame: .zero)
+        let textView = UITextView()
+        strip.addSubview(textView)
+        let str = localizeStrings("ElectronLinkText")
+        let attrStr = NSMutableAttributedString(string: str, attributes: [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.color(type: .text)
+        ])
+        attrStr.add(link: "https://flat.whiteboard.agora.io/", forExistString: localizeStrings("Link"))
+        textView.attributedText = attrStr
+        textView.linkTextAttributes = [.foregroundColor: UIColor.color(type: .primary), .underlineColor: UIColor.clear]
+        textView.isEditable = false
+        textView.textAlignment = .center
+        textView.backgroundColor = .color(type: .primary, .weak)
+        textView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        strip.addSubview(closeButton)
+        closeButton.imageEdgeInsets = .init(inset: 3)
+        closeButton.snp.makeConstraints { make in
+            make.right.top.bottom.equalToSuperview()
+            make.width.equalTo(44)
+        }
+        return strip
+    }()
+    
+    lazy var closeButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(UIImage(named: "close-bold"), for: .normal)
+        btn.addTarget(self, action: #selector(onClickClose), for: .touchUpInside)
+        btn.tintColor = UIColor.color(type: .text)
+        return btn
+    }()
+    
+    @objc func onClickClose() {
+        linkToElectronView.removeFromSuperview()
+        showHideElectronLink = true
     }
 
     override func show(_ vc: UIViewController, hidePrimary: Bool = false) {
