@@ -150,7 +150,7 @@ class FastboardViewController: UIViewController {
         innerBorderMask.frame = view.bounds
 
         let rectPath = UIBezierPath(rect: view.bounds)
-        
+
         let lineWidth = CGFloat(3)
         let radius: CGFloat
         if let window = view.window {
@@ -163,12 +163,12 @@ class FastboardViewController: UIViewController {
         } else {
             radius = 0
         }
-        
+
         let frame = view.bounds.inset(by: .init(inset: lineWidth))
         let roundPath = UIBezierPath(roundedRect: frame,
-                                    byRoundingCorners: [.bottomLeft, .bottomRight],
-                                    cornerRadii: .init(width: radius, height: radius))
-        
+                                     byRoundingCorners: [.bottomLeft, .bottomRight],
+                                     cornerRadii: .init(width: radius, height: radius))
+
         rectPath.append(roundPath)
         rectPath.usesEvenOddFillRule = true
         innerBorderMask.fillRule = .evenOdd
@@ -232,21 +232,20 @@ class FastboardViewController: UIViewController {
     }
 
     func bindConnecting() {
-        isRoomJoined
-            .withLatestFrom(isRoomBanned) { join, ban -> Bool in
-                let showLoading = !join && !ban
-                return showLoading
+        Observable.combineLatest(isRoomJoined.asObservable(), isRoomBanned.asObservable()) { join, ban in
+            let showLoading = !join && !ban
+            return showLoading
+        }
+        .asDriver(onErrorJustReturn: false)
+        .distinctUntilChanged()
+        .drive(with: self, onNext: { weakSelf, showLoading in
+            if showLoading {
+                weakSelf.showActivityIndicator()
+            } else {
+                weakSelf.stopActivityIndicator()
             }
-            .asDriver(onErrorJustReturn: false)
-            .distinctUntilChanged()
-            .drive(with: self, onNext: { weakSelf, showLoading in
-                if showLoading {
-                    weakSelf.showActivityIndicator()
-                } else {
-                    weakSelf.stopActivityIndicator()
-                }
-            })
-            .disposed(by: rx.disposeBag)
+        })
+        .disposed(by: rx.disposeBag)
     }
 
     func setupViews() {
@@ -293,7 +292,7 @@ class FastboardViewController: UIViewController {
         view.isHidden = true
         return view
     }()
-    
+
     lazy var innerBorderMaskView: UIView = {
         let view = UIView()
         view.backgroundColor = .color(type: .primary)
@@ -301,7 +300,7 @@ class FastboardViewController: UIViewController {
         view.layer.mask = innerBorderMask
         return view
     }()
-    
+
     lazy var innerBorderMask = CAShapeLayer()
 }
 
