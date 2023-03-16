@@ -80,13 +80,12 @@ extension RtcViewController {
         updateAnimate(for: view.contentView, forwardsView: view, forwardsFrame: .init(origin: .zero, size: rtcMinimalSize))
     }
     
-    
     // MARK: - Pinch
     @objc func onPinch(_ gesture: UIPinchGestureRecognizer) {
         guard let targetView = gesture.view as? RtcItemContentView else { return }
         let minWidth = draggingCanvasProvider.getDraggingView().bounds.width * minDraggingScaleOfCanvas
         let minScale = minWidth / targetView.bounds.width
-        let maxScale = draggingCanvasProvider.getDraggingLayoutFor(index: 0, totalCount: 1).width / targetView.bounds.width
+        let maxScale = draggingCanvasProvider.getDraggingLayoutFor(index: 0, totalCount: 1).width * 0.9 / targetView.bounds.width
         let scale = min(max(minScale, gesture.scale), maxScale)
         switch gesture.state {
         case .changed:
