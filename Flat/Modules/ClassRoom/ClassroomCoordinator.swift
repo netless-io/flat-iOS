@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import StoreKit
 
 class ClassroomCoordinator: NSObject {
     override private init() {
@@ -25,6 +26,15 @@ class ClassroomCoordinator: NSObject {
     @objc func onClassroomLeaving() {
         // Just remove all the info for can't get the leaving scene identifier.
         currentClassroomUUID = nil
+        
+        
+        if #available(iOS 14.0, *) {
+            let connectedWindowScenes = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+            if let activeScene = connectedWindowScenes.first(where: { $0.activationState == .foregroundActive }) {
+                SKStoreReviewController.requestReview(in: activeScene)
+            }
+        }
     }
     
     func enterClassroomFrom(windowScene: UIWindowScene) {
