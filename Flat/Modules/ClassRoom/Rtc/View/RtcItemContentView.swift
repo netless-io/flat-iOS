@@ -118,6 +118,7 @@ class RtcItemContentView: UIView {
         if isDragging {
             micStrenthView.isHidden = true
             silenceImageView.isHidden = true
+            _delayHideFloat()
         } else {
             micStrenthView.isHidden = !showVolume
             silenceImageView.isHidden = showVolume
