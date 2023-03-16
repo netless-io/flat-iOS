@@ -241,29 +241,6 @@ class ClassRoomViewModel {
             }
     }
 
-    enum RtcInputType {
-        case camera
-        case mic
-    }
-
-//    func transformLocalRtcClick(_ input: Observable<RtcInputType>) -> Driver<DeviceState> {
-//        input.withLatestFrom(currentUser, resultSelector: { a, b in (a, b) })
-//            .flatMap { [weak self] click, user -> Observable<DeviceState> in
-//                guard let self else { return .just(.init(mic: user.status.mic, camera: user.status.camera)) }
-//                var state: DeviceState
-//                switch click {
-//                case .camera:
-//                    state = .init(mic: user.status.mic, camera: !user.status.camera)
-//                case .mic:
-//                    state = .init(mic: !user.status.mic, camera: user.status.camera)
-//                }
-//                return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: state))
-//                    .asObservable()
-//                    .map { state }
-//            }
-//            .asDriver(onErrorJustReturn: .init(mic: false, camera: false))
-//    }
-
     func transformBanClick(_ input: ControlEvent<Void>) -> Observable<Bool> {
         input
             .withLatestFrom(stateHandler.banState, resultSelector: { _, ban in !ban })

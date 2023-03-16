@@ -474,16 +474,6 @@ class ClassRoomViewController: UIViewController {
         rtcListViewController.bindUsers(viewModel.rtcUsers.asDriver(onErrorJustReturn: []))
         rtcListViewController.draggingCanvasProvider = self
 
-//        let inputSource = Observable.merge(
-//            rtcListViewController.localUserMicClick.map { ClassRoomViewModel.RtcInputType.mic },
-//            rtcListViewController.localUserCameraClick.map { ClassRoomViewModel.RtcInputType.camera },
-//            settingVC.cameraPublish.asObservable().map { ClassRoomViewModel.RtcInputType.camera },
-//            settingVC.micPublish.asObservable().map { ClassRoomViewModel.RtcInputType.mic }
-//        )
-//        viewModel.transformLocalRtcClick(inputSource)
-//            .drive()
-//            .disposed(by: rx.disposeBag)
-
         rtcListViewController.viewModel.rtc.screenShareJoinBehavior
             .skip(while: { !$0 })
             .subscribe(with: self, onNext: { weakSelf, isOn in
