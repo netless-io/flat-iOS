@@ -106,6 +106,7 @@
 		8A303BE429AD9ADB00E0AF36 /* CountryCodePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */; };
 		8A317A9D2966D67800041D4A /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A317A9C2966D67800041D4A /* SceneManager.swift */; };
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
+		8A3782E029C3077A0051D4FB /* RatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3782DF29C3077A0051D4FB /* RatingManager.swift */; };
 		8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */; };
 		8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
@@ -424,6 +425,7 @@
 		8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCodePicker.swift; sourceTree = "<group>"; };
 		8A317A9C2966D67800041D4A /* SceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
+		8A3782DF29C3077A0051D4FB /* RatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingManager.swift; sourceTree = "<group>"; };
 		8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsLogHandler.swift; sourceTree = "<group>"; };
 		8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomOperation.swift; sourceTree = "<group>"; };
 		8A48A9C82716D734003719DB /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
@@ -1109,6 +1111,14 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		8A3782E129C30F800051D4FB /* StoreReview */ = {
+			isa = PBXGroup;
+			children = (
+				8A3782DF29C3077A0051D4FB /* RatingManager.swift */,
+			);
+			path = StoreReview;
+			sourceTree = "<group>";
+		};
 		8A40F70A28E541DF00BCEF45 /* RoomOperation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1227,6 +1237,7 @@
 		8A97EBBB271D180600965185 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8A3782E129C30F800051D4FB /* StoreReview */,
 				8AA268E5292B4A830065FC3C /* Invite */,
 				8A6898DD2919FF77002DD089 /* Generic */,
 				8A9ACBF9271D602600E7E7CE /* Views */,
@@ -1928,6 +1939,7 @@
 				8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */,
 				8AD3CDF92716B53D008BD904 /* UIViewController+Alert.swift in Sources */,
 				8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */,
+				8A3782E029C3077A0051D4FB /* RatingManager.swift in Sources */,
 				8A7741DC2738BB06009FAADA /* ClassroomFactory.swift in Sources */,
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,

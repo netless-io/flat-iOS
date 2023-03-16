@@ -8,7 +8,6 @@
 
 import Foundation
 import RxSwift
-import StoreKit
 
 class ClassroomCoordinator: NSObject {
     override private init() {
@@ -22,18 +21,17 @@ class ClassroomCoordinator: NSObject {
     static let shared = ClassroomCoordinator()
 
     var currentClassroomUUID: String?
+    var enterClassDate: Date?
 
     @objc func onClassroomLeaving() {
         // Just remove all the info for can't get the leaving scene identifier.
         currentClassroomUUID = nil
-        
-        
-        if #available(iOS 14.0, *) {
-            let connectedWindowScenes = UIApplication.shared.connectedScenes
-                .compactMap { $0 as? UIWindowScene }
-            if let activeScene = connectedWindowScenes.first(where: { $0.activationState == .foregroundActive }) {
-                SKStoreReviewController.requestReview(in: activeScene)
+        if let enterClassDate {
+            let duration = Date().timeIntervalSince(enterClassDate)
+            if #available(iOS 14.0, *) {
+                RatingManager.requestReviewIfAppropriate(context: .init(enterClassroomDuration: duration))
             }
+            self.enterClassDate = nil
         }
     }
     
@@ -41,6 +39,7 @@ class ClassroomCoordinator: NSObject {
         guard let uuid = windowScene.session.userInfo?["roomUUID"] as? String
         else { return }
         currentClassroomUUID = uuid
+        enterClassDate = Date()
         let periodicUUID = windowScene.session.userInfo?["periodicUUID"] as? String
         let window = windowScene.windows.first(where: \.isKeyWindow)
         let emptyRoot = EmptySplitSecondaryViewController()
@@ -77,6 +76,7 @@ class ClassroomCoordinator: NSObject {
         }
 
         currentClassroomUUID = uuid
+        enterClassDate = Date()
         if #available(iOS 14.0, *) {
             if ProcessInfo().isiOSAppOnMac {
                 guard let main = controller?.mainContainer?.concreteViewController else { return }
