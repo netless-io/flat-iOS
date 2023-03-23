@@ -399,7 +399,7 @@ extension RtcViewController: ViewDraggerDelegate {
             let isPartInScrollView = isContentView(contentView, partIn: mainScrollView)
             if isPartInScrollView {
                 draggingPossibleTargetView = .grid
-            } else {
+            } else {1
                 draggingPossibleTargetView = .minimal(itemViewForUid(contentView.uid))
             }
 
