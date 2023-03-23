@@ -32,12 +32,13 @@ enum DraggingPossibleTargetView {
 
 typealias UserCanvasDraggingResult = (uid: UInt, rect: CGRect)
 
+let defaultDraggingScaleOfCanvas = CGFloat(0.4)
 let minDraggingScaleOfCanvas = CGFloat(0.25)
 
 class RtcViewController: UIViewController {
     let viewModel: RtcViewModel
     var draggingCanvasProvider: VideoDraggingCanvasProvider!
-    
+
     let userCameraClick: PublishRelay<String> = .init()
     let userMicClick: PublishRelay<String> = .init()
 
@@ -402,13 +403,9 @@ extension RtcViewController: ViewDraggerDelegate {
                 draggingPossibleTargetView = .minimal(itemViewForUid(contentView.uid))
             }
 
-            let currentRatio = contentView.bounds.height / contentView.bounds.width
-            let isPreviewRatio = abs(currentRatio - ClassRoomLayoutRatioConfig.rtcPreviewRatio) <= 0.01
-            // Scale to minimal size
-            let currentScale = contentView.bounds.width / draggingCanvasProvider.getDraggingView().bounds.width
-            let minimalScale = minDraggingScaleOfCanvas
-            if currentScale < minimalScale || !isPreviewRatio {
-                let scale = minimalScale / currentScale
+            if isPartInScrollView { // Means dragging from rtc top view.
+                let currentScale = contentView.bounds.width / draggingCanvasProvider.getDraggingView().bounds.width
+                let scale = defaultDraggingScaleOfCanvas / currentScale
                 let startFrame = contentView.frame
                 let width = startFrame.width * scale
                 let height = width * ClassRoomLayoutRatioConfig.rtcPreviewRatio

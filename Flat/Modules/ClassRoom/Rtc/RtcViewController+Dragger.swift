@@ -184,7 +184,7 @@ extension RtcViewController: UIGestureRecognizerDelegate {
     }
 
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let isOnScrollView = gestureRecognizer.view?.superview is RtcItemContentView
+        let isOnScrollView = gestureRecognizer.view?.superview is RtcVideoItemView
         if !isOnScrollView { return true }
         
         guard let pan = (gestureRecognizer as? UIPanGestureRecognizer),
