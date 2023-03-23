@@ -107,7 +107,7 @@ class ClassRoomViewController: UIViewController {
             splitWarningsView.isHidden = true
         }
     }
-    
+
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
         if container.superview != nil {
@@ -440,19 +440,18 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
 
-        
         let tapSomeUserCamera = Observable.merge(
             userListViewController.cameraTap.asObservable().map(\.rtmUUID),
             settingVC.cameraPublish.asObservable().map { [unowned self] in self.viewModel.userUUID },
             rtcListViewController.userCameraClick.asObservable()
         )
-        
+
         let tapSomeUserMic = Observable.merge(
             userListViewController.micTap.asObservable().map(\.rtmUUID),
             settingVC.micPublish.asObservable().map { [unowned self] in self.viewModel.userUUID },
             rtcListViewController.userMicClick.asObservable()
         )
-        
+
         viewModel.transformUserListInput(.init(allMuteTap: userListViewController.allMuteTap.asObservable(),
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
@@ -602,7 +601,7 @@ class ClassRoomViewController: UIViewController {
         container.axis = .vertical
         return container
     }()
-    
+
     lazy var leftSafeAreaMaskView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -626,13 +625,13 @@ class ClassRoomViewController: UIViewController {
         let isiPhone = UIDevice.current.userInterfaceIdiom == .phone
         let statusBarMinHeight: CGFloat = 24
         let statusBarMaxHeight: CGFloat = 66
-        
+
         leftSafeAreaMaskView.snp.makeConstraints { make in
             make.left.equalTo(view)
             make.top.bottom.equalTo(fastboardViewController.blackMaskView)
             make.right.equalTo(fastboardViewController.blackMaskView.snp.left)
         }
-        
+
         container.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview().offset(view.safeAreaInsets.left / 2)
@@ -739,6 +738,7 @@ class ClassRoomViewController: UIViewController {
     }
 
     // MARK: - Layout
+
     func updateLayout() {
         if settingVC.videoAreaOn.value {
             // Do not use the left safe area.
@@ -754,12 +754,12 @@ class ClassRoomViewController: UIViewController {
             }
         }
     }
-    
+
     func performRtc(hide: Bool) {
         rtcAndBoardContainer.sendSubviewToBack(rtcListViewController.view)
-        self.rtcListViewController.view.alpha = hide ? 1 : 0
+        rtcListViewController.view.alpha = hide ? 1 : 0
         UIView.animate(withDuration: 0.3) {
-            self.rtcListViewController.view.alpha = hide ? 0: 1
+            self.rtcListViewController.view.alpha = hide ? 0 : 1
             self.rtcListViewController.view.isHidden = hide
             self.updateLayout()
         }
@@ -896,8 +896,7 @@ class ClassRoomViewController: UIViewController {
         let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         return effectView
     }()
-    
-    
+
     let classroomStatusBar: ClassroomStatusBar
 }
 
@@ -905,17 +904,17 @@ extension ClassRoomViewController: VideoDraggingCanvasProvider {
     func getDraggingView() -> UIView { fastboardViewController.view }
     func getDraggingLayoutFor(index: Int, totalCount: Int) -> CGRect {
         let bounds = getDraggingView().bounds
-        let rowNum: Int
+        let colCount: Int
         switch totalCount {
-        case 1: rowNum = 1
-        case 2...4: rowNum = 2
-        case 5...9: rowNum = 3
-        default: rowNum = 4
+        case 1: colCount = 1
+        case 2...4: colCount = 2
+        case 5...9: colCount = 3
+        default: colCount = 4
         }
-        let rowCount = ceil(CGFloat(totalCount) / CGFloat(rowNum))
-        let rowIndex = CGFloat(index / rowNum)
-        let colIndex = CGFloat(index % rowNum)
-        let itemWidth = bounds.width / CGFloat(rowNum)
+        let rowCount = ceil(CGFloat(totalCount) / CGFloat(colCount))
+        let rowIndex = CGFloat(index / colCount)
+        let colIndex = CGFloat(index % colCount)
+        let itemWidth = bounds.width / CGFloat(colCount)
         let itemHeight = bounds.height / CGFloat(rowCount)
         var videoSize: CGSize
         let estimateWidth = itemHeight / ClassRoomLayoutRatioConfig.rtcPreviewRatio
@@ -925,39 +924,43 @@ extension ClassRoomViewController: VideoDraggingCanvasProvider {
             let videoHeight = itemWidth * ClassRoomLayoutRatioConfig.rtcPreviewRatio
             videoSize = .init(width: itemWidth, height: videoHeight)
         }
-        
+
         videoSize = .init(width: floor(videoSize.width), height: floor(videoSize.height)) // Round to prevent pixel error.
         
-        let needCenterLastRow = totalCount % rowNum != 0 // Center last row
+        let horizontalSpacing = bounds.height - (videoSize.height * rowCount)
+        let topMargin = floor(horizontalSpacing / 2)
+
+        let needCenterLastRow = totalCount % colCount != 0 // Center last row
         let isLastRow = rowIndex == rowCount - 1
-        if needCenterLastRow && isLastRow {
-            let actualLastColCount = CGFloat(totalCount % rowNum)
+        let y = topMargin + (rowIndex * videoSize.height)
+        if needCenterLastRow, isLastRow {
+            let actualLastColCount = CGFloat(totalCount % colCount)
             let widthMargin = (bounds.width - (actualLastColCount * itemWidth)) / 2
             let x = widthMargin + (colIndex * itemWidth) + (itemWidth - videoSize.width) / 2
-            let y = (rowIndex * itemHeight) + (itemHeight - videoSize.height) / 2
-            let rect = CGRect.init(x: x, y: y, width: videoSize.width, height: videoSize.height)
+            let rect = CGRect(x: x, y: y, width: videoSize.width, height: videoSize.height)
             return rect
         } else {
             let x = (colIndex * itemWidth) + (itemWidth - videoSize.width) / 2
-            let y = (rowIndex * itemHeight) + (itemHeight - videoSize.height) / 2
-            let rect = CGRect.init(x: x, y: y, width: videoSize.width, height: videoSize.height)
+            let rect = CGRect(x: x, y: y, width: videoSize.width, height: videoSize.height)
             return rect
         }
     }
+
     func onStartGridPreview() {
         fastboardViewController.blackMaskView.isHidden = false
         leftSafeAreaMaskView.isHidden = false
     }
+
     func onEndGridPreview() {
         fastboardViewController.blackMaskView.isHidden = true
         leftSafeAreaMaskView.isHidden = true
     }
-    
+
     func startHint() {
         fastboardViewController.innerBorderMaskView.isHidden = false
         fastboardViewController.view.bringSubviewToFront(fastboardViewController.innerBorderMaskView)
     }
-    
+
     func endHint() {
         fastboardViewController.innerBorderMaskView.isHidden = true
     }

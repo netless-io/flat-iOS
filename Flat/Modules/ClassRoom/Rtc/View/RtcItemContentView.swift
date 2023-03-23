@@ -9,6 +9,7 @@
 import UIKit
 
 class RtcItemContentView: UIView {
+    
     override var frame: CGRect {
         didSet {
             // Warning: update view's frame when the view is directly on the window hierachy will not trigger `layoutSubviews` function.
@@ -29,7 +30,9 @@ class RtcItemContentView: UIView {
         
         largeAvatarImageView.frame = bounds
         effectView.frame = bounds
-        nameLabel.frame = bounds
+        offlineMaskLabel.frame = bounds
+        nameLabel.frame = .init(origin: .init(x: 4, y: bounds.height - 18),
+                                size: .init(width: bounds.width - 44, height: 18))
         let avatarWidth = bounds.width * 48.0 / 112.0
         avatarImageView.bounds = .init(origin: .zero, size: .init(width: avatarWidth, height: avatarWidth))
         avatarImageView.center = .init(x: bounds.width / 2, y: bounds.height / 2)
@@ -41,14 +44,6 @@ class RtcItemContentView: UIView {
                               height: micIconSize.height)
         micStrenthView.frame = micFrame
         silenceImageView.frame = micStrenthView.frame
-    }
-    
-    var alwaysShowName = false {
-        didSet {
-            if alwaysShowName {
-                nameLabel.isHidden = false
-            }
-        }
     }
     
     var showAvatar = false {
@@ -83,22 +78,7 @@ class RtcItemContentView: UIView {
         perform(#selector(_delayHideFloat), with: self, afterDelay: delay)
     }
     
-    func toggleNameLabelDisplay() {
-        if !alwaysShowName {
-            if nameLabel.isHidden {
-                nameLabel.isHidden = false
-                NSObject.cancelPreviousPerformRequests(withTarget: self)
-                perform(#selector(_delayHideFloat), with: nil, afterDelay: 3)
-            } else {
-                nameLabel.isHidden = true
-            }
-        }
-    }
-    
     @objc func _delayHideFloat() {
-        if !alwaysShowName {
-            nameLabel.isHidden = true
-        }
         controlView.isHidden = true
     }
     
@@ -118,7 +98,7 @@ class RtcItemContentView: UIView {
         if isDragging {
             micStrenthView.isHidden = true
             silenceImageView.isHidden = true
-            _delayHideFloat()
+            controlView.isHidden = true
         } else {
             micStrenthView.isHidden = !showVolume
             silenceImageView.isHidden = showVolume
@@ -137,6 +117,7 @@ class RtcItemContentView: UIView {
         addSubview(effectView)
         addSubview(avatarImageView)
         addSubview(silenceImageView)
+        addSubview(offlineMaskLabel)
         addSubview(nameLabel)
         addSubview(micStrenthView)
         
@@ -278,13 +259,22 @@ class RtcItemContentView: UIView {
         return view
     }()
 
-    lazy var nameLabel: UILabel = {
+    lazy var offlineMaskLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
         label.textColor = .white
         label.textAlignment = .center
-        label.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         label.isHidden = true
+        label.backgroundColor = .black.withAlphaComponent(0.66)
+        label.text = localizeStrings("offline")
+        return label
+    }()
+    
+    lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .white
+        label.textAlignment = .left
         return label
     }()
 

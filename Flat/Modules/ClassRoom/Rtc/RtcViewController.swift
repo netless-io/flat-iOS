@@ -199,13 +199,9 @@ class RtcViewController: UIViewController {
         itemView.heroID = nil
         itemView.update(avatar: user.avatarURL)
         itemView.backLabel.text = user.name
-        if user.isOnline {
-            itemView.contentView.nameLabel.text = user.name
-        } else {
-            itemView.contentView.nameLabel.text = "\(user.name) (\(localizeStrings("offline")))"
-        }
+        itemView.contentView.nameLabel.text = user.name
+        itemView.contentView.offlineMaskLabel.isHidden = user.isOnline
         itemView.contentView.silenceImageView.isHidden = user.status.mic
-        itemView.contentView.alwaysShowName = !user.isOnline
         itemView.contentView.showVolume = user.status.mic
         itemView.contentView.showAvatar = showAvatar
         itemView.contentView.controlView.update(cameraOn: user.status.camera,
@@ -356,7 +352,6 @@ class RtcViewController: UIViewController {
         if viewModel.canUpdateDeviceState(view.uid) {
             view.toggleControlViewDisplay()
         }
-        view.toggleNameLabelDisplay()
         view.superview?.bringSubviewToFront(view)
         userTap.accept(view.uid)
     }
