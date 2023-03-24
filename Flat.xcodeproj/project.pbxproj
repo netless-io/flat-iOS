@@ -117,7 +117,6 @@
 		8A4D35BF2913C33400AFA5DE /* MixReplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4D35BE2913C33400AFA5DE /* MixReplayViewController.swift */; };
 		8A4DA84829A4700F00B6D19B /* AgoraCanvasContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DA84729A4700F00B6D19B /* AgoraCanvasContainer.swift */; };
 		8A5231C429AF3F9900889160 /* VideoDraggingCanvasProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5231C329AF3F9900889160 /* VideoDraggingCanvasProvider.swift */; };
-		8A52FB7629A855830059C914 /* MTLTexture+CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A52FB7529A855820059C914 /* MTLTexture+CGImage.swift */; };
 		8A54515C28B4D96700334A16 /* UITextfield+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */; };
 		8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55F1B1273A710000D4DA0F /* AnyRequest.swift */; };
 		8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */; };
@@ -222,6 +221,7 @@
 		8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */; };
 		8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */; };
 		8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */; };
+		8AACBBC829CD491A00CD32C5 /* MTLTexture+CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AACBBC729CD491900CD32C5 /* MTLTexture+CGImage.swift */; };
 		8AAE2549295D795D007D5507 /* RaiseHandListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */; };
 		8AAE254B295D7A0C007D5507 /* RaiseHandTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */; };
 		8AAE254D295EB88A007D5507 /* RoomUserRxSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */; };
@@ -440,7 +440,6 @@
 		8A4D35BE2913C33400AFA5DE /* MixReplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixReplayViewController.swift; sourceTree = "<group>"; };
 		8A4DA84729A4700F00B6D19B /* AgoraCanvasContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraCanvasContainer.swift; sourceTree = "<group>"; };
 		8A5231C329AF3F9900889160 /* VideoDraggingCanvasProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDraggingCanvasProvider.swift; sourceTree = "<group>"; };
-		8A52FB7529A855820059C914 /* MTLTexture+CGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MTLTexture+CGImage.swift"; path = "/Users/xuyunshi/flat-ios/Flat/Modules/ClassRoom/Rtc/MTLTexture+CGImage.swift"; sourceTree = "<absolute>"; };
 		8A54515B28B4D96700334A16 /* UITextfield+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextfield+Rx.swift"; sourceTree = "<group>"; };
 		8A55F1B1273A710000D4DA0F /* AnyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRequest.swift; sourceTree = "<group>"; };
 		8A59959028CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageCreateDirectoryRequest.swift; sourceTree = "<group>"; };
@@ -546,6 +545,7 @@
 		8AAC69B52717FFD600F9A3B4 /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
 		8AAC69B927180B9500F9A3B4 /* UIViewController+Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Activity.swift"; sourceTree = "<group>"; };
 		8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCoordinator.swift; sourceTree = "<group>"; };
+		8AACBBC729CD491900CD32C5 /* MTLTexture+CGImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MTLTexture+CGImage.swift"; sourceTree = "<group>"; };
 		8AAE2548295D795D007D5507 /* RaiseHandListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandListViewController.swift; sourceTree = "<group>"; };
 		8AAE254A295D7A0C007D5507 /* RaiseHandTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaiseHandTableViewCell.swift; sourceTree = "<group>"; };
 		8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUserRxSectionData.swift; sourceTree = "<group>"; };
@@ -1132,7 +1132,7 @@
 			children = (
 				8A2390F329A7520200DECCAE /* CGImage+isDark.swift */,
 				8AD5224829B86D6D005095C5 /* CGRect+diff.swift */,
-				8A52FB7529A855820059C914 /* MTLTexture+CGImage.swift */,
+				8AACBBC729CD491900CD32C5 /* MTLTexture+CGImage.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1917,7 +1917,6 @@
 				8AAC69B02717E32E00F9A3B4 /* AuthProcessRequest.swift in Sources */,
 				8A270B6C271822BA00450DC6 /* MainTabBarController.swift in Sources */,
 				8A21DAB8279FA5020060E25D /* StartRecordReqeust.swift in Sources */,
-				8A52FB7629A855830059C914 /* MTLTexture+CGImage.swift in Sources */,
 				8A270B7C2718352C00450DC6 /* LaunchItem.swift in Sources */,
 				8A05C322275E05BC009BCA79 /* MethodExchange.swift in Sources */,
 				8AF244DC287C243C00E6B2AF /* WechatBinding.swift in Sources */,
@@ -1943,6 +1942,7 @@
 				8A7741DC2738BB06009FAADA /* ClassroomFactory.swift in Sources */,
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
+				8AACBBC829CD491A00CD32C5 /* MTLTexture+CGImage.swift in Sources */,
 				8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */,
 				8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
