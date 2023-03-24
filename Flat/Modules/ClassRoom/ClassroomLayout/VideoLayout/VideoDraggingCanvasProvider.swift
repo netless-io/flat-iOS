@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol VideoDraggingCanvasProvider {
+protocol VideoDraggingCanvasProvider: AnyObject {
     func getDraggingView() -> UIView
     func getDraggingLayoutFor(index: Int, totalCount: Int) -> CGRect
     func onStartGridPreview()

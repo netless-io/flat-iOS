@@ -602,7 +602,7 @@ class ClassRoomViewController: UIViewController {
         return container
     }()
 
-    lazy var leftSafeAreaMaskView: UIView = {
+    lazy var draggingDridMaskView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
         view.isHidden = true
@@ -617,7 +617,7 @@ class ClassRoomViewController: UIViewController {
         let rtcView = rtcListViewController.view!
         let boardView = fastboardViewController.view!
 
-        view.addSubview(leftSafeAreaMaskView) // Make sure the container is on the bottom hierachy.
+        view.addSubview(draggingDridMaskView) // Make sure the container is on the bottom hierachy.
         view.addSubview(container)
         rtcListViewController.didMove(toParent: self)
         fastboardViewController.didMove(toParent: self)
@@ -626,10 +626,9 @@ class ClassRoomViewController: UIViewController {
         let statusBarMinHeight: CGFloat = 24
         let statusBarMaxHeight: CGFloat = 66
 
-        leftSafeAreaMaskView.snp.makeConstraints { make in
-            make.left.equalTo(view)
+        draggingDridMaskView.snp.makeConstraints { make in
+            make.left.right.equalTo(view)
             make.top.bottom.equalTo(fastboardViewController.blackMaskView)
-            make.right.equalTo(fastboardViewController.blackMaskView.snp.left)
         }
 
         container.snp.makeConstraints { make in
@@ -948,12 +947,12 @@ extension ClassRoomViewController: VideoDraggingCanvasProvider {
 
     func onStartGridPreview() {
         fastboardViewController.blackMaskView.isHidden = false
-        leftSafeAreaMaskView.isHidden = false
+        draggingDridMaskView.isHidden = false
     }
 
     func onEndGridPreview() {
         fastboardViewController.blackMaskView.isHidden = true
-        leftSafeAreaMaskView.isHidden = true
+        draggingDridMaskView.isHidden = true
     }
 
     func startHint() {

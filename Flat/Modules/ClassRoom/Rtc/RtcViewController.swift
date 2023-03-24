@@ -37,7 +37,7 @@ let minDraggingScaleOfCanvas = CGFloat(0.25)
 
 class RtcViewController: UIViewController {
     let viewModel: RtcViewModel
-    var draggingCanvasProvider: VideoDraggingCanvasProvider!
+    weak var draggingCanvasProvider: VideoDraggingCanvasProvider!
 
     let userCameraClick: PublishRelay<String> = .init()
     let userMicClick: PublishRelay<String> = .init()
@@ -399,7 +399,7 @@ extension RtcViewController: ViewDraggerDelegate {
             let isPartInScrollView = isContentView(contentView, partIn: mainScrollView)
             if isPartInScrollView {
                 draggingPossibleTargetView = .grid
-            } else {1
+            } else {
                 draggingPossibleTargetView = .minimal(itemViewForUid(contentView.uid))
             }
 
