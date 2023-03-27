@@ -36,6 +36,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let requestDevicePublisher: PublishRelay<RequestDeviceType> = .init()
     let requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> = .init()
     let notifyDeviceOffPublisher: PublishRelay<RequestDeviceType> = .init()
+    
+    var videoLayoutStore: VideoLayoutStore
 
     var bag = DisposeBag()
     let commandEncoder = CommandEncoder()
@@ -52,7 +54,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
          roomStartStatus: RoomStartStatus,
          whiteboardBannedAction: Observable<Void>,
          whiteboardRoomError: Observable<FastRoomError>,
-         rtcError: Observable<RtcError>)
+         rtcError: Observable<RtcError>,
+         videoLayoutStore: VideoLayoutStore)
     {
         self.syncedStore = syncedStore
         self.rtm = rtm
@@ -63,6 +66,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         self.isOwner = isOwner
         self.maxWritableUsersCount = maxWritableUsersCount
         self.roomStartStatus = .init(value: roomStartStatus)
+        self.videoLayoutStore = videoLayoutStore
         syncedStore.delegate = self
 
         whiteboardBannedAction
@@ -223,6 +227,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         guard let self else { return .error("self not exist ") }
                         try self.syncedStore.sendCommand(.deviceStateUpdate([uuid: .init(mic: false, camera: false)]))
                         try self.syncedStore.sendCommand(.onStageUsersUpdate([uuid: false]))
+                        self.videoLayoutStore.removeFreeDraggingUsers([uuid])
+                        self.videoLayoutStore.removeExpandUsers([uuid])
                         return .just(())
                     }
             case let .updateUserWhiteboardEnable(uuid: uuid, enable: enable):
@@ -328,6 +334,10 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         try self.syncedStore.sendCommand(.onStageUsersUpdate(newStageIds))
                         try self.syncedStore.sendCommand(.raiseHandUsersUpdate([]))
                         try self.syncedStore.sendCommand(.deviceStateUpdate(deviceState))
+                        
+                        var needOffStageUsers = result.onStageUsers.filter { $0.key != self.ownerUUID && $0.value}.map { $0.key } // Clear video layout info for users. (Not owner and onStage).
+                        self.videoLayoutStore.removeFreeDraggingUsers(needOffStageUsers)
+                        self.videoLayoutStore.removeExpandUsers(needOffStageUsers)
                         return .just(())
                     }
             case .requestDeviceResponse(type: let type, on: let on):

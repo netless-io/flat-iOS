@@ -13,6 +13,7 @@ import RxSwift
 protocol VideoLayoutStore {
     func layoutState() -> Observable<VideoLayoutState>
     func updateExpandUsers(_ usersUUID: [String])
+    func removeExpandUsers(_ users: [String])
     func removeFreeDraggingUsers(_ users: [String])
     func updateFreeDraggingUsers(_ users: [DraggingUser])
 }

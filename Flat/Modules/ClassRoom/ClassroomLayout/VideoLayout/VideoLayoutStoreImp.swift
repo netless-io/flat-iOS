@@ -42,6 +42,19 @@ class VideoLayoutStoreImp: NSObject, VideoLayoutStore, SyncedStoreUpdateCallBack
         syncStore.setStorageState(storeName, partialState: [gridKey: usersUUID])
     }
     
+    func removeExpandUsers(_ users: [String]) {
+        _getStorageValue { [weak self] state in
+            guard let self else { return }
+            if let state {
+                var newGridUsers = state.gridUsers
+                for user in users {
+                    newGridUsers.removeAll(where: { $0 == user })
+                }
+                self.updateExpandUsers(newGridUsers)
+            }
+        }
+    }
+    
     func removeFreeDraggingUsers(_ users: [String]) {
         let pairs = users.map {
             ($0, NSNull())
@@ -64,9 +77,12 @@ class VideoLayoutStoreImp: NSObject, VideoLayoutStore, SyncedStoreUpdateCallBack
         }
     }
 
-    func getStorageValue() {
-        syncStore.getStorageState(storeName) { [weak self] result in
-            guard let self, let result else { return }
+    fileprivate func _getStorageValue(handler: @escaping (VideoLayoutState?)->Void) {
+        syncStore.getStorageState(storeName) { result in
+            guard let result else {
+                handler(nil)
+                return
+            }
             let gridUsers = result[gridKey] as? [String]
             let freeUsers = result
                 .compactMap { key, value -> DraggingUser? in
@@ -78,7 +94,15 @@ class VideoLayoutStoreImp: NSObject, VideoLayoutStore, SyncedStoreUpdateCallBack
                     return .init(uuid: userUUID, dictionary: valueDictionary)
                 }
             let state = VideoLayoutState(gridUsers: gridUsers ?? [], freeDraggingUsers: freeUsers)
-            self.resultPublisher.onNext(state)
+            handler(state)
+        }
+    }
+    
+    func getStorageValue() {
+        _getStorageValue { [weak self] state in
+            if let state {
+                self?.resultPublisher.onNext(state)
+            }
         }
     }
 }

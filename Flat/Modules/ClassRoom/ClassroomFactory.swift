@@ -107,8 +107,9 @@ enum ClassroomFactory {
                                            roomStartStatus: basicInfo.roomStatus,
                                            whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),
-                                           rtcError: rtc.errorPublisher.asObservable())
-
+                                           rtcError: rtc.errorPublisher.asObservable(),
+                                           videoLayoutStore: videoLayoutStore)
+        
         let isLocalUser: ((UInt) -> Bool) = { $0 == 0 || $0 == playInfo.rtcUID }
         let rtcViewModel = RtcViewModel(rtc: rtc,
                                         userRtcUid: playInfo.rtcUID,
