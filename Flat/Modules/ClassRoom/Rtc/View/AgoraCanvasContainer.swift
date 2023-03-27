@@ -72,7 +72,7 @@ class AgoraCanvasContainer: UIView {
         
         mtk?.isHidden = true
         showSnapShot = true
-        NSObject.cancelPreviousPerformRequests(withTarget: self)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(removeSnapShot), object: nil)
         perform(#selector(removeSnapShot), with: nil, afterDelay: duration)
     }
     
@@ -98,7 +98,7 @@ class AgoraCanvasContainer: UIView {
     }
     
     func endSnapShot() {
-        NSObject.cancelPreviousPerformRequests(withTarget: self)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(startSnapShot), object: nil)
     }
 
     // Disable constraints to enable avoid wrong layout result.
