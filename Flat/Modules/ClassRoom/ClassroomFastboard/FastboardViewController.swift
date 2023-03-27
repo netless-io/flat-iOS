@@ -406,7 +406,13 @@ extension FastRoomPhase: CustomStringConvertible {
 }
 
 extension FastboardViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith _: UIGestureRecognizer) -> Bool {
-        true
+    func gestureRecognizer(_: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    // Reject tap not at current hierachy.
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let touchView = touch.view else { return false }
+        return touchView.isDescendant(of: fastRoom.view)
     }
 }
