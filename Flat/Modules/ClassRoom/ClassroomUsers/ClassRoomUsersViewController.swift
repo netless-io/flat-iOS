@@ -144,30 +144,7 @@ class ClassRoomUsersViewController: UIViewController {
 
     func config(cell: RoomUserTableViewCell, user: RoomUser) {
         let isUserSelf = user.rtmUUID == userUUID
-
-        cell.avatarImageView.kf.setImage(with: user.avatarURL)
-        cell.nameLabel.text = user.name
-        cell.statusLabel.isHidden = !(user.status.isSpeak && !user.isOnline) // OnStage and not in the room
-        cell.onStageSwitch.isOn = user.status.isSpeak
-        cell.whiteboardSwitch.isOn = user.status.whiteboard
-        cell.set(operationType: .mic, empty: !user.status.isSpeak)
-        cell.set(operationType: .camera, empty: !user.status.isSpeak)
-        cell.set(operationType: .raiseHand, empty: !user.status.isRaisingHand)
-        cell.raiseHandButton.isEnabled = isUserSelf || isOwner
-        cell.userSelfPointer.isHidden = !isUserSelf
-
-        let cameraOperationEnable = isOwner || isUserSelf
-        let micOperationEnable = isOwner || isUserSelf
-        cell.updateCamera(on: user.status.camera, enable: cameraOperationEnable)
-        cell.updateMic(on: user.status.mic, enable: micOperationEnable)
-        
-        if isOwner {
-            cell.onStageSwitch.isEnabled = true
-            cell.whiteboardSwitch.isEnabled = true
-        } else {
-            cell.onStageSwitch.isEnabled = isUserSelf && user.status.isSpeak
-            cell.whiteboardSwitch.isEnabled = isUserSelf && user.status.whiteboard
-        }
+        cell.update(user: user, isUserSelf: isUserSelf, isOwner: isOwner)
         cell.clickHandler = { [weak self] type in
             guard let self else { return }
             switch type {
@@ -181,6 +158,18 @@ class ClassRoomUsersViewController: UIViewController {
                 self.whiteboardTap.accept(user)
             case .raiseHand:
                 self.raiseHandTap.accept(user)
+            }
+            
+            // After a while. Try check value was actually updated.
+            // If not, update with the old value.
+            // To avoid some command was rejected by stateHandler.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak cell, weak self] in
+                guard let cell, let self, let cache = cell.cacheUser else { return }
+                if cache.rtmUUID == user.rtmUUID { // Still the same cell.
+                    if cache == user {
+                        cell.update(user: cache, isUserSelf: isUserSelf, isOwner: self.isOwner)
+                    }
+                }
             }
         }
     }

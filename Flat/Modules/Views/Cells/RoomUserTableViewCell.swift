@@ -30,6 +30,34 @@ class RoomUserTableViewCell: UITableViewCell {
     required init?(coder _: NSCoder) {
         fatalError()
     }
+    
+    var cacheUser: RoomUser?
+    func update(user: RoomUser, isUserSelf: Bool, isOwner: Bool) {
+        cacheUser = user
+        avatarImageView.kf.setImage(with: user.avatarURL)
+        nameLabel.text = user.name
+        statusLabel.isHidden = !(user.status.isSpeak && !user.isOnline) // OnStage and not in the room
+        onStageSwitch.isOn = user.status.isSpeak
+        whiteboardSwitch.isOn = user.status.whiteboard
+        set(operationType: .mic, empty: !user.status.isSpeak)
+        set(operationType: .camera, empty: !user.status.isSpeak)
+        set(operationType: .raiseHand, empty: !user.status.isRaisingHand)
+        raiseHandButton.isEnabled = isUserSelf || isOwner
+        userSelfPointer.isHidden = !isUserSelf
+
+        let cameraOperationEnable = isOwner || isUserSelf
+        let micOperationEnable = isOwner || isUserSelf
+        updateCamera(on: user.status.camera, enable: cameraOperationEnable)
+        updateMic(on: user.status.mic, enable: micOperationEnable)
+        
+        if isOwner {
+            onStageSwitch.isEnabled = true
+            whiteboardSwitch.isEnabled = true
+        } else {
+            onStageSwitch.isEnabled = isUserSelf && user.status.isSpeak
+            whiteboardSwitch.isEnabled = isUserSelf && user.status.whiteboard
+        }
+    }
 
     func set(operationType: OperationType, empty: Bool) {
         var container: UIView?
