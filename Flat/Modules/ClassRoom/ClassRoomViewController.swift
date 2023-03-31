@@ -150,7 +150,7 @@ class ClassRoomViewController: UIViewController {
                     weakSelf.setupBinding()
                 },
                 onFailure: { weakSelf, error in
-                    weakSelf.stopSubModules()
+                    weakSelf.stopSubModules(cleanRtc: true)
                     weakSelf.showAlertWith(message: localizeStrings("Init room error") + error.localizedDescription) {
                         weakSelf.leaveUIHierarchy()
                     }
@@ -296,7 +296,7 @@ class ClassRoomViewController: UIViewController {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
                 logger.info("device terminate")
-                weakSelf.stopSubModules()
+                weakSelf.stopSubModules(cleanRtc: false) // Clean rtc by system.
             })
             .disposed(by: rx.disposeBag)
     }
@@ -695,13 +695,16 @@ class ClassRoomViewController: UIViewController {
         }
     }
 
-    func stopSubModules() {
+    // Clean rtc may made crash when app is terminating.
+    func stopSubModules(cleanRtc: Bool) {
         viewModel.destroy(sender: self)
         fastboardViewController.leave()
-        rtcListViewController.viewModel.rtc
-            .leave()
-            .subscribe()
-            .disposed(by: rx.disposeBag)
+        if cleanRtc {
+            rtcListViewController.viewModel.rtc
+                .leave()
+                .subscribe()
+                .disposed(by: rx.disposeBag)
+        }
     }
 
     func leaveUIHierarchy() {
@@ -718,7 +721,7 @@ class ClassRoomViewController: UIViewController {
     }
 
     func stopSubModulesAndLeaveUIHierarchy() {
-        stopSubModules()
+        stopSubModules(cleanRtc: true)
         leaveUIHierarchy()
     }
 
@@ -732,7 +735,7 @@ class ClassRoomViewController: UIViewController {
         guard let scene = notification.object as? UIWindowScene else { return }
         if view.window?.windowScene === scene {
             logger.info("classroom destroy by scene disconnect")
-            stopSubModules()
+            stopSubModules(cleanRtc: true)
         }
     }
 
