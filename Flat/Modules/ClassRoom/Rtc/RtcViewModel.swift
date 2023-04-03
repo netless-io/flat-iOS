@@ -71,14 +71,14 @@ class RtcViewModel {
                     rtc.updateRemoteUserStreamType(rtcUID: $0, type: .high)
                 }
             }
-        
+
         layoutInfo
             .freeDraggingUsers
             .filter { !localUserRegular($0.uid) }
             .forEach {
                 rtc.updateRemoteUserStreamType(rtcUID: $0.uid, type: .high)
             }
-        
+
         layoutInfo
             .minimalUsers
             .filter { !localUserRegular($0) }
@@ -257,20 +257,26 @@ class RtcViewModel {
     }
 
     func trans(_ us: Driver<[RoomUser]>) -> Driver<[RTCUserOutput]> {
-        us.map { [weak self] users -> [RTCUserOutput] in
-            guard let self else { return [] }
-            return users.map { user -> RTCUserOutput in
-                let isLocal = self.localUserRegular(user.rtcUID)
-                let cv = self.canvasView(for: user.rtcUID)
-                if isLocal {
-                    self.rtc.updateLocalUser(micOn: user.status.mic)
-                    self.rtc.updateLocalUser(cameraOn: user.status.camera)
-                } else {
-                    self.rtc.updateRemoteUser(rtcUID: user.rtcUID, cameraOn: user.status.camera, micOn: user.status.mic)
+        us.do(
+            onNext: { [weak self] users in
+                guard let self else { return }
+                for user in users {
+                    let isLocal = self.localUserRegular(user.rtcUID)
+                    if isLocal {
+                        self.rtc.updateLocalUser(micOn: user.status.mic)
+                        self.rtc.updateLocalUser(cameraOn: user.status.camera)
+                    } else {
+                        self.rtc.updateRemoteUser(rtcUID: user.rtcUID, cameraOn: user.status.camera, micOn: user.status.mic)
+                    }
                 }
-                return .init(user: user, canvasView: cv)
             }
-        }
+        ).map({ [weak self] users -> [RTCUserOutput] in
+            guard let self else { return [] }
+            return users.filter(\.status.isSpeak).map { user -> RTCUserOutput in
+                let canvasView = self.canvasView(for: user.rtcUID)
+                return RTCUserOutput(user: user, canvasView: canvasView)
+            }
+        })
     }
 
     func strenthFor(uid: UInt) -> Observable<CGFloat> {

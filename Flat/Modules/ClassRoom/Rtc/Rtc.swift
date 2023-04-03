@@ -41,11 +41,28 @@ class Rtc: NSObject {
     lazy var isBroadcaster: Bool = false
     lazy var localCameraOn: Bool = false {
         didSet {
+            if localCameraOn == oldValue {
+                return
+            }
+            agoraKit.enableLocalVideo(localCameraOn)
+            agoraKit.muteLocalVideoStream(!localCameraOn)
+            if localCameraOn {
+                agoraKit.startPreview()
+            } else {
+                agoraKit.stopPreview()
+            }
+            logger.info("update local user status camera: \(localCameraOn)")
             updateClienRoleIfNeed()
         }
     }
     lazy var localAudioOn: Bool = false {
         didSet {
+            if localAudioOn == oldValue {
+                return
+            }
+            agoraKit.enableLocalAudio(localAudioOn)
+            agoraKit.muteLocalAudioStream(!localAudioOn)
+            logger.info("update local user status mic: \(localAudioOn)")
             updateClienRoleIfNeed()
         }
     }
@@ -114,15 +131,7 @@ class Rtc: NSObject {
     func updateLocalUser(cameraOn: Bool) {
         if isJoined.value {
             targetLocalCamera = nil
-            agoraKit.enableLocalVideo(cameraOn)
-            agoraKit.muteLocalVideoStream(!cameraOn)
-            if cameraOn {
-                agoraKit.startPreview()
-            } else {
-                agoraKit.stopPreview()
-            }
             localCameraOn = cameraOn
-            logger.info("update local user status camera: \(cameraOn)")
         } else {
             targetLocalCamera = cameraOn
             logger.trace("update local user status camera: \(cameraOn) to target")
@@ -132,10 +141,7 @@ class Rtc: NSObject {
     func updateLocalUser(micOn: Bool) {
         if isJoined.value {
             targetLocalMic = nil
-            agoraKit.enableLocalAudio(micOn)
-            agoraKit.muteLocalAudioStream(!micOn)
             localAudioOn = micOn
-            logger.info("update local user status mic: \(micOn)")
         } else {
             targetLocalMic = micOn
             logger.trace("update local user status mic: \(micOn) to target")

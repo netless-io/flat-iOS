@@ -470,7 +470,7 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindRtc() {
-        rtcListViewController.bindUsers(viewModel.rtcUsers.asDriver(onErrorJustReturn: []))
+        rtcListViewController.bindUsers(viewModel.members.asDriver(onErrorJustReturn: []))
         rtcListViewController.draggingCanvasProvider = self
 
         rtcListViewController.viewModel.rtc.screenShareJoinBehavior

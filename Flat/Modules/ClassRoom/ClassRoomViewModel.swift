@@ -24,7 +24,7 @@ class ClassRoomViewModel {
     let initDeviceState: DeviceState
     var banState: Observable<Bool> { stateHandler.banState.asObservable() }
     var members: Observable<[RoomUser]> { stateHandler.members() }
-    var rtcUsers: Observable<[RoomUser]> {
+    var onStageUsers: Observable<[RoomUser]> {
         members
             .map { users in
                 users.filter(\.status.isSpeak)
@@ -436,7 +436,7 @@ class ClassRoomViewModel {
 
         let cameraTask = input
             .tapSomeUserCamera
-            .withLatestFrom(rtcUsers) { uuid, users in
+            .withLatestFrom(onStageUsers) { uuid, users in
                 users.first(where: { $0.rtmUUID == uuid })
             }.flatMap { [unowned self] user -> Single<String> in
                 guard let user else { return .error("User not found") }
@@ -459,7 +459,7 @@ class ClassRoomViewModel {
 
         let micTask = input
             .tapSomeUserMic
-            .withLatestFrom(rtcUsers) { uuid, users in
+            .withLatestFrom(onStageUsers) { uuid, users in
                 users.first(where: { $0.rtmUUID == uuid })
             }.flatMap { [unowned self] user -> Single<String> in
                 guard let user else { return .error("User not found") }
@@ -576,7 +576,7 @@ class ClassRoomViewModel {
                 let alert = recording ? finishAlert() : startAlert()
                 return alert.map { _ in recording }
             }
-            .withLatestFrom(rtcUsers, resultSelector: { recording, users in
+            .withLatestFrom(onStageUsers, resultSelector: { recording, users in
                 (recording, users)
             })
             .flatMap { [unowned self] recording, users -> Observable<Bool> in
@@ -606,7 +606,7 @@ class ClassRoomViewModel {
             .asObservable()
             .concat(userOperation)
 
-        let layoutUpdate = rtcUsers
+        let layoutUpdate = onStageUsers
             .distinctUntilChanged()
             .filter { [weak self] _ in
                 self?.recordModel != nil
