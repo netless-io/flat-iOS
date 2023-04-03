@@ -18,11 +18,11 @@ target 'Flat' do
   pod 'libPhoneNumber-iOS'
   pod 'ScreenCorners'
   
-  pod 'AgoraRtm_iOS'
+  pod 'AgoraRtm_iOS', '1.5.1'
   pod 'AgoraRtcEngine_iOS', '4.1.0'
   pod 'Fastboard/fpa', '2.0.0-alpha.13'
-  pod 'Whiteboard', '2.17.0-alpha.21'
-  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.21'
+  pod 'Whiteboard', '2.0.0-alpha.22'
+  pod 'Whiteboard/SyncPlayer', '2.0.0-alpha.22'
   pod 'SyncPlayer', '0.3.3'
   pod 'ViewDragger', '1.1.0'
   
@@ -37,7 +37,7 @@ target 'Flat' do
   pod 'AliyunLogProducer/Core'
   pod 'AliyunLogProducer/Bricks'
   
-  pod 'WechatOpenSDK'
+  pod 'WechatOpenSDK-XCFramework'
   pod 'FirebaseCrashlytics'
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   
@@ -57,7 +57,6 @@ target 'Flat' do
     end
     
     installer.pods_project.build_configurations.each do |config|
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
       if config.name.include?("Debug")
         config.build_settings["ONLY_ACTIVE_ARCH"] = "YES"
       end

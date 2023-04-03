@@ -1,6 +1,5 @@
 PODS:
   - AcknowList (3.0.0)
-  - AgoraFPA_iOS (1.0.0)
   - AgoraRtcEngine_iOS (4.1.0):
     - AgoraRtcEngine_iOS/AIAEC (= 4.1.0)
     - AgoraRtcEngine_iOS/AINS (= 4.1.0)
@@ -26,7 +25,7 @@ PODS:
   - AgoraRtcEngine_iOS/SuperResolution (4.1.0)
   - AgoraRtcEngine_iOS/VirtualBackground (4.1.0)
   - AgoraRtcEngine_iOS/VQA (4.1.0)
-  - AgoraRtm_iOS (1.4.10)
+  - AgoraRtm_iOS (1.5.1)
   - AliyunLogProducer/Bricks (2.3.10.4):
     - AliyunLogProducer/Core
   - AliyunLogProducer/Core (2.3.10.4)
@@ -107,7 +106,7 @@ PODS:
     - GoogleUtilities/Logger
   - Hero (1.6.1)
   - IQKeyboardManagerSwift (6.5.9)
-  - Kingfisher (7.4.1)
+  - Kingfisher (7.6.2)
   - libPhoneNumber-iOS (0.9.15)
   - Logging (1.4.0)
   - LookinServer (1.1.5):
@@ -122,6 +121,7 @@ PODS:
   - nanopb/encode (2.30909.0)
   - "NSObject+Rx (5.2.2)":
     - RxSwift (~> 6.2)
+  - NTL_AgoraFPA (1.0.0)
   - NTLBridge (3.1.5)
   - PromisesObjC (2.1.1)
   - RxCocoa (6.5.0):
@@ -140,32 +140,32 @@ PODS:
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
   - ViewDragger (1.1.0)
-  - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.17.0-alpha.21):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.21)
-  - Whiteboard/Base (2.17.0-alpha.21):
+  - WechatOpenSDK-XCFramework (2.0.2)
+  - Whiteboard (2.17.0-alpha.22):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.22)
+  - Whiteboard/Base (2.17.0-alpha.22):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.21):
+  - Whiteboard/Converter (2.17.0-alpha.22):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.17.0-alpha.21):
-    - AgoraFPA_iOS (~> 1.0.0)
+  - Whiteboard/fpa (2.17.0-alpha.22):
+    - NTL_AgoraFPA (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.17.0-alpha.21):
+  - Whiteboard/Model (2.17.0-alpha.22):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.21):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.22):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.21):
+  - Whiteboard/Object (2.17.0-alpha.22):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.21):
+  - Whiteboard/Replayer (2.17.0-alpha.22):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.21)
-  - Whiteboard/Room (2.17.0-alpha.21):
+  - Whiteboard/Resource (2.17.0-alpha.22)
+  - Whiteboard/Room (2.17.0-alpha.22):
     - Whiteboard/Base
-  - Whiteboard/SyncPlayer (2.17.0-alpha.21):
+  - Whiteboard/SyncPlayer (2.17.0-alpha.22):
     - SyncPlayer
     - Whiteboard/Replayer
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.21):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.22):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -176,7 +176,7 @@ PODS:
 DEPENDENCIES:
   - AcknowList
   - AgoraRtcEngine_iOS (= 4.1.0)
-  - AgoraRtm_iOS
+  - AgoraRtm_iOS (= 1.5.1)
   - AliyunLogProducer/Bricks
   - AliyunLogProducer/Core
   - CropViewController
@@ -202,15 +202,14 @@ DEPENDENCIES:
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
-  - WechatOpenSDK
-  - Whiteboard (= 2.17.0-alpha.21)
-  - Whiteboard/SyncPlayer (= 2.17.0-alpha.21)
+  - WechatOpenSDK-XCFramework
+  - Whiteboard (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
+  - Whiteboard/SyncPlayer (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
   - Zip
 
 SPEC REPOS:
   trunk:
     - AcknowList
-    - AgoraFPA_iOS
     - AgoraRtcEngine_iOS
     - AgoraRtm_iOS
     - AliyunLogProducer
@@ -238,6 +237,7 @@ SPEC REPOS:
     - MBProgressHUD
     - nanopb
     - "NSObject+Rx"
+    - NTL_AgoraFPA
     - NTLBridge
     - PromisesObjC
     - RxCocoa
@@ -250,16 +250,18 @@ SPEC REPOS:
     - SwiftyBeaver
     - SyncPlayer
     - ViewDragger
-    - WechatOpenSDK
-    - Whiteboard
+    - WechatOpenSDK-XCFramework
     - YYModel
     - Zip
 
+EXTERNAL SOURCES:
+  Whiteboard:
+    :path: "/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS"
+
 SPEC CHECKSUMS:
   AcknowList: 931531a3e9d66f202ae8e04819a62c50b818b03e
-  AgoraFPA_iOS: 2202f574e6832567e368d5e69ad6da121a18ee4a
   AgoraRtcEngine_iOS: 33f0136ad4196b2a31c8470e6b536fe77fb25f8b
-  AgoraRtm_iOS: 95e7070466f42a6494435a7f39fd2b13fc143cbf
+  AgoraRtm_iOS: 595a9fa33a409831e6183396ea8f8bc563918403
   AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
@@ -277,7 +279,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
-  Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
+  Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   LookinServer: 2893f2bae53cbf3fd49bbe1a8ea1745582ef1317
@@ -285,6 +287,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
+  NTL_AgoraFPA: 24a5d0541aba7818829d0051faa7b53317b944a0
   NTLBridge: e94dc18242476b0238c10213a5438d9b9a59fcce
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
@@ -297,11 +300,11 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20
-  WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: e33eaa669fca26467870ff0a8ed889e411d5fafe
+  WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
+  Whiteboard: 1fbb366fd99be95c2b5941abc2b6fbac425e0a1a
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 3ce8a7631ecc37b1d41b587b41d305d22c651615
+PODFILE CHECKSUM: 88849c0c55d681cba798b31a06c587dd124c3cba
 
 COCOAPODS: 1.12.0
