@@ -203,8 +203,8 @@ DEPENDENCIES:
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
   - WechatOpenSDK-XCFramework
-  - Whiteboard (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
-  - Whiteboard/SyncPlayer (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
+  - Whiteboard (= 2.17.0-alpha.22)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.22)
   - Zip
 
 SPEC REPOS:
@@ -251,12 +251,9 @@ SPEC REPOS:
     - SyncPlayer
     - ViewDragger
     - WechatOpenSDK-XCFramework
+    - Whiteboard
     - YYModel
     - Zip
-
-EXTERNAL SOURCES:
-  Whiteboard:
-    :path: "/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS"
 
 SPEC CHECKSUMS:
   AcknowList: 931531a3e9d66f202ae8e04819a62c50b818b03e
@@ -305,6 +302,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 88849c0c55d681cba798b31a06c587dd124c3cba
+PODFILE CHECKSUM: 27bc1742ef69e7d94d425a50c541fbb150968d56
 
 COCOAPODS: 1.12.0
