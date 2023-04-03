@@ -108,6 +108,8 @@
 	<string>$(FLAT_WEB_BASE_URL)</string>
 	<key>GITHUB_CLIENT_ID</key>
 	<string>$(GITHUB_CLIENT_ID)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>weixinULAPI</string>
