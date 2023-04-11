@@ -96,10 +96,12 @@ class RtcItemContentView: UIView {
         }
         
         if isDragging {
+            nameLabel.isHidden = true
             micStrenthView.isHidden = true
             silenceImageView.isHidden = true
             controlView.isHidden = true
         } else {
+            nameLabel.isHidden = false
             micStrenthView.isHidden = !showVolume
             silenceImageView.isHidden = showVolume
         }
