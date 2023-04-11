@@ -241,6 +241,7 @@
 		8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362527462F93000D5003 /* Observable+Extension.swift */; };
 		8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362B27464E63000D5003 /* String+Empty.swift */; };
 		8ABF36312747B696000D5003 /* UIView+FlatLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36302747B696000D5003 /* UIView+FlatLoading.swift */; };
+		8AC0943429E0171400CC641A /* whiteboard_rebuild.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AC0943329E0171400CC641A /* whiteboard_rebuild.bundle */; };
 		8AC1FF3528912BAA00624E8B /* ClassRoomSyncedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */; };
 		8AC3AFCF28AA4B4600587AE0 /* AlibabaLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */; };
 		8AC3AFD128AB355300587AE0 /* SBLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */; };
@@ -566,6 +567,7 @@
 		8ABF362527462F93000D5003 /* Observable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extension.swift"; sourceTree = "<group>"; };
 		8ABF362B27464E63000D5003 /* String+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Empty.swift"; sourceTree = "<group>"; };
 		8ABF36302747B696000D5003 /* UIView+FlatLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+FlatLoading.swift"; sourceTree = "<group>"; };
+		8AC0943329E0171400CC641A /* whiteboard_rebuild.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = whiteboard_rebuild.bundle; sourceTree = "<group>"; };
 		8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSyncedStore.swift; sourceTree = "<group>"; };
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlibabaLogHandler.swift; sourceTree = "<group>"; };
@@ -1583,6 +1585,7 @@
 		8AD7C6BB27157EA7001C4AAD /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8AC0943329E0171400CC641A /* whiteboard_rebuild.bundle */,
 				8A4C7A7427F2E4B3006988C6 /* FlatFlint_Release.entitlements */,
 				8A4C7A7127F2E3B0006988C6 /* FlatFlint_Debug.entitlements */,
 				8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */,
@@ -1754,6 +1757,7 @@
 				8A270B9027195A1200450DC6 /* Localizable.strings in Resources */,
 				8AD7C6C927157EA7001C4AAD /* LaunchScreen.storyboard in Resources */,
 				8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */,
+				8AC0943429E0171400CC641A /* whiteboard_rebuild.bundle in Resources */,
 				8A270BC3271980A300450DC6 /* AboutUsViewController.xib in Resources */,
 				8AFB3FB128C98B6200B8B18C /* GoogleService-Info.plist in Resources */,
 				8A270BA8271977EE00450DC6 /* ContactUsViewController.xib in Resources */,

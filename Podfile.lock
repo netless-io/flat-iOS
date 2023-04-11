@@ -33,7 +33,7 @@ PODS:
   - Differentiator (5.0.0)
   - DZNEmptyDataSet (1.8.1)
   - Fastboard/core (2.0.0-alpha.13):
-    - Whiteboard (~> 2.17.0-alpha.20)
+    - Whiteboard (~> 2.17.0-alpha.23)
   - Fastboard/fpa (2.0.0-alpha.13):
     - Fastboard/core
     - Whiteboard/fpa
@@ -141,31 +141,31 @@ PODS:
   - SyncPlayer (0.3.3)
   - ViewDragger (1.1.0)
   - WechatOpenSDK-XCFramework (2.0.2)
-  - Whiteboard (2.17.0-alpha.22):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.22)
-  - Whiteboard/Base (2.17.0-alpha.22):
+  - Whiteboard (2.17.0-alpha.24):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.24)
+  - Whiteboard/Base (2.17.0-alpha.24):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.22):
+  - Whiteboard/Converter (2.17.0-alpha.24):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.17.0-alpha.22):
+  - Whiteboard/fpa (2.17.0-alpha.24):
     - NTL_AgoraFPA (~> 1.0.0)
     - Whiteboard/Room
-  - Whiteboard/Model (2.17.0-alpha.22):
+  - Whiteboard/Model (2.17.0-alpha.24):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.22):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.24):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.22):
+  - Whiteboard/Object (2.17.0-alpha.24):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.22):
+  - Whiteboard/Replayer (2.17.0-alpha.24):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.22)
-  - Whiteboard/Room (2.17.0-alpha.22):
+  - Whiteboard/Resource (2.17.0-alpha.24)
+  - Whiteboard/Room (2.17.0-alpha.24):
     - Whiteboard/Base
-  - Whiteboard/SyncPlayer (2.17.0-alpha.22):
+  - Whiteboard/SyncPlayer (2.17.0-alpha.24):
     - SyncPlayer
     - Whiteboard/Replayer
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.22):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.24):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -181,7 +181,7 @@ DEPENDENCIES:
   - AliyunLogProducer/Core
   - CropViewController
   - DZNEmptyDataSet
-  - Fastboard/fpa (= 2.0.0-alpha.13)
+  - Fastboard/fpa (from `/Users/xuyunshi/Desktop/Fastboard`)
   - Firebase/AnalyticsWithoutAdIdSupport
   - FirebaseCrashlytics
   - Hero
@@ -203,8 +203,8 @@ DEPENDENCIES:
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
   - WechatOpenSDK-XCFramework
-  - Whiteboard (= 2.17.0-alpha.22)
-  - Whiteboard/SyncPlayer (= 2.17.0-alpha.22)
+  - Whiteboard (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
+  - Whiteboard/SyncPlayer (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
   - Zip
 
 SPEC REPOS:
@@ -216,7 +216,6 @@ SPEC REPOS:
     - CropViewController
     - Differentiator
     - DZNEmptyDataSet
-    - Fastboard
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -251,9 +250,14 @@ SPEC REPOS:
     - SyncPlayer
     - ViewDragger
     - WechatOpenSDK-XCFramework
-    - Whiteboard
     - YYModel
     - Zip
+
+EXTERNAL SOURCES:
+  Fastboard:
+    :path: "/Users/xuyunshi/Desktop/Fastboard"
+  Whiteboard:
+    :path: "/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS"
 
 SPEC CHECKSUMS:
   AcknowList: 931531a3e9d66f202ae8e04819a62c50b818b03e
@@ -263,7 +267,7 @@ SPEC CHECKSUMS:
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fastboard: 1bd6ccd76eb8c94d20e83d5ad4af2dd5e1a193f0
+  Fastboard: b36297b7d53f4ad5846bf6f505106b905e10d019
   Firebase: 800f16f07af493d98d017446a315c27af0552f41
   FirebaseAnalytics: 1b60984a408320dda637306f3f733699ef8473d7
   FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
@@ -298,10 +302,10 @@ SPEC CHECKSUMS:
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20
   WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
-  Whiteboard: 1fbb366fd99be95c2b5941abc2b6fbac425e0a1a
+  Whiteboard: 10b699f7e47bdad272788eaf36b1eb8b966594c3
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 27bc1742ef69e7d94d425a50c541fbb150968d56
+PODFILE CHECKSUM: deefa7ce8acc5076be2a71059a1e41f0a6f3a020
 
 COCOAPODS: 1.12.0

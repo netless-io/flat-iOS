@@ -20,9 +20,9 @@ target 'Flat' do
   
   pod 'AgoraRtm_iOS', '1.5.1'
   pod 'AgoraRtcEngine_iOS', '4.1.0'
-  pod 'Fastboard/fpa', '2.0.0-alpha.13'
-  pod 'Whiteboard', '2.17.0-alpha.22'
-  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.22'
+  pod 'Fastboard/fpa', '2.0.0-alpha.14'
+  pod 'Whiteboard', '2.17.0-alpha.24'
+  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.24'
   pod 'SyncPlayer', '0.3.3'
   pod 'ViewDragger', '1.1.0'
   
@@ -42,6 +42,15 @@ target 'Flat' do
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   
   post_install do |installer|
+    system('sh rebuild_whiteboard_bridge.sh $(pwd)')
+
+    # Remove the original whitebaord resource
+    installer.pods_project.targets.each do |target|
+        if target.name == 'Whiteboard-Whiteboard'
+            target.remove_from_project
+        end
+    end
+    
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
