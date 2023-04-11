@@ -12,8 +12,6 @@ class WhiteboardAppsCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         appIconView.contentMode = .center
-        appIconView.clipsToBounds = true
-        appIconView.layer.cornerRadius = 12
         appIconView.tintColor = .whiteText
         contentView.addSubview(appIconView)
         contentView.addSubview(appTitleLabel)

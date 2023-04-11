@@ -13,11 +13,26 @@ class WhiteboardAppsViewController: UIViewController {
     struct WhiteboardAppItem {
         let title: String
         let imageName: String
+        let appParams: WhiteAppParam?
     }
 
-    let items: [WhiteboardAppItem] = [
-        .init(title: localizeStrings("whiteboard_save_annotation"), imageName: "whiteboard_save_annotation"),
-    ]
+    let appItems = [
+        "Monaco",
+        "GeoGebra",
+        "Countdown",
+        "Selector",
+        "Dice",
+        "MindMap",
+        "Quill",
+    ].map {
+        WhiteboardAppItem(title: localizeStrings($0), imageName: $0, appParams: .init(kind: $0, options: .init(), attrs: [:]))
+    }
+
+    lazy var items: [WhiteboardAppItem] = {
+        var i = appItems
+        i.append(WhiteboardAppItem(title: localizeStrings("whiteboard_save_annotation"), imageName: "save_whiteboard", appParams: nil))
+        return i
+    }()
 
     var room: WhiteRoom?
     weak var clickSource: UIButton?
@@ -25,8 +40,9 @@ class WhiteboardAppsViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         let rows = ceil(CGFloat(items.count) / numberPerRow)
+        let margins = layout.minimumLineSpacing * (rows - 1)
         preferredContentSize = .init(width: layout.itemSize.width * numberPerRow + layout.sectionInset.left + layout.sectionInset.right,
-                                     height: layout.itemSize.height * rows + layout.sectionInset.top + layout.sectionInset.bottom)
+                                     height: layout.itemSize.height * rows + layout.sectionInset.top + layout.sectionInset.bottom + margins)
     }
 
     @available(*, unavailable)
@@ -56,7 +72,7 @@ class WhiteboardAppsViewController: UIViewController {
     lazy var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = .init(width: 120, height: 66 + 8)
-        layout.minimumLineSpacing = 0
+        layout.minimumLineSpacing = 14
         layout.minimumInteritemSpacing = 0
         layout.sectionInset = .init(inset: 16)
         return layout
@@ -81,14 +97,19 @@ extension WhiteboardAppsViewController: UICollectionViewDelegate, UICollectionVi
         let item = items[indexPath.row]
         cell.appTitleLabel.text = item.title
         cell.appIconView.image = UIImage(named: item.imageName)
-        cell.appIconView.backgroundColor = UIColor(hexString: "#00C35A")
         return cell
     }
 
-    func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {
+    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let room, let parent = presentingViewController, let source = clickSource else { return }
-        let vc = WhiteboardScenesListViewController(room: room)
+
+        let item = items[indexPath.row]
         dismiss(animated: true) {
+            if let params = item.appParams {
+                room.addApp(params) { _ in }
+                return
+            }
+            let vc = WhiteboardScenesListViewController(room: room)
             parent.popoverViewController(viewController: vc, fromSource: source)
         }
     }

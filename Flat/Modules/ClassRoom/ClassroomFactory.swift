@@ -74,6 +74,12 @@ enum ClassroomFactory {
         fastRoomConfiguration.whiteRoomConfig.disableCameraTransform = !userPermissionEnable
         fastRoomConfiguration.whiteSdkConfiguration.log = false
         fastRoomConfiguration.whiteRoomConfig.isWritable = userPermissionEnable
+        if let customBundlePath = Bundle.main.path(forResource: "whiteboard_rebuild", ofType: "bundle"),
+           let customBundle = Bundle(path: customBundlePath),
+           let indexPath = customBundle.path(forResource: "index", ofType: "html")
+        {
+            fastRoomConfiguration.customWhiteboardUrl = URL(fileURLWithPath: indexPath).absoluteString
+        }
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
 
@@ -109,7 +115,7 @@ enum ClassroomFactory {
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),
                                            rtcError: rtc.errorPublisher.asObservable(),
                                            videoLayoutStore: videoLayoutStore)
-        
+
         let isLocalUser: ((UInt) -> Bool) = { $0 == 0 || $0 == playInfo.rtcUID }
         let rtcViewModel = RtcViewModel(rtc: rtc,
                                         userRtcUid: playInfo.rtcUID,
@@ -124,11 +130,11 @@ enum ClassroomFactory {
                                             guard let user = imp.currentOnStageUsers.first(where: { $0.value.rtcUID == rtcId })?.value else { return .low }
                                             let isTeacher = user.rtmUUID == playInfo.ownerUUID
                                             return playInfo.roomType.thumbnailStreamType(isUserTeacher: isTeacher)
-            
-        }, canUpdateDeviceState: { rtcUid in
-            if isLocalUser(rtcUid) { return true }
-            return basicInfo.isOwner
-        })
+
+                                        }, canUpdateDeviceState: { rtcUid in
+                                            if isLocalUser(rtcUid) { return true }
+                                            return basicInfo.isOwner
+                                        })
         let rtcViewController = RtcViewController(viewModel: rtcViewModel)
 
         let alertProvider = DefaultAlertProvider()

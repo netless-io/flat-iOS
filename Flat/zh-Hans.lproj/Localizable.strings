@@ -159,6 +159,9 @@
 "Copy Success" = "复制成功";
 
 
+"Countdown" = "计时器";
+
+
 "CountryCodeSelection" = "区号选择";
 
 
@@ -187,6 +190,9 @@
 
 
 "Delete room record alert" = "确认删除该记录？";
+
+
+"Dice" = "骰子";
 
 
 "DidLoadAll" = "已全部加载";
@@ -256,6 +262,12 @@
 
 
 "Finish" = "完成";
+
+
+"GeoGebra" = "几何代数";
+
+
+"Geogebra" = "";
 
 
 "GoSetting" = "前往设置";
@@ -363,10 +375,16 @@
 "MicRequestReject" = "拒绝开启麦克风";
 
 
+"MindMap" = "思维导图";
+
+
 "Mirror" = "镜像";
 
 
 "Modify Room" = "修改房间";
+
+
+"Monaco" = "代码编辑器";
 
 
 "NeedLoginAgain" = "凭证已过期，请重新登录";
@@ -463,6 +481,9 @@
 
 
 "Profile" = "个人资料";
+
+
+"Quill" = "富文本编辑器";
 
 
 "Raised Hand" = "举手";
@@ -589,6 +610,9 @@
 
 
 "Select Theme" = "选择外观";
+
+
+"Selector" = "答题器";
 
 
 "SendSMS" = "发送验证码";

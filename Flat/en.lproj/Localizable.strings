@@ -159,6 +159,9 @@
 "Copy Success" = "Copy Success";
 
 
+"Countdown" = "Countdown";
+
+
 "CountryCodeSelection" = "Country code selection";
 
 
@@ -187,6 +190,9 @@
 
 
 "Delete room record alert" = "Are you sure to delete the current room record";
+
+
+"Dice" = "Dice";
 
 
 "DidLoadAll" = "Loaded all";
@@ -256,6 +262,9 @@
 
 
 "Finish" = "Finish";
+
+
+"GeoGebra" = "GeoGebra";
 
 
 "GoSetting" = "Go Setting";
@@ -363,10 +372,16 @@
 "MicRequestReject" = "refused to turn on microphone";
 
 
+"MindMap" = "MindMap";
+
+
 "Mirror" = "Mirror";
 
 
 "Modify Room" = "Modify Room";
+
+
+"Monaco" = "Code Editor";
 
 
 "NeedLoginAgain" = "The credentials have expired, please log in again";
@@ -463,6 +478,9 @@
 
 
 "Profile" = "Profile";
+
+
+"Quill" = "Rich Text Editor";
 
 
 "Raised Hand" = "Raised";
@@ -589,6 +607,9 @@
 
 
 "Select Theme" = "Select Theme";
+
+
+"Selector" = "Selector";
 
 
 "SendSMS" = "Send Code";
