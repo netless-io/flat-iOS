@@ -42,32 +42,45 @@ target 'Flat' do
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   
   post_install do |installer|
-    system('sh rebuild_whiteboard_bridge.sh $(pwd)')
-
-    # Remove the original whitebaord resource
-    installer.pods_project.targets.each do |target|
-        if target.name == 'Whiteboard-Whiteboard'
-            target.remove_from_project
-        end
-    end
-    
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
-      end
-    end
-    
-    installer.pods_project.targets.each do |target|
-      if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
-        target.build_configurations.each do |config|
-          config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
-        end
-      end
-    end
+    # Fix for XCode 14.3
+    installer.generated_projects.each do |project|
+          project.targets.each do |target|
+              target.build_configurations.each do |config|
+                  config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+               end
+          end
+   end
     
     installer.pods_project.build_configurations.each do |config|
       if config.name.include?("Debug")
         config.build_settings["ONLY_ACTIVE_ARCH"] = "YES"
+      end
+    end
+    
+    # Rebuild whiteboard bridge with injected code.
+    system('sh rebuild_whiteboard_bridge.sh $(pwd)')
+    # Remove the copy resource
+    installer.pods_project.targets.each do |target|
+      if target.name == "Whiteboard"
+          puts "===================> Find Whiteboard Target"
+          build_phase = target.build_phases.find { |bp| bp.display_name == 'Resources' }
+          build_phase.clear()
+          puts "===================> Clear copy original Whiteboard Resources"
+      end
+    
+      # Remove the original whitebaord resource target
+      if target.name == 'Whiteboard-Whiteboard'
+          target.remove_from_project
+      end
+      
+      target.build_configurations.each do |config|
+        config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+      end
+      
+      if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
+        target.build_configurations.each do |config|
+          config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+        end
       end
     end
   end

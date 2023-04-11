@@ -32,9 +32,9 @@ PODS:
   - CropViewController (2.6.1)
   - Differentiator (5.0.0)
   - DZNEmptyDataSet (1.8.1)
-  - Fastboard/core (2.0.0-alpha.13):
-    - Whiteboard (~> 2.17.0-alpha.23)
-  - Fastboard/fpa (2.0.0-alpha.13):
+  - Fastboard/core (2.0.0-alpha.14):
+    - Whiteboard (~> 2.17.0-alpha.24)
+  - Fastboard/fpa (2.0.0-alpha.14):
     - Fastboard/core
     - Whiteboard/fpa
   - Firebase/AnalyticsWithoutAdIdSupport (9.5.0):
@@ -181,7 +181,7 @@ DEPENDENCIES:
   - AliyunLogProducer/Core
   - CropViewController
   - DZNEmptyDataSet
-  - Fastboard/fpa (from `/Users/xuyunshi/Desktop/Fastboard`)
+  - Fastboard/fpa (= 2.0.0-alpha.14)
   - Firebase/AnalyticsWithoutAdIdSupport
   - FirebaseCrashlytics
   - Hero
@@ -203,8 +203,8 @@ DEPENDENCIES:
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
   - WechatOpenSDK-XCFramework
-  - Whiteboard (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
-  - Whiteboard/SyncPlayer (from `/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS`)
+  - Whiteboard (= 2.17.0-alpha.24)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.24)
   - Zip
 
 SPEC REPOS:
@@ -216,6 +216,7 @@ SPEC REPOS:
     - CropViewController
     - Differentiator
     - DZNEmptyDataSet
+    - Fastboard
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -250,14 +251,9 @@ SPEC REPOS:
     - SyncPlayer
     - ViewDragger
     - WechatOpenSDK-XCFramework
+    - Whiteboard
     - YYModel
     - Zip
-
-EXTERNAL SOURCES:
-  Fastboard:
-    :path: "/Users/xuyunshi/Desktop/Fastboard"
-  Whiteboard:
-    :path: "/Users/xuyunshi/Desktop/Whiteboard/Whiteboard-iOS"
 
 SPEC CHECKSUMS:
   AcknowList: 931531a3e9d66f202ae8e04819a62c50b818b03e
@@ -267,7 +263,7 @@ SPEC CHECKSUMS:
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fastboard: b36297b7d53f4ad5846bf6f505106b905e10d019
+  Fastboard: 70b0d34b827bf937dd32e4abf7988b58a09522a0
   Firebase: 800f16f07af493d98d017446a315c27af0552f41
   FirebaseAnalytics: 1b60984a408320dda637306f3f733699ef8473d7
   FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
@@ -306,6 +302,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: deefa7ce8acc5076be2a71059a1e41f0a6f3a020
+PODFILE CHECKSUM: bb6372169ae0690452da31e5d9cb52b56723eb11
 
 COCOAPODS: 1.12.0
