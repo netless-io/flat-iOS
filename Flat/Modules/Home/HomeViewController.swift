@@ -84,10 +84,6 @@ class HomeViewController: UIViewController {
         mainContainer?.concreteViewController.present(JoinRoomViewController(), animated: true)
     }
 
-    @objc func onClickBook() {
-        showAlertWith(message: localizeStrings("Coming soon"))
-    }
-
     @objc func onRefresh(_ sender: UIRefreshControl) {
         // Update for sometimes network doesn't work
         applyAvatar()
@@ -287,7 +283,6 @@ class HomeViewController: UIViewController {
         let stack = UIStackView(arrangedSubviews: [
             createHeaderButton(title: localizeStrings("Join Room"), imageName: "room_join", target: self, action: #selector(onClickJoin)),
             createHeaderButton(title: localizeStrings("Start Now"), imageName: "room_create", target: self, action: #selector(onClickCreate)),
-            createHeaderButton(title: localizeStrings("Book Room"), imageName: "room_book", target: self, action: #selector(onClickBook)),
         ])
         stack.distribution = .fillEqually
         stack.axis = .horizontal
