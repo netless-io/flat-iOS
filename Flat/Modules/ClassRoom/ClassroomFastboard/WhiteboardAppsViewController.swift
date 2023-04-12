@@ -25,7 +25,7 @@ class WhiteboardAppsViewController: UIViewController {
         "MindMap",
         "Quill",
     ].map {
-        WhiteboardAppItem(title: localizeStrings($0), imageName: $0, appParams: .init(kind: $0, options: .init(), attrs: [:]))
+        WhiteboardAppItem(title: localizeStrings($0), imageName: "apps_" + $0, appParams: .init(kind: $0, options: .init(), attrs: [:]))
     }
 
     lazy var items: [WhiteboardAppItem] = {
