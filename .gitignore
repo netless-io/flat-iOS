@@ -86,4 +86,4 @@ iOSInjectionProject/
 Flat/GoogleService-Info.plist
 
 # Rebuild source
-Flat/whiteboard_rebuild.bundle/
+Flat/whiteboard_rebuild.bundle/*
