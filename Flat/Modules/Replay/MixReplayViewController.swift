@@ -62,7 +62,16 @@ class MixReplayViewController: UIViewController {
         whiteboardView?.removeFromSuperview()
         whiteboardView = nil
 
-        let newWhiteView = WhiteBoardView()
+        let newWhiteView: WhiteBoardView
+        if let customBundlePath = Bundle.main.path(forResource: "whiteboard_rebuild", ofType: "bundle"),
+           let customBundle = Bundle(path: customBundlePath),
+           let indexPath = customBundle.path(forResource: "index", ofType: "html")
+        {
+            newWhiteView = WhiteBoardView(customUrl: URL(fileURLWithPath: indexPath).absoluteString)
+        } else {
+            newWhiteView = WhiteBoardView()
+        }
+        
         newWhiteView.setTraitRelatedBlock { v in
             v.backgroundColor = .color(type: .background).resolvedColor(with: v.traitCollection)
         }
