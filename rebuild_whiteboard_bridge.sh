@@ -1,3 +1,4 @@
+set -exo pipefail
 ENTRY_PATH=$1
 LOCAL_PATH=$(echo ~/Desktop/Whiteboard/Whiteboard-iOS/Whiteboard/Resource)
 POD_PATH="${ENTRY_PATH}/Pods/Whiteboard/Whiteboard/Resource"
@@ -26,5 +27,7 @@ rm -rf $BUILD_PATH
 
 if test $REMOVE_RAW_SOURCE -eq 1
 then
-    rm -rf $WHITE_RESOURCE_PATH/*
+    rm -rf $WHITE_RESOURCE_PATH/*.html
+    rm -rf $WHITE_RESOURCE_PATH/*.js
+    rm -rf $WHITE_RESOURCE_PATH/*.css
 fi
