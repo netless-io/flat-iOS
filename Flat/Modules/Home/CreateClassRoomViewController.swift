@@ -183,6 +183,11 @@ class CreateClassRoomViewController: UIViewController {
     }
 
     @objc func onClickCreate(_ sender: UIButton) {
+        // Update prefer device status
+        let deviceStatus = DeviceState(mic: deviceView.micOn, camera: deviceView.cameraOn)
+        deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
+        deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
+        
         let title: String
         let text = subjectTextField.text ?? ""
         title = text.isEmpty ? defaultTitle : text
@@ -194,11 +199,8 @@ class CreateClassRoomViewController: UIViewController {
         ApiProvider.shared.request(fromApi: createQuest)
             .asSingle()
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onSuccess: { weakSelf, info in
+            .subscribe(with: self, onSuccess: { _, info in
                 sender.isLoading = false
-                let deviceStatus = DeviceState(mic: weakSelf.deviceView.micOn, camera: weakSelf.deviceView.cameraOn)
-                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
-                weakSelf.deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
                 ClassroomCoordinator.shared.enterClassroom(uuid: info.roomUUID,
                                                            periodUUID: info.periodicUUID,
                                                            basicInfo: nil,

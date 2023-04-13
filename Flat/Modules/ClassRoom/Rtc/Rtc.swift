@@ -39,32 +39,34 @@ class Rtc: NSObject {
     var isFrontMirror: Bool
     var isUsingFront: Bool
     lazy var isBroadcaster: Bool = false
-    lazy var localCameraOn: Bool = false {
+    var localCameraOn: Bool {
         didSet {
-            if localCameraOn == oldValue {
-                return
-            }
-            agoraKit.enableLocalVideo(localCameraOn)
-            agoraKit.muteLocalVideoStream(!localCameraOn)
-            if localCameraOn {
-                agoraKit.startPreview()
-            } else {
-                agoraKit.stopPreview()
-            }
-            logger.info("update local user status camera: \(localCameraOn)")
-            updateClienRoleIfNeed()
+            if localCameraOn == oldValue { return }
+            _performCameraStateUpdate()
         }
     }
-    lazy var localAudioOn: Bool = false {
-        didSet {
-            if localAudioOn == oldValue {
-                return
-            }
-            agoraKit.enableLocalAudio(localAudioOn)
-            agoraKit.muteLocalAudioStream(!localAudioOn)
-            logger.info("update local user status mic: \(localAudioOn)")
-            updateClienRoleIfNeed()
+    private func _performCameraStateUpdate() {
+        agoraKit.enableLocalVideo(localCameraOn)
+        agoraKit.muteLocalVideoStream(!localCameraOn)
+        if localCameraOn {
+            agoraKit.startPreview()
+        } else {
+            agoraKit.stopPreview()
         }
+        logger.info("update local user status camera: \(localCameraOn)")
+        updateClienRoleIfNeed()
+    }
+    var localAudioOn: Bool {
+        didSet {
+            if localAudioOn == oldValue { return }
+            _performAudioStateUpdate()
+        }
+    }
+    private func _performAudioStateUpdate() {
+        agoraKit.enableLocalAudio(localAudioOn)
+        agoraKit.muteLocalAudioStream(!localAudioOn)
+        logger.info("update local user status mic: \(localAudioOn)")
+        updateClienRoleIfNeed()
     }
     
     func updateClienRoleIfNeed() {
@@ -182,6 +184,8 @@ class Rtc: NSObject {
         self.screenShareInfo = screenShareInfo
         self.isFrontMirror = isFrontMirror
         self.isUsingFront = isUsingFront
+        self.localCameraOn = false
+        self.localAudioOn = false
         super.init()
         
         let agoraKitConfig = AgoraRtcEngineConfig()
@@ -206,6 +210,9 @@ class Rtc: NSObject {
         agoraKit.enableVideo()
         agoraKit.enableAudio()
         agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: false)
+        // 初始化音视频传输
+        _performAudioStateUpdate()
+        _performCameraStateUpdate()
         
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
@@ -227,6 +234,7 @@ class Rtc: NSObject {
         isJoined
             .filter { $0 }
             .subscribe(with: self, onNext: { weakSelf, _ in
+                // TODO: Should force update.
                 if let targetLocalMic = weakSelf.targetLocalMic {
                     weakSelf.updateLocalUser(micOn: targetLocalMic)
                 }

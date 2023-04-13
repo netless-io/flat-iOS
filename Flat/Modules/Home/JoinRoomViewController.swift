@@ -49,6 +49,12 @@ class JoinRoomViewController: UIViewController {
         guard let uuid = subjectTextField.text?.replacingOccurrences(of: " ", with: ""),
                 !uuid.isEmpty
         else { return }
+        
+        // Update prefer device status
+        let deviceStatus = DeviceState(mic: deviceView.micOn, camera: deviceView.cameraOn)
+        deviceStatusStore.updateDevicePreferredStatus(forType: .camera, value: deviceStatus.camera)
+        deviceStatusStore.updateDevicePreferredStatus(forType: .mic, value: deviceStatus.mic)
+        
         ClassroomCoordinator.shared.enterClassroom(uuid: uuid,
                                                    periodUUID: nil,
                                                    basicInfo: nil,
