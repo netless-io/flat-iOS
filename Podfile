@@ -46,16 +46,10 @@ target 'Flat' do
     installer.generated_projects.each do |project|
           project.targets.each do |target|
               target.build_configurations.each do |config|
-                  config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+                  config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
                end
           end
    end
-    
-    installer.pods_project.build_configurations.each do |config|
-      if config.name.include?("Debug")
-        config.build_settings["ONLY_ACTIVE_ARCH"] = "YES"
-      end
-    end
     
     # Rebuild whiteboard bridge with injected code.
     system('sh rebuild_whiteboard_bridge.sh $(pwd)')
@@ -71,10 +65,6 @@ target 'Flat' do
       # Remove the original whitebaord resource target
       if target.name == 'Whiteboard-Whiteboard'
           target.remove_from_project
-      end
-      
-      target.build_configurations.each do |config|
-        config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
       end
       
       if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"

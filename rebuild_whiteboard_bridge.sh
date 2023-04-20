@@ -16,7 +16,7 @@ else
 fi
 echo "Whiteboard resource path: $WHITE_RESOURCE_PATH"
 
-curl -sSL https://raw.githubusercontent.com/netless-io/flat-native-bridge/main/bridge.sh | sh -s $WHITE_RESOURCE_PATH
+curl -sSL https://raw.githubusercontent.com/netless-io/flat-native-bridge/main/bridge.sh | sh -s $WHITE_RESOURCE_PATH ios13
 
 BUILD_PATH=$ENTRY_PATH/build
 BUNDLE_PATH=$ENTRY_PATH/Flat/whiteboard_rebuild.bundle
