@@ -342,6 +342,8 @@ class ClassRoomViewController: UIViewController {
                     ws.classroomStatusBar.networkStatus = .great
                 case .good:
                     ws.classroomStatusBar.networkStatus = .good
+                case .unknown:
+                    ws.classroomStatusBar.networkStatus = .great
                 default:
                     ws.classroomStatusBar.networkStatus = .bad
                 }
