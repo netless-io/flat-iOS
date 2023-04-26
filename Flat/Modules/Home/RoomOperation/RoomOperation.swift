@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 let roomRemovedNotification = "roomRemovedNotification"
 
@@ -15,7 +16,12 @@ extension RoomBasicInfo {
         let room = self
         func performRemoveReqeust() {
             rootController.showActivityIndicator()
-            let request = RoomCancelRequest(roomUUID: room.roomUUID)
+            let request: RoomCancelRequest
+            if let periodicUUID, !periodicUUID.isEmpty {
+                request = RoomCancelRequest(roomIdentifier: .periodRoomUUID(periodicUUID))
+            } else {
+                request = RoomCancelRequest(roomIdentifier: .roomUUID(roomUUID))
+            }
             ApiProvider.shared.request(fromApi: request) { result in
                 rootController.stopActivityIndicator()
                 switch result {

@@ -8,10 +8,32 @@
 
 import Foundation
 
+enum RoomIdentifier {
+    case roomUUID(String)
+    case periodRoomUUID(String)
+    
+    var path: String {
+        switch self {
+        case .roomUUID:
+            return "/v1/room/cancel/ordinary"
+        case .periodRoomUUID:
+            return "/v1/room/cancel/periodic"
+        }
+    }
+    
+    var body: Encodable {
+        switch self {
+        case .roomUUID(let roomUUID):
+            return ["roomUUID": roomUUID]
+        case .periodRoomUUID(let periodicUUID):
+            return ["periodicUUID": periodicUUID]
+        }
+    }
+}
 struct RoomCancelRequest: FlatRequest {
-    let roomUUID: String
+    let roomIdentifier: RoomIdentifier
 
-    var path: String { "/v1/room/cancel/ordinary" }
-    var task: Task { .requestJSONEncodable(encodable: ["roomUUID": roomUUID]) }
+    var path: String { roomIdentifier.path }
+    var task: Task { .requestJSONEncodable(encodable: roomIdentifier.body) }
     let responseType = EmptyResponse.self
 }
