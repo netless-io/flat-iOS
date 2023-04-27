@@ -453,6 +453,9 @@
 "PeriodicSubRoomHasRunning" = "周期性子房间不存在";
 
 
+"PersonalInfoCollect" = "个人信息收集公示";
+
+
 "PhoneInputPlaceholder" = "请输入手机号";
 
 
@@ -636,7 +639,7 @@
 "ShareMore" = "更多";
 
 
-"ShortCuts" = "";
+"ShortCuts" = "第三方信息数据共享";
 
 
 "Shortcuts" = "偏好设置";
@@ -715,6 +718,9 @@
 
 
 "Theme.light" = "浅色";
+
+
+"ThirdPartyShare" = "第三方信息数据共享";
 
 
 "Today" = "今天";

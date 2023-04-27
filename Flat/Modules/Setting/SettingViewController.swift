@@ -88,6 +88,14 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                   title: localizeStrings("Shortcuts"),
                   detail: "",
                   targetAction: (self, #selector(onClickShortcuts(sender:)))),
+            .init(image: UIImage(named: "personal_collect")!,
+                  title: localizeStrings("PersonalInfoCollect"),
+                  detail: "",
+                  targetAction: (self, #selector(onClickInfoCollect))),
+            .init(image: UIImage(named: "third_share")!,
+                  title: localizeStrings("ThirdPartyShare"),
+                  detail: "",
+                  targetAction: (self, #selector(onClickThirdPartCollect)))
         ]
         tableView.reloadData()
     }
@@ -104,6 +112,22 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @objc func onClickLogout() {
         AuthStore.shared.logout()
+    }
+
+    @objc func onClickInfoCollect() {
+        let url = URL(string: Env().webBaseURL.appending("/sensitive?token=\(AuthStore.shared.user!.token)"))!
+        let vc = WKWebViewController(url: url)
+        vc.usingClose = false
+        vc.navigationItem.title = localizeStrings("PersonalInfoCollect")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func onClickThirdPartCollect() {
+        let url = URL(string: "https://flat.whiteboard.agora.io/privacy-extra/libraries.html")!
+        let vc = WKWebViewController(url: url)
+        vc.usingClose = false
+        vc.navigationItem.title = localizeStrings("ThirdPartyShare")
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     @objc func onVersion(sender _: Any?) {
@@ -234,7 +258,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         button.addTarget(self, action: #selector(onClickLogout), for: .touchUpInside)
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
         button.setImage(UIImage(named: "logout"), for: .normal)
-        
+
         button.setTraitRelatedBlock { button in
             let color = UIColor.color(light: .red6, dark: .red5)
             button.layer.borderColor = color.resolvedColor(with: button.traitCollection).cgColor

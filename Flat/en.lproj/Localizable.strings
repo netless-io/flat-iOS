@@ -450,6 +450,9 @@
 "PeriodicSubRoomHasRunning" = "Periodic sub-room does not exist";
 
 
+"PersonalInfoCollect" = "Personal Information Collection";
+
+
 "PhoneInputPlaceholder" = "Enter your phone number";
 
 
@@ -632,6 +635,9 @@
 
 "ShareMore" = "More";
 
+/*  */
+"ShortCuts" = "Third party information data sharing";
+
 
 "Shortcuts" = "Preferences";
 
@@ -709,6 +715,9 @@
 
 
 "Theme.light" = "Light";
+
+
+"ThirdPartyShare" = "Third party data sharing";
 
 
 "Today" = "Today";

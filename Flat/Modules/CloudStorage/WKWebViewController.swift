@@ -10,6 +10,7 @@ import UIKit
 import WebKit
 
 class WKWebViewController: UIViewController {
+    var usingClose = true
     var dismissHandler: (() -> Void)?
     
     init(url: URL) {
@@ -33,7 +34,9 @@ class WKWebViewController: UIViewController {
         presentTitleLabel?.removeFromSuperview()
 
         if let _ = navigationController {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: localizeStrings("Close"), style: .plain, target: self, action: #selector(onClickNaviBack))
+            if usingClose {
+                navigationItem.leftBarButtonItem = UIBarButtonItem(title: localizeStrings("Close"), style: .plain, target: self, action: #selector(onClickNaviBack))
+            }
             webView.snp.remakeConstraints { make in
                 make.edges.equalTo(view.safeAreaLayoutGuide)
             }
