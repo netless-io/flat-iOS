@@ -210,13 +210,13 @@ class FastboardViewController: UIViewController {
     }
 
     func syncUndoRedoGestureEnable() {
-        let preferDisable = ShortcutsManager.shared.shortcuts[.disableDefaultUndoRedo] ?? false
+        let preferDisable = PerferrenceManager.shared.preferences[.disableDefaultUndoRedo] ?? false
         let permissionDisable = !roomPermission.value.inputEnable
         updateUndoRedoGestureDisable(preferDisable || permissionDisable)
     }
 
     @objc
-    fileprivate func onUndoRedoShortcutsUpdate(notification _: Notification) {
+    fileprivate func onUndoRedoPreferenceUpdate(notification _: Notification) {
         syncUndoRedoGestureEnable()
     }
 
@@ -228,7 +228,7 @@ class FastboardViewController: UIViewController {
         view.addGestureRecognizer(undoGesture)
         view.addGestureRecognizer(redoGesture)
         syncUndoRedoGestureEnable()
-        NotificationCenter.default.addObserver(self, selector: #selector(onUndoRedoShortcutsUpdate(notification:)), name: undoRedoShortcutsUpdateNotificaton, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onUndoRedoPreferenceUpdate(notification:)), name: undoRedoPreferenceUpdateNotificaton, object: nil)
     }
 
     func bindConnecting() {

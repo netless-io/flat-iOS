@@ -35,7 +35,7 @@ class ClassRoomSettingViewController: UIViewController {
             case .videoArea:
                 return localizeStrings("Video Area")
             case .shortcut:
-                return localizeStrings("Shortcuts")
+                return localizeStrings("Preferences")
             }
         }
     }
@@ -43,7 +43,7 @@ class ClassRoomSettingViewController: UIViewController {
     let cameraPublish: PublishRelay<Void> = .init()
     let micPublish: PublishRelay<Void> = .init()
     let videoAreaPublish: PublishRelay<Void> = .init()
-    var shortcutsPublish: PublishRelay<Void> = .init()
+    var preferencePublish: PublishRelay<Void> = .init()
 
     let cellIdentifier = "cellIdentifier"
 
@@ -284,7 +284,7 @@ extension ClassRoomSettingViewController: UITableViewDelegate, UITableViewDataSo
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if models[indexPath.section][indexPath.row] == .shortcut {
-            shortcutsPublish.accept(())
+            preferencePublish.accept(())
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

@@ -22,6 +22,8 @@ extension RoomStartStatus {
 }
 
 class HomeViewController: UIViewController {
+    override var canBecomeFirstResponder: Bool { true }
+    
     let avatarPlaceHolder = UIImage.imageWith(color: .color(type: .background, .strong),
                                               size: .init(width: 44, height: 44))
     

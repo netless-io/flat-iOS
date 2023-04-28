@@ -1,5 +1,5 @@
 //
-//  ShortcutsTableViewCell.swift
+//  PreferenceTableViewCell.swift
 //  Flat
 //
 //  Created by xuyunshi on 2022/11/16.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-class ShortcutsTableViewCell: UITableViewCell {
+class PreferenceTableViewCell: UITableViewCell {
     var switchHandler: ((Bool) -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        let stack = UIStackView(arrangedSubviews: [shortcutsTitleLabel, shortcutsDetailLabel])
+        let stack = UIStackView(arrangedSubviews: [preferenceTitleLabel, preferenceDetailLabel])
         stack.axis = .vertical
         stack.spacing = 4
         contentView.addSubview(stack)
@@ -23,12 +23,12 @@ class ShortcutsTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.right.equalToSuperview().inset(88)
         }
-        contentView.addSubview(shortcutsSwitch)
-        shortcutsSwitch.snp.makeConstraints { make in
+        contentView.addSubview(preferenceSwitch)
+        preferenceSwitch.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(14)
             make.centerY.equalToSuperview()
         }
-        shortcutsSwitch.addTarget(self, action: #selector(onSwitchUpdate), for: .valueChanged)
+        preferenceSwitch.addTarget(self, action: #selector(onSwitchUpdate), for: .valueChanged)
     }
 
     @available(*, unavailable)
@@ -40,16 +40,16 @@ class ShortcutsTableViewCell: UITableViewCell {
         switchHandler?(sender.isOn)
     }
 
-    lazy var shortcutsSwitch = UISwitch()
+    lazy var preferenceSwitch = UISwitch()
 
-    lazy var shortcutsTitleLabel: UILabel = {
+    lazy var preferenceTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
         label.textColor = .color(type: .text)
         return label
     }()
 
-    lazy var shortcutsDetailLabel: UILabel = {
+    lazy var preferenceDetailLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = .color(type: .text, .weak)

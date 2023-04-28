@@ -48,6 +48,9 @@
 "ApplePencilShortcutsDetail" = "(Can be set in System Settings - Apple Pencil)";
 
 
+"ApplianceMenu" = "Tool";
+
+
 "Avatar" = "Avatar";
 
 
@@ -126,6 +129,9 @@
 "ClassesStillLeftTips" = "You have rooms that have not been closed or withdrawn from, and you can only request to cancel your account after processing, the number remaining: ";
 
 
+"ClearWhiteboard" = "Clear Whiteboard";
+
+
 "Close" = "Close";
 
 
@@ -189,6 +195,9 @@
 "Delete room record alert" = "Are you sure to delete the current room record";
 
 
+"DeleteWhiteSelectedItem" = "Delete whiteboard selection";
+
+
 "Dice" = "Dice";
 
 
@@ -220,6 +229,9 @@
 
 
 "Enter Room" = "Enter Room";
+
+
+"Escape" = "Escape";
 
 
 "Exit" = "Exit";
@@ -384,6 +396,9 @@
 "NeedLoginAgain" = "The credentials have expired, please log in again";
 
 
+"NewPage" = "Create new page";
+
+
 "Nickname" = "Nickname";
 
 
@@ -424,6 +439,15 @@
 
 
 "OtherLoginTips" = "You can also log in directly through";
+
+
+"PageMenu" = "Page";
+
+
+"PageNext" = "Next page";
+
+
+"PagePrev" = "Previous page";
 
 
 "ParamsCheckFailed" = "Parameter error";
@@ -471,6 +495,9 @@
 "Please enter your nickname" = "Please enter your nickname";
 
 
+"Preferences" = "Preferences";
+
+
 "Preview" = "Preview";
 
 
@@ -516,7 +543,7 @@
 "Replay" = "Replay";
 
 
-"ResetShortcuts" = "Reset Preferences";
+"ResetPreference" = "Reset Preferences";
 
 
 "ResetShortcutsAlert" = "This action is not reversible, are you sure you want to reset the preferences?";
@@ -635,12 +662,6 @@
 
 "ShareMore" = "More";
 
-/*  */
-"ShortCuts" = "Third party information data sharing";
-
-
-"Shortcuts" = "Preferences";
-
 
 "SmallClass" = "SmallClass";
 
@@ -682,6 +703,12 @@
 
 
 "Submit" = "Submit";
+
+
+"SwitchNextColor" = "Switch to the next color";
+
+
+"SwitchPrevColor" = "Switch to the previous color";
 
 
 "Teacher" = "Teacher";
@@ -844,6 +871,36 @@
 
 
 "and" = "and";
+
+
+"appliance.arrow" = "Arrow";
+
+
+"appliance.clicker" = "Clicker";
+
+
+"appliance.ellipse" = "Circle";
+
+
+"appliance.eraser" = "Eraser";
+
+
+"appliance.pencil" = "Pencil";
+
+
+"appliance.pencilEraser" = "Partial Eraser";
+
+
+"appliance.rectangle" = "Rectangle";
+
+
+"appliance.selector" = "Selector";
+
+
+"appliance.straight" = "Line";
+
+
+"appliance.text" = "Text";
 
 
 "classroomTimePassed" = "Duration";

@@ -27,7 +27,7 @@ enum ClassroomFactory {
                       isUsingFront: ClassroomDefaultConfig.usingFrontCamera,
                       screenShareInfo: playInfo.rtcShareScreen)
 
-        FastRoom.followSystemPencilBehavior = ShortcutsManager.shared.shortcuts[.applePencilFollowSystem] ?? true
+        FastRoom.followSystemPencilBehavior = PerferrenceManager.shared.preferences[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
         let region: Region
         switch FlatRegion(rawValue: basicInfo.region) ?? .CN_HZ {
@@ -65,7 +65,7 @@ enum ClassroomFactory {
             fastRoomConfiguration.whiteSdkConfiguration.setValue(ua, forKey: "netlessUA")
         }
         fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
-        fastRoomConfiguration.whiteSdkConfiguration.disableNewPencilStroke = !(ShortcutsManager.shared.shortcuts[.pencilTail] ?? true)
+        fastRoomConfiguration.whiteSdkConfiguration.disableNewPencilStroke = !(PerferrenceManager.shared.preferences[.pencilTail] ?? true)
         let userPermissionEnable = basicInfo.isOwner
         fastRoomConfiguration.whiteRoomConfig.windowParams?.collectorStyles = ["top": "8px", "right": "8px"]
         fastRoomConfiguration.whiteRoomConfig.windowParams?.scrollVerticalOnly = true

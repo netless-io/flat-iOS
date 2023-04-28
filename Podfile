@@ -20,7 +20,8 @@ target 'Flat' do
   
   pod 'AgoraRtm_iOS', '1.5.1'
   pod 'AgoraRtcEngine_iOS', '4.1.0', :subspecs => ['RtcBasic']
-  pod 'Fastboard/fpa', '2.0.0-alpha.14'
+  pod 'Fastboard', '2.0.0-alpha.15'
+  pod 'Fastboard/fpa', '2.0.0-alpha.15'
   pod 'Whiteboard', '2.17.0-alpha.24'
   pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.24'
   pod 'SyncPlayer', '0.3.3'
@@ -72,7 +73,9 @@ target 'Flat' do
         end
       end
     end
+
     
+    # Remove the copy resource
     installer.pods_project.targets.each do |target|
       if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
         target.build_configurations.each do |config|

@@ -55,8 +55,8 @@
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A133529288FA21000C825DE /* MessageCensorRequest.swift */; };
 		8A14EE6C28A6321D00C0CB89 /* logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14EE6B28A6321D00C0CB89 /* logger.swift */; };
-		8A172A8A29248714006E4798 /* ShortcutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8929248714006E4798 /* ShortcutsViewController.swift */; };
-		8A172A8C29249584006E4798 /* ShortcutsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8B29249584006E4798 /* ShortcutsTableViewCell.swift */; };
+		8A172A8A29248714006E4798 /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8929248714006E4798 /* PreferenceViewController.swift */; };
+		8A172A8C29249584006E4798 /* PreferenceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */; };
 		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
 		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
 		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
@@ -164,6 +164,8 @@
 		8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */; };
 		8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */; };
 		8A8A240329879F63008319BB /* ClassroomStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A240229879F63008319BB /* ClassroomStatusBar.swift */; };
+		8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */; };
+		8A8A79B72A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A79B62A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift */; };
 		8A92194828ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */; };
 		8A92194A28ADDFC400DDDA81 /* ScenePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */; };
 		8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EBAE2719983700965185 /* CreateRoomRequest.swift */; };
@@ -212,6 +214,8 @@
 		8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */; };
 		8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */; };
 		8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA268E6292B4A940065FC3C /* InviteViewController.swift */; };
+		8AA348422A121ABE00409124 /* ApplianceShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA348412A121ABE00409124 /* ApplianceShortcutItem.swift */; };
+		8AA348452A121E9300409124 /* ClassroomKeyboardRespondable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA348442A121E9300409124 /* ClassroomKeyboardRespondable.swift */; };
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
 		8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* RtmChannel.swift */; };
 		8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* Rtm.swift */; };
@@ -239,6 +243,7 @@
 		8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */; };
 		8ABD71BF276716AA004FDC36 /* UploadType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71BE276716AA004FDC36 /* UploadType.swift */; };
 		8ABD71C227682214004FDC36 /* ClassRoomLayoutRatioConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABD71C127682214004FDC36 /* ClassRoomLayoutRatioConfig.swift */; };
+		8ABECA9E29FA4F5B00F5A527 /* ClassRoomViewController+keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABECA9D29FA4F5B00F5A527 /* ClassRoomViewController+keyboard.swift */; };
 		8ABF36242745F2D8000D5003 /* AlertProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF36232745F2D8000D5003 /* AlertProvider.swift */; };
 		8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362527462F93000D5003 /* Observable+Extension.swift */; };
 		8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABF362B27464E63000D5003 /* String+Empty.swift */; };
@@ -374,8 +379,8 @@
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A133529288FA21000C825DE /* MessageCensorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCensorRequest.swift; sourceTree = "<group>"; };
 		8A14EE6B28A6321D00C0CB89 /* logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logger.swift; sourceTree = "<group>"; };
-		8A172A8929248714006E4798 /* ShortcutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsViewController.swift; sourceTree = "<group>"; };
-		8A172A8B29249584006E4798 /* ShortcutsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsTableViewCell.swift; sourceTree = "<group>"; };
+		8A172A8929248714006E4798 /* PreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
+		8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceTableViewCell.swift; sourceTree = "<group>"; };
 		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
@@ -489,6 +494,8 @@
 		8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageInClassViewController.swift; sourceTree = "<group>"; };
 		8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSAuthView.swift; sourceTree = "<group>"; };
 		8A8A240229879F63008319BB /* ClassroomStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStatusBar.swift; sourceTree = "<group>"; };
+		8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+keyboard.swift"; sourceTree = "<group>"; };
+		8A8A79B62A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalKeyboardShortcutRespondable.swift; sourceTree = "<group>"; };
 		8A92194728ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardScenesListViewController.swift; sourceTree = "<group>"; };
 		8A92194928ADDFC400DDDA81 /* ScenePreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenePreviewCell.swift; sourceTree = "<group>"; };
 		8A97EBAE2719983700965185 /* CreateRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomRequest.swift; sourceTree = "<group>"; };
@@ -539,6 +546,8 @@
 		8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomViewModel.swift; sourceTree = "<group>"; };
 		8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateHandlerImp.swift; sourceTree = "<group>"; };
 		8AA268E6292B4A940065FC3C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
+		8AA348412A121ABE00409124 /* ApplianceShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplianceShortcutItem.swift; sourceTree = "<group>"; };
+		8AA348442A121E9300409124 /* ClassroomKeyboardRespondable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomKeyboardRespondable.swift; sourceTree = "<group>"; };
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		8AA97EA12741F83A00C3F92E /* RtmChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmChannel.swift; sourceTree = "<group>"; };
 		8AA97EA32741F97B00C3F92E /* Rtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rtm.swift; sourceTree = "<group>"; };
@@ -567,6 +576,7 @@
 		8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileShareLaunchItem.swift; sourceTree = "<group>"; };
 		8ABD71BE276716AA004FDC36 /* UploadType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadType.swift; sourceTree = "<group>"; };
 		8ABD71C127682214004FDC36 /* ClassRoomLayoutRatioConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomLayoutRatioConfig.swift; sourceTree = "<group>"; };
+		8ABECA9D29FA4F5B00F5A527 /* ClassRoomViewController+keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassRoomViewController+keyboard.swift"; sourceTree = "<group>"; };
 		8ABF36232745F2D8000D5003 /* AlertProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertProvider.swift; sourceTree = "<group>"; };
 		8ABF362527462F93000D5003 /* Observable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extension.swift"; sourceTree = "<group>"; };
 		8ABF362B27464E63000D5003 /* String+Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Empty.swift"; sourceTree = "<group>"; };
@@ -881,7 +891,6 @@
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
 				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
 				8A0E1F05296D73F900C3EE24 /* ClassroomCoordinator.swift */,
-				8A172A88292486F5006E4798 /* Shortcuts */,
 				8A92196128AF3BE700DDDA81 /* ClassroomUsers */,
 				8A92195E28AF3B9B00DDDA81 /* ClassroomState */,
 				8A21DAC2279FCB5D0060E25D /* ClassroomRecording */,
@@ -926,15 +935,6 @@
 				8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */,
 			);
 			path = Log;
-			sourceTree = "<group>";
-		};
-		8A172A88292486F5006E4798 /* Shortcuts */ = {
-			isa = PBXGroup;
-			children = (
-				8A172A8929248714006E4798 /* ShortcutsViewController.swift */,
-				8A172A8B29249584006E4798 /* ShortcutsTableViewCell.swift */,
-			);
-			path = Shortcuts;
 			sourceTree = "<group>";
 		};
 		8A1BF0BD280D0AF400D76F22 /* Auth */ = {
@@ -1243,6 +1243,7 @@
 		8A97EBBB271D180600965185 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8AA348432A121E2B00409124 /* Shortcuts */,
 				8A3782E129C30F800051D4FB /* StoreReview */,
 				8AA268E5292B4A830065FC3C /* Invite */,
 				8A6898DD2919FF77002DD089 /* Generic */,
@@ -1428,6 +1429,28 @@
 				8AA268E6292B4A940065FC3C /* InviteViewController.swift */,
 			);
 			path = Invite;
+			sourceTree = "<group>";
+		};
+		8AA348432A121E2B00409124 /* Shortcuts */ = {
+			isa = PBXGroup;
+			children = (
+				8AA348462A121EA500409124 /* Interface */,
+				8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */,
+				8ABECA9D29FA4F5B00F5A527 /* ClassRoomViewController+keyboard.swift */,
+				8A172A8929248714006E4798 /* PreferenceViewController.swift */,
+				8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */,
+			);
+			path = Shortcuts;
+			sourceTree = "<group>";
+		};
+		8AA348462A121EA500409124 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				8AA348412A121ABE00409124 /* ApplianceShortcutItem.swift */,
+				8A8A79B62A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift */,
+				8AA348442A121E9300409124 /* ClassroomKeyboardRespondable.swift */,
+			);
+			path = Interface;
 			sourceTree = "<group>";
 		};
 		8AAC69B12717E3E300F9A3B4 /* Models */ = {
@@ -1852,6 +1875,7 @@
 				8A0E1F04296D482B00C3EE24 /* ClassroomSceneDelegate.swift in Sources */,
 				8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */,
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
+				8AA348452A121E9300409124 /* ClassroomKeyboardRespondable.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
 				8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */,
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
@@ -1865,7 +1889,7 @@
 				8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */,
 				8A0E1F06296D73F900C3EE24 /* ClassroomCoordinator.swift in Sources */,
 				8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */,
-				8A172A8C29249584006E4798 /* ShortcutsTableViewCell.swift in Sources */,
+				8A172A8C29249584006E4798 /* PreferenceTableViewCell.swift in Sources */,
 				8A0CA22828BC9CB10035F71A /* FlatCustomAlertSetable.swift in Sources */,
 				8AAC69BA27180B9500F9A3B4 /* UIViewController+Activity.swift in Sources */,
 				8A317A9D2966D67800041D4A /* SceneManager.swift in Sources */,
@@ -1944,8 +1968,10 @@
 				8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */,
 				8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */,
 				8AC1FF3528912BAA00624E8B /* ClassRoomSyncedStore.swift in Sources */,
+				8A8A79B72A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift in Sources */,
 				8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */,
 				8AFB942E28B7550100B8795D /* CameraMicToggleView.swift in Sources */,
+				8ABECA9E29FA4F5B00F5A527 /* ClassRoomViewController+keyboard.swift in Sources */,
 				8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */,
 				8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */,
 				8AD3CDF92716B53D008BD904 /* UIViewController+Alert.swift in Sources */,
@@ -2004,7 +2030,7 @@
 				8AD3627A28DC61E00086699E /* SpringButton.swift in Sources */,
 				8AD3CDF2271693EC008BD904 /* GithubLogin.swift in Sources */,
 				8A5DDC8A272A7502006216AD /* CommandDecoder.swift in Sources */,
-				8A172A8A29248714006E4798 /* ShortcutsViewController.swift in Sources */,
+				8A172A8A29248714006E4798 /* PreferenceViewController.swift in Sources */,
 				8A9FB3AD2722674F00F6F06F /* FlatResponseDataHandler.swift in Sources */,
 				8AD3627E28DD49680086699E /* UIView+TableViewHeader.swift in Sources */,
 				8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */,
@@ -2057,10 +2083,12 @@
 				8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */,
 				8AD2EF762775665300087280 /* ShareManager.swift in Sources */,
 				8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */,
+				8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */,
 				8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */,
 				8A92194A28ADDFC400DDDA81 /* ScenePreviewCell.swift in Sources */,
+				8AA348422A121ABE00409124 /* ApplianceShortcutItem.swift in Sources */,
 				8A97EBB727199AC700965185 /* ClassRoomType.swift in Sources */,
 				8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */,
 				8A9FB397272156D900F6F06F /* ChatTableViewCell.swift in Sources */,

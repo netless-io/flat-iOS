@@ -40,7 +40,7 @@ var globalLaunchCoordinator: LaunchCoordinator!
 func configAppearance() {
     FastRoomThemeManager.shared.updateIcons(using: Bundle.main)
     FastRoomControlBar.appearance().borderWidth = commonBorderWidth
-    
+
     UISwitch.appearance().onTintColor = .color(type: .primary)
 
     IQKeyboardManager.shared.enable = true
@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         processMethodExchange()
         registerThirdPartSDK()
         configAppearance()
-        
+
         #if DEBUG
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 guard AuthStore.shared.isLogin else { return }
@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logger.info("multiwindow: configurationForConnecting \(activityType)")
         switch activityType {
         case NSUserActivity.Classroom:
-            connectingSceneSession.userInfo = activity?.userInfo as? [String : Any]
+            connectingSceneSession.userInfo = activity?.userInfo as? [String: Any]
             return UISceneConfiguration(name: NSUserActivity.Classroom, sessionRole: connectingSceneSession.role)
         default:
             return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: Orientation
-    
+
     func application(_: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
         .all
     }

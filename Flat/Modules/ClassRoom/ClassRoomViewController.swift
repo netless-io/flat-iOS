@@ -71,6 +71,7 @@ class ClassRoomViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIApplication.shared.isIdleTimerDisabled = true
+        becomeFirstResponder()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -125,7 +126,7 @@ class ClassRoomViewController: UIViewController {
         initRoomStatus()
         observeScene()
     }
-
+    
     // MARK: - Private
 
     func initRoomStatus() {
@@ -526,11 +527,11 @@ class ClassRoomViewController: UIViewController {
             self?.settingButton.isSelected = false
         }
 
-        settingVC.shortcutsPublish
+        settingVC.preferencePublish
             .asObservable()
             .flatMap { [unowned self] in self.rx.dismiss(animated: true).asObservable() }
             .subscribe(with: self, onNext: { ws, _ in
-                let vc = ShortcutsViewController()
+                let vc = PreferenceViewController()
                 vc.popOverDismissHandler = {
                     ws.settingButton.isSelected = false
                 }

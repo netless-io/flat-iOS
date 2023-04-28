@@ -36,4 +36,23 @@ extension UIViewController {
             hud.isUserInteractionEnabled = preventTouching
         }
     }
+
+    func toast(
+        _ customView: UIView,
+        timeInterval: TimeInterval = 1.5,
+        preventTouching: Bool = false
+    ) {
+        DispatchQueue.main.async { [weak view] in
+            guard let window = view?.window else { return }
+            MBProgressHUD.hide(for: window, animated: false)
+            let hud = MBProgressHUD.showAdded(to: window, animated: true)
+            hud.bezelView.style = .solidColor
+            hud.bezelView.color = UIColor.black.withAlphaComponent(0.45)
+            hud.mode = .customView
+            hud.customView = customView
+            hud.hide(animated: true, afterDelay: timeInterval)
+            hud.isUserInteractionEnabled = preventTouching
+        }
+    }
 }
+

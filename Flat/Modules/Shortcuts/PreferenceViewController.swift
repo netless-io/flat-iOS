@@ -1,5 +1,5 @@
 //
-//  ShortcutsViewController.swift
+//  PreferenceViewController.swift
 //  Flat
 //
 //  Created by xuyunshi on 2022/11/16.
@@ -9,12 +9,12 @@
 import Fastboard
 import UIKit
 
-let undoRedoShortcutsUpdateNotificaton: Notification.Name = .init("undoRedoShortcutUpdateNotificaton")
-let defaultShortcuts: [ShortcutsType: Bool] = supportApplePencil() ?
+let undoRedoPreferenceUpdateNotificaton: Notification.Name = .init("undoRedoShortcutUpdateNotificaton")
+let defaultPreferences: [PreferrenceType: Bool] = supportApplePencil() ?
     [.disableDefaultUndoRedo: false, .pencilTail: true] :
     [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true]
 
-class ShortcutsManager {
+class PerferrenceManager {
     static var key: String {
         AuthStore.shared.user!.userUUID + "-shortcuts"
     }
@@ -22,56 +22,56 @@ class ShortcutsManager {
     private init() {
         if let value =
             UserDefaults.standard.value(forKey: Self.key) as? Data,
-            let result = try? JSONDecoder().decode([ShortcutsType: Bool].self, from: value)
+            let result = try? JSONDecoder().decode([PreferrenceType: Bool].self, from: value)
         {
             // To sync shortcuts
-            if result.count != defaultShortcuts.count {
-                shortcuts = defaultShortcuts
+            if result.count != defaultPreferences.count {
+                preferences = defaultPreferences
                 result.forEach { k, v in
-                    updateShortcuts(type: k, value: v)
+                    updatePreference(type: k, value: v)
                 }
             } else {
-                shortcuts = result
+                preferences = result
             }
             return
         }
-        shortcuts = defaultShortcuts
+        preferences = defaultPreferences
     }
 
-    func updateShortcuts(type: ShortcutsType, value: Bool) {
-        shortcuts[type] = value
+    func updatePreference(type: PreferrenceType, value: Bool) {
+        preferences[type] = value
         switch type {
         case .disableDefaultUndoRedo:
-            NotificationCenter.default.post(name: undoRedoShortcutsUpdateNotificaton, object: nil, userInfo: ["disable": value])
+            NotificationCenter.default.post(name: undoRedoPreferenceUpdateNotificaton, object: nil, userInfo: ["disable": value])
         case .applePencilFollowSystem:
             FastRoom.followSystemPencilBehavior = value
         case .pencilTail:
             break
         }
-        logger.info("update shortcuts \(type), \(value)")
+        logger.info("update preference \(type), \(value)")
         do {
-            let newData = try JSONEncoder().encode(shortcuts)
+            let newData = try JSONEncoder().encode(preferences)
             UserDefaults.standard.setValue(newData, forKey: Self.key)
         } catch {
             logger.error("update shortcuts error \(error)")
         }
     }
 
-    func resetShortcuts() {
-        logger.info("reset shortcuts")
+    func resetPreferences() {
+        logger.info("reset preferences")
         UserDefaults.standard.removeObject(forKey: Self.key)
-        shortcuts = defaultShortcuts
+        preferences = defaultPreferences
 
-        if let applePencilFollowSystem = shortcuts[.applePencilFollowSystem] {
+        if let applePencilFollowSystem = preferences[.applePencilFollowSystem] {
             FastRoom.followSystemPencilBehavior = applePencilFollowSystem
         }
     }
 
-    static let shared = ShortcutsManager()
-    private(set) var shortcuts: [ShortcutsType: Bool]
+    static let shared = PerferrenceManager()
+    private(set) var preferences: [PreferrenceType: Bool]
 }
 
-enum ShortcutsType: Codable {
+enum PreferrenceType: Codable {
     // 双指轻点 / 三指轻点默认 undo / redo
     case disableDefaultUndoRedo
     case applePencilFollowSystem
@@ -100,7 +100,21 @@ enum ShortcutsType: Codable {
     }
 }
 
-class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PreferenceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    enum DisplayItem {
+        case preference(PreferrenceType, Bool)
+        var title: String {
+            switch self {
+            case .preference(let t, _): return t.title
+            }
+        }
+        
+        var detail: String {
+            switch self {
+            case .preference(let t, _): return t.detail
+            }
+        }
+    }
     enum Style {
         case setting
         case inClassroom
@@ -112,7 +126,7 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
     init(style: Style = .inClassroom) {
         self.style = style
         super.init(nibName: nil, bundle: nil)
-        preferredContentSize = .init(width: 0, height: CGFloat(defaultShortcuts.count) * itemHeight)
+        preferredContentSize = .init(width: 0, height: CGFloat(items.count) * itemHeight)
     }
 
     @available(*, unavailable)
@@ -126,7 +140,7 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func setupViews() {
-        title = localizeStrings("Shortcuts")
+        title = localizeStrings("Preferences")
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -149,14 +163,14 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
 
     @objc func onClickReset() {
         showCheckAlert(message: localizeStrings("ResetShortcutsAlert")) { [unowned self] in
-            ShortcutsManager.shared.resetShortcuts()
+            PerferrenceManager.shared.resetPreferences()
             self.updateItems()
         }
     }
 
     lazy var tableView: UITableView = {
         let view = UITableView(frame: .zero, style: .grouped)
-        view.register(ShortcutsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        view.register(PreferenceTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         view.separatorStyle = .none
         view.delegate = self
         view.dataSource = self
@@ -171,7 +185,7 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         button.layer.cornerRadius = 4
         button.adjustsImageWhenHighlighted = false
         button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.setTitle("  " + localizeStrings("ResetShortcuts"), for: .normal)
+        button.setTitle("  " + localizeStrings("ResetPreference"), for: .normal)
         button.addTarget(self, action: #selector(onClickReset), for: .touchUpInside)
         button.contentEdgeInsets = .init(top: 0, left: 44, bottom: 0, right: 44)
 
@@ -182,9 +196,10 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         return button
     }()
 
-    lazy var items: [(ShortcutsType, Bool)] = ShortcutsManager.shared.shortcuts.map { $0 }
+    lazy var items: [DisplayItem] = PerferrenceManager.shared.preferences.map { DisplayItem.preference($0.key, $0.value) }
+    
     func updateItems() {
-        items = ShortcutsManager.shared.shortcuts.map { $0 }
+        items = PerferrenceManager.shared.preferences.map { DisplayItem.preference($0.key, $0.value) }
         tableView.reloadData()
     }
 
@@ -200,10 +215,15 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! ShortcutsTableViewCell
-        cell.shortcutsTitleLabel.text = item.0.title
-        cell.shortcutsDetailLabel.text = item.0.detail
-        cell.shortcutsSwitch.isOn = item.1
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! PreferenceTableViewCell
+        cell.preferenceTitleLabel.text = item.title
+        cell.preferenceDetailLabel.text = item.detail
+        switch item {
+        case .preference(_, let isOn):
+            cell.preferenceSwitch.isHidden = false
+            cell.preferenceSwitch.isOn = isOn
+        }
+        
         switch style {
         case .inClassroom:
             cell.contentView.backgroundColor = .classroomChildBG
@@ -212,7 +232,9 @@ class ShortcutsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         cell.switchHandler = { [weak self] isOn in
             guard let self else { return }
-            ShortcutsManager.shared.updateShortcuts(type: item.0, value: isOn)
+            if case .preference(let type, _) = item {
+                PerferrenceManager.shared.updatePreference(type: type, value: isOn)
+            }
             self.updateItems()
         }
         return cell

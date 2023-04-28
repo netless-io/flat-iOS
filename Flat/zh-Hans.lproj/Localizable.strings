@@ -48,6 +48,9 @@
 "ApplePencilShortcutsDetail" = "（可在系统设置-Apple Pencil 中设置）";
 
 
+"ApplianceMenu" = "教具";
+
+
 "Avatar" = "头像";
 
 
@@ -126,6 +129,9 @@
 "ClassesStillLeftTips" = "你有尚未结束或退出的房间，处理完毕后才可以申请注销账号, 剩余数量: ";
 
 
+"ClearWhiteboard" = "清空白板";
+
+
 "Close" = "关闭";
 
 
@@ -189,6 +195,9 @@
 "Delete room record alert" = "确认删除该记录？";
 
 
+"DeleteWhiteSelectedItem" = "删除白板选中内容";
+
+
 "Dice" = "骰子";
 
 
@@ -220,6 +229,9 @@
 
 
 "Enter Room" = "进入房间";
+
+
+"Escape" = "取消";
 
 
 "Exit" = "退出";
@@ -387,6 +399,9 @@
 "NeedLoginAgain" = "凭证已过期，请重新登录";
 
 
+"NewPage" = "创建新页面";
+
+
 "Nickname" = "昵称";
 
 
@@ -427,6 +442,15 @@
 
 
 "OtherLoginTips" = "也可通过以下方式直接登录";
+
+
+"PageMenu" = "页面";
+
+
+"PageNext" = "下一页";
+
+
+"PagePrev" = "上一页";
 
 /* Flat Server Error */
 "ParamsCheckFailed" = "参数错误";
@@ -474,6 +498,9 @@
 "Please enter your nickname" = "请输入昵称";
 
 
+"Preferences" = "偏好设置";
+
+
 "Preview" = "预览";
 
 
@@ -519,7 +546,7 @@
 "Replay" = "回放";
 
 
-"ResetShortcuts" = "重置偏好设置";
+"ResetPreference" = "重置偏好设置";
 
 
 "ResetShortcutsAlert" = "该操作不可恢复，你确定要重置偏好设置吗？";
@@ -639,12 +666,6 @@
 "ShareMore" = "更多";
 
 
-"ShortCuts" = "第三方信息数据共享";
-
-
-"Shortcuts" = "偏好设置";
-
-
 "SmallClass" = "小班课";
 
 
@@ -685,6 +706,12 @@
 
 
 "Submit" = "提交";
+
+
+"SwitchNextColor" = "切换到下一个颜色";
+
+
+"SwitchPrevColor" = "切换到上一个颜色";
 
 
 "Teacher" = "老师";
@@ -847,6 +874,36 @@
 
 
 "and" = "和";
+
+
+"appliance.arrow" = "箭头";
+
+
+"appliance.clicker" = "光标";
+
+
+"appliance.ellipse" = "圆形";
+
+
+"appliance.eraser" = "橡皮擦";
+
+
+"appliance.pencil" = "铅笔";
+
+
+"appliance.pencilEraser" = "局部橡皮擦";
+
+
+"appliance.rectangle" = "矩形";
+
+
+"appliance.selector" = "选择器";
+
+
+"appliance.straight" = "直线";
+
+
+"appliance.text" = "文字";
 
 
 "classroomTimePassed" = "已上课";

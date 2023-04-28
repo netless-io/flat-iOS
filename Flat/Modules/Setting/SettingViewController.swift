@@ -85,7 +85,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                   detail: userUseFPA ? true : false,
                   targetAction: (self, #selector(onClickFPA(sender:)))),
             .init(image: UIImage(named: "command")!,
-                  title: localizeStrings("Shortcuts"),
+                  title: localizeStrings("Preferences"),
                   detail: "",
                   targetAction: (self, #selector(onClickShortcuts(sender:)))),
             .init(image: UIImage(named: "personal_collect")!,
@@ -190,7 +190,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @objc func onClickShortcuts(sender _: Any?) {
-        let vc = ShortcutsViewController(style: .setting)
+        let vc = PreferenceViewController(style: .setting)
         navigationController?.pushViewController(vc, animated: true)
     }
 
