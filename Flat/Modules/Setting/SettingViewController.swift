@@ -116,7 +116,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @objc func onClickInfoCollect() {
         let url = URL(string: Env().webBaseURL.appending("/sensitive?token=\(AuthStore.shared.user!.token)"))!
-        let vc = WKWebViewController(url: url)
+        let vc = WKWebViewController(url: url, isScrollEnabled: true)
         vc.usingClose = false
         vc.navigationItem.title = localizeStrings("PersonalInfoCollect")
         navigationController?.pushViewController(vc, animated: true)
@@ -124,7 +124,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @objc func onClickThirdPartCollect() {
         let url = URL(string: "https://flat.whiteboard.agora.io/privacy-extra/libraries.html")!
-        let vc = WKWebViewController(url: url)
+        let vc = WKWebViewController(url: url, isScrollEnabled: true)
         vc.usingClose = false
         vc.navigationItem.title = localizeStrings("ThirdPartyShare")
         navigationController?.pushViewController(vc, animated: true)

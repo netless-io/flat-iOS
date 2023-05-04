@@ -13,9 +13,10 @@ class WKWebViewController: UIViewController {
     var usingClose = true
     var dismissHandler: (() -> Void)?
     
-    init(url: URL) {
+    init(url: URL, isScrollEnabled: Bool = false) {
         super.init(nibName: nil, bundle: nil)
         webView.load(URLRequest(url: url))
+        webView.scrollView.isScrollEnabled = isScrollEnabled
     }
 
     @available(*, unavailable)
@@ -64,7 +65,6 @@ class WKWebViewController: UIViewController {
         view.backgroundColor = .color(type: .background)
         webView.backgroundColor = .color(type: .background)
         view.addSubview(webView)
-        webView.scrollView.isScrollEnabled = false
     }
 
     lazy var webView = WKWebView(frame: .zero)
