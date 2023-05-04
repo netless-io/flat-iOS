@@ -65,6 +65,7 @@ enum ClassroomCommand {
     case allMute
     case updateRoomStartStatus(RoomStartStatus)
     case requestDeviceResponse(type: RequestDeviceType, on: Bool)
+    case sendReward(toUserUUID: String)
 }
 
 protocol ClassroomStateHandler {
@@ -72,6 +73,7 @@ protocol ClassroomStateHandler {
     var requestDevicePublisher: PublishRelay<RequestDeviceType> { get }
     var requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> { get }
     var banMessagePublisher: PublishRelay<Bool> { get }
+    var rewardPublisher: PublishRelay<String> { get }
     var noticePublisher: PublishRelay<String> { get }
     var banState: BehaviorRelay<Bool> { get }
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }

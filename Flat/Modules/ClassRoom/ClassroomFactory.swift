@@ -120,7 +120,7 @@ enum ClassroomFactory {
         let rtcViewModel = RtcViewModel(rtc: rtc,
                                         userRtcUid: playInfo.rtcUID,
                                         canUpdateLayout: basicInfo.isOwner,
-                                        localUserRegular: isLocalUser,
+                                        localUserValidation: isLocalUser,
                                         layoutStore: videoLayoutStore,
                                         userFetch: { rtcId -> RoomUser? in
                                             if rtcId == 0 { return imp.currentOnStageUsers[playInfo.rtmUID] }
@@ -134,6 +134,18 @@ enum ClassroomFactory {
                                         }, canUpdateDeviceState: { rtcUid in
                                             if isLocalUser(rtcUid) { return true }
                                             return basicInfo.isOwner
+                                        }, canUpdateWhiteboard: { rtcUid in
+                                            if basicInfo.isOwner {
+                                                if isLocalUser(rtcUid) { return false }
+                                                return true
+                                            }
+                                            return false
+                                        }, canSendRewards: { rtcUid in
+                                            if basicInfo.isOwner {
+                                                if isLocalUser(rtcUid) { return false }
+                                                return true
+                                            }
+                                            return false
                                         })
         let rtcViewController = RtcViewController(viewModel: rtcViewModel)
 

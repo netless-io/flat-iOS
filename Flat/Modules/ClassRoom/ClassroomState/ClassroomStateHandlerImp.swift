@@ -33,6 +33,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let deviceState: BehaviorRelay<[String: DeviceState]> = .init(value: [:])
     let noticePublisher: PublishRelay<String> = .init()
     let banMessagePublisher: PublishRelay<Bool> = .init()
+    let rewardPublisher: PublishRelay<String> = .init()
     let requestDevicePublisher: PublishRelay<RequestDeviceType> = .init()
     let requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> = .init()
     let notifyDeviceOffPublisher: PublishRelay<RequestDeviceType> = .init()
@@ -154,6 +155,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         do {
             let command = try commandDecoder.decode(data)
             switch command {
+            case .reward(roomUUID: _, userUUID: let userUUID):
+                rewardPublisher.accept(userUUID)
             case .updateRoomStatus(roomUUID: _, status: let status):
                 roomStartStatus.accept(status)
             case .raiseHand(roomUUID: _, raiseHand: let raise):
@@ -206,6 +209,9 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         logger.info("try send command \(command)")
         do {
             switch command {
+            case .sendReward(toUserUUID: let uuid):
+                let msgData = try commandEncoder.encode(.reward(roomUUID: roomUUID, userUUID: uuid))
+                return commandChannel.sendRawData(msgData)
             case let .updateRoomStartStatus(status):
                 let msgData = try commandEncoder.encode(.updateRoomStatus(roomUUID: roomUUID, status: status))
                 let serverRequest = RoomStatusUpdateRequest(newStatus: status, roomUUID: roomUUID)

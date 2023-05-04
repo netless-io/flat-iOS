@@ -251,6 +251,16 @@ class ClassRoomViewModel {
                     .map { ban }
             }
     }
+    
+    func observableRewards() -> Observable<UInt> {
+        stateHandler.rewardPublisher
+            .withLatestFrom(members, resultSelector: { uuid, members in
+                members.first(where: { $0.rtmUUID == uuid })?.rtcUID
+            })
+            .filter({ $0 != nil })
+            .map { $0! }
+            .asObservable()
+    }
 
     func transformRaiseHandClick(_ input: ControlEvent<Void>) -> Driver<Bool> {
         guard !isOwner else { return .just(false) }
@@ -366,6 +376,7 @@ class ClassRoomViewModel {
         let tapSomeUserRaiseHand: Observable<RoomUser>
         let tapSomeUserCamera: Observable<String>
         let tapSomeUserMic: Observable<String>
+        let tapSomeUserReward: Observable<String>
     }
 
     func transformUserListInput(_ input: UserListInput) -> Driver<String> {
@@ -375,6 +386,14 @@ class ClassRoomViewModel {
                 return self.stateHandler
                     .send(command: .allMute)
                     .map { localizeStrings("All mute toast") }
+            }.asDriver(onErrorJustReturn: "all mute task error")
+        
+        let rewardTask = input.tapSomeUserReward
+            .flatMap { [unowned self] userUUID -> Single<String> in
+                guard self.isOwner else { return .just("") }
+                return self.stateHandler
+                    .send(command: .sendReward(toUserUUID: userUUID))
+                    .map { "" }
             }.asDriver(onErrorJustReturn: "all mute task error")
 
         let stopTask = input.stopInteractingTap
@@ -486,7 +505,8 @@ class ClassRoomViewModel {
                          whiteboardTask,
                          cameraTask,
                          micTask,
-                         cancelRaiseHandTask).merge()
+                         cancelRaiseHandTask,
+                         rewardTask).merge()
     }
 
     /// Return should dismiss

@@ -13,21 +13,36 @@ class InnerPermissionControlView: UIView {
     enum ClickType {
         case camera
         case mic
+        case whiteboard
+        case rewards
     }
     
     var clickHandler: ((ClickType)->Void)?
 
     lazy var cameraOnImage = UIImage(named: "camera_on")!
     lazy var cameraOffImage = UIImage(named: "camera_off")!
+    
+    lazy var whiteboardOnImage = UIImage(named: "whiteboard_permission_on")!
+    lazy var whiteboardOffImage = UIImage(named: "whiteboard_permission_off")!
 
     lazy var micOnImage = UIImage(named: "mic_on")!
     lazy var micOffImage = UIImage(named: "mic_off")!
 
-    func update(cameraOn: Bool, micOn: Bool) {
+    func update(
+        cameraOn: Bool,
+        micOn: Bool,
+        whiteboardOn: Bool,
+        whiteboardHide: Bool,
+        rewardsHide: Bool
+    ) {
         cameraButton.setImage(cameraOn ? cameraOnImage : cameraOffImage, for: .normal)
         cameraButton.tintColor = cameraOn ? .color(type: .primary) : .color(type: .danger)
         micButton.setImage(micOn ? micOnImage : micOffImage, for: .normal)
         micButton.tintColor = micOn ? .color(type: .primary) : .color(type: .danger)
+        whiteboardButton.setImage(whiteboardOn ? whiteboardOnImage : whiteboardOffImage, for: .normal)
+        whiteboardButton.tintColor = whiteboardOn ? .color(type: .primary) : .color(type: .danger)
+        whiteboardButton.isHidden = whiteboardHide
+        rewardsButton.isHidden = rewardsHide
     }
 
     override init(frame: CGRect) {
@@ -70,6 +85,10 @@ class InnerPermissionControlView: UIView {
             clickHandler?(.camera)
         case 1:
             clickHandler?(.mic)
+        case 2:
+            clickHandler?(.whiteboard)
+        case 3:
+            clickHandler?(.rewards)
         default:
             return
         }
@@ -78,7 +97,7 @@ class InnerPermissionControlView: UIView {
     // MARK: - Lazy
 
     lazy var stackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [cameraButton, micButton])
+        let view = UIStackView(arrangedSubviews: [cameraButton, micButton, whiteboardButton, rewardsButton])
         view.axis = .horizontal
         view.distribution = .fillEqually
         return view
@@ -99,4 +118,18 @@ class InnerPermissionControlView: UIView {
         return btn
     }()
 
+    lazy var whiteboardButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.tag = 2
+        btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
+        return btn
+    }()
+    
+    lazy var rewardsButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setImage(UIImage(named: "rewards"), for: .normal)
+        btn.tag = 3
+        btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
+        return btn
+    }()
 }

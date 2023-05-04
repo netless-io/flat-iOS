@@ -7,7 +7,9 @@
 //
 
 import AgoraRtcKit
+import AVFAudio
 import Hero
+import Lottie
 import MetalKit
 import RxCocoa
 import RxRelay
@@ -41,6 +43,8 @@ class RtcViewController: UIViewController {
 
     let userCameraClick: PublishRelay<String> = .init()
     let userMicClick: PublishRelay<String> = .init()
+    let whiteboardClick: PublishRelay<RoomUser> = .init()
+    let rewardsClick: PublishRelay<String> = .init()
 
     var preferredMargin: CGFloat = 0 {
         didSet {
@@ -206,7 +210,10 @@ class RtcViewController: UIViewController {
         itemView.contentView.showVolume = user.status.mic
         itemView.contentView.showAvatar = showAvatar
         itemView.contentView.controlView.update(cameraOn: user.status.camera,
-                                                micOn: user.status.mic)
+                                                micOn: user.status.mic,
+                                                whiteboardOn: user.status.whiteboard,
+                                                whiteboardHide: !viewModel.canUpdateWhiteboard(user.rtcUID),
+                                                rewardsHide: !viewModel.canSendRewards(user.rtcUID))
 
         if user.status.mic {
             viewModel.strenthFor(uid: user.rtcUID)
@@ -335,15 +342,64 @@ class RtcViewController: UIViewController {
             view.contentView.controlView.clickHandler = { [weak self, weak view] type in
                 guard let self else { return }
                 view?.contentView.showControlViewAndHideAfter(delay: 3)
-                guard let uuid = self.viewModel.userFetch(uid)?.rtmUUID else { return }
+                guard let user = self.viewModel.userFetch(uid) else { return }
+                let uuid = user.rtmUUID
                 switch type {
                 case .mic:
                     self.userMicClick.accept(uuid)
                 case .camera:
                     self.userCameraClick.accept(uuid)
+                case .whiteboard:
+                    self.whiteboardClick.accept(user)
+                case .rewards:
+                    self.rewardAnimation(uid: uid)
+                    self.rewardsClick.accept(uuid)
                 }
             }
             return view
+        }
+    }
+
+    lazy var rewardPlayer: AVAudioPlayer? = {
+        guard let rewardAudioPath = Bundle.main.url(forResource: "reward", withExtension: "mp3") else { return nil }
+        do {
+            let player = try AVAudioPlayer(contentsOf: rewardAudioPath)
+            player.prepareToPlay()
+            return player
+        }
+        catch {
+            logger.error("play reward audio fail \(error)")
+            return nil
+        }
+    }()
+
+    func rewardAnimation(uid: UInt) {
+        guard let window = view.window else { return }
+        rewardPlayer?.play()
+        let animationView = LottieAnimationView(name: "reward")
+        window.addSubview(animationView)
+        let windowSize = window.bounds.size
+        animationView.center = .init(x: windowSize.width / 2, y: windowSize.height / 2)
+        animationView.bounds = .init(origin: .zero, size: windowSize.applying(.init(scaleX: 0.5, y: 0.5)))
+        animationView.isUserInteractionEnabled = false
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .playOnce
+        animationView.play { [weak animationView, weak self] _ in
+            guard let self else {
+                animationView?.removeFromSuperview()
+                return
+            }
+            guard let animationView else { return }
+            let userItemView = self.itemViewForUid(uid).contentView
+            let frameInWindow = window.convert(userItemView.bounds, from: userItemView)
+            UIView.animate(withDuration: 0.5) {
+                animationView.frame = frameInWindow
+            }
+            UIView.animate(withDuration: 0.5, delay: 0.5) {
+                animationView.alpha = 0
+            } completion: { _ in
+                animationView.removeFromSuperview()
+            }
         }
     }
 

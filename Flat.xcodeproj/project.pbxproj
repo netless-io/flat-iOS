@@ -96,6 +96,8 @@
 		8A270BC7271989FB00450DC6 /* UIView+DidLayoutBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270BC6271989FB00450DC6 /* UIView+DidLayoutBlock.swift */; };
 		8A270BC927198A1800450DC6 /* UIButton+Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270BC827198A1800450DC6 /* UIButton+Spacing.swift */; };
 		8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270BCA27198FBE00450DC6 /* UIImage+Color.swift */; };
+		8A2905F42A038DBE00147244 /* reward.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A2905F32A038DBE00147244 /* reward.json */; };
+		8A2905FA2A0396A100147244 /* reward.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8A2905F92A0396A100147244 /* reward.mp3 */; };
 		8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29751E2726A2DC0095F9F0 /* UIImage+tintColor.swift */; };
 		8A2D0B9727158C9000123207 /* ApiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9627158C9000123207 /* ApiProvider.swift */; };
 		8A2D0B9A27158FCD00123207 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9927158FCD00123207 /* Request.swift */; };
@@ -416,6 +418,8 @@
 		8A270BC6271989FB00450DC6 /* UIView+DidLayoutBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+DidLayoutBlock.swift"; sourceTree = "<group>"; };
 		8A270BC827198A1800450DC6 /* UIButton+Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Spacing.swift"; sourceTree = "<group>"; };
 		8A270BCA27198FBE00450DC6 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
+		8A2905F32A038DBE00147244 /* reward.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reward.json; sourceTree = "<group>"; };
+		8A2905F92A0396A100147244 /* reward.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = reward.mp3; sourceTree = "<group>"; };
 		8A29751E2726A2DC0095F9F0 /* UIImage+tintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+tintColor.swift"; sourceTree = "<group>"; };
 		8A2D0B9627158C9000123207 /* ApiProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiProvider.swift; sourceTree = "<group>"; };
 		8A2D0B9927158FCD00123207 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -1602,6 +1606,8 @@
 				8AD7C6CA27157EA7001C4AAD /* Info.plist */,
 				8A270B9227195A1200450DC6 /* Localizable.strings */,
 				8AC376AE271D21F2003464B0 /* bridgingHeader.h */,
+				8A2905F32A038DBE00147244 /* reward.json */,
+				8A2905F92A0396A100147244 /* reward.mp3 */,
 				8ADDEAA2296C001400F2B7BE /* loading.json */,
 				8AFB3FB028C98B6200B8B18C /* GoogleService-Info.plist */,
 				8ADDEAA4296C002F00F2B7BE /* loading_dark.json */,
@@ -1755,7 +1761,9 @@
 				8A270B942719607700450DC6 /* LoginViewController.xib in Resources */,
 				8A05C3522760ADFC009BCA79 /* UploadTaskTableViewCell.xib in Resources */,
 				8A270B9027195A1200450DC6 /* Localizable.strings in Resources */,
+				8A2905FA2A0396A100147244 /* reward.mp3 in Resources */,
 				8AD7C6C927157EA7001C4AAD /* LaunchScreen.storyboard in Resources */,
+				8A2905F42A038DBE00147244 /* reward.json in Resources */,
 				8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */,
 				8AC0943429E0171400CC641A /* whiteboard_rebuild.bundle in Resources */,
 				8A270BC3271980A300450DC6 /* AboutUsViewController.xib in Resources */,

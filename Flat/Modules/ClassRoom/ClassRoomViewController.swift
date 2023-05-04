@@ -453,18 +453,24 @@ class ClassRoomViewController: UIViewController {
             settingVC.micPublish.asObservable().map { [unowned self] in self.viewModel.userUUID },
             rtcListViewController.userMicClick.asObservable()
         )
+        
+        let whiteboardTap = Observable.merge(
+            rtcListViewController.whiteboardClick.asObservable(),
+            userListViewController.whiteboardTap.asObservable()
+        )
 
         viewModel.transformUserListInput(.init(allMuteTap: userListViewController.allMuteTap.asObservable(),
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
-                                               tapSomeUserWhiteboard: userListViewController.whiteboardTap.asObservable(),
+                                               tapSomeUserWhiteboard: whiteboardTap,
                                                tapSomeUserRaiseHand:
                                                Observable.merge([
                                                    userListViewController.raiseHandTap.asObservable(),
                                                    raiseHandListViewController.acceptRaiseHandPublisher.asObservable()
                                                ]),
                                                tapSomeUserCamera: tapSomeUserCamera,
-                                               tapSomeUserMic: tapSomeUserMic))
+                                               tapSomeUserMic: tapSomeUserMic,
+                                               tapSomeUserReward: rtcListViewController.rewardsClick.asObservable()))
             .drive(with: self, onNext: { weakSelf, s in
                 weakSelf.toast(s, timeInterval: 3, preventTouching: false)
             })
@@ -474,7 +480,14 @@ class ClassRoomViewController: UIViewController {
     func bindRtc() {
         rtcListViewController.bindUsers(viewModel.members.asDriver(onErrorJustReturn: []))
         rtcListViewController.draggingCanvasProvider = self
-
+        
+        viewModel
+            .observableRewards()
+            .subscribe(with: rtcListViewController) { r, uid in
+                r.rewardAnimation(uid: uid)
+            }
+            .disposed(by: rx.disposeBag)
+        
         rtcListViewController.viewModel.rtc.screenShareJoinBehavior
             .skip(while: { !$0 })
             .subscribe(with: self, onNext: { weakSelf, isOn in
@@ -482,6 +495,7 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.turnScreenShare(on: isOn)
             })
             .disposed(by: rx.disposeBag)
+        
     }
 
     func bindWhiteboard() {
