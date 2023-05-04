@@ -37,7 +37,6 @@ class CameraPreviewView: UIView {
     init() {
         super.init(frame: .zero)
         setupViews()
-        syncRotate()
         NotificationCenter.default.addObserver(self, selector: #selector(syncRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
@@ -52,6 +51,7 @@ class CameraPreviewView: UIView {
         if window == nil, isOn {
             turnCamera(on: false)
         }
+        syncRotate()
     }
 
     override func layoutSubviews() {
