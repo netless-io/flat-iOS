@@ -45,6 +45,8 @@ class RtcViewController: UIViewController {
     let userMicClick: PublishRelay<String> = .init()
     let whiteboardClick: PublishRelay<RoomUser> = .init()
     let rewardsClick: PublishRelay<String> = .init()
+    let muteAllClick: PublishRelay<Void> = .init()
+    let resetLayoutClick: PublishRelay<UInt> = .init()
 
     var preferredMargin: CGFloat = 0 {
         didSet {
@@ -86,12 +88,15 @@ class RtcViewController: UIViewController {
             .disposed(by: rx.disposeBag)
 
         if viewModel.canUpdateLayout {
-            viewModel.tranformLayoutTask(.init(userTap: userTap.asDriverOnErrorJustComplete(),
-                                               userDoubleTap: doublePublisher.asDriverOnErrorJustComplete(),
-                                               userMinimalDragging: userMinimalDragging.asDriverOnErrorJustComplete(),
-                                               userCanvasDragging: userCanvasDragging.asDriverOnErrorJustComplete()))
-                .subscribe()
-                .disposed(by: rx.disposeBag)
+            viewModel.tranformLayoutTask(.init(
+                userTap: userTap.asDriverOnErrorJustComplete(),
+                userDoubleTap: doublePublisher.asDriverOnErrorJustComplete(),
+                userMinimalDragging: userMinimalDragging.asDriverOnErrorJustComplete(),
+                userCanvasDragging: userCanvasDragging.asDriverOnErrorJustComplete(),
+                resetLayoutTap: resetLayoutClick.asDriverOnErrorJustComplete()
+            ))
+            .subscribe()
+            .disposed(by: rx.disposeBag)
         }
     }
 
@@ -213,7 +218,9 @@ class RtcViewController: UIViewController {
                                                 micOn: user.status.mic,
                                                 whiteboardOn: user.status.whiteboard,
                                                 whiteboardHide: !viewModel.canUpdateWhiteboard(user.rtcUID),
-                                                rewardsHide: !viewModel.canSendRewards(user.rtcUID))
+                                                rewardsHide: !viewModel.canSendRewards(user.rtcUID),
+                                                resetLayoutHide: !viewModel.canResetLayout(user.rtcUID),
+                                                muteAllHide: !viewModel.canMuteAll(user.rtcUID))
 
         if user.status.mic {
             viewModel.strenthFor(uid: user.rtcUID)
@@ -354,6 +361,10 @@ class RtcViewController: UIViewController {
                 case .rewards:
                     self.rewardAnimation(uid: uid)
                     self.rewardsClick.accept(uuid)
+                case .resetLayout:
+                    self.resetLayoutClick.accept(uid)
+                case .muteAll:
+                    self.muteAllClick.accept(())
                 }
             }
             return view

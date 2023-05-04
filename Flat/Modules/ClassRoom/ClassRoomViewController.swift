@@ -459,7 +459,12 @@ class ClassRoomViewController: UIViewController {
             userListViewController.whiteboardTap.asObservable()
         )
 
-        viewModel.transformUserListInput(.init(allMuteTap: userListViewController.allMuteTap.asObservable(),
+        let muteAll = Observable.merge(
+            rtcListViewController.muteAllClick.asObservable(),
+            userListViewController.allMuteTap.asObservable()
+        )
+        
+        viewModel.transformUserListInput(.init(allMuteTap: muteAll,
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
                                                tapSomeUserWhiteboard: whiteboardTap,

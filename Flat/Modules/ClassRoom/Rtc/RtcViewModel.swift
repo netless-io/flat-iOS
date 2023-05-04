@@ -21,7 +21,9 @@ class RtcViewModel {
                   userThumbnailStream: @escaping ((UInt) -> AgoraVideoStreamType),
                   canUpdateDeviceState: @escaping ((UInt) -> Bool),
                   canUpdateWhiteboard: @escaping ((UInt) -> Bool),
-                  canSendRewards: @escaping ((UInt) -> Bool))
+                  canSendRewards: @escaping ((UInt) -> Bool),
+                  canResetLayout: @escaping ((UInt) -> Bool),
+                  canMuteAll: @escaping ((UInt) -> Bool))
     {
         self.canUpdateLayout = canUpdateLayout
         self.layoutStore = layoutStore
@@ -33,6 +35,8 @@ class RtcViewModel {
         self.canUpdateDeviceState = canUpdateDeviceState
         self.canUpdateWhiteboard = canUpdateWhiteboard
         self.canSendRewards = canSendRewards
+        self.canResetLayout = canResetLayout
+        self.canMuteAll = canMuteAll
     }
 
     let canUpdateLayout: Bool
@@ -45,6 +49,8 @@ class RtcViewModel {
     let canUpdateDeviceState: (UInt) -> Bool
     let canUpdateWhiteboard: (UInt) -> Bool
     let canSendRewards: (UInt) -> Bool
+    let canResetLayout: (UInt) -> Bool
+    let canMuteAll: (UInt) -> Bool
     
     struct LayoutUsersInfo {
         let minimalUsers: [UInt]
@@ -62,6 +68,7 @@ class RtcViewModel {
         let userDoubleTap: Driver<UInt>
         let userMinimalDragging: Driver<UInt>
         let userCanvasDragging: Driver<UserCanvasDraggingResult>
+        let resetLayoutTap: Driver<UInt>
     }
 
     func updateStreamTypeWith(layoutInfo: LayoutUsersInfo) {
@@ -128,6 +135,16 @@ class RtcViewModel {
                 }
                 return uid
             }
+        
+        let resetLayoutTask = input
+            .resetLayoutTap
+            .asObservable()
+            .withLatestFrom(layoutState) { [unowned self] uid, state -> UInt in
+                let freeUsers = state.freeDraggingUsers.map(\.uuid)
+                self.layoutStore.removeFreeDraggingUsers(freeUsers)
+                self.layoutStore.updateExpandUsers([])
+                return uid
+            }
 
         let tapTask = input
             .userTap
@@ -185,7 +202,7 @@ class RtcViewModel {
                 return drag.uid
             }
 
-        return .merge(tapTask, doubleTapTask, minimalDragTask, canvasDragTask)
+        return .merge(tapTask, doubleTapTask, minimalDragTask, canvasDragTask, resetLayoutTask)
     }
 
     func tranformLayoutInfo(_ input: LayoutInput) -> Observable<LayoutUsersInfo> {

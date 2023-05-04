@@ -146,6 +146,10 @@ enum ClassroomFactory {
                                                 return true
                                             }
                                             return false
+                                        }, canResetLayout: { rtcUid in
+                                            basicInfo.isOwner && isLocalUser(rtcUid)
+                                        }, canMuteAll: { rtcUid in
+                                            basicInfo.isOwner && isLocalUser(rtcUid)
                                         })
         let rtcViewController = RtcViewController(viewModel: rtcViewModel)
 

@@ -10,18 +10,20 @@ import UIKit
 
 private let itemWidth = CGFloat(44)
 class InnerPermissionControlView: UIView {
-    enum ClickType {
+    enum ClickType: Int {
         case camera
         case mic
         case whiteboard
         case rewards
+        case resetLayout
+        case muteAll
     }
-    
-    var clickHandler: ((ClickType)->Void)?
+
+    var clickHandler: ((ClickType) -> Void)?
 
     lazy var cameraOnImage = UIImage(named: "camera_on")!
     lazy var cameraOffImage = UIImage(named: "camera_off")!
-    
+
     lazy var whiteboardOnImage = UIImage(named: "whiteboard_permission_on")!
     lazy var whiteboardOffImage = UIImage(named: "whiteboard_permission_off")!
 
@@ -33,7 +35,9 @@ class InnerPermissionControlView: UIView {
         micOn: Bool,
         whiteboardOn: Bool,
         whiteboardHide: Bool,
-        rewardsHide: Bool
+        rewardsHide: Bool,
+        resetLayoutHide: Bool,
+        muteAllHide: Bool
     ) {
         cameraButton.setImage(cameraOn ? cameraOnImage : cameraOffImage, for: .normal)
         cameraButton.tintColor = cameraOn ? .color(type: .primary) : .color(type: .danger)
@@ -43,17 +47,20 @@ class InnerPermissionControlView: UIView {
         whiteboardButton.tintColor = whiteboardOn ? .color(type: .primary) : .color(type: .danger)
         whiteboardButton.isHidden = whiteboardHide
         rewardsButton.isHidden = rewardsHide
+        resetLayoutButton.isHidden = resetLayoutHide
+        muteAllButton.isHidden = muteAllHide
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Private
 
     func setup() {
@@ -75,60 +82,75 @@ class InnerPermissionControlView: UIView {
         }
     }
 
-    
     // MARK: - Action
 
     @objc func onClick(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        switch sender.tag {
-        case 0:
-            clickHandler?(.camera)
-        case 1:
-            clickHandler?(.mic)
-        case 2:
-            clickHandler?(.whiteboard)
-        case 3:
-            clickHandler?(.rewards)
-        default:
-            return
+        if let type = ClickType(rawValue: sender.tag) {
+            clickHandler?(type)
         }
     }
 
     // MARK: - Lazy
 
     lazy var stackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [cameraButton, micButton, whiteboardButton, rewardsButton])
+        let view = UIStackView(arrangedSubviews: [
+            resetLayoutButton,
+            muteAllButton,
+            cameraButton,
+            micButton,
+            whiteboardButton,
+            rewardsButton
+        ])
         view.axis = .horizontal
         view.distribution = .fillEqually
         return view
     }()
-
     
     lazy var cameraButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.tag = 0
+        btn.tag = ClickType.camera.rawValue
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
     }()
 
     lazy var micButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.tag = 1
+        btn.tag = ClickType.mic.rawValue
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
     }()
 
     lazy var whiteboardButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.tag = 2
+        btn.tag = ClickType.whiteboard.rawValue
+        btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
+        return btn
+    }()
+
+    lazy var rewardsButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setImage(UIImage(named: "rewards"), for: .normal)
+        btn.tintColor = .color(light: .grey6, dark: .grey4)
+        btn.tag = ClickType.rewards.rawValue
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
     }()
     
-    lazy var rewardsButton: UIButton = {
+    lazy var muteAllButton: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "rewards"), for: .normal)
-        btn.tag = 3
+        btn.setImage(UIImage(named: "mute_all"), for: .normal)
+        btn.tintColor = .color(light: .grey6, dark: .grey4)
+        btn.tag = ClickType.muteAll.rawValue
+        btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
+        return btn
+    }()
+    
+    lazy var resetLayoutButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setImage(UIImage(named: "layout_reset"), for: .normal)
+        btn.tintColor = .color(light: .grey6, dark: .grey4)
+        btn.tag = ClickType.resetLayout.rawValue
         btn.addTarget(self, action: #selector(onClick(_:)), for: .touchUpInside)
         return btn
     }()
