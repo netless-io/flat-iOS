@@ -268,7 +268,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         .flatMap { [weak self] result -> Single<Void> in
                             guard let self else { return .just(()) }
                             let currentDeviceState = result.deviceState
-                            guard let currentUserState = currentDeviceState[uuid] else { return .just(()) }
+                            let currentUserState = currentDeviceState[uuid] ?? .init(mic: false, camera: false)
                             let turnOnMic = !currentUserState.mic && state.mic
                             let turnOnCamera = !currentUserState.camera && state.camera
                             let turnOffMic = currentUserState.mic && !state.mic
@@ -341,7 +341,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         try self.syncedStore.sendCommand(.raiseHandUsersUpdate([]))
                         try self.syncedStore.sendCommand(.deviceStateUpdate(deviceState))
                         
-                        var needOffStageUsers = result.onStageUsers.filter { $0.key != self.ownerUUID && $0.value}.map { $0.key } // Clear video layout info for users. (Not owner and onStage).
+                        let needOffStageUsers = result.onStageUsers.filter { $0.key != self.ownerUUID && $0.value}.map { $0.key } // Clear video layout info for users. (Not owner and onStage).
                         self.videoLayoutStore.removeFreeDraggingUsers(needOffStageUsers)
                         self.videoLayoutStore.removeExpandUsers(needOffStageUsers)
                         return .just(())
