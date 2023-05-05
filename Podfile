@@ -41,6 +41,8 @@ target 'Flat' do
   pod 'FirebaseCrashlytics'
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   
+  ignore_whiteboard_rebuild = ENV["ignore_whiteboard_rebuild"] == "true"
+  
   post_install do |installer|
     # Fix for XCode 14.3
     installer.generated_projects.each do |project|
@@ -51,22 +53,27 @@ target 'Flat' do
           end
    end
     
-    # Rebuild whiteboard bridge with injected code.
-    system('sh rebuild_whiteboard_bridge.sh $(pwd)')
-    # Remove the copy resource
-    installer.pods_project.targets.each do |target|
-      if target.name == "Whiteboard"
+    if !ignore_whiteboard_rebuild
+      # Rebuild whiteboard bridge with injected code.
+      system('sh rebuild_whiteboard_bridge.sh $(pwd)')
+      
+      # Remove the copy resource
+      installer.pods_project.targets.each do |target|
+        if target.name == "Whiteboard"
           puts "===================> Find Whiteboard Target"
           build_phase = target.build_phases.find { |bp| bp.display_name == 'Resources' }
           build_phase.clear()
           puts "===================> Clear copy original Whiteboard Resources"
-      end
-    
-      # Remove the original whitebaord resource target
-      if target.name == 'Whiteboard-Whiteboard'
+        end
+        
+        # Remove the original whitebaord resource target
+        if target.name == 'Whiteboard-Whiteboard'
           target.remove_from_project
+        end
       end
-      
+    end
+    
+    installer.pods_project.targets.each do |target|
       if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
         target.build_configurations.each do |config|
           config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
