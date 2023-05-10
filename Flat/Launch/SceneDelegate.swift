@@ -12,6 +12,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         logger.info("multiwindow: willConnect to \(scene.session.persistentIdentifier)")
         SceneManager.shared.startConnect(scene: scene, connectionOptions: connectionOptions)
+
+        if #available(iOS 15.0, *) {
+            if let windowScene = scene as? UIWindowScene {
+                let launchAnimationView = UIView(frame: windowScene.screen.bounds)
+                let logo = UIImageView(image: UIImage(named: "login_icon"))
+                launchAnimationView.addSubview(logo)
+                logo.snp.makeConstraints { make in
+                    make.center.equalToSuperview()
+                }
+                let window = windowScene.keyWindow
+                let beginScale = CGFloat(1.1)
+                window?.transform = .init(scaleX: beginScale, y: beginScale)
+                launchAnimationView.transform = .init(scaleX: 1 / beginScale, y: 1 / beginScale)
+                window?.addSubview(launchAnimationView)
+                UIView.animate(withDuration: 2 / 3.0) {
+                    window?.transform = .identity
+                    launchAnimationView.alpha = 0
+                    launchAnimationView.transform = .init(scaleX: 1 / beginScale * 0.8, y: 1 / beginScale * 0.8)
+                } completion: { _ in
+                    launchAnimationView.removeFromSuperview()
+                }
+            }
+        }
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
