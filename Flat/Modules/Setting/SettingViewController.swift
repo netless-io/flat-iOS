@@ -115,7 +115,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @objc func onClickInfoCollect() {
-        let url = URL(string: Env().webBaseURL.appending("/sensitive?token=\(AuthStore.shared.user!.token)"))!
+        let url = URL(string: Env().webBaseURL.appending("/sensitive?token=\(AuthStore.shared.user!.token)&?theme=\(Theme.shared.style.schemeStringForWeb)"))!
         let vc = WKWebViewController(url: url, isScrollEnabled: true)
         vc.usingClose = false
         vc.navigationItem.title = localizeStrings("PersonalInfoCollect")

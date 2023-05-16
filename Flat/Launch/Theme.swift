@@ -31,6 +31,21 @@ enum ThemeStyle: String, Codable, CaseIterable {
         }
     }
 
+    var schemeStringForWeb: String {
+        switch self {
+        case .light: return "light"
+        case .dark: return "dark"
+        case .auto:
+            guard let style = SceneManager.shared.windowMap.randomElement()?.value.traitCollection.userInterfaceStyle
+            else { return "light" }
+            switch style {
+            case .light: return "light"
+            case .dark: return "dark"
+            default: return "light"
+            }
+        }
+    }
+
     static var allCases: [ThemeStyle] { [.dark, .light, .auto] }
 }
 
@@ -54,18 +69,18 @@ class Theme {
         }
         style = getPreferredStyle()
     }
-    
+
     func setupWindowTheme(_ window: UIWindow?) {
         apply(style, window: window)
     }
-    
+
     func updateUserPreferredStyle(_ style: ThemeStyle) {
         self.style = style
         setStoredPreferredStyle(style)
         SceneManager.shared.windowMap.map(\.value).forEach { apply(style, window: $0) }
         SceneManager.shared.refreshMultiWindowPreview()
     }
-    
+
     private func setStoredPreferredStyle(_ newValue: ThemeStyle) {
         do {
             let encoder = JSONEncoder()
@@ -107,7 +122,7 @@ class Theme {
         let hasCompact = window?.traitCollection.hasCompact ?? true
         FastRoomControlBar.appearance().commonRadius = hasCompact ? 8 : 4
         FastRoomControlBar.appearance().itemWidth = hasCompact ? 40 : 48
-        
+
         let flatTheme: FastRoomThemeAsset
         switch style {
         case .dark:

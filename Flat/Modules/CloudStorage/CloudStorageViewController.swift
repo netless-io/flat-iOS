@@ -453,18 +453,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         do {
             let jsonData = try JSONEncoder().encode(item)
             let itemJSONStr = (String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)) ?? ""
-            let schemeString: String
-            switch Theme.shared.style {
-            case .light: schemeString = "light"
-            case .dark: schemeString = "dark"
-            case .auto:
-                switch traitCollection.userInterfaceStyle {
-                case .light: schemeString = "light"
-                case .dark: schemeString = "dark"
-                default: schemeString = "light"
-                }
-            }
-            let link = Env().webBaseURL + "/preview/\(itemJSONStr)?theme=\(schemeString)"
+            let link = Env().webBaseURL + "/preview/\(itemJSONStr)?theme=\(Theme.shared.style.schemeStringForWeb)"
             if let url = URL(string: link) {
                 let vc = WKWebViewController(url: url)
                 vc.modalPresentationStyle = .fullScreen
