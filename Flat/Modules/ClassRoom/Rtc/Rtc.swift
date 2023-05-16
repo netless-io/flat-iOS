@@ -10,21 +10,23 @@ import AgoraRtcKit
 import Foundation
 import RxRelay
 import RxSwift
+import UIKit
 
 enum RtcError {
     case connectionLost
 }
 
-fileprivate func encodeConfigWith(mirror: Bool) -> AgoraVideoEncoderConfiguration {
-    AgoraVideoEncoderConfiguration(size: .init(width: 1280, height: 720),
-                                                frameRate: .fps15,
-                                                bitrate: 1130,
-                                                orientationMode: .adaptative,
-                                   mirrorMode: mirror ? .enabled : .disabled)
+private func encodeConfigWith(mirror: Bool) -> AgoraVideoEncoderConfiguration {
+    let isPhone = UIDevice().userInterfaceIdiom == .phone
+    return AgoraVideoEncoderConfiguration(
+        size: .init(width: 1280, height: 720),
+        frameRate: .fps15,
+        bitrate: 1130,
+        orientationMode: isPhone ? .fixedLandscape : .adaptative,
+        mirrorMode: mirror ? .enabled : .disabled)
 }
 
 class Rtc: NSObject {
-    let displayQueue = DispatchQueue(label: "com.flat.render.rtc", qos: .userInteractive)
     var agoraKit: AgoraRtcEngineKit!
     let screenShareInfo: ShareScreenInfo?
     let screenShareJoinBehavior: BehaviorRelay<Bool> = .init(value: false)
@@ -45,6 +47,7 @@ class Rtc: NSObject {
             _performCameraStateUpdate()
         }
     }
+
     private func _performCameraStateUpdate() {
         agoraKit.enableLocalVideo(localCameraOn)
         agoraKit.muteLocalVideoStream(!localCameraOn)
@@ -56,19 +59,21 @@ class Rtc: NSObject {
         logger.info("update local user status camera: \(localCameraOn)")
         updateClienRoleIfNeed()
     }
+
     var localAudioOn: Bool {
         didSet {
             if localAudioOn == oldValue { return }
             _performAudioStateUpdate()
         }
     }
+
     private func _performAudioStateUpdate() {
         agoraKit.enableLocalAudio(localAudioOn)
         agoraKit.muteLocalAudioStream(!localAudioOn)
         logger.info("update local user status mic: \(localAudioOn)")
         updateClienRoleIfNeed()
     }
-    
+
     func updateClienRoleIfNeed() {
         if localCameraOn || localAudioOn {
             if !isBroadcaster {
@@ -78,7 +83,7 @@ class Rtc: NSObject {
                 return
             }
         }
-        if !localAudioOn && !localCameraOn {
+        if !localAudioOn, !localCameraOn {
             if isBroadcaster {
                 isBroadcaster = false
                 let result = agoraKit.setClientRole(.audience)
@@ -93,7 +98,7 @@ class Rtc: NSObject {
         agoraKit.setLocalRenderMode(.hidden, mirror: isFrontMirror ? .enabled : .disabled)
         agoraKit.setVideoEncoderConfiguration(encodeConfigWith(mirror: isFrontMirror))
     }
-    
+
     @objc func onClassroomSettingNeedToggleCameraNotification() {
         isUsingFront.toggle()
         agoraKit.switchCamera()
@@ -184,10 +189,10 @@ class Rtc: NSObject {
         self.screenShareInfo = screenShareInfo
         self.isFrontMirror = isFrontMirror
         self.isUsingFront = isUsingFront
-        self.localCameraOn = false
-        self.localAudioOn = false
+        localCameraOn = false
+        localAudioOn = false
         super.init()
-        
+
         let agoraKitConfig = AgoraRtcEngineConfig()
         agoraKitConfig.appId = appId
         agoraKitConfig.areaCode = .CN
@@ -206,14 +211,14 @@ class Rtc: NSObject {
         agoraKit.setParameters("{\"che.audio.live_for_comm\": true}")
         // Agora 建议自定义的小流分辨率不超过 320 × 180 px，码率不超过 140 Kbps，且小流帧率不能超过大流帧率。
         agoraKit.setParameters("{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":5,\"bitRate\":140}}")
-        
+
         agoraKit.enableVideo()
         agoraKit.enableAudio()
         agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: false)
         // 初始化音视频传输
         _performAudioStateUpdate()
         _performCameraStateUpdate()
-        
+
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
             canvas.uid = uid
@@ -263,7 +268,7 @@ extension Rtc: AgoraRtcEngineDelegate {
         errorPublisher.accept(.connectionLost)
     }
 
-    func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionState, reason: AgoraConnectionChangedReason) {
+    func rtcEngine(_: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionState, reason: AgoraConnectionChangedReason) {
         switch state {
         case .disconnected, .connecting, .reconnecting, .failed:
             isJoined.accept(false)
@@ -273,7 +278,7 @@ extension Rtc: AgoraRtcEngineDelegate {
         }
         logger.info("connectionChangedTo \(state) \(reason)")
     }
-    
+
     func rtcEngine(_: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], totalVolume _: Int) {
         for speaker in speakers {
             let strenth = CGFloat(speaker.volume) / 255
@@ -286,11 +291,11 @@ extension Rtc: AgoraRtcEngineDelegate {
         }
     }
 
-    func rtcEngine(_ engine: AgoraRtcEngineKit, reportRtcStats stats: AgoraChannelStats) {
+    func rtcEngine(_: AgoraRtcEngineKit, reportRtcStats stats: AgoraChannelStats) {
         lastMileDelay.accept(Int(stats.lastmileDelay))
     }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, networkQuality uid: UInt, txQuality: AgoraNetworkQuality, rxQuality: AgoraNetworkQuality) {
+
+    func rtcEngine(_: AgoraRtcEngineKit, networkQuality uid: UInt, txQuality: AgoraNetworkQuality, rxQuality: AgoraNetworkQuality) {
         if uid == 0 {
             switch (rxQuality, txQuality) {
             case (.excellent, .excellent):
@@ -304,7 +309,7 @@ extension Rtc: AgoraRtcEngineDelegate {
             }
         }
     }
-    
+
     func rtcEngine(_: AgoraRtcEngineKit, didApiCallExecute _: Int, api _: String, result _: String) {}
     func rtcEngine(_: AgoraRtcEngineKit, didJoinChannel _: String, withUid _: UInt, elapsed _: Int) {}
     func rtcEngine(_: AgoraRtcEngineKit, didLeaveChannelWith _: AgoraChannelStats) {}
