@@ -1,0 +1,19 @@
+{
+  "images" : [
+    {
+      "filename" : "record.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "record 1.pdf",
+      "idiom" : "iphone"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
+  }
+}

@@ -42,6 +42,24 @@ class FastboardViewController: UIViewController {
 
     // MARK: Public
 
+    func insert(image: UIImage, url: URL, changeApplianceToSelector: Bool = true) {
+        let imageSize = image.size
+        let cameraScale = self.fastRoom.room?.state.cameraState?.scale.floatValue ?? 1
+        let containerWidth = self.fastRoom.view.bounds.width / 4 / CGFloat(cameraScale)
+        if imageSize.width > containerWidth {
+            let ratio = imageSize.width / imageSize.height
+            self.fastRoom.insertImg(url, imageSize: .init(width: containerWidth, height: containerWidth / ratio))
+        } else {
+            self.fastRoom.insertImg(url, imageSize: image.size)
+        }
+        if changeApplianceToSelector {
+            let newMemberState = WhiteMemberState()
+            newMemberState.currentApplianceName = .ApplianceSelector
+            self.fastRoom.room?.setMemberState(newMemberState)
+            self.fastRoom.view.overlay?.initUIWith(appliance: .ApplianceSelector, shape: nil)
+        }
+    }
+    
     func leave() {
         fastRoom.disconnectRoom()
     }

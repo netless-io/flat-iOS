@@ -252,6 +252,8 @@
 		8AC1FF3528912BAA00624E8B /* ClassRoomSyncedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1FF3428912BAA00624E8B /* ClassRoomSyncedStore.swift */; };
 		8AC3AFCF28AA4B4600587AE0 /* AlibabaLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */; };
 		8AC3AFD128AB355300587AE0 /* SBLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */; };
+		8AC492DD2A2596070029F675 /* TempPhotoStartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC492DC2A2596070029F675 /* TempPhotoStartRequest.swift */; };
+		8AC492DF2A2596B40029F675 /* TempPhotoFinishRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC492DE2A2596B40029F675 /* TempPhotoFinishRequest.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
@@ -288,6 +290,7 @@
 		8ADDEAA3296C001400F2B7BE /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8ADDEAA2296C001400F2B7BE /* loading.json */; };
 		8ADDEAA5296C002F00F2B7BE /* loading_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 8ADDEAA4296C002F00F2B7BE /* loading_dark.json */; };
 		8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */; };
+		8ADF45BF2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF45BE2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift */; };
 		8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */; };
 		8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */; };
 		8AE59C7C28D302D500BAC8FC /* VideoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */; };
@@ -586,6 +589,8 @@
 		8AC376AE271D21F2003464B0 /* bridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridgingHeader.h; sourceTree = "<group>"; };
 		8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlibabaLogHandler.swift; sourceTree = "<group>"; };
 		8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBLogHandler.swift; sourceTree = "<group>"; };
+		8AC492DC2A2596070029F675 /* TempPhotoStartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempPhotoStartRequest.swift; sourceTree = "<group>"; };
+		8AC492DE2A2596B40029F675 /* TempPhotoFinishRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempPhotoFinishRequest.swift; sourceTree = "<group>"; };
 		8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingViewController.swift; sourceTree = "<group>"; };
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -626,6 +631,7 @@
 		8ADDEAA2296C001400F2B7BE /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		8ADDEAA4296C002F00F2B7BE /* loading_dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading_dark.json; sourceTree = "<group>"; };
 		8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Level.swift"; sourceTree = "<group>"; };
+		8ADF45BE2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassroomViewController+ImagePicker.swift"; sourceTree = "<group>"; };
 		8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordQueryRequest.swift; sourceTree = "<group>"; };
 		8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+loading.swift"; sourceTree = "<group>"; };
 		8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreviewView.swift; sourceTree = "<group>"; };
@@ -889,6 +895,7 @@
 				8AAE2547295D794E007D5507 /* RaiseHand */,
 				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
+				8ADF45BE2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift */,
 				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
 				8A0E1F05296D73F900C3EE24 /* ClassroomCoordinator.swift */,
 				8A92196128AF3BE700DDDA81 /* ClassroomUsers */,
@@ -1328,6 +1335,7 @@
 		8A9FB3A027224E3F00F6F06F /* Flat */ = {
 			isa = PBXGroup;
 			children = (
+				8AC492DB2A2595000029F675 /* Classroom */,
 				8AED087528113608001DEFDC /* Cancelation */,
 				8A1BF0BD280D0AF400D76F22 /* Auth */,
 				8A21DABF279FAB220060E25D /* Record */,
@@ -1549,6 +1557,15 @@
 				8A270BC2271980A300450DC6 /* AboutUsViewController.xib */,
 			);
 			path = About;
+			sourceTree = "<group>";
+		};
+		8AC492DB2A2595000029F675 /* Classroom */ = {
+			isa = PBXGroup;
+			children = (
+				8AC492DE2A2596B40029F675 /* TempPhotoFinishRequest.swift */,
+				8AC492DC2A2596070029F675 /* TempPhotoStartRequest.swift */,
+			);
+			path = Classroom;
 			sourceTree = "<group>";
 		};
 		8AD2EF742775664C00087280 /* Share */ = {
@@ -1932,6 +1949,7 @@
 				8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */,
 				8A73309428C843C600404B2D /* UITableView+loadedAll.swift in Sources */,
 				8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */,
+				8AC492DF2A2596B40029F675 /* TempPhotoFinishRequest.swift in Sources */,
 				8A0CA23028BE11A10035F71A /* Global.swift in Sources */,
 				8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */,
 				8ABD71BD2766D325004FDC36 /* FileShareLaunchItem.swift in Sources */,
@@ -2054,6 +2072,7 @@
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
 				8A6021DE29B9D248009D499C /* RtcItemContentView.swift in Sources */,
+				8ADF45BF2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift in Sources */,
 				8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */,
 				8A92194828ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift in Sources */,
 				8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */,
@@ -2150,6 +2169,7 @@
 				8A0CA23928C0519A0035F71A /* DeviceAutorizationHelper.swift in Sources */,
 				8A80208F2754C84500F5691C /* ClassRoomType+AgoraVideoSteamType.swift in Sources */,
 				8A97EBB32719999000965185 /* JoinRoomRequest.swift in Sources */,
+				8AC492DD2A2596070029F675 /* TempPhotoStartRequest.swift in Sources */,
 				8A270BBF27197F1500450DC6 /* XIBLocalizeable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

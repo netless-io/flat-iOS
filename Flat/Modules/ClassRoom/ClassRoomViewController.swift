@@ -508,6 +508,7 @@ class ClassRoomViewController: UIViewController {
         fastboardViewController.bind(observablePermission: viewModel.whiteboardPermission)
             .subscribe(with: self, onNext: { weakSelf, permission in
                 weakSelf.rightToolBar.forceUpdate(button: weakSelf.cloudStorageButton, visible: permission.inputEnable)
+                weakSelf.rightToolBar.forceUpdate(button: weakSelf.takePhotoButton, visible: permission.inputEnable)
             })
             .disposed(by: rx.disposeBag)
 
@@ -803,7 +804,14 @@ class ClassRoomViewController: UIViewController {
         button.style = .selectableAppliance
         return button
     }()
-
+    
+    lazy var takePhotoButton: FastRoomPanelItemButton = {
+        let button = FastRoomPanelItemButton(type: .custom)
+        button.rawImage = UIImage(named: "classroom_take_photo")!
+        button.addTarget(self, action: #selector(onClickTakePhoto(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     lazy var raiseHandListButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setupBadgeView(rightInset: -6, topInset: -6, width: 20)
@@ -833,6 +841,14 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
+    @objc func onClickTakePhoto(_ sender: UIButton) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.modalPresentationStyle = .pageSheet
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+    
     @objc func onClickStorage(_ sender: UIButton) {
         cloudStorageNavigationController.popOverDismissHandler = { [weak self] in
             self?.cloudStorageButton.isSelected = false
@@ -851,19 +867,7 @@ class ClassRoomViewController: UIViewController {
             guard let self else { return }
             switch fileContent {
             case let .image(url: url, image: image):
-                let imageSize = image.size
-                let cameraScale = self.fastboardViewController.fastRoom.room?.state.cameraState?.scale.floatValue ?? 1
-                let containerWidth = self.fastboardViewController.fastRoom.view.bounds.width / 4 / CGFloat(cameraScale)
-                if imageSize.width > containerWidth {
-                    let ratio = imageSize.width / imageSize.height
-                    self.fastboardViewController.fastRoom.insertImg(url, imageSize: .init(width: containerWidth, height: containerWidth / ratio))
-                } else {
-                    self.fastboardViewController.fastRoom.insertImg(url, imageSize: image.size)
-                }
-                let newMemberState = WhiteMemberState()
-                newMemberState.currentApplianceName = .ApplianceSelector
-                self.fastboardViewController.fastRoom.room?.setMemberState(newMemberState)
-                self.fastboardViewController.fastRoom.view.overlay?.initUIWith(appliance: .ApplianceSelector, shape: nil)
+                self.fastboardViewController.insert(image: image, url: url)
             case let .media(url: url, title: title):
                 self.fastboardViewController.fastRoom.insertMedia(url, title: title, completionHandler: nil)
             case let .multiPages(pages: pages, title: title):
@@ -894,7 +898,8 @@ class ClassRoomViewController: UIViewController {
         if traitCollection.hasCompact {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [chatButton, usersButton, inviteButton, cloudStorageButton, settingButton])
+                                         views: [takePhotoButton, chatButton, usersButton, inviteButton, cloudStorageButton, settingButton])
+            bar.forceUpdate(button: takePhotoButton, visible: false)
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
             bar.narrowStyle = .none
@@ -902,7 +907,8 @@ class ClassRoomViewController: UIViewController {
         } else {
             let bar = FastRoomControlBar(direction: .vertical,
                                          borderMask: .all,
-                                         views: [chatButton, usersButton, inviteButton, cloudStorageButton, recordButton, settingButton])
+                                         views: [takePhotoButton, chatButton, usersButton, inviteButton, cloudStorageButton, recordButton, settingButton])
+            bar.forceUpdate(button: takePhotoButton, visible: false)
             bar.forceUpdate(button: cloudStorageButton, visible: false)
             bar.forceUpdate(button: chatButton, visible: false)
             bar.forceUpdate(button: recordButton, visible: isOwner)

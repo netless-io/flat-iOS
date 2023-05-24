@@ -25,7 +25,7 @@ enum UploadStatus {
     case uploadFinish
     case reporting
     case reportFinish
-    case finish
+    case finish(url: String)
 
     var availableOperation: UploadTaskOperation? {
         switch self {
@@ -124,6 +124,7 @@ class UploadService {
             let accessing = fileURL.startAccessingSecurityScopedResource()
             guard accessing else { throw "access file error, \(fileURL)" }
         }
+        var remoteURL: String?
         var fileUUID: String?
         let tracker = BehaviorRelay<UploadStatus>(value: .idle)
         trackers[fileURL] = tracker
@@ -132,6 +133,7 @@ class UploadService {
             .do(onNext: { info in
                 tracker.accept(.prepareFinish)
                 fileUUID = info.fileUUID
+                remoteURL = info.ossDomain.appendingPathComponent(info.ossFilePath).absoluteString
             })
             .flatMap { [unowned self] info -> Observable<Void> in
                 try self.upload(fileURL: fileURL, info: info)
@@ -157,7 +159,7 @@ class UploadService {
             .asSingle()
             .do(onSuccess: { _ in
                 tracker.accept(.reportFinish)
-                tracker.accept(.finish)
+                tracker.accept(.finish(url: remoteURL ?? ""))
                 if shouldAccessingSecurityScopedResource {
                     fileURL.stopAccessingSecurityScopedResource()
                 }
