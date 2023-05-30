@@ -74,7 +74,7 @@ extension UIViewController {
     fileprivate var activityView: CustomActivityIndicatorView {
         let activityViewTag = 999
         let activityView: CustomActivityIndicatorView
-        if let view = view.viewWithTag(activityViewTag) as? CustomActivityIndicatorView {
+        if let view = view.subviews.first(where: { $0.tag == activityViewTag }) as? CustomActivityIndicatorView {
             activityView = view
         } else {
             let view: CustomActivityIndicatorView
