@@ -27,7 +27,7 @@ struct Country {
         return country
     }
     
-    static func fallBack() -> Self { .init(code: "zh-cn", name: "China", phoneCode: "86")}
+    static func fallBack() -> Self { .init(code: "cn", name: "China", phoneCode: "86")}
 }
 
 class CountryCodePicker: UIViewController {
