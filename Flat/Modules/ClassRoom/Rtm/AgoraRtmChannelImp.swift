@@ -1,5 +1,5 @@
 //
-//  ClassRoomCommand.swift
+//  AgoraRtmChannelImp.swift
 //  Flat
 //
 //  Created by xuyunshi on 2021/11/15.
@@ -11,7 +11,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class RtmChannel: NSObject, AgoraRtmChannelDelegate {
+class AgoraRtmChannelImp: NSObject, AgoraRtmChannelDelegate, RtmChannelProvider {
     let newMemberPublisher: PublishRelay<String> = .init()
     let memberLeftPublisher: PublishRelay<String> = .init()
     let newMessagePublish: PublishRelay<(text: String, date: Date, sender: String)> = .init()
@@ -43,7 +43,7 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
         }
     }
 
-    func sendMessage(_ text: String, censor: Bool = false, appendToNewMessage: Bool = false) -> Single<Void> {
+    func sendMessage(_ text: String) -> Single<Void> {
         let send = Single<Void>.create { [weak self] observer in
             guard let self else {
                 observer(.failure("self not exist"))
@@ -60,17 +60,11 @@ class RtmChannel: NSObject, AgoraRtmChannelDelegate {
             return Disposables.create()
         }.do(onSuccess: { [weak self] in
             guard let self else { return }
-            if appendToNewMessage {
-                self.newMessagePublish.accept((text, Date(), self.userUUID))
-            }
+            self.newMessagePublish.accept((text, Date(), self.userUUID))
         })
-        if censor {
-            return ApiProvider.shared.request(fromApi: MessageCensorRequest(text: text))
-                .asSingle()
-                .flatMap { r in r.valid ? send : .just(()) }
-        } else {
-            return send
-        }
+        return ApiProvider.shared.request(fromApi: MessageCensorRequest(text: text))
+            .asSingle()
+            .flatMap { r in r.valid ? send : .just(()) }
     }
 
     func getMembers() -> Single<[String]> {

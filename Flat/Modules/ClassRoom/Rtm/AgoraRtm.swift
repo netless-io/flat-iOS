@@ -1,5 +1,5 @@
 //
-//  ClassRoomRtm.swift
+//  AgoraRtm.swift
 //  Flat
 //
 //  Created by xuyunshi on 2021/11/15.
@@ -12,22 +12,10 @@ import RxRelay
 import RxSwift
 
 /// Rtm state control
-class Rtm: NSObject {
-    enum RtmError {
-        case remoteLogin
-        case reconnectingTimeout
-    }
-
-    enum State {
-        case idle
-        case connecting
-        case reconnecting
-        case connected
-    }
-
+class AgoraRtm: NSObject, RtmProvider {
     let p2pMessage: PublishRelay<(data: Data, sender: String)> = .init()
     let error: PublishRelay<RtmError> = .init()
-    let state: BehaviorRelay<State> = .init(value: .idle)
+    let state: BehaviorRelay<RtmState> = .init(value: .idle)
     let reconnectTimeoutInterval: DispatchTimeInterval = .seconds(5)
 
     init(rtmToken: String,
@@ -47,11 +35,11 @@ class Rtm: NSObject {
         array.reduce(Single<Void>.just(())) { [weak self] partial, part -> Single<Void> in
             guard let self else { return .error("self not exist") }
             return partial.flatMap { _ -> Single<Void> in
-                return self.sendP2PMessage(data: part.data, toUUID: part.uuid)
+                self.sendP2PMessage(data: part.data, toUUID: part.uuid)
             }
         }
     }
-    
+
     func sendP2PMessage(data: Data, toUUID UUID: String) -> Single<Void> {
         logger.info("send p2p raw message data, to \(UUID)")
         switch state.value {
@@ -104,9 +92,11 @@ class Rtm: NSObject {
         case .connected, .reconnecting: return .just(())
         case .connecting: return createLoginObserver()
         case .idle:
+            logger.info("start login: \(agoraGenerator.agoraToken), \(agoraGenerator.agoraUserId)")
             agoraKit.login(byToken: agoraGenerator.agoraToken,
                            user: agoraGenerator.agoraUserId) { [weak self] code in
                 guard let self else { return }
+                logger.info("login complete with code \(code)")
                 self.loginCallbacks.forEach { $0(code) }
                 self.loginCallbacks = []
                 self.state.accept(.connected)
@@ -115,7 +105,7 @@ class Rtm: NSObject {
         }
     }
 
-    func leave() -> Single<Void> {
+    func logout() -> Single<Void> {
         switch state.value {
         case .idle, .connecting, .reconnecting: return .just(())
         case .connected:
@@ -132,13 +122,13 @@ class Rtm: NSObject {
         }
     }
 
-    func joinChannelId(_ channelId: String) -> Single<RtmChannel> {
+    func joinChannelId(_ channelId: String) -> Single<RtmChannelProvider> {
         .create { [weak self] observer in
             guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
-            let handler = RtmChannel()
+            let handler = AgoraRtmChannelImp()
             handler.userUUID = agoraGenerator.agoraUserId
             handler.channelId = channelId
             let channel = self.agoraKit.createChannel(withId: channelId, delegate: handler)!
@@ -198,13 +188,15 @@ extension AgoraRtmConnectionChangeReason: CustomStringConvertible {
             return "bannedByServer"
         case .remoteLogin:
             return "remoteLogin"
+        case .tokenExpired:
+            return "tokenExpired"
         @unknown default:
             return "unknown"
         }
     }
 }
 
-extension Rtm: AgoraRtmDelegate {
+extension AgoraRtm: AgoraRtmDelegate {
     func rtmKit(_: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
         logger.info("state \(state), reason \(reason)")
         switch state {

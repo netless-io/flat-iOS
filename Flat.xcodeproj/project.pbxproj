@@ -217,8 +217,8 @@
 		8AA348422A121ABE00409124 /* ApplianceShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA348412A121ABE00409124 /* ApplianceShortcutItem.swift */; };
 		8AA348452A121E9300409124 /* ClassroomKeyboardRespondable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA348442A121E9300409124 /* ClassroomKeyboardRespondable.swift */; };
 		8AA594882744E39200BB23C6 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */; };
-		8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* RtmChannel.swift */; };
-		8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* Rtm.swift */; };
+		8AA97EA22741F83A00C3F92E /* AgoraRtmChannelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA12741F83A00C3F92E /* AgoraRtmChannelImp.swift */; };
+		8AA97EA42741F97B00C3F92E /* AgoraRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA97EA32741F97B00C3F92E /* AgoraRtm.swift */; };
 		8AAB06242762E514006CAEF2 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06232762E514006CAEF2 /* ExportService.swift */; };
 		8AAB06262762F509006CAEF2 /* RenameFileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06252762F509006CAEF2 /* RenameFileRequest.swift */; };
 		8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAB06272762FD06006CAEF2 /* StartConvertRequest.swift */; };
@@ -254,6 +254,9 @@
 		8AC3AFD128AB355300587AE0 /* SBLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */; };
 		8AC492DD2A2596070029F675 /* TempPhotoStartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC492DC2A2596070029F675 /* TempPhotoStartRequest.swift */; };
 		8AC492DF2A2596B40029F675 /* TempPhotoFinishRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC492DE2A2596B40029F675 /* TempPhotoFinishRequest.swift */; };
+		8AC492E12A25EC940029F675 /* ClassroomStateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC492E02A25EC940029F675 /* ClassroomStateMock.swift */; };
+		8AC492E32A25F71B0029F675 /* RtmProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC492E22A25F71B0029F675 /* RtmProvider.swift */; };
+		8AC492E52A2606490029F675 /* RtmChannelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC492E42A2606490029F675 /* RtmChannelProvider.swift */; };
 		8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */; };
 		8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */; };
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
@@ -552,8 +555,8 @@
 		8AA348412A121ABE00409124 /* ApplianceShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplianceShortcutItem.swift; sourceTree = "<group>"; };
 		8AA348442A121E9300409124 /* ClassroomKeyboardRespondable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomKeyboardRespondable.swift; sourceTree = "<group>"; };
 		8AA594872744E39200BB23C6 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
-		8AA97EA12741F83A00C3F92E /* RtmChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmChannel.swift; sourceTree = "<group>"; };
-		8AA97EA32741F97B00C3F92E /* Rtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rtm.swift; sourceTree = "<group>"; };
+		8AA97EA12741F83A00C3F92E /* AgoraRtmChannelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtmChannelImp.swift; sourceTree = "<group>"; };
+		8AA97EA32741F97B00C3F92E /* AgoraRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtm.swift; sourceTree = "<group>"; };
 		8AAB06232762E514006CAEF2 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
 		8AAB06252762F509006CAEF2 /* RenameFileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameFileRequest.swift; sourceTree = "<group>"; };
 		8AAB06272762FD06006CAEF2 /* StartConvertRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartConvertRequest.swift; sourceTree = "<group>"; };
@@ -591,6 +594,9 @@
 		8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBLogHandler.swift; sourceTree = "<group>"; };
 		8AC492DC2A2596070029F675 /* TempPhotoStartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempPhotoStartRequest.swift; sourceTree = "<group>"; };
 		8AC492DE2A2596B40029F675 /* TempPhotoFinishRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempPhotoFinishRequest.swift; sourceTree = "<group>"; };
+		8AC492E02A25EC940029F675 /* ClassroomStateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStateMock.swift; sourceTree = "<group>"; };
+		8AC492E22A25F71B0029F675 /* RtmProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmProvider.swift; sourceTree = "<group>"; };
+		8AC492E42A2606490029F675 /* RtmChannelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmChannelProvider.swift; sourceTree = "<group>"; };
 		8AC9CEF9274253D800EEBEE7 /* ClassRoomSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomSettingViewController.swift; sourceTree = "<group>"; };
 		8AC9CEFC27434A8E00EEBEE7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -1208,6 +1214,7 @@
 			children = (
 				8AA242FD289B68BA00C306F0 /* ClassroomStateHandlerImp.swift */,
 				8AA242F5289A6ABD00C306F0 /* ClassroomStateHandler.swift */,
+				8AC492E02A25EC940029F675 /* ClassroomStateMock.swift */,
 			);
 			path = ClassroomState;
 			sourceTree = "<group>";
@@ -1686,8 +1693,10 @@
 		8AE8F55C272101E600D2E0F5 /* Rtm */ = {
 			isa = PBXGroup;
 			children = (
-				8AA97EA12741F83A00C3F92E /* RtmChannel.swift */,
-				8AA97EA32741F97B00C3F92E /* Rtm.swift */,
+				8AA97EA12741F83A00C3F92E /* AgoraRtmChannelImp.swift */,
+				8AC492E42A2606490029F675 /* RtmChannelProvider.swift */,
+				8AA97EA32741F97B00C3F92E /* AgoraRtm.swift */,
+				8AC492E22A25F71B0029F675 /* RtmProvider.swift */,
 				8A92195F28AF3BB900DDDA81 /* Chat */,
 				8AE892F92727E98B009C71DA /* Command */,
 			);
@@ -1901,6 +1910,7 @@
 				8A21DAAE279E65E00060E25D /* RecordDetailInfo.swift in Sources */,
 				8A97EBB927199AD300965185 /* ShareScreenInfo.swift in Sources */,
 				8AAE254B295D7A0C007D5507 /* RaiseHandTableViewCell.swift in Sources */,
+				8AC492E12A25EC940029F675 /* ClassroomStateMock.swift in Sources */,
 				8AC9CEFD27434A8E00EEBEE7 /* ChatViewController.swift in Sources */,
 				8A7741E5273A542F009FAADA /* UIView+Badge.swift in Sources */,
 				8A0CA23528BF37B50035F71A /* ConvinceInit.swift in Sources */,
@@ -1949,6 +1959,7 @@
 				8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */,
 				8A73309428C843C600404B2D /* UITableView+loadedAll.swift in Sources */,
 				8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */,
+				8AC492E52A2606490029F675 /* RtmChannelProvider.swift in Sources */,
 				8AC492DF2A2596B40029F675 /* TempPhotoFinishRequest.swift in Sources */,
 				8A0CA23028BE11A10035F71A /* Global.swift in Sources */,
 				8A59959128CADBB300ACCDCB /* StorageCreateDirectoryRequest.swift in Sources */,
@@ -1993,7 +2004,7 @@
 				8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */,
 				8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */,
 				8AD3CDF92716B53D008BD904 /* UIViewController+Alert.swift in Sources */,
-				8AA97EA22741F83A00C3F92E /* RtmChannel.swift in Sources */,
+				8AA97EA22741F83A00C3F92E /* AgoraRtmChannelImp.swift in Sources */,
 				8A3782E029C3077A0051D4FB /* RatingManager.swift in Sources */,
 				8A7741DC2738BB06009FAADA /* ClassroomFactory.swift in Sources */,
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
@@ -2140,7 +2151,7 @@
 				8A55F1B2273A710000D4DA0F /* AnyRequest.swift in Sources */,
 				8AD2EF6F277451BA00087280 /* CustomPreviewViewController.swift in Sources */,
 				8A9ACC01271E712100E7E7CE /* RoomListRequest.swift in Sources */,
-				8AA97EA42741F97B00C3F92E /* Rtm.swift in Sources */,
+				8AA97EA42741F97B00C3F92E /* AgoraRtm.swift in Sources */,
 				8A64212D2913BAAB008EEB2F /* UpdateLayoutRequest.swift in Sources */,
 				8A9ACC05271E726B00E7E7CE /* RoomStartStatus.swift in Sources */,
 				8AAC69B62717FFD600F9A3B4 /* AuthStore.swift in Sources */,
@@ -2150,6 +2161,7 @@
 				8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */,
 				8A05C34727609226009BCA79 /* Kingfisher+fetchDiskCachePath.swift in Sources */,
 				8A05C32C275F4E7E009BCA79 /* UploadService.swift in Sources */,
+				8AC492E32A25F71B0029F675 /* RtmProvider.swift in Sources */,
 				8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */,
 				8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */,
 				8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */,

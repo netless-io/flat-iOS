@@ -15,8 +15,7 @@ class ClassRoomViewModel {
 
     let preferredDeviceState: DeviceState
     let alertProvider: AlertProvider
-    let rtm: Rtm
-    let commandChannelRequest: Single<RtmChannel>
+    let commandChannelRequest: Single<RtmChannelProvider>
     let userUUID: String
     let roomUUID: String
     let isOwner: Bool
@@ -113,8 +112,7 @@ class ClassRoomViewModel {
          userUUID: String,
          roomUUID: String,
          roomType: ClassRoomType,
-         commandChannelRequest: Single<RtmChannel>,
-         rtm: Rtm,
+         commandChannelRequest: Single<RtmChannelProvider>,
          alertProvider: AlertProvider,
          preferredDeviceState: DeviceState)
     {
@@ -125,7 +123,6 @@ class ClassRoomViewModel {
         self.roomUUID = roomUUID
         self.roomType = roomType
         self.commandChannelRequest = commandChannelRequest
-        self.rtm = rtm
         self.alertProvider = alertProvider
         self.preferredDeviceState = preferredDeviceState
     }
@@ -193,7 +190,7 @@ class ClassRoomViewModel {
     }
 
     struct ChatChannelInitValue {
-        let channel: RtmChannel
+        let channel: RtmChannelProvider
         let userNameProvider: UserInfoQueryProvider
         let notice: Observable<String>
         let isBanned: Driver<Bool>

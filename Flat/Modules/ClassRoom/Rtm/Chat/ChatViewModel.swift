@@ -37,7 +37,7 @@ class ChatViewModel {
 
     let roomUUID: String
     let userInfoProvider: UserInfoQueryProvider
-    let rtm: RtmChannel
+    let rtmChannel: RtmChannelProvider
     let notice: Observable<String>
     let isOwner: Bool
     let isBanned: Driver<Bool>
@@ -45,13 +45,13 @@ class ChatViewModel {
 
     init(roomUUID: String,
          userNameProvider: @escaping UserInfoQueryProvider,
-         rtm: RtmChannel,
+         rtmChannel: RtmChannelProvider,
          notice: Observable<String>,
          isBanned: Driver<Bool>,
          isOwner: Bool,
          banMessagePublisher: PublishRelay<Bool>)
     {
-        self.rtm = rtm
+        self.rtmChannel = rtmChannel
         self.notice = notice
         userInfoProvider = userNameProvider
         self.roomUUID = roomUUID
@@ -64,7 +64,7 @@ class ChatViewModel {
         let send = input.sendTap.withLatestFrom(input.textInput)
             .filter(\.isNotEmptyOrAllSpacing)
             .flatMapLatest { [unowned self] text in
-                self.rtm.sendMessage(text, censor: true, appendToNewMessage: true)
+                self.rtmChannel.sendMessage(text)
                     .asDriver(onErrorJustReturn: ())
             }
 
@@ -80,7 +80,7 @@ class ChatViewModel {
                 }
         }
 
-        let newMessage = rtm.newMessagePublish.map { [Message.user(UserMessage(userId: $0.sender, text: $0.text, time: $0.date))] }
+        let newMessage = rtmChannel.newMessagePublish.map { [Message.user(UserMessage(userId: $0.sender, text: $0.text, time: $0.date))] }
         let noticeMessage = notice.map { [Message.notice($0)] }
         let banMessage = banMessagePublisher.map { [Message.notice(localizeStrings($0 ? "All banned" : "The ban was lifted"))] }
 

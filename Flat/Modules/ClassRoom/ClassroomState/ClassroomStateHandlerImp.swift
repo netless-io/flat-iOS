@@ -11,8 +11,7 @@ import RxRelay
 import RxSwift
 import Whiteboard
 
-// The classroom state combined from syncedStore and rtm
-// But rtc connection can also fire error
+// The classroom state combined from syncedStore and rtm, while rtc connection can also fire error.
 class ClassroomStateHandlerImp: ClassroomStateHandler {
     let maxWritableUsersCount: Int
     let roomUUID: String
@@ -20,9 +19,9 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let userUUID: String
     let isOwner: Bool
     let syncedStore: ClassRoomSyncedStore
-    let rtm: Rtm
-    var commandChannel: RtmChannel!
-    let commandChannelRequest: Single<RtmChannel>
+    let rtmProvider: RtmProvider
+    var commandChannel: RtmChannelProvider!
+    let commandChannelRequest: Single<RtmChannelProvider>
 
     let error: PublishRelay<ClassroomStateError> = .init()
     let roomStartStatus: BehaviorRelay<RoomStartStatus>
@@ -45,8 +44,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let commandDecoder = CommandDecoder()
 
     init(syncedStore: ClassRoomSyncedStore,
-         rtm: Rtm,
-         commandChannelRequest: Single<RtmChannel>,
+         rtmProvider: RtmProvider,
+         commandChannelRequest: Single<RtmChannelProvider>,
          roomUUID: String,
          ownerUUID: String,
          userUUID: String,
@@ -59,7 +58,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
          videoLayoutStore: VideoLayoutStore)
     {
         self.syncedStore = syncedStore
-        self.rtm = rtm
+        self.rtmProvider = rtmProvider
         self.commandChannelRequest = commandChannelRequest
         self.roomUUID = roomUUID
         self.ownerUUID = ownerUUID
@@ -76,7 +75,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             })
             .disposed(by: bag)
 
-        let r = rtm.error.map { error -> ClassroomStateError in
+        let r = rtmProvider.error.map { error -> ClassroomStateError in
             switch error {
             case .reconnectingTimeout: return .rtmReconnectingTimeout
             case .remoteLogin: return .rtmRemoteLogin
@@ -98,15 +97,15 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     // 2. Rtm channel join
     // 3. SyncedStore join
     func setup() -> Single<Void> {
-        rtm.login()
-            .flatMap { [weak self] _ -> Single<RtmChannel> in
+        rtmProvider.login()
+            .flatMap { [weak self] _ -> Single<RtmChannelProvider> in
                 guard let self else { return .error("self not exist") }
                 return self.commandChannelRequest
             }.do(onSuccess: { [weak self] channel in
                 if let self {
                     self.commandChannel = channel
 
-                    PublishRelay.of(channel.rawDataPublish, self.rtm.p2pMessage)
+                    PublishRelay.of(channel.rawDataPublish, self.rtmProvider.p2pMessage)
                         .merge()
                         .flatMap { [weak self] value -> Observable<RtmCommand?> in
                             guard let self else { return .error("self not exist") }
@@ -258,7 +257,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     }
             case let .updateRaiseHand(raiseHand):
                 let msgData = try commandEncoder.encode(.raiseHand(roomUUID: roomUUID, raiseHand: raiseHand))
-                return rtm.sendP2PMessage(data: msgData, toUUID: ownerUUID)
+                return rtmProvider.sendP2PMessage(data: msgData, toUUID: ownerUUID)
             case let .updateDeviceState(uuid: uuid, state: state):
                 if userUUID == uuid { // Do anything to self is okay
                     try syncedStore.sendCommand(.deviceStateUpdate([uuid: state]))
@@ -278,21 +277,21 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                                 // Notify the user who's device was turned off
                                 if turnOffMic {
                                     let msgData = try self.commandEncoder.encode(.notifyDeviceOff(roomUUID: self.roomUUID, deviceType: .mic))
-                                    return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
+                                    return self.rtmProvider.sendP2PMessage(data: msgData, toUUID: uuid)
                                 }
                                 if turnOffCamera {
                                     let msgData = try self.commandEncoder.encode(.notifyDeviceOff(roomUUID: self.roomUUID, deviceType: .camera))
-                                    return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
+                                    return self.rtmProvider.sendP2PMessage(data: msgData, toUUID: uuid)
                                 }
                                 return .just(())
                             } else { // It only send the first command
                                 if turnOnMic {
                                     let msgData = try self.commandEncoder.encode(.requestDevice(roomUUID: self.roomUUID, deviceType: .mic))
-                                    return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
+                                    return self.rtmProvider.sendP2PMessage(data: msgData, toUUID: uuid)
                                 }
                                 if turnOnCamera {
                                     let msgData = try self.commandEncoder.encode(.requestDevice(roomUUID: self.roomUUID, deviceType: .camera))
-                                    return self.rtm.sendP2PMessage(data: msgData, toUUID: uuid)
+                                    return self.rtmProvider.sendP2PMessage(data: msgData, toUUID: uuid)
                                 }
                                 return .just(())
                             }
@@ -323,7 +322,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                             let data = try self.commandEncoder.encode(.notifyDeviceOff(roomUUID: self.roomUUID, deviceType: .mic))
                             return (data, $0)
                         }
-                        return self.rtm.sendP2PMessageFromArray(msgs)
+                        return self.rtmProvider.sendP2PMessageFromArray(msgs)
                     }
             case .stopInteraction:
                 return syncedStore.getValues()
@@ -348,7 +347,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     }
             case .requestDeviceResponse(type: let type, on: let on):
                 let msgData = try self.commandEncoder.encode(.requestDeviceResponse(roomUUID: self.roomUUID, deviceType: type, on: on))
-                return self.rtm.sendP2PMessage(data: msgData, toUUID: ownerUUID)
+                return self.rtmProvider.sendP2PMessage(data: msgData, toUUID: ownerUUID)
             }
         } catch {
             logger.error("classroomStateImp send command \(command)")
@@ -558,7 +557,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     func destroy() {
         let bag = DisposeBag()
         syncedStore.destroy()
-        rtm.leave().subscribe().disposed(by: bag)
+        rtmProvider.logout().subscribe().disposed(by: bag)
         // lol! This function can be called even app is about to terminate
         DispatchQueue.global().asyncAfter(deadline: .now() + 0.1) {
             _ = bag

@@ -371,7 +371,7 @@ class ClassRoomViewController: UIViewController {
             .subscribe(with: self, onSuccess: { weakSelf, r in
                 let chatViewModel = ChatViewModel(roomUUID: weakSelf.viewModel.roomUUID,
                                                   userNameProvider: r.userNameProvider,
-                                                  rtm: r.channel,
+                                                  rtmChannel: r.channel,
                                                   notice: r.notice,
                                                   isBanned: r.isBanned,
                                                   isOwner: weakSelf.isOwner,

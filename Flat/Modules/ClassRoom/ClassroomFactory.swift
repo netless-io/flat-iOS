@@ -87,11 +87,12 @@ enum ClassroomFactory {
         let mic = userPermissionEnable ? deviceStatus.mic : false
         let initDeviceState = DeviceState(mic: mic, camera: camera)
 
+        let agoraRtm = AgoraRtm(rtmToken: playInfo.rtmToken,
+                           rtmUserUUID: playInfo.rtmUID,
+                           agoraAppId: Env().agoraAppId)
         // Config Rtm
-        let rtm = Rtm(rtmToken: playInfo.rtmToken,
-                      rtmUserUUID: playInfo.rtmUID,
-                      agoraAppId: Env().agoraAppId)
-        let rtmChannel = rtm.joinChannelId(playInfo.rtmChannelId)
+        let rtm: RtmProvider = agoraRtm
+        let rtmChannel = agoraRtm.joinChannelId(playInfo.rtmChannelId)
             .asObservable()
             .share(replay: 1, scope: .forever)
             .asSingle()
@@ -102,8 +103,9 @@ enum ClassroomFactory {
         fastboardViewController.bindStore = syncedStore
         fastboardViewController.bindLayoutStore = videoLayoutStore
 
+//        let imp = ClassroomStateMock()
         let imp = ClassroomStateHandlerImp(syncedStore: syncedStore,
-                                           rtm: rtm,
+                                           rtmProvider: rtm,
                                            commandChannelRequest: rtmChannel,
                                            roomUUID: playInfo.roomUUID,
                                            ownerUUID: playInfo.ownerUUID,
@@ -161,7 +163,6 @@ enum ClassroomFactory {
                                     roomUUID: playInfo.roomUUID,
                                     roomType: basicInfo.roomType,
                                     commandChannelRequest: rtmChannel,
-                                    rtm: rtm,
                                     alertProvider: alertProvider,
                                     preferredDeviceState: deviceStatus)
 
