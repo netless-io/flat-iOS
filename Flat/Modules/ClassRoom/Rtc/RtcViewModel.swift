@@ -51,8 +51,8 @@ class RtcViewModel {
     let canSendRewards: (UInt) -> Bool
     let canResetLayout: (UInt) -> Bool
     let canMuteAll: (UInt) -> Bool
-    
-    struct LayoutUsersInfo {
+
+    struct LayoutUsersInfo: Equatable {
         let minimalUsers: [UInt]
         let expandUsers: [UInt]
         let freeDraggingUsers: [FreeDraggingUser]
@@ -135,7 +135,7 @@ class RtcViewModel {
                 }
                 return uid
             }
-        
+
         let resetLayoutTask = input
             .resetLayoutTap
             .asObservable()
@@ -234,6 +234,7 @@ class RtcViewModel {
                     return nil
                 }
             let minimalUsers = users.filter { u in
+                if !u.status.isSpeak { return false }
                 if gridUsers.contains(u.rtcUID) { return false }
                 if freeDraggingUsers.contains(where: { $0.uid == u.rtcUID }) { return false }
                 return true
@@ -243,6 +244,7 @@ class RtcViewModel {
                          freeDraggingUsers: freeDraggingUsers)
         }
         .debounce(.milliseconds(100), scheduler: MainScheduler.instance) // To avoid multi data change times in a short time.
+        .distinctUntilChanged(==)
         .do(onNext: { [weak self] layout in
             self?.updateStreamTypeWith(layoutInfo: layout)
         })
@@ -280,8 +282,37 @@ class RtcViewModel {
     }
 
     func trans(_ us: Driver<[RoomUser]>) -> Driver<[RTCUserOutput]> {
-        us.do(
-            onNext: { [weak self] users in
+        us
+            .throttle(.milliseconds(500))
+            .scan([UInt: RoomUser](), accumulator: { lastRtcUsers, inputUsers in
+                var rtcUsers = lastRtcUsers
+                // Update rtc users.
+                for user in inputUsers {
+                    if let _ = rtcUsers.index(forKey: user.rtcUID) {
+                        rtcUsers[user.rtcUID] = user
+                    } else if user.status.isSpeak {
+                        rtcUsers[user.rtcUID] = user
+                    }
+                }
+                return rtcUsers
+            })
+            .map(\.values)
+            .distinctUntilChanged { old, new in
+                if old.count != new.count {
+                    return false
+                }
+                for oldUser in old {
+                    if let newUser = new.first(where: { $0.rtcUID == oldUser.rtcUID }) {
+                        return newUser.status.isSpeak == oldUser.status.isSpeak &&
+                            newUser.status.camera == oldUser.status.camera &&
+                            newUser.status.mic == oldUser.status.mic
+                    } else {
+                        return false
+                    }
+                }
+                return true
+            }
+            .do(onNext: { [weak self] users in
                 guard let self else { return }
                 for user in users {
                     let isLocal = self.localUserRegular(user.rtcUID)
@@ -292,14 +323,14 @@ class RtcViewModel {
                         self.rtc.updateRemoteUser(rtcUID: user.rtcUID, cameraOn: user.status.camera, micOn: user.status.mic)
                     }
                 }
+            })
+            .map { [weak self] users -> [RTCUserOutput] in
+                guard let self else { return [] }
+                return users.filter(\.status.isSpeak).map { user -> RTCUserOutput in
+                    let canvasView = self.canvasView(for: user.rtcUID)
+                    return RTCUserOutput(user: user, canvasView: canvasView)
+                }
             }
-        ).map({ [weak self] users -> [RTCUserOutput] in
-            guard let self else { return [] }
-            return users.filter(\.status.isSpeak).map { user -> RTCUserOutput in
-                let canvasView = self.canvasView(for: user.rtcUID)
-                return RTCUserOutput(user: user, canvasView: canvasView)
-            }
-        })
     }
 
     func strenthFor(uid: UInt) -> Observable<CGFloat> {

@@ -17,7 +17,7 @@ import RxSwift
 import UIKit
 import ViewDragger
 
-struct FreeDraggingUser {
+struct FreeDraggingUser: Equatable {
     let uid: UInt
     let rect: CGRect
 }
@@ -73,7 +73,8 @@ class RtcViewController: UIViewController {
     }
 
     func bindUsers(_ users: Driver<[RoomUser]>) {
-        viewModel.trans(users)
+        viewModel
+            .trans(users)
             .drive(with: self, onNext: { weakSelf, values in
                 weakSelf.updateWith(values)
             })
@@ -266,11 +267,11 @@ class RtcViewController: UIViewController {
                 itemView.contentView.videoContainerView.addSubview(cv)
             }
         }
-        let speaingIds = values.filter(\.user.status.isSpeak).map(\.user.rtcUID)
+        let speakingIds = values.filter(\.user.status.isSpeak).map(\.user.rtcUID)
         videoItemsStackView
             .arrangedSubviews
             .compactMap { $0 as? RtcVideoItemView }
-            .filter { !speaingIds.contains($0.uid) }
+            .filter { !speakingIds.contains($0.uid) }
             .forEach { remove(view: $0) }
         updateScrollViewInset()
     }
@@ -279,6 +280,7 @@ class RtcViewController: UIViewController {
         view.removeFromSuperview()
         videoItemsStackView.removeArrangedSubview(view)
         view.contentView.removeFromSuperview()
+        draggers.removeValue(forKey: view.uid)
     }
 
     func updateScrollViewInset() {
