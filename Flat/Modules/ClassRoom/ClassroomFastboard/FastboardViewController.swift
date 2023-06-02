@@ -45,7 +45,7 @@ class FastboardViewController: UIViewController {
     func insert(image: UIImage, url: URL, changeApplianceToSelector: Bool = true) {
         let imageSize = image.size
         let cameraScale = self.fastRoom.room?.state.cameraState?.scale.floatValue ?? 1
-        let containerWidth = self.fastRoom.view.bounds.width / 4 / CGFloat(cameraScale)
+        let containerWidth = self.fastRoom.view.bounds.width / 2.5 / CGFloat(cameraScale)
         if imageSize.width > containerWidth {
             let ratio = imageSize.width / imageSize.height
             self.fastRoom.insertImg(url, imageSize: .init(width: containerWidth, height: containerWidth / ratio))
