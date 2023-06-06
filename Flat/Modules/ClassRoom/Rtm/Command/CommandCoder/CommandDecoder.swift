@@ -31,10 +31,10 @@ struct CommandDecoder {
             let status = RoomStartStatus(rawValue: statusStr)
             return .updateRoomStatus(roomUUID: roomUUID, status: status)
         case .requestDevice:
-            if let camera = info["camera"] {
+            if let _ = info["camera"] {
                 return .requestDevice(roomUUID: roomUUID, deviceType: .camera)
             }
-            if let mic = info["mic"] {
+            if let _ = info["mic"] {
                 return .requestDevice(roomUUID: roomUUID, deviceType: .mic)
             }
             fatalError("can't get this type")
@@ -59,6 +59,15 @@ struct CommandDecoder {
                 return .reward(roomUUID: roomUUID, userUUID: userUUID)
             }
             fatalError("can't get this type")
+        case .newUserEnter:
+            if let userInfo = info["userInfo"] as? NSDictionary,
+               let userUUID = info["userUUID"] as? String
+            {
+                let jsonData = try JSONSerialization.data(withJSONObject: userInfo)
+                let roomUserInfo = try decode.decode(RoomUserInfo.self, from: jsonData)
+                return .newUserEnter(roomUUID: roomUUID, userUUID: userUUID, userInfo: roomUserInfo)
+            }
+            fallthrough
         default:
             return .undefined(reason: "won't happen")
         }

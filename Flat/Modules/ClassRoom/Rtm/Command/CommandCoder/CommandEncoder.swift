@@ -55,6 +55,14 @@ struct CommandEncoder {
         case .reward(roomUUID: let roomUUID, userUUID: let userUUID):
             t = .reward
             v = ["roomUUID": roomUUID, "userUUID": userUUID]
+        case .newUserEnter(roomUUID: let roomUUID, userUUID: let userUUID, userInfo: let userInfo):
+            t = .newUserEnter
+            if let dict = userInfo.nsDict() {
+                v = ["roomUUID": roomUUID, "userUUID": userUUID, "userInfo": dict]
+            } else {
+                v = ["roomUUID": roomUUID, "userUUID": userUUID]
+            }
+            
         }
         let dic: NSDictionary = ["t": t.rawValue, "v": v]
         let data = try JSONSerialization.data(withJSONObject: dic)

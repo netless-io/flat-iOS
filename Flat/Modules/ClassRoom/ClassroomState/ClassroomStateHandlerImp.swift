@@ -22,6 +22,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let rtmProvider: RtmProvider
     var commandChannel: RtmChannelProvider!
     let commandChannelRequest: Single<RtmChannelProvider>
+    let userInfo: RoomUserInfo
 
     let error: PublishRelay<ClassroomStateError> = .init()
     let roomStartStatus: BehaviorRelay<RoomStartStatus>
@@ -36,7 +37,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let requestDevicePublisher: PublishRelay<RequestDeviceType> = .init()
     let requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> = .init()
     let notifyDeviceOffPublisher: PublishRelay<RequestDeviceType> = .init()
-    
+
     var videoLayoutStore: VideoLayoutStore
 
     var bag = DisposeBag()
@@ -51,6 +52,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
          userUUID: String,
          isOwner: Bool,
          maxWritableUsersCount: Int,
+         userInfo: RoomUserInfo,
          roomStartStatus: RoomStartStatus,
          whiteboardBannedAction: Observable<Void>,
          whiteboardRoomError: Observable<FastRoomError>,
@@ -59,6 +61,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     {
         self.syncedStore = syncedStore
         self.rtmProvider = rtmProvider
+        self.userInfo = userInfo
         self.commandChannelRequest = commandChannelRequest
         self.roomUUID = roomUUID
         self.ownerUUID = ownerUUID
@@ -67,6 +70,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         self.maxWritableUsersCount = maxWritableUsersCount
         self.roomStartStatus = .init(value: roomStartStatus)
         self.videoLayoutStore = videoLayoutStore
+        roomUserInfoCache[userUUID] = userInfo
+
         syncedStore.delegate = self
 
         whiteboardBannedAction
@@ -117,6 +122,11 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             })
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self else { return .error("self not exist") }
+                let enterData = try self.commandEncoder.encode(.newUserEnter(roomUUID: self.roomUUID, userUUID: self.userUUID, userInfo: self.userInfo))
+                return commandChannel.sendRawData(enterData)
+            }
+            .flatMap { [weak self] _ -> Single<Void> in
+                guard let self else { return .error("self not exist") }
                 return .create { [weak self] ob in
                     guard let self else {
                         ob(.failure("self deinit"))
@@ -154,6 +164,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         do {
             let command = try commandDecoder.decode(data)
             switch command {
+            case .newUserEnter(roomUUID: _, userUUID: let userUUID, userInfo: let userInfo):
+                roomUserInfoCache[userUUID] = userInfo
             case .reward(roomUUID: _, userUUID: let userUUID):
                 rewardPublisher.accept(userUUID)
             case .updateRoomStatus(roomUUID: _, status: let status):
@@ -183,9 +195,9 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             case .notice(roomUUID: _, text: let notice):
                 noticePublisher.accept(notice)
             case .undefined: break
-            case .requestDevice(_, deviceType: let type):
+            case let .requestDevice(_, deviceType: type):
                 requestDevicePublisher.accept(type)
-            case .requestDeviceResponse(_, deviceType: let deviceType, on: let on):
+            case let .requestDeviceResponse(_, deviceType: deviceType, on: on):
                 return memberNameQueryProvider()([senderId])
                     .flatMap { [weak self] userDic -> Observable<Void> in
                         guard let self else { return .error("self not exist") }
@@ -194,7 +206,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         return .just(())
                     }
                     .map { command }
-            case .notifyDeviceOff(_, deviceType: let type):
+            case let .notifyDeviceOff(_, deviceType: type):
                 notifyDeviceOffPublisher.accept(type)
             }
             return .just(command)
@@ -208,7 +220,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         logger.info("try send command \(command)")
         do {
             switch command {
-            case .sendReward(toUserUUID: let uuid):
+            case let .sendReward(toUserUUID: uuid):
                 let msgData = try commandEncoder.encode(.reward(roomUUID: roomUUID, userUUID: uuid))
                 return commandChannel.sendRawData(msgData)
             case let .updateRoomStartStatus(status):
@@ -339,15 +351,15 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                         try self.syncedStore.sendCommand(.onStageUsersUpdate(newStageIds))
                         try self.syncedStore.sendCommand(.raiseHandUsersUpdate([]))
                         try self.syncedStore.sendCommand(.deviceStateUpdate(deviceState))
-                        
-                        let needOffStageUsers = result.onStageUsers.filter { $0.key != self.ownerUUID && $0.value}.map { $0.key } // Clear video layout info for users. (Not owner and onStage).
+
+                        let needOffStageUsers = result.onStageUsers.filter { $0.key != self.ownerUUID && $0.value }.map(\.key) // Clear video layout info for users. (Not owner and onStage).
                         self.videoLayoutStore.removeFreeDraggingUsers(needOffStageUsers)
                         self.videoLayoutStore.removeExpandUsers(needOffStageUsers)
                         return .just(())
                     }
-            case .requestDeviceResponse(type: let type, on: let on):
-                let msgData = try self.commandEncoder.encode(.requestDeviceResponse(roomUUID: self.roomUUID, deviceType: type, on: on))
-                return self.rtmProvider.sendP2PMessage(data: msgData, toUUID: ownerUUID)
+            case let .requestDeviceResponse(type: type, on: on):
+                let msgData = try commandEncoder.encode(.requestDeviceResponse(roomUUID: roomUUID, deviceType: type, on: on))
+                return rtmProvider.sendP2PMessage(data: msgData, toUUID: ownerUUID)
             }
         } catch {
             logger.error("classroomStateImp send command \(command)")
@@ -434,7 +446,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         }
 
         let sharedStageIds = onStageIds.share(replay: 1, scope: .forever)
-        let ownerUUID = self.ownerUUID
+        let ownerUUID = ownerUUID
         // Get member ids from stage ids and online member ids.
         // For offline onstage users can display on the list.
         // Insert owner id always.
@@ -454,30 +466,34 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             return result
         }
 
-        let members = memberIds.flatMap { [weak self] idPairs -> Observable<[RoomUser]> in
-            guard let self else { return .error("self not exist") }
-            let ids = idPairs.map(\.key)
-            let noCacheIds = ids.filter { self.roomUserInfoCache[$0] == nil }
-            let cachedUsers = ids.compactMap { self.roomUserInfoCache[$0]?.toRoomUser(uid: $0, isOnline: idPairs[$0] ?? false) }
-            if noCacheIds.isEmpty { return .just(cachedUsers) }
-            let memberRequest = MemberRequest(roomUUID: self.roomUUID, usersUUID: noCacheIds)
-            let req = ApiProvider.shared
-                .request(fromApi: memberRequest)
-                .do(onNext: { [weak self] r in
-                    for pair in r.response {
-                        self?.roomUserInfoCache[pair.key] = pair.value
-                    }
-                })
-            let reqUsers = req.map { r -> [RoomUser] in
-                r.response.map { $0.value.toRoomUser(uid: $0.key, isOnline: idPairs[$0.key] ?? false) }
+        let members = memberIds
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance) // Combine too much user join request.
+            .delay(.milliseconds(500), scheduler: MainScheduler.instance) // Waiting for rtm user cache, to reduce request from server.
+            .flatMap { [weak self] idPairs -> Observable<[RoomUser]> in
+                guard let self else { return .error("self not exist") }
+                let ids = idPairs.map(\.key)
+                let noCacheIds = ids.filter { self.roomUserInfoCache[$0] == nil }
+                let cachedUsers = ids.compactMap { self.roomUserInfoCache[$0]?.toRoomUser(uid: $0, isOnline: idPairs[$0] ?? false) }
+                print("cc:: no cache count \(noCacheIds.count), \(noCacheIds)")
+                if noCacheIds.isEmpty { return .just(cachedUsers) }
+                let memberRequest = MemberRequest(roomUUID: self.roomUUID, usersUUID: noCacheIds)
+                let req = ApiProvider.shared
+                    .request(fromApi: memberRequest)
+                    .do(onNext: { [weak self] r in
+                        for pair in r.response {
+                            self?.roomUserInfoCache[pair.key] = pair.value
+                        }
+                    })
+                let reqUsers = req.map { r -> [RoomUser] in
+                    r.response.map { $0.value.toRoomUser(uid: $0.key, isOnline: idPairs[$0.key] ?? false) }
+                }
+                let totalUsers = reqUsers.map { users -> [RoomUser] in
+                    var r = cachedUsers
+                    r.append(contentsOf: users)
+                    return r
+                }
+                return totalUsers
             }
-            let totalUsers = reqUsers.map { users -> [RoomUser] in
-                var r = cachedUsers
-                r.append(contentsOf: users)
-                return r
-            }
-            return totalUsers
-        }
 
         let result = Observable.combineLatest(
             members,

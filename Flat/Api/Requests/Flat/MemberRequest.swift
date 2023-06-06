@@ -10,12 +10,24 @@ import Foundation
 import Kingfisher
 
 /// Raw type from server
-struct RoomUserInfo: Decodable, Hashable {
+struct RoomUserInfo: Codable, Hashable {
     let name: String
     let rtcUID: UInt
     // Empty sometimes. Do not use URL type
     let avatarURL: String
-
+    
+    func nsDict() -> NSDictionary? {
+        do {
+            let data = try JSONEncoder().encode(self)
+            let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary
+            return dict
+        }
+        catch {
+            logger.error("encode \(self) \(error)")
+            return nil
+        }
+    }
+    
     func toRoomUser(uid: String, isOnline: Bool) -> RoomUser {
         .init(rtmUUID: uid,
               rtcUID: rtcUID,
