@@ -123,7 +123,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self else { return .error("self not exist") }
                 let enterData = try self.commandEncoder.encode(.newUserEnter(roomUUID: self.roomUUID, userUUID: self.userUUID, userInfo: self.userInfo))
-                return commandChannel.sendRawData(enterData)
+                return self.commandChannel.sendRawData(enterData)
             }
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self else { return .error("self not exist") }
