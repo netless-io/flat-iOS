@@ -100,17 +100,6 @@ jobs:
         run: |
           sh blackduck.sh "$BLACK_DUCK_TOKEN" "$BD_COMMAND"
           echo "blackduck: $BD_HOST/api/projects/888fe533-a493-45d1-adfd-9e4765793731/versions/ae27340f-0807-4fb0-93a4-5ee322ece657/components" >> archive_$RUN_NUMBER.log
-      - name: AgoraScan
-        env:
-          AGORA_SCAN_TOKEN: ${{ secrets.AGORA_SCAN_TOKEN }}
-          RUN_NUMBER: ${{github.run_number}}
-        run: |
-            cd iPa
-            NAME=$(find *.ipa)
-            IPAPATH=$(greadlink -f $NAME)
-            cd ..
-            AGORA_SCAN=$(./AgoraScan $IPAPATH $AGORA_SCAN_TOKEN)
-            echo "agora_scan: $AGORA_SCAN" >> archive_$RUN_NUMBER.log
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
