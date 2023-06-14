@@ -158,7 +158,7 @@ class FastboardViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         // It does not affect whiteboard background color.
         // Only for the device rotate transition
-        fastRoom.view.whiteboardView.backgroundColor = UIColor.color(type: .background).resolvedColor(with: traitCollection)
+        Theme.shared.whiteboardStyle.whiteboardTraitCollectionDidChangeResolve(traitCollection, fastRoom: fastRoom)
     }
 
     override func viewDidLayoutSubviews() {

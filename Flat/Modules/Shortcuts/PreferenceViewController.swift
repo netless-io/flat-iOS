@@ -103,18 +103,22 @@ enum PreferrenceType: Codable {
 class PreferenceViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     enum DisplayItem {
         case preference(PreferrenceType, Bool)
+        case whiteboardStyle
         var title: String {
             switch self {
             case .preference(let t, _): return t.title
+            case .whiteboardStyle: return localizeStrings("WhiteboardStyle")
             }
         }
-        
+
         var detail: String {
             switch self {
             case .preference(let t, _): return t.detail
+            case .whiteboardStyle: return localizeStrings("WhiteboardStyleDetail")
             }
         }
     }
+
     enum Style {
         case setting
         case inClassroom
@@ -196,8 +200,12 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
         return button
     }()
 
-    lazy var items: [DisplayItem] = PerferrenceManager.shared.preferences.map { DisplayItem.preference($0.key, $0.value) }
-    
+    lazy var items: [DisplayItem] = {
+        var i = PerferrenceManager.shared.preferences.map { DisplayItem.preference($0.key, $0.value) }
+        i.append(.whiteboardStyle)
+        return i
+    }()
+
     func updateItems() {
         items = PerferrenceManager.shared.preferences.map { DisplayItem.preference($0.key, $0.value) }
         tableView.reloadData()
@@ -222,8 +230,10 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
         case .preference(_, let isOn):
             cell.preferenceSwitch.isHidden = false
             cell.preferenceSwitch.isOn = isOn
+        case .whiteboardStyle:
+            cell.preferenceSwitch.isHidden = true
         }
-        
+
         switch style {
         case .inClassroom:
             cell.contentView.backgroundColor = .classroomChildBG
@@ -242,5 +252,26 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+
+        if case .whiteboardStyle = items[indexPath.row] {
+            let vc = WhiteboardStyleViewController()
+            switch style {
+            case .setting:
+                navigationController?.pushViewController(vc, animated: true)
+            case .inClassroom:
+                guard let p = presentingViewController else { return }
+                p
+                    .rx.dismiss(animated: false)
+                    .subscribe(with: p, onSuccess: { p, _ in
+                        if p.isWindowCompact {
+                            let navi = UINavigationController(rootViewController: vc)
+                            p.present(navi, animated: true)
+                        } else {
+                            p.present(vc, animated: true)
+                        }
+                    })
+                    .disposed(by: p.rx.disposeBag)
+            }
+        }
     }
 }

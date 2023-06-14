@@ -186,6 +186,9 @@
 "Decode error" = "解码错误";
 
 
+"DefaultWhiteboardStyle" = "默认";
+
+
 "Delete" = "删除";
 
 
@@ -871,6 +874,21 @@
 
 
 "WhiteboardPermissionOpenToast" = "已获得白板权限";
+
+
+"WhiteboardStyle" = "白板背景";
+
+
+"WhiteboardStyle#064D6D" = "藏青";
+
+
+"WhiteboardStyle#446550" = "墨绿";
+
+
+"WhiteboardStyle#49585F" = "浅灰";
+
+
+"WhiteboardStyleDetail" = "（教室内白板的本地背景色）";
 
 
 "and" = "和";

@@ -8,6 +8,7 @@
 
 import Fastboard
 import Foundation
+import Whiteboard
 
 enum ThemeStyle: String, Codable, CaseIterable {
     case dark
@@ -49,9 +50,80 @@ enum ThemeStyle: String, Codable, CaseIterable {
     static var allCases: [ThemeStyle] { [.dark, .light, .auto] }
 }
 
+enum WhiteboardStyle {
+    case `default`
+    case hex(String)
+    
+    static var list: [WhiteboardStyle] {
+        [
+            .default,
+            .hex("#064D6D"),
+            .hex("#49585F"),
+            .hex("#446550")
+        ]
+    }
+    
+    var image: UIImage? {
+        switch self {
+        case .default:
+            return UIImage(named: "whiteboard_bg_default")
+        case .hex(let string):
+            return UIImage(named: "whiteboard_bg_\(string)")
+        }
+    }
+    
+    var localizedString: String {
+        switch self {
+        case .default:
+            return localizeStrings("DefaultWhiteboardStyle")
+        case .hex(let string):
+            return localizeStrings("WhiteboardStyle\(string)")
+        }
+    }
+    
+    var string: String {
+        switch self {
+        case .default:
+            return "default"
+        case .hex(let string):
+            return string
+        }
+    }
+    
+    func whiteboardTraitCollectionDidChangeResolve(_ traitCollection: UITraitCollection, fastRoom: FastRoom) {
+        switch self {
+        case .default:
+            fastRoom.view.whiteboardView.backgroundColor = UIColor.color(type: .background).resolvedColor(with: traitCollection)
+        case .hex(let string):
+            fastRoom.view.whiteboardView.backgroundColor = .init(hexString: string)
+        }
+    }
+    
+    var teleboxTheme: WhiteTeleBoxManagerThemeConfig? {
+        switch self {
+        case .default:
+            return nil
+        case .hex(let string):
+            let config = WhiteTeleBoxManagerThemeConfig()
+            config.managerStageBackground = string
+            config.managerContainerBackground = string
+            return config
+        }
+    }
+    
+    init(string: String) {
+        if string.starts(with: "#") {
+            self = .hex(string)
+        } else {
+            self = .default
+        }
+    }
+}
+
 class Theme {
     static let shared = Theme()
     private(set) var style: ThemeStyle
+    private(set) var whiteboardStyle: WhiteboardStyle
     private init() {
         func getPreferredStyle() -> ThemeStyle {
             guard let data = UserDefaults.standard.value(forKey: "userPreferredStyle") as? Data
@@ -67,20 +139,36 @@ class Theme {
                 return .default
             }
         }
+        func getWhiteboardStyle() -> WhiteboardStyle {
+            guard let string = UserDefaults.standard.value(forKey: "whiteboardStyle") as? String
+            else { return .default }
+            return .init(string: string)
+        }
+        whiteboardStyle = getWhiteboardStyle()
         style = getPreferredStyle()
     }
 
     func setupWindowTheme(_ window: UIWindow?) {
         apply(style, window: window)
     }
-
-    func updateUserPreferredStyle(_ style: ThemeStyle) {
-        self.style = style
-        setStoredPreferredStyle(style)
-        SceneManager.shared.windowMap.map(\.value).forEach { apply(style, window: $0) }
+    
+    func updateUserPreferredStyle(_ style: ThemeStyle?, whiteboardStyle: WhiteboardStyle?) {
+        if let whiteboardStyle {
+            self.whiteboardStyle = whiteboardStyle
+            setStoredWhiteboardStyle(whiteboardStyle)
+        }
+        if let style {
+            self.style = style
+            setStoredPreferredStyle(style)
+        }
+        SceneManager.shared.windowMap.map(\.value).forEach { apply(self.style, window: $0) }
         SceneManager.shared.refreshMultiWindowPreview()
     }
 
+    private func setStoredWhiteboardStyle(_ newValue: WhiteboardStyle) {
+        UserDefaults.standard.setValue(newValue.string, forKey: "whiteboardStyle")
+    }
+    
     private func setStoredPreferredStyle(_ newValue: ThemeStyle) {
         do {
             let encoder = JSONEncoder()
@@ -133,6 +221,9 @@ class Theme {
             flatTheme = FastRoomDefaultTheme.defaultAutoTheme
         }
 
+        if let teleboxTheme = whiteboardStyle.teleboxTheme {
+            flatTheme.teleboxTheme = teleboxTheme
+        }
         flatTheme.panelItemAssets.normalIconColor = .color(type: .text)
         flatTheme.panelItemAssets.selectedBackgroundEdgeinset = hasCompact ? .zero : .init(inset: -4)
         flatTheme.panelItemAssets.selectedBackgroundCornerRadius = hasCompact ? 0 : 8

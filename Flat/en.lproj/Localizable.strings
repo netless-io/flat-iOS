@@ -186,6 +186,9 @@
 "Decode error" = "Decode error";
 
 
+"DefaultWhiteboardStyle" = "Default";
+
+
 "Delete" = "Delete";
 
 
@@ -868,6 +871,21 @@
 
 
 "WhiteboardPermissionOpenToast" = "Whiteboard access has been granted";
+
+
+"WhiteboardStyle" = "Whiteboard background";
+
+
+"WhiteboardStyle#064D6D" = "Navy Blue";
+
+
+"WhiteboardStyle#446550" = "Dark Green";
+
+
+"WhiteboardStyle#49585F" = "Light Green";
+
+
+"WhiteboardStyleDetail" = "(Local background color of the whiteboard in the classroom)";
 
 
 "and" = "and";

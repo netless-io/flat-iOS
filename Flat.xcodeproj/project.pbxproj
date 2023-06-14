@@ -99,6 +99,7 @@
 		8A2905F42A038DBE00147244 /* reward.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A2905F32A038DBE00147244 /* reward.json */; };
 		8A2905FA2A0396A100147244 /* reward.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8A2905F92A0396A100147244 /* reward.mp3 */; };
 		8A29751F2726A2DC0095F9F0 /* UIImage+tintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29751E2726A2DC0095F9F0 /* UIImage+tintColor.swift */; };
+		8A2AFC632A39A09B00CD7E36 /* WhiteboardStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2AFC622A39A09B00CD7E36 /* WhiteboardStyleViewController.swift */; };
 		8A2D0B9727158C9000123207 /* ApiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9627158C9000123207 /* ApiProvider.swift */; };
 		8A2D0B9A27158FCD00123207 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9927158FCD00123207 /* Request.swift */; };
 		8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2D0B9B27158FF000123207 /* FlatRequestGenerator.swift */; };
@@ -432,6 +433,7 @@
 		8A2905F32A038DBE00147244 /* reward.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reward.json; sourceTree = "<group>"; };
 		8A2905F92A0396A100147244 /* reward.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = reward.mp3; sourceTree = "<group>"; };
 		8A29751E2726A2DC0095F9F0 /* UIImage+tintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+tintColor.swift"; sourceTree = "<group>"; };
+		8A2AFC622A39A09B00CD7E36 /* WhiteboardStyleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardStyleViewController.swift; sourceTree = "<group>"; };
 		8A2D0B9627158C9000123207 /* ApiProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiProvider.swift; sourceTree = "<group>"; };
 		8A2D0B9927158FCD00123207 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		8A2D0B9B27158FF000123207 /* FlatRequestGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatRequestGenerator.swift; sourceTree = "<group>"; };
@@ -1453,6 +1455,7 @@
 				8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */,
 				8ABECA9D29FA4F5B00F5A527 /* ClassRoomViewController+keyboard.swift */,
 				8A172A8929248714006E4798 /* PreferenceViewController.swift */,
+				8A2AFC622A39A09B00CD7E36 /* WhiteboardStyleViewController.swift */,
 				8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */,
 			);
 			path = Shortcuts;
@@ -2145,6 +2148,7 @@
 				8AB1A739287D4141000AE9A1 /* UploadAvatarFinishRequest.swift in Sources */,
 				8A9FB3C927229E5E00F6F06F /* AnyEncodable.swift in Sources */,
 				8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */,
+				8A2AFC632A39A09B00CD7E36 /* WhiteboardStyleViewController.swift in Sources */,
 				8A9FB3B72722949600F6F06F /* ParameterEncoder.swift in Sources */,
 				8A59FF8B28DAA28600318407 /* UIViewController+screenSize.swift in Sources */,
 				8AA242FE289B68BA00C306F0 /* ClassroomStateHandlerImp.swift in Sources */,

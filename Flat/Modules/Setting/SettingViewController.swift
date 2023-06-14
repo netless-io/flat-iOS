@@ -206,7 +206,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         for i in ThemeStyle.allCases {
             let selected = localizeStrings("selected")
             alertController.addAction(.init(title: i.description + ((current == i) ? selected : ""), style: .default, handler: { _ in
-                manager.updateUserPreferredStyle(i)
+                manager.updateUserPreferredStyle(i, whiteboardStyle: nil)
                 self.updateItems()
             }))
         }

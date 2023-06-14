@@ -8,11 +8,11 @@ PODS:
   - CropViewController (2.6.1)
   - Differentiator (5.0.0)
   - DZNEmptyDataSet (1.8.1)
-  - Fastboard (2.0.0-alpha.15):
-    - Fastboard/core (= 2.0.0-alpha.15)
-  - Fastboard/core (2.0.0-alpha.15):
+  - Fastboard (2.0.0-alpha.16):
+    - Fastboard/core (= 2.0.0-alpha.16)
+  - Fastboard/core (2.0.0-alpha.16):
     - Whiteboard (~> 2.17.0-alpha.24)
-  - Fastboard/fpa (2.0.0-alpha.15):
+  - Fastboard/fpa (2.0.0-alpha.16):
     - Fastboard/core
     - Whiteboard/fpa
   - Firebase/AnalyticsWithoutAdIdSupport (9.5.0):
@@ -159,8 +159,8 @@ DEPENDENCIES:
   - AliyunLogProducer/Core
   - CropViewController
   - DZNEmptyDataSet
-  - Fastboard (= 2.0.0-alpha.15)
-  - Fastboard/fpa (= 2.0.0-alpha.15)
+  - Fastboard (= 2.0.0-alpha.16)
+  - Fastboard/fpa (= 2.0.0-alpha.16)
   - Firebase/AnalyticsWithoutAdIdSupport
   - FirebaseCrashlytics
   - Hero
@@ -242,7 +242,7 @@ SPEC CHECKSUMS:
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fastboard: e737415737d7cbffc40d8febb2b8ace59a09a571
+  Fastboard: ffe79cdf141ea1e4c2bf08ce2faf507dbc043bf2
   Firebase: 800f16f07af493d98d017446a315c27af0552f41
   FirebaseAnalytics: 1b60984a408320dda637306f3f733699ef8473d7
   FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
@@ -281,6 +281,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 1a8f56a76e34e8e82c6ea388cef6a6fddbb86314
+PODFILE CHECKSUM: aca189833d687b019cec1a761c3d85765ecdd95e
 
 COCOAPODS: 1.12.1
