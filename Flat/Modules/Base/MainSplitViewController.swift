@@ -63,16 +63,6 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
 
     weak var detailUpdateDelegate: MainSplitViewControllerDetailUpdateDelegate?
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if canShowDetail {
-            // Show detail for device support split
-            if viewControllers.count == 1 {
-                show(emptyDetailController)
-            }
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self

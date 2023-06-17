@@ -6,7 +6,7 @@
 //  Copyright © 2023 agora.io. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 private func randomForegroundWindow() -> UIWindow? {
     let connectedWindowScenes = UIApplication.shared.connectedScenes
@@ -51,9 +51,15 @@ class SceneManager {
     }
 
     func updateWindowSceneTrait(_ windowScene: UIWindowScene) {
-        let top = UIApplication.shared.topWith(windowScene: windowScene)
-        if top is ClassRoomViewController || top is MixReplayViewController { // Dont reconfig when top is classroom or replay
-            return
+        var top: UIViewController? = UIApplication.shared.topWith(windowScene: windowScene)
+        func shouldPreserve(_ vc: UIViewController) -> Bool {
+            return vc is ClassRoomViewController || vc is MixReplayViewController
+        }
+        while let i = top {
+            if shouldPreserve(i) {  // Dont reconfig when top is classroom or replay
+                return
+            }
+            top = i.presentingViewController
         }
         // To avoid the viewcontroller replace complex, only config the root viewcontroller now.
         config(windowScene: windowScene, user: AuthStore.shared.user)
