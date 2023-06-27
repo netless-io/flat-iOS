@@ -474,7 +474,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 let ids = idPairs.map(\.key)
                 let noCacheIds = ids.filter { self.roomUserInfoCache[$0] == nil }
                 let cachedUsers = ids.compactMap { self.roomUserInfoCache[$0]?.toRoomUser(uid: $0, isOnline: idPairs[$0] ?? false) }
-                print("cc:: no cache count \(noCacheIds.count), \(noCacheIds)")
+//                print("cc:: no cache count \(noCacheIds.count), \(noCacheIds)")
                 if noCacheIds.isEmpty { return .just(cachedUsers) }
                 let memberRequest = MemberRequest(roomUUID: self.roomUUID, usersUUID: noCacheIds)
                 let req = ApiProvider.shared
