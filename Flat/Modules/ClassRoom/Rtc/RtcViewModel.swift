@@ -298,19 +298,19 @@ class RtcViewModel {
             })
             .map(\.values)
             .distinctUntilChanged { old, new in
+                // When user count update. update it.
                 if old.count != new.count {
                     return false
                 }
-                for oldUser in old {
-                    if let newUser = new.first(where: { $0.rtcUID == oldUser.rtcUID }) {
-                        return newUser.status.isSpeak == oldUser.status.isSpeak &&
-                            newUser.status.camera == oldUser.status.camera &&
-                            newUser.status.mic == oldUser.status.mic
-                    } else {
-                        return false
-                    }
+                let isAllSame = old.allSatisfy { oldUser in
+                    guard
+                        let newUser = new.first(where: { $0.rtcUID == oldUser.rtcUID })
+                    else { return false }
+                    return newUser.status.isSpeak == oldUser.status.isSpeak &&
+                        newUser.status.camera == oldUser.status.camera &&
+                        newUser.status.mic == oldUser.status.mic
                 }
-                return true
+                return isAllSame
             }
             .do(onNext: { [weak self] users in
                 guard let self else { return }
