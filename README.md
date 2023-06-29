@@ -24,7 +24,7 @@
 
 - Open sourced front-end and back-end
   - [X] [Flat Web][flat-web]
-  - [X] Flat Desktop ([Windows][flat-homepage] and [macOS][flat-homepage])
+  - [X] Flat Desktop [flat-homepage]
   - [X] [Flat Android][flat-android]
   - [X] [Flat iOS][flat-iOS]
   - [X] [Flat Server][flat-server]

@@ -24,10 +24,10 @@
 
 - 前后端完全开源
   - [X] [Flat Web][flat-web]
-  - [X] Flat 桌面端 ([Windows][flat-homepage] and [macOS][flat-homepage])
+  - [X] Flat 桌面端 [flat-homepage] 
   - [X] [Flat Android][flat-android]
   - [X] [Flat iOS][flat-iOS]
-  - [X] [Flat Server 服务器][flat-server]
+  - [X] [Flat Server][flat-server]
 - 多场景课堂
   - [X] 大班课
   - [X] 小班课
