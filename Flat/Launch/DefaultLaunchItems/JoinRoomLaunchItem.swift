@@ -30,7 +30,6 @@ class JoinRoomLaunchItem: LaunchItem {
                 return true
             } else if let roomId = getUniversalLinkRoomUUID(url) {
                 uuid = roomId
-                UIApplication.shared.topWith(windowScene: scene as? UIWindowScene)?.showAlertWith(message: roomId)
                 return true
             }
         }
