@@ -109,6 +109,7 @@
 		8A303BE429AD9ADB00E0AF36 /* CountryCodePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */; };
 		8A317A9D2966D67800041D4A /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A317A9C2966D67800041D4A /* SceneManager.swift */; };
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
+		8A34A20E2A594C3F006337D7 /* ReplayLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A34A20C2A593F76006337D7 /* ReplayLaunchItem.swift */; };
 		8A3782E029C3077A0051D4FB /* RatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3782DF29C3077A0051D4FB /* RatingManager.swift */; };
 		8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */; };
 		8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */; };
@@ -443,6 +444,7 @@
 		8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCodePicker.swift; sourceTree = "<group>"; };
 		8A317A9C2966D67800041D4A /* SceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
+		8A34A20C2A593F76006337D7 /* ReplayLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayLaunchItem.swift; sourceTree = "<group>"; };
 		8A3782DF29C3077A0051D4FB /* RatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingManager.swift; sourceTree = "<group>"; };
 		8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsLogHandler.swift; sourceTree = "<group>"; };
 		8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomOperation.swift; sourceTree = "<group>"; };
@@ -700,6 +702,7 @@
 			isa = PBXGroup;
 			children = (
 				8A05C2B52759B722009BCA79 /* JoinRoomLaunchItem.swift */,
+				8A34A20C2A593F76006337D7 /* ReplayLaunchItem.swift */,
 				8ABD71BC2766D325004FDC36 /* FileShareLaunchItem.swift */,
 			);
 			path = DefaultLaunchItems;
@@ -2129,6 +2132,7 @@
 				8A270B9F2719681F00450DC6 /* Bundle+Language.swift in Sources */,
 				8A9FB3C127229A6200F6F06F /* FlatRequest.swift in Sources */,
 				8A7741BB27328AEA009FAADA /* PopMenuView.swift in Sources */,
+				8A34A20E2A594C3F006337D7 /* ReplayLaunchItem.swift in Sources */,
 				8A716F3627B9FFF800DB408F /* LoginViewController+Debug.swift in Sources */,
 				8AE8607C29B6DACD002CC58B /* VideoLayoutStore.swift in Sources */,
 				8A9ACC03271E71B100E7E7CE /* RoomBasicInfo.swift in Sources */,

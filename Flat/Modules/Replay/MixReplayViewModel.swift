@@ -18,14 +18,12 @@ class MixReplayViewModel {
         let duration: TimeInterval
     }
 
-    let roomInfo: RoomBasicInfo
     let recordDetail: RecordDetailInfo
 
     var currentIndex: Int?
     var whiteSDK: WhiteSDK!
 
-    internal init(roomInfo: RoomBasicInfo, recordDetail: RecordDetailInfo) {
-        self.roomInfo = roomInfo
+    internal init(recordDetail: RecordDetailInfo) {
         self.recordDetail = recordDetail
     }
 
