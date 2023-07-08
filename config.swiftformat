@@ -1,7 +1,0 @@
-
-# file options
---exclude Pods
-
-# rules
---disable elseOnSameLine
-
