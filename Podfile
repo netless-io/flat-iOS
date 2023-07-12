@@ -19,11 +19,10 @@ target 'Flat' do
   pod 'ScreenCorners'
   
   pod 'AgoraRtm_iOS', '1.5.1'
-  pod 'AgoraRtcEngine_iOS', '4.1.0', :subspecs => ['RtcBasic']
-  pod 'Fastboard', '2.0.0-alpha.16'
-  pod 'Fastboard/fpa', '2.0.0-alpha.16'
-  pod 'Whiteboard', '2.17.0-alpha.24'
-  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.24'
+  pod 'AgoraRtcEngine_iOS', '4.2.1', :subspecs => ['RtcBasic']
+  pod 'Fastboard', '2.0.0-alpha.17'
+  pod 'Whiteboard', '2.17.0-alpha.25'
+  pod 'Whiteboard/SyncPlayer', '2.17.0-alpha.25'
   pod 'SyncPlayer', '0.3.3'
   pod 'ViewDragger', '1.1.0'
   

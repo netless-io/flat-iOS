@@ -1,6 +1,6 @@
 PODS:
   - AcknowList (3.0.0)
-  - AgoraRtcEngine_iOS/RtcBasic (4.1.0)
+  - AgoraRtcEngine_iOS/RtcBasic (4.2.1)
   - AgoraRtm_iOS (1.5.1)
   - AliyunLogProducer/Bricks (2.3.10.4):
     - AliyunLogProducer/Core
@@ -8,13 +8,10 @@ PODS:
   - CropViewController (2.6.1)
   - Differentiator (5.0.0)
   - DZNEmptyDataSet (1.8.1)
-  - Fastboard (2.0.0-alpha.16):
-    - Fastboard/core (= 2.0.0-alpha.16)
-  - Fastboard/core (2.0.0-alpha.16):
-    - Whiteboard (~> 2.17.0-alpha.24)
-  - Fastboard/fpa (2.0.0-alpha.16):
-    - Fastboard/core
-    - Whiteboard/fpa
+  - Fastboard (2.0.0-alpha.17):
+    - Fastboard/core (= 2.0.0-alpha.17)
+  - Fastboard/core (2.0.0-alpha.17):
+    - Whiteboard (~> 2.17.0-alpha.25)
   - Firebase/AnalyticsWithoutAdIdSupport (9.5.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics/WithoutAdIdSupport (~> 9.5.0)
@@ -99,7 +96,6 @@ PODS:
   - nanopb/encode (2.30909.0)
   - "NSObject+Rx (5.2.2)":
     - RxSwift (~> 6.2)
-  - NTL_AgoraFPA (1.0.0)
   - NTLBridge (3.1.5)
   - PromisesObjC (2.1.1)
   - RxCocoa (6.5.0):
@@ -119,31 +115,28 @@ PODS:
   - SyncPlayer (0.3.3)
   - ViewDragger (1.1.0)
   - WechatOpenSDK-XCFramework (2.0.2)
-  - Whiteboard (2.17.0-alpha.24):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.24)
-  - Whiteboard/Base (2.17.0-alpha.24):
+  - Whiteboard (2.17.0-alpha.25):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.25)
+  - Whiteboard/Base (2.17.0-alpha.25):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.24):
+  - Whiteboard/Converter (2.17.0-alpha.25):
     - Whiteboard/Object
-  - Whiteboard/fpa (2.17.0-alpha.24):
-    - NTL_AgoraFPA (~> 1.0.0)
-    - Whiteboard/Room
-  - Whiteboard/Model (2.17.0-alpha.24):
+  - Whiteboard/Model (2.17.0-alpha.25):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.24):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.25):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.24):
+  - Whiteboard/Object (2.17.0-alpha.25):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.24):
+  - Whiteboard/Replayer (2.17.0-alpha.25):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.24)
-  - Whiteboard/Room (2.17.0-alpha.24):
+  - Whiteboard/Resource (2.17.0-alpha.25)
+  - Whiteboard/Room (2.17.0-alpha.25):
     - Whiteboard/Base
-  - Whiteboard/SyncPlayer (2.17.0-alpha.24):
+  - Whiteboard/SyncPlayer (2.17.0-alpha.25):
     - SyncPlayer
     - Whiteboard/Replayer
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.24):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.25):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -153,14 +146,13 @@ PODS:
 
 DEPENDENCIES:
   - AcknowList
-  - AgoraRtcEngine_iOS/RtcBasic (= 4.1.0)
+  - AgoraRtcEngine_iOS/RtcBasic (= 4.2.1)
   - AgoraRtm_iOS (= 1.5.1)
   - AliyunLogProducer/Bricks
   - AliyunLogProducer/Core
   - CropViewController
   - DZNEmptyDataSet
-  - Fastboard (= 2.0.0-alpha.16)
-  - Fastboard/fpa (= 2.0.0-alpha.16)
+  - Fastboard (= 2.0.0-alpha.17)
   - Firebase/AnalyticsWithoutAdIdSupport
   - FirebaseCrashlytics
   - Hero
@@ -182,8 +174,8 @@ DEPENDENCIES:
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
   - WechatOpenSDK-XCFramework
-  - Whiteboard (= 2.17.0-alpha.24)
-  - Whiteboard/SyncPlayer (= 2.17.0-alpha.24)
+  - Whiteboard (= 2.17.0-alpha.25)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.25)
   - Zip
 
 SPEC REPOS:
@@ -216,7 +208,6 @@ SPEC REPOS:
     - MBProgressHUD
     - nanopb
     - "NSObject+Rx"
-    - NTL_AgoraFPA
     - NTLBridge
     - PromisesObjC
     - RxCocoa
@@ -236,13 +227,13 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AcknowList: 931531a3e9d66f202ae8e04819a62c50b818b03e
-  AgoraRtcEngine_iOS: 33f0136ad4196b2a31c8470e6b536fe77fb25f8b
+  AgoraRtcEngine_iOS: bbbacbf4797a6f85532c6023b72c4d66f2b49227
   AgoraRtm_iOS: 595a9fa33a409831e6183396ea8f8bc563918403
   AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fastboard: ffe79cdf141ea1e4c2bf08ce2faf507dbc043bf2
+  Fastboard: 07fc92da659d6a654876e90d21fff5259eace13e
   Firebase: 800f16f07af493d98d017446a315c27af0552f41
   FirebaseAnalytics: 1b60984a408320dda637306f3f733699ef8473d7
   FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
@@ -263,7 +254,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
-  NTL_AgoraFPA: 24a5d0541aba7818829d0051faa7b53317b944a0
   NTLBridge: e94dc18242476b0238c10213a5438d9b9a59fcce
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
@@ -277,10 +267,10 @@ SPEC CHECKSUMS:
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20
   WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
-  Whiteboard: 10b699f7e47bdad272788eaf36b1eb8b966594c3
+  Whiteboard: fcbe3d4788c390026164a3b3580d7aee5826673b
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: aca189833d687b019cec1a761c3d85765ecdd95e
+PODFILE CHECKSUM: 692f381ad0a5be459456c204f4f958b73e0b849b
 
 COCOAPODS: 1.12.1
