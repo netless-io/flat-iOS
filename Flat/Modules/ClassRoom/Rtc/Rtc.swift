@@ -205,12 +205,17 @@ class Rtc: NSObject {
         let captureConfig = AgoraCameraCapturerConfiguration()
         captureConfig.cameraDirection = isUsingFront ? .front : .rear
         agoraKit.setCameraCapturerConfiguration(captureConfig)
-        // 各发流端在加入频道前或者后，都可以调用 enableDualStreamMode 方法开启双流模式。
-        agoraKit.enableDualStreamMode(true)
+        // 4.2 的 AI 降噪
+        agoraKit.setAINSMode(true, mode: .AINS_MODE_BALANCED)
         // 启用针对多人通信场景的优化策略。
         agoraKit.setParameters("{\"che.audio.live_for_comm\": true}")
+        // 4.2 用新的 api 开启多流
         // Agora 建议自定义的小流分辨率不超过 320 × 180 px，码率不超过 140 Kbps，且小流帧率不能超过大流帧率。
-        agoraKit.setParameters("{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":5,\"bitRate\":140}}")
+        let streamConfig = AgoraSimulcastStreamConfig()
+        streamConfig.dimensions = CGSize(width: 320, height: 180)
+        streamConfig.framerate = 5
+        streamConfig.kBitrate = 140
+        agoraKit.setDualStreamMode(.autoSimulcastStream, streamConfig: streamConfig)
 
         agoraKit.enableVideo()
         agoraKit.enableAudio()
