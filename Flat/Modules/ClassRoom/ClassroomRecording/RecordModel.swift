@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 let singleRecordHeight: Int = 108
-private let maxUserCount = 17
+private let maxUserCount = 15
 private let singleWidth = Int(CGFloat(singleRecordHeight) / ClassRoomLayoutRatioConfig.rtcItemRatio)
 private let margin = Float(0)
 private let videoWidth = singleWidth * maxUserCount + ((maxUserCount + 1) * Int(margin))
