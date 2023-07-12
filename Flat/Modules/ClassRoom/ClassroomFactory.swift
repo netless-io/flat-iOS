@@ -51,7 +51,6 @@ enum ClassroomFactory {
                                                       roomToken: playInfo.whiteboardRoomToken,
                                                       region: region,
                                                       userUID: AuthStore.shared.user?.userUUID ?? "",
-                                                      useFPA: userUseFPA,
                                                       userPayload: .init(nickName: userName),
                                                       audioMixerDelegate: rtc)
 

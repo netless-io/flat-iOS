@@ -17,21 +17,6 @@ private var fpaKey: String? {
     return key
 }
 
-/// Global value for user
-var userUseFPA: Bool {
-    get {
-        guard let fpaKey else { return false }
-        return (UserDefaults.standard.value(forKey: fpaKey) as? Bool) ?? false
-    }
-    set {
-        guard let fpaKey else { return }
-        UserDefaults.standard.setValue(newValue, forKey: fpaKey)
-        if !newValue {
-            FpaProxyService.shared().stop()
-        }
-    }
-}
-
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let cellIdentifier = "cellIdentifier"
     var items: [Item] = []
@@ -80,10 +65,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                   title: localizeStrings("AccountCancellation"),
                   detail: "",
                   targetAction: (self, #selector(onClickCancellation(sender:)))),
-            .init(image: UIImage(named: "rocket")!,
-                  title: localizeStrings("FPA"),
-                  detail: userUseFPA ? true : false,
-                  targetAction: (self, #selector(onClickFPA(sender:)))),
             .init(image: UIImage(named: "command")!,
                   title: localizeStrings("Preferences"),
                   detail: "",
@@ -192,11 +173,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func onClickShortcuts(sender _: Any?) {
         let vc = PreferenceViewController(style: .setting)
         navigationController?.pushViewController(vc, animated: true)
-    }
-
-    @objc func onClickFPA(sender: Any?) {
-        guard let sender = sender as? UISwitch else { return }
-        userUseFPA = sender.isOn
     }
 
     @objc func onClickTheme(sender: Any?) {
