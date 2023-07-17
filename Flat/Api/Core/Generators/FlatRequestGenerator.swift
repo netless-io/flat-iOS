@@ -38,7 +38,7 @@ class FlatRequestGenerator: Generator {
             if request.value(forHTTPHeaderField: contentTypeHeaderName) == nil {
                 request.setValue("application/json; charset=utf-8", forHTTPHeaderField: contentTypeHeaderName)
             }
-            request.httpBody = try JSONSerialization.data(withJSONObject: [:], options: [])
+            request.httpBody = try JSONSerialization.data(withJSONObject: [String:String](), options: [])
         }
         for (field, value) in api.header {
             request.addValue(value, forHTTPHeaderField: field)

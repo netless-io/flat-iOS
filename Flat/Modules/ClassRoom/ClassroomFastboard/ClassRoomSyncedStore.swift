@@ -21,7 +21,7 @@ private let whiteboardStateName = "whiteboard"
 private let onStageUsersName = "onStageUsers"
 
 private let classroomDefaultValue: [AnyHashable: Any] = [
-    ClassRoomSyncedStore.RoomState.Keys.raiseHandUsers.rawValue: [],
+    ClassRoomSyncedStore.RoomState.Keys.raiseHandUsers.rawValue: [String](),
     ClassRoomSyncedStore.RoomState.Keys.ban.rawValue: false,
 ]
 private let onStageUserDefaultValue: [AnyHashable: Any] = [:]

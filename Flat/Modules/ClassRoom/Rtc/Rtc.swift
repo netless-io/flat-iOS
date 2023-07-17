@@ -379,6 +379,7 @@ extension AgoraConnectionChangedReason: CustomStringConvertible {
         case .reasonLost: return "lost"
         case .reasonEchoTest: return "echoTest"
         case .clientIpAddressChangedByUser: return "clientIpAddressChangedByUser"
+        case .licenseValidationFailure: return "licenseValidationFailure"
         @unknown default: return "unknown \(rawValue)"
         }
     }
