@@ -36,18 +36,6 @@ class ReplayLaunchItem: LaunchItem {
         return false
     }
 
-    fileprivate func getUniversalLinkRoomUUID(_ url: URL) -> String? {
-        // Url style:
-        // host/replay/{roomType}/{roomUUID}/{ownerUUID}
-        if url.pathComponents.contains("replay"),
-           url.pathComponents.count >= 5,
-           url.pathComponents[3].isNotEmptyOrAllSpacing
-        {
-            return url.pathComponents[3]
-        }
-        return nil
-    }
-
     func shouldHandle(userActivity: NSUserActivity, scene: UIScene) -> Bool {
         guard let url = userActivity.webpageURL else { return false }
         self.scene = scene as? UIWindowScene
@@ -62,6 +50,9 @@ class ReplayLaunchItem: LaunchItem {
 
     func afterLoginSuccessImplementation(withLaunchCoordinator coordinator: LaunchCoordinator, user: User) {
         guard let controller = scene?.viewController() else { return }
+        if controller.presentedViewController != nil {
+            controller.dismiss(animated: false)
+        }
         controller.showActivityIndicator()
         ApiProvider.shared.request(fromApi: RecordDetailRequest(uuid: uuid)) { [weak controller] result in
             guard let controller else { return }
@@ -75,5 +66,17 @@ class ReplayLaunchItem: LaunchItem {
                 controller.toast(error.localizedDescription)
             }
         }
+    }
+    
+    fileprivate func getUniversalLinkRoomUUID(_ url: URL) -> String? {
+        // Url style:
+        // host/replay/{roomType}/{roomUUID}/{ownerUUID}
+        if url.pathComponents.contains("replay"),
+           url.pathComponents.count >= 5,
+           url.pathComponents[3].isNotEmptyOrAllSpacing
+        {
+            return url.pathComponents[3]
+        }
+        return nil
     }
 }
