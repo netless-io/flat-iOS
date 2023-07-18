@@ -308,12 +308,14 @@ class RtcViewModel {
                     else { return false }
                     return newUser.status.isSpeak == oldUser.status.isSpeak &&
                         newUser.status.camera == oldUser.status.camera &&
-                        newUser.status.mic == oldUser.status.mic
+                        newUser.status.mic == oldUser.status.mic &&
+                        newUser.isOnline == oldUser.isOnline
                 }
                 return isAllSame
             }
             .do(onNext: { [weak self] users in
                 guard let self else { return }
+                logger.info("refresh all rtc users status.")
                 for user in users {
                     let isLocal = self.localUserRegular(user.rtcUID)
                     if isLocal {
