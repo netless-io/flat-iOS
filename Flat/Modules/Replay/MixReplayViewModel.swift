@@ -32,7 +32,7 @@ class MixReplayViewModel {
 
         currentIndex = index
         let config = WhiteSdkConfiguration(app: Env().netlessAppId)
-        config.region = .CN
+        config.region =  recordDetail.region.toWhiteRegion()
         config.userCursor = true
         config.useMultiViews = true
         config.log = false

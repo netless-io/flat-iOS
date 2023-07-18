@@ -29,21 +29,8 @@ enum ClassroomFactory {
 
         FastRoom.followSystemPencilBehavior = PerferrenceManager.shared.preferences[.applePencilFollowSystem] ?? true
         let fastRoomConfiguration: FastRoomConfiguration
-        let region: Region
-        switch FlatRegion(rawValue: basicInfo.region) ?? .CN_HZ {
-        case .CN_HZ:
-            region = .CN
-        case .US_SV:
-            region = .US
-        case .SG:
-            region = .SG
-        case .IN_MUM:
-            region = .IN
-        case .GB_LON:
-            region = .GB
-        case .none:
-            region = .CN
-        }
+        
+        let region: Region = (FlatRegion(rawValue: basicInfo.region) ?? .CN_HZ).toFastRegion()
         let userName = AuthStore.shared.user?.name ?? ""
 
         fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
