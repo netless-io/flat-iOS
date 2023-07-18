@@ -10,9 +10,10 @@ import Fastboard
 import UIKit
 
 let undoRedoPreferenceUpdateNotificaton: Notification.Name = .init("undoRedoShortcutUpdateNotificaton")
+let ainsPreferenceUpdateNotificaton: Notification.Name = .init("ainsPreferenceUpdateNotificaton")
 let defaultPreferences: [PreferrenceType: Bool] = supportApplePencil() ?
-    [.disableDefaultUndoRedo: false, .pencilTail: true, .audioMixing: false] :
-    [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true, .audioMixing: false]
+    [.disableDefaultUndoRedo: false, .pencilTail: true, .audioMixing: false, .ains: true] :
+    [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true, .audioMixing: false, .ains: true]
 
 class PerferrenceManager {
     static var key: String {
@@ -49,6 +50,8 @@ class PerferrenceManager {
             break
         case .audioMixing:
             break
+        case .ains:
+            NotificationCenter.default.post(name: ainsPreferenceUpdateNotificaton, object: nil, userInfo: ["enable": value])
         }
         logger.info("update preference \(type), \(value)")
         do {
@@ -79,6 +82,7 @@ enum PreferrenceType: Codable {
     case applePencilFollowSystem
     case pencilTail
     case audioMixing
+    case ains
 
     var title: String {
         switch self {
@@ -90,6 +94,8 @@ enum PreferrenceType: Codable {
             return localizeStrings("PencilTail")
         case .audioMixing:
             return localizeStrings("AudioMixing")
+        case .ains:
+            return localizeStrings("AINS")
         }
     }
 
@@ -103,6 +109,8 @@ enum PreferrenceType: Codable {
             return localizeStrings("PencilTailDetail")
         case .audioMixing:
             return localizeStrings("AudioMixingDetail")
+        case .ains:
+            return localizeStrings("ainsDetail")
         }
     }
 }
@@ -113,14 +121,14 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
         case whiteboardStyle
         var title: String {
             switch self {
-            case .preference(let t, _): return t.title
+            case let .preference(t, _): return t.title
             case .whiteboardStyle: return localizeStrings("WhiteboardStyle")
             }
         }
 
         var detail: String {
             switch self {
-            case .preference(let t, _): return t.detail
+            case let .preference(t, _): return t.detail
             case .whiteboardStyle: return localizeStrings("WhiteboardStyleDetail")
             }
         }
@@ -212,7 +220,7 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
         i.append(.whiteboardStyle)
         return i
     }
-    
+
     lazy var items: [DisplayItem] = latestItems()
 
     func updateItems() {
@@ -236,7 +244,7 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
         cell.preferenceTitleLabel.text = item.title
         cell.preferenceDetailLabel.text = item.detail
         switch item {
-        case .preference(_, let isOn):
+        case let .preference(_, isOn):
             cell.preferenceSwitch.isHidden = false
             cell.preferenceSwitch.isOn = isOn
         case .whiteboardStyle:
@@ -251,7 +259,7 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         cell.switchHandler = { [weak self] isOn in
             guard let self else { return }
-            if case .preference(let type, _) = item {
+            if case let .preference(type, _) = item {
                 PerferrenceManager.shared.updatePreference(type: type, value: isOn)
             }
             self.updateItems()

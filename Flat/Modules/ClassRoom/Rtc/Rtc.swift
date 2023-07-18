@@ -23,7 +23,8 @@ private func encodeConfigWith(mirror: Bool) -> AgoraVideoEncoderConfiguration {
         frameRate: .fps15,
         bitrate: 1130,
         orientationMode: isPhone ? .fixedLandscape : .adaptative,
-        mirrorMode: mirror ? .enabled : .disabled)
+        mirrorMode: mirror ? .enabled : .disabled
+    )
 }
 
 class Rtc: NSObject {
@@ -65,6 +66,14 @@ class Rtc: NSObject {
             if localAudioOn == oldValue { return }
             _performAudioStateUpdate()
         }
+    }
+    
+    
+    @objc fileprivate func _updateAINS() {
+        let isAINS = PerferrenceManager.shared.preferences[.ains] ?? true
+        logger.info("update ains \(isAINS)")
+        // 4.2 的 AI 降噪
+        agoraKit.setAINSMode(isAINS, mode: .AINS_MODE_BALANCED)
     }
 
     private func _performAudioStateUpdate() {
@@ -205,8 +214,7 @@ class Rtc: NSObject {
         let captureConfig = AgoraCameraCapturerConfiguration()
         captureConfig.cameraDirection = isUsingFront ? .front : .rear
         agoraKit.setCameraCapturerConfiguration(captureConfig)
-        // 4.2 的 AI 降噪
-        agoraKit.setAINSMode(true, mode: .AINS_MODE_BALANCED)
+
         // 启用针对多人通信场景的优化策略。
         agoraKit.setParameters("{\"che.audio.live_for_comm\": true}")
         // 4.2 用新的 api 开启多流
@@ -223,6 +231,8 @@ class Rtc: NSObject {
         // 初始化音视频传输
         _performAudioStateUpdate()
         _performCameraStateUpdate()
+        // 初始化降噪
+        _updateAINS()
 
         joinChannelBlock = { [weak self] in
             let canvas = AgoraRtcVideoCanvas()
@@ -256,6 +266,7 @@ class Rtc: NSObject {
 
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleCameraNotification), name: classroomSettingNeedToggleCameraNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleFronMirrorNotification), name: classroomSettingNeedToggleFrontMirrorNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(_updateAINS), name: ainsPreferenceUpdateNotificaton, object: nil)
     }
 }
 
@@ -307,7 +318,7 @@ extension Rtc: AgoraRtcEngineDelegate {
                 networkStatusBehavior.accept(.excellent)
             case (.bad, _), (_, .bad):
                 networkStatusBehavior.accept(.bad)
-            case (.unknown, let s), (let s, .unknown):
+            case let (.unknown, s), let (s, .unknown):
                 networkStatusBehavior.accept(s)
             default:
                 networkStatusBehavior.accept(.good)

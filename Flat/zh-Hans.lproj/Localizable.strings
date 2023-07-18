@@ -1,5 +1,11 @@
 
 
+"AI noise reduction" = "AI 降噪Suppression";
+
+
+"AINS" = "AI 降噪";
+
+
 "About" = "关于我们";
 
 
@@ -895,6 +901,9 @@
 
 
 "WhiteboardStyleDetail" = "（教室内白板的本地背景色）";
+
+
+"ainsDetail" = "(打开后用于降低本地环境噪音)";
 
 
 "and" = "和";

@@ -1,5 +1,8 @@
 
 
+"AINS" = "AI noise suppression";
+
+
 "About" = "About";
 
 
@@ -892,6 +895,9 @@
 
 
 "WhiteboardStyleDetail" = "(Local background color of the whiteboard in the classroom)";
+
+
+"ainsDetail" = "(Turned on to reduce local ambient noise)";
 
 
 "and" = "and";
