@@ -19,7 +19,7 @@ private let agoraPlayErrorStateCode = 714
 private let agoraPlaceholderStateCode = 0
 
 extension Rtc: FastAudioMixerDelegate {
-    func startAudioMixing(audioBridge: WhiteAudioMixerBridge, filePath: String, loopback: Bool, replace: Bool, cycle: Int) {
+    func startAudioMixing(audioBridge: WhiteAudioMixerBridge, filePath: String, loopback: Bool, replace _: Bool, cycle: Int) {
         currentAudioBridge = audioBridge
         let errorCode = Int(agoraKit.startAudioMixing(filePath, loopback: loopback, cycle: cycle, startPos: 0))
         logger.info("mixing start code: \(errorCode)")
@@ -71,8 +71,8 @@ extension Rtc {
             objc_setAssociatedObject(self, &currentAudioBridgeKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
-    
-    func rtcEngine(_ engine: AgoraRtcEngineKit, audioMixingStateChanged state: AgoraAudioMixingStateType, reasonCode: AgoraAudioMixingReasonCode) {
+
+    func rtcEngine(_: AgoraRtcEngineKit, audioMixingStateChanged state: AgoraAudioMixingStateType, reasonCode: AgoraAudioMixingReasonCode) {
         logger.info("mixing rtc state update state: \(state.rawValue), errorCode: \(reasonCode.rawValue) ")
         currentAudioBridge?.setMediaState(state.rawValue, errorCode: reasonCode.rawValue)
     }

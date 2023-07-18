@@ -33,13 +33,15 @@ enum ClassroomFactory {
         let region: Region = (FlatRegion(rawValue: basicInfo.region) ?? .CN_HZ).toFastRegion()
         let userName = AuthStore.shared.user?.name ?? ""
 
+        let mixerDelegate: FastAudioMixerDelegate? = (PerferrenceManager.shared.preferences[.audioMixing] ?? false) ? rtc : nil
+        logger.info("set audio mixer \(mixerDelegate != nil)")
         fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
                                                       roomUUID: playInfo.whiteboardRoomUUID,
                                                       roomToken: playInfo.whiteboardRoomToken,
                                                       region: region,
                                                       userUID: AuthStore.shared.user?.userUUID ?? "",
                                                       userPayload: .init(nickName: userName),
-                                                      audioMixerDelegate: rtc)
+                                                      audioMixerDelegate: mixerDelegate)
 
         if var ua = fastRoomConfiguration.whiteSdkConfiguration.value(forKey: "netlessUA") as? [String] {
             let env = Env()

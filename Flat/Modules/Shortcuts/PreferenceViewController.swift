@@ -11,8 +11,8 @@ import UIKit
 
 let undoRedoPreferenceUpdateNotificaton: Notification.Name = .init("undoRedoShortcutUpdateNotificaton")
 let defaultPreferences: [PreferrenceType: Bool] = supportApplePencil() ?
-    [.disableDefaultUndoRedo: false, .pencilTail: true] :
-    [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true]
+    [.disableDefaultUndoRedo: false, .pencilTail: true, .audioMixing: false] :
+    [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true, .audioMixing: false]
 
 class PerferrenceManager {
     static var key: String {
@@ -47,6 +47,8 @@ class PerferrenceManager {
             FastRoom.followSystemPencilBehavior = value
         case .pencilTail:
             break
+        case .audioMixing:
+            break
         }
         logger.info("update preference \(type), \(value)")
         do {
@@ -76,6 +78,7 @@ enum PreferrenceType: Codable {
     case disableDefaultUndoRedo
     case applePencilFollowSystem
     case pencilTail
+    case audioMixing
 
     var title: String {
         switch self {
@@ -85,6 +88,8 @@ enum PreferrenceType: Codable {
             return localizeStrings("ApplePencilShortcuts")
         case .pencilTail:
             return localizeStrings("PencilTail")
+        case .audioMixing:
+            return localizeStrings("AudioMixing")
         }
     }
 
@@ -96,6 +101,8 @@ enum PreferrenceType: Codable {
             return localizeStrings("ApplePencilShortcutsDetail")
         case .pencilTail:
             return localizeStrings("PencilTailDetail")
+        case .audioMixing:
+            return localizeStrings("AudioMixingDetail")
         }
     }
 }
@@ -200,14 +207,16 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
         return button
     }()
 
-    lazy var items: [DisplayItem] = {
+    func latestItems() -> [DisplayItem] {
         var i = PerferrenceManager.shared.preferences.map { DisplayItem.preference($0.key, $0.value) }
         i.append(.whiteboardStyle)
         return i
-    }()
+    }
+    
+    lazy var items: [DisplayItem] = latestItems()
 
     func updateItems() {
-        items = PerferrenceManager.shared.preferences.map { DisplayItem.preference($0.key, $0.value) }
+        items = latestItems()
         tableView.reloadData()
     }
 
