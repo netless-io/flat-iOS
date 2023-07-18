@@ -115,28 +115,28 @@ PODS:
   - SyncPlayer (0.3.3)
   - ViewDragger (1.1.0)
   - WechatOpenSDK-XCFramework (2.0.2)
-  - Whiteboard (2.17.0-alpha.25):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.25)
-  - Whiteboard/Base (2.17.0-alpha.25):
+  - Whiteboard (2.17.0-alpha.26):
+    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.26)
+  - Whiteboard/Base (2.17.0-alpha.26):
     - NTLBridge (~> 3.1.4)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.25):
+  - Whiteboard/Converter (2.17.0-alpha.26):
     - Whiteboard/Object
-  - Whiteboard/Model (2.17.0-alpha.25):
+  - Whiteboard/Model (2.17.0-alpha.26):
     - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.25):
+  - Whiteboard/NativeReplayer (2.17.0-alpha.26):
     - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.25):
+  - Whiteboard/Object (2.17.0-alpha.26):
     - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.25):
+  - Whiteboard/Replayer (2.17.0-alpha.26):
     - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.25)
-  - Whiteboard/Room (2.17.0-alpha.25):
+  - Whiteboard/Resource (2.17.0-alpha.26)
+  - Whiteboard/Room (2.17.0-alpha.26):
     - Whiteboard/Base
-  - Whiteboard/SyncPlayer (2.17.0-alpha.25):
+  - Whiteboard/SyncPlayer (2.17.0-alpha.26):
     - SyncPlayer
     - Whiteboard/Replayer
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.25):
+  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.26):
     - Whiteboard/Converter
     - Whiteboard/NativeReplayer
     - Whiteboard/Resource
@@ -174,8 +174,8 @@ DEPENDENCIES:
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
   - WechatOpenSDK-XCFramework
-  - Whiteboard (= 2.17.0-alpha.25)
-  - Whiteboard/SyncPlayer (= 2.17.0-alpha.25)
+  - Whiteboard (= 2.17.0-alpha.26)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.26)
   - Zip
 
 SPEC REPOS:
@@ -267,10 +267,10 @@ SPEC CHECKSUMS:
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20
   WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
-  Whiteboard: fcbe3d4788c390026164a3b3580d7aee5826673b
+  Whiteboard: f7346add48ba76d4503171de5367746fd900ab1d
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 692f381ad0a5be459456c204f4f958b73e0b849b
+PODFILE CHECKSUM: 245e4784a78297332ee8d0ced5dc7862ffb822c6
 
 COCOAPODS: 1.12.1
