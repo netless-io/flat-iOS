@@ -267,6 +267,11 @@ class FastboardViewController: UIViewController {
     }
 
     func setupViews() {
+        if #available(iOS 16.4, *) {
+            fastRoom.view.whiteboardView.isInspectable = true
+        } else {
+            // Fallback on earlier versions
+        }
         view.addSubview(fastRoom.view)
         fastRoom.view.snp.makeConstraints { $0.edges.equalToSuperview() }
         view.addSubview(blackMaskView)
