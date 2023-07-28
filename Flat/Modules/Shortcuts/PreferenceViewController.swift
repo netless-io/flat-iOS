@@ -12,8 +12,8 @@ import UIKit
 let undoRedoPreferenceUpdateNotificaton: Notification.Name = .init("undoRedoShortcutUpdateNotificaton")
 let ainsPreferenceUpdateNotificaton: Notification.Name = .init("ainsPreferenceUpdateNotificaton")
 let defaultPreferences: [PreferrenceType: Bool] = supportApplePencil() ?
-    [.disableDefaultUndoRedo: false, .pencilTail: true, .audioMixing: false, .ains: true] :
-    [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true, .audioMixing: false, .ains: true]
+    [.disableDefaultUndoRedo: false, .applePencilFollowSystem: true, .pencilTail: true, .audioMixing: false, .ains: true] :
+    [.disableDefaultUndoRedo: false, .pencilTail: true, .audioMixing: false, .ains: true]
 
 class PerferrenceManager {
     static var key: String {
