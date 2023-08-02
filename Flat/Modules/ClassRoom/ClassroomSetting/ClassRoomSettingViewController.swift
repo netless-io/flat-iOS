@@ -129,7 +129,7 @@ class ClassRoomSettingViewController: UIViewController {
 
         let logoutHeight = CGFloat(40)
         let margin = CGFloat(14)
-        let containerHeight = CGFloat(logoutHeight + margin + 30 + view.safeAreaInsets.bottom)
+        let containerHeight = CGFloat(logoutHeight + 2*margin)
         let bottomContainer = UIView(frame: .init(origin: .zero, size: .init(width: 400, height: containerHeight)))
         bottomContainer.backgroundColor = .classroomChildBG
         tableView.contentInset = .init(top: 0, left: 0, bottom: containerHeight, right: 0)
@@ -261,7 +261,7 @@ class ClassRoomSettingViewController: UIViewController {
         view.register(.init(nibName: String(describing: ClassRoomSettingTableViewCell.self), bundle: nil), forCellReuseIdentifier: cellIdentifier)
         view.delegate = self
         view.dataSource = self
-        view.rowHeight = 48
+        view.rowHeight = 46
         view.showsVerticalScrollIndicator = false
         return view
     }()
