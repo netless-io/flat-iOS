@@ -54,14 +54,14 @@ enum ClassroomFactory {
         }
         fastRoomConfiguration.whiteSdkConfiguration.enableSyncedStore = true
         fastRoomConfiguration.whiteSdkConfiguration.disableNewPencilStroke = !(PerferrenceManager.shared.preferences[.pencilTail] ?? true)
-        let userPermissionEnable = basicInfo.isOwner
+        let isOwner = basicInfo.isOwner
         fastRoomConfiguration.whiteRoomConfig.windowParams?.collectorStyles = ["top": "8px", "right": "8px"]
         fastRoomConfiguration.whiteRoomConfig.windowParams?.scrollVerticalOnly = true
         fastRoomConfiguration.whiteRoomConfig.windowParams?.stageStyle = "box-shadow: 0 0 0"
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
-        fastRoomConfiguration.whiteRoomConfig.disableCameraTransform = !userPermissionEnable
+        fastRoomConfiguration.whiteRoomConfig.disableCameraTransform = !isOwner
         fastRoomConfiguration.whiteSdkConfiguration.log = false
-        fastRoomConfiguration.whiteRoomConfig.isWritable = userPermissionEnable
+        fastRoomConfiguration.whiteRoomConfig.isWritable = basicInfo.roomType.whiteboardAlwaysWritable ? true : isOwner
         if let customBundlePath = Bundle.main.path(forResource: "whiteboard_rebuild", ofType: "bundle"),
            let customBundle = Bundle(path: customBundlePath),
            let indexPath = customBundle.path(forResource: "index", ofType: "html")
@@ -71,8 +71,8 @@ enum ClassroomFactory {
         Fastboard.globalFastboardRatio = 1 / ClassRoomLayoutRatioConfig.whiteboardRatio
         let fastboardViewController = FastboardViewController(fastRoomConfiguration: fastRoomConfiguration)
 
-        let camera = userPermissionEnable ? deviceStatus.camera : false
-        let mic = userPermissionEnable ? deviceStatus.mic : false
+        let camera = isOwner ? deviceStatus.camera : false
+        let mic = isOwner ? deviceStatus.mic : false
         let initDeviceState = DeviceState(mic: mic, camera: camera)
 
         let agoraRtm = AgoraRtm(rtmToken: playInfo.rtmToken,

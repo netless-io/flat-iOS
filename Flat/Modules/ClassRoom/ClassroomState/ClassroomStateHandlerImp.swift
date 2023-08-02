@@ -508,9 +508,11 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                     newUser.status.mic = deviceState.mic
                     newUser.status.camera = deviceState.camera
                 }
+                // Owner is always in speaking status.
                 newUser.status.isSpeak = ownerUUID == newUser.rtmUUID || onStageIds.contains(newUser.rtmUUID)
-                newUser.status.isRaisingHand = raiseHands.contains(newUser.rtmUUID)
+                // Owner is always in whiteboard status.
                 newUser.status.whiteboard = ownerUUID == newUser.rtmUUID || whiteboardIds.contains(newUser.rtmUUID)
+                newUser.status.isRaisingHand = raiseHands.contains(newUser.rtmUUID)
                 return newUser
             }
 

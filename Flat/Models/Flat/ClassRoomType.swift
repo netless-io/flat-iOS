@@ -21,6 +21,16 @@ struct ClassRoomType: RawRepresentable, Codable, Equatable {
             }
         }
     }
+    
+    var allowAutoOnstage: Bool {
+        if self == .bigClass { return false }
+        return true
+    }
+    
+    var whiteboardAlwaysWritable: Bool {
+        if self == .bigClass { return false }
+        return true
+    }
 
     var maxWritableUsersCount: Int {
         switch self {

@@ -39,7 +39,7 @@ class ClassRoomViewModel {
             .distinctUntilChanged()
     }
 
-    func transWhiteboardPermissionUpdate(whiteboardEnable: Observable<Bool>) -> Driver<String> {
+    func transWhiteboardPermissionUpdate(whiteboardEnable _: Observable<Bool>) -> Driver<String> {
         currentUser
             .map(\.status.whiteboard)
             .distinctUntilChanged()
@@ -55,7 +55,8 @@ class ClassRoomViewModel {
         Observable
             .combineLatest(
                 currentUser.map(\.status.isSpeak),
-                whiteboardEnable) { speak, whiteboard -> (speak: Bool, whiteboard: Bool) in (speak, whiteboard) }
+                whiteboardEnable
+            ) { speak, whiteboard -> (speak: Bool, whiteboard: Bool) in (speak, whiteboard) }
             .filter { ($0.speak && $0.whiteboard) || !$0.speak }
             .map(\.speak)
             .distinctUntilChanged()
@@ -78,7 +79,8 @@ class ClassRoomViewModel {
 
     var raiseHandHide: Observable<Bool> {
         Observable.combineLatest(currentUser,
-                                 banState) { [weak self] currentUser, ban in
+                                 banState)
+        { [weak self] currentUser, ban in
             guard let self else { return true }
             if self.isOwner { return true }
             if ban { return true }
@@ -86,7 +88,16 @@ class ClassRoomViewModel {
         }
     }
 
-    var whiteboardPermission: Observable<WhiteboardPermission> { currentUser.map { .init(writable: $0.status.whiteboard || $0.status.isSpeak, inputEnable: $0.status.whiteboard) }}
+    var whiteboardPermission: Observable<WhiteboardPermission> {
+        let isBigClass = roomType == .bigClass
+        let classroomAllowWhiteboardWritable = !isBigClass
+        return currentUser.map {
+            WhiteboardPermission(
+                writable: classroomAllowWhiteboardWritable || $0.status.whiteboard || $0.status.isSpeak,
+                inputEnable: $0.status.whiteboard
+            )
+        }
+    }
 
     var isRaisingHand: Observable<Bool> {
         currentUser.map(\.status.isRaisingHand)
@@ -138,7 +149,7 @@ class ClassRoomViewModel {
         let initRoom = stateHandler.setup()
             .flatMap { [weak self] _ -> Single<Void> in
                 guard let self else { return .error("self not exist") }
-                // Owner broadcast state when join room
+                // Owner broadcast state when join room.
                 if self.isOwner {
                     return self.stateHandler.send(command: .updateDeviceState(uuid: self.userUUID, state: self.initDeviceState))
                 } else {
@@ -151,34 +162,26 @@ class ClassRoomViewModel {
             .share(replay: 1, scope: .whileConnected)
 
         let autoPickMemberOnStageOnce: Single<RoomUser?>?
-        if roomType == .oneToOne, isOwner {
+        if roomType.allowAutoOnstage, !isOwner {
             autoPickMemberOnStageOnce = shareInitRoom
-                .flatMap { [weak self] _ -> Observable<[RoomUser]> in
+                .flatMap { [weak self] _ -> Observable<RoomUser> in
                     guard let self else { return .error("self not exist") }
-                    return self.members
+                    return self.currentUser
                 }
-                .skip(while: { $0.count < 2 })
-                .take(1)
-                .flatMap { [weak self] members -> Observable<RoomUser?> in
+                .withLatestFrom(
+                    stateHandler.checkIfSpeakUserOverMaxCount(),
+                    resultSelector: { user, allowSpeakMore -> RoomUser? in
+                        allowSpeakMore ? user : nil
+                })
+                .flatMap({ [weak self] user -> Observable<RoomUser?> in
                     guard let self else { return .error("self not exist") }
-                    let speakers = members.filter(\.status.isSpeak)
-                    if speakers.count >= 2 {
-                        return .just(nil)
-                    }
-
-                    let nonSpeakers = members.filter {
-                        $0.rtmUUID != self.userUUID &&
-                            !$0.status.isSpeak
-                    }
-                    if let target = nonSpeakers.first {
-                        return self.stateHandler
-                            .send(command: .pickUserOnStage(target.rtmUUID))
+                    if let user {
+                        return self.stateHandler.send(command: .pickUserOnStage(user.rtmUUID))
                             .asObservable()
-                            .map { target }
-                    } else {
-                        return .just(nil)
+                            .map({ _ -> RoomUser? in user })
                     }
-                }
+                    return .just(nil)
+                })
                 .asSingle()
         } else {
             autoPickMemberOnStageOnce = nil
@@ -248,13 +251,13 @@ class ClassRoomViewModel {
                     .map { ban }
             }
     }
-    
+
     func observableRewards() -> Observable<UInt> {
         stateHandler.rewardPublisher
             .withLatestFrom(members, resultSelector: { uuid, members in
                 members.first(where: { $0.rtmUUID == uuid })?.rtcUID
             })
-            .filter({ $0 != nil })
+            .filter { $0 != nil }
             .map { $0! }
             .asObservable()
     }
@@ -384,7 +387,7 @@ class ClassRoomViewModel {
                     .send(command: .allMute)
                     .map { localizeStrings("All mute toast") }
             }.asDriver(onErrorJustReturn: "all mute task error")
-        
+
         let rewardTask = input.tapSomeUserReward
             .flatMap { [unowned self] userUUID -> Single<String> in
                 guard self.isOwner else { return .just("") }
@@ -468,7 +471,7 @@ class ClassRoomViewModel {
                         return ""
                     }
                     .catch { error in
-                        return .just(error.localizedDescription)
+                        .just(error.localizedDescription)
                     }
                 return sending
             }.asDriver(onErrorJustReturn: "Camera task error")
@@ -491,7 +494,7 @@ class ClassRoomViewModel {
                         return ""
                     }
                     .catch { error in
-                        return .just(error.localizedDescription)
+                        .just(error.localizedDescription)
                     }
                 return sending
             }.asDriver(onErrorJustReturn: "Mic task error")
