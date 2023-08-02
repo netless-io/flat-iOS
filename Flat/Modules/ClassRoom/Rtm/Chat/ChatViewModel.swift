@@ -101,7 +101,7 @@ class ChatViewModel {
             msgs.map { msg -> DisplayMessage in
                 switch msg {
                 case let .notice(text): return .notice(text)
-                case let .user(msg): return .user(message: msg, info: dic[msg.userId]!)
+                case let .user(msg): return .user(message: msg, info: dic[msg.userId] ?? .init(name: "unknown-user", avatar: nil))
                 }
             }
         }
