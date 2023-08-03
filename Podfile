@@ -55,7 +55,7 @@ target 'Flat' do
     
     if !ignore_whiteboard_rebuild
       # Rebuild whiteboard bridge with injected code.
-      system('sh rebuild_whiteboard_bridge.sh $(pwd)')
+      system('sh rebuild_whiteboard_bridge.sh $(pwd)') || exit(1)
       
       # Remove the copy resource
       installer.pods_project.targets.each do |target|
