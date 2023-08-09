@@ -79,6 +79,7 @@ class ClassroomStatusBar: UIView {
         addSubview(networkStatusIcon)
         addSubview(timeLabel)
         addSubview(timeCountLabel)
+        addSubview(onStageStatusButton)
         latencyLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
@@ -104,6 +105,11 @@ class ClassroomStatusBar: UIView {
             make.left.equalTo(timeLabel.snp.right)
             make.centerY.equalToSuperview()
         }
+        onStageStatusButton.snp.makeConstraints { make in
+            make.top.bottom.right.equalToSuperview()
+            make.left.greaterThanOrEqualTo(timeCountLabel.snp.right)
+            make.width.greaterThanOrEqualTo(100)
+        }
         addLine(direction: .bottom, color: .borderColor)
     }
     
@@ -115,7 +121,7 @@ class ClassroomStatusBar: UIView {
     lazy var networkStatusIcon = UIImageView()
     lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = .color(type: .text)
         label.text = localizeStrings("classroomTimePassed") + ": "
         return label
@@ -123,14 +129,14 @@ class ClassroomStatusBar: UIView {
 
     lazy var timeCountLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = .color(type: .text)
         return label
     }()
     
     lazy var networkStatusLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = .color(type: .text)
         label.text = localizeStrings("network") + ":"
         return label
@@ -138,7 +144,7 @@ class ClassroomStatusBar: UIView {
     
     lazy var latencyLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = .color(type: .text)
         label.text = localizeStrings("latency") + ": "
         return label
@@ -146,9 +152,21 @@ class ClassroomStatusBar: UIView {
     
     lazy var latencyCountLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = .color(type: .text)
         return label
+    }()
+    
+    lazy var onStageStatusButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.titleLabel?.font = .systemFont(ofSize: 12)
+        btn.alpha = 0
+        btn.setTitle(localizeStrings("People on stage hint") + " 0", for: .normal)
+        btn.setImage(UIImage(named: "statusbar_onstage_user"), for: .normal)
+        btn.tintColor = .color(type: .primary)
+        btn.setTitleColor(.color(type: .primary), for: .normal)
+        btn.horizontalCenterTitleAndImageWith(4)
+        return btn
     }()
     
     @objc func onTimer() {

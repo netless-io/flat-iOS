@@ -9,13 +9,24 @@
 import Fastboard
 import RxCocoa
 import RxSwift
+import SnapKit
 import UIKit
 import Whiteboard
 
 let classRoomLeavingNotificationName = Notification.Name("classRoomLeaving")
 
+let classroomStatusBarMinHeight: CGFloat = 24
+let classroomRtcMinHeight: CGFloat = 88
+let classroomRtcMaxHeight: CGFloat = 190
+let classroomRtcMinWidth: CGFloat = 120
+let classroomRtcMaxWidth: CGFloat = 166
+let classroomRtcComactLength: CGFloat = 0
+
 class ClassRoomViewController: UIViewController {
-    override var prefersStatusBarHidden: Bool { true }
+    var hideStatusBar = true
+    override var prefersStatusBarHidden: Bool {
+        hideStatusBar
+    }
     override var prefersHomeIndicatorAutoHidden: Bool { true }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         traitCollection.hasCompact ? .landscapeRight : .landscape
@@ -28,6 +39,13 @@ class ClassRoomViewController: UIViewController {
     let isOwner: Bool
     let ownerUUID: String
     let viewModel: ClassRoomViewModel
+
+    // MARK: - Rtc dragging variables
+
+    var rtcIndicatorDraggingPreviousTranslation = CGFloat(0)
+    var draggingTranslation = CGFloat(0)
+    var rtcLengthConstraint: Constraint?
+    var draggingStartRtcLength = CGFloat(0)
 
     // MARK: - Child Controllers
 
@@ -57,7 +75,7 @@ class ClassRoomViewController: UIViewController {
         self.inviteViewController = inviteViewController
         self.isOwner = isOwner
         self.ownerUUID = ownerUUID
-        self.classroomStatusBar = .init(beginTime: beginTime)
+        classroomStatusBar = .init(beginTime: beginTime)
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         logger.trace("\(self) init")
@@ -115,6 +133,14 @@ class ClassRoomViewController: UIViewController {
             updateLayout()
         }
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.current.userInterfaceIdiom != .phone {
+            hideStatusBar = container.frame.origin.y <= view.safeAreaInsets.top
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
 
     deinit {
         logger.trace("\(self) deinit")
@@ -126,7 +152,7 @@ class ClassRoomViewController: UIViewController {
         initRoomStatus()
         observeScene()
     }
-    
+
     // MARK: - Private
 
     func initRoomStatus() {
@@ -454,7 +480,7 @@ class ClassRoomViewController: UIViewController {
             settingVC.micPublish.asObservable().map { [unowned self] in self.viewModel.userUUID },
             rtcListViewController.userMicClick.asObservable()
         )
-        
+
         let whiteboardTap = Observable.merge(
             rtcListViewController.whiteboardClick.asObservable(),
             userListViewController.whiteboardTap.asObservable()
@@ -464,7 +490,7 @@ class ClassRoomViewController: UIViewController {
             rtcListViewController.muteAllClick.asObservable(),
             userListViewController.allMuteTap.asObservable()
         )
-        
+
         viewModel.transformUserListInput(.init(allMuteTap: muteAll,
                                                stopInteractingTap: userListViewController.stopInteractingTap.asObservable(),
                                                tapSomeUserOnStage: userListViewController.onStageTap.asObservable(),
@@ -472,7 +498,7 @@ class ClassRoomViewController: UIViewController {
                                                tapSomeUserRaiseHand:
                                                Observable.merge([
                                                    userListViewController.raiseHandTap.asObservable(),
-                                                   raiseHandListViewController.acceptRaiseHandPublisher.asObservable()
+                                                   raiseHandListViewController.acceptRaiseHandPublisher.asObservable(),
                                                ]),
                                                tapSomeUserCamera: tapSomeUserCamera,
                                                tapSomeUserMic: tapSomeUserMic,
@@ -484,16 +510,23 @@ class ClassRoomViewController: UIViewController {
     }
 
     func bindRtc() {
+        viewModel
+            .members
+            .map { $0.filter(\.status.isSpeak).count }
+            .map { localizeStrings("People on stage hint") + " \($0)" }
+            .bind(to: classroomStatusBar.onStageStatusButton.rx.title(for: .normal))
+            .disposed(by: rx.disposeBag)
+
         rtcListViewController.bindUsers(viewModel.members.asDriver(onErrorJustReturn: []))
         rtcListViewController.draggingCanvasProvider = self
-        
+
         viewModel
             .observableRewards()
             .subscribe(with: rtcListViewController) { r, uid in
                 r.rewardAnimation(uid: uid)
             }
             .disposed(by: rx.disposeBag)
-        
+
         rtcListViewController.viewModel.rtc.screenShareJoinBehavior
             .skip(while: { !$0 })
             .subscribe(with: self, onNext: { weakSelf, isOn in
@@ -501,7 +534,6 @@ class ClassRoomViewController: UIViewController {
                 weakSelf.turnScreenShare(on: isOn)
             })
             .disposed(by: rx.disposeBag)
-        
     }
 
     func bindWhiteboard() {
@@ -550,13 +582,16 @@ class ClassRoomViewController: UIViewController {
             })
             .disposed(by: rx.disposeBag)
 
-        settingVC.videoAreaPublish.asDriver(onErrorJustReturn: ())
-            .drive(with: self, onNext: { weakSelf, _ in
-                let isOpen = !weakSelf.settingVC.videoAreaOn.value
-                weakSelf.settingVC.videoAreaOn.accept(isOpen)
-                weakSelf.performRtc(hide: !isOpen)
-            })
-            .disposed(by: rx.disposeBag)
+        Driver.merge(
+            classroomStatusBar.onStageStatusButton.rx.tap.asDriver(),
+            settingVC.videoAreaPublish.asDriver(onErrorJustReturn: ())
+        )
+        .drive(with: self, onNext: { weakSelf, _ in
+            let isOpen = !weakSelf.settingVC.videoAreaOn.value
+            weakSelf.settingVC.videoAreaOn.accept(isOpen)
+            weakSelf.performRtc(hide: !isOpen)
+        })
+        .disposed(by: rx.disposeBag)
 
         viewModel.transformLogoutTap(settingVC.logoutButton.rx.sourceTap.map { [unowned self] _ in
             self.settingButton
@@ -622,6 +657,8 @@ class ClassRoomViewController: UIViewController {
     lazy var container: UIStackView = {
         let container = UIStackView(arrangedSubviews: [classroomStatusBar, rtcAndBoardContainer])
         container.axis = .vertical
+        container.bringSubviewToFront(classroomStatusBar)
+        container.clipsToBounds = true
         return container
     }()
 
@@ -637,7 +674,6 @@ class ClassRoomViewController: UIViewController {
         addChild(rtcListViewController)
         addChild(fastboardViewController)
 
-        let rtcView = rtcListViewController.view!
         let boardView = fastboardViewController.view!
 
         view.addSubview(draggingDridMaskView) // Make sure the container is on the bottom hierachy.
@@ -646,8 +682,6 @@ class ClassRoomViewController: UIViewController {
         fastboardViewController.didMove(toParent: self)
 
         let isiPhone = UIDevice.current.userInterfaceIdiom == .phone
-        let statusBarMinHeight: CGFloat = 24
-        let statusBarMaxHeight: CGFloat = 66
 
         draggingDridMaskView.snp.makeConstraints { make in
             make.left.right.equalTo(view)
@@ -656,35 +690,22 @@ class ClassRoomViewController: UIViewController {
 
         container.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.centerX.equalToSuperview().offset(view.safeAreaInsets.left / 2)
+            make.centerX.equalToSuperview().offset(view.safeAreaInsets.left / 2) // Only work for some iPhone.
             make.width.lessThanOrEqualTo(view).inset(view.safeAreaInsets.left / 2)
             make.height.lessThanOrEqualToSuperview()
             make.width.height.equalToSuperview().priority(.high)
         }
-        classroomStatusBar.snp.makeConstraints { make in
-            make.height.lessThanOrEqualTo(statusBarMaxHeight)
-            make.height.greaterThanOrEqualTo(statusBarMinHeight)
-            make.height.equalTo(statusBarMinHeight).priority(.low)
+
+        classroomStatusBar.snp.remakeConstraints { make in
+            make.height.equalTo(classroomStatusBarMinHeight)
         }
 
         if isiPhone {
             boardView.snp.makeConstraints { make in
                 make.width.equalTo(boardView.snp.height).dividedBy(ClassRoomLayoutRatioConfig.whiteboardRatio)
-                make.height.equalTo(view).offset(statusBarMinHeight).priority(.low)
-            }
-            let iPhoneMinRtcWidth: CGFloat = 120
-            rtcView.snp.makeConstraints { make in
-                make.width.greaterThanOrEqualTo(iPhoneMinRtcWidth)
-                make.width.equalTo(iPhoneMinRtcWidth).priority(.medium)
+                make.height.equalTo(view).offset(classroomStatusBarMinHeight).priority(.low)
             }
         } else {
-            let rtcMinHeight: CGFloat = 88
-            let rtcMaxHeight: CGFloat = 190
-            rtcView.snp.makeConstraints { make in
-                make.height.lessThanOrEqualTo(rtcMaxHeight)
-                make.height.greaterThanOrEqualTo(rtcMinHeight)
-                make.height.equalTo(rtcMaxHeight).priority(.medium)
-            }
             boardView.snp.makeConstraints { make in
                 make.height.equalTo(boardView.snp.width).multipliedBy(ClassRoomLayoutRatioConfig.whiteboardRatio)
                 make.width.equalTo(view).priority(.low)
@@ -692,6 +713,36 @@ class ClassRoomViewController: UIViewController {
         }
 
         setupToolbar()
+        setupRtcDragging()
+        updateRtcViewConstraint()
+    }
+
+    /// - Parameter length: width for vertical. height for horizontal
+    func updateRtcViewConstraint(length: CGFloat? = nil) {
+        guard let rtcView = rtcListViewController.view else { return }
+        let isPhone = UIDevice.current.userInterfaceIdiom == .phone
+        if isPhone {
+            rtcLengthConstraint?.deactivate()
+            rtcView.snp.remakeConstraints { make in
+                if let length {
+                    rtcLengthConstraint = make.width.equalTo(length).constraint
+                } else {
+                    make.width.greaterThanOrEqualTo(classroomRtcMinWidth)
+                    rtcLengthConstraint = make.width.equalTo(classroomRtcMinWidth).priority(.medium).constraint
+                }
+            }
+        } else {
+            rtcLengthConstraint?.deactivate()
+            rtcView.snp.remakeConstraints { make in
+                make.height.lessThanOrEqualTo(classroomRtcMaxHeight)
+                make.height.greaterThanOrEqualTo(classroomRtcMinHeight)
+                if let length {
+                    rtcLengthConstraint = make.height.equalTo(length).constraint
+                } else {
+                    rtcLengthConstraint = make.height.equalTo(classroomRtcMaxHeight).priority(.medium).constraint
+                }
+            }
+        }
     }
 
     func setupToolbar() {
@@ -780,17 +831,30 @@ class ClassRoomViewController: UIViewController {
         }
     }
 
-    func performRtc(hide: Bool) {
-        rtcAndBoardContainer.sendSubviewToBack(rtcListViewController.view)
-        rtcListViewController.view.alpha = hide ? 1 : 0
-        UIView.animate(withDuration: 0.3) {
-            self.rtcListViewController.view.alpha = hide ? 0 : 1
-            self.rtcListViewController.view.isHidden = hide
-            self.updateLayout()
+    func performRtc(hide: Bool, animation: Bool = true) {
+        updateRtcViewConstraint(length: hide ? classroomRtcComactLength : nil)
+        let animationBlock: (() -> Void) = {
+            self.rtcListViewController.mainScrollView.alpha = hide ? 0 : 1
+            self.classroomStatusBar.onStageStatusButton.alpha = hide ? 1 : 0
+            self.view.layoutIfNeeded()
+        }
+        if animation {
+            UIView.animate(withDuration: 0.3, animations: animationBlock)
+        } else {
+            animationBlock()
         }
     }
 
     // MARK: - Lazy
+
+    lazy var rtcDraggingHandlerView: UIImageView = {
+        let view = UIImageView()
+        view.backgroundColor = .clear
+        view.alpha = 0.3
+        view.isUserInteractionEnabled = true
+        view.contentMode = .center
+        return view
+    }()
 
     lazy var settingButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
@@ -804,14 +868,14 @@ class ClassRoomViewController: UIViewController {
         button.style = .selectableAppliance
         return button
     }()
-    
+
     lazy var takePhotoButton: FastRoomPanelItemButton = {
         let button = FastRoomPanelItemButton(type: .custom)
         button.rawImage = UIImage(named: "classroom_take_photo")!
         button.addTarget(self, action: #selector(onClickTakePhoto(_:)), for: .touchUpInside)
         return button
     }()
-    
+
     lazy var raiseHandListButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setupBadgeView(rightInset: -6, topInset: -6, width: 20)
@@ -841,14 +905,14 @@ class ClassRoomViewController: UIViewController {
         return button
     }()
 
-    @objc func onClickTakePhoto(_ sender: UIButton) {
+    @objc func onClickTakePhoto(_: UIButton) {
         let picker = UIImagePickerController()
         picker.sourceType = .camera
         picker.modalPresentationStyle = .pageSheet
         picker.delegate = self
         present(picker, animated: true)
     }
-    
+
     @objc func onClickStorage(_ sender: UIButton) {
         cloudStorageNavigationController.popOverDismissHandler = { [weak self] in
             self?.cloudStorageButton.isSelected = false
@@ -937,8 +1001,8 @@ extension ClassRoomViewController: VideoDraggingCanvasProvider {
         let colCount: Int
         switch totalCount {
         case 1: colCount = 1
-        case 2...4: colCount = 2
-        case 5...9: colCount = 3
+        case 2 ... 4: colCount = 2
+        case 5 ... 9: colCount = 3
         default: colCount = 4
         }
         let rowCount = ceil(CGFloat(totalCount) / CGFloat(colCount))
@@ -956,7 +1020,7 @@ extension ClassRoomViewController: VideoDraggingCanvasProvider {
         }
 
         videoSize = .init(width: floor(videoSize.width), height: floor(videoSize.height)) // Round to prevent pixel error.
-        
+
         let horizontalSpacing = bounds.height - (videoSize.height * rowCount)
         let topMargin = floor(horizontalSpacing / 2)
 

@@ -477,6 +477,9 @@
 "PencilTailDetail" = "(need to re-enter the room to take effect)";
 
 
+"People on stage hint" = "On stage:";
+
+
 "PeriodicIsEnded" = "Periodic room has ended";
 
 
@@ -673,6 +676,9 @@
 
 
 "ShareMore" = "More";
+
+
+"Single person on stage hint" = "1 person is on stage";
 
 
 "SmallClass" = "SmallClass";

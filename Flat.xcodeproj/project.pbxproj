@@ -54,6 +54,7 @@
 		8A11CBF227201069001D0B1F /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBF127201069001D0B1F /* String+Error.swift */; };
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A133529288FA21000C825DE /* MessageCensorRequest.swift */; };
+		8A1447E82A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447E72A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift */; };
 		8A14EE6C28A6321D00C0CB89 /* logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14EE6B28A6321D00C0CB89 /* logger.swift */; };
 		8A172A8A29248714006E4798 /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8929248714006E4798 /* PreferenceViewController.swift */; };
 		8A172A8C29249584006E4798 /* PreferenceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */; };
@@ -386,6 +387,7 @@
 		8A11CBF127201069001D0B1F /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A133529288FA21000C825DE /* MessageCensorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCensorRequest.swift; sourceTree = "<group>"; };
+		8A1447E72A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassroomViewController+rtcHideDragging.swift"; sourceTree = "<group>"; };
 		8A14EE6B28A6321D00C0CB89 /* logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logger.swift; sourceTree = "<group>"; };
 		8A172A8929248714006E4798 /* PreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
 		8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceTableViewCell.swift; sourceTree = "<group>"; };
@@ -906,6 +908,7 @@
 				8AAE2547295D794E007D5507 /* RaiseHand */,
 				8AA242FB289A82FF00C306F0 /* ClassRoomViewModel.swift */,
 				8AA242F9289A7DDC00C306F0 /* ClassRoomViewController.swift */,
+				8A1447E72A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift */,
 				8ADF45BE2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift */,
 				8A7741DB2738BB06009FAADA /* ClassroomFactory.swift */,
 				8A0E1F05296D73F900C3EE24 /* ClassroomCoordinator.swift */,
@@ -2035,6 +2038,7 @@
 				8AD2EF6D2774128200087280 /* ConvertService.swift in Sources */,
 				8A21DAB6279F9EEF0060E25D /* RecordAcquireRequest.swift in Sources */,
 				8A9FB3CD2722C0A100F6F06F /* HistoryMessageRequest.swift in Sources */,
+				8A1447E82A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift in Sources */,
 				8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */,
 				8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */,
 				8AA242FA289A7DDC00C306F0 /* ClassRoomViewController.swift in Sources */,

@@ -249,6 +249,7 @@ class RtcViewController: UIViewController {
     func updateWith(_ values: [RtcViewModel.RTCUserOutput]) {
         // Reset voluem spy
         volumesDisposeBag = DisposeBag()
+
         for value in values {
             let itemView = itemViewForUid(value.user.rtcUID)
             if itemView.superview == nil {
@@ -446,19 +447,19 @@ class RtcViewController: UIViewController {
 }
 
 extension RtcViewController: ViewDraggerDelegate {
-    func travelAnimationDidRecoverWith(travelAnimation: ViewDragger, view: UIView, travelState: TravelState) {}
+    func travelAnimationDidRecoverWith(travelAnimation _: ViewDragger, view _: UIView, travelState _: TravelState) {}
 
-    func travelAnimationDidStartWith(travelAnimation: ViewDragger, view: UIView, travelState: TravelState) {}
+    func travelAnimationDidStartWith(travelAnimation _: ViewDragger, view _: UIView, travelState _: TravelState) {}
 
-    func travelAnimationDidCancelWith(travelAnimation: ViewDragger, view: UIView, travelState: TravelState) {}
+    func travelAnimationDidCancelWith(travelAnimation _: ViewDragger, view _: UIView, travelState _: TravelState) {}
 
-    func travelAnimationDidUpdateProgress(travelAnimation: ViewDragger, view: UIView, travelState: TravelState, progress: CGFloat) {}
+    func travelAnimationDidUpdateProgress(travelAnimation _: ViewDragger, view _: UIView, travelState _: TravelState, progress _: CGFloat) {}
 
-    func travelAnimationDidCompleteWith(travelAnimation: ViewDragger, view: UIView, travelState: TravelState) {}
+    func travelAnimationDidCompleteWith(travelAnimation _: ViewDragger, view _: UIView, travelState _: TravelState) {}
 
     // MARK: - Free Dragging
 
-    func travelAnimationStartFreeDragging(travelAnimation: ViewDragger, view: UIView) {
+    func travelAnimationStartFreeDragging(travelAnimation _: ViewDragger, view: UIView) {
         view.superview?.bringSubviewToFront(view) // Just for local display
         if let contentView = view as? RtcItemContentView {
             contentView.finishCurrentAnimation()
@@ -491,14 +492,14 @@ extension RtcViewController: ViewDraggerDelegate {
         }
     }
 
-    func travelAnimationCancelFreeDragging(travelAnimation: ViewDragger, view: UIView) {
+    func travelAnimationCancelFreeDragging(travelAnimation _: ViewDragger, view: UIView) {
         if let contentView = view as? RtcItemContentView {
             contentView.isDragging = false
             contentView.endRtcSnapShot()
         }
     }
 
-    func travelAnimationFreeDraggingUpdate(travelAnimation: ViewDragger, view: UIView) {
+    func travelAnimationFreeDraggingUpdate(travelAnimation _: ViewDragger, view: UIView) {
         let contentView = view as! RtcItemContentView
         if let draggingPossibleTargetView {
             switch draggingPossibleTargetView {
@@ -530,7 +531,7 @@ extension RtcViewController: ViewDraggerDelegate {
         }
     }
 
-    func travelAnimationEndFreeDragging(travelAnimation: ViewDragger, view: UIView, velocity: CGPoint) {
+    func travelAnimationEndFreeDragging(travelAnimation _: ViewDragger, view: UIView, velocity: CGPoint) {
         guard let contentView = view as? RtcItemContentView else { return }
         let itemView = itemViewForUid(contentView.uid)
         contentView.isDragging = false
