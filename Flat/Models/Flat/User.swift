@@ -10,8 +10,12 @@ import Foundation
 
 struct User: Codable {
     var name: String
-    var avatar: URL
+    var avatar: String
     let userUUID: String
     var token: String
     var hasPhone: Bool
+    
+    var avatarUrl: URL? {
+        URL(string: avatar)
+    }
 }

@@ -228,6 +228,9 @@
 "ElectronLinkText" = "如需更全功能可前往链接下载 Electron 桌面版本。";
 
 
+"EmailOrPhonePlaceHolder" = "请输入邮箱或手机号";
+
+
 "EmptyCloudTip" = "暂无文件";
 
 
@@ -363,6 +366,9 @@
 "Loading" = "加载中";
 
 
+"Login" = "登录";
+
+
 "Login fail" = "登录失败";
 
 
@@ -468,6 +474,9 @@
 "ParamsCheckFailed" = "参数错误";
 
 
+"PassCodePlaceholder" = "请输入密码";
+
+
 "Pause Class" = "暂停上课";
 
 
@@ -544,6 +553,9 @@
 
 
 "RecordingStartTips" = "录制开始";
+
+
+"Register" = "注册";
 
 
 "Reject" = "拒绝";
@@ -942,6 +954,9 @@
 "classroomTimePassed" = "已上课";
 
 
+"forgotPassword" = "忘记密码？";
+
+
 "inviteDescribe" = "邀请你参加 Flat 房间";
 
 
@@ -966,10 +981,16 @@
 "ownerAutoOnStageTips" = "已自动请学生上台，用户:  ";
 
 
+"passwordAuth" = "密码登录";
+
+
 "screenshot" = "白板截图";
 
 
 "selected" = "（已选）";
+
+
+"smsAuth" = "短信验证码登录";
 
 
 "then" = "";

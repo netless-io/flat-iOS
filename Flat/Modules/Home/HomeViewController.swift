@@ -250,7 +250,7 @@ class HomeViewController: UIViewController {
         let size = CGSize(width: avatarWidth, height: avatarWidth).applying(.init(scaleX: scale, y: scale))
         let processor = ResizingImageProcessor(referenceSize: size)
         avatarButton.imageEdgeInsets = .init(inset: (tableHeaderItemWidth - avatarWidth) / 2)
-        avatarButton.kf.setImage(with: AuthStore.shared.user?.avatar,
+        avatarButton.kf.setImage(with: AuthStore.shared.user?.avatarUrl,
                                  for: .normal,
                                  placeholder: avatarPlaceHolder,
                                  options: [.processor(processor), .transition(.fade(0.3))])

@@ -100,7 +100,7 @@ enum ClassroomFactory {
                                            userUUID: AuthStore.shared.user?.userUUID ?? "",
                                            isOwner: playInfo.rtmUID == playInfo.ownerUUID,
                                            maxWritableUsersCount: basicInfo.roomType.maxWritableUsersCount,
-                                           userInfo: RoomUserInfo(name: AuthStore.shared.user?.name ?? "", rtcUID: playInfo.rtcUID, avatarURL: AuthStore.shared.user?.avatar.absoluteString ?? ""),
+                                           userInfo: RoomUserInfo(name: AuthStore.shared.user?.name ?? "", rtcUID: playInfo.rtcUID, avatarURL: AuthStore.shared.user?.avatar ?? ""),
                                            roomStartStatus: basicInfo.roomStatus,
                                            whiteboardBannedAction: fastboardViewController.isRoomBanned.filter { $0 }.asObservable().mapToVoid(),
                                            whiteboardRoomError: fastboardViewController.roomError.asObservable(),

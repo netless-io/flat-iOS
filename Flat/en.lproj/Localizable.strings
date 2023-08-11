@@ -228,6 +228,9 @@
 "ElectronLinkText" = "For full functionality, go to the link to download the desktop version of Electron.";
 
 
+"EmailOrPhonePlaceHolder" = "Email or phone number";
+
+
 "EmptyCloudTip" = "No file";
 
 
@@ -360,6 +363,9 @@
 "Loading" = "Loading";
 
 
+"Login" = "Sign In";
+
+
 "Login fail" = "Login fail";
 
 
@@ -372,7 +378,7 @@
 "LoginGithubURLMismatch" = "Login Github Mismatch";
 
 
-"LoginOrRegister" = "Login";
+"LoginOrRegister" = "Sign In";
 
 
 "Logout" = "Logout";
@@ -465,6 +471,9 @@
 "ParamsCheckFailed" = "Parameter error";
 
 
+"PassCodePlaceholder" = "Password";
+
+
 "Pause Class" = "Pause Class";
 
 
@@ -541,6 +550,9 @@
 
 
 "RecordingStartTips" = "Recording stared";
+
+
+"Register" = "Sign Up";
 
 
 "Reject" = "Reject";
@@ -942,6 +954,9 @@
 "classroomTimePassed" = "Duration";
 
 
+"forgotPassword" = "Forgot?";
+
+
 "inviteDescribe" = "invite you to join the Flat classroom";
 
 
@@ -966,10 +981,16 @@
 "ownerAutoOnStageTips" = "The student has been automatically invited to the stage and the user is : ";
 
 
+"passwordAuth" = "via password";
+
+
 "screenshot" = "screenshot";
 
 
 "selected" = " (Selected)";
+
+
+"smsAuth" = "via SMS";
 
 
 "whiteboard_save_annotation" = "Save Annotation";

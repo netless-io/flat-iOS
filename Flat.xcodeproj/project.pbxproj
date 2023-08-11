@@ -55,11 +55,15 @@
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A133529288FA21000C825DE /* MessageCensorRequest.swift */; };
 		8A1447E82A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447E72A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift */; };
+		8A1447EC2A8497BD00F5F9AD /* PasswordAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447EB2A8497BD00F5F9AD /* PasswordAuthView.swift */; };
+		8A1447EE2A8619A500F5F9AD /* String+regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447ED2A8619A500F5F9AD /* String+regex.swift */; };
+		8A1447F02A86239000F5F9AD /* EmailLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447EF2A86239000F5F9AD /* EmailLoginRequest.swift */; };
+		8A1447F22A8623E600F5F9AD /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447F12A8623E600F5F9AD /* PhoneLoginRequest.swift */; };
 		8A14EE6C28A6321D00C0CB89 /* logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14EE6B28A6321D00C0CB89 /* logger.swift */; };
 		8A172A8A29248714006E4798 /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8929248714006E4798 /* PreferenceViewController.swift */; };
 		8A172A8C29249584006E4798 /* PreferenceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */; };
 		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
-		8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */; };
+		8A1BF0C1280D0B7300D76F22 /* PhoneSMSLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneSMSLoginRequest.swift */; };
 		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
 		8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */; };
 		8A1BF0C7280E563A00D76F22 /* CancellationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */; };
@@ -388,11 +392,15 @@
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A133529288FA21000C825DE /* MessageCensorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCensorRequest.swift; sourceTree = "<group>"; };
 		8A1447E72A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassroomViewController+rtcHideDragging.swift"; sourceTree = "<group>"; };
+		8A1447EB2A8497BD00F5F9AD /* PasswordAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAuthView.swift; sourceTree = "<group>"; };
+		8A1447ED2A8619A500F5F9AD /* String+regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+regex.swift"; sourceTree = "<group>"; };
+		8A1447EF2A86239000F5F9AD /* EmailLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginRequest.swift; sourceTree = "<group>"; };
+		8A1447F12A8623E600F5F9AD /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
 		8A14EE6B28A6321D00C0CB89 /* logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logger.swift; sourceTree = "<group>"; };
 		8A172A8929248714006E4798 /* PreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
 		8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceTableViewCell.swift; sourceTree = "<group>"; };
 		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
-		8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLoginRequest.swift; sourceTree = "<group>"; };
+		8A1BF0C0280D0B7300D76F22 /* PhoneSMSLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSMSLoginRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
 		8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingPhoneRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationViewController.swift; sourceTree = "<group>"; };
@@ -766,6 +774,7 @@
 				8A11CBF127201069001D0B1F /* String+Error.swift */,
 				8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */,
 				8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */,
+				8A1447ED2A8619A500F5F9AD /* String+regex.swift */,
 				8ABF362B27464E63000D5003 /* String+Empty.swift */,
 				8A05A1552834EA7A002DE9B9 /* AttributedString.swift */,
 				8A05A1592834EC04002DE9B9 /* StringLocalize.swift */,
@@ -964,7 +973,9 @@
 				8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */,
 				8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */,
 				8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */,
-				8A1BF0C0280D0B7300D76F22 /* PhoneLoginRequest.swift */,
+				8A1BF0C0280D0B7300D76F22 /* PhoneSMSLoginRequest.swift */,
+				8A1447EF2A86239000F5F9AD /* EmailLoginRequest.swift */,
+				8A1447F12A8623E600F5F9AD /* PhoneLoginRequest.swift */,
 				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
 				8AF244DD287C2AFC00E6B2AF /* WechatBindingRequest.swift */,
 				8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */,
@@ -1124,6 +1135,7 @@
 			children = (
 				8A270B962719607700450DC6 /* LoginViewController.xib */,
 				8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */,
+				8A1447EB2A8497BD00F5F9AD /* PasswordAuthView.swift */,
 				8A05A1512834C756002DE9B9 /* PrivacyAlertViewController.swift */,
 				8A05A1522834C756002DE9B9 /* PrivacyAlertViewController.xib */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
@@ -1976,6 +1988,7 @@
 				8AD3627C28DC6D660086699E /* ProfileTableViewCell.swift in Sources */,
 				8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */,
 				8A8020952755F51C00F5691C /* UIScrollView+Centerize.swift in Sources */,
+				8A1447EC2A8497BD00F5F9AD /* PasswordAuthView.swift in Sources */,
 				8ACE3A20272FDD5D00BC37F7 /* EmptySplitSecondaryViewController.swift in Sources */,
 				8A4BF2D728C58BB000021D2A /* WhiteboardAppsCell.swift in Sources */,
 				8ABF362627462F93000D5003 /* Observable+Extension.swift in Sources */,
@@ -2010,6 +2023,7 @@
 				8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */,
 				8AFB942E28B7550100B8795D /* CameraMicToggleView.swift in Sources */,
 				8ABECA9E29FA4F5B00F5A527 /* ClassRoomViewController+keyboard.swift in Sources */,
+				8A1447F22A8623E600F5F9AD /* PhoneLoginRequest.swift in Sources */,
 				8A21DAB0279E78BA0060E25D /* RecordDetailRequest.swift in Sources */,
 				8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */,
 				8AD3CDF92716B53D008BD904 /* UIViewController+Alert.swift in Sources */,
@@ -2023,6 +2037,7 @@
 				8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
+				8A1447F02A86239000F5F9AD /* EmailLoginRequest.swift in Sources */,
 				8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */,
 				8A11CBF227201069001D0B1F /* String+Error.swift in Sources */,
 				8A05C2B62759B722009BCA79 /* JoinRoomLaunchItem.swift in Sources */,
@@ -2090,6 +2105,7 @@
 				8AB1A796288145D4000AE9A1 /* UploadUtility.swift in Sources */,
 				8A05C32E275F5017009BCA79 /* PrepareUploadRequest.swift in Sources */,
 				8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */,
+				8A1447EE2A8619A500F5F9AD /* String+regex.swift in Sources */,
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
 				8A6021DE29B9D248009D499C /* RtcItemContentView.swift in Sources */,
@@ -2141,7 +2157,7 @@
 				8AE8607C29B6DACD002CC58B /* VideoLayoutStore.swift in Sources */,
 				8A9ACC03271E71B100E7E7CE /* RoomBasicInfo.swift in Sources */,
 				8AED087928113840001DEFDC /* AccountCancelationRequest.swift in Sources */,
-				8A1BF0C1280D0B7300D76F22 /* PhoneLoginRequest.swift in Sources */,
+				8A1BF0C1280D0B7300D76F22 /* PhoneSMSLoginRequest.swift in Sources */,
 				8A0EB7B1272BA39C00003DF7 /* UIImage+Compose.swift in Sources */,
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,
 				8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */,

@@ -113,7 +113,7 @@ class CameraPreviewView: UIView {
             make.center.equalToSuperview()
             make.width.height.equalTo(64)
         }
-        avatarImageView.kf.setImage(with: AuthStore.shared.user?.avatar)
+        avatarImageView.kf.setImage(with: AuthStore.shared.user?.avatarUrl)
     }
 
     var isOn = false

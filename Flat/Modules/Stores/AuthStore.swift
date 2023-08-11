@@ -102,7 +102,7 @@ class AuthStore {
     }
 
     func updateAvatar(_ url: URL) {
-        user?.avatar = url
+        user?.avatar = url.absoluteString
         if let user {
             processLoginSuccessUserInfo(user)
         }

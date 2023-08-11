@@ -195,7 +195,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.avatarImageView.isHidden = false
             cell.profileDetailTextLabel.isHidden = true
             cell.profileTitleLabel.text = localizeStrings("Avatar")
-            cell.avatarImageView.kf.setImage(with: AuthStore.shared.user?.avatar)
+            cell.avatarImageView.kf.setImage(with: AuthStore.shared.user?.avatarUrl)
         case 1:
             cell.avatarImageView.isHidden = true
             cell.profileDetailTextLabel.isHidden = false

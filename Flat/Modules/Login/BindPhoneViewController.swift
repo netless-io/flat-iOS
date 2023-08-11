@@ -24,17 +24,6 @@ class BindPhoneViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
     }
-
-    func presentCountryPicker() {
-        let picker = CountryCodePicker()
-        picker.pickingHandler = { [weak self] country in
-            self?.dismiss(animated: true)
-            self?.smsAuthView.country = country
-        }
-        let navi = BaseNavigationViewController(rootViewController: picker)
-        navi.modalPresentationStyle = .formSheet
-        present(navi, animated: true)
-    }
     
     func setupViews() {
         view.backgroundColor = .color(type: .background)
@@ -140,10 +129,6 @@ class BindPhoneViewController: UIViewController {
 
     @objc
     func onLogin(sender: UIButton) {
-        if case let .failure(errStr) = smsAuthView.allValidCheck(sender: sender) {
-            toast(errStr)
-            return
-        }
         let request = BindingPhoneRequest(phone: smsAuthView.fullPhoneText, code: smsAuthView.codeText)
         let activity = showActivityIndicator()
         ApiProvider.shared.request(fromApi: request) { [weak self] result in
@@ -162,9 +147,7 @@ class BindPhoneViewController: UIViewController {
         view.smsRequestMaker = { phone in
             ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind, phone: phone))
         }
-        view.countryCodeClick = { [weak self] in
-            self?.presentCountryPicker()
-        }
+        view.presentRoot = self
         return view
     }()
 }

@@ -12,53 +12,41 @@ import RxSwift
 import UIKit
 
 class SMSAuthView: UIView {
-    var country = Country.currentCountry() {
+    weak var presentRoot: UIViewController?
+    var sendSMSAddtionalCheck: ((_ sender: UIView) -> Result<Void, String>)?
+    var smsRequestMaker: ((String) -> Observable<EmptyResponse>)?
+    
+    private var country = Country.currentCountry() {
         didSet {
             countryCodeSelectBtn.setTitle("+\(country.phoneCode)", for: .normal)
         }
     }
-
-    var countryCodeClick: (() -> Void)?
-    var smsRequestMaker: ((String) -> Observable<EmptyResponse>)?
-    var additionalCheck: ((_ sender: UIView) -> Result<Void, String>)?
-    var phoneValid: Bool {
+    private var phoneValid: Bool {
         guard let text = phoneTextfield.text else { return false }
         guard let phoneObj = try? NBPhoneNumberUtil.sharedInstance().parse(text, defaultRegion: country.code) else { return false }
         return NBPhoneNumberUtil.sharedInstance().isValidNumber(forRegion: phoneObj, regionCode: country.code)
     }
+    private var codeValid: Bool { codeText.count >= 4 }
 
     var fullPhoneText: String { "+\(country.phoneCode)\(phoneTextfield.text ?? "")" }
     var codeText: String { verificationCodeTextfield.text ?? "" }
-    var codeValid: Bool { codeText.count >= 4 }
     var loginEnable: Observable<Bool> {
         Observable.combineLatest(phoneTextfield.rx.text.orEmpty,
-                                 verificationCodeTextfield.rx.text.orEmpty) { [unowned self] _, _ in
+                                 verificationCodeTextfield.rx.text.orEmpty)
+        { [unowned self] _, _ in
             self.phoneValid && self.codeValid
         }
     }
 
-    func allValidCheck(sender: UIView?) -> Result<Void, String> {
-        if let additionalCheck {
-            switch additionalCheck(sender ?? self) {
-            case .success: break
-            case let .failure(errorStr):
-                return .failure(errorStr)
-            }
-        }
-        if !phoneValid { return .failure(localizeStrings("InvalidPhone")) }
-        if !codeValid { return .failure(localizeStrings("InvalidCode")) }
-        return .success(())
-    }
-
     @objc
     func onClickCountryCode() {
-        countryCodeClick?()
+        presentRoot?.present(picker, animated: true)
     }
 
     @objc
     func onClickSendSMS(sender: UIButton) {
         let top = sender.viewController()
-        if case let .failure(errStr) = additionalCheck?(sender) {
+        if case let .failure(errStr) = sendSMSAddtionalCheck?(sender) {
             top?.toast(errStr)
             return
         }
@@ -84,14 +72,33 @@ class SMSAuthView: UIView {
     override init(frame _: CGRect) {
         super.init(frame: .zero)
         setupViews()
+        binding()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupViews()
+        binding()
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        .init(width: 375, height: UIView.noIntrinsicMetric)
     }
 
-    func setupViews() {
+    func binding() {
+        phoneTextfield.rx.text.orEmpty
+            .map { [unowned self] _ in self.phoneValid }
+            .subscribe(with: smsButton, onNext: { btn, enable in
+                if enable {
+                    btn.setTitleColor(.color(type: .primary), for: .normal)
+                } else {
+                    btn.setTitleColor(.color(type: .text, .weak), for: .normal)
+                }
+            })
+            .disposed(by: rx.disposeBag)
+    }
+    
+    private func setupViews() {
         backgroundColor = .color(type: .background)
 
         let margin: CGFloat = 16
@@ -138,10 +145,17 @@ class SMSAuthView: UIView {
             .disposed(by: rx.disposeBag)
     }
 
-    override var intrinsicContentSize: CGSize {
-        .init(width: 375, height: UIView.noIntrinsicMetric)
-    }
-
+    lazy var picker: UIViewController = {
+        let picker = CountryCodePicker()
+        picker.pickingHandler = { [weak self] country in
+            self?.presentRoot?.dismiss(animated: true)
+            self?.country = country
+        }
+        let navi = BaseNavigationViewController(rootViewController: picker)
+        navi.modalPresentationStyle = .formSheet
+        return navi
+    }()
+    
     lazy var verificationCodeTextfield: BottomLineTextfield = {
         let f = BottomLineTextfield()
         f.placeholder = localizeStrings("VerificationCodePlaceholder")
@@ -169,7 +183,7 @@ class SMSAuthView: UIView {
     }()
 
     lazy var countryCodeSelectBtn: UIButton = {
-        let btn = UIButton(type: .custom)
+        let btn = UIButton(type: .system)
         btn.frame = .init(origin: .zero, size: .init(width: 66, height: 48))
         btn.setTitle("+\(country.phoneCode)", for: .normal)
         btn.setTitleColor(.color(type: .text), for: .normal)
