@@ -9,6 +9,11 @@
 import Foundation
 
 enum FlatApiError: Int, LocalizedError {
+    case FileCheckFailed = 1_000
+    case FileDownloadFailed
+    case FileUnzipFailed
+    case FileUploadFailed
+    
     case ParamsCheckFailed = 100_000
     case ServerFail
     case CurrentProcessFailed
@@ -16,12 +21,26 @@ enum FlatApiError: Int, LocalizedError {
     case NeedLoginAgain
     case UnsupportedPlatform
     case JWTSignFailed
+    case ExhaustiveAttack
+    case RequestSignatureIncorrect
+    case NonCompliant
+    case UnsupportedOperation
 
     case SMSVerificationCodeInvalid = 110_000
-    // Bind when binding already
-    case SMSAlreadyExist = 110_001
-    // Bind a phone has registered
-    case PhoneRegistered = 110_002
+    case SMSAlreadyExist // Bind when binding already
+    case PhoneRegistered // Bind a phone has registered
+    case SMSFailedToSendCode // failed to send verification code
+    
+    case EmailVerificationCodeInvalid = 115_000 // verification code invalid
+    case EmailAlreadyExist // email already exist by current user
+    case EmailAlreadyBinding // email are binding by other users
+    case EmailFailedToSendCode // failed to send verification code
+    
+    case CensorshipFailed = 120_000 // censorship failed
+    
+    case OAuthUUIDNotFound = 130_000 // oauth uuid not found
+    case OAuthClientIDNotFound  // oauth client id not found
+    case OAuthSecretUUIDNotFound  // oauth secret uuid not found
 
     case RoomNotFound = 200_000
     case RoomIsEnded
@@ -35,7 +54,10 @@ enum FlatApiError: Int, LocalizedError {
     case PeriodicSubRoomHasRunning
 
     case UserNotFound = 400_000
-    case UserAlreadyBinding = 400_002
+    case UserRoomListNotEmpty  // occurs when delete account, user must have quitted all running rooms
+    case UserAlreadyBinding // already bound, should unbind first
+    case UserPasswordIncorrect // user password (for update) incorrect
+    case UserOrPasswordIncorrect // user or password (for login) incorrect
 
     case RecordNotFound = 50000
 
@@ -44,11 +66,15 @@ enum FlatApiError: Int, LocalizedError {
     case FileSizeTooBig
     case FileNotFound
     case FileExists
+    case DirectoryNotExists // current directory not exists
+    case DirectoryAlreadyExists // directory already exists
 
     case FileIsConverted = 80000
     case FileConvertFailed
     case FileIsConverting
     case FileIsConvertWaiting
+    case FileNotIsConvertNone // file convertStep not ConvertStep.None
+    case FileNotIsConverting // file convertStep not ConvertStep.Converting
 
     case LoginGithubSuspended = 90000
     case LoginGithubURLMismatch
