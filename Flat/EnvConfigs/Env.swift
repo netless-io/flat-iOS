@@ -21,6 +21,10 @@ struct Env {
         return value
     }
 
+    var forceBindPhone: Bool {
+        (value(for: "FORCE_BIND_PHONE") as String)  == "1"
+    }
+    
     var region: Region {
         Region(rawValue: value(for: "REGION")) ?? .US
     }

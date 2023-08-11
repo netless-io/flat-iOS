@@ -22,3 +22,4 @@ PRODUCT_NAME = Flat 在线教室
 REGION = CN
 SLS_PROJECT = flat-prod
 SLS_ENDPOINT = cn-hangzhou.log.aliyuncs.com
+FORCE_BIND_PHONE = 1

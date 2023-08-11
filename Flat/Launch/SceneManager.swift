@@ -137,14 +137,14 @@ extension SceneManager {
         }
         if let user {
             startGoogleAnalytics()
-            if user.hasPhone {
-                window.rootViewController = createMainContainer(for: window)
-            } else {
+            if !user.hasPhone && Env().forceBindPhone {
                 let root = LoginViewController()
                 window.rootViewController = root
                 DispatchQueue.main.async {
                     root.present(BindPhoneViewController(), animated: true)
                 }
+            } else {
+                window.rootViewController = createMainContainer(for: window)
             }
         } else {
             window.rootViewController = LoginViewController()
