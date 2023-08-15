@@ -417,6 +417,9 @@
 "NewPage" = "Create new page";
 
 
+"NextStep" = "Next Step";
+
+
 "Nickname" = "Nickname";
 
 
@@ -472,6 +475,9 @@
 
 
 "PassCodePlaceholder" = "Password";
+
+
+"PasswordValidTips" = "Passwords need to contain at least one letter and one number, and have a total length of at least 8 characters";
 
 
 "Pause Class" = "Pause Class";
@@ -553,6 +559,9 @@
 
 
 "Register" = "Sign Up";
+
+
+"RegisterTitle" = "Sign up new account";
 
 
 "Reject" = "Reject";

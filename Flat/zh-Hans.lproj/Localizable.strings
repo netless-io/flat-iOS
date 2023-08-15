@@ -420,6 +420,9 @@
 "NewPage" = "创建新页面";
 
 
+"NextStep" = "下一步";
+
+
 "Nickname" = "昵称";
 
 
@@ -475,6 +478,9 @@
 
 
 "PassCodePlaceholder" = "请输入密码";
+
+
+"PasswordValidTips" = "密码需要至少包含一个字母和一个数字，且总长度至少为8个字符";
 
 
 "Pause Class" = "暂停上课";
@@ -556,6 +562,9 @@
 
 
 "Register" = "注册";
+
+
+"RegisterTitle" = "注册新账号";
 
 
 "Reject" = "拒绝";
