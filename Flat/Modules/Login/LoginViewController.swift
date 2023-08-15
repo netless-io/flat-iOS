@@ -9,7 +9,6 @@
 import AuthenticationServices
 import RxRelay
 import RxSwift
-import SafariServices
 import UIKit
 
 class LoginViewController: UIViewController {
@@ -148,6 +147,12 @@ class LoginViewController: UIViewController {
     // MARK: - Action -
 
     @objc
+    func onClickRegister(sender: UIButton) {
+        let vc = SignUpViewController()
+        present(vc, animated: true)
+    }
+    
+    @objc
     func onClickLogin(sender: UIButton) {
         switch loginType.value {
         case .sms: smsLogin()
@@ -159,26 +164,28 @@ class LoginViewController: UIViewController {
                 stopActivityIndicator()
                 switch result {
                 case let .success(user):
-                    self.lastAccountLoginText = self.passwordAuthView.accountText
-                    self.lastAccountLoginPwd = self.passwordAuthView.passwordText
+                    self.lastAccountLoginText = self.passwordAuthView.accountTextfield.accountText
+                    self.lastAccountLoginPwd = self.passwordAuthView.passwordTextfield.passwordText
                     AuthStore.shared.processLoginSuccessUserInfo(user)
                 case let .failure(error):
                     self.toast(error.localizedDescription)
                 }
+            }
+            let request: PasswordLoginRequest
+            let account = passwordAuthView.accountTextfield.accountText
+            let password = passwordAuthView.passwordTextfield.passwordText
+            switch self.passwordAuthView.accountTextfield.accountType.value {
+            case .email:
+                request = PasswordLoginRequest(account: .email(account), password: password)
+            case .phone:
+                request = PasswordLoginRequest(account: .phone(account), password: password)
             }
             agreementCheck { [weak self] result in
                 guard let self else { return }
                 switch result {
                 case .success:
                     showActivityIndicator()
-                    switch self.passwordAuthView.accountType.value {
-                    case .email:
-                        let request = EmailLoginRequest(email: passwordAuthView.accountText, password: passwordAuthView.passwordText)
-                        ApiProvider.shared.request(fromApi: request, completionHandler: processPasswordLoginResult)
-                    case .phone:
-                        let request = PhoneLoginRequest(phone: passwordAuthView.accountText, password: passwordAuthView.passwordText)
-                        ApiProvider.shared.request(fromApi: request, completionHandler: processPasswordLoginResult)
-                    }
+                    ApiProvider.shared.request(fromApi: request, completionHandler: processPasswordLoginResult)
                 case .failure: return
                 }
             }
@@ -265,7 +272,7 @@ class LoginViewController: UIViewController {
         syncTraitCollection(traitCollection)
 
         // Others
-        smsAuthView.sendSMSAddtionalCheck = { [weak self] sender in
+        smsAuthView.verificationCodeTextfield.sendSMSAddtionalCheck = { [weak self] sender in
             guard let self else { return .failure("") }
             let agree = self.checkAgreementDidAgree()
             if agree { return .success(()) }
@@ -273,17 +280,21 @@ class LoginViewController: UIViewController {
                 guard let self,
                       let sender = sender as? UIButton
                 else { return }
-                self.smsAuthView.onClickSendSMS(sender: sender)
+                self.smsAuthView.verificationCodeTextfield.onClickSendSMS(sender: sender)
             }, cancelAction: nil)
             return .failure("")
         }
-        smsAuthView.smsRequestMaker = { phone in
-            ApiProvider.shared.request(fromApi: SMSRequest(scenario: .login, phone: phone))
+        smsAuthView.verificationCodeTextfield.smsRequestMaker = { [weak self] in
+            guard let self else { return .error("self not exist") }
+            let phone = self.smsAuthView.fullPhoneText
+            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .login(phone: phone)))
         }
+        
         smsAuthView.presentRoot = self
 
-        passwordAuthView.presentRoot = self
+        passwordAuthView.accountTextfield.presentRoot = self
         loginButton.addTarget(self, action: #selector(onClickLogin(sender:)), for: .touchUpInside)
+        registerButton.addTarget(self, action: #selector(onClickRegister(sender:)), for: .touchUpInside)
 
         // Hide weChat login when weChat not installed
         weChatLoginButton.isHidden = !WXApi.isWXAppInstalled()
@@ -375,7 +386,7 @@ class LoginViewController: UIViewController {
         let vc = PrivacyAlertViewController(
             agreeClick: { [unowned self] in
                 self.dismiss(animated: false)
-                self.agreementCheckButton.isSelected = true
+                self.agreementCheckStackView.isSelected = true
                 agreeAction?()
             },
             cancelClick: { [unowned self] in
@@ -391,7 +402,7 @@ class LoginViewController: UIViewController {
     }
 
     func checkAgreementDidAgree() -> Bool {
-        agreementCheckButton.isSelected
+        agreementCheckStackView.isSelected
     }
 
     func syncTraitCollection(_ trait: UITraitCollection) {
@@ -489,20 +500,6 @@ class LoginViewController: UIViewController {
                                 })
     }
 
-    @objc func onClickAgreement(sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-    }
-
-    @objc func onClickPrivacy() {
-        let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/privacy.html")!)
-        present(controller, animated: true, completion: nil)
-    }
-
-    @objc func onClickServiceAgreement() {
-        let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/service.html")!)
-        present(controller, animated: true, completion: nil)
-    }
-
     // MARK: - Lazy -
 
     lazy var smsAuthView = SMSAuthView()
@@ -521,54 +518,6 @@ class LoginViewController: UIViewController {
         ]
         return layer
     }()
-
-    lazy var agreementCheckButton: UIButton = {
-        let btn = UIButton.checkBoxStyleButton()
-        btn.setTitleColor(.color(type: .text), for: .normal)
-        btn.setTitle("  " + localizeStrings("Have read and agree") + " ", for: .normal)
-        btn.addTarget(self, action: #selector(onClickAgreement), for: .touchUpInside)
-        btn.contentEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 0)
-        btn.titleLabel?.font = .systemFont(ofSize: 12)
-        btn.titleLabel?.minimumScaleFactor = 0.1
-        btn.titleLabel?.adjustsFontSizeToFitWidth = true
-        btn.titleLabel?.numberOfLines = 1
-        btn.titleLabel?.lineBreakMode = .byClipping
-        btn.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        return btn
-    }()
-
-    lazy var agreementCheckStackView: UIStackView = {
-        let privacyButton = UIButton(type: .custom)
-        privacyButton.tintColor = .color(type: .primary)
-        privacyButton.setTitleColor(.color(type: .primary), for: .normal)
-        privacyButton.titleLabel?.font = .systemFont(ofSize: 12)
-        privacyButton.setTitle(localizeStrings("Privacy Policy"), for: .normal)
-        privacyButton.addTarget(self, action: #selector(onClickPrivacy), for: .touchUpInside)
-
-        let serviceAgreementButton = UIButton(type: .custom)
-        serviceAgreementButton.tintColor = .color(type: .primary)
-        serviceAgreementButton.titleLabel?.font = .systemFont(ofSize: 12)
-        serviceAgreementButton.setTitle(localizeStrings("Service Agreement"), for: .normal)
-        serviceAgreementButton.setTitleColor(.color(type: .primary), for: .normal)
-        serviceAgreementButton.addTarget(self, action: #selector(onClickServiceAgreement), for: .touchUpInside)
-
-        let label1 = UILabel()
-        label1.textColor = .color(type: .text)
-        label1.font = .systemFont(ofSize: 12)
-        label1.text = " " + localizeStrings("and") + " "
-        label1.setContentCompressionResistancePriority(.required, for: .horizontal) // Don't compress it.
-
-        let space1 = UIView()
-        let space2 = UIView()
-        space1.setContentCompressionResistancePriority(.fittingSizeLevel, for: .horizontal)
-        space2.setContentCompressionResistancePriority(.fittingSizeLevel, for: .horizontal)
-        let view = UIStackView(arrangedSubviews: [space1, agreementCheckButton, privacyButton, label1, serviceAgreementButton, space2])
-        view.axis = .horizontal
-        view.distribution = .fill
-        view.alignment = .center
-        space2.snp.makeConstraints { make in
-            make.width.equalTo(space1)
-        }
-        return view
-    }()
+    
+    lazy var agreementCheckStackView = AgreementCheckView(presentRoot: self)
 }

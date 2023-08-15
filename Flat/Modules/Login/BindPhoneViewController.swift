@@ -144,8 +144,10 @@ class BindPhoneViewController: UIViewController {
 
     lazy var smsAuthView: SMSAuthView = {
         let view = SMSAuthView()
-        view.smsRequestMaker = { phone in
-            ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind, phone: phone))
+        view.verificationCodeTextfield.smsRequestMaker = { [weak view] in
+            guard let view else { return .error("self not exist") }
+            let phone = view.fullPhoneText
+            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind(phone: phone)))
         }
         view.presentRoot = self
         return view
