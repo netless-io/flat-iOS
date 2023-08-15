@@ -11,7 +11,11 @@ import UIKit
 class SignUpViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        modalPresentationStyle = .formSheet
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            modalPresentationStyle = .formSheet
+        } else {
+            modalPresentationStyle = .fullScreen
+        }
         preferredContentSize = .init(width: 480, height: 480)
     }
     
@@ -27,11 +31,15 @@ class SignUpViewController: UIViewController {
     
     func setupViews() {
         view.backgroundColor = .color(type: .background)
-        let titleView = addPresentTitle(localizeStrings("RegisterTitle"))
-        addPresentCloseButton { [weak self] in
-            self?.presentingViewController?.dismiss(animated: true)
+        let isInNavigation = navigationController != nil
+        if isInNavigation {
+            navigationItem.title = localizeStrings("RegisterTitle")
+        } else {
+            addPresentTitle(localizeStrings("RegisterTitle"))
+            addPresentCloseButton { [weak self] in
+                self?.presentingViewController?.dismiss(animated: true)
+            }
         }
-
         let spacer = UIView()
         let mainContent = UIStackView(arrangedSubviews: [signUpInputView, spacer, agreementCheckStackView, signUpButton])
         mainContent.axis = .vertical
@@ -39,9 +47,10 @@ class SignUpViewController: UIViewController {
         mainContent.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.lessThanOrEqualToSuperview().inset(16)
-            make.width.equalTo(375).priority(.medium)
-            make.top.equalTo(titleView.snp.bottom)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.width.equalToSuperview().inset(16).priority(.medium)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(isInNavigation ? 0 : 44)
+            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view.snp.bottom).inset(16).priority(.medium)
         }
         agreementCheckStackView.snp.makeConstraints { make in
             make.height.equalTo(44)

@@ -223,7 +223,8 @@ class LoginViewController: UIViewController {
 
     @IBAction
     func onClickForgetPassword(_: Any) {
-        // TODO:
+        let vc = ResetPasswordViewController()
+        present(vc, animated: true)
     }
 
     // MARK: - Private -

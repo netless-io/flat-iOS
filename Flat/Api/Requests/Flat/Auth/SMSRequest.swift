@@ -16,6 +16,8 @@ struct SMSRequest: FlatRequest {
     enum Scenario {
         case login(phone: String)
         case bind(phone: String)
+        case resetPhone(String)
+        case resetEmail(String, language: SMSLanguageType)
         case emailRegister(email: String, language: SMSLanguageType)
 
         var path: String {
@@ -24,6 +26,10 @@ struct SMSRequest: FlatRequest {
                 return "/v1/login/phone/sendMessage"
             case .bind:
                 return "/v1/user/bindingPhone/sendMessage"
+            case .resetPhone:
+                return "/v2/reset/phone/send-message"
+            case .resetEmail:
+                return "/v2/reset/email/send-message"
             case .emailRegister:
                 return "/v2/register/email/send-message"
             }
@@ -33,6 +39,8 @@ struct SMSRequest: FlatRequest {
             switch self {
             case .login(phone: let phone): return ["phone": phone]
             case .bind(phone: let phone): return ["phone": phone]
+            case .resetPhone(let phone): return ["phone": phone]
+            case .resetEmail(let email, language: let l): return ["email": email, "language": l.rawValue]
             case .emailRegister(email: let email, language: let l): return ["email": email, "language": l.rawValue]
             }
         }

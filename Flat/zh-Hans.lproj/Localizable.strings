@@ -582,6 +582,18 @@
 "Replay" = "回放";
 
 
+"ResetCheckButtonTitle" = "确认并登录";
+
+
+"ResetPassword" = "重置密码";
+
+
+"ResetPasswordPlaceholder" = "请输入新密码";
+
+
+"ResetPasswordPlaceholderAgain" = "请再次输入新密码";
+
+
 "ResetPreference" = "重置偏好设置";
 
 
@@ -694,6 +706,9 @@
 
 
 "Setting" = "个人设置";
+
+
+"SettingNewPassword" = "设置新密码";
 
 
 "Share" = "分享";

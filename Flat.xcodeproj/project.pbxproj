@@ -39,6 +39,10 @@
 		8A07E6002A8B64A400796CA5 /* AgreementCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E5FF2A8B64A400796CA5 /* AgreementCheckView.swift */; };
 		8A07E6022A8B6D7200796CA5 /* SignUpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6012A8B6D7200796CA5 /* SignUpRequest.swift */; };
 		8A07E6042A8B716900796CA5 /* PasswordLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6032A8B716900796CA5 /* PasswordLoginRequest.swift */; };
+		8A07E6062A8B7F4200796CA5 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6052A8B7F4200796CA5 /* ResetPasswordViewController.swift */; };
+		8A07E6082A8B831000796CA5 /* PasswordRepeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6072A8B831000796CA5 /* PasswordRepeatView.swift */; };
+		8A07E60A2A8B84F000796CA5 /* AccountCodeAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6092A8B84F000796CA5 /* AccountCodeAuthView.swift */; };
+		8A07E60C2A8B878200796CA5 /* ResetPasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E60B2A8B878200796CA5 /* ResetPasswordRequest.swift */; };
 		8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */; };
 		8A0A85F227ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
@@ -382,6 +386,10 @@
 		8A07E5FF2A8B64A400796CA5 /* AgreementCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementCheckView.swift; sourceTree = "<group>"; };
 		8A07E6012A8B6D7200796CA5 /* SignUpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRequest.swift; sourceTree = "<group>"; };
 		8A07E6032A8B716900796CA5 /* PasswordLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordLoginRequest.swift; sourceTree = "<group>"; };
+		8A07E6052A8B7F4200796CA5 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		8A07E6072A8B831000796CA5 /* PasswordRepeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordRepeatView.swift; sourceTree = "<group>"; };
+		8A07E6092A8B84F000796CA5 /* AccountCodeAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCodeAuthView.swift; sourceTree = "<group>"; };
+		8A07E60B2A8B878200796CA5 /* ResetPasswordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordRequest.swift; sourceTree = "<group>"; };
 		8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelRoomHistoryRequest.swift; sourceTree = "<group>"; };
 		8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Pods-Flat-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-Flat/Pods-Flat-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
@@ -988,6 +996,7 @@
 				8A1BF0C0280D0B7300D76F22 /* PhoneSMSLoginRequest.swift */,
 				8A07E6032A8B716900796CA5 /* PasswordLoginRequest.swift */,
 				8A07E6012A8B6D7200796CA5 /* SignUpRequest.swift */,
+				8A07E60B2A8B878200796CA5 /* ResetPasswordRequest.swift */,
 				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
 				8AF244DD287C2AFC00E6B2AF /* WechatBindingRequest.swift */,
 				8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */,
@@ -1148,12 +1157,15 @@
 				8A270B962719607700450DC6 /* LoginViewController.xib */,
 				8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */,
 				8A1447EB2A8497BD00F5F9AD /* PasswordAuthView.swift */,
+				8A07E6092A8B84F000796CA5 /* AccountCodeAuthView.swift */,
+				8A07E6072A8B831000796CA5 /* PasswordRepeatView.swift */,
 				8A07E5FB2A8B5CB400796CA5 /* PasswordTextfield.swift */,
 				8A07E5F92A8B59D600796CA5 /* AccountTextfield.swift */,
 				8A05A1512834C756002DE9B9 /* PrivacyAlertViewController.swift */,
 				8A05A1522834C756002DE9B9 /* PrivacyAlertViewController.xib */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
 				8A07E5F52A8B58F700796CA5 /* SignUpViewController.swift */,
+				8A07E6052A8B7F4200796CA5 /* ResetPasswordViewController.swift */,
 				8A07E5FF2A8B64A400796CA5 /* AgreementCheckView.swift */,
 				8A07E5F72A8B594B00796CA5 /* SignUpInputView.swift */,
 				8A07E5FD2A8B5DE300796CA5 /* VerifyCodeTextfield.swift */,
@@ -1966,6 +1978,8 @@
 				8A4DA84829A4700F00B6D19B /* AgoraCanvasContainer.swift in Sources */,
 				8AF244DE287C2AFD00E6B2AF /* WechatBindingRequest.swift in Sources */,
 				8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */,
+				8A07E6062A8B7F4200796CA5 /* ResetPasswordViewController.swift in Sources */,
+				8A07E6082A8B831000796CA5 /* PasswordRepeatView.swift in Sources */,
 				8AFB942C28B74EBA00B8795D /* UIViewController+Present.swift in Sources */,
 				8A07E5F62A8B58F700796CA5 /* SignUpViewController.swift in Sources */,
 				8A07E6002A8B64A400796CA5 /* AgreementCheckView.swift in Sources */,
@@ -2057,6 +2071,7 @@
 				8AACBBC829CD491A00CD32C5 /* MTLTexture+CGImage.swift in Sources */,
 				8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */,
 				8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */,
+				8A07E60A2A8B84F000796CA5 /* AccountCodeAuthView.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
 				8ABF362C27464E63000D5003 /* String+Empty.swift in Sources */,
@@ -2093,6 +2108,7 @@
 				8A05A15A2834EC04002DE9B9 /* StringLocalize.swift in Sources */,
 				8A97EBAF2719983700965185 /* CreateRoomRequest.swift in Sources */,
 				8A05C313275DE279009BCA79 /* ProfileViewController.swift in Sources */,
+				8A07E60C2A8B878200796CA5 /* ResetPasswordRequest.swift in Sources */,
 				8A9FB3BB2722981200F6F06F /* JSONEncoder+Extension.swift in Sources */,
 				8A8020912755B09000F5691C /* RtcViewController.swift in Sources */,
 				8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */,
