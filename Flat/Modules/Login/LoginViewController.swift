@@ -62,7 +62,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    var lastAccountLoginText: String? {
+    static var lastAccountLoginText: String? {
         get {
             UserDefaults.standard.value(forKey: "lastAccountLoginText") as? String
         }
@@ -71,7 +71,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    var lastAccountLoginPwd: String? {
+    static var lastAccountLoginPwd: String? {
         get {
             UserDefaults.standard.value(forKey: "lastAccountLoginPwd") as? String
         }
@@ -164,8 +164,8 @@ class LoginViewController: UIViewController {
                 stopActivityIndicator()
                 switch result {
                 case let .success(user):
-                    self.lastAccountLoginText = self.passwordAuthView.accountTextfield.accountText
-                    self.lastAccountLoginPwd = self.passwordAuthView.passwordTextfield.passwordText
+                    Self.lastAccountLoginText = self.passwordAuthView.accountTextfield.accountText
+                    Self.lastAccountLoginPwd = self.passwordAuthView.passwordTextfield.passwordText
                     AuthStore.shared.processLoginSuccessUserInfo(user)
                 case let .failure(error):
                     self.toast(error.localizedDescription)
@@ -336,8 +336,8 @@ class LoginViewController: UIViewController {
 
     func loadHistory() {
         smsAuthView.phoneTextfield.text = lastSMSLoginPhone
-        passwordAuthView.accountTextfield.text = lastAccountLoginText
-        passwordAuthView.passwordTextfield.text = lastAccountLoginPwd
+        passwordAuthView.accountTextfield.text = Self.lastAccountLoginText
+        passwordAuthView.passwordTextfield.text = Self.lastAccountLoginPwd
     }
 
     func showDeviceAgreeAlert() {

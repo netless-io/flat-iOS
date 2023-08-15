@@ -139,7 +139,8 @@ class SignUpViewController: UIViewController {
                     .subscribe(with: self, onNext: { ws, user in
                         ws.stopActivityIndicator()
                         AuthStore.shared.processLoginSuccessUserInfo(user)
-                        // TODO: store last login info ..405
+                        LoginViewController.lastAccountLoginText = account
+                        LoginViewController.lastAccountLoginPwd = password
                     }, onError: { ws, error in
                         ws.stopActivityIndicator()
                         ws.toast(error.localizedDescription)
