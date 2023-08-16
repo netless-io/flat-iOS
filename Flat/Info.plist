@@ -104,6 +104,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>DISABLE_LOGIN_TYPES</key>
+	<string>$(DISABLE_LOGIN_TYPES)</string>
 	<key>FLAT_WEB_BASE_URL</key>
 	<string>$(FLAT_WEB_BASE_URL)</string>
 	<key>FORCE_BIND_PHONE</key>

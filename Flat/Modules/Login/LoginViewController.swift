@@ -46,6 +46,7 @@ class LoginViewController: UIViewController {
     @IBOutlet var tipsLabel: UILabel!
     @IBOutlet var thirdPartLoginStackView: UIStackView!
 
+    @IBOutlet var appleLoginButton: UIButton!
     @IBOutlet var googleLoginButton: UIButton!
     @IBOutlet var githubLoginButton: UIButton!
     @IBOutlet var weChatLoginButton: UIButton!
@@ -133,6 +134,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        hideDisabledLoginTypes()
         loadHistory()
         bind()
         #if DEBUG
@@ -230,6 +232,18 @@ class LoginViewController: UIViewController {
 
     // MARK: - Private -
 
+    func hideDisabledLoginTypes() {
+        let env = Env().disabledLoginTypes
+        for type in env {
+            switch type {
+            case .apple: appleLoginButton.isHidden = true
+            case .google: googleLoginButton.isHidden = true
+            case .github: githubLoginButton.isHidden = true
+            case .wechat: weChatLoginButton.isHidden = true
+            }
+        }
+    }
+    
     func setupViews() {
         // UI
         registerButton.layer.borderWidth = commonBorderWidth
@@ -260,7 +274,6 @@ class LoginViewController: UIViewController {
             $0.backgroundColor = .color(type: .background)
         }
         flatLabel.textColor = .color(type: .text, .strong)
-//        setupAppleLogin()
 
         let i = contentStackView.arrangedSubviews.firstIndex(of: registerButton) ?? 0
         contentStackView.insertArrangedSubview(agreementCheckStackView, at: i + 1)

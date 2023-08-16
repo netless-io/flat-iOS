@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="DEV_Flat" customModuleProvider="target">
             <connections>
+                <outlet property="appleLoginButton" destination="5Wc-bT-Wxv" id="SyY-gD-oj6"/>
                 <outlet property="authInputStackView" destination="Kbq-rl-1M2" id="Y00-Yt-7Ri"/>
                 <outlet property="compactBgView" destination="7fq-dm-8Fc" id="DCb-ec-YMR"/>
                 <outlet property="compactGradientView" destination="JIe-Yn-VIY" id="mZs-Rj-5FR"/>

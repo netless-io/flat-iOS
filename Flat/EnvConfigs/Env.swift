@@ -8,6 +8,15 @@
 
 import Foundation
 
+enum LoginType: String {
+    case email
+    case phone
+    case github
+    case apple
+    case wechat
+    case google
+}
+
 struct Env {
     enum Region: String {
         case CN
@@ -21,6 +30,10 @@ struct Env {
         return value
     }
 
+    var disabledLoginTypes: [LoginType] {
+        (value(for: "DISABLE_LOGIN_TYPES") as String).split(separator: ",").compactMap { LoginType.init(rawValue: String($0)) }
+    }
+    
     var forceBindPhone: Bool {
         (value(for: "FORCE_BIND_PHONE") as String)  == "1"
     }

@@ -24,4 +24,4 @@ REGION = CN
 SLS_PROJECT = hz-flat-dev
 SLS_ENDPOINT = cn-hangzhou.log.aliyuncs.com
 FORCE_BIND_PHONE = 1
-
+DISABLE_LOGIN_TYPES = google
