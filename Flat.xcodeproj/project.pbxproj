@@ -44,6 +44,8 @@
 		8A07E60A2A8B84F000796CA5 /* AccountCodeAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6092A8B84F000796CA5 /* AccountCodeAuthView.swift */; };
 		8A07E60C2A8B878200796CA5 /* ResetPasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E60B2A8B878200796CA5 /* ResetPasswordRequest.swift */; };
 		8A07E60E2A8C749800796CA5 /* GoogleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E60D2A8C749800796CA5 /* GoogleLogin.swift */; };
+		8A07E6122A8CC1E900796CA5 /* UpdatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6112A8CC1E900796CA5 /* UpdatePasswordViewController.swift */; };
+		8A07E6142A8CC66100796CA5 /* UpdatePasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6132A8CC66100796CA5 /* UpdatePasswordRequest.swift */; };
 		8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */; };
 		8A0A85F227ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
@@ -392,6 +394,8 @@
 		8A07E6092A8B84F000796CA5 /* AccountCodeAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCodeAuthView.swift; sourceTree = "<group>"; };
 		8A07E60B2A8B878200796CA5 /* ResetPasswordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordRequest.swift; sourceTree = "<group>"; };
 		8A07E60D2A8C749800796CA5 /* GoogleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleLogin.swift; sourceTree = "<group>"; };
+		8A07E6112A8CC1E900796CA5 /* UpdatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordViewController.swift; sourceTree = "<group>"; };
+		8A07E6132A8CC66100796CA5 /* UpdatePasswordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordRequest.swift; sourceTree = "<group>"; };
 		8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelRoomHistoryRequest.swift; sourceTree = "<group>"; };
 		8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Pods-Flat-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-Flat/Pods-Flat-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
@@ -999,6 +1003,7 @@
 				8A07E6032A8B716900796CA5 /* PasswordLoginRequest.swift */,
 				8A07E6012A8B6D7200796CA5 /* SignUpRequest.swift */,
 				8A07E60B2A8B878200796CA5 /* ResetPasswordRequest.swift */,
+				8A07E6132A8CC66100796CA5 /* UpdatePasswordRequest.swift */,
 				8AD3CDF52716B165008BD904 /* SetAuthUuidRequest.swift */,
 				8AF244DD287C2AFC00E6B2AF /* WechatBindingRequest.swift */,
 				8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */,
@@ -1097,6 +1102,7 @@
 				8AC376B2271D25CD003464B0 /* About */,
 				8AC376B1271D25BB003464B0 /* ContactUs */,
 				8A270B8327192A0800450DC6 /* SettingViewController.swift */,
+				8A07E6112A8CC1E900796CA5 /* UpdatePasswordViewController.swift */,
 				8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */,
 				8A270B8527192A6600450DC6 /* SettingTableViewCell.swift */,
 				8A270B8627192A6600450DC6 /* SettingTableViewCell.xib */,
@@ -2084,6 +2090,7 @@
 				8A270BC927198A1800450DC6 /* UIButton+Spacing.swift in Sources */,
 				8A9FB3A327224E8000F6F06F /* HistoryMessageSourceRequest.swift in Sources */,
 				8AD7C6BD27157EA7001C4AAD /* AppDelegate.swift in Sources */,
+				8A07E6142A8CC66100796CA5 /* UpdatePasswordRequest.swift in Sources */,
 				8A8020892754697500F5691C /* RtcViewModel.swift in Sources */,
 				8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */,
 				8A0EB7C3272BFB3100003DF7 /* ClassRoomSettingTableViewCell.swift in Sources */,
@@ -2175,6 +2182,7 @@
 				8A99EC4028B5BA3C0066CFF3 /* BottomLineTextfield.swift in Sources */,
 				8A59FF8828D96D3600318407 /* WKWebViewController.swift in Sources */,
 				8A97EBB527199AB600965185 /* RoomPlayInfo.swift in Sources */,
+				8A07E6122A8CC1E900796CA5 /* UpdatePasswordViewController.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
 				8A05C34D2760AB26009BCA79 /* UploadTasksViewController.swift in Sources */,
 				8ACA7ED228B77E8100EE24D5 /* UIViewController+SafaArea.swift in Sources */,
