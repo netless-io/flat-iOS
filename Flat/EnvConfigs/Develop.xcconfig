@@ -13,6 +13,7 @@
 API_URL = flat-api-dev.whiteboard.agora.io
 FLAT_WEB_BASE_URL = flat-web-dev.whiteboard.agora.io
 GITHUB_CLIENT_ID = 9821657775fbc74773f1
+GOOGLE_CLIENT_ID = 273996094508-p97og69ojac5ja0khn1rvmi3tb7vgfgm.apps.googleusercontent.com
 WECHAT_APP_ID = wx09437693798bc108
 NETLESS_APP_ID = cFjxAJjiEeuUQ0211QCRBw/mO9uJB_DiCIqug
 AGORA_APP_ID = a185de0a777f4c159e302abcc0f03b64

@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import AuthenticationServices
 import RxRelay
 import RxSwift
 import UIKit
@@ -47,11 +46,13 @@ class LoginViewController: UIViewController {
     @IBOutlet var tipsLabel: UILabel!
     @IBOutlet var thirdPartLoginStackView: UIStackView!
 
+    @IBOutlet var googleLoginButton: UIButton!
     @IBOutlet var githubLoginButton: UIButton!
     @IBOutlet var weChatLoginButton: UIButton!
 
     var weChatLogin: WeChatLogin?
     var githubLogin: GithubLogin?
+    var googleLogin: GoogleLogin?
     var appleLogin: Any?
     var lastSMSLoginPhone: String? {
         get {
@@ -259,7 +260,7 @@ class LoginViewController: UIViewController {
             $0.backgroundColor = .color(type: .background)
         }
         flatLabel.textColor = .color(type: .text, .strong)
-        setupAppleLogin()
+//        setupAppleLogin()
 
         let i = contentStackView.arrangedSubviews.firstIndex(of: registerButton) ?? 0
         contentStackView.insertArrangedSubview(agreementCheckStackView, at: i + 1)
@@ -418,26 +419,12 @@ class LoginViewController: UIViewController {
         }
     }
 
-    func setupAppleLogin() {
-        let container = UIView()
-        let button = ASAuthorizationAppleIDButton(authorizationButtonType: .default, authorizationButtonStyle: .black)
-        container.addSubview(button)
-        thirdPartLoginStackView.addArrangedSubview(container)
-        button.addTarget(self, action: #selector(onClickAppleLogin(sender:)), for: .touchUpInside)
-
-        button.cornerRadius = 29
-        button.removeConstraints(button.constraints)
-        button.snp.makeConstraints { make in
-            make.width.height.equalTo(58)
-            make.center.equalToSuperview()
-        }
-    }
-
-    @objc func onClickAppleLogin(sender: UIButton) {
+    @objc
+    @IBAction func onClickAppleLogin(sender: UIButton) {
         guard checkAgreementDidAgree() else {
-            showAgreementCheckAlert { [weak self] in
+            showAgreementCheckAlert(agreeAction: { [weak self] in
                 self?.onClickAppleLogin(sender: sender)
-            }
+            }, cancelAction: nil)
             return
         }
         showActivityIndicator()
@@ -453,11 +440,34 @@ class LoginViewController: UIViewController {
         }
     }
 
+    @IBAction func onClickGoogleButton(_ sender: UIButton) {
+        guard checkAgreementDidAgree() else {
+            showAgreementCheckAlert(agreeAction: { [weak self] in
+                self?.onClickGoogleButton(sender)
+            }, cancelAction: nil)
+            return
+        }
+        guard let coordinator = globalLaunchCoordinator else { return }
+        showActivityIndicator(forSeconds: 1)
+        googleLogin = GoogleLogin()
+        googleLogin?.startLogin(withAuthStore: AuthStore.shared,
+                                launchCoordinator: coordinator,
+                                sender: sender,
+                                completionHandler: { [weak self] result in
+                                    switch result {
+                                    case .success:
+                                        return
+                                    case let .failure(error):
+                                        self?.showAlertWith(message: error.localizedDescription)
+                                    }
+                                })
+    }
+    
     @IBAction func onClickWeChatButton() {
         guard checkAgreementDidAgree() else {
-            showAgreementCheckAlert { [weak self] in
+            showAgreementCheckAlert(agreeAction: { [weak self] in
                 self?.onClickWeChatButton()
-            }
+            }, cancelAction: nil)
             return
         }
         guard let launchCoordinator = globalLaunchCoordinator else { return }
@@ -479,14 +489,13 @@ class LoginViewController: UIViewController {
 
     @IBAction func onClickGithubButton(sender: UIButton) {
         guard checkAgreementDidAgree() else {
-            showAgreementCheckAlert { [weak self] in
+            showAgreementCheckAlert(agreeAction: { [weak self] in
                 self?.onClickGithubButton(sender: sender)
-            }
+            }, cancelAction: nil)
             return
         }
         guard let coordinator = globalLaunchCoordinator else { return }
         showActivityIndicator(forSeconds: 1)
-        githubLogin?.removeLaunchItemFromLaunchCoordinator?()
         githubLogin = GithubLogin()
         githubLogin?.startLogin(withAuthStore: AuthStore.shared,
                                 launchCoordinator: coordinator,

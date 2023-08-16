@@ -19,6 +19,7 @@
                 <outlet property="flatLabel" destination="hhQ-qF-rd8" id="sEf-ae-A9i"/>
                 <outlet property="forgetPasswordButton" destination="cCX-9K-yvd" id="WmF-HN-Vft"/>
                 <outlet property="githubLoginButton" destination="66p-b6-epO" id="UmJ-jc-cPR"/>
+                <outlet property="googleLoginButton" destination="0WL-if-sWo" id="enh-cq-WF9"/>
                 <outlet property="loginButton" destination="Fkj-E5-RS5" id="GId-FY-m1a"/>
                 <outlet property="loginRegularBg" destination="XSB-Cf-LTe" id="Fw4-oL-sUW"/>
                 <outlet property="loginTypeToggleButton" destination="za7-R3-Ak7" id="aFb-09-NJ9"/>
@@ -71,16 +72,16 @@
                                     </constraints>
                                 </view>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Bz8-YI-D5e">
-                                    <rect key="frame" x="68.5" y="419.5" width="375" height="527"/>
+                                    <rect key="frame" x="32.5" y="419.5" width="447" height="527"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ucK-zM-iy8">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="223"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="447" height="223"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_icon" translatesAutoresizingMaskIntoConstraints="NO" id="LcV-pg-1cs">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="447" height="94"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhQ-qF-rd8">
-                                                    <rect key="frame" x="0.0" y="102" width="375" height="24"/>
+                                                    <rect key="frame" x="0.0" y="102" width="447" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                     <color key="textColor" systemColor="systemRedColor"/>
                                                     <nil key="highlightedColor"/>
@@ -89,7 +90,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="在线互动，让想法同步" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pTe-i4-eT5">
-                                                    <rect key="frame" x="0.0" y="134" width="375" height="17"/>
+                                                    <rect key="frame" x="0.0" y="134" width="447" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" name="7A7B7C"/>
                                                     <nil key="highlightedColor"/>
@@ -98,7 +99,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WAN-an-hVj">
-                                                    <rect key="frame" x="0.0" y="159" width="375" height="64"/>
+                                                    <rect key="frame" x="0.0" y="159" width="447" height="64"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="64" id="vA5-dZ-BKk"/>
@@ -107,14 +108,14 @@
                                             </subviews>
                                         </stackView>
                                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="300" placeholderIntrinsicHeight="144" translatesAutoresizingMaskIntoConstraints="NO" id="Kbq-rl-1M2" userLabel="authContainer" customClass="UIStackView">
-                                            <rect key="frame" x="0.0" y="231" width="375" height="144"/>
+                                            <rect key="frame" x="0.0" y="231" width="447" height="144"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" priority="750" constant="375" id="N2g-NW-r1u"/>
                                             </constraints>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w5U-qR-ZKD">
-                                            <rect key="frame" x="0.0" y="383" width="375" height="48"/>
+                                            <rect key="frame" x="0.0" y="383" width="447" height="48"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="za7-R3-Ak7">
                                                     <rect key="frame" x="0.0" y="0.0" width="88" height="48"/>
@@ -127,11 +128,11 @@
                                                     </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tGH-DG-Ets">
-                                                    <rect key="frame" x="88" y="0.0" width="224" height="48"/>
+                                                    <rect key="frame" x="88" y="0.0" width="296" height="48"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cCX-9K-yvd">
-                                                    <rect key="frame" x="312" y="0.0" width="63" height="48"/>
+                                                    <rect key="frame" x="384" y="0.0" width="63" height="48"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="forget">
                                                         <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
@@ -149,7 +150,7 @@
                                             </constraints>
                                         </stackView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fkj-E5-RS5" customClass="FlatGeneralCrossButton" customModule="DEV_Flat" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="439" width="375" height="40"/>
+                                            <rect key="frame" x="0.0" y="439" width="447" height="40"/>
                                             <color key="backgroundColor" red="0.47684186699999997" green="0.50480759139999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="DMp-sv-Zgo"/>
@@ -158,7 +159,7 @@
                                             <buttonConfiguration key="configuration" style="plain" title="Login"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VKX-0M-aFl" customClass="SpringButton" customModule="DEV_Flat" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="487" width="375" height="40"/>
+                                            <rect key="frame" x="0.0" y="487" width="447" height="40"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="ubt-VF-CXo"/>
@@ -180,10 +181,10 @@
                                     </constraints>
                                 </stackView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="cO4-JK-Wcy">
-                                    <rect key="frame" x="68.5" y="1144" width="375.5" height="162"/>
+                                    <rect key="frame" x="32" y="1154" width="448" height="152"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="375.5" placeholderIntrinsicHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="m42-RC-mH1">
-                                            <rect key="frame" x="0.0" y="0.0" width="375.5" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="448" height="66"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="i5C-AW-IRd">
                                                     <rect key="frame" x="0.0" y="0.0" width="16" height="66"/>
@@ -193,18 +194,18 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="82" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="w15-pG-zIq" customClass="DashLineView" customModule="DEV_Flat" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="0.0" width="82" height="66"/>
+                                                    <rect key="frame" x="16" y="0.0" width="118.5" height="66"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="KPT-2a-aok"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="9rN-mb-JPk">
-                                                    <rect key="frame" x="98" y="0.0" width="16" height="66"/>
+                                                    <rect key="frame" x="134.5" y="0.0" width="16" height="66"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="147.5" placeholderIntrinsicHeight="44" text="也可通过以下方式直接登录" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTh-jI-o8u">
-                                                    <rect key="frame" x="114" y="0.0" width="147.5" height="66"/>
+                                                    <rect key="frame" x="150.5" y="0.0" width="147.5" height="66"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" systemColor="systemGreenColor"/>
                                                     <nil key="highlightedColor"/>
@@ -213,15 +214,15 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="aCn-QO-NWM">
-                                                    <rect key="frame" x="261.5" y="0.0" width="16" height="66"/>
+                                                    <rect key="frame" x="298" y="0.0" width="16" height="66"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="82" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="g43-OR-gCl" customClass="DashLineView" customModule="DEV_Flat" customModuleProvider="target">
-                                                    <rect key="frame" x="277.5" y="0.0" width="82" height="66"/>
+                                                    <rect key="frame" x="314" y="0.0" width="118" height="66"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="K3A-Pi-zpc">
-                                                    <rect key="frame" x="359.5" y="0.0" width="16" height="66"/>
+                                                    <rect key="frame" x="432" y="0.0" width="16" height="66"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
                                             </subviews>
@@ -233,10 +234,18 @@
                                             </constraints>
                                         </stackView>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="J7d-YG-TGG">
-                                            <rect key="frame" x="0.0" y="90" width="375.5" height="72"/>
+                                            <rect key="frame" x="0.0" y="90" width="448" height="62"/>
                                             <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0WL-if-sWo">
+                                                    <rect key="frame" x="0.0" y="0.0" width="82" height="62"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain" image="login_google" title=""/>
+                                                    <connections>
+                                                        <action selector="onClickGoogleButton:" destination="-1" eventType="touchUpInside" id="h53-Bh-dux"/>
+                                                    </connections>
+                                                </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLG-0j-XGe">
-                                                    <rect key="frame" x="0.0" y="0.0" width="167.5" height="72"/>
+                                                    <rect key="frame" x="122" y="0.0" width="82" height="62"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="82" id="WSC-zD-b7b"/>
                                                     </constraints>
@@ -248,11 +257,19 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="66p-b6-epO">
-                                                    <rect key="frame" x="207.5" y="0.0" width="168" height="72"/>
+                                                    <rect key="frame" x="244" y="0.0" width="82" height="62"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" image="login_github" title=""/>
                                                     <connections>
                                                         <action selector="onClickGithubButtonWithSender:" destination="-1" eventType="touchUpInside" id="oSX-ge-fJi"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Wc-bT-Wxv">
+                                                    <rect key="frame" x="366" y="0.0" width="82" height="62"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain" image="login_apple" title=""/>
+                                                    <connections>
+                                                        <action selector="onClickAppleLoginWithSender:" destination="-1" eventType="touchUpInside" id="Nay-fa-XHp"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -291,11 +308,13 @@
         </view>
     </objects>
     <resources>
+        <image name="login_apple" width="48" height="48"/>
         <image name="login_compact_bg" width="347.5" height="130"/>
-        <image name="login_github" width="58" height="58"/>
+        <image name="login_github" width="48" height="48"/>
+        <image name="login_google" width="48" height="48"/>
         <image name="login_icon" width="94" height="94"/>
         <image name="login_pad" width="442" height="435"/>
-        <image name="login_wechat" width="58" height="58"/>
+        <image name="login_wechat" width="48" height="48"/>
         <namedColor name="7A7B7C">
             <color red="0.47843137254901963" green="0.4823529411764706" blue="0.48627450980392156" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

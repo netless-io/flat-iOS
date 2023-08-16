@@ -36,6 +36,10 @@ struct Env {
     var githubClientId: String {
         value(for: "GITHUB_CLIENT_ID") as String
     }
+    
+    var googleClientId: String {
+        value(for: "GOOGLE_CLIENT_ID") as String
+    }
 
     var webBaseURL: String {
         "https://\(value(for: "FLAT_WEB_BASE_URL") as String)"

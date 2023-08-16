@@ -110,6 +110,8 @@
 	<string>${FORCE_BIND_PHONE}</string>
 	<key>GITHUB_CLIENT_ID</key>
 	<string>$(GITHUB_CLIENT_ID)</string>
+	<key>GOOGLE_CLIENT_ID</key>
+	<string>$(GOOGLE_CLIENT_ID)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
