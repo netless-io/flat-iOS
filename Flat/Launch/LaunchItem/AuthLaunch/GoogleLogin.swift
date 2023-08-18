@@ -1,15 +1,15 @@
 //
-//  GithubLogin.swift
-//  flat
+//  GoogleLogin.swift
+//  Flat
 //
-//  Created by xuyunshi on 2021/10/13.
-//  Copyright © 2021 agora.io. All rights reserved.
+//  Created by xuyunshi on 2023/8/16.
+//  Copyright © 2023 agora.io. All rights reserved.
 //
 
 import SafariServices
 import UIKit
 
-class GithubLogin: LaunchItem {
+class GoogleLogin: LaunchItem {
     private var unload: (() -> Void)?
 
     func shouldHandle(url: URL?, scene: UIScene) -> Bool {
@@ -49,7 +49,7 @@ class GithubLogin: LaunchItem {
             guard let self else { return }
             switch r {
             case .success:
-                let controller = SFSafariViewController(url: self.githubLoginURL)
+                let controller = SFSafariViewController(url: Env().googleLoginURLWith(authUUID: uuid))
                 controller.modalPresentationStyle = .pageSheet
                 sender.viewController()?.present(controller, animated: true)
                 let launchItemIdentifier = self.uuid
@@ -70,10 +70,5 @@ class GithubLogin: LaunchItem {
                 completionHandler(.failure(error))
             }
         }
-    }
-
-    var githubLoginURL: URL {
-        let env = Env()
-        return URL(string: "https://github.com/login/oauth/authorize?client_id=\(env.githubClientId)&redirect_uri=\(env.baseURL)/v1/login/github/callback&state=\(uuid)")!
     }
 }

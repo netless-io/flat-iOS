@@ -20,7 +20,7 @@
                 <outlet property="flatLabel" destination="hhQ-qF-rd8" id="sEf-ae-A9i"/>
                 <outlet property="forgetPasswordButton" destination="cCX-9K-yvd" id="WmF-HN-Vft"/>
                 <outlet property="githubLoginButton" destination="66p-b6-epO" id="UmJ-jc-cPR"/>
-                <outlet property="googleLoginButton" destination="0WL-if-sWo" id="enh-cq-WF9"/>
+                <outlet property="googleLoginButton" destination="0WL-if-sWo" id="rir-db-6Nk"/>
                 <outlet property="loginButton" destination="Fkj-E5-RS5" id="GId-FY-m1a"/>
                 <outlet property="loginRegularBg" destination="XSB-Cf-LTe" id="Fw4-oL-sUW"/>
                 <outlet property="loginTypeToggleButton" destination="za7-R3-Ak7" id="aFb-09-NJ9"/>
@@ -242,7 +242,7 @@
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" image="login_google" title=""/>
                                                     <connections>
-                                                        <action selector="onClickGoogleButton:" destination="-1" eventType="touchUpInside" id="h53-Bh-dux"/>
+                                                        <action selector="onClickWebLinkLoginButtonWithSender:" destination="-1" eventType="touchUpInside" id="6zf-GC-J3d"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLG-0j-XGe">
@@ -262,7 +262,7 @@
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" image="login_github" title=""/>
                                                     <connections>
-                                                        <action selector="onClickGithubButtonWithSender:" destination="-1" eventType="touchUpInside" id="oSX-ge-fJi"/>
+                                                        <action selector="onClickWebLinkLoginButtonWithSender:" destination="-1" eventType="touchUpInside" id="dh2-Ib-4XR"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Wc-bT-Wxv">

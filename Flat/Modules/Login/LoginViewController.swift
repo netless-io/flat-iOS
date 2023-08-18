@@ -51,9 +51,8 @@ class LoginViewController: UIViewController {
     @IBOutlet var githubLoginButton: UIButton!
     @IBOutlet var weChatLoginButton: UIButton!
 
+    var webLinkLogin: WebLinkLoginItem?
     var weChatLogin: WeChatLogin?
-    var githubLogin: GithubLogin?
-    var googleLogin: GoogleLogin?
     var appleLogin: Any?
     var lastSMSLoginPhone: String? {
         get {
@@ -240,6 +239,7 @@ class LoginViewController: UIViewController {
             case .google: googleLoginButton.isHidden = true
             case .github: githubLoginButton.isHidden = true
             case .wechat: weChatLoginButton.isHidden = true
+            case .phone, .email: return // Can't hide yet.
             }
         }
     }
@@ -453,29 +453,6 @@ class LoginViewController: UIViewController {
         }
     }
 
-    @IBAction func onClickGoogleButton(_ sender: UIButton) {
-        guard checkAgreementDidAgree() else {
-            showAgreementCheckAlert(agreeAction: { [weak self] in
-                self?.onClickGoogleButton(sender)
-            }, cancelAction: nil)
-            return
-        }
-        guard let coordinator = globalLaunchCoordinator else { return }
-        showActivityIndicator(forSeconds: 1)
-        googleLogin = GoogleLogin()
-        googleLogin?.startLogin(withAuthStore: AuthStore.shared,
-                                launchCoordinator: coordinator,
-                                sender: sender,
-                                completionHandler: { [weak self] result in
-                                    switch result {
-                                    case .success:
-                                        return
-                                    case let .failure(error):
-                                        self?.showAlertWith(message: error.localizedDescription)
-                                    }
-                                })
-    }
-    
     @IBAction func onClickWeChatButton() {
         guard checkAgreementDidAgree() else {
             showAgreementCheckAlert(agreeAction: { [weak self] in
@@ -500,27 +477,37 @@ class LoginViewController: UIViewController {
         }
     }
 
-    @IBAction func onClickGithubButton(sender: UIButton) {
+    @IBAction func onClickWebLinkLoginButton(sender: UIButton) {
+        var urlMaker: ((String)->URL)?
+        if sender === githubLoginButton {
+            urlMaker = Env().githubLoginURLWith(authUUID:)
+        } else if sender === googleLoginButton {
+            urlMaker = Env().googleLoginURLWith(authUUID:)
+        }
+        guard let urlMaker else { return }
         guard checkAgreementDidAgree() else {
             showAgreementCheckAlert(agreeAction: { [weak self] in
-                self?.onClickGithubButton(sender: sender)
+                self?.onClickWebLinkLoginButton(sender: sender)
             }, cancelAction: nil)
             return
         }
         guard let coordinator = globalLaunchCoordinator else { return }
-        showActivityIndicator(forSeconds: 1)
-        githubLogin = GithubLogin()
-        githubLogin?.startLogin(withAuthStore: AuthStore.shared,
-                                launchCoordinator: coordinator,
-                                sender: sender,
-                                completionHandler: { [weak self] result in
-                                    switch result {
-                                    case .success:
-                                        return
-                                    case let .failure(error):
-                                        self?.showAlertWith(message: error.localizedDescription)
-                                    }
-                                })
+        showActivityIndicator()
+        webLinkLogin = WebLinkLoginItem()
+        webLinkLogin?.startLogin(withAuthStore: AuthStore.shared,
+                                      launchCoordinator: coordinator,
+                                      sender: sender,
+                                      urlMaker: urlMaker) { [weak self] result in
+            guard let self else { return }
+            self.stopActivityIndicator()
+            self.webLinkLogin = nil
+            switch result {
+            case .success:
+                return
+            case let .failure(error):
+                self.showAlertWith(message: error.localizedDescription)
+            }
+        }
     }
 
     // MARK: - Lazy -

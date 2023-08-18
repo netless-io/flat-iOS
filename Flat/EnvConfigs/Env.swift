@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum LoginType: String {
+enum LoginType: String, CaseIterable {
     case email
     case phone
     case github
@@ -31,13 +31,13 @@ struct Env {
     }
 
     var disabledLoginTypes: [LoginType] {
-        (value(for: "DISABLE_LOGIN_TYPES") as String).split(separator: ",").compactMap { LoginType.init(rawValue: String($0)) }
+        (value(for: "DISABLE_LOGIN_TYPES") as String).split(separator: ",").compactMap { LoginType(rawValue: String($0)) }
     }
-    
+
     var forceBindPhone: Bool {
-        (value(for: "FORCE_BIND_PHONE") as String)  == "1"
+        (value(for: "FORCE_BIND_PHONE") as String) == "1"
     }
-    
+
     var region: Region {
         Region(rawValue: value(for: "REGION")) ?? .US
     }
@@ -49,7 +49,7 @@ struct Env {
     var githubClientId: String {
         value(for: "GITHUB_CLIENT_ID") as String
     }
-    
+
     var googleClientId: String {
         value(for: "GOOGLE_CLIENT_ID") as String
     }
@@ -100,6 +100,40 @@ struct Env {
 
     var slsAk: String {
         Bundle.main.infoDictionary?["SLS_AK"] as? String ?? ""
+    }
+}
+
+private let googleAuthBaseUrl = "https://accounts.google.com/o/oauth2/v2/auth"
+private let githubAuthBaseUrl = "https://github.com/login/oauth/authorize"
+extension Env {
+    func githubBindingURLWith(authUUID uuid: String) -> URL {
+        let redirectUri = baseURL + "/v1/login/github/callback/binding"
+        let queryString = "?client_id=\(githubClientId)&redirect_uri=\(redirectUri)&state=\(uuid)"
+        let urlString = githubAuthBaseUrl + queryString
+        return URL(string: urlString)!
+    }
+    
+    func githubLoginURLWith(authUUID uuid: String) -> URL {
+        let redirectUri = baseURL + "/v1/login/github/callback"
+        let queryString = "?client_id=\(githubClientId)&redirect_uri=\(redirectUri)&state=\(uuid)"
+        let urlString = githubAuthBaseUrl + queryString
+        return URL(string: urlString)!
+    }
+
+    func googleBindingURLWith(authUUID uuid: String) -> URL {
+        let redirectUrl = baseURL + "/v1/user/binding/platform/google"
+        let scope = ["openid", "https://www.googleapis.com/auth/userinfo.profile"].joined(separator: " ").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let queryString = "?response_type=code&access_type=online&scope=\(scope)&client_id=\(googleClientId)&redirect_uri=\(redirectUrl)&state=\(uuid)"
+        let urlString = googleAuthBaseUrl + queryString
+        return URL(string: urlString)!
+    }
+    
+    func googleLoginURLWith(authUUID uuid: String) -> URL {
+        let redirectUrl = baseURL + "/v1/login/google/callback"
+        let scope = ["openid", "https://www.googleapis.com/auth/userinfo.profile"].joined(separator: " ").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let queryString = "?response_type=code&access_type=online&scope=\(scope)&client_id=\(googleClientId)&redirect_uri=\(redirectUrl)&state=\(uuid)"
+        let urlString = googleAuthBaseUrl + queryString
+        return URL(string: urlString)!
     }
 }
 
