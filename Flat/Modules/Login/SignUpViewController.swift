@@ -150,6 +150,9 @@ class SignUpViewController: UIViewController {
                         AuthStore.shared.processLoginSuccessUserInfo(user)
                         LoginViewController.lastAccountLoginText = account
                         LoginViewController.lastAccountLoginPwd = password
+                        if !Env().forceBindPhone {
+                            NotificationCenter.default.post(name: signUpSuccessNotificationName, object: nil)
+                        }
                     }, onError: { ws, error in
                         ws.stopActivityIndicator()
                         ws.toast(error.localizedDescription)

@@ -447,6 +447,12 @@
 "NeedLoginAgain" = "凭证已过期，请重新登录";
 
 
+"NewAccountAvatarPlaceholder" = "上传头像（可选）";
+
+
+"NewAccountNickNamePlaceholder" = "请输入昵称（可选）";
+
+
 "NewPage" = "创建新页面";
 
 

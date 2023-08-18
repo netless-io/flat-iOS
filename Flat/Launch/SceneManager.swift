@@ -25,6 +25,7 @@ class SceneManager {
         NotificationCenter.default.addObserver(self, selector: #selector(onLoginSuccess), name: loginSuccessNotificationName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onLogout), name: logoutNotificationName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onJwtExpire), name: jwtExpireNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onSignUpSuccess), name: signUpSuccessNotificationName, object: nil)
     }
 
     static let shared = SceneManager()
@@ -85,7 +86,8 @@ class SceneManager {
 
     // MARK: - AuthStore
 
-    @objc func onLoginSuccess(_ notification: Notification) {
+    @objc
+    func onLoginSuccess(_ notification: Notification) {
         guard let user = notification.userInfo?["user"] as? User else { return }
         for (identifier, window) in windowMap {
             guard let scene = window.windowScene else { return }
@@ -94,8 +96,15 @@ class SceneManager {
         }
         refreshMultiWindowPreview()
     }
+    
+    @objc
+    func onSignUpSuccess(_ notification: Notification) {
+        guard let root = windowMap.randomElement()?.value.rootViewController else { return }
+        root.present(AvatarNickNameSettingViewController(), animated: true)
+    }
 
-    @objc func onLogout() {
+    @objc
+    func onLogout() {
         let pickedRandomScene = randomForegroundWindow()?.windowScene
         for (identifier, window) in windowMap {
             guard let scene = window.windowScene else { return }
@@ -109,7 +118,8 @@ class SceneManager {
         }
     }
 
-    @objc func onJwtExpire() {
+    @objc
+    func onJwtExpire() {
         guard let root = randomForegroundWindow()?.rootViewController else { return }
         if let _ = root.presentedViewController {
             root.dismiss(animated: false)

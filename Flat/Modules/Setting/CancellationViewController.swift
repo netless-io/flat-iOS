@@ -97,7 +97,7 @@ class CancellationViewController: UIViewController {
         srcView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.top.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(bottomHeight + margin)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(bottomHeight + 2*margin)
         }
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin))

@@ -13,6 +13,7 @@ import RxSwift
 
 let avatarUpdateNotificationName: Notification.Name = .init(rawValue: "avatarUpdateNotification")
 let loginSuccessNotificationName: Notification.Name = .init("loginSuccessNotification")
+let signUpSuccessNotificationName: Notification.Name = .init("signUpSuccessNotificationName")
 let logoutNotificationName: Notification.Name = .init("logoutNotification")
 let jwtExpireNotificationName: Notification.Name = .init("jwtExpireNotification")
 
@@ -56,9 +57,10 @@ class AuthStore {
         }
         newUser.hasPhone = true
         processLoginSuccessUserInfo(newUser)
+        NotificationCenter.default.post(name: signUpSuccessNotificationName, object: nil)
     }
 
-    func processLoginSuccessUserInfo(_ user: User) {
+    func processLoginSuccessUserInfo(_ user: User, relogin: Bool = true) {
         do {
             let data = try JSONEncoder().encode(user)
             UserDefaults.standard.setValue(data, forKey: userDefaultKey)
@@ -66,9 +68,11 @@ class AuthStore {
             logger.error("encode user error \(error)")
         }
         self.user = user
-        Crashlytics.crashlytics().setUserID(user.userUUID)
-        NotificationCenter.default.post(name: loginSuccessNotificationName, object: nil, userInfo: ["user": user])
-        observeFirstJWTExpire()
+        if relogin {
+            Crashlytics.crashlytics().setUserID(user.userUUID)
+            NotificationCenter.default.post(name: loginSuccessNotificationName, object: nil, userInfo: ["user": user])
+            observeFirstJWTExpire()
+        }
     }
 
     func observeFirstJWTExpire() {
@@ -89,14 +93,14 @@ class AuthStore {
     func updateName(_ name: String) {
         user?.name = name
         if let user {
-            processLoginSuccessUserInfo(user)
+            processLoginSuccessUserInfo(user, relogin: false)
         }
     }
 
     func updateAvatar(_ url: URL) {
         user?.avatar = url.absoluteString
         if let user {
-            processLoginSuccessUserInfo(user)
+            processLoginSuccessUserInfo(user, relogin: false)
         }
         NotificationCenter.default.post(name: avatarUpdateNotificationName, object: nil)
     }

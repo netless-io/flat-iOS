@@ -6,14 +6,14 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import CropViewController
-import Photos
 import RxSwift
 import UIKit
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let cellIdentifier = "profileCellIdentifier"
 
+    let profileUpdate = ProfileUpdate()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -37,34 +37,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - Actions
-
-    func onClickAvatar() {
-        func failPhotoPermission() {
-            showCheckAlert(checkTitle: localizeStrings("GoSetting"), message: localizeStrings("PhotoDenyTip")) {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
-                }
-            }
-        }
-        switch PHPhotoLibrary.authorizationStatus() {
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { [weak self] s in
-                DispatchQueue.main.async {
-                    if s == .denied {
-                        failPhotoPermission()
-                        return
-                    }
-                    self?.onClickAvatar()
-                }
-            }
-        case .denied:
-            failPhotoPermission()
-        default:
-            let vc = UIImagePickerController()
-            vc.delegate = self
-            mainContainer?.concreteViewController.present(vc, animated: true)
-        }
-    }
 
     func onClickNickName() {
         let alert = UIAlertController(title: localizeStrings("Update nickname"), message: nil, preferredStyle: .alert)
@@ -140,130 +112,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            onClickAvatar()
+            guard let root = mainContainer?.concreteViewController else { return }
+            profileUpdate.startUpdateAvatar(from: root)
         case 1:
             onClickNickName()
         default:
             return
-        }
-    }
-}
-
-extension ProfileViewController: CropViewControllerDelegate {
-    func cropViewController(_: CropViewController, didCropToCircularImage image: UIImage, withRect _: CGRect, angle _: Int) {
-        var targetImage = image
-        let maxSize = CGSize(width: 244, height: 244)
-        if image.size.width > maxSize.width || image.size.height > maxSize.height {
-            UIGraphicsBeginImageContextWithOptions(maxSize, false, 3)
-            image.draw(in: .init(origin: .zero, size: maxSize))
-            if let t = UIGraphicsGetImageFromCurrentImageContext() {
-                targetImage = t
-            }
-            UIGraphicsEndImageContext()
-        }
-
-        let data = targetImage.pngData()
-        let path = NSTemporaryDirectory() + UUID().uuidString + ".png"
-        FileManager.default.createFile(atPath: path, contents: data)
-        let fileURL = URL(fileURLWithPath: path)
-        do {
-            let attribute = try FileManager.default.attributesOfItem(atPath: fileURL.path)
-            let name = fileURL.lastPathComponent
-            let size = (attribute[.size] as? NSNumber)?.intValue ?? 0
-            showActivityIndicator(text: localizeStrings("Uploading"))
-            ApiProvider.shared.request(fromApi: PrepareAvatarUploadRequest(fileName: name, fileSize: size))
-                .flatMap { [weak self] info throws -> Observable<UploadInfo> in
-                    guard let self else { return .error("self not exist") }
-                    return try self.upload(info: info, fileURL: fileURL).map { info }
-                }
-                .flatMap { info -> Observable<URL> in
-                    let finishRequest = UploadAvatarFinishRequest(fileUUID: info.fileUUID)
-                    let avatarURL = info.ossDomain.appendingPathComponent(info.ossFilePath)
-                    return ApiProvider.shared.request(fromApi: finishRequest).map { _ in avatarURL }
-                }
-                .subscribe(with: self, onNext: { weakSelf, avatarUrl in
-                    weakSelf.stopActivityIndicator()
-                    AuthStore.shared.updateAvatar(avatarUrl)
-                    weakSelf.toast(localizeStrings("Upload Success"))
-                }, onError: { weakSelf, error in
-                    weakSelf.toast(error.localizedDescription)
-                })
-                .disposed(by: rx.disposeBag)
-        } catch {
-            toast(error.localizedDescription)
-        }
-        dismiss(animated: true)
-    }
-}
-
-extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let image = info[.originalImage] as? UIImage else { return }
-        let vc = CropViewController(croppingStyle: .circular, image: image)
-        vc.delegate = self
-        dismiss(animated: false) {
-            self.mainContainer?.concreteViewController.present(vc, animated: true)
-        }
-    }
-
-    private func upload(info: UploadInfo, fileURL: URL) throws -> Observable<Void> {
-        let session = URLSession(configuration: .default)
-        let boundary = UUID().uuidString
-        var request = URLRequest(url: info.ossDomain, timeoutInterval: 60 * 10)
-        request.httpMethod = "POST"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
-        let encodedFileName = String(URLComponents(url: fileURL, resolvingAgainstBaseURL: false)?
-            .percentEncodedPath
-            .split(separator: "/")
-            .last ?? "")
-
-        let partFormData = MultipartFormData(fileManager: FileManager.default, boundary: boundary)
-        let headers: [(String, String)] = [
-            ("key", info.ossFilePath),
-            ("name", fileURL.lastPathComponent),
-            ("policy", info.policy),
-            ("OSSAccessKeyId", Env().ossAccessKeyId),
-            ("success_action_status", "200"),
-            ("callback", ""),
-            ("signature", info.signature),
-            ("Content-Disposition", "attachment; filename=\"\(encodedFileName)\"; filename*=UTF-8''\(encodedFileName)"),
-        ]
-        for (key, value) in headers {
-            let d = value.data(using: .utf8)!
-            partFormData.append(d, withName: key)
-        }
-        partFormData.append(fileURL, withName: "file")
-        let data = try partFormData.encode()
-        return .create { s in
-            let task = session.uploadTask(with: request, from: data) { _, response, error in
-                guard error == nil else {
-                    s.onError(error!)
-                    s.onCompleted()
-                    return
-                }
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    s.onError("not a http response")
-                    s.onCompleted()
-                    return
-                }
-                guard httpResponse.statusCode == 200 else {
-                    s.onError("not correct statusCode, \(httpResponse.statusCode)")
-                    s.onCompleted()
-                    return
-                }
-                s.onNext(())
-                s.onCompleted()
-            }
-            task.resume()
-            return Disposables.create {
-                if let _ = task.error {
-                    return
-                }
-                if !task.progress.isFinished {
-                    task.cancel()
-                }
-            }
         }
     }
 }

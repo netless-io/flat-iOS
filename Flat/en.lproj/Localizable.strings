@@ -444,6 +444,12 @@
 "NeedLoginAgain" = "The credentials have expired, please log in again";
 
 
+"NewAccountAvatarPlaceholder" = "Upload Avatar (optional)";
+
+
+"NewAccountNickNamePlaceholder" = "Please enter your nickname (optional)";
+
+
 "NewPage" = "Create new page";
 
 

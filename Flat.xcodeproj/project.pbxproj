@@ -58,6 +58,8 @@
 		8A07E62E2A8F5BF900796CA5 /* RebindingPhoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E62D2A8F5BF900796CA5 /* RebindingPhoneRequest.swift */; };
 		8A07E6302A8F608900796CA5 /* LoginBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E62F2A8F608900796CA5 /* LoginBackgroundView.swift */; };
 		8A07E6322A8F64CD00796CA5 /* CompactLoginBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6312A8F64CD00796CA5 /* CompactLoginBackgroundView.swift */; };
+		8A07E6342A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6332A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift */; };
+		8A07E6362A8F6F3F00796CA5 /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6352A8F6F3F00796CA5 /* ProfileUpdate.swift */; };
 		8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */; };
 		8A0A85F227ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
@@ -420,6 +422,8 @@
 		8A07E62D2A8F5BF900796CA5 /* RebindingPhoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RebindingPhoneRequest.swift; sourceTree = "<group>"; };
 		8A07E62F2A8F608900796CA5 /* LoginBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBackgroundView.swift; sourceTree = "<group>"; };
 		8A07E6312A8F64CD00796CA5 /* CompactLoginBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactLoginBackgroundView.swift; sourceTree = "<group>"; };
+		8A07E6332A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarNickNameSettingViewController.swift; sourceTree = "<group>"; };
+		8A07E6352A8F6F3F00796CA5 /* ProfileUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
 		8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelRoomHistoryRequest.swift; sourceTree = "<group>"; };
 		8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Pods-Flat-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-Flat/Pods-Flat-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
@@ -1141,6 +1145,7 @@
 			isa = PBXGroup;
 			children = (
 				8A05C312275DE279009BCA79 /* ProfileViewController.swift */,
+				8A07E6352A8F6F3F00796CA5 /* ProfileUpdate.swift */,
 				8AD3627B28DC6D660086699E /* ProfileTableViewCell.swift */,
 				8A07E6272A8F1D3300796CA5 /* AppleBinding.swift */,
 			);
@@ -1197,6 +1202,7 @@
 				8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */,
 				8A0E1F03296D482B00C3EE24 /* ClassroomSceneDelegate.swift */,
 				8A317A9C2966D67800041D4A /* SceneManager.swift */,
+				8A07E6332A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift */,
 				8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */,
 				8A20A3A92797AB3E00024040 /* Theme.swift */,
 			);
@@ -2108,6 +2114,7 @@
 				8AE8607F29B6EB1D002CC58B /* VideoLayoutStoreImp.swift in Sources */,
 				8AD5224929B86D6D005095C5 /* CGRect+diff.swift in Sources */,
 				8A0CA22A28BCC4380035F71A /* FlatCompactAlertController.swift in Sources */,
+				8A07E6342A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift in Sources */,
 				8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,
@@ -2273,6 +2280,7 @@
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,
 				8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */,
 				8A9FB3BD272298CD00F6F06F /* JSONDecoder+Extension.swift in Sources */,
+				8A07E6362A8F6F3F00796CA5 /* ProfileUpdate.swift in Sources */,
 				8A07E6242A8E014200796CA5 /* BindingEmailRequest.swift in Sources */,
 				8A07E62E2A8F5BF900796CA5 /* RebindingPhoneRequest.swift in Sources */,
 				8AA1155B29BF11FD00CF4CDB /* InnerPermissionControlView.swift in Sources */,
