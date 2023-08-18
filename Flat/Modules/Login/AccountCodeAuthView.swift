@@ -20,12 +20,14 @@ class AccountCodeAuthView: UIView {
         }
     }
     
-    override init(frame _: CGRect) {
+    init(staticAccountType: AccountTextfield.AccountType? = nil) {
+        accountTextfield = .init(staticAccountType: staticAccountType)
         super.init(frame: .zero)
         setupViews()
     }
     
     required init?(coder: NSCoder) {
+        accountTextfield = .init()
         super.init(coder: coder)
         setupViews()
     }
@@ -61,5 +63,5 @@ class AccountCodeAuthView: UIView {
     }
     
     lazy var verifyCodeTextfield = VerifyCodeTextfield()
-    lazy var accountTextfield = AccountTextfield()
+    var accountTextfield: AccountTextfield
 }

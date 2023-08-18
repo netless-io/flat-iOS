@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BindPhoneViewController: UIViewController {
+class ForceBindPhoneViewController: UIViewController {
     override init(nibName _: String?, bundle _: Bundle?) {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen

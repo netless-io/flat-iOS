@@ -141,7 +141,7 @@ extension SceneManager {
                 let root = LoginViewController()
                 window.rootViewController = root
                 DispatchQueue.main.async {
-                    root.present(BindPhoneViewController(), animated: true)
+                    root.present(ForceBindPhoneViewController(), animated: true)
                 }
             } else {
                 window.rootViewController = createMainContainer(for: window)

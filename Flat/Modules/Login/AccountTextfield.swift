@@ -28,7 +28,8 @@ class AccountTextfield: BottomLineTextfield {
     }
     
     weak var presentRoot: UIViewController?
-    var accountType: BehaviorRelay<AccountType> = .init(value: .phone)
+    let staticAccountType: AccountType?
+    var accountType: BehaviorRelay<AccountType>
     var accountEnable: Observable<Bool> {
         Observable.combineLatest(accountType, rx.text.orEmpty) { [unowned self] type, account in
             type.valid(account, country: country)
@@ -49,12 +50,20 @@ class AccountTextfield: BottomLineTextfield {
     }
     
     // MARK: - Life Cycle -
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(staticAccountType: AccountType? = nil) {
+        self.staticAccountType = staticAccountType
+        if let staticAccountType {
+            self.accountType = .init(value: staticAccountType)
+        } else {
+            self.accountType = .init(value: .phone)
+        }
+        super.init(frame: .zero)
         binding()
     }
     
     required init?(coder: NSCoder) {
+        staticAccountType = nil
+        accountType = .init(value: .phone)
         super.init(coder: coder)
         binding()
     }
@@ -66,18 +75,31 @@ class AccountTextfield: BottomLineTextfield {
         textColor = .color(type: .text)
         leftViewMode = .always
         leftView = leftContainer
+        
+        if let staticAccountType {
+            switch staticAccountType {
+            case .phone:
+                keyboardType = .numberPad
+                placeholder = localizeStrings("PhoneInputPlaceholder")
+            case .email:
+                keyboardType = .emailAddress
+                placeholder = localizeStrings("EmailInputPlaceholder")
+            }
+        }
     }
     
     // MARK: - Private -
     
     private func binding() {
-        rx.text.orEmpty
-            .map { $0.allSatisfy({ c in c.isNumber }) }
-            .distinctUntilChanged()
-            .subscribe(with: self) { ws, isPhone in
-                ws.accountType.accept(isPhone ? .phone : .email)
-            }
-            .disposed(by: rx.disposeBag)
+        if staticAccountType == nil {
+            rx.text.orEmpty
+                .map { $0.allSatisfy({ c in c.isNumber }) }
+                .distinctUntilChanged()
+                .subscribe(with: self) { ws, isPhone in
+                    ws.accountType.accept(isPhone ? .phone : .email)
+                }
+                .disposed(by: rx.disposeBag)
+        }
         
         accountType
             .subscribe(with: self) { ws, type in
