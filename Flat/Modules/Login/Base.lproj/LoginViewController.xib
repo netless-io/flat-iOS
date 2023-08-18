@@ -14,8 +14,7 @@
             <connections>
                 <outlet property="appleLoginButton" destination="5Wc-bT-Wxv" id="SyY-gD-oj6"/>
                 <outlet property="authInputStackView" destination="Kbq-rl-1M2" id="Y00-Yt-7Ri"/>
-                <outlet property="compactBgView" destination="7fq-dm-8Fc" id="DCb-ec-YMR"/>
-                <outlet property="compactGradientView" destination="JIe-Yn-VIY" id="mZs-Rj-5FR"/>
+                <outlet property="compactBackgroundLogoView" destination="JIe-Yn-VIY" id="mZs-Rj-5FR"/>
                 <outlet property="contentStackView" destination="Bz8-YI-D5e" id="C5P-bq-iVv"/>
                 <outlet property="flatLabel" destination="hhQ-qF-rd8" id="sEf-ae-A9i"/>
                 <outlet property="forgetPasswordButton" destination="cCX-9K-yvd" id="WmF-HN-Vft"/>
@@ -41,36 +40,16 @@
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Eu9-lO-dxG">
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                     <subviews>
-                        <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="XSB-Cf-LTe">
+                        <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="XSB-Cf-LTe" customClass="LoginBackgroundView" customModule="DEV_Flat" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="512" height="1366"/>
-                            <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_pad" translatesAutoresizingMaskIntoConstraints="NO" id="u0T-3P-81O">
-                                    <rect key="frame" x="0.0" y="0.0" width="512" height="1366"/>
-                                </imageView>
-                            </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            <constraints>
-                                <constraint firstItem="u0T-3P-81O" firstAttribute="leading" secondItem="XSB-Cf-LTe" secondAttribute="leading" id="Dga-tH-iqP"/>
-                                <constraint firstAttribute="trailing" secondItem="u0T-3P-81O" secondAttribute="trailing" id="Qbc-ES-oBe"/>
-                                <constraint firstAttribute="bottom" secondItem="u0T-3P-81O" secondAttribute="bottom" id="Sj2-bS-lU3"/>
-                                <constraint firstItem="u0T-3P-81O" firstAttribute="top" secondItem="XSB-Cf-LTe" secondAttribute="top" id="h7e-9r-jiR"/>
-                            </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Hp-L8-wmT">
                             <rect key="frame" x="512" y="0.0" width="512" height="1366"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JIe-Yn-VIY">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JIe-Yn-VIY" customClass="CompactLoginBackgroundView" customModule="DEV_Flat" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="512" height="375.5"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_compact_bg" translatesAutoresizingMaskIntoConstraints="NO" id="7fq-dm-8Fc">
-                                            <rect key="frame" x="82.5" y="235.5" width="347.5" height="130"/>
-                                        </imageView>
-                                    </subviews>
                                     <color key="backgroundColor" systemColor="systemPinkColor"/>
-                                    <constraints>
-                                        <constraint firstItem="7fq-dm-8Fc" firstAttribute="centerX" secondItem="JIe-Yn-VIY" secondAttribute="centerX" id="Iob-oM-PM2"/>
-                                        <constraint firstAttribute="bottom" secondItem="7fq-dm-8Fc" secondAttribute="bottom" constant="10" id="Lg3-aA-sh1"/>
-                                    </constraints>
                                 </view>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Bz8-YI-D5e">
                                     <rect key="frame" x="32.5" y="419.5" width="447" height="527"/>
@@ -310,11 +289,9 @@
     </objects>
     <resources>
         <image name="login_apple" width="48" height="48"/>
-        <image name="login_compact_bg" width="347.5" height="130"/>
         <image name="login_github" width="48" height="48"/>
         <image name="login_google" width="48" height="48"/>
         <image name="login_icon" width="94" height="94"/>
-        <image name="login_pad" width="442" height="435"/>
         <image name="login_wechat" width="48" height="48"/>
         <namedColor name="7A7B7C">
             <color red="0.47843137254901963" green="0.4823529411764706" blue="0.48627450980392156" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

@@ -37,9 +37,7 @@ class ForceBindPhoneViewController: UIViewController {
         view.addSubview(stack)
         stack.snp.makeConstraints { $0.edges.equalToSuperview() }
         if !traitCollection.hasCompact {
-            let leftView = UIImageView(image: UIImage(named: "login_pad"))
-            leftView.contentMode = .scaleAspectFill
-            leftView.clipsToBounds = true
+            let leftView = LoginBackgroundView()
             stack.addArrangedSubview(leftView)
         }
         stack.addArrangedSubview(mainView)
@@ -104,11 +102,14 @@ class ForceBindPhoneViewController: UIViewController {
             let bindPhoneDetailLabel = UILabel()
             bindPhoneDetailLabel.text = localizeStrings("Bind Phone Detail")
             bindPhoneDetailLabel.font = .systemFont(ofSize: 14)
+            bindPhoneDetailLabel.numberOfLines = 0
+            bindPhoneDetailLabel.textAlignment = .center
             bindPhoneDetailLabel.textColor = .color(type: .text)
             mainView.addSubview(bindPhoneDetailLabel)
             bindPhoneDetailLabel.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()
                 make.top.equalTo(titleLabel.snp.bottom).offset(10)
+                make.left.right.equalToSuperview().inset(14)
             }
 
             let closeButton = UIButton(type: .custom)

@@ -56,6 +56,8 @@
 		8A07E6282A8F1D3300796CA5 /* AppleBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6272A8F1D3300796CA5 /* AppleBinding.swift */; };
 		8A07E62C2A8F48B700796CA5 /* WebLinkLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E62B2A8F48B700796CA5 /* WebLinkLoginItem.swift */; };
 		8A07E62E2A8F5BF900796CA5 /* RebindingPhoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E62D2A8F5BF900796CA5 /* RebindingPhoneRequest.swift */; };
+		8A07E6302A8F608900796CA5 /* LoginBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E62F2A8F608900796CA5 /* LoginBackgroundView.swift */; };
+		8A07E6322A8F64CD00796CA5 /* CompactLoginBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6312A8F64CD00796CA5 /* CompactLoginBackgroundView.swift */; };
 		8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */; };
 		8A0A85F227ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
@@ -416,6 +418,8 @@
 		8A07E6272A8F1D3300796CA5 /* AppleBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleBinding.swift; sourceTree = "<group>"; };
 		8A07E62B2A8F48B700796CA5 /* WebLinkLoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebLinkLoginItem.swift; sourceTree = "<group>"; };
 		8A07E62D2A8F5BF900796CA5 /* RebindingPhoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RebindingPhoneRequest.swift; sourceTree = "<group>"; };
+		8A07E62F2A8F608900796CA5 /* LoginBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBackgroundView.swift; sourceTree = "<group>"; };
+		8A07E6312A8F64CD00796CA5 /* CompactLoginBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactLoginBackgroundView.swift; sourceTree = "<group>"; };
 		8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelRoomHistoryRequest.swift; sourceTree = "<group>"; };
 		8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Pods-Flat-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-Flat/Pods-Flat-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
@@ -1221,6 +1225,8 @@
 				8A05A1512834C756002DE9B9 /* PrivacyAlertViewController.swift */,
 				8A05A1522834C756002DE9B9 /* PrivacyAlertViewController.xib */,
 				8A2D0BA82716859700123207 /* LoginViewController.swift */,
+				8A07E62F2A8F608900796CA5 /* LoginBackgroundView.swift */,
+				8A07E6312A8F64CD00796CA5 /* CompactLoginBackgroundView.swift */,
 				8A07E5F52A8B58F700796CA5 /* SignUpViewController.swift */,
 				8A07E6052A8B7F4200796CA5 /* ResetPasswordViewController.swift */,
 				8A07E5FF2A8B64A400796CA5 /* AgreementCheckView.swift */,
@@ -2057,6 +2063,7 @@
 				8A9FB3C727229E4600F6F06F /* Task.swift in Sources */,
 				8A9FB3B5272290AB00F6F06F /* URLRequest+Extension.swift in Sources */,
 				8A270BC7271989FB00450DC6 /* UIView+DidLayoutBlock.swift in Sources */,
+				8A07E6322A8F64CD00796CA5 /* CompactLoginBackgroundView.swift in Sources */,
 				8A80209C27570CC700F5691C /* StorageFileModel.swift in Sources */,
 				8A05C34527609207009BCA79 /* AnyPreview.swift in Sources */,
 				8AD3CDF027168F25008BD904 /* Env.swift in Sources */,
@@ -2157,6 +2164,7 @@
 				8A05C2AF2758B98F009BCA79 /* WeChatLogin.swift in Sources */,
 				8AC3AFCF28AA4B4600587AE0 /* AlibabaLogHandler.swift in Sources */,
 				8A8507ED27E1787A0072AF49 /* CloudStorageDisplayViewController.swift in Sources */,
+				8A07E6302A8F608900796CA5 /* LoginBackgroundView.swift in Sources */,
 				8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */,
 				8A8020A027570F4B00F5691C /* PageListContainer.swift in Sources */,
 				8A4D35BF2913C33400AFA5DE /* MixReplayViewController.swift in Sources */,

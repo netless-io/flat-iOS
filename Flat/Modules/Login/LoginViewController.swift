@@ -29,13 +29,12 @@ class LoginViewController: UIViewController {
     @IBOutlet var contentStackView: UIStackView!
 
     // Regular
-    @IBOutlet var loginRegularBg: UIView!
+    @IBOutlet var loginRegularBg: LoginBackgroundView!
     @IBOutlet var regularLogoStackView: UIStackView!
     @IBOutlet var flatLabel: UILabel!
 
     // Compact
-    @IBOutlet var compactBgView: UIImageView!
-    @IBOutlet var compactGradientView: UIView!
+    @IBOutlet var compactBackgroundLogoView: CompactLoginBackgroundView!
 
     // Common
     @IBOutlet var authInputStackView: UIStackView!
@@ -98,24 +97,6 @@ class LoginViewController: UIViewController {
             return .portrait
         } else {
             return .all
-        }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        let isDark = traitCollection.userInterfaceStyle == .dark
-        compactGradientLayer.isHidden = isDark // Show nothing on dark mode.
-
-        if isDark {
-            regularGradientLayer.colors = [
-                UIColor(hexString: "#1756C3").cgColor,
-                UIColor(hexString: "#00225E").cgColor,
-            ]
-        } else {
-            regularGradientLayer.colors = [
-                UIColor(hexString: "#69A0FF").cgColor,
-                UIColor.white.cgColor,
-            ]
         }
     }
 
@@ -253,15 +234,6 @@ class LoginViewController: UIViewController {
             let titleColor = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
             btn.layer.borderColor = borderColor.cgColor
             btn.setTitleColor(titleColor, for: .normal)
-        }
-        loginRegularBg.layer.insertSublayer(regularGradientLayer, at: 0)
-        loginRegularBg.setDidLayoutHandle { [weak regularGradientLayer] bounds in
-            regularGradientLayer?.frame = bounds
-        }
-        compactGradientView.backgroundColor = .clear
-        compactGradientView.layer.insertSublayer(compactGradientLayer, at: 0)
-        compactGradientView.setDidLayoutHandle { [weak compactGradientLayer] bounds in
-            compactGradientLayer?.frame = bounds
         }
         [loginTypeToggleButton, forgetPasswordButton].forEach {
             $0?.tintColor = .color(type: .primary)
@@ -423,10 +395,10 @@ class LoginViewController: UIViewController {
     func syncTraitCollection(_ trait: UITraitCollection) {
         if trait.horizontalSizeClass == .compact || trait.verticalSizeClass == .compact {
             loginRegularBg.isHidden = true
-            compactGradientView.isHidden = false
+            compactBackgroundLogoView.isHidden = false
             regularLogoStackView.isHidden = true
         } else {
-            compactGradientView.isHidden = true
+            compactBackgroundLogoView.isHidden = true
             loginRegularBg.isHidden = false
             regularLogoStackView.isHidden = false
         }
@@ -514,20 +486,6 @@ class LoginViewController: UIViewController {
 
     lazy var smsAuthView = SMSAuthView()
     lazy var passwordAuthView = PasswordAuthView()
-
-    lazy var regularGradientLayer: CAGradientLayer = {
-        let layer = CAGradientLayer()
-        return layer
-    }()
-
-    lazy var compactGradientLayer: CAGradientLayer = {
-        let layer = CAGradientLayer()
-        layer.colors = [
-            UIColor(hexString: "#69A0FF").cgColor,
-            UIColor.white.cgColor,
-        ]
-        return layer
-    }()
     
     lazy var agreementCheckStackView = AgreementCheckView(presentRoot: self)
 }
