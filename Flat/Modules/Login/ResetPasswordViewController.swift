@@ -198,6 +198,7 @@ class ResetPasswordViewController: UIViewController {
         label.font = .systemFont(ofSize: 12)
         label.textColor = .color(type: .text, .weak)
         label.textAlignment = .center
+        label.text = localizeStrings("ResetPasswordTips")
         return label
     }()
 }

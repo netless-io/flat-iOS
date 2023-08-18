@@ -8,10 +8,23 @@
 
 import Foundation
 struct UpdatePasswordRequest: FlatRequest {
-    let password: String
-    let newPassword: String
+    enum PasswordType {
+        case new(String)
+        case update(password: String, newPassword: String)
+        
+        var para: Encodable {
+            switch self {
+            case .new(let newPassword):
+                return ["newPassword": newPassword]
+            case .update(password: let password, newPassword: let newPassword):
+                return ["password": password, "newPassword": newPassword]
+            }
+        }
+    }
+
+    let type: PasswordType
 
     var path: String { "/v2/user/password" }
-    var task: Task { .requestJSONEncodable(encodable: ["password": password, "newPassword": newPassword]) }
+    var task: Task { .requestJSONEncodable(encodable: type.para) }
     let responseType = EmptyResponse.self
 }

@@ -16,4 +16,8 @@ extension String {
     var isEmptyOrAllSpacing: Bool {
         trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
+    
+    func replacingEmpty(with new: String) -> String {
+        isEmpty ? new : self
+    }
 }

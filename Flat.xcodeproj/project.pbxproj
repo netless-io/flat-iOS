@@ -44,8 +44,17 @@
 		8A07E60A2A8B84F000796CA5 /* AccountCodeAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6092A8B84F000796CA5 /* AccountCodeAuthView.swift */; };
 		8A07E60C2A8B878200796CA5 /* ResetPasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E60B2A8B878200796CA5 /* ResetPasswordRequest.swift */; };
 		8A07E60E2A8C749800796CA5 /* GoogleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E60D2A8C749800796CA5 /* GoogleLogin.swift */; };
+		8A07E6102A8CA94100796CA5 /* SecurityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E60F2A8CA94100796CA5 /* SecurityViewController.swift */; };
 		8A07E6122A8CC1E900796CA5 /* UpdatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6112A8CC1E900796CA5 /* UpdatePasswordViewController.swift */; };
 		8A07E6142A8CC66100796CA5 /* UpdatePasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6132A8CC66100796CA5 /* UpdatePasswordRequest.swift */; };
+		8A07E6162A8DBF7B00796CA5 /* SetNewPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6152A8DBF7B00796CA5 /* SetNewPasswordViewController.swift */; };
+		8A07E61C2A8DECE500796CA5 /* WebLinkBindingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E61B2A8DECE500796CA5 /* WebLinkBindingItem.swift */; };
+		8A07E61E2A8DFA8E00796CA5 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E61D2A8DFA8E00796CA5 /* BindPhoneViewController.swift */; };
+		8A07E6222A8E003100796CA5 /* BindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6212A8E003000796CA5 /* BindEmailViewController.swift */; };
+		8A07E6242A8E014200796CA5 /* BindingEmailRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6232A8E014200796CA5 /* BindingEmailRequest.swift */; };
+		8A07E6262A8F1CF100796CA5 /* AppleBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6252A8F1CF000796CA5 /* AppleBindingRequest.swift */; };
+		8A07E6282A8F1D3300796CA5 /* AppleBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6272A8F1D3300796CA5 /* AppleBinding.swift */; };
+		8A07E62C2A8F48B700796CA5 /* WebLinkLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E62B2A8F48B700796CA5 /* WebLinkLoginItem.swift */; };
 		8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */; };
 		8A0A85F227ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
@@ -77,7 +86,7 @@
 		8A172A8C29249584006E4798 /* PreferenceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */; };
 		8A1BF0BF280D0B2100D76F22 /* SMSRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */; };
 		8A1BF0C1280D0B7300D76F22 /* PhoneSMSLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C0280D0B7300D76F22 /* PhoneSMSLoginRequest.swift */; };
-		8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */; };
+		8A1BF0C3280D3DB000D76F22 /* ForceBindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* ForceBindPhoneViewController.swift */; };
 		8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */; };
 		8A1BF0C7280E563A00D76F22 /* CancellationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */; };
 		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
@@ -394,8 +403,17 @@
 		8A07E6092A8B84F000796CA5 /* AccountCodeAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCodeAuthView.swift; sourceTree = "<group>"; };
 		8A07E60B2A8B878200796CA5 /* ResetPasswordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordRequest.swift; sourceTree = "<group>"; };
 		8A07E60D2A8C749800796CA5 /* GoogleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleLogin.swift; sourceTree = "<group>"; };
+		8A07E60F2A8CA94100796CA5 /* SecurityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityViewController.swift; sourceTree = "<group>"; };
 		8A07E6112A8CC1E900796CA5 /* UpdatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordViewController.swift; sourceTree = "<group>"; };
 		8A07E6132A8CC66100796CA5 /* UpdatePasswordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordRequest.swift; sourceTree = "<group>"; };
+		8A07E6152A8DBF7B00796CA5 /* SetNewPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNewPasswordViewController.swift; sourceTree = "<group>"; };
+		8A07E61B2A8DECE500796CA5 /* WebLinkBindingItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebLinkBindingItem.swift; sourceTree = "<group>"; };
+		8A07E61D2A8DFA8E00796CA5 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
+		8A07E6212A8E003000796CA5 /* BindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindEmailViewController.swift; sourceTree = "<group>"; };
+		8A07E6232A8E014200796CA5 /* BindingEmailRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingEmailRequest.swift; sourceTree = "<group>"; };
+		8A07E6252A8F1CF000796CA5 /* AppleBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleBindingRequest.swift; sourceTree = "<group>"; };
+		8A07E6272A8F1D3300796CA5 /* AppleBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleBinding.swift; sourceTree = "<group>"; };
+		8A07E62B2A8F48B700796CA5 /* WebLinkLoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebLinkLoginItem.swift; sourceTree = "<group>"; };
 		8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelRoomHistoryRequest.swift; sourceTree = "<group>"; };
 		8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Pods-Flat-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-Flat/Pods-Flat-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
@@ -427,7 +445,7 @@
 		8A172A8B29249584006E4798 /* PreferenceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceTableViewCell.swift; sourceTree = "<group>"; };
 		8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C0280D0B7300D76F22 /* PhoneSMSLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSMSLoginRequest.swift; sourceTree = "<group>"; };
-		8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindPhoneViewController.swift; sourceTree = "<group>"; };
+		8A1BF0C2280D3DB000D76F22 /* ForceBindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceBindPhoneViewController.swift; sourceTree = "<group>"; };
 		8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingPhoneRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationViewController.swift; sourceTree = "<group>"; };
 		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
@@ -897,6 +915,30 @@
 			path = Upload;
 			sourceTree = "<group>";
 		};
+		8A07E6292A8F480400796CA5 /* LaunchItem */ = {
+			isa = PBXGroup;
+			children = (
+				8A07E62A2A8F487700796CA5 /* AuthLaunch */,
+				8A270B7B2718352C00450DC6 /* LaunchItem.swift */,
+				8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */,
+				8A05C2B42759B6EC009BCA79 /* DefaultLaunchItems */,
+			);
+			path = LaunchItem;
+			sourceTree = "<group>";
+		};
+		8A07E62A2A8F487700796CA5 /* AuthLaunch */ = {
+			isa = PBXGroup;
+			children = (
+				8AD3CDF1271693EC008BD904 /* GithubLogin.swift */,
+				8A07E62B2A8F48B700796CA5 /* WebLinkLoginItem.swift */,
+				8A05C2AE2758B98F009BCA79 /* WeChatLogin.swift */,
+				8A07E60D2A8C749800796CA5 /* GoogleLogin.swift */,
+				8A07E61B2A8DECE500796CA5 /* WebLinkBindingItem.swift */,
+				8AF244DB287C243C00E6B2AF /* WechatBinding.swift */,
+			);
+			path = AuthLaunch;
+			sourceTree = "<group>";
+		};
 		8A0BD7B1274B345900383E9D /* Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -999,6 +1041,7 @@
 				8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */,
 				8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */,
 				8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */,
+				8A07E6232A8E014200796CA5 /* BindingEmailRequest.swift */,
 				8A1BF0C0280D0B7300D76F22 /* PhoneSMSLoginRequest.swift */,
 				8A07E6032A8B716900796CA5 /* PasswordLoginRequest.swift */,
 				8A07E6012A8B6D7200796CA5 /* SignUpRequest.swift */,
@@ -1013,6 +1056,7 @@
 				8AF244D9287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift */,
 				8A05C2B22758C78E009BCA79 /* WechatAuthCallbackRequest.swift */,
 				8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */,
+				8A07E6252A8F1CF000796CA5 /* AppleBindingRequest.swift */,
 				8AF244D7287C17D900E6B2AF /* BindListRequest.swift */,
 			);
 			path = Auth;
@@ -1091,7 +1135,7 @@
 			children = (
 				8A05C312275DE279009BCA79 /* ProfileViewController.swift */,
 				8AD3627B28DC6D660086699E /* ProfileTableViewCell.swift */,
-				8AF244DB287C243C00E6B2AF /* WechatBinding.swift */,
+				8A07E6272A8F1D3300796CA5 /* AppleBinding.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1102,7 +1146,11 @@
 				8AC376B2271D25CD003464B0 /* About */,
 				8AC376B1271D25BB003464B0 /* ContactUs */,
 				8A270B8327192A0800450DC6 /* SettingViewController.swift */,
+				8A07E60F2A8CA94100796CA5 /* SecurityViewController.swift */,
+				8A07E61D2A8DFA8E00796CA5 /* BindPhoneViewController.swift */,
+				8A07E6212A8E003000796CA5 /* BindEmailViewController.swift */,
 				8A07E6112A8CC1E900796CA5 /* UpdatePasswordViewController.swift */,
+				8A07E6152A8DBF7B00796CA5 /* SetNewPasswordViewController.swift */,
 				8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */,
 				8A270B8527192A6600450DC6 /* SettingTableViewCell.swift */,
 				8A270B8627192A6600450DC6 /* SettingTableViewCell.xib */,
@@ -1137,14 +1185,12 @@
 		8A2D0B8F271587C000123207 /* Launch */ = {
 			isa = PBXGroup;
 			children = (
-				8A05C2B42759B6EC009BCA79 /* DefaultLaunchItems */,
+				8A07E6292A8F480400796CA5 /* LaunchItem */,
 				8AD7C6BC27157EA7001C4AAD /* AppDelegate.swift */,
 				8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */,
 				8A0E1F03296D482B00C3EE24 /* ClassroomSceneDelegate.swift */,
 				8A317A9C2966D67800041D4A /* SceneManager.swift */,
-				8AAC69BB27180EB300F9A3B4 /* LaunchCoordinator.swift */,
 				8A0CA22D28BDFB1D0035F71A /* RegularSideBarViewController.swift */,
-				8A270B7B2718352C00450DC6 /* LaunchItem.swift */,
 				8A20A3A92797AB3E00024040 /* Theme.swift */,
 			);
 			path = Launch;
@@ -1179,12 +1225,9 @@
 				8A07E5FD2A8B5DE300796CA5 /* VerifyCodeTextfield.swift */,
 				8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */,
 				8A05A1572834EA99002DE9B9 /* Agreement.swift */,
-				8A1BF0C2280D3DB000D76F22 /* BindPhoneViewController.swift */,
+				8A1BF0C2280D3DB000D76F22 /* ForceBindPhoneViewController.swift */,
 				8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */,
 				8AEF069E276973E40009904A /* AppleLogin.swift */,
-				8AD3CDF1271693EC008BD904 /* GithubLogin.swift */,
-				8A05C2AE2758B98F009BCA79 /* WeChatLogin.swift */,
-				8A07E60D2A8C749800796CA5 /* GoogleLogin.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2064,6 +2107,7 @@
 				8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */,
 				8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */,
 				8AC1FF3528912BAA00624E8B /* ClassRoomSyncedStore.swift in Sources */,
+				8A07E6262A8F1CF100796CA5 /* AppleBindingRequest.swift in Sources */,
 				8A07E5F82A8B594B00796CA5 /* SignUpInputView.swift in Sources */,
 				8A8A79B72A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift in Sources */,
 				8ABD71BB27634986004FDC36 /* FinishConvertRequest.swift in Sources */,
@@ -2076,6 +2120,7 @@
 				8A3782E029C3077A0051D4FB /* RatingManager.swift in Sources */,
 				8A7741DC2738BB06009FAADA /* ClassroomFactory.swift in Sources */,
 				8A270BCB27198FBE00450DC6 /* UIImage+Color.swift in Sources */,
+				8A07E6222A8E003100796CA5 /* BindEmailViewController.swift in Sources */,
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
 				8AACBBC829CD491A00CD32C5 /* MTLTexture+CGImage.swift in Sources */,
 				8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */,
@@ -2102,6 +2147,7 @@
 				8A1447E82A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift in Sources */,
 				8A7741D82738B9EE009FAADA /* JoinRoomViewController.swift in Sources */,
 				8AD3CDF62716B165008BD904 /* SetAuthUuidRequest.swift in Sources */,
+				8A07E61C2A8DECE500796CA5 /* WebLinkBindingItem.swift in Sources */,
 				8AA242FA289A7DDC00C306F0 /* ClassRoomViewController.swift in Sources */,
 				8A9FB3C327229A7C00F6F06F /* Method.swift in Sources */,
 				8AF244DA287C236E00E6B2AF /* SetBindingAuthUUIDRequest.swift in Sources */,
@@ -2136,7 +2182,7 @@
 				8A172A8A29248714006E4798 /* PreferenceViewController.swift in Sources */,
 				8A9FB3AD2722674F00F6F06F /* FlatResponseDataHandler.swift in Sources */,
 				8AD3627E28DD49680086699E /* UIView+TableViewHeader.swift in Sources */,
-				8A1BF0C3280D3DB000D76F22 /* BindPhoneViewController.swift in Sources */,
+				8A1BF0C3280D3DB000D76F22 /* ForceBindPhoneViewController.swift in Sources */,
 				8A9ACC0A271E98DB00E7E7CE /* RoomTableViewCell.swift in Sources */,
 				8A9FB395272154B800F6F06F /* Message.swift in Sources */,
 				8A270B8427192A0800450DC6 /* SettingViewController.swift in Sources */,
@@ -2153,6 +2199,7 @@
 				8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */,
 				8AB1A796288145D4000AE9A1 /* UploadUtility.swift in Sources */,
 				8A05C32E275F5017009BCA79 /* PrepareUploadRequest.swift in Sources */,
+				8A07E62C2A8F48B700796CA5 /* WebLinkLoginItem.swift in Sources */,
 				8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */,
 				8A1447EE2A8619A500F5F9AD /* String+regex.swift in Sources */,
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
@@ -2185,11 +2232,13 @@
 				8A07E6122A8CC1E900796CA5 /* UpdatePasswordViewController.swift in Sources */,
 				8A0EB7AF272B9B4F00003DF7 /* UIImage+ColorPicker.swift in Sources */,
 				8A05C34D2760AB26009BCA79 /* UploadTasksViewController.swift in Sources */,
+				8A07E6162A8DBF7B00796CA5 /* SetNewPasswordViewController.swift in Sources */,
 				8ACA7ED228B77E8100EE24D5 /* UIViewController+SafaArea.swift in Sources */,
 				8A7741C42734CFAC009FAADA /* BorderLabelView.swift in Sources */,
 				8A7741E3273A47C2009FAADA /* Array+Extension.swift in Sources */,
 				8AD2EF762775665300087280 /* ShareManager.swift in Sources */,
 				8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */,
+				8A07E6282A8F1D3300796CA5 /* AppleBinding.swift in Sources */,
 				8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */,
@@ -2213,6 +2262,7 @@
 				8A05C3512760ADFC009BCA79 /* UploadTaskTableViewCell.swift in Sources */,
 				8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */,
 				8A9FB3BD272298CD00F6F06F /* JSONDecoder+Extension.swift in Sources */,
+				8A07E6242A8E014200796CA5 /* BindingEmailRequest.swift in Sources */,
 				8AA1155B29BF11FD00CF4CDB /* InnerPermissionControlView.swift in Sources */,
 				8A0CA23728BF4A860035F71A /* CameraPreviewView.swift in Sources */,
 				8ACE3A24272FED7700BC37F7 /* RoomHistoryRequest.swift in Sources */,
@@ -2246,6 +2296,7 @@
 				8AC9CEFA274253D800EEBEE7 /* ClassRoomSettingViewController.swift in Sources */,
 				8AAC69BC27180EB300F9A3B4 /* LaunchCoordinator.swift in Sources */,
 				8A7741BD2733BF15009FAADA /* RoomStatusUpdateRequest.swift in Sources */,
+				8A07E6102A8CA94100796CA5 /* SecurityViewController.swift in Sources */,
 				8A7741BF2733D040009FAADA /* UIViewController+Toast.swift in Sources */,
 				8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */,
 				8A270B762718314200450DC6 /* TopViewController.swift in Sources */,
@@ -2253,6 +2304,7 @@
 				8ABD71C227682214004FDC36 /* ClassRoomLayoutRatioConfig.swift in Sources */,
 				8A2D0B9E27159F4C00123207 /* ApiError.swift in Sources */,
 				8A5231C429AF3F9900889160 /* VideoDraggingCanvasProvider.swift in Sources */,
+				8A07E61E2A8DFA8E00796CA5 /* BindPhoneViewController.swift in Sources */,
 				8A07E5FA2A8B59D600796CA5 /* AccountTextfield.swift in Sources */,
 				8A05C3402760427E009BCA79 /* HTTPHeaders.swift in Sources */,
 				8A4BF2D528C58AD800021D2A /* WhiteboardAppsViewController.swift in Sources */,

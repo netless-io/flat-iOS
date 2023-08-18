@@ -14,6 +14,7 @@ struct User: Codable {
     let userUUID: String
     var token: String
     var hasPhone: Bool
+    var hasPassword: Bool
     
     var avatarUrl: URL? {
         URL(string: avatar)

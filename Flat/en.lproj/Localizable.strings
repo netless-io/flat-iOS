@@ -18,6 +18,27 @@
 "AccountCancellation" = "Account Cancellation";
 
 
+"AccountSecurity" = "Account Security";
+
+
+"Account_apple" = "Apple ID";
+
+
+"Account_email" = "Email";
+
+
+"Account_github" = "Github";
+
+
+"Account_google" = "Google";
+
+
+"Account_phone" = "Phone";
+
+
+"Account_wechat" = "WeChat";
+
+
 "Acknowledgement" = "Libraries We Use";
 
 
@@ -54,6 +75,9 @@
 "ApplianceMenu" = "Tool";
 
 
+"AtLeastBindPhoneOrEmailTips" = "Need to keep at least one of your cell phone number and email address";
+
+
 "AudioMixing" = "PPT audio mixing";
 
 
@@ -73,6 +97,9 @@
 
 
 "Bind Phone Detail" = "According to the relevant policies and regulations, you need to bind the cell phone number";
+
+
+"BindEmail" = "Binding Email";
 
 
 "BindPhone" = "Binding Mobile Number";
@@ -117,7 +144,7 @@
 "Cancel Room Verbose" = "Sure to remove the room from the room list? Once removed, you can join the room again by using the room number.";
 
 
-"CancelationAndLogout" = "Cancel account and log out";
+"CancelationAndLogout" = "Cancel Account";
 
 
 "Chat" = "Chat";
@@ -226,6 +253,9 @@
 
 
 "ElectronLinkText" = "For full functionality, go to the link to download the desktop version of Electron.";
+
+
+"EmailInputPlaceholder" = "Email address";
 
 
 "EmailOrPhonePlaceHolder" = "Email or phone number";
@@ -441,6 +471,9 @@
 "NotPermission" = "No permission to operate";
 
 
+"OldPasswordPlaceholder" = "Old Password";
+
+
 "On/Off stage" = "On Stage";
 
 
@@ -589,6 +622,9 @@
 
 
 "ResetPasswordPlaceholderAgain" = "Please enter the new password again";
+
+
+"ResetPasswordTips" = "Password at least 8 digits, including at least letters and numbers";
 
 
 "ResetPreference" = "Reset Preferences";
@@ -759,6 +795,9 @@
 "Submit" = "Submit";
 
 
+"Success" = "Success";
+
+
 "SwitchNextColor" = "Switch to the next color";
 
 
@@ -816,7 +855,7 @@
 "TurnOnRecordAlertTip" = "Is it sure to turn on recording?";
 
 
-"Unbound" = "Unbound";
+"Unbound" = "Unbinding";
 
 
 "Unbound Tips" = "Do you want to unbind the corresponding account?";
@@ -838,6 +877,9 @@
 
 
 "Update nickname success" = "Update nickname success";
+
+
+"UpdatePassword" = "Update Password";
 
 
 "Upload" = "Upload";
@@ -886,6 +928,9 @@
 
 
 "UserAlreadyBinding" = "The user has been bound, please change the account that needs to be bound";
+
+
+"UserCancel" = "User Cancelled";
 
 
 "UserNotFound" = "User does not exist";

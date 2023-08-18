@@ -8,10 +8,23 @@
 
 import Foundation
 
-struct BindingInfo: Codable {
+struct BindingMetaInfo: Decodable {
+    let phone: String
+    let wechat: String
+    let apple: String
+    let github: String
+    let email: String
+    let google: String
+}
+
+struct BindingInfo: Decodable {
+    let phone: Bool
     let wechat: Bool
     let apple: Bool
     let github: Bool
+    let email: Bool
+    let google: Bool
+    let meta: BindingMetaInfo
 }
 
 struct BindListRequest: FlatRequest {

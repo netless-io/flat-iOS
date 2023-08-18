@@ -11,15 +11,16 @@ import UIKit
 import Whiteboard
 import Zip
 
-private var fpaKey: String? {
-    guard let uid = AuthStore.shared.user?.userUUID else { return nil }
-    let key = uid + "useFPA"
-    return key
-}
-
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    struct Item {
+        let image: UIImage
+        let title: String
+        let detail: Any
+        let targetAction: (NSObject, Selector)?
+    }
+    
     let cellIdentifier = "cellIdentifier"
-    var items: [Item] = []
+    var items: [[Item]] = [[]]
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,51 +33,48 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         updateItems()
     }
 
-    struct Item {
-        let image: UIImage
-        let title: String
-        let detail: Any
-        let targetAction: (NSObject, Selector)?
-    }
-
     func updateItems() {
         items = [
-            .init(image: UIImage(named: "language")!,
-                  title: localizeStrings("Language Setting"),
-                  detail: LocaleManager.language?.name ?? "跟随系统",
-                  targetAction: (self, #selector(onClickLanguage(sender:)))),
-            .init(image: UIImage(named: "theme")!,
-                  title: localizeStrings("Theme"),
-                  detail: Theme.shared.style.description,
-                  targetAction: (self, #selector(onClickTheme(sender:)))),
-            .init(image: UIImage(named: "update_version")!,
-                  title: localizeStrings("Version"),
-                  detail: "Flat v\(Env().version) (\(Env().build))",
-                  targetAction: (self, #selector(onVersion(sender:)))),
-            .init(image: UIImage(named: "about_us")!,
-                  title: localizeStrings("About"),
-                  detail: "",
-                  targetAction: (self, #selector(onClickAbout(sender:)))),
-            .init(image: UIImage(named: "export")!,
-                  title: localizeStrings("Export log"),
-                  detail: "",
-                  targetAction: (self, #selector(onClickExportLog(sender:)))),
-            .init(image: UIImage(named: "cancellation")!,
-                  title: localizeStrings("AccountCancellation"),
-                  detail: "",
-                  targetAction: (self, #selector(onClickCancellation(sender:)))),
-            .init(image: UIImage(named: "command")!,
-                  title: localizeStrings("Preferences"),
-                  detail: "",
-                  targetAction: (self, #selector(onClickShortcuts(sender:)))),
-            .init(image: UIImage(named: "personal_collect")!,
-                  title: localizeStrings("PersonalInfoCollect"),
-                  detail: "",
-                  targetAction: (self, #selector(onClickInfoCollect))),
-            .init(image: UIImage(named: "third_share")!,
-                  title: localizeStrings("ThirdPartyShare"),
-                  detail: "",
-                  targetAction: (self, #selector(onClickThirdPartCollect)))
+            [.init(image: UIImage(named: "security")!,
+                   title: localizeStrings("AccountSecurity"),
+                   detail: "",
+                   targetAction: (self, #selector(onClickSecurity(sender:))))],
+
+            [.init(image: UIImage(named: "language")!,
+                   title: localizeStrings("Language Setting"),
+                   detail: LocaleManager.language?.name ?? "跟随系统",
+                   targetAction: (self, #selector(onClickLanguage(sender:)))),
+             .init(image: UIImage(named: "command")!,
+                   title: localizeStrings("Preferences"),
+                   detail: "",
+                   targetAction: (self, #selector(onClickShortcuts(sender:)))),
+             .init(image: UIImage(named: "theme")!,
+                   title: localizeStrings("Theme"),
+                   detail: Theme.shared.style.description,
+                   targetAction: (self, #selector(onClickTheme(sender:))))],
+
+            [.init(image: UIImage(named: "personal_collect")!,
+                   title: localizeStrings("PersonalInfoCollect"),
+                   detail: "",
+                   targetAction: (self, #selector(onClickInfoCollect))),
+             .init(image: UIImage(named: "third_share")!,
+                   title: localizeStrings("ThirdPartyShare"),
+                   detail: "",
+                   targetAction: (self, #selector(onClickThirdPartCollect)))],
+            
+            [.init(image: UIImage(named: "export")!,
+                   title: localizeStrings("Export log"),
+                   detail: "",
+                   targetAction: (self, #selector(onClickExportLog(sender:)))),
+             .init(image: UIImage(named: "about_us")!,
+                   title: localizeStrings("About"),
+                   detail: "",
+                   targetAction: (self, #selector(onClickAbout(sender:)))),
+             .init(image: UIImage(named: "update_version")!,
+                   title: localizeStrings("Version"),
+                   detail: "Flat v\(Env().version) (\(Env().build))",
+                   targetAction: (self, #selector(onVersion(sender:))))
+            ],
         ]
         tableView.reloadData()
     }
@@ -102,7 +100,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         vc.navigationItem.title = localizeStrings("PersonalInfoCollect")
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     @objc func onClickThirdPartCollect() {
         let url = URL(string: "https://flat.whiteboard.agora.io/privacy-extra/libraries.html")!
         let vc = WKWebViewController(url: url, isScrollEnabled: true)
@@ -114,25 +112,6 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func onVersion(sender _: Any?) {
         let url = URL(string: "https://itunes.apple.com/app/id1598891661")!
         UIApplication.shared.open(url)
-    }
-
-    @objc func onClickCancellation(sender _: Any?) {
-        showActivityIndicator()
-        ApiProvider.shared.request(fromApi: AccountCancelationValidateRequest()) { [weak self] result in
-            guard let self else { return }
-            self.stopActivityIndicator()
-            switch result {
-            case let .failure(error):
-                self.toast(error.localizedDescription)
-            case let .success(r):
-                if r.alreadyJoinedRoomCount > 0 {
-                    self.showAlertWith(title: localizeStrings("ClassesStillLeftTips") + r.alreadyJoinedRoomCount.description, message: "", completionHandler: nil)
-                } else {
-                    let vc = CancellationViewController()
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        }
     }
 
     @objc func onClickExportLog(sender: Any?) {
@@ -151,7 +130,8 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             try Zip.zipFiles(paths: files,
                              zipFilePath: zipUrl,
                              password: nil,
-                             compression: .DefaultCompression) { progress in
+                             compression: .DefaultCompression)
+            { progress in
                 if progress >= 1 {
                     DispatchQueue.main.async {
                         let vc = UIActivityViewController(activityItems: [zipUrl], applicationActivities: nil)
@@ -190,6 +170,10 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let cell = sender as? SettingTableViewCell {
             popoverViewController(viewController: alertController, fromSource: cell.settingDetailLabel)
         }
+    }
+
+    @objc func onClickSecurity(sender _: Any?) {
+        navigationController?.pushViewController(SecurityViewController(), animated: true)
     }
 
     @objc func onClickLanguage(sender: Any?) {
@@ -268,21 +252,41 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         48
     }
+    
+    func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
+        12
+    }
 
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+    func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
+        0.1
+    }
+
+    func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
+        UIView()
+    }
+
+    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
+        UIView()
+    }
+    
+    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+        items[section].count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         items.count
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        let item = items[indexPath.row]
+        let item = items[indexPath.section][indexPath.row]
         if item.detail is String, let pairs = item.targetAction {
             pairs.0.performSelector(onMainThread: pairs.1, with: cell, waitUntilDone: true)
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = items[indexPath.row]
+        let item = items[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SettingTableViewCell
         cell.iconImageView.image = item.image
         cell.settingTitleLabel.text = item.title

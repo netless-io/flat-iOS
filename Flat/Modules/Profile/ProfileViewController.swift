@@ -14,17 +14,10 @@ import UIKit
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let cellIdentifier = "profileCellIdentifier"
 
-    var bindInfo: [BindingType: Bool]? {
-        didSet {
-            tableView.reloadData()
-        }
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupObserver()
-        updateBindingInfo()
     }
 
     func setupObserver() {
@@ -41,32 +34,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.addSubview(tableView)
         tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
         tableView.reloadData()
-    }
-
-    func updateBindingInfo(showIndicator: Bool = false) {
-        if showIndicator {
-            showActivityIndicator()
-        }
-        ApiProvider.shared.request(fromApi: BindListRequest()) { result in
-            self.stopActivityIndicator()
-            switch result {
-            case let .success(list):
-                var info = self.bindInfo ?? [:]
-                for type in BindingType.allCases {
-                    switch type {
-                    case .WeChat:
-                        info[type] = list.wechat
-                    case .Apple:
-                        info[type] = list.apple
-                    case .Github:
-                        info[type] = list.github
-                    }
-                }
-                self.bindInfo = info
-            case let .failure(error):
-                self.toast(error.localizedDescription)
-            }
-        }
     }
 
     // MARK: - Actions
@@ -128,43 +95,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         present(alert, animated: true)
     }
 
-    func onClickBindType(_ type: BindingType) {
-        guard let binded = bindInfo?[type] else { return }
-        if !binded {
-            switch type {
-            case .WeChat:
-                showActivityIndicator()
-                let binding = WechatBinding { [weak self] error in
-                    self?.stopActivityIndicator()
-                    if let error {
-                        self?.toast(error.localizedDescription)
-                    } else {
-                        self?.updateBindingInfo(showIndicator: true)
-                    }
-                }
-                binding.startBinding(onCoordinator: globalLaunchCoordinator!)
-            case .Apple:
-                return
-            case .Github:
-                return
-            }
-        } else {
-            showCheckAlert(message: localizeStrings("Unbound Tips")) {
-                self.showActivityIndicator()
-                ApiProvider.shared.request(fromApi: RemoveBindingRequest(type: type)) { result in
-                    self.stopActivityIndicator()
-                    switch result {
-                    case let .success(value):
-                        AuthStore.shared.updateToken(value.token)
-                        self.updateBindingInfo()
-                    case let .failure(error):
-                        self.toast(error.localizedDescription)
-                    }
-                }
-            }
-        }
-    }
-
     // MARK: - Lazy
 
     lazy var tableView: UITableView = {
@@ -181,7 +111,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Table view data source
 
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        3
+        2
     }
 
     func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -202,18 +132,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.profileTitleLabel.text = localizeStrings("Nickname")
             cell.profileDetailTextLabel.text = AuthStore.shared.user?.name
         default:
-            cell.avatarImageView.isHidden = true
-            cell.profileDetailTextLabel.isHidden = false
-            let type = BindingType(rawValue: indexPath.row - 2)!
-            cell.profileTitleLabel.text = localizeStrings(type.identifierString)
-            if let bindInfo {
-                let binded = bindInfo[type] ?? false
-                cell.profileDetailTextLabel.text = localizeStrings(binded ? "Binded" : "Unbound")
-                cell.profileDetailTextLabel.textColor = binded ? .color(type: .success) : .color(type: .text)
-            } else {
-                cell.profileDetailTextLabel.text = localizeStrings("Loading")
-                cell.profileDetailTextLabel.textColor = .color(type: .text)
-            }
+            return cell
         }
         return cell
     }
@@ -225,7 +144,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 1:
             onClickNickName()
         default:
-            onClickBindType(.init(rawValue: indexPath.row - 2)!)
+            return
         }
     }
 }

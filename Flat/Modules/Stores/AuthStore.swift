@@ -18,14 +18,6 @@ let jwtExpireNotificationName: Notification.Name = .init("jwtExpireNotification"
 
 typealias LoginHandler = (Result<User, ApiError>) -> Void
 
-enum BindingType: Int, CaseIterable, Codable {
-    case WeChat = 0
-    case Apple
-    case Github
-
-    var identifierString: String { String(describing: self) }
-}
-
 class AuthStore {
     private let userDefaultKey = "AuthStore_user"
 

@@ -18,6 +18,27 @@
 "AccountCancellation" = "注销账号";
 
 
+"AccountSecurity" = "账号安全";
+
+
+"Account_apple" = "Apple ID";
+
+
+"Account_email" = "邮箱";
+
+
+"Account_github" = "Github";
+
+
+"Account_google" = "Google";
+
+
+"Account_phone" = "手机";
+
+
+"Account_wechat" = "微信";
+
+
 "Acknowledgement" = "我们使用的库";
 
 
@@ -54,6 +75,9 @@
 "ApplianceMenu" = "教具";
 
 
+"AtLeastBindPhoneOrEmailTips" = "需要至少保留手机号和邮箱中任意一个";
+
+
 "AudioMixing" = "PPT 混音";
 
 
@@ -73,6 +97,9 @@
 
 
 "Bind Phone Detail" = "根据相关政策法规，需要绑定手机号";
+
+
+"BindEmail" = "绑定邮箱";
 
 
 "BindPhone" = "绑定手机号";
@@ -226,6 +253,9 @@
 
 
 "ElectronLinkText" = "如需更全功能可前往链接下载 Electron 桌面版本。";
+
+
+"EmailInputPlaceholder" = "请输入邮箱";
 
 
 "EmailOrPhonePlaceHolder" = "请输入邮箱或手机号";
@@ -444,6 +474,9 @@
 "NotPermission" = "没有权限操作";
 
 
+"OldPasswordPlaceholder" = "请输入旧手机号";
+
+
 "On/Off stage" = "上/下台";
 
 
@@ -592,6 +625,9 @@
 
 
 "ResetPasswordPlaceholderAgain" = "请再次输入新密码";
+
+
+"ResetPasswordTips" = "密码至少8位，至少包括字母和数字";
 
 
 "ResetPreference" = "重置偏好设置";
@@ -759,6 +795,9 @@
 "Submit" = "提交";
 
 
+"Success" = "操作成功";
+
+
 "SwitchNextColor" = "切换到下一个颜色";
 
 
@@ -786,7 +825,7 @@
 "The ban was lifted" = "禁言已解除";
 
 
-"Theme" = "外观";
+"Theme" = "外观设置";
 
 
 "Theme.auto" = "自动";
@@ -840,6 +879,9 @@
 "Update nickname success" = "更新昵称成功";
 
 
+"UpdatePassword" = "修改密码";
+
+
 "Upload" = "上传";
 
 
@@ -886,6 +928,9 @@
 
 
 "UserAlreadyBinding" = "用户已绑定，请更换需要绑定的账号";
+
+
+"UserCancel" = "用户取消";
 
 
 "UserNotFound" = "用户不存在";

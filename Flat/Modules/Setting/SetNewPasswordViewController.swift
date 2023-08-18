@@ -1,23 +1,23 @@
 //
-//  UpdatePasswordViewController.swift
+//  SetNewPasswordViewController.swift
 //  Flat
 //
-//  Created by xuyunshi on 2023/8/16.
+//  Created by xuyunshi on 2023/8/17.
 //  Copyright © 2023 agora.io. All rights reserved.
 //
 
 import UIKit
 import RxSwift
 
-class UpdatePasswordViewController: UIViewController {
+class SetNewPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         binding()
     }
-    
+
     func setupViews() {
-        title = localizeStrings("UpdatePassword")
+        title = localizeStrings("SettingNewPassword")
         view.backgroundColor = .color(type: .background)
         view.addSubview(mainContentView)
         mainContentView.snp.makeConstraints { make in
@@ -32,10 +32,9 @@ class UpdatePasswordViewController: UIViewController {
     
     func binding() {
         Observable.combineLatest(
-            oldPasswordTextfield.rx.text.orEmpty,
             p1.rx.text.orEmpty,
             p2.rx.text.orEmpty
-        ) { [$0, $1, $2].allSatisfy(\.isNotEmptyOrAllSpacing) }
+        ) { [$0, $1].allSatisfy(\.isNotEmptyOrAllSpacing) }
         .asDriver(onErrorJustReturn: false)
         .drive(updateButton.rx.isEnabled)
         .disposed(by: rx.disposeBag)
@@ -43,15 +42,15 @@ class UpdatePasswordViewController: UIViewController {
     
     @objc
     func onReset() {
-        let pwd = oldPasswordTextfield.passwordText
         let new = p1.passwordText
-        let request = UpdatePasswordRequest(type: .update(password: pwd, newPassword: new))
+        let request = UpdatePasswordRequest(type: .new(new))
         showActivityIndicator()
         ApiProvider.shared.request(fromApi: request) { [weak self] result in
             guard let self else { return }
             self.stopActivityIndicator()
             switch result {
             case .success:
+                AuthStore.shared.user?.hasPassword = true
                 LoginViewController.lastAccountLoginPwd = new
                 self.toast(localizeStrings("Success"), timeInterval: 2)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
@@ -67,10 +66,10 @@ class UpdatePasswordViewController: UIViewController {
 
     lazy var mainContentView: UIStackView = {
         let spacer = UIView()
-        let view = UIStackView(arrangedSubviews: [oldPasswordTextfield, p1, p2, spacer, updateButton, resetTipsLabel])
+        let view = UIStackView(arrangedSubviews: [p1, p2, spacer, updateButton, resetTipsLabel])
         view.axis = .vertical
         view.spacing = 16
-        [oldPasswordTextfield, p1, p2, updateButton].forEach { $0.snp.makeConstraints { make in
+        [p1, p2, updateButton].forEach { $0.snp.makeConstraints { make in
             make.height.equalTo(44)
         }}
         resetTipsLabel.snp.makeConstraints { make in
@@ -81,16 +80,9 @@ class UpdatePasswordViewController: UIViewController {
     
     lazy var updateButton: FlatGeneralCrossButton = {
         let btn = FlatGeneralCrossButton()
-        btn.setTitle(localizeStrings("ResetCheckButtonTitle"), for: .normal)
+        btn.setTitle(localizeStrings("Confirm"), for: .normal)
         btn.addTarget(self, action: #selector(onReset))
         return btn
-    }()
-
-    
-    lazy var oldPasswordTextfield: PasswordTextfield = {
-        let tf = PasswordTextfield()
-        tf.placeholder = localizeStrings("OldPasswordPlaceholder")
-        return tf
     }()
     
     lazy var p1: PasswordTextfield = {
