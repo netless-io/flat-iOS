@@ -51,7 +51,7 @@ class ApiProvider: NSObject {
 
     @discardableResult
     func request<T: FlatRequest>(fromApi api: T,
-                                 completionHandler: @escaping (Result<T.Response, ApiError>) -> Void) -> URLSessionDataTask?
+                                 completionHandler: @escaping (Result<T.Response, Error>) -> Void) -> URLSessionDataTask?
     {
         let task = request(fromApi: api, generator: flatGenerator, responseDataHandler: flatResponseHandler, completionHandler: completionHandler)
         task?.resume()
@@ -60,7 +60,7 @@ class ApiProvider: NSObject {
 
     @discardableResult
     func request<T: AgoraRequest>(fromApi api: T,
-                                  completionHandler: @escaping (Result<T.Response, ApiError>) -> Void) -> URLSessionDataTask?
+                                  completionHandler: @escaping (Result<T.Response, Error>) -> Void) -> URLSessionDataTask?
     {
         let task = request(fromApi: api, generator: agoraGenerator, responseDataHandler: agoraResponseHandler, completionHandler: completionHandler)
         task?.resume()
@@ -99,7 +99,7 @@ class ApiProvider: NSObject {
     func request<T: Request>(fromApi api: T,
                              generator: Generator,
                              responseDataHandler: ResponseDataHandler,
-                             completionHandler: @escaping (Result<T.Response, ApiError>) -> Void) -> URLSessionDataTask?
+                             completionHandler: @escaping (Result<T.Response, Error>) -> Void) -> URLSessionDataTask?
     {
         do {
             let req = try generator.generateRequest(fromApi: api)
@@ -118,26 +118,26 @@ class ApiProvider: NSObject {
                         return
                     }
                     callBackQueue.async {
-                        completionHandler(.failure(.message(message: error.localizedDescription)))
+                        completionHandler(.failure(ApiError.message(message: error.localizedDescription)))
                     }
                     return
                 }
                 guard let response = response as? HTTPURLResponse else {
                     callBackQueue.async {
-                        completionHandler(.failure(.unknown))
+                        completionHandler(.failure(ApiError.unknown))
                     }
                     return
                 }
                 guard response.statusCode == 200 else {
                     callBackQueue.async {
                         let msg = String(data: data ?? Data(), encoding: .utf8) ?? ""
-                        completionHandler(.failure(.message(message: "error statusCode \(response.statusCode), \(msg)")))
+                        completionHandler(.failure(ApiError.message(message: "error statusCode \(response.statusCode), \(msg)")))
                     }
                     return
                 }
                 guard let data else {
                     callBackQueue.async {
-                        completionHandler(.failure(.decode(message: "no data")))
+                        completionHandler(.failure(ApiError.decode(message: "no data")))
                     }
                     return
                 }
@@ -150,7 +150,7 @@ class ApiProvider: NSObject {
                 } catch {
                     callBackQueue.async {
                         logger.error("decode error \(error)")
-                        completionHandler(.failure(.decode(message: error.localizedDescription)))
+                        completionHandler(.failure(ApiError.decode(message: error.localizedDescription)))
                     }
                 }
             }

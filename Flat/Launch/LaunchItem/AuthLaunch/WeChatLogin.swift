@@ -41,7 +41,7 @@ class WeChatLogin: NSObject, LaunchItem {
     func startLogin(withAuthStore authStore: AuthStore, launchCoordinator: LaunchCoordinator, completionHandler: @escaping LoginHandler) {
         ApiProvider.shared.request(fromApi: SetAuthUuidRequest(uuid: uuid)) { [weak self] r in
             guard let self else {
-                completionHandler(.failure(.message(message: "self not exist")))
+                completionHandler(.failure("self not exist"))
                 return
             }
             switch r {
@@ -79,7 +79,7 @@ extension WeChatLogin: WXApiDelegate {
         guard let handler else { return }
         guard resp.isKind(of: SendAuthResp.self) else { return }
         guard resp.errCode == 0, let newResp = resp as? SendAuthResp, let code = newResp.code else {
-            handler(.failure(.message(message: resp.errStr)))
+            handler(.failure(resp.errStr))
             return
         }
         let req = WechatCallBackRequest(uuid: uuid, code: code)

@@ -12,6 +12,7 @@ import UIKit
 class VerifyCodeTextfield: BottomLineTextfield {
     var sendSMSAddtionalCheck: ((_ sender: UIView) -> Result<Void, String>)?
     var smsRequestMaker: (() -> Observable<EmptyResponse>)?
+    var smsErrorHandler: ((Error)->Void)?
     var bag = DisposeBag()
     var sendSmsEnable: Observable<Bool>? {
         didSet {
@@ -80,9 +81,13 @@ class VerifyCodeTextfield: BottomLineTextfield {
                 top?.stopActivityIndicator()
                 top?.toast(localizeStrings("CodeSend"))
                 weakSelf.startTimer()
-            }, onFailure: { _, err in
+            }, onFailure: { ws, err in
                 top?.stopActivityIndicator()
-                top?.toast(err.localizedDescription)
+                if let handler = ws.smsErrorHandler {
+                    handler(err)
+                } else {
+                    top?.toast(err.localizedDescription)
+                }
             })
             .disposed(by: rx.disposeBag)
     }

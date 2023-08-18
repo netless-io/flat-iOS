@@ -9,6 +9,8 @@
 import UIKit
 
 class ForceBindPhoneViewController: UIViewController {
+    var isRebinding = false
+    
     override init(nibName _: String?, bundle _: Bundle?) {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
@@ -55,7 +57,6 @@ class ForceBindPhoneViewController: UIViewController {
                 make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(66)
             }
 
-            let bindButton = FlatGeneralCrossButton()
             bindButton.setTitle(localizeStrings("Confirm"), for: .normal)
             mainView.addSubview(bindButton)
             bindButton.snp.makeConstraints { make in
@@ -63,7 +64,6 @@ class ForceBindPhoneViewController: UIViewController {
                 make.height.equalTo(40)
                 make.top.equalTo(smsAuthView.snp.bottom).offset(28)
             }
-            bindButton.addTarget(self, action: #selector(onLogin), for: .touchUpInside)
 
             smsAuthView
                 .loginEnable
@@ -77,7 +77,6 @@ class ForceBindPhoneViewController: UIViewController {
                 make.width.equalToSuperview().multipliedBy(0.72)
             }
 
-            let bindButton = FlatGeneralCrossButton()
             bindButton.setTitle(localizeStrings("Confirm"), for: .normal)
             mainView.addSubview(bindButton)
             bindButton.snp.makeConstraints { make in
@@ -85,7 +84,6 @@ class ForceBindPhoneViewController: UIViewController {
                 make.height.equalTo(40)
                 make.top.equalTo(smsAuthView.snp.bottom).offset(32)
             }
-            bindButton.addTarget(self, action: #selector(onLogin), for: .touchUpInside)
 
             smsAuthView
                 .loginEnable
@@ -129,16 +127,41 @@ class ForceBindPhoneViewController: UIViewController {
 
     @objc
     func onLogin(sender: UIButton) {
-        let request = BindingPhoneRequest(phone: smsAuthView.fullPhoneText, code: smsAuthView.codeText)
         let activity = showActivityIndicator()
-        ApiProvider.shared.request(fromApi: request) { [weak self] result in
-            activity.stopAnimating()
-            switch result {
-            case .success:
-                AuthStore.shared.processBindPhoneSuccess()
-            case let .failure(error):
-                self?.toast(error.localizedDescription)
+        if isRebinding {
+            let request = RebindingPhoneRequest(phone: smsAuthView.fullPhoneText, code: smsAuthView.codeText)
+            ApiProvider.shared.request(fromApi: request) { [weak self] result in
+                activity.stopAnimating()
+                switch result {
+                case .success:
+                    AuthStore.shared.processBindPhoneSuccess()
+                case let .failure(error):
+                    self?.toast(error.localizedDescription)
+                }
             }
+        } else {
+            let request = BindingPhoneRequest(phone: smsAuthView.fullPhoneText, code: smsAuthView.codeText)
+            ApiProvider.shared.request(fromApi: request) { [weak self] result in
+                activity.stopAnimating()
+                switch result {
+                case .success:
+                    AuthStore.shared.processBindPhoneSuccess()
+                case let .failure(error):
+                    self?.toast(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func showRebindAlert() {
+        showCheckAlert(message: localizeStrings("rebindingPhoneTips")) {
+            self.smsAuthView.verificationCodeTextfield.smsRequestMaker = { [weak self] in
+                guard let smsAuthView = self?.smsAuthView else { return .error("self not exist") }
+                let phone = smsAuthView.fullPhoneText
+                return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .rebind(phone: phone)))
+            }
+            self.smsAuthView.verificationCodeTextfield.onClickSendSMS(sender: self.smsAuthView.verificationCodeTextfield.smsButton)
+            self.isRebinding = true
         }
     }
 
@@ -149,7 +172,18 @@ class ForceBindPhoneViewController: UIViewController {
             let phone = view.fullPhoneText
             return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind(phone: phone)))
         }
+        view.verificationCodeTextfield.smsErrorHandler = { [weak self] error in
+            if case FlatApiError.PhoneRegistered = error {
+                self?.showRebindAlert()
+            }
+        }
         view.presentRoot = self
         return view
+    }()
+    
+    lazy var bindButton: FlatGeneralCrossButton = {
+        let btn = FlatGeneralCrossButton()
+        btn.addTarget(self, action: #selector(self.onLogin(sender:)), for: .touchUpInside)
+        return btn
     }()
 }

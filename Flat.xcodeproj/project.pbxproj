@@ -55,6 +55,7 @@
 		8A07E6262A8F1CF100796CA5 /* AppleBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6252A8F1CF000796CA5 /* AppleBindingRequest.swift */; };
 		8A07E6282A8F1D3300796CA5 /* AppleBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6272A8F1D3300796CA5 /* AppleBinding.swift */; };
 		8A07E62C2A8F48B700796CA5 /* WebLinkLoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E62B2A8F48B700796CA5 /* WebLinkLoginItem.swift */; };
+		8A07E62E2A8F5BF900796CA5 /* RebindingPhoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E62D2A8F5BF900796CA5 /* RebindingPhoneRequest.swift */; };
 		8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */; };
 		8A0A85F227ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
@@ -414,6 +415,7 @@
 		8A07E6252A8F1CF000796CA5 /* AppleBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleBindingRequest.swift; sourceTree = "<group>"; };
 		8A07E6272A8F1D3300796CA5 /* AppleBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleBinding.swift; sourceTree = "<group>"; };
 		8A07E62B2A8F48B700796CA5 /* WebLinkLoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebLinkLoginItem.swift; sourceTree = "<group>"; };
+		8A07E62D2A8F5BF900796CA5 /* RebindingPhoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RebindingPhoneRequest.swift; sourceTree = "<group>"; };
 		8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelRoomHistoryRequest.swift; sourceTree = "<group>"; };
 		8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Pods-Flat-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-Flat/Pods-Flat-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
@@ -1041,6 +1043,7 @@
 				8AAC69AF2717E32E00F9A3B4 /* AuthProcessRequest.swift */,
 				8A1BF0BE280D0B2100D76F22 /* SMSRequest.swift */,
 				8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */,
+				8A07E62D2A8F5BF900796CA5 /* RebindingPhoneRequest.swift */,
 				8A07E6232A8E014200796CA5 /* BindingEmailRequest.swift */,
 				8A1BF0C0280D0B7300D76F22 /* PhoneSMSLoginRequest.swift */,
 				8A07E6032A8B716900796CA5 /* PasswordLoginRequest.swift */,
@@ -2263,6 +2266,7 @@
 				8A9ACC07271E969100E7E7CE /* Date+Extension.swift in Sources */,
 				8A9FB3BD272298CD00F6F06F /* JSONDecoder+Extension.swift in Sources */,
 				8A07E6242A8E014200796CA5 /* BindingEmailRequest.swift in Sources */,
+				8A07E62E2A8F5BF900796CA5 /* RebindingPhoneRequest.swift in Sources */,
 				8AA1155B29BF11FD00CF4CDB /* InnerPermissionControlView.swift in Sources */,
 				8A0CA23728BF4A860035F71A /* CameraPreviewView.swift in Sources */,
 				8ACE3A24272FED7700BC37F7 /* RoomHistoryRequest.swift in Sources */,

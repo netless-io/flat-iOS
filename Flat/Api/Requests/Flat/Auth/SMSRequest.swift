@@ -16,6 +16,7 @@ struct SMSRequest: FlatRequest {
     enum Scenario {
         case login(phone: String)
         case bind(phone: String)
+        case rebind(phone: String)
         case bindEmail(String)
         case resetPhone(String)
         case resetEmail(String, language: SMSLanguageType)
@@ -23,6 +24,8 @@ struct SMSRequest: FlatRequest {
 
         var path: String {
             switch self {
+            case .rebind:
+                return "/v2/user/rebind-phone/send-message"
             case .bindEmail:
                 return "/v1/user/bindingEmail/sendMessage"
             case .login:
@@ -40,6 +43,7 @@ struct SMSRequest: FlatRequest {
         
         var encodableResult: Encodable {
             switch self {
+            case .rebind(phone: let phone): return ["phone": phone]
             case .bindEmail(let email): return ["email": email]
             case .login(phone: let phone): return ["phone": phone]
             case .bind(phone: let phone): return ["phone": phone]

@@ -57,7 +57,7 @@ class RoomDetailViewController: UIViewController {
 
     // MARK: - Private
 
-    func loadData(completion: @escaping ((Result<RoomBasicInfo, ApiError>) -> Void)) {
+    func loadData(completion: @escaping ((Result<RoomBasicInfo, Error>) -> Void)) {
         guard let fetchingInfo = info else { return }
         RoomBasicInfo.fetchInfoBy(uuid: fetchingInfo.roomUUID, periodicUUID: fetchingInfo.periodicUUID) { [weak self] result in
             guard let self else { return }

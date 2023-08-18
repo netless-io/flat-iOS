@@ -16,7 +16,7 @@ let loginSuccessNotificationName: Notification.Name = .init("loginSuccessNotific
 let logoutNotificationName: Notification.Name = .init("logoutNotification")
 let jwtExpireNotificationName: Notification.Name = .init("jwtExpireNotification")
 
-typealias LoginHandler = (Result<User, ApiError>) -> Void
+typealias LoginHandler = (Result<User, Error>) -> Void
 
 class AuthStore {
     private let userDefaultKey = "AuthStore_user"

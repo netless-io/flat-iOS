@@ -42,13 +42,13 @@ class AppleLogin: NSObject, ASAuthorizationControllerDelegate {
                 }
             }
         } else {
-            handler?(.failure(.message(message: "decode auth error")))
+            handler?(.failure(ApiError.message(message: "decode auth error")))
             handler = nil
         }
     }
 
     func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
-        handler?(.failure(.message(message: error.localizedDescription)))
+        handler?(.failure(ApiError.message(message: error.localizedDescription)))
         handler = nil
     }
 }

@@ -28,7 +28,7 @@ class FlatResponseHandler: ResponseDataHandler {
                     FlatResponseHandler.jwtExpireSignal.accept(())
                 }
             }
-            throw ApiError.message(message: error.localizedDescription)
+            throw error
         }
         guard status == 0 else {
             let str = String(data: data, encoding: .utf8)

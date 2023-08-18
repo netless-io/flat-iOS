@@ -1053,6 +1053,9 @@
 "passwordAuth" = "via password";
 
 
+"rebindingPhoneTips" = "Input mobile phone number has been bound to other accounts, whether the current New Account and existing account merger? The merge operation will erase all data from the current New Account";
+
+
 "screenshot" = "screenshot";
 
 

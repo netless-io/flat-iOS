@@ -162,7 +162,7 @@ class LoginViewController: UIViewController {
         }
 
         func passwordLogin() {
-            func processPasswordLoginResult(_ result: Result<User, ApiError>) {
+            func processPasswordLoginResult(_ result: Result<User, Error>) {
                 stopActivityIndicator()
                 switch result {
                 case let .success(user):
