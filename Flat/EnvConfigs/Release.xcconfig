@@ -20,6 +20,7 @@ AGORA_APP_ID = 931b86d6781e49a2a255db4ce6e8e804
 OSS_ACCESS_KEY_ID = LTAI5tMwHQ1xyroeneA9XLh4
 OTHER_SWIFT_FLAGS = $(inherited) -D Flat
 PRODUCT_NAME = Flat 在线教室
+CREATE_WHITEBOARD_REGION = cn-hz
 REGION = CN
 SLS_PROJECT = flat-prod
 SLS_ENDPOINT = cn-hangzhou.log.aliyuncs.com

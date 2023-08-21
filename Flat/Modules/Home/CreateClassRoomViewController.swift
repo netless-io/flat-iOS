@@ -193,6 +193,7 @@ class CreateClassRoomViewController: UIViewController {
         title = text.isEmpty ? defaultTitle : text
         let startDate = Date()
         let createQuest = CreateRoomRequest(beginTime: startDate,
+                                            region: Env().createWhiteboardRegion,
                                             title: title,
                                             type: currentRoomType)
         sender.isLoading = true

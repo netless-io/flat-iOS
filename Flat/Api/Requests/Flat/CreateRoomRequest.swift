@@ -17,7 +17,7 @@ struct CreateRoomRequest: FlatRequest, Encodable {
     }
 
     let beginTime: Date
-    let region: FlatRegion = .CN_HZ
+    let region: FlatRegion
     let title: String
     let type: ClassRoomType
 

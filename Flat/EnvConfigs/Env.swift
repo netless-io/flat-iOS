@@ -34,6 +34,10 @@ struct Env {
         (value(for: "DISABLE_LOGIN_TYPES") as String).split(separator: ",").compactMap { LoginType(rawValue: String($0)) }
     }
 
+    var createWhiteboardRegion: FlatRegion {
+        FlatRegion(rawValue: value(for: "CREATE_WHITEBOARD_REGION") as String) ?? .CN_HZ
+    }
+    
     var forceBindPhone: Bool {
         (value(for: "FORCE_BIND_PHONE") as String) == "1"
     }
