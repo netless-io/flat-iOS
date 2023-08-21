@@ -267,6 +267,8 @@
 		8AAE254D295EB88A007D5507 /* RoomUserRxSectionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE254C295EB88A007D5507 /* RoomUserRxSectionData.swift */; };
 		8AAE53CD2730E46800C35796 /* UIImage+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */; };
 		8AAE53D127311D7E00C35796 /* String+ReguarExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */; };
+		8AB0AC3D2A9354B8006661E1 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDEF27168F25008BD904 /* Env.swift */; };
+		8AB0AC402A9355A6006661E1 /* Env+Whiteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0AC3F2A9355A6006661E1 /* Env+Whiteboard.swift */; };
 		8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */; };
 		8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */; };
 		8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */; };
@@ -640,6 +642,7 @@
 		8AAE53CC2730E46800C35796 /* UIImage+Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Circle.swift"; sourceTree = "<group>"; };
 		8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
 		8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ReguarExpression.swift"; sourceTree = "<group>"; };
+		8AB0AC3F2A9355A6006661E1 /* Env+Whiteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Env+Whiteboard.swift"; sourceTree = "<group>"; };
 		8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveBindingRequest.swift; sourceTree = "<group>"; };
 		8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRenameRequest.swift; sourceTree = "<group>"; };
 		8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareAvatarUploadRequest.swift; sourceTree = "<group>"; };
@@ -1415,6 +1418,7 @@
 			isa = PBXGroup;
 			children = (
 				8AD3CDEF27168F25008BD904 /* Env.swift */,
+				8AB0AC3F2A9355A6006661E1 /* Env+Whiteboard.swift */,
 				8AD3CDEC27168E75008BD904 /* Develop.xcconfig */,
 				8A4C7A7527F2E53B006988C6 /* Flint_Develop.xcconfig */,
 				8A4C7A7627F2E544006988C6 /* Flint_Release.xcconfig */,
@@ -2224,6 +2228,7 @@
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
 				8A6021DE29B9D248009D499C /* RtcItemContentView.swift in Sources */,
 				8ADF45BF2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift in Sources */,
+				8AB0AC402A9355A6006661E1 /* Env+Whiteboard.swift in Sources */,
 				8AA242FC289A82FF00C306F0 /* ClassRoomViewModel.swift in Sources */,
 				8A92194828ADDCF700DDDA81 /* WhiteboardScenesListViewController.swift in Sources */,
 				8A7010A627777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift in Sources */,

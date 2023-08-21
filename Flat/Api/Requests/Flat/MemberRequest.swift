@@ -64,6 +64,14 @@ struct MemberRequest: FlatRequest, Encodable {
     let usersUUID: [String]?
 
     var path: String { "/v1/room/info/users" }
+    var customBaseURL: String? {
+        for server in Env().servers {
+            if roomUUID.hasPrefix(server.classroomUUIDPrefix) {
+                return server.baseURL
+            }
+        }
+        return nil
+    }
     let responseType = MemberResponse.self
 
     var decoder: JSONDecoder {

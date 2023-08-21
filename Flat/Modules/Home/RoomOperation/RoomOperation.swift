@@ -46,6 +46,17 @@ extension RoomBasicInfo {
                 performRemoveReqeust()
             }
         }
+        
+        // Return no action for cross region classroom.
+        for server in Env().servers {
+            if room.roomUUID.hasPrefix(server.classroomUUIDPrefix) {
+                return []
+            }
+            if room.roomUUID.hasPrefix(server.classroomInviteCode.description) {
+                return []
+            }
+        }
+        
         switch room.roomStatus {
         case .Idle:
             if room.isOwner {

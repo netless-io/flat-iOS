@@ -17,10 +17,12 @@ protocol Request {
     var decoder: JSONDecoder { get }
     var task: Task { get }
     var header: [String: String] { get }
+    var customBaseURL: String? { get }
 }
 
 extension Request {
     var header: [String: String] { [:] }
+    var customBaseURL: String? { nil }
 }
 
 extension Request where Self: Encodable {

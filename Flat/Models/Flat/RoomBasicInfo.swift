@@ -41,7 +41,7 @@ extension RoomBasicInfo {
     /// This method can't get periodicUUID
     /// Periodic room info can be fetched either periodicUUID or a inviteUUID
     static func fetchInfoBy(uuid: String, periodicUUID: String?) -> Observable<Self> {
-        let request = RoomInfoRequest(uuid: uuid)
+        let request = RoomInfoRequest(roomUUID: uuid)
         return ApiProvider.shared.request(fromApi: request).map {
             let info = $0.roomInfo
             return RoomBasicInfo(roomUUID: uuid,
@@ -63,7 +63,7 @@ extension RoomBasicInfo {
     /// This method can't get periodicUUID
     /// Periodic room info can be fetched either periodicUUID or a inviteUUID
     static func fetchInfoBy(uuid: String, periodicUUID: String?, completion: @escaping ((Result<Self, Error>) -> Void)) {
-        let request = RoomInfoRequest(uuid: uuid)
+        let request = RoomInfoRequest(roomUUID: uuid)
         ApiProvider.shared.request(fromApi: request) { result in
             switch result {
             case let .success(raw):
@@ -90,11 +90,22 @@ extension RoomBasicInfo {
 }
 
 private struct RoomInfoRequest: FlatRequest {
-    let uuid: String
+    let roomUUID: String
 
     var path: String { "/v1/room/info/ordinary" }
-    var task: Task { .requestJSONEncodable(encodable: ["roomUUID": uuid]) }
+    var task: Task { .requestJSONEncodable(encodable: ["roomUUID": roomUUID]) }
     let responseType = RawRoomInfo.self
+    var customBaseURL: String? {
+        for server in Env().servers {
+            if roomUUID.hasPrefix(server.classroomUUIDPrefix) {
+                return server.baseURL
+            }
+            if roomUUID.hasPrefix(server.classroomInviteCode.description) {
+                return server.baseURL
+            }
+        }
+        return nil
+    }
 }
 
 // Middle Struct

@@ -10,18 +10,19 @@ import Foundation
 
 class FlatRequestGenerator: Generator {
     var token: String?
-    let host: String
+    let baseURL: String
     let timeoutInterval: TimeInterval
     let sessionId: String
 
-    init(host: String, timeoutInterval: TimeInterval, sessionId: String) {
-        self.host = host
+    init(baseURL: String, timeoutInterval: TimeInterval, sessionId: String) {
+        self.baseURL = baseURL
         self.timeoutInterval = timeoutInterval
         self.sessionId = sessionId
     }
 
     func generateRequest(fromApi api: some Request) throws -> URLRequest {
-        let fullPath = "\(host)\(api.path)"
+        let base = api.customBaseURL ?? baseURL
+        let fullPath = "\(base)\(api.path)"
         let url = URL(string: fullPath)!
         var request = URLRequest(url: url, timeoutInterval: timeoutInterval)
         request.httpMethod = api.method.rawValue

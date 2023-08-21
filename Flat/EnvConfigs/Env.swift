@@ -18,12 +18,21 @@ enum LoginType: String, CaseIterable {
 }
 
 struct Env {
+    struct ServerGroupItem: Decodable {
+        fileprivate let apiURL: String
+        let classroomInviteCode: Int
+        let classroomUUIDPrefix: String
+        var baseURL: String {
+            "https://\(apiURL)"
+        }
+    }
+    
     enum Region: String {
         case CN
         case US
     }
 
-    private func value<T>(for key: String) -> T {
+    func value<T>(for key: String) -> T {
         guard let value = Bundle.main.infoDictionary?[key] as? T else {
             fatalError("Invalid or missing Info.plist key: \(key)")
         }
@@ -32,10 +41,6 @@ struct Env {
 
     var disabledLoginTypes: [LoginType] {
         (value(for: "DISABLE_LOGIN_TYPES") as String).split(separator: ",").compactMap { LoginType(rawValue: String($0)) }
-    }
-
-    var createWhiteboardRegion: FlatRegion {
-        FlatRegion(rawValue: value(for: "CREATE_WHITEBOARD_REGION") as String) ?? .CN_HZ
     }
     
     var forceBindPhone: Bool {
@@ -68,6 +73,19 @@ struct Env {
 
     var name: String {
         Bundle.main.infoDictionary?["CFBundleName"] as? String ?? ""
+    }
+    
+    var servers: [ServerGroupItem] {
+        do {
+            let str = value(for: "SERVER_GROUP") as String
+            if let data = str.data(using: .utf8) {
+                let items = try JSONDecoder().decode([ServerGroupItem].self, from: data)
+                return items
+            }
+        } catch {
+            // Prevent it by unit test. So do nothing.
+        }
+        return []
     }
 
     var version: String {

@@ -129,6 +129,8 @@
 	<string>$(OSS_ACCESS_KEY_ID)</string>
 	<key>REGION</key>
 	<string>$(REGION)</string>
+	<key>SERVER_GROUP</key>
+	<string>$(SERVER_GROUP)</string>
 	<key>SLS_AK</key>
 	<string>$(SLS_AK)</string>
 	<key>SLS_ENDPOINT</key>

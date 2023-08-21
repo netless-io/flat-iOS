@@ -13,7 +13,7 @@ let defaultNetworkTimeoutInterval: TimeInterval = 30
 let callBackQueue = DispatchQueue.main
 let rootQueue = DispatchQueue(label: "agora.io.flat.session.rootQueue")
 
-let flatGenerator = FlatRequestGenerator(host: Env().baseURL, timeoutInterval: defaultNetworkTimeoutInterval, sessionId: globalSessionId)
+let flatGenerator = FlatRequestGenerator(baseURL: Env().baseURL, timeoutInterval: defaultNetworkTimeoutInterval, sessionId: globalSessionId)
 let flatResponseHandler = FlatResponseHandler()
 let agoraGenerator = AgoraRequestGenerator(agoraAppId: Env().agoraAppId, timeoutInterval: defaultNetworkTimeoutInterval)
 let agoraResponseHandler = AgoraResponseHandler()
