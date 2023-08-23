@@ -963,6 +963,9 @@
 "UserNotInRoom" = "用户不在房间内";
 
 
+"UserOrPasswordIncorrect" = "账号或密码错误";
+
+
 "VerificationCode" = "验证码";
 
 

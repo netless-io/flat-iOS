@@ -963,6 +963,9 @@
 "UserNotInRoom" = "User is not in the room";
 
 
+"UserOrPasswordIncorrect" = "Incorrect account or password";
+
+
 "VerificationCode" = "VerificationCode";
 
 
