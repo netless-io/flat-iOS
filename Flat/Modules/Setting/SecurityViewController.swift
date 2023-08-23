@@ -273,9 +273,9 @@ extension SecurityViewController: UITableViewDelegate, UITableViewDataSource {
             }
         case .updatePassword:
             if AuthStore.shared.user?.hasPassword == true {
-                navigationController?.pushViewController(SetNewPasswordViewController(), animated: true)
-            } else {
                 navigationController?.pushViewController(UpdatePasswordViewController(), animated: true)
+            } else {
+                navigationController?.pushViewController(SetNewPasswordViewController(), animated: true)
             }
         case .accountCancel:
             onClickCancellation()
