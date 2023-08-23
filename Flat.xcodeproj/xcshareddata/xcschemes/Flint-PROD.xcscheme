@@ -28,6 +28,28 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8AB0AC2C2A9352B0006661E1"
+               BuildableName = "Flat-Test.xctest"
+               BlueprintName = "Flat-Test"
+               ReferencedContainer = "container:Flat.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8AB0AC5D2A948AFB006661E1"
+               BuildableName = "Flat_Test.xctest"
+               BlueprintName = "Flat_Test"
+               ReferencedContainer = "container:Flat.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
