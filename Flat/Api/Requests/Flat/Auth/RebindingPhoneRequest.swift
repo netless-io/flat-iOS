@@ -14,5 +14,5 @@ struct RebindingPhoneRequest: FlatRequest {
 
     var path: String { "/v2/user/rebind-phone" }
     var task: Task { .requestJSONEncodable(encodable: ["phone": phone, "code": code]) }
-    let responseType = EmptyResponse.self
+    let responseType = User.self
 }

@@ -134,8 +134,8 @@ class ForceBindPhoneViewController: UIViewController {
             ApiProvider.shared.request(fromApi: request) { [weak self] result in
                 activity.stopAnimating()
                 switch result {
-                case .success:
-                    AuthStore.shared.processBindPhoneSuccess()
+                case .success(let user):
+                    AuthStore.shared.processLoginSuccessUserInfo(user, relogin: true)
                 case let .failure(error):
                     self?.toast(error.localizedDescription)
                 }
