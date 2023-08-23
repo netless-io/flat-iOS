@@ -71,6 +71,11 @@ jobs:
         run: |
           touch "archive_$RUN_NUMBER.log"
           echo "url: https://github.com/netless-io/flat-ios/actions/runs/$RUN_ID" >> archive_$RUN_NUMBER.log
+      - name: Test
+        env:
+          RUN_NUMBER: ${{github.run_number}}
+        run: |
+          sh test.sh Flat_Release_Test test_flat_$RUN_NUMBER.log
       - name: Archive
         run: |
           sh archive.sh
@@ -100,6 +105,11 @@ jobs:
         run: |
           sh blackduck.sh "$BLACK_DUCK_TOKEN" "$BD_COMMAND"
           echo "blackduck: $BD_HOST/api/projects/888fe533-a493-45d1-adfd-9e4765793731/versions/ae27340f-0807-4fb0-93a4-5ee322ece657/components" >> archive_$RUN_NUMBER.log
+      - name: Upload Test Result
+        uses: actions/upload-artifact@v2
+        with:
+          name: test
+          path: test_flat_${{github.run_number}}.log
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
