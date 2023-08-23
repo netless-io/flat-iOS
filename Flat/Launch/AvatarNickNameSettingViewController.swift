@@ -95,7 +95,6 @@ class AvatarNickNameSettingViewController: UIViewController {
         let spacer = UIView()
         let view = UIStackView(arrangedSubviews: [avatarButton, nickNameTextfield, spacer, finishButton])
         view.axis = .vertical
-        view.spacing = 48
         avatarButton.snp.makeConstraints { make in
             make.height.equalTo(200)
         }

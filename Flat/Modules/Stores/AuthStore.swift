@@ -13,7 +13,6 @@ import RxSwift
 
 let avatarUpdateNotificationName: Notification.Name = .init(rawValue: "avatarUpdateNotification")
 let loginSuccessNotificationName: Notification.Name = .init("loginSuccessNotification")
-let signUpSuccessNotificationName: Notification.Name = .init("signUpSuccessNotificationName")
 let logoutNotificationName: Notification.Name = .init("logoutNotification")
 let jwtExpireNotificationName: Notification.Name = .init("jwtExpireNotification")
 
@@ -39,6 +38,15 @@ class AuthStore {
             } catch {
                 logger.error("decode user error, \(error)")
             }
+        }
+    }
+    
+    var unsetDefaultProfileUserUUID: String {
+        get {
+            (UserDefaults.standard.value(forKey: "unsetDefaultProfileSet") as? String) ?? ""
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "unsetDefaultProfileSet")
         }
     }
 
@@ -84,7 +92,6 @@ class AuthStore {
         }
         newUser.hasPhone = true
         processLoginSuccessUserInfo(newUser)
-        NotificationCenter.default.post(name: signUpSuccessNotificationName, object: nil)
     }
 
     func processLoginSuccessUserInfo(_ user: User, relogin: Bool = true) {

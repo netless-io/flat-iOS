@@ -147,6 +147,7 @@ class SignUpViewController: UIViewController {
                     .flatMap { _ in login }
                     .subscribe(with: self, onNext: { ws, user in
                         ws.stopActivityIndicator()
+                        AuthStore.shared.unsetDefaultProfileUserUUID = user.userUUID
                         AuthStore.shared.processLoginSuccessUserInfo(user)
                         AuthStore.shared.lastAccountLoginInfo = .init(
                             account: ws.signUpInputView.accountTextfield.accountType.value,
@@ -154,9 +155,6 @@ class SignUpViewController: UIViewController {
                             inputText: ws.signUpInputView.accountTextfield.text ?? "",
                             pwd: password
                         )
-                        if !Env().forceBindPhone {
-                            NotificationCenter.default.post(name: signUpSuccessNotificationName, object: nil)
-                        }
                     }, onError: { ws, error in
                         ws.stopActivityIndicator()
                         ws.toast(error.localizedDescription)

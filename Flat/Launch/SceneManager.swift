@@ -25,7 +25,6 @@ class SceneManager {
         NotificationCenter.default.addObserver(self, selector: #selector(onLoginSuccess), name: loginSuccessNotificationName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onLogout), name: logoutNotificationName, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onJwtExpire), name: jwtExpireNotificationName, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onSignUpSuccess), name: signUpSuccessNotificationName, object: nil)
     }
 
     static let shared = SceneManager()
@@ -57,7 +56,7 @@ class SceneManager {
             return vc is ClassRoomViewController || vc is MixReplayViewController
         }
         while let i = top {
-            if shouldPreserve(i) {  // Dont reconfig when top is classroom or replay
+            if shouldPreserve(i) { // Dont reconfig when top is classroom or replay
                 return
             }
             top = i.presentingViewController
@@ -95,12 +94,6 @@ class SceneManager {
             config(windowScene: scene, user: user)
         }
         refreshMultiWindowPreview()
-    }
-    
-    @objc
-    func onSignUpSuccess(_ notification: Notification) {
-        guard let root = windowMap.randomElement()?.value.rootViewController else { return }
-        root.present(AvatarNickNameSettingViewController(), animated: true)
     }
 
     @objc
@@ -147,7 +140,7 @@ extension SceneManager {
         }
         if let user {
             startGoogleAnalytics()
-            if !user.hasPhone && Env().forceBindPhone {
+            if !user.hasPhone, Env().forceBindPhone {
                 let root = LoginViewController()
                 window.rootViewController = root
                 DispatchQueue.main.async {
@@ -155,6 +148,10 @@ extension SceneManager {
                 }
             } else {
                 window.rootViewController = createMainContainer(for: window)
+                if AuthStore.shared.unsetDefaultProfileUserUUID == user.userUUID {
+                    AuthStore.shared.unsetDefaultProfileUserUUID = ""
+                    window.rootViewController?.present(AvatarNickNameSettingViewController(), animated: true)
+                }
             }
         } else {
             window.rootViewController = LoginViewController()

@@ -9,7 +9,7 @@
 import SafariServices
 import UIKit
 
-class WebLinkLoginItem: LaunchItem {
+class WebLinkLoginItem: NSObject, LaunchItem {
     private var unload: (() -> Void)?
 
     func shouldHandle(url: URL?, scene: UIScene) -> Bool {
@@ -55,6 +55,7 @@ class WebLinkLoginItem: LaunchItem {
             switch r {
             case .success:
                 let controller = SFSafariViewController(url: url)
+                controller.delegate = self
                 controller.modalPresentationStyle = .pageSheet
                 sender.viewController()?.present(controller, animated: true)
                 let launchItemIdentifier = self.uuid
@@ -75,5 +76,11 @@ class WebLinkLoginItem: LaunchItem {
                 completionHandler(.failure(error))
             }
         }
+    }
+}
+
+extension WebLinkLoginItem: SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        handler?(.failure(""))
     }
 }
