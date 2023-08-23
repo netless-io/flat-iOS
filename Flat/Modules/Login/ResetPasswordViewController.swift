@@ -150,8 +150,12 @@ class ResetPasswordViewController: UIViewController {
             .subscribe(with: self, onNext: { ws, user in
                 ws.stopActivityIndicator()
                 AuthStore.shared.processLoginSuccessUserInfo(user)
-                LoginViewController.lastAccountLoginText = account
-                LoginViewController.lastAccountLoginPwd = password
+                AuthStore.shared.lastAccountLoginInfo = .init(
+                    account: ws.accountCodeAuthView.accountTextfield.accountType.value,
+                    regionCode: ws.accountCodeAuthView.accountTextfield.country.code,
+                    inputText: ws.accountCodeAuthView.accountTextfield.text ?? "",
+                    pwd: password
+                )
             }, onError: { ws, error in
                 ws.stopActivityIndicator()
                 ws.toast(error.localizedDescription)

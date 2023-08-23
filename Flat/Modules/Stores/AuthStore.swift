@@ -19,6 +19,13 @@ let jwtExpireNotificationName: Notification.Name = .init("jwtExpireNotification"
 
 typealias LoginHandler = (Result<User, Error>) -> Void
 
+struct AccountLoginInfo: Codable {
+    var account: AccountType
+    var regionCode: String
+    var inputText: String // Not include country phone code.
+    var pwd: String
+}
+
 class AuthStore {
     private let userDefaultKey = "AuthStore_user"
 
@@ -35,6 +42,26 @@ class AuthStore {
         }
     }
 
+    var lastAccountLoginInfo: AccountLoginInfo? {
+        get {
+            guard let data = UserDefaults.standard.data(forKey: "lastAccountLoginInfo"),
+                  let model = try? JSONDecoder().decode(AccountLoginInfo.self, from: data)
+            else { return nil }
+            return model
+        }
+        set {
+            guard let newValue else {
+                UserDefaults.standard.set(nil, forKey: "lastAccountLoginInfo")
+                return
+            }
+            guard let data = try? JSONEncoder().encode(newValue) else {
+                UserDefaults.standard.set(nil, forKey: "lastAccountLoginInfo")
+                return
+            }
+            UserDefaults.standard.set(data, forKey: "lastAccountLoginInfo")
+        }
+    }
+    
     var disposeBag = DisposeBag()
     
     var isLogin: Bool { user != nil }

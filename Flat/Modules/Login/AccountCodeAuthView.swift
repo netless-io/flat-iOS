@@ -20,7 +20,7 @@ class AccountCodeAuthView: UIView {
         }
     }
     
-    init(staticAccountType: AccountTextfield.AccountType? = nil) {
+    init(staticAccountType: AccountType? = nil) {
         accountTextfield = .init(staticAccountType: staticAccountType)
         super.init(frame: .zero)
         setupViews()

@@ -54,7 +54,7 @@ class BindEmailViewController: UIViewController {
             self.stopActivityIndicator()
             switch result {
             case .success:
-                LoginViewController.lastAccountLoginText = account
+                AuthStore.shared.lastAccountLoginInfo?.inputText = account
                 self.toast(localizeStrings("Success"), timeInterval: 2)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
                     guard let self else { return }

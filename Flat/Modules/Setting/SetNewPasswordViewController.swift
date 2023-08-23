@@ -51,7 +51,7 @@ class SetNewPasswordViewController: UIViewController {
             switch result {
             case .success:
                 AuthStore.shared.user?.hasPassword = true
-                LoginViewController.lastAccountLoginPwd = new
+                AuthStore.shared.lastAccountLoginInfo?.pwd = new
                 self.toast(localizeStrings("Success"), timeInterval: 2)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
                     guard let self else { return }

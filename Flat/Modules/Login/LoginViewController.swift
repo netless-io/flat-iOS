@@ -61,24 +61,6 @@ class LoginViewController: UIViewController {
             UserDefaults.standard.setValue(newValue, forKey: "lastLoginPhone")
         }
     }
-    
-    static var lastAccountLoginText: String? {
-        get {
-            UserDefaults.standard.value(forKey: "lastAccountLoginText") as? String
-        }
-        set {
-            UserDefaults.standard.setValue(newValue, forKey: "lastAccountLoginText")
-        }
-    }
-    
-    static var lastAccountLoginPwd: String? {
-        get {
-            UserDefaults.standard.value(forKey: "lastAccountLoginPwd") as? String
-        }
-        set {
-            UserDefaults.standard.setValue(newValue, forKey: "lastAccountLoginPwd")
-        }
-    }
 
     var deviceAgreementAgree: Bool {
         get {
@@ -147,8 +129,12 @@ class LoginViewController: UIViewController {
                 stopActivityIndicator()
                 switch result {
                 case let .success(user):
-                    Self.lastAccountLoginText = self.passwordAuthView.accountTextfield.accountText
-                    Self.lastAccountLoginPwd = self.passwordAuthView.passwordTextfield.passwordText
+                    AuthStore.shared.lastAccountLoginInfo = .init(
+                        account: self.passwordAuthView.accountTextfield.accountType.value,
+                        regionCode: self.passwordAuthView.accountTextfield.country.code,
+                        inputText: self.passwordAuthView.accountTextfield.text ?? "",
+                        pwd: self.passwordAuthView.passwordTextfield.passwordText
+                    )
                     AuthStore.shared.processLoginSuccessUserInfo(user)
                 case let .failure(error):
                     self.toast(error.localizedDescription)
@@ -323,8 +309,11 @@ class LoginViewController: UIViewController {
 
     func loadHistory() {
         smsAuthView.phoneTextfield.text = lastSMSLoginPhone
-        passwordAuthView.accountTextfield.text = Self.lastAccountLoginText
-        passwordAuthView.passwordTextfield.text = Self.lastAccountLoginPwd
+        
+        if let info = AuthStore.shared.lastAccountLoginInfo {
+            passwordAuthView.accountTextfield.fillWith(countryCode: info.regionCode, inputText: info.inputText)
+            passwordAuthView.passwordTextfield.text = info.pwd
+        }
     }
 
     func showDeviceAgreeAlert() {

@@ -11,22 +11,22 @@ import RxSwift
 import RxRelay
 import libPhoneNumber_iOS
 
-class AccountTextfield: BottomLineTextfield {
-    enum AccountType {
-        case phone
-        case email
-        
-        func valid(_ text: String, country: Country) -> Bool {
-            switch self {
-            case .phone:
-                guard let phoneObj = try? NBPhoneNumberUtil.sharedInstance().parse(text, defaultRegion: country.code) else { return false }
-                return NBPhoneNumberUtil.sharedInstance().isValidNumber(forRegion: phoneObj, regionCode: country.code)
-            case .email:
-                return text.isEmail()
-            }
+enum AccountType: String, Codable {
+    case phone
+    case email
+    
+    func valid(_ text: String, country: Country) -> Bool {
+        switch self {
+        case .phone:
+            guard let phoneObj = try? NBPhoneNumberUtil.sharedInstance().parse(text, defaultRegion: country.code) else { return false }
+            return NBPhoneNumberUtil.sharedInstance().isValidNumber(forRegion: phoneObj, regionCode: country.code)
+        case .email:
+            return text.isEmail()
         }
     }
-    
+}
+
+class AccountTextfield: BottomLineTextfield {
     weak var presentRoot: UIViewController?
     let staticAccountType: AccountType?
     var accountType: BehaviorRelay<AccountType>
@@ -43,10 +43,18 @@ class AccountTextfield: BottomLineTextfield {
         }
     }
     
-    private var country = Country.currentCountry() {
+    var country = Country.currentCountry() {
         didSet {
             countryCodeSelectBtn.setTitle("+\(country.phoneCode)", for: .normal)
         }
+    }
+    
+    func fillWith(countryCode: String?, inputText: String) {
+        if let countryCode, let country = Country.countryFor(regionCode: countryCode) {
+            self.country = country
+        }
+        text = inputText
+        sendActions(for: .valueChanged)
     }
     
     // MARK: - Life Cycle -

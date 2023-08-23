@@ -148,8 +148,12 @@ class SignUpViewController: UIViewController {
                     .subscribe(with: self, onNext: { ws, user in
                         ws.stopActivityIndicator()
                         AuthStore.shared.processLoginSuccessUserInfo(user)
-                        LoginViewController.lastAccountLoginText = account
-                        LoginViewController.lastAccountLoginPwd = password
+                        AuthStore.shared.lastAccountLoginInfo = .init(
+                            account: ws.signUpInputView.accountTextfield.accountType.value,
+                            regionCode: ws.signUpInputView.accountTextfield.country.code,
+                            inputText: ws.signUpInputView.accountTextfield.text ?? "",
+                            pwd: password
+                        )
                         if !Env().forceBindPhone {
                             NotificationCenter.default.post(name: signUpSuccessNotificationName, object: nil)
                         }

@@ -52,7 +52,7 @@ class UpdatePasswordViewController: UIViewController {
             self.stopActivityIndicator()
             switch result {
             case .success:
-                LoginViewController.lastAccountLoginPwd = new
+                AuthStore.shared.lastAccountLoginInfo?.pwd = new
                 self.toast(localizeStrings("Success"), timeInterval: 2)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
                     guard let self else { return }

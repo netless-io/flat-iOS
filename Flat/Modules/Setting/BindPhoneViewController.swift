@@ -54,7 +54,8 @@ class BindPhoneViewController: UIViewController {
             self.stopActivityIndicator()
             switch result {
             case .success:
-                LoginViewController.lastAccountLoginText = account
+                AuthStore.shared.lastAccountLoginInfo?.regionCode = authView.accountTextfield.country.code
+                AuthStore.shared.lastAccountLoginInfo?.inputText = authView.accountTextfield.text ?? ""
                 self.toast(localizeStrings("Success"), timeInterval: 2)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
                     guard let self else { return }
