@@ -295,7 +295,6 @@ class LoginViewController: UIViewController {
             loginTypeToggleButton.setTitle(localizeStrings("smsAuth"), for: .normal)
             forgetPasswordButton.isHidden = false
             registerButton.isHidden = false
-            passwordAuthView.accountTextfield.becomeFirstResponder()
         case .sms:
             smsAuthView.isHidden = false
             passwordAuthView.isHidden = true
@@ -303,7 +302,6 @@ class LoginViewController: UIViewController {
             loginTypeToggleButton.setTitle(localizeStrings("passwordAuth"), for: .normal)
             forgetPasswordButton.isHidden = true
             registerButton.isHidden = true
-            smsAuthView.phoneTextfield.becomeFirstResponder()
         }
     }
 
