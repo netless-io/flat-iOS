@@ -79,7 +79,7 @@ class SignUpViewController: UIViewController {
             case .email:
                 return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .emailRegister(email: account, language: isCN ? .zh : .en)))
             case .phone:
-                return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind(phone: account)))
+                return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .phoneRegister(phone: account)))
             }
         }
         signUpInputView.accountTextfield.presentRoot = self

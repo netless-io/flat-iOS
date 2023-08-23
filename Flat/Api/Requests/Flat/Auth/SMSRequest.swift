@@ -21,6 +21,7 @@ struct SMSRequest: FlatRequest {
         case resetPhone(String)
         case resetEmail(String, language: SMSLanguageType)
         case emailRegister(email: String, language: SMSLanguageType)
+        case phoneRegister(phone: String)
 
         var path: String {
             switch self {
@@ -38,6 +39,8 @@ struct SMSRequest: FlatRequest {
                 return "/v2/reset/email/send-message"
             case .emailRegister:
                 return "/v2/register/email/send-message"
+            case .phoneRegister:
+                return "/v2/register/phone/send-message"
             }
         }
         
@@ -50,6 +53,7 @@ struct SMSRequest: FlatRequest {
             case .resetPhone(let phone): return ["phone": phone]
             case .resetEmail(let email, language: let l): return ["email": email, "language": l.rawValue]
             case .emailRegister(email: let email, language: let l): return ["email": email, "language": l.rawValue]
+            case .phoneRegister(phone: let phone): return ["phone": phone]
             }
         }
     }
