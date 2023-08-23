@@ -12,15 +12,20 @@ import Whiteboard
 import Zip
 
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    struct ItemSection {
+        let title: String
+        let items: [Item]
+    }
+
     struct Item {
         let image: UIImage
         let title: String
         let detail: Any
         let targetAction: (NSObject, Selector)?
     }
-    
+
     let cellIdentifier = "cellIdentifier"
-    var items: [[Item]] = [[]]
+    var items: [ItemSection] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -35,46 +40,49 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func updateItems() {
         items = [
-            [.init(image: UIImage(named: "security")!,
-                   title: localizeStrings("AccountSecurity"),
-                   detail: "",
-                   targetAction: (self, #selector(onClickSecurity(sender:))))],
+            ItemSection(title: localizeStrings("Security"), items:
+                [.init(image: UIImage(named: "security")!,
+                       title: localizeStrings("AccountSecurity"),
+                       detail: "",
+                       targetAction: (self, #selector(onClickSecurity(sender:))))]),
 
-            [.init(image: UIImage(named: "language")!,
-                   title: localizeStrings("Language Setting"),
-                   detail: LocaleManager.language?.name ?? "跟随系统",
-                   targetAction: (self, #selector(onClickLanguage(sender:)))),
-             .init(image: UIImage(named: "command")!,
-                   title: localizeStrings("Preferences"),
-                   detail: "",
-                   targetAction: (self, #selector(onClickShortcuts(sender:)))),
-             .init(image: UIImage(named: "theme")!,
-                   title: localizeStrings("Theme"),
-                   detail: Theme.shared.style.description,
-                   targetAction: (self, #selector(onClickTheme(sender:))))],
+            ItemSection(title: localizeStrings("Preferences"), items:
+                [.init(image: UIImage(named: "language")!,
+                       title: localizeStrings("Language Setting"),
+                       detail: LocaleManager.language?.name ?? "跟随系统",
+                       targetAction: (self, #selector(onClickLanguage(sender:)))),
+                 .init(image: UIImage(named: "command")!,
+                       title: localizeStrings("PreferencesSetting"),
+                       detail: "",
+                       targetAction: (self, #selector(onClickShortcuts(sender:)))),
+                 .init(image: UIImage(named: "theme")!,
+                       title: localizeStrings("Theme"),
+                       detail: Theme.shared.style.description,
+                       targetAction: (self, #selector(onClickTheme(sender:))))]),
 
-            [.init(image: UIImage(named: "personal_collect")!,
-                   title: localizeStrings("PersonalInfoCollect"),
-                   detail: "",
-                   targetAction: (self, #selector(onClickInfoCollect))),
-             .init(image: UIImage(named: "third_share")!,
-                   title: localizeStrings("ThirdPartyShare"),
-                   detail: "",
-                   targetAction: (self, #selector(onClickThirdPartCollect)))],
-            
-            [.init(image: UIImage(named: "export")!,
-                   title: localizeStrings("Export log"),
-                   detail: "",
-                   targetAction: (self, #selector(onClickExportLog(sender:)))),
-             .init(image: UIImage(named: "about_us")!,
-                   title: localizeStrings("About"),
-                   detail: "",
-                   targetAction: (self, #selector(onClickAbout(sender:)))),
-             .init(image: UIImage(named: "update_version")!,
-                   title: localizeStrings("Version"),
-                   detail: "Flat v\(Env().version) (\(Env().build))",
-                   targetAction: (self, #selector(onVersion(sender:))))
-            ],
+            ItemSection(title: localizeStrings("Privacy"), items:
+                [.init(image: UIImage(named: "personal_collect")!,
+                       title: localizeStrings("PersonalInfoCollect"),
+                       detail: "",
+                       targetAction: (self, #selector(onClickInfoCollect))),
+                 .init(image: UIImage(named: "third_share")!,
+                       title: localizeStrings("ThirdPartyShare"),
+                       detail: "",
+                       targetAction: (self, #selector(onClickThirdPartCollect)))]),
+
+            ItemSection(title: localizeStrings("More"), items:
+                [.init(image: UIImage(named: "export")!,
+                       title: localizeStrings("Export log"),
+                       detail: "",
+                       targetAction: (self, #selector(onClickExportLog(sender:)))),
+                 .init(image: UIImage(named: "about_us")!,
+                       title: localizeStrings("About"),
+                       detail: "",
+                       targetAction: (self, #selector(onClickAbout(sender:)))),
+                 .init(image: UIImage(named: "update_version")!,
+                       title: localizeStrings("Version"),
+                       detail: "Flat v\(Env().version) (\(Env().build))",
+                       targetAction: (self, #selector(onVersion(sender:))))]),
         ]
         tableView.reloadData()
     }
@@ -243,7 +251,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.delegate = self
         view.dataSource = self
         view.tableFooterView = container
-        view.tableHeaderView = .minHeaderView()
+        view.tableHeaderView = .init(frame: .init(origin: .zero, size: .init(width: 0, height: 12)))
         return view
     }()
 
@@ -252,41 +260,52 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         48
     }
-    
+
     func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-        12
+        24
     }
 
     func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        0.1
+        18
     }
 
     func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
         UIView()
     }
 
-    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        UIView()
+    func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UITableViewHeaderFooterView(frame: .zero)
+        view.backgroundColor = .red
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        label.text = items[section].title
+        label.textColor = .color(type: .text, .weak)
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview()
+        }
+        return view
     }
-    
+
     func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items[section].count
+        items[section].items.count
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
+
+    func numberOfSections(in _: UITableView) -> Int {
         items.count
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        let item = items[indexPath.section][indexPath.row]
+        let item = items[indexPath.section].items[indexPath.row]
         if item.detail is String, let pairs = item.targetAction {
             pairs.0.performSelector(onMainThread: pairs.1, with: cell, waitUntilDone: true)
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = items[indexPath.section][indexPath.row]
+        let item = items[indexPath.section].items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SettingTableViewCell
         cell.iconImageView.image = item.image
         cell.settingTitleLabel.text = item.title

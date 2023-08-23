@@ -147,6 +147,9 @@
 "CancelationAndLogout" = "Cancel Account";
 
 
+"Cancellation" = "Cancellation";
+
+
 "Chat" = "Chat";
 
 
@@ -441,6 +444,9 @@
 "Monaco" = "Code Editor";
 
 
+"More" = "More";
+
+
 "NeedLoginAgain" = "The credentials have expired, please log in again";
 
 
@@ -516,6 +522,9 @@
 "PassCodePlaceholder" = "Password";
 
 
+"Password" = "Password";
+
+
 "PasswordValidTips" = "Passwords need to contain at least one letter and one number, and have a total length of at least 8 characters";
 
 
@@ -567,7 +576,13 @@
 "Preferences" = "Preferences";
 
 
+"PreferencesSetting" = "Preferences";
+
+
 "Preview" = "Preview";
+
+
+"Privacy" = "Privacy";
 
 
 "Privacy Policy" = "Privacy Policy";
@@ -718,6 +733,9 @@
 
 
 "ScreenShare-On" = "Screen share on";
+
+
+"Security" = "Security";
 
 
 "Select Language" = "Select Language";

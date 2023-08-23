@@ -159,7 +159,7 @@ class PreferenceViewController: UIViewController, UITableViewDelegate, UITableVi
     }
 
     func setupViews() {
-        title = localizeStrings("Preferences")
+        title = localizeStrings("PreferencesSetting")
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

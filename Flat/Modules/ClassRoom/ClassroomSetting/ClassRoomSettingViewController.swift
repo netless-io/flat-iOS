@@ -35,7 +35,7 @@ class ClassRoomSettingViewController: UIViewController {
             case .videoArea:
                 return localizeStrings("Video Area")
             case .shortcut:
-                return localizeStrings("Preferences")
+                return localizeStrings("PreferencesSetting")
             }
         }
     }

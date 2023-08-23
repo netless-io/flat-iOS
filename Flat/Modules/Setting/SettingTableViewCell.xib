@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -43,7 +43,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="SettingSettingSettingSettingSetting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kii-l4-55a">
-                        <rect key="frame" x="44" y="24" width="125" height="19.5"/>
+                        <rect key="frame" x="48" y="24" width="121" height="19.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" systemColor="systemOrangeColor"/>
                         <nil key="highlightedColor"/>
@@ -61,7 +61,7 @@
                     <constraint firstItem="hq2-JB-D6u" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="QBo-6W-ews"/>
                     <constraint firstAttribute="trailing" secondItem="hq2-JB-D6u" secondAttribute="trailing" constant="16" id="Ruz-il-PI5"/>
                     <constraint firstItem="hq2-JB-D6u" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kii-l4-55a" secondAttribute="trailing" constant="16" id="S6a-XS-zgt"/>
-                    <constraint firstItem="kii-l4-55a" firstAttribute="leading" secondItem="YXl-bd-eGe" secondAttribute="trailing" constant="4" id="Vrl-Rv-rab"/>
+                    <constraint firstItem="kii-l4-55a" firstAttribute="leading" secondItem="YXl-bd-eGe" secondAttribute="trailing" constant="8" id="Vrl-Rv-rab"/>
                     <constraint firstItem="YXl-bd-eGe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dMR-M2-LND"/>
                     <constraint firstItem="kii-l4-55a" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xuk-6c-9uo"/>
                     <constraint firstItem="YXl-bd-eGe" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="yw7-1C-XDS"/>

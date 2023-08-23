@@ -28,10 +28,15 @@ class SecurityViewController: UIViewController {
         case updatePassword
         case accountCancel
     }
+    
+    struct Section {
+        let title: String
+        let items: [DisplayItem]
+    }
 
     var appleBinding: AppleBinding?
     
-    var items: [[DisplayItem]] = [[]] {
+    var sections: [Section] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -39,7 +44,7 @@ class SecurityViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadBindingInfo(showLoading: items.isEmpty)
+        loadBindingInfo(showLoading: sections.isEmpty)
     }
     
     override func viewDidLoad() {
@@ -96,7 +101,11 @@ class SecurityViewController: UIViewController {
                         let item = BindingItem(type: type, isBind: isBind, detail: detail)
                         return item
                     }
-                self.items = [items.map { DisplayItem.binding($0) }, [.updatePassword], [.accountCancel]]
+                self.sections = [
+                    .init(title: localizeStrings("Account binding information"), items: items.map { DisplayItem.binding($0) }),
+                    .init(title: localizeStrings("Password"), items: [.updatePassword]),
+                    .init(title: localizeStrings("Cancellation"), items: [.accountCancel]),
+                ]
             case let .failure(failure):
                 self.toast(failure.localizedDescription)
             }
@@ -113,7 +122,7 @@ class SecurityViewController: UIViewController {
         view.separatorStyle = .none
         view.delegate = self
         view.dataSource = self
-        view.tableHeaderView = .minHeaderView()
+        view.tableHeaderView = .init(frame: .init(origin: .zero, size: .init(width: 0, height: 12)))
         return view
     }()
 }
@@ -124,27 +133,38 @@ extension SecurityViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-        12
+        24
     }
 
     func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
-        0.1
+        12
     }
 
     func tableView(_: UITableView, viewForFooterInSection _: Int) -> UIView? {
         UIView()
     }
 
-    func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
-        UIView()
+    func tableView(_: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UITableViewHeaderFooterView(frame: .zero)
+        view.backgroundColor = .red
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        label.text = sections[section].title
+        label.textColor = .color(type: .text, .weak)
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview()
+        }
+        return view
     }
 
     func numberOfSections(in _: UITableView) -> Int {
-        items.count
+        sections.count
     }
 
     func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items[section].count
+        sections[section].items.count
     }
 
     func bind(type: LoginType) {
@@ -195,8 +215,8 @@ extension SecurityViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func unbind(type: LoginType) {
-        let hasPhone = items
-            .flatMap { $0 }
+        let hasPhone = sections
+            .flatMap { $0.items }
             .contains(where: {
                 if case .binding(let item) = $0,
                    item.type == .phone && item.isBind {
@@ -204,8 +224,8 @@ extension SecurityViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 return false
             })
-        let hasEmail = items
-            .flatMap { $0 }
+        let hasEmail = sections
+            .flatMap { $0.items }
             .contains(where: {
                 if case .binding(let item) = $0,
                    item.type == .email && item.isBind {
@@ -242,7 +262,7 @@ extension SecurityViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = items[indexPath.section][indexPath.row]
+        let item = sections[indexPath.section].items[indexPath.row]
         switch item {
         case let .binding(bindingItem):
             let type = bindingItem.type
@@ -282,7 +302,7 @@ extension SecurityViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = items[indexPath.section][indexPath.row]
+        let item = sections[indexPath.section].items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! SettingTableViewCell
         switch item {
         case let .binding(bindingItem):

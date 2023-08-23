@@ -147,6 +147,9 @@
 "CancelationAndLogout" = "注销并退出登录";
 
 
+"Cancellation" = "注销";
+
+
 "Chat" = "聊天";
 
 
@@ -444,6 +447,9 @@
 "Monaco" = "代码编辑器";
 
 
+"More" = "更多";
+
+
 "NeedLoginAgain" = "凭证已过期，请重新登录";
 
 
@@ -519,6 +525,9 @@
 "PassCodePlaceholder" = "请输入密码";
 
 
+"Password" = "密码";
+
+
 "PasswordValidTips" = "密码需要至少包含一个字母和一个数字，且总长度至少为8个字符";
 
 
@@ -567,10 +576,16 @@
 "Please enter your nickname" = "请输入昵称";
 
 
-"Preferences" = "偏好设置";
+"Preferences" = "首选项";
+
+
+"PreferencesSetting" = "偏好设置";
 
 
 "Preview" = "预览";
+
+
+"Privacy" = "隐私";
 
 
 "Privacy Policy" = "隐私政策";
@@ -721,6 +736,9 @@
 
 
 "ScreenShare-On" = "屏幕共享开始";
+
+
+"Security" = "安全";
 
 
 "Select Language" = "选择语言";
