@@ -34,7 +34,10 @@ class SetNewPasswordViewController: UIViewController {
         Observable.combineLatest(
             p1.rx.text.orEmpty,
             p2.rx.text.orEmpty
-        ) { [$0, $1].allSatisfy(\.isNotEmptyOrAllSpacing) }
+        ) {
+            $0.isNotEmptyOrAllSpacing &&
+            $0 == $1
+        }
         .asDriver(onErrorJustReturn: false)
         .drive(updateButton.rx.isEnabled)
         .disposed(by: rx.disposeBag)
@@ -43,6 +46,10 @@ class SetNewPasswordViewController: UIViewController {
     @objc
     func onReset() {
         let new = p1.passwordText
+        guard new.isValidPassword() else {
+            toast(localizeStrings("PasswordValidTips"))
+            return
+        }
         let request = UpdatePasswordRequest(type: .new(new))
         showActivityIndicator()
         ApiProvider.shared.request(fromApi: request) { [weak self] result in

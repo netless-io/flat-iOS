@@ -35,7 +35,10 @@ class UpdatePasswordViewController: UIViewController {
             oldPasswordTextfield.rx.text.orEmpty,
             p1.rx.text.orEmpty,
             p2.rx.text.orEmpty
-        ) { [$0, $1, $2].allSatisfy(\.isNotEmptyOrAllSpacing) }
+        ) {
+            $0.isNotEmptyOrAllSpacing &&
+            $1 == $2
+        }
         .asDriver(onErrorJustReturn: false)
         .drive(updateButton.rx.isEnabled)
         .disposed(by: rx.disposeBag)
@@ -44,6 +47,10 @@ class UpdatePasswordViewController: UIViewController {
     @objc
     func onReset() {
         let pwd = oldPasswordTextfield.passwordText
+        guard pwd.isValidPassword() else {
+            toast(localizeStrings("PasswordValidTips"))
+            return
+        }
         let new = p1.passwordText
         let request = UpdatePasswordRequest(type: .update(password: pwd, newPassword: new))
         showActivityIndicator()

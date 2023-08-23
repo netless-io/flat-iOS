@@ -135,6 +135,10 @@ class ResetPasswordViewController: UIViewController {
         let code = accountCodeAuthView.verifyCodeTextfield.text ?? ""
         let password = resetView.p1.text ?? ""
         let loginRequest: PasswordLoginRequest
+        guard password.isValidPassword() else {
+            toast(localizeStrings("PasswordValidTips"))
+            return
+        }
         switch accountCodeAuthView.accountTextfield.accountType.value {
         case .email:
             request = ResetPasswordRequest(type: .email(account), code: code, password: password)
