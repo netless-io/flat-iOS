@@ -179,7 +179,7 @@ extension SecurityViewController: UITableViewDelegate, UITableViewDataSource {
                 guard let self else { return }
                 self.appleBinding = nil
                 stopActivityIndicator()
-                if let error {
+                if let error, !error.localizedDescription.isEmpty {
                     toast(error.localizedDescription)
                 } else {
                     loadBindingInfo(showLoading: false)
