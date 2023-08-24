@@ -282,6 +282,9 @@
 "Escape" = "Escape";
 
 
+"ExhaustiveAttack" = "You've been doing this too often. Please try again later.";
+
+
 "Exit" = "Exit";
 
 
@@ -714,7 +717,7 @@
 "Rtm reconnecting timeout tips" = "Network connection failed, please check the network and try again";
 
 
-"SMSAlreadyExist" = "Phone Already Exist";
+"SMSAlreadyExist" = "This cell phone number is registered";
 
 
 "SMSVerificationCodeInvalid" = "Invalid Code";

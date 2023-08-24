@@ -282,6 +282,9 @@
 "Escape" = "取消";
 
 
+"ExhaustiveAttack" = "你的操作过于频繁，请稍后再试";
+
+
 "Exit" = "退出";
 
 
@@ -717,7 +720,7 @@
 "Rtm reconnecting timeout tips" = "网络连接失败，请检查网络后重试";
 
 
-"SMSAlreadyExist" = "已经绑定过手机号";
+"SMSAlreadyExist" = "该手机号已注册";
 
 
 "SMSVerificationCodeInvalid" = "验证码无效";
