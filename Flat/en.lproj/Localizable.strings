@@ -258,6 +258,9 @@
 "ElectronLinkText" = "For full functionality, go to the link to download the desktop version of Electron.";
 
 
+"EmailFailedToSendCode" = "Email verification code sending failure";
+
+
 "EmailInputPlaceholder" = "Email address";
 
 
@@ -669,7 +672,7 @@
 "Room ID" = "Room ID";
 
 
-"Room ID Input PlaceHolder" = "Enter 10-digit room ID";
+"Room ID Input PlaceHolder" = "Enter 11-digit room ID";
 
 
 "Room List" = "Room List";
@@ -1080,7 +1083,7 @@
 "ownerAutoOnStageTips" = "The student has been automatically invited to the stage and the user is : ";
 
 
-"passwordAuth" = "via password";
+"passwordAuth" = "Via password";
 
 
 "rebindingPhoneTips" = "Input mobile phone number has been bound to other accounts, whether the current New Account and existing account merger? The merge operation will erase all data from the current New Account";
@@ -1092,7 +1095,7 @@
 "selected" = " (Selected)";
 
 
-"smsAuth" = "via SMS";
+"smsAuth" = "Via SMS";
 
 
 "whiteboard_save_annotation" = "Save Annotation";

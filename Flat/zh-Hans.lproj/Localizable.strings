@@ -258,6 +258,9 @@
 "ElectronLinkText" = "如需更全功能可前往链接下载 Electron 桌面版本。";
 
 
+"EmailFailedToSendCode" = "邮箱验证码发送失败";
+
+
 "EmailInputPlaceholder" = "请输入邮箱";
 
 
@@ -672,7 +675,7 @@
 "Room ID" = "房间号";
 
 
-"Room ID Input PlaceHolder" = "请输入10位房间号";
+"Room ID Input PlaceHolder" = "请输入11位房间号";
 
 
 "Room List" = "房间列表";
