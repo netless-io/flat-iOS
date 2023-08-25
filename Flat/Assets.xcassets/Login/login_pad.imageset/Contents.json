@@ -1,8 +1,8 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename" : "Group 2118.pdf",
+      "idiom" : "universal"
     },
     {
       "appearances" : [
@@ -11,29 +11,13 @@
           "value" : "dark"
         }
       ],
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename" : "Group 2111.pdf",
+      "idiom" : "universal"
     },
     {
-      "filename" : "Group 2118@2x.png",
+      "filename" : "Group 2119.pdf",
       "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Group 2111@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Group 2118@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "locale" : "en"
     },
     {
       "appearances" : [
@@ -42,61 +26,9 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Group 2111@3x.png",
+      "filename" : "Group 2120.pdf",
       "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "idiom" : "universal",
-      "locale" : "en",
-      "scale" : "1x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "idiom" : "universal",
-      "locale" : "en",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Group 2111@2x-2 1.png",
-      "idiom" : "universal",
-      "locale" : "en",
-      "scale" : "2x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Group 2111@2x-3 1.png",
-      "idiom" : "universal",
-      "locale" : "en",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Group 2111@3x-2 1.png",
-      "idiom" : "universal",
-      "locale" : "en",
-      "scale" : "3x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Group 2111@3x-3 1.png",
-      "idiom" : "universal",
-      "locale" : "en",
-      "scale" : "3x"
+      "locale" : "en"
     }
   ],
   "info" : {
