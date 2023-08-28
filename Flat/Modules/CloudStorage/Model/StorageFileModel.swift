@@ -87,10 +87,40 @@ struct StorageFileModel: Codable, Equatable {
     }
 
     struct WhiteboardFilePayload: Codable, Equatable {
+        enum CodingKeys: String, CodingKey {
+            case convertStep
+            case region
+            case taskToken
+            case taskUUID
+        }
+        
         let convertStep: StorageCovertStep
         let region: FlatRegion
         let taskToken: String
         let taskUUID: String
+        
+        init(convertStep: StorageCovertStep, region: FlatRegion, taskToken: String, taskUUID: String) {
+            self.convertStep = convertStep
+            self.region = region
+            self.taskToken = taskToken
+            self.taskUUID = taskUUID
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container: KeyedDecodingContainer<StorageFileModel.WhiteboardFilePayload.CodingKeys> = try decoder.container(keyedBy: StorageFileModel.WhiteboardFilePayload.CodingKeys.self)
+            self.convertStep = try container.decode(StorageCovertStep.self, forKey: StorageFileModel.WhiteboardFilePayload.CodingKeys.convertStep)
+            self.region = try container.decode(FlatRegion.self, forKey: StorageFileModel.WhiteboardFilePayload.CodingKeys.region)
+            self.taskToken = (try? container.decode(String.self, forKey: StorageFileModel.WhiteboardFilePayload.CodingKeys.taskToken)) ?? ""
+            self.taskUUID = (try? container.decode(String.self, forKey: StorageFileModel.WhiteboardFilePayload.CodingKeys.taskUUID)) ?? ""
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: StorageFileModel.WhiteboardFilePayload.CodingKeys.self)
+            try container.encode(self.convertStep, forKey: StorageFileModel.WhiteboardFilePayload.CodingKeys.convertStep)
+            try container.encode(self.region, forKey: StorageFileModel.WhiteboardFilePayload.CodingKeys.region)
+            try container.encode(self.taskToken, forKey: StorageFileModel.WhiteboardFilePayload.CodingKeys.taskToken)
+            try container.encode(self.taskUUID, forKey: StorageFileModel.WhiteboardFilePayload.CodingKeys.taskUUID)
+        }
     }
 
     enum Payload: Codable, Equatable {

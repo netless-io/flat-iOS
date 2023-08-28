@@ -47,7 +47,7 @@ enum ConvertService {
     }
 
     static func startConvert(fileUUID: String,
-                             completion: @escaping ((Result<StorageFileModel.Payload, Error>) -> Void))
+                             completion: @escaping ((Result<StartConvertRequest.Result, Error>) -> Void))
     {
         ApiProvider.shared.request(fromApi: StartConvertRequest(fileUUID: fileUUID)) { result in
             switch result {

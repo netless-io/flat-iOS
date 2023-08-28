@@ -289,12 +289,11 @@ class CloudStorageDisplayViewController: UIViewController,
                     switch r {
                     case let .success(model):
                         guard let self else { return }
-                        if let index = self.container.items.firstIndex(where: { $0.fileUUID == uuid }),
-                           let info = model.whiteConverteInfo
+                        if let index = self.container.items.firstIndex(where: { $0.fileUUID == uuid })
                         {
                             self.container.items[index].updateConvert(step: .converting,
-                                                                      taskUUID: info.taskUUID,
-                                                                      taskToken: info.taskToken)
+                                                                      taskUUID: model.taskUUID,
+                                                                      taskToken: model.taskToken)
                             self.configPollingTaskWith(newItems: self.container.items)
                         }
                     case let .failure(error):
