@@ -36,7 +36,9 @@ struct Action {
     let handler: ((Action) -> Void)?
     let tag: Int
 
-    static let cancel: Self = .init(title: localizeStrings("Cancel"), image: nil, style: .default, handler: nil, tag: cancelTag)
+    static var cancel: Self {
+        .init(title: localizeStrings("Cancel"), image: nil, style: .default, handler: nil, tag: cancelTag)
+    }
 }
 
 class FlatCompactAlertController: UIViewController {
