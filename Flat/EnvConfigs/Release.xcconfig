@@ -26,5 +26,6 @@ REGION = CN
 SLS_PROJECT = flat-prod
 SLS_ENDPOINT = cn-hangzhou.log.aliyuncs.com
 FORCE_BIND_PHONE = 1
+PREFER_PHONE_ACCOUNT = 1
 DISABLE_LOGIN_TYPES = google
 SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "flat-api.whiteboard.agora.io", "classroomUUIDPrefix": "CN-"},{"classroomInviteCode": 2, "apiURL": "flat-api-sg.whiteboard.agora.io", "classroomUUIDPrefix": "SG-"}]

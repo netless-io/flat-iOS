@@ -24,5 +24,6 @@ TEST_HOST_PRODUCT_NAME = Flint-DEV
 CREATE_WHITEBOARD_REGION = sg
 REGION = US
 FORCE_BIND_PHONE = 0
+PREFER_PHONE_ACCOUNT = 0
 DISABLE_LOGIN_TYPES = wechat
 SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "flat-api-dev.whiteboard.agora.io", "classroomUUIDPrefix": "CN-"},{"classroomInviteCode": 2, "apiURL": "flat-api-dev-sg.whiteboard.agora.io", "classroomUUIDPrefix": "SG-"}]

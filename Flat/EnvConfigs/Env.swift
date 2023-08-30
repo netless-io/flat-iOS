@@ -43,6 +43,10 @@ struct Env {
         (value(for: "DISABLE_LOGIN_TYPES") as String).split(separator: ",").compactMap { LoginType(rawValue: String($0)) }
     }
     
+    var preferPhoneAccount: Bool {
+        (value(for: "PREFER_PHONE_ACCOUNT") as String) == "1"
+    }
+    
     var forceBindPhone: Bool {
         (value(for: "FORCE_BIND_PHONE") as String) == "1"
     }

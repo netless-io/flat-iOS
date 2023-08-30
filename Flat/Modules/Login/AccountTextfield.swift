@@ -63,7 +63,7 @@ class AccountTextfield: BottomLineTextfield {
         if let staticAccountType {
             self.accountType = .init(value: staticAccountType)
         } else {
-            self.accountType = .init(value: .phone)
+            self.accountType = .init(value: Env().preferPhoneAccount ? .phone : .email)
         }
         super.init(frame: .zero)
         binding()
@@ -101,6 +101,7 @@ class AccountTextfield: BottomLineTextfield {
     private func binding() {
         if staticAccountType == nil {
             rx.text.orEmpty
+                .filter(\.isNotEmptyOrAllSpacing)
                 .map { $0.allSatisfy({ c in c.isNumber }) }
                 .distinctUntilChanged()
                 .subscribe(with: self) { ws, isPhone in

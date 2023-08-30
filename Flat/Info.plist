@@ -127,6 +127,8 @@
 	<string>$(NETLESS_APP_ID)</string>
 	<key>OSS_ACCESS_KEY_ID</key>
 	<string>$(OSS_ACCESS_KEY_ID)</string>
+	<key>PREFER_PHONE_ACCOUNT</key>
+	<string>$(PREFER_PHONE_ACCOUNT)</string>
 	<key>REGION</key>
 	<string>$(REGION)</string>
 	<key>SERVER_GROUP</key>
