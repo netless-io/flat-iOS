@@ -97,7 +97,7 @@ extension ClassRoomViewController {
         view.addSubview(rtcDraggingHandlerView)
         let isiPhone = UIDevice.current.userInterfaceIdiom == .phone
 
-        let draggingHotSize = isiPhone ? CGSize(width: 32, height: 144) : CGSize(width: 144, height: 32)
+        let draggingHotSize = isiPhone ? CGSize(width: 44, height: 144) : CGSize(width: 144, height: 32)
         let indicatorSize = isiPhone ? CGSize(width: 2, height: 88) : CGSize(width: 88, height: 4)
         let indicatorMargin = isiPhone ? CGFloat(3) : CGFloat(8)
         UIGraphicsBeginImageContext(draggingHotSize)
@@ -133,7 +133,15 @@ extension ClassRoomViewController {
         }
 
         let rtcDraggingGesture = UIPanGestureRecognizer(target: self, action: #selector(onRtcDraggingGesture))
-        rtcDraggingHandlerView.addGestureRecognizer(rtcDraggingGesture)
+        
+        // attach gesture to draggingView itself on iPad.
+        // attach gesture to main view on iPhone.
+        if isiPhone {
+            rtcDraggingGesture.delegate = self
+            view.addGestureRecognizer(rtcDraggingGesture)
+        } else {
+            rtcDraggingHandlerView.addGestureRecognizer(rtcDraggingGesture)
+        }
     }
 
     @objc
@@ -141,5 +149,28 @@ extension ClassRoomViewController {
         UIView.animate(withDuration: 0.3) {
             self.rtcDraggingHandlerView.alpha = 0.3
         }
+    }
+}
+
+extension ClassRoomViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let pan = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+        let transiton = pan.translation(in: rtcDraggingHandlerView)
+        let location = pan.location(in: rtcDraggingHandlerView)
+        let x = location.x - transiton.x
+        let y = location.y - transiton.y
+        if x < 0 {
+            return false
+        }
+        if x > rtcDraggingHandlerView.bounds.width + 10 { // 10 is experience value.
+            return false
+        }
+        if y < 0 {
+            return false
+        }
+        if y > rtcDraggingHandlerView.bounds.height + 10 {  // 10 is experience value.
+            return false
+        }
+        return true
     }
 }

@@ -712,8 +712,9 @@ class ClassRoomViewController: UIViewController {
             }
         }
 
-        setupToolbar()
+        // Keep dragging view order lower than operation panel.
         setupRtcDragging()
+        setupToolbar()
         updateRtcViewConstraint()
     }
 
