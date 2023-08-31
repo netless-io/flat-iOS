@@ -56,7 +56,7 @@ extension RtcViewController {
                 forwardsView.addSubview(c)
             }
             c.frame = forwardsFrame
-            c.animationToFrame = .zero
+            c.animationToFrame = .infinite
         }
     }
     

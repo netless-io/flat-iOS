@@ -134,7 +134,8 @@ class RtcItemContentView: UIView {
     fileprivate var animationCompleteBlock: ((RtcItemContentView) -> Void)?
     
     let defaultAnimationkey = "k"
-    var animationToFrame = CGRect.zero
+    // Set default to infinite as a default value to diff tiny change.
+    var animationToFrame = CGRect.infinite
     func animation(x: CGFloat,
                    y: CGFloat,
                    xScale: CGFloat,
