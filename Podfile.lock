@@ -114,7 +114,6 @@ PODS:
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
   - ViewDragger (1.1.0)
-  - WechatOpenSDK-XCFramework (2.0.2)
   - Whiteboard (2.17.0-alpha.27):
     - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.27)
   - Whiteboard/Base (2.17.0-alpha.27):
@@ -173,7 +172,6 @@ DEPENDENCIES:
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
-  - WechatOpenSDK-XCFramework
   - Whiteboard (= 2.17.0-alpha.27)
   - Whiteboard/SyncPlayer (= 2.17.0-alpha.27)
   - Zip
@@ -220,7 +218,6 @@ SPEC REPOS:
     - SwiftyBeaver
     - SyncPlayer
     - ViewDragger
-    - WechatOpenSDK-XCFramework
     - Whiteboard
     - YYModel
     - Zip
@@ -266,11 +263,10 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20
-  WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
   Whiteboard: 4070c0edf0ef37b56ef83be49d0110319083fdb6
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: 7e98eb6cd86fd59ed6bfe500a7a3d91c35bd1c57
+PODFILE CHECKSUM: c254a639a146d32fefbcaa77e4ae2009269d61e0
 
 COCOAPODS: 1.12.1

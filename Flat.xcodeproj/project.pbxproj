@@ -144,6 +144,7 @@
 		8A34A20E2A594C3F006337D7 /* ReplayLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A34A20C2A593F76006337D7 /* ReplayLaunchItem.swift */; };
 		8A3782E029C3077A0051D4FB /* RatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3782DF29C3077A0051D4FB /* RatingManager.swift */; };
 		8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */; };
+		8A3A95D82AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A3A95D72AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework */; };
 		8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
 		8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9CA2716D795003719DB /* FlatResponse.swift */; };
@@ -524,6 +525,7 @@
 		8A34A20C2A593F76006337D7 /* ReplayLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayLaunchItem.swift; sourceTree = "<group>"; };
 		8A3782DF29C3077A0051D4FB /* RatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingManager.swift; sourceTree = "<group>"; };
 		8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsLogHandler.swift; sourceTree = "<group>"; };
+		8A3A95D72AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "WechatOpenSDK-XCFramework.xcframework"; sourceTree = "<group>"; };
 		8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomOperation.swift; sourceTree = "<group>"; };
 		8A48A9C82716D734003719DB /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
 		8A48A9CA2716D795003719DB /* FlatResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatResponse.swift; sourceTree = "<group>"; };
@@ -766,6 +768,7 @@
 			files = (
 				8A0CA22328BC73FE0035F71A /* QuartzCore.framework in Frameworks */,
 				9AE3AF17B16B9CA81A411696 /* Pods_Flat.framework in Frameworks */,
+				8A3A95D82AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1277,6 +1280,14 @@
 				8A3782DF29C3077A0051D4FB /* RatingManager.swift */,
 			);
 			path = StoreReview;
+			sourceTree = "<group>";
+		};
+		8A3A95D62AA5CDCF003C99D6 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				8A3A95D72AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework */,
+			);
+			path = Vendor;
 			sourceTree = "<group>";
 		};
 		8A40F70A28E541DF00BCEF45 /* RoomOperation */ = {
@@ -1796,6 +1807,7 @@
 				8AD2EF692772F3D500087280 /* FlatNon_Sign.entitlements */,
 				8A05C2B12758BBCE009BCA79 /* FlatRelease.entitlements */,
 				8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */,
+				8A3A95D62AA5CDCF003C99D6 /* Vendor */,
 				8A9ACBF4271D50F000E7E7CE /* EnvConfigs */,
 				8A97EBBB271D180600965185 /* Modules */,
 				8AAC69B12717E3E300F9A3B4 /* Models */,

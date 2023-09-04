@@ -37,7 +37,6 @@ target 'Flat' do
   pod 'AliyunLogProducer/Core'
   pod 'AliyunLogProducer/Bricks'
   
-  pod 'WechatOpenSDK-XCFramework'
   pod 'FirebaseCrashlytics'
   pod 'Firebase/AnalyticsWithoutAdIdSupport'
   
