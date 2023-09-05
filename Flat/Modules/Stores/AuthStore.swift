@@ -36,7 +36,10 @@ class AuthStore {
                 flatGenerator.token = user?.token
                 observeFirstJWTExpire()
             } catch {
-                logger.error("decode user error, \(error)")
+              // Logger may not be ready...
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                  logger.error("decode user error, \(error)")
+              }
             }
         }
     }
