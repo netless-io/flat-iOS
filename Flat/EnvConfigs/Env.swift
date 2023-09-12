@@ -26,7 +26,7 @@ struct Env {
             "https://\(apiURL)"
         }
     }
-    
+
     enum Region: String {
         case CN
         case US
@@ -42,11 +42,11 @@ struct Env {
     var disabledLoginTypes: [LoginType] {
         (value(for: "DISABLE_LOGIN_TYPES") as String).split(separator: ",").compactMap { LoginType(rawValue: String($0)) }
     }
-    
+
     var preferPhoneAccount: Bool {
         (value(for: "PREFER_PHONE_ACCOUNT") as String) == "1"
     }
-    
+
     var forceBindPhone: Bool {
         (value(for: "FORCE_BIND_PHONE") as String) == "1"
     }
@@ -78,7 +78,7 @@ struct Env {
     var name: String {
         Bundle.main.infoDictionary?["CFBundleName"] as? String ?? ""
     }
-    
+
     var servers: [ServerGroupItem] {
         do {
             let str = value(for: "SERVER_GROUP") as String
@@ -138,7 +138,7 @@ extension Env {
         let urlString = githubAuthBaseUrl + queryString
         return URL(string: urlString)!
     }
-    
+
     func githubLoginURLWith(authUUID uuid: String) -> URL {
         let redirectUri = baseURL + "/v1/login/github/callback"
         let queryString = "?client_id=\(githubClientId)&redirect_uri=\(redirectUri)&state=\(uuid)"
@@ -153,7 +153,7 @@ extension Env {
         let urlString = googleAuthBaseUrl + queryString
         return URL(string: urlString)!
     }
-    
+
     func googleLoginURLWith(authUUID uuid: String) -> URL {
         let redirectUrl = baseURL + "/v1/login/google/callback"
         let scope = ["openid", "https://www.googleapis.com/auth/userinfo.profile"].joined(separator: " ").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
@@ -166,5 +166,32 @@ extension Env {
 extension Env {
     var containsSlsInfo: Bool {
         !slsSk.isEmpty && !slsAk.isEmpty && !slsEndpoint.isEmpty && !slsProject.isEmpty
+    }
+}
+
+extension Env {
+    func customBaseUrlFor(roomUUID: String) -> String? {
+        let isAllNumer = roomUUID.allSatisfy(\.isNumber)
+        if isAllNumer, roomUUID.count == 10 {
+            return nil // Old invite code. Drop it.
+        }
+        for server in servers {
+            if isAllNumer {
+                if roomUUID.hasPrefix(server.classroomInviteCode.description) {
+                    return server.baseURL
+                }
+            }
+            if roomUUID.hasPrefix(server.classroomUUIDPrefix) {
+                return server.baseURL
+            }
+        }
+        return nil
+    }
+    
+    func isCrossRegion(roomUUID: String) -> Bool {
+        if let url = customBaseUrlFor(roomUUID: roomUUID) {
+            return url != baseURL
+        }
+        return false
     }
 }

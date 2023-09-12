@@ -13,16 +13,6 @@ struct JoinRoomRequest: FlatRequest {
 
     var path: String { "/v1/room/join" }
     var task: Task { .requestJSONEncodable(encodable: ["uuid": info.periodicUUID ?? info.roomUUID]) }
-    var customBaseURL: String? {
-        for server in Env().servers {
-            if info.roomUUID.hasPrefix(server.classroomUUIDPrefix) {
-                return server.baseURL
-            }
-            if info.roomUUID.hasPrefix(server.classroomInviteCode.description) {
-                return server.baseURL
-            }
-        }
-        return nil
-    }
+    var customBaseURL: String? { Env().customBaseUrlFor(roomUUID: info.roomUUID) }
     let responseType = RoomPlayInfo.self
 }

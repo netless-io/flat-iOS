@@ -95,17 +95,7 @@ private struct RoomInfoRequest: FlatRequest {
     var path: String { "/v1/room/info/ordinary" }
     var task: Task { .requestJSONEncodable(encodable: ["roomUUID": roomUUID]) }
     let responseType = RawRoomInfo.self
-    var customBaseURL: String? {
-        for server in Env().servers {
-            if roomUUID.hasPrefix(server.classroomUUIDPrefix) {
-                return server.baseURL
-            }
-            if roomUUID.hasPrefix(server.classroomInviteCode.description) {
-                return server.baseURL
-            }
-        }
-        return nil
-    }
+    var customBaseURL: String? { Env().customBaseUrlFor(roomUUID: roomUUID) }
 }
 
 // Middle Struct
