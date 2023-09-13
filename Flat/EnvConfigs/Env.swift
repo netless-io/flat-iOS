@@ -173,7 +173,7 @@ extension Env {
     func customBaseUrlFor(roomUUID: String) -> String? {
         let isAllNumer = roomUUID.allSatisfy(\.isNumber)
         if isAllNumer, roomUUID.count == 10 {
-            return nil // Old invite code. Drop it.
+            return servers.first(where: { $0.classroomUUIDPrefix == "CN-"})?.baseURL // Old invite code. Using CN.
         }
         for server in servers {
             if isAllNumer {
