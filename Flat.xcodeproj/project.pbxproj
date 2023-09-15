@@ -2042,7 +2042,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $ACTION == install ]; then\n\nif [ $CONFIGURATION == Flat_Release ]; then\necho \"start run upload-dsym\"\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\nfi\n\nfi\n";
+			shellScript = "if [ $ACTION == install ]; then\n\nif [ $CONFIGURATION == Flat_Release ] || [ $CONFIGURATION == Flint_Release ]; then\necho \"start run upload-dsym\"\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\nfi\n\nfi\n";
 		};
 		8E76B20DC73A14DFE384120F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
