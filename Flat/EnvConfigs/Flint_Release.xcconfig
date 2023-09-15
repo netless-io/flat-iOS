@@ -10,20 +10,20 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-API_URL = flat-api.whiteboard.agora.io
-FLAT_WEB_BASE_URL = flat-web.whiteboard.agora.io
-GITHUB_CLIENT_ID = 0ac608815326aead5db7
+API_URL = api.flat.agora.io
+FLAT_WEB_BASE_URL = web.flat.agora.io
+GITHUB_CLIENT_ID = da83d7e14217594fba46
 GOOGLE_CLIENT_ID = 273996094508-2rpraucen77a1o5dul5ftrua5k3og157.apps.googleusercontent.com
 WECHAT_APP_ID = wx09437693798bc108
-NETLESS_APP_ID = cFjxAJjiEeuUQ0211QCRBw/mO9uJB_DiCIqug
-AGORA_APP_ID = 931b86d6781e49a2a255db4ce6e8e804
-OSS_ACCESS_KEY_ID = LTAI5t9Gb6tzQzzLmB6cTVf7
+NETLESS_APP_ID = cFjxAJjiEeuUQ0211QCRBw/kndLTOWdG2qYcQ
+AGORA_APP_ID = 549c8a24c1e64852bd163f853f5fe14f
+OSS_ACCESS_KEY_ID = LTAI5tMwHQ1xyroeneA9XLh4
 OTHER_SWIFT_FLAGS = $(inherited) -D Flint
-PRODUCT_NAME = Flint
-TEST_HOST_PRODUCT_NAME = Flint
+PRODUCT_NAME = Flat
+TEST_HOST_PRODUCT_NAME = Flat
 CREATE_WHITEBOARD_REGION = sg
 REGION = US
 FORCE_BIND_PHONE = 0
 PREFER_PHONE_ACCOUNT = 0
 DISABLE_LOGIN_TYPES = wechat
-SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "flat-api.whiteboard.agora.io", "classroomUUIDPrefix": "CN-"},{"classroomInviteCode": 2, "apiURL": "flat-api-sg.whiteboard.agora.io", "classroomUUIDPrefix": "SG-"}]
+SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "flat-api.whiteboard.agora.io", "classroomUUIDPrefix": "CN-"},{"classroomInviteCode": 2, "apiURL": "api.flat.agora.io", "classroomUUIDPrefix": "SG-"}]

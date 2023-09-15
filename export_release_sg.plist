@@ -5,13 +5,13 @@
 	<key>destination</key>
 	<string>export</string>
 	<key>manageAppVersionAndBuildNumber</key>
-	<true/>
+	<false/>
 	<key>method</key>
 	<string>app-store</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>io.agora.flat</key>
-		<string>flat-release</string>
+		<key>io.agora.flint</key>
+		<string>Flint Release</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>

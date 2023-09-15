@@ -94,7 +94,7 @@
       buildConfiguration = "Release">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Flint_Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
