@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
         }
     }
 
-    let loginType: BehaviorRelay<LoginType> = .init(value: .sms)
+    let loginType: BehaviorRelay<LoginType> = .init(value: Env().preferPhoneAccount ? .sms : .password)
 
     @IBOutlet var splitStackView: UIStackView!
     @IBOutlet var contentStackView: UIStackView!
