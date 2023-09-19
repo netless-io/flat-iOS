@@ -258,6 +258,9 @@
 "ElectronLinkText" = "如需更全功能可前往链接下载 Electron 桌面版本。";
 
 
+"EmailAlreadyExist" = "邮箱已存在";
+
+
 "EmailFailedToSendCode" = "邮箱验证码发送失败";
 
 

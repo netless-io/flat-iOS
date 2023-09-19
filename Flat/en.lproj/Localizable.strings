@@ -258,6 +258,9 @@
 "ElectronLinkText" = "For full functionality, go to the link to download the desktop version of Electron.";
 
 
+"EmailAlreadyExist" = "Email already exists";
+
+
 "EmailFailedToSendCode" = "Email verification code sending failure";
 
 
