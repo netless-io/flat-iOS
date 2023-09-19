@@ -4,6 +4,8 @@
 <dict>
 	<key>AGORA_APP_ID</key>
 	<string>$(AGORA_APP_ID)</string>
+	<key>APP_UPDATE_SOURCE</key>
+	<string>$(APP_UPDATE_SOURCE)</string>
 	<key>API_URL</key>
 	<string>$(API_URL)</string>
 	<key>CFBundleDocumentTypes</key>

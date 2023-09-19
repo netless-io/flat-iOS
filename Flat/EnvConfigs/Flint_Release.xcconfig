@@ -26,4 +26,5 @@ REGION = US
 FORCE_BIND_PHONE = 0
 PREFER_PHONE_ACCOUNT = 0
 DISABLE_LOGIN_TYPES = wechat
+APP_UPDATE_SOURCE = flat-storage-sg.oss-ap-southeast-1.aliyuncs.com/versions/latest/stable/iOS/ios_latest.json
 SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "flat-api.whiteboard.agora.io", "classroomUUIDPrefix": "CN-"},{"classroomInviteCode": 2, "apiURL": "api.flat.agora.io", "classroomUUIDPrefix": "SG-"}]

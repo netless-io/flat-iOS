@@ -26,6 +26,7 @@ REGION = CN
 SLS_PROJECT = hz-flat-dev
 SLS_ENDPOINT = cn-hangzhou.log.aliyuncs.com
 FORCE_BIND_PHONE = 1
+APP_UPDATE_SOURCE = flat-storage.oss-cn-hangzhou.aliyuncs.com/versions/latest/stable/iOS/ios_latest.json
 PREFER_PHONE_ACCOUNT = 1
 DISABLE_LOGIN_TYPES = google
 SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "flat-api-dev.whiteboard.agora.io", "classroomUUIDPrefix": "CN-"},{"classroomInviteCode": 2, "apiURL": "flat-api-dev-sg.whiteboard.agora.io", "classroomUUIDPrefix": "SG-"}]

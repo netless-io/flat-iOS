@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Siren.shared.apiManager = .init(country: .china)
         Siren.shared.rulesManager = .init(globalRules: .relaxed)
         checkOSSVersionObserver = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
-            let url = URL(string: "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/versions/latest/stable/iOS/ios_latest.json")!
+            let url = Env().appUpdateCheckURL
             let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
             URLSession.shared.dataTask(with: request) { data, _, _ in
                 URLCache.shared.removeCachedResponse(for: request)

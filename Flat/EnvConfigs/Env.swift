@@ -66,6 +66,10 @@ struct Env {
     var googleClientId: String {
         value(for: "GOOGLE_CLIENT_ID") as String
     }
+    
+    var appUpdateCheckURL: URL {
+        .init(string: "https://" + (value(for: "APP_UPDATE_SOURCE") as String))!
+    }
 
     var webBaseURL: String {
         "https://\(value(for: "FLAT_WEB_BASE_URL") as String)"

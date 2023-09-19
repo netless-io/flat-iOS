@@ -72,4 +72,11 @@ final class EnvTest: XCTestCase {
             XCTAssert(customUrl == nil)
         }
     }
+    
+    func testAppUpdateResource() async throws {
+        let url = Env().appUpdateCheckURL
+        let (_, response) = try await URLSession.shared.data(for: .init(url: url))
+        let httpResponse = response as! HTTPURLResponse
+        XCTAssert(httpResponse.statusCode == 200)
+    }
 }

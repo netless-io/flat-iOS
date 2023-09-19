@@ -25,6 +25,7 @@ CREATE_WHITEBOARD_REGION = cn-hz
 REGION = CN
 SLS_PROJECT = flat-prod
 SLS_ENDPOINT = cn-hangzhou.log.aliyuncs.com
+APP_UPDATE_SOURCE = flat-storage.oss-cn-hangzhou.aliyuncs.com/versions/latest/stable/iOS/ios_latest.json
 FORCE_BIND_PHONE = 1
 PREFER_PHONE_ACCOUNT = 1
 DISABLE_LOGIN_TYPES = google
