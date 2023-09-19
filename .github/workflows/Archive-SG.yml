@@ -45,11 +45,11 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       - name: FillSLSSec
         env:
-          SLS_AK: ${{ secrets.SLS_AK }}
-          SLS_SK: ${{ secrets.SLS_SK }}
+          SLS_AK: ${{ secrets.SLS_AK_SG }}
+          SLS_SK: ${{ secrets.SLS_SK_SG }}
         run: |
-          sh FillSecret.sh SLS_AK $SLS_AK ./Flat/EnvConfigs/Release.xcconfig
-          sh FillSecret.sh SLS_SK $SLS_SK ./Flat/EnvConfigs/Release.xcconfig
+          sh FillSecret.sh SLS_AK $SLS_AK ./Flat/EnvConfigs/Flint_Release.xcconfig
+          sh FillSecret.sh SLS_SK $SLS_SK ./Flat/EnvConfigs/Flint_Release.xcconfig
       - name: PodInstall
         run: |
           pod repo update
