@@ -59,7 +59,7 @@ class WebLinkBindingItem: NSObject, LaunchItem {
             case .success:
                 let controller = SFSafariViewController(url: urlMaker(self.uuid))
                 controller.delegate = self
-                controller.modalPresentationStyle = .pageSheet
+                controller.modalPresentationStyle = .fullScreen
                 sender.viewController()?.present(controller, animated: true)
                 let launchItemIdentifier = self.uuid
                 launchCoordinator.registerLaunchItem(self, identifier: launchItemIdentifier)

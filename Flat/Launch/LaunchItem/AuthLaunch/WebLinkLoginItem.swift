@@ -56,7 +56,7 @@ class WebLinkLoginItem: NSObject, LaunchItem {
             case .success:
                 let controller = SFSafariViewController(url: url)
                 controller.delegate = self
-                controller.modalPresentationStyle = .pageSheet
+                controller.modalPresentationStyle = .fullScreen
                 sender.viewController()?.present(controller, animated: true)
                 let launchItemIdentifier = self.uuid
                 launchCoordinator.registerLaunchItem(self, identifier: launchItemIdentifier)
