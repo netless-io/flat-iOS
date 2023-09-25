@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A00853F2AC135100053366B /* SensetiveLogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00853E2AC135100053366B /* SensetiveLogFilter.swift */; };
+		8A0085412AC135510053366B /* LogSensetiveTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0085402AC135510053366B /* LogSensetiveTest.swift */; };
+		8A0085422AC135560053366B /* SensetiveLogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00853E2AC135100053366B /* SensetiveLogFilter.swift */; };
 		8A05A1532834C756002DE9B9 /* PrivacyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05A1512834C756002DE9B9 /* PrivacyAlertViewController.swift */; };
 		8A05A1542834C756002DE9B9 /* PrivacyAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A05A1522834C756002DE9B9 /* PrivacyAlertViewController.xib */; };
 		8A05A1562834EA7A002DE9B9 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05A1552834EA7A002DE9B9 /* AttributedString.swift */; };
@@ -384,6 +387,8 @@
 		2B773F9587EAD9D58FD45B88 /* Pods_Flat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB5061DE7DACC73AD6C59FD /* Pods-Flat.flat_release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.flat_release.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.flat_release.xcconfig"; sourceTree = "<group>"; };
 		7911FDD3A2AC2D6E513C8FF5 /* Pods-Flat.flint_debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.flint_debug.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.flint_debug.xcconfig"; sourceTree = "<group>"; };
+		8A00853E2AC135100053366B /* SensetiveLogFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensetiveLogFilter.swift; sourceTree = "<group>"; };
+		8A0085402AC135510053366B /* LogSensetiveTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSensetiveTest.swift; sourceTree = "<group>"; };
 		8A05A1512834C756002DE9B9 /* PrivacyAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyAlertViewController.swift; sourceTree = "<group>"; };
 		8A05A1522834C756002DE9B9 /* PrivacyAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrivacyAlertViewController.xib; sourceTree = "<group>"; };
 		8A05A1552834EA7A002DE9B9 /* AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedString.swift; sourceTree = "<group>"; };
@@ -1066,6 +1071,7 @@
 			children = (
 				8A14EE6B28A6321D00C0CB89 /* logger.swift */,
 				8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */,
+				8A00853E2AC135100053366B /* SensetiveLogFilter.swift */,
 				8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */,
 				8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */,
 			);
@@ -1677,6 +1683,7 @@
 			children = (
 				8AB0AC772A94B320006661E1 /* Flat-Test-Info.plist */,
 				8AB0AC602A948AFB006661E1 /* EnvTest.swift */,
+				8A0085402AC135510053366B /* LogSensetiveTest.swift */,
 			);
 			path = Flat_Test;
 			sourceTree = "<group>";
@@ -2091,6 +2098,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AB0AC612A948AFB006661E1 /* EnvTest.swift in Sources */,
+				8A0085422AC135560053366B /* SensetiveLogFilter.swift in Sources */,
+				8A0085412AC135510053366B /* LogSensetiveTest.swift in Sources */,
 				8AB0AC6C2A948B0D006661E1 /* Env.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2108,6 +2117,7 @@
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
 				8AA348452A121E9300409124 /* ClassroomKeyboardRespondable.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
+				8A00853F2AC135100053366B /* SensetiveLogFilter.swift in Sources */,
 				8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */,
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
 				8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */,
