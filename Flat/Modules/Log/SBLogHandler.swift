@@ -84,7 +84,7 @@ struct SBLogHandler: LogHandler {
              line: UInt)
     {
         let msg = "\(message)".replacingOccurrences(of: ", ", with: " ").replacingOccurrences(of: "\n", with: "")
-        let formattedMsg = "\(source.isEmpty ? "" : "[\(source)],") \(msg)"
+        let formattedMsg = SensetiveLogFilter.filter("\(source.isEmpty ? "" : "[\(source)],") \(msg)")
         switch level {
         case .trace:
             logger.verbose(formattedMsg, file, function, line: Int(line), context: metadata)
