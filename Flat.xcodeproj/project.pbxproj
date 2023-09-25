@@ -10,6 +10,7 @@
 		8A00853F2AC135100053366B /* SensetiveLogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00853E2AC135100053366B /* SensetiveLogFilter.swift */; };
 		8A0085412AC135510053366B /* LogSensetiveTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0085402AC135510053366B /* LogSensetiveTest.swift */; };
 		8A0085422AC135560053366B /* SensetiveLogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00853E2AC135100053366B /* SensetiveLogFilter.swift */; };
+		8A0085442AC169A00053366B /* UIWindowScene+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0085432AC169A00053366B /* UIWindowScene+Extension.swift */; };
 		8A05A1532834C756002DE9B9 /* PrivacyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05A1512834C756002DE9B9 /* PrivacyAlertViewController.swift */; };
 		8A05A1542834C756002DE9B9 /* PrivacyAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A05A1522834C756002DE9B9 /* PrivacyAlertViewController.xib */; };
 		8A05A1562834EA7A002DE9B9 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05A1552834EA7A002DE9B9 /* AttributedString.swift */; };
@@ -389,6 +390,7 @@
 		7911FDD3A2AC2D6E513C8FF5 /* Pods-Flat.flint_debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.flint_debug.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.flint_debug.xcconfig"; sourceTree = "<group>"; };
 		8A00853E2AC135100053366B /* SensetiveLogFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensetiveLogFilter.swift; sourceTree = "<group>"; };
 		8A0085402AC135510053366B /* LogSensetiveTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSensetiveTest.swift; sourceTree = "<group>"; };
+		8A0085432AC169A00053366B /* UIWindowScene+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindowScene+Extension.swift"; sourceTree = "<group>"; };
 		8A05A1512834C756002DE9B9 /* PrivacyAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyAlertViewController.swift; sourceTree = "<group>"; };
 		8A05A1522834C756002DE9B9 /* PrivacyAlertViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrivacyAlertViewController.xib; sourceTree = "<group>"; };
 		8A05A1552834EA7A002DE9B9 /* AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedString.swift; sourceTree = "<group>"; };
@@ -1233,6 +1235,7 @@
 				8A07E6292A8F480400796CA5 /* LaunchItem */,
 				8AD7C6BC27157EA7001C4AAD /* AppDelegate.swift */,
 				8AD7C6BE27157EA7001C4AAD /* SceneDelegate.swift */,
+				8A0085432AC169A00053366B /* UIWindowScene+Extension.swift */,
 				8A0E1F03296D482B00C3EE24 /* ClassroomSceneDelegate.swift */,
 				8A317A9C2966D67800041D4A /* SceneManager.swift */,
 				8A07E6332A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift */,
@@ -2118,6 +2121,7 @@
 				8AA348452A121E9300409124 /* ClassroomKeyboardRespondable.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
 				8A00853F2AC135100053366B /* SensetiveLogFilter.swift in Sources */,
+				8A0085442AC169A00053366B /* UIWindowScene+Extension.swift in Sources */,
 				8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */,
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
 				8A5DDC88272A74FB006216AD /* CommandEncoder.swift in Sources */,

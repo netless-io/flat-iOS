@@ -53,6 +53,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         logger.info("multiwindow: disconnect \(scene.session.persistentIdentifier)")
         SceneManager.shared.disconnect(scene: scene)
     }
+
+    
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        if let windowScene = scene as? UIWindowScene {
+            windowScene.blur(false)
+        }
+    }
+    
+    func sceneWillResignActive(_ scene: UIScene) {
+        if let windowScene = scene as? UIWindowScene {
+            windowScene.blur(true)
+        }
+    }
     
     // MARK: - WindowSceneDelegate
     func windowScene(_ windowScene: UIWindowScene, didUpdate previousCoordinateSpace: UICoordinateSpace, interfaceOrientation previousInterfaceOrientation: UIInterfaceOrientation, traitCollection previousTraitCollection: UITraitCollection) {

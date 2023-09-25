@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                        originalSelector: #selector(UIView.traitCollectionDidChange(_:)),
                        swizzledSelector: #selector(UIView.exchangedTraitCollectionDidChange(_:)))
     }
-
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
