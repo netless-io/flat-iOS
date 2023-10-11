@@ -100,6 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func registerThirdPartSDK() {
         WXApi.registerApp(Env().weChatAppId, universalLink: "https://flat-api.whiteboard.agora.io")
+        // TODO: Only works for CN now.
     }
 
     func processMethodExchange() {
