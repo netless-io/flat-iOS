@@ -71,7 +71,7 @@ class JoinRoomViewController: UIViewController {
             {
                 let id = url.lastPathComponent
                 return id
-            } else if let num = try? str.matchExpressionPattern("(\\d ?){10}") {
+            } else if let num = try? str.matchExpressionPattern("[\\d\\s]+\\d$") {
                 let r = num.replacingOccurrences(of: " ", with: "")
                 return r
             }

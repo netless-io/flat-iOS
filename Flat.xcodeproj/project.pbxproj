@@ -110,6 +110,8 @@
 		8A21DABE279FAAC20060E25D /* StopRecordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DABD279FAAC20060E25D /* StopRecordRequest.swift */; };
 		8A21DAC1279FBE810060E25D /* RecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21DAC0279FBE810060E25D /* RecordModel.swift */; };
 		8A2390F429A7520200DECCAE /* CGImage+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2390F329A7520200DECCAE /* CGImage+isDark.swift */; };
+		8A2619B02AF49DE3009599B1 /* String+ReguarExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE53D027311D7E00C35796 /* String+ReguarExpression.swift */; };
+		8A2619B22AF49E02009599B1 /* RegexTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2619B12AF49E02009599B1 /* RegexTest.swift */; };
 		8A270B6C271822BA00450DC6 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B6B271822BA00450DC6 /* MainTabBarController.swift */; };
 		8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B7327182B9300450DC6 /* UIColor+Extension.swift */; };
 		8A270B762718314200450DC6 /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B752718314200450DC6 /* TopViewController.swift */; };
@@ -491,6 +493,7 @@
 		8A21DABD279FAAC20060E25D /* StopRecordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopRecordRequest.swift; sourceTree = "<group>"; };
 		8A21DAC0279FBE810060E25D /* RecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordModel.swift; sourceTree = "<group>"; };
 		8A2390F329A7520200DECCAE /* CGImage+isDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImage+isDark.swift"; sourceTree = "<group>"; };
+		8A2619B12AF49E02009599B1 /* RegexTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexTest.swift; sourceTree = "<group>"; };
 		8A270B6B271822BA00450DC6 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		8A270B6E271829AB00450DC6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8A270B7327182B9300450DC6 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -1686,6 +1689,7 @@
 			children = (
 				8AB0AC772A94B320006661E1 /* Flat-Test-Info.plist */,
 				8AB0AC602A948AFB006661E1 /* EnvTest.swift */,
+				8A2619B12AF49E02009599B1 /* RegexTest.swift */,
 				8A0085402AC135510053366B /* LogSensetiveTest.swift */,
 			);
 			path = Flat_Test;
@@ -2102,6 +2106,8 @@
 			files = (
 				8AB0AC612A948AFB006661E1 /* EnvTest.swift in Sources */,
 				8A0085422AC135560053366B /* SensetiveLogFilter.swift in Sources */,
+				8A2619B02AF49DE3009599B1 /* String+ReguarExpression.swift in Sources */,
+				8A2619B22AF49E02009599B1 /* RegexTest.swift in Sources */,
 				8A0085412AC135510053366B /* LogSensetiveTest.swift in Sources */,
 				8AB0AC6C2A948B0D006661E1 /* Env.swift in Sources */,
 			);
