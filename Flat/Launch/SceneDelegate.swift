@@ -63,7 +63,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneWillResignActive(_ scene: UIScene) {
         if let windowScene = scene as? UIWindowScene {
-            windowScene.blur(true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if scene.activationState != .foregroundActive {
+                    windowScene.blur(true)
+                }
+            }
         }
     }
     
