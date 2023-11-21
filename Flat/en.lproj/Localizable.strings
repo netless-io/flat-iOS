@@ -690,6 +690,9 @@
 "Room Type" = "Room Type";
 
 
+"RoomExists" = "Individual room already exists, create a new room only after it is over";
+
+
 "RoomIsEnded" = "Room is over";
 
 
@@ -697,6 +700,9 @@
 
 
 "RoomNotFound" = "Room does not exist";
+
+
+"RoomNotFoundAndIsPmi" = "The room hasn't started yet. Please wait for the teacher to enter";
 
 
 "RoomNotIsEnded" = "The room is not over yet";

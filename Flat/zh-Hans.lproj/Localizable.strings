@@ -693,6 +693,9 @@
 "Room Type" = "房间类型";
 
 
+"RoomExists" = "个人房间已存在，结束后方可创建新房间";
+
+
 "RoomIsEnded" = "房间已结束";
 
 
@@ -700,6 +703,9 @@
 
 
 "RoomNotFound" = "房间不存在";
+
+
+"RoomNotFoundAndIsPmi" = "房间未开始，请等待老师进入";
 
 
 "RoomNotIsEnded" = "房间还未结束";

@@ -48,6 +48,8 @@ enum FlatApiError: Int, LocalizedError {
     case RoomNotIsRunning
     case RoomNotIsEnded
     case RoomNotIsIdle
+    case RoomExists // (pmi) room already exists, cannot create new room
+    case RoomNotFoundAndIsPmi // room not found and the invite code is pmi
 
     case PeriodicNotFound = 300_000
     case PeriodicIsEnded
