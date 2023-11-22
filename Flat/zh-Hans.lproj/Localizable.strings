@@ -588,6 +588,9 @@
 "Please enter your nickname" = "请输入昵称";
 
 
+"PmiSuffix" = " 的个人房间";
+
+
 "Preferences" = "首选项";
 
 
@@ -1096,6 +1099,9 @@
 
 
 "passwordAuth" = "密码登录";
+
+
+"pmiInviteDescribe" = "邀请你参加 Flat 个人房间";
 
 
 "rebindingPhoneTips" = "输入手机号已绑定其他账号，是否将当前新建账号和已有账号合并？合并操作将会清除当前新建账号所有数据";

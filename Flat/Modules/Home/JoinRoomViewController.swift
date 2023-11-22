@@ -214,6 +214,9 @@ class JoinRoomViewController: UIViewController {
             self?.roomIdTextField.text = id
             self?.roomIdTextField.sendActions(for: .editingChanged)
         }
+        vc.dismissHandler = { [weak self] in
+            self?.dismiss(animated: true)
+        }
         vc.modalTransitionStyle = .crossDissolve
         vc.modalPresentationStyle = .overCurrentContext
         present(vc, animated: true)

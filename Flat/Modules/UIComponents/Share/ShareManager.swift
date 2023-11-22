@@ -13,6 +13,7 @@ struct ShareInfo {
     let subject: String
     let number: String
     let link: URL
+    let title: String
 
     init(roomDetail: RoomBasicInfo) {
         let formatter = DateFormatter()
@@ -23,13 +24,14 @@ struct ShareInfo {
         number = roomDetail.inviteCode.formatterInviteCode
         if roomDetail.isPmi {
             link = URL(string: Env().webBaseURL + "/join/\(roomDetail.inviteCode)")!
+            title = (AuthStore.shared.user?.name ?? "") + localizeStrings("pmiInviteDescribe")
         } else {
             link = URL(string: Env().webBaseURL + "/join/\(roomDetail.roomUUID)")!
+            title = (AuthStore.shared.user?.name ?? "") + localizeStrings("inviteDescribe")
         }
     }
 
     var description: String {
-        let title = (AuthStore.shared.user?.name ?? "") + localizeStrings("inviteDescribe")
         let timeStr = localizeStrings("Start Time") + ": " + time
         let subStr = localizeStrings("Room Theme") + ": " + subject
         let numStr = localizeStrings("Room ID") + ": " + number

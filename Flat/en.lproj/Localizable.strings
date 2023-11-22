@@ -585,6 +585,9 @@
 "Please enter your nickname" = "Please enter your nickname";
 
 
+"PmiSuffix" = "'s personal room";
+
+
 "Preferences" = "Preferences";
 
 
@@ -1071,7 +1074,7 @@
 "forgotPassword" = "Forgot?";
 
 
-"inviteDescribe" = "invite you to join the Flat classroom";
+"inviteDescribe" = " invite you to join the Flat classroom";
 
 
 "latency" = "Latency";
@@ -1096,6 +1099,9 @@
 
 
 "passwordAuth" = "Via password";
+
+
+"pmiInviteDescribe" = "invite you to join the Flat personal classroom";
 
 
 "rebindingPhoneTips" = "Input mobile phone number has been bound to other accounts, whether the current New Account and existing account merger? The merge operation will erase all data from the current New Account";

@@ -12,6 +12,10 @@ import RxSwift
 
 extension String {
     var formatterInviteCode: String {
+        let isAllNumer = allSatisfy(\.isNumber)
+        if !isAllNumer {
+            return self
+        }
         if count == 11 {
             let i = index(startIndex, offsetBy: 4)
             let j = index(i, offsetBy: 3)

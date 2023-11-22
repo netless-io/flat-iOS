@@ -28,7 +28,7 @@ class ClassroomCoordinator: NSObject {
     private(set) var joinRoomHisotryItems: [JoinRoomHistoryItem] = []
     private var joinRoomHistoryUserDefaultsKey: String { "joinRoomHistory-" + (AuthStore.shared.user?.userUUID ?? "") }
     func clearJoinRoomHistoryItem() {
-        UserDefaults.standard.setValue(nil, forKey: joinRoomHistoryUserDefaultsKey)
+        UserDefaults.standard.removeObject(forKey: joinRoomHistoryUserDefaultsKey)
         updateJoinRoomHistoryItem()
     }
     
@@ -60,6 +60,8 @@ class ClassroomCoordinator: NSObject {
             } catch {
                 logger.error("joinRoomHistory decode error \(error)")
             }
+        } else {
+            self.joinRoomHisotryItems = []
         }
         return self.joinRoomHisotryItems
     }
@@ -185,7 +187,11 @@ class ClassroomCoordinator: NSObject {
                 }
             }
             .do(onNext: { [weak self] _ , info in
-                self?.insertJoinRoomHistoryItem(.init(roomName: info.title, roomInviteId: info.inviteCode))
+                if info.isPmi {
+                    self?.insertJoinRoomHistoryItem(.init(roomName: "\(info.ownerName)\(localizeStrings("PmiSuffix"))", roomInviteId: info.inviteCode))
+                } else {
+                    self?.insertJoinRoomHistoryItem(.init(roomName: info.title, roomInviteId: info.inviteCode))
+                }
             })
             .map { ClassroomFactory.getClassRoomViewController(withPlayInfo: $0.0, basicInfo: $0.1, deviceStatus: deviceState) }
             .asSingle()

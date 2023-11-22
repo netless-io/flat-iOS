@@ -91,6 +91,7 @@ class InviteViewController: UIViewController {
         label.font = .systemFont(ofSize: 14, weight: .regular)
         label.textColor = .color(type: .text, .weak)
         label.textAlignment = .left
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         label.text = title
 
         let detailLabel = UILabel()
@@ -98,9 +99,10 @@ class InviteViewController: UIViewController {
         detailLabel.textColor = .color(type: .text)
         detailLabel.text = detail
         detailLabel.textAlignment = .right
-        detailLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        detailLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         detailLabel.numberOfLines = 0
         let stack = UIStackView(arrangedSubviews: [label, detailLabel])
+        stack.spacing = 4
         stack.distribution = .fill
         stack.alignment = .top
         return stack
@@ -158,7 +160,7 @@ class InviteViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .semibold)
         label.textColor = .color(type: .text, .strong)
-        label.text = (AuthStore.shared.user?.name ?? "") + " " + localizeStrings("inviteDescribe")
+        label.text = shareInfo.title
         label.numberOfLines = 0
         label.textAlignment = .center
         return label

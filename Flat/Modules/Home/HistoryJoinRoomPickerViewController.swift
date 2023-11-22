@@ -10,6 +10,7 @@ import UIKit
 
 class HistoryJoinRoomPickerViewController: UIViewController {
     var items = ClassroomCoordinator.shared.joinRoomHisotryItems
+    var dismissHandler: (()->Void)?
     
     var roomIdConfirmHandler: ((String) ->Void)?
     
@@ -17,9 +18,14 @@ class HistoryJoinRoomPickerViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
     }
+
+    func triggerDismissHandler() {
+        dismissHandler?()
+        dismissHandler = nil
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        dismiss(animated: true)
+        triggerDismissHandler()
     }
     
     func setupViews() {
@@ -47,24 +53,23 @@ class HistoryJoinRoomPickerViewController: UIViewController {
     }
     
     @objc func onCancel() {
-        dismiss(animated: true)
+        triggerDismissHandler()
     }
     
     @objc func onConfirm() {
         let row = picker.selectedRow(inComponent: 0)
         if row + 1 > items.count {
-            dismiss(animated: true)
+            triggerDismissHandler()
             return
         }
         let item = items[row]
-        dismiss(animated: true)
+        triggerDismissHandler()
         roomIdConfirmHandler?(item.roomInviteId)
     }
     
     @objc func onClear() {
         ClassroomCoordinator.shared.clearJoinRoomHistoryItem()
-        items = []
-        picker.reloadAllComponents()
+        triggerDismissHandler()
     }
     
     lazy var picker: UIPickerView = {
@@ -116,6 +121,8 @@ extension HistoryJoinRoomPickerViewController: UIPickerViewDelegate, UIPickerVie
         let leftLabel = UILabel()
         leftLabel.font = .systemFont(ofSize: 14)
         leftLabel.textColor = .color(type: .text)
+        leftLabel.numberOfLines = 1
+        leftLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         leftLabel.text = items[row].roomName
         leftLabel.textAlignment = .left
         
@@ -126,6 +133,7 @@ extension HistoryJoinRoomPickerViewController: UIPickerViewDelegate, UIPickerVie
         rightLabel.textAlignment = .right
         
         let stack = UIStackView(arrangedSubviews: [leftLabel, rightLabel])
+        stack.spacing = 14
         stack.axis = .horizontal
         view.addSubview(stack)
         stack.snp.makeConstraints { make in
