@@ -19,4 +19,15 @@ extension UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
     }
+    
+    func fillBottomSafeAreaWith(color: UIColor) {
+        let fillView = UIView()
+        fillView.backgroundColor = color
+        view.addSubview(fillView)
+        fillView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalTo(view)
+        }
+    }
 }

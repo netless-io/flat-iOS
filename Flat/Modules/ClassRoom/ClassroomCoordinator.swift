@@ -9,6 +9,11 @@
 import Foundation
 import RxSwift
 
+struct JoinRoomHistoryItem: Codable {
+    let roomName: String
+    let roomInviteId: String
+}
+
 class ClassroomCoordinator: NSObject {
     override private init() {
         super.init()
@@ -20,6 +25,45 @@ class ClassroomCoordinator: NSObject {
 
     static let shared = ClassroomCoordinator()
 
+    private(set) var joinRoomHisotryItems: [JoinRoomHistoryItem] = []
+    private var joinRoomHistoryUserDefaultsKey: String { "joinRoomHistory-" + (AuthStore.shared.user?.userUUID ?? "") }
+    func clearJoinRoomHistoryItem() {
+        UserDefaults.standard.setValue(nil, forKey: joinRoomHistoryUserDefaultsKey)
+        updateJoinRoomHistoryItem()
+    }
+    
+    func insertJoinRoomHistoryItem(_ item: JoinRoomHistoryItem) {
+        var items = updateJoinRoomHistoryItem()
+        if let index = items.firstIndex(where: { $0.roomInviteId == item.roomInviteId }) {
+            // Removing exist.
+            items.remove(at: index)
+        }
+        if items.count >= 10 {
+            items = items.dropLast()
+        }
+        items.insert(item, at: 0)
+        do {
+            let data = try JSONEncoder().encode(items)
+            UserDefaults.standard.setValue(data, forKey: joinRoomHistoryUserDefaultsKey)
+            updateJoinRoomHistoryItem()
+        } catch {
+            logger.error("joinRoomHistory encode error \(error)")
+        }
+    }
+    
+    @discardableResult
+    func updateJoinRoomHistoryItem() -> [JoinRoomHistoryItem] {
+        if let data = UserDefaults.standard.value(forKey: joinRoomHistoryUserDefaultsKey) as? Data {
+            do {
+                let items = try JSONDecoder().decode([JoinRoomHistoryItem].self, from: data)
+                self.joinRoomHisotryItems = items
+            } catch {
+                logger.error("joinRoomHistory decode error \(error)")
+            }
+        }
+        return self.joinRoomHisotryItems
+    }
+    
     var currentClassroomUUID: String?
     var enterClassDate: Date?
 
@@ -140,6 +184,9 @@ class ClassroomCoordinator: NSObject {
                         .map { (p, $0) }
                 }
             }
+            .do(onNext: { [weak self] _ , info in
+                self?.insertJoinRoomHistoryItem(.init(roomName: info.title, roomInviteId: info.inviteCode))
+            })
             .map { ClassroomFactory.getClassRoomViewController(withPlayInfo: $0.0, basicInfo: $0.1, deviceStatus: deviceState) }
             .asSingle()
     }

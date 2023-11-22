@@ -29,12 +29,17 @@ class JoinRoomViewController: UIViewController {
         guard !fireKeyboardFirstTime else { return }
         if view.window != nil, view.bounds.width > 0 {
             fireKeyboardFirstTime = true
-            subjectTextField.becomeFirstResponder()
+            roomIdTextField.becomeFirstResponder()
         }
     }
 
     var fireKeyboardFirstTime = false
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        historyPickerButton.isEnabled = !ClassroomCoordinator.shared.updateJoinRoomHistoryItem().isEmpty
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -46,7 +51,7 @@ class JoinRoomViewController: UIViewController {
     // MARK: - Action
 
     @objc func onClickJoin(_ sender: UIButton) {
-        guard let uuid = subjectTextField.text?.replacingOccurrences(of: " ", with: ""),
+        guard let uuid = roomIdTextField.text?.replacingOccurrences(of: " ", with: ""),
                 !uuid.isEmpty
         else { return }
         
@@ -80,7 +85,7 @@ class JoinRoomViewController: UIViewController {
     }
 
     func bindJoinEnable() {
-        subjectTextField.rx.text.orEmpty.asDriver()
+        roomIdTextField.rx.text.orEmpty.asDriver()
             .map(\.isNotEmptyOrAllSpacing)
             .drive(with: self, onNext: { weakSelf, joinEnable in
                 weakSelf.joinButton.isEnabled = joinEnable
@@ -109,7 +114,7 @@ class JoinRoomViewController: UIViewController {
         let bottomStackItemHeight: CGFloat = 44
 
         if traitCollection.hasCompact {
-            let centerStack = UIStackView(arrangedSubviews: [subjectTextField, previewView, deviceView])
+            let centerStack = UIStackView(arrangedSubviews: [roomIdTextField, previewView, deviceView])
             centerStack.axis = .vertical
             centerStack.alignment = .center
             centerStack.distribution = .equalCentering
@@ -118,7 +123,7 @@ class JoinRoomViewController: UIViewController {
                 make.center.equalToSuperview()
             }
 
-            subjectTextField.snp.makeConstraints { make in
+            roomIdTextField.snp.makeConstraints { make in
                 make.width.equalTo(320)
                 make.height.equalTo(66)
             }
@@ -140,7 +145,7 @@ class JoinRoomViewController: UIViewController {
         }
 
         let bottomStack = UIStackView(arrangedSubviews: [deviceView, joinButton])
-        let verticalStack = UIStackView(arrangedSubviews: [subjectTextField, previewView, bottomStack])
+        let verticalStack = UIStackView(arrangedSubviews: [roomIdTextField, previewView, bottomStack])
         verticalStack.axis = .vertical
         verticalStack.alignment = .center
         verticalStack.distribution = .equalCentering
@@ -149,8 +154,8 @@ class JoinRoomViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide).inset(UIEdgeInsets(top: 56, left: 16, bottom: 16, right: 16))
         }
 
-        subjectTextField.setContentHuggingPriority(.defaultLow, for: .vertical)
-        subjectTextField.snp.makeConstraints { make in
+        roomIdTextField.setContentHuggingPriority(.defaultLow, for: .vertical)
+        roomIdTextField.snp.makeConstraints { make in
             make.width.equalTo(320)
             make.height.equalTo(66)
         }
@@ -178,7 +183,7 @@ class JoinRoomViewController: UIViewController {
 
     // MARK: - Lazy
 
-    lazy var subjectTextField: BottomLineTextfield = {
+    lazy var roomIdTextField: BottomLineTextfield = {
         let tf = BottomLineTextfield()
         tf.textColor = .color(type: .text, .strong)
         tf.textAlignment = .center
@@ -187,25 +192,47 @@ class JoinRoomViewController: UIViewController {
         tf.keyboardType = .numberPad
         tf.returnKeyType = .join
         tf.clearButtonMode = .whileEditing
+        tf.rightView = historyPickerButton
+        tf.rightViewMode = .unlessEditing
         tf.delegate = self
         tf.keyboardDistanceFromTextField = 188
         return tf
     }()
+    
+    lazy var historyPickerButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.frame = .init(x: 0, y: 0, width: 44, height: 44)
+        btn.setImage(UIImage(named: "triangle_down"), for: .normal)
+        btn.tintColor = .color(type: .text)
+        btn.addTarget(self, action: #selector(onClickHistory), for: .touchUpInside)
+        return btn
+    }()
+    
+    @objc func onClickHistory() {
+        let vc = HistoryJoinRoomPickerViewController()
+        vc.roomIdConfirmHandler = { [weak self] id in
+            self?.roomIdTextField.text = id
+            self?.roomIdTextField.sendActions(for: .editingChanged)
+        }
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overCurrentContext
+        present(vc, animated: true)
+    }
 
     @objc func handle(keyboardShowNotification notification: Notification) {
         guard let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         guard let window = view.window else { return }
         let deviceEnd = deviceView.convert(CGPoint(x: 0, y: deviceView.bounds.height), to: window).y
         let isOverDeviceView = keyboardRect.origin.y > deviceEnd
-        if isOverDeviceView, subjectTextField.inputAccessoryView == roomInputAccessView {
-            subjectTextField.inputAccessoryView = nil
+        if isOverDeviceView, roomIdTextField.inputAccessoryView == roomInputAccessView {
+            roomIdTextField.inputAccessoryView = nil
             UIView.performWithoutAnimation {
-                self.subjectTextField.reloadInputViews()
+                self.roomIdTextField.reloadInputViews()
             }
-        } else if !isOverDeviceView, subjectTextField.inputAccessoryView == nil {
-            subjectTextField.inputAccessoryView = roomInputAccessView
+        } else if !isOverDeviceView, roomIdTextField.inputAccessoryView == nil {
+            roomIdTextField.inputAccessoryView = roomInputAccessView
             UIView.performWithoutAnimation {
-                self.subjectTextField.reloadInputViews()
+                self.roomIdTextField.reloadInputViews()
             }
         }
     }

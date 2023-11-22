@@ -20,7 +20,7 @@ struct ShareInfo {
         formatter.timeStyle = .short
         time = formatter.string(from: roomDetail.beginTime)
         subject = roomDetail.title
-        number = roomDetail.formatterInviteCode
+        number = roomDetail.inviteCode.formatterInviteCode
         link = URL(string: Env().webBaseURL + "/join/\(roomDetail.roomUUID)")!
     }
 

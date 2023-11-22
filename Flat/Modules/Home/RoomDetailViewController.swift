@@ -100,7 +100,7 @@ class RoomDetailViewController: UIViewController {
 
     @IBAction func onClickCopy(_: Any) {
         guard let info else { return }
-        UIPasteboard.general.string = info.formatterInviteCode
+        UIPasteboard.general.string = info.inviteCode.formatterInviteCode
         toast(localizeStrings("Copy Success"))
     }
 
@@ -186,7 +186,7 @@ class RoomDetailViewController: UIViewController {
         statusLabel.text = localizeStrings(status.rawValue)
         statusLabel.textColor = status == .Started ? .color(type: .success) : .color(type: .text)
 
-        roomNumberLabel.text = info.formatterInviteCode
+        roomNumberLabel.text = info.inviteCode.formatterInviteCode
         roomTypeLabel.text = localizeStrings(roomType.rawValue)
 
         if status == .Stopped {

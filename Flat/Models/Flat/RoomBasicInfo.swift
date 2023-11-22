@@ -10,6 +10,12 @@ import Fastboard
 import Foundation
 import RxSwift
 
+extension String {
+    var formatterInviteCode: String {
+        split(every: 3).joined(separator: " ")
+    }
+}
+
 /// Get from list or by 'ordinary' request
 struct RoomBasicInfo: Decodable, Equatable {
     let roomUUID: String
@@ -31,10 +37,6 @@ struct RoomBasicInfo: Decodable, Equatable {
     let hasRecord: Bool
     let inviteCode: String
     let ownerAvatarURL: String
-
-    var formatterInviteCode: String {
-        inviteCode.split(every: 3).joined(separator: " ")
-    }
 }
 
 extension RoomBasicInfo {
@@ -115,4 +117,5 @@ private struct RoomInfo: Decodable {
     let ownerUserName: String
     let region: String
     let inviteCode: String
+    let isPmi: Bool
 }

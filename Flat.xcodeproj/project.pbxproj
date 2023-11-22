@@ -203,6 +203,7 @@
 		8A8507EF27E180A00072AF49 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */; };
 		8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */; };
 		8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */; };
+		8A8797F92B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */; };
 		8A8A240329879F63008319BB /* ClassroomStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A240229879F63008319BB /* ClassroomStatusBar.swift */; };
 		8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */; };
 		8A8A79B72A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A79B62A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift */; };
@@ -590,6 +591,7 @@
 		8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
 		8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageInClassViewController.swift; sourceTree = "<group>"; };
 		8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSAuthView.swift; sourceTree = "<group>"; };
+		8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryJoinRoomPickerViewController.swift; sourceTree = "<group>"; };
 		8A8A240229879F63008319BB /* ClassroomStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStatusBar.swift; sourceTree = "<group>"; };
 		8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+keyboard.swift"; sourceTree = "<group>"; };
 		8A8A79B62A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalKeyboardShortcutRespondable.swift; sourceTree = "<group>"; };
@@ -1152,6 +1154,7 @@
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
 				8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */,
 				8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */,
+				8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */,
 				8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */,
 				8AFB942D28B7550100B8795D /* CameraMicToggleView.swift */,
 				8A0CA23828C0519A0035F71A /* DeviceAutorizationHelper.swift */,
@@ -2222,6 +2225,7 @@
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,
 				8A21DABC279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift in Sources */,
+				8A8797F92B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift in Sources */,
 				8AAC69B32717E3EB00F9A3B4 /* User.swift in Sources */,
 				8A80209A27570A4A00F5691C /* CloudStorageTableViewCell.swift in Sources */,
 				8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */,
