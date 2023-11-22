@@ -21,7 +21,11 @@ struct ShareInfo {
         time = formatter.string(from: roomDetail.beginTime)
         subject = roomDetail.title
         number = roomDetail.inviteCode.formatterInviteCode
-        link = URL(string: Env().webBaseURL + "/join/\(roomDetail.roomUUID)")!
+        if roomDetail.isPmi {
+            link = URL(string: Env().webBaseURL + "/join/\(roomDetail.inviteCode)")!
+        } else {
+            link = URL(string: Env().webBaseURL + "/join/\(roomDetail.roomUUID)")!
+        }
     }
 
     var description: String {

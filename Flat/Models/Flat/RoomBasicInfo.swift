@@ -12,7 +12,23 @@ import RxSwift
 
 extension String {
     var formatterInviteCode: String {
-        split(every: 3).joined(separator: " ")
+        if count == 11 {
+            let i = index(startIndex, offsetBy: 4)
+            let j = index(i, offsetBy: 3)
+
+            let r =
+                self[startIndex ..< i]
+                    +
+                    " "
+                    +
+                    self[i ..< j]
+                    +
+                    " "
+                    +
+                    self[j ..< endIndex]
+            return String(r)
+        }
+        return split(every: 3).joined(separator: " ")
     }
 }
 
@@ -37,6 +53,7 @@ struct RoomBasicInfo: Decodable, Equatable {
     let hasRecord: Bool
     let inviteCode: String
     let ownerAvatarURL: String
+    let isPmi: Bool
 }
 
 extension RoomBasicInfo {
@@ -58,7 +75,8 @@ extension RoomBasicInfo {
                                  region: info.region,
                                  hasRecord: info.hasRecord,
                                  inviteCode: info.inviteCode,
-                                 ownerAvatarURL: "")
+                                 ownerAvatarURL: "",
+                                 isPmi: info.isPmi)
         }
     }
 
@@ -82,7 +100,8 @@ extension RoomBasicInfo {
                                               region: info.region,
                                               hasRecord: info.hasRecord,
                                               inviteCode: info.inviteCode,
-                                              ownerAvatarURL: "")
+                                              ownerAvatarURL: "",
+                                              isPmi: info.isPmi)
                 completion(.success(basicInfo))
             case let .failure(error):
                 completion(.failure(error))
