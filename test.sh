@@ -4,7 +4,7 @@ xcodebuild \
   -workspace Flat.xcworkspace \
   -scheme $SCHEME \
   -sdk iphonesimulator \
-  -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.4' \
+  -destination 'platform=iOS Simulator,name=iPhoneTest' \
   test | xcbeautify > $OUTPATH
   PASSSTR='Test Succeeded'
   TEST_RESULT=$(cat $OUTPATH)
