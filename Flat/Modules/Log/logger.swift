@@ -46,6 +46,12 @@ func bootstrapLogger() {
     }
 
     let device = UIDevice.current
+    let isiOSOnMac: Bool
+    if #available(iOS 14.0, *) {
+        isiOSOnMac = ProcessInfo.processInfo.isiOSAppOnMac
+    } else {
+        isiOSOnMac = false
+    }
     let memoryMB = ProcessInfo.processInfo.physicalMemory / 1024 / 1024
-    logger.info("type: \(device.model), systemVersion: \(device.systemVersion), model: \(identifier), memory: \(memoryMB) MB")
+    logger.info("type: \(device.model), systemVersion: \(device.systemVersion), model: \(identifier), memory: \(memoryMB) MB, isiOSOnMac: \(isiOSOnMac)")
 }
