@@ -23,6 +23,11 @@ class MixReplayViewController: UIViewController {
     let viewModel: MixReplayViewModel
     var rtcPlayer: AVPlayer?
     var syncPlayer: SyncPlayer?
+    var playbackSpeed: Float = 1 {
+        didSet {
+            syncPlayer?.playbackRate = playbackSpeed
+        }
+    }
 
     // MARK: - LifeCycle
 
@@ -90,6 +95,7 @@ class MixReplayViewController: UIViewController {
             .subscribe(with: self) { weakSelf, record in
                 weakSelf.listen(to: record.player, duration: record.duration)
                 weakSelf.setup(forRtcPlayer: record.rtcPlayer)
+                weakSelf.syncPlayer?.playbackRate = weakSelf.playbackSpeed
                 if autoPlay {
                     weakSelf.syncPlayer?.play()
                 }
@@ -196,6 +202,14 @@ class MixReplayViewController: UIViewController {
             self?.overlay.displayState = .showDelayHide
         }
     }
+    
+    @objc func onClickRateButton(_ sender: UIButton) {
+        popoverViewController(viewController: speedlistViewController, fromSource: sender)
+        overlay.displayState = .showAlways
+        speedlistViewController.dismissHandler = { [weak self] in
+            self?.overlay.displayState = .showDelayHide
+        }
+    }
 
     // MARK: - Lazy
 
@@ -215,13 +229,26 @@ class MixReplayViewController: UIViewController {
     lazy var overlay: ReplayOverlay = {
         let overlay = ReplayOverlay()
         overlay.delegate = self
+        overlay.toolStackView.addArrangedSubview(rateButton)
         overlay.toolStackView.addArrangedSubview(sectionListButton)
+        rateButton.snp.makeConstraints { make in
+            make.width.equalTo(44)
+        }
         sectionListButton.snp.makeConstraints { make in
             make.width.equalTo(44)
         }
         return overlay
     }()
 
+    lazy var rateButton: UIButton = {
+        let btn = UIButton(type: .system)
+        let img = UIImage(systemName: "speedometer", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
+        btn.setImage(img, for: .normal)
+        btn.tintColor = .white
+        btn.addTarget(self, action: #selector(onClickRateButton), for: .touchUpInside)
+        return btn
+    }()
+    
     lazy var sectionListButton: UIButton = {
         let btn = UIButton(type: .system)
         let img = UIImage(systemName: "list.number", withConfiguration: UIImage.SymbolConfiguration(weight: .regular))
@@ -231,6 +258,15 @@ class MixReplayViewController: UIViewController {
         return btn
     }()
 
+    lazy var speedlistViewController: ReplayPlaybackSpeedListViewController = {
+        let vc = ReplayPlaybackSpeedListViewController()
+        vc.rateUpdateHandler = { [weak self] speed in
+            guard let self else { return }
+            self.playbackSpeed = speed
+        }
+        return vc
+    }()
+    
     lazy var selectionlistViewController: RecordSelectionListViewController = {
         let vc = RecordSelectionListViewController()
         vc.clickHandler = { [weak self] index in

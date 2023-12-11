@@ -306,6 +306,7 @@
 		8AC9CF0127434B1F00EEBEE7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */; };
 		8AC9CF04274490C900EEBEE7 /* ClassRoomUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */; };
 		8ACA7ED228B77E8100EE24D5 /* UIViewController+SafaArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACA7ED128B77E8100EE24D5 /* UIViewController+SafaArea.swift */; };
+		8ACAA7252B2701C5008FAAA5 /* ReplayPlaybackSpeedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAA7242B2701C5008FAAA5 /* ReplayPlaybackSpeedListViewController.swift */; };
 		8ACB64D027758DAE00225621 /* FlatRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64CF27758DAE00225621 /* FlatRegion.swift */; };
 		8ACB64D22775B02D00225621 /* MainContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB64D12775B02D00225621 /* MainContainer.swift */; };
 		8ACE3A1B272F8BA800BC37F7 /* UIViewController+PopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */; };
@@ -699,6 +700,7 @@
 		8AC9CF0027434B1F00EEBEE7 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		8AC9CF03274490C900EEBEE7 /* ClassRoomUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRoomUsersViewController.swift; sourceTree = "<group>"; };
 		8ACA7ED128B77E8100EE24D5 /* UIViewController+SafaArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SafaArea.swift"; sourceTree = "<group>"; };
+		8ACAA7242B2701C5008FAAA5 /* ReplayPlaybackSpeedListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayPlaybackSpeedListViewController.swift; sourceTree = "<group>"; };
 		8ACB64CF27758DAE00225621 /* FlatRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatRegion.swift; sourceTree = "<group>"; };
 		8ACB64D12775B02D00225621 /* MainContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContainer.swift; sourceTree = "<group>"; };
 		8ACE3A1A272F8BA800BC37F7 /* UIViewController+PopOver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopOver.swift"; sourceTree = "<group>"; };
@@ -1118,6 +1120,7 @@
 				8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */,
 				8A4D35BE2913C33400AFA5DE /* MixReplayViewController.swift */,
 				8A21DAB1279F86A00060E25D /* ReplayOverlay.swift */,
+				8ACAA7242B2701C5008FAAA5 /* ReplayPlaybackSpeedListViewController.swift */,
 				8A62D35828D445710046910B /* RecordSelectionListViewController.swift */,
 			);
 			path = Replay;
@@ -2398,6 +2401,7 @@
 				8A48A9CB2716D795003719DB /* FlatResponse.swift in Sources */,
 				8A0EB7BA272BD4E300003DF7 /* RoomUserTableViewCell.swift in Sources */,
 				8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */,
+				8ACAA7252B2701C5008FAAA5 /* ReplayPlaybackSpeedListViewController.swift in Sources */,
 				8AB1A739287D4141000AE9A1 /* UploadAvatarFinishRequest.swift in Sources */,
 				8A9FB3C927229E5E00F6F06F /* AnyEncodable.swift in Sources */,
 				8A2D0B9C27158FF000123207 /* FlatRequestGenerator.swift in Sources */,
