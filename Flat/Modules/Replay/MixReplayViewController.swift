@@ -319,7 +319,7 @@ extension MixReplayViewController: ReplayOverlayDelegate {
     }
 
     func seekTo(_ seconds: TimeInterval) {
-        guard let syncPlayer else { return }
+        guard let syncPlayer, syncPlayer.totalTime.timescale > 0 else { return }
         let cmTime = CMTime(seconds: seconds, preferredTimescale: syncPlayer.totalTime.timescale)
 
         isSeeking = true
