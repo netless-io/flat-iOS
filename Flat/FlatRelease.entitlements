@@ -10,6 +10,8 @@
 	<array>
 		<string>applinks:flat-api.whiteboard.agora.io</string>
 		<string>applinks:flat-web.whiteboard.agora.io</string>
+		<string>applinks:api.flat.shengwang.cn</string>
+		<string>applinks:web.flat.shengwang.cn</string>
 	</array>
 </dict>
 </plist>
