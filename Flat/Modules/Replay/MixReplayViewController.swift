@@ -94,7 +94,9 @@ class MixReplayViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self) { weakSelf, record in
                 weakSelf.listen(to: record.player, duration: record.duration)
-                weakSelf.setup(forRtcPlayer: record.rtcPlayer)
+                if let rtcPlayer = record.rtcPlayer {
+                    weakSelf.setup(forRtcPlayer: rtcPlayer)
+                }
                 weakSelf.syncPlayer?.playbackRate = weakSelf.playbackSpeed
                 if autoPlay {
                     weakSelf.syncPlayer?.play()

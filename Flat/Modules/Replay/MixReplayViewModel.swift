@@ -14,7 +14,7 @@ import Whiteboard
 class MixReplayViewModel {
     struct PlayRecord {
         let player: SyncPlayer
-        let rtcPlayer: AVPlayer
+        let rtcPlayer: AVPlayer? // RtcPlayer may be nil.
         let duration: TimeInterval
     }
 
@@ -80,13 +80,39 @@ class MixReplayViewModel {
             }
             return Disposables.create()
         }
-
-        return whitePlayer
-            .map { whitePlayer -> PlayRecord in
-                let rtcPlayer = AVPlayer(url: record.videoURL)
-                let syncPlayer = SyncPlayer(players: [rtcPlayer, whitePlayer])
-                return .init(player: syncPlayer, rtcPlayer: rtcPlayer, duration: duration)
+        
+        let videoPlayer = Observable<AVPlayer?>.create { subscribe in
+            let url = record.videoURL
+            var request = URLRequest(url: url)
+            request.httpMethod = "HEAD"
+            let task = URLSession.shared.dataTask(with: request) { _, res, error in
+                if let res = res as? HTTPURLResponse, res.statusCode == 200 {
+                    subscribe.onNext(AVPlayer(url: url))
+                    subscribe.onCompleted()
+                    return
+                }
+                subscribe.onNext(nil)
+                subscribe.onCompleted()
+                return
+            }
+            task.resume()
+            return Disposables.create {
+                task.cancel()
+            }
+        }
+        
+        let playRecord = Observable.zip(whitePlayer, videoPlayer)
+            .map { white, av -> PlayRecord in
+                let syncPlayer: SyncPlayer
+                if let av {
+                    syncPlayer = SyncPlayer(players: [av, white])
+                } else {
+                    syncPlayer = SyncPlayer(players: [white])
+                }
+                return .init(player: syncPlayer, rtcPlayer: av, duration: duration)
             }
             .asSingle()
+        
+        return playRecord
     }
 }
