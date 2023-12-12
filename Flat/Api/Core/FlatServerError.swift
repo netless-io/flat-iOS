@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum FlatApiError: Int, LocalizedError {
+enum FlatApiError: Int, LocalizedError, CaseIterable {
     case FileCheckFailed = 1_000
     case FileDownloadFailed
     case FileUnzipFailed
@@ -60,6 +60,7 @@ enum FlatApiError: Int, LocalizedError {
     case UserAlreadyBinding // already bound, should unbind first
     case UserPasswordIncorrect // user password (for update) incorrect
     case UserOrPasswordIncorrect // user or password (for login) incorrect
+    case UserPmiDrained
 
     case RecordNotFound = 50000
 

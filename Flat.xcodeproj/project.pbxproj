@@ -347,6 +347,12 @@
 		8AE8607C29B6DACD002CC58B /* VideoLayoutStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8607B29B6DACD002CC58B /* VideoLayoutStore.swift */; };
 		8AE8607F29B6EB1D002CC58B /* VideoLayoutStoreImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8607E29B6EB1D002CC58B /* VideoLayoutStoreImp.swift */; };
 		8AE892FB2727E99D009C71DA /* RtmCommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE892FA2727E99D009C71DA /* RtmCommandType.swift */; };
+		8AEB402F2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEB402E2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift */; };
+		8AEB40302B28508200F0B9D6 /* FlatServerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD2EF6A27730A1800087280 /* FlatServerError.swift */; };
+		8AEB40322B2851C900F0B9D6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8A270B9227195A1200450DC6 /* Localizable.strings */; };
+		8AEB40332B2851D300F0B9D6 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270B9C271967D800450DC6 /* Language.swift */; };
+		8AEB40342B2851D700F0B9D6 /* LocaleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A270BA02719686C00450DC6 /* LocaleManager.swift */; };
+		8AEB40352B2851DD00F0B9D6 /* StringLocalize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05A1592834EC04002DE9B9 /* StringLocalize.swift */; };
 		8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */; };
 		8AED087928113840001DEFDC /* AccountCancelationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED087728113741001DEFDC /* AccountCancelationRequest.swift */; };
 		8AEF069F276973E40009904A /* AppleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEF069E276973E40009904A /* AppleLogin.swift */; };
@@ -745,6 +751,7 @@
 		8AE8607B29B6DACD002CC58B /* VideoLayoutStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoLayoutStore.swift; sourceTree = "<group>"; };
 		8AE8607E29B6EB1D002CC58B /* VideoLayoutStoreImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoLayoutStoreImp.swift; sourceTree = "<group>"; };
 		8AE892FA2727E99D009C71DA /* RtmCommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmCommandType.swift; sourceTree = "<group>"; };
+		8AEB402E2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiErrorLocalizeTest.swift; sourceTree = "<group>"; };
 		8AED08762811361A001DEFDC /* AccountCancelationValidateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationValidateRequest.swift; sourceTree = "<group>"; };
 		8AED087728113741001DEFDC /* AccountCancelationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCancelationRequest.swift; sourceTree = "<group>"; };
 		8AEF069E276973E40009904A /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
@@ -1692,6 +1699,7 @@
 			children = (
 				8AB0AC772A94B320006661E1 /* Flat-Test-Info.plist */,
 				8AB0AC602A948AFB006661E1 /* EnvTest.swift */,
+				8AEB402E2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift */,
 				8A2619B12AF49E02009599B1 /* RegexTest.swift */,
 				8A0085402AC135510053366B /* LogSensetiveTest.swift */,
 			);
@@ -2010,6 +2018,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AEB40322B2851C900F0B9D6 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2107,11 +2116,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AEB40302B28508200F0B9D6 /* FlatServerError.swift in Sources */,
+				8AEB40342B2851D700F0B9D6 /* LocaleManager.swift in Sources */,
 				8AB0AC612A948AFB006661E1 /* EnvTest.swift in Sources */,
 				8A0085422AC135560053366B /* SensetiveLogFilter.swift in Sources */,
+				8AEB40332B2851D300F0B9D6 /* Language.swift in Sources */,
 				8A2619B02AF49DE3009599B1 /* String+ReguarExpression.swift in Sources */,
+				8AEB402F2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift in Sources */,
 				8A2619B22AF49E02009599B1 /* RegexTest.swift in Sources */,
 				8A0085412AC135510053366B /* LogSensetiveTest.swift in Sources */,
+				8AEB40352B2851DD00F0B9D6 /* StringLocalize.swift in Sources */,
 				8AB0AC6C2A948B0D006661E1 /* Env.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

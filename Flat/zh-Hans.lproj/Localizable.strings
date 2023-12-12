@@ -150,6 +150,9 @@
 "Cancellation" = "注销";
 
 
+"CensorshipFailed" = "审核失败";
+
+
 "Chat" = "聊天";
 
 
@@ -249,6 +252,12 @@
 "DidLoadAll" = "已全部加载";
 
 
+"DirectoryAlreadyExists" = "文件夹已存在";
+
+
+"DirectoryNotExists" = "文件夹不存在";
+
+
 "Disagree" = "不同意";
 
 
@@ -261,6 +270,9 @@
 "ElectronLinkText" = "如需更全功能可前往链接下载 Electron 桌面版本。";
 
 
+"EmailAlreadyBinding" = "邮箱已被绑定，请更换其他邮箱或在原帐号中解绑";
+
+
 "EmailAlreadyExist" = "邮箱已存在";
 
 
@@ -271,6 +283,9 @@
 
 
 "EmailOrPhonePlaceHolder" = "请输入邮箱或手机号";
+
+
+"EmailVerificationCodeInvalid" = "无效的邮箱验证码，请重试";
 
 
 "EmptyCloudTip" = "暂无文件";
@@ -309,7 +324,13 @@
 "File not ready" = "文件转码没有完成";
 
 
+"FileCheckFailed" = "文件校验失败";
+
+
 "FileConvertFailed" = "文件转码失败";
+
+
+"FileDownloadFailed" = "文件下载失败";
 
 
 "FileExists" = "文件已经存在";
@@ -327,16 +348,25 @@
 "FileNotFound" = "无法找到文件";
 
 
+"FileNotIsConvertNone" = "文件不是非转码状态";
+
+
+"FileNotIsConverting" = "文件不是转码状态中";
+
+
 "FileSizeTooBig" = "文件过大";
+
+
+"FileUnzipFailed" = "文件解压失败";
+
+
+"FileUploadFailed" = "文件上传失败";
 
 
 "Finish" = "完成";
 
 
 "GeoGebra" = "几何代数";
-
-
-"Geogebra" = "";
 
 
 "GoSetting" = "前往设置";
@@ -492,10 +522,22 @@
 "NoUploadingWarnings" = "没有文件正在上传";
 
 
+"NonCompliant" = "请求不合规";
+
+
 "NotEnoughTotalUsage" = "没有足够容量";
 
 
 "NotPermission" = "没有权限操作";
+
+
+"OAuthClientIDNotFound" = "绑定失败，绑定用户不存在";
+
+
+"OAuthSecretUUIDNotFound" = "绑定失败，无法找到相关信息";
+
+
+"OAuthUUIDNotFound" = "绑定失败，绑定信息不存在";
 
 
 "OldPasswordPlaceholder" = "请输入旧密码";
@@ -651,6 +693,9 @@
 "Replay" = "回放";
 
 
+"RequestSignatureIncorrect" = "请求签名错误";
+
+
 "ResetCheckButtonTitle" = "确认并登录";
 
 
@@ -739,6 +784,9 @@
 
 
 "SMSAlreadyExist" = "该手机号已注册";
+
+
+"SMSFailedToSendCode" = "发送验证码失败，请稍后再试";
 
 
 "SMSVerificationCodeInvalid" = "验证码无效";
@@ -915,6 +963,9 @@
 "Unknown error" = "未知错误";
 
 
+"UnsupportedOperation" = "不支持的操作";
+
+
 "UnsupportedPlatform" = "不支持的登录平台";
 
 
@@ -985,6 +1036,15 @@
 
 
 "UserOrPasswordIncorrect" = "账号或密码错误";
+
+
+"UserPasswordIncorrect" = "用户密码错误";
+
+
+"UserPmiDrained" = "个人房间号耗尽，无法继续创建";
+
+
+"UserRoomListNotEmpty" = "用户房间列表不为空";
 
 
 "VerificationCode" = "验证码";
@@ -1114,9 +1174,6 @@
 
 
 "smsAuth" = "短信验证码登录";
-
-
-"then" = "";
 
 
 "whiteboard_save_annotation" = "保存板书";

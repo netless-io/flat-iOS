@@ -150,6 +150,9 @@
 "Cancellation" = "Cancellation";
 
 
+"CensorshipFailed" = "Failure of an audit";
+
+
 "Chat" = "Chat";
 
 
@@ -249,6 +252,12 @@
 "DidLoadAll" = "Loaded all";
 
 
+"DirectoryAlreadyExists" = "Directory already exists";
+
+
+"DirectoryNotExists" = "Directory not exists";
+
+
 "Disagree" = "Disagree";
 
 
@@ -261,6 +270,9 @@
 "ElectronLinkText" = "For full functionality, go to the link to download the desktop version of Electron.";
 
 
+"EmailAlreadyBinding" = "Mailbox has been bound, please change another mailbox or unbind in the original account.";
+
+
 "EmailAlreadyExist" = "Email already exists";
 
 
@@ -271,6 +283,9 @@
 
 
 "EmailOrPhonePlaceHolder" = "Email or phone number";
+
+
+"EmailVerificationCodeInvalid" = "Invalid email verification code, please try again.";
 
 
 "EmptyCloudTip" = "No file";
@@ -309,7 +324,13 @@
 "File not ready" = "File converting not ready";
 
 
+"FileCheckFailed" = "File check failed";
+
+
 "FileConvertFailed" = "File convert failed";
+
+
+"FileDownloadFailed" = "File download failed";
 
 
 "FileExists" = "File exists";
@@ -327,7 +348,19 @@
 "FileNotFound" = "File not found";
 
 
+"FileNotIsConvertNone" = "File is not in unconvert status";
+
+
+"FileNotIsConverting" = "File is not in converting status";
+
+
 "FileSizeTooBig" = "File size too big";
+
+
+"FileUnzipFailed" = "File unzip failed";
+
+
+"FileUploadFailed" = "File upload failed";
 
 
 "Finish" = "Finish";
@@ -489,10 +522,22 @@
 "NoUploadingWarnings" = "No files are being uploaded";
 
 
+"NonCompliant" = "Request not conforming with regulations";
+
+
 "NotEnoughTotalUsage" = "Reaching capacity limit";
 
 
 "NotPermission" = "No permission to operate";
+
+
+"OAuthClientIDNotFound" = "Binding failed, bind user does not exist.";
+
+
+"OAuthSecretUUIDNotFound" = "Binding failed to find relevant information.";
+
+
+"OAuthUUIDNotFound" = "Binding failed, binding information does not exist.";
 
 
 "OldPasswordPlaceholder" = "Old Password";
@@ -648,6 +693,9 @@
 "Replay" = "Replay";
 
 
+"RequestSignatureIncorrect" = "Request signature incorrect";
+
+
 "ResetCheckButtonTitle" = "Confirm & Sign In";
 
 
@@ -736,6 +784,9 @@
 
 
 "SMSAlreadyExist" = "This cell phone number is registered";
+
+
+"SMSFailedToSendCode" = "Failed to send verification code. Please try again later.";
 
 
 "SMSVerificationCodeInvalid" = "Invalid Code";
@@ -915,6 +966,9 @@
 "Unknown error" = "Unknown error";
 
 
+"UnsupportedOperation" = "Unsupported operation";
+
+
 "UnsupportedPlatform" = "Unsupported login platform";
 
 
@@ -985,6 +1039,15 @@
 
 
 "UserOrPasswordIncorrect" = "Incorrect account or password";
+
+
+"UserPasswordIncorrect" = "User password incorrect";
+
+
+"UserPmiDrained" = "Exhausted personal room numbers, unable to continue creating.";
+
+
+"UserRoomListNotEmpty" = "User room list is not empty";
 
 
 "VerificationCode" = "VerificationCode";
@@ -1114,6 +1177,9 @@
 
 
 "smsAuth" = "Via SMS";
+
+/*  */
+"then" = "";
 
 
 "whiteboard_save_annotation" = "Save Annotation";
