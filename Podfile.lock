@@ -1,6 +1,6 @@
 PODS:
   - AcknowList (3.0.0)
-  - AgoraRtcEngine_iOS/RtcBasic (4.2.1)
+  - AgoraRtcEngine_iOS/RtcBasic (4.2.6)
   - AgoraRtm_iOS (1.5.1)
   - AliyunLogProducer/Bricks (2.3.10.4):
     - AliyunLogProducer/Core
@@ -145,7 +145,7 @@ PODS:
 
 DEPENDENCIES:
   - AcknowList
-  - AgoraRtcEngine_iOS/RtcBasic (= 4.2.1)
+  - AgoraRtcEngine_iOS/RtcBasic (= 4.2.6)
   - AgoraRtm_iOS (= 1.5.1)
   - AliyunLogProducer/Bricks
   - AliyunLogProducer/Core
@@ -224,7 +224,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AcknowList: 931531a3e9d66f202ae8e04819a62c50b818b03e
-  AgoraRtcEngine_iOS: bbbacbf4797a6f85532c6023b72c4d66f2b49227
+  AgoraRtcEngine_iOS: ac647332ad8f86d79cf810601c9e62b28c3a4de0
   AgoraRtm_iOS: 595a9fa33a409831e6183396ea8f8bc563918403
   AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
@@ -267,6 +267,6 @@ SPEC CHECKSUMS:
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: de7e02a7a606f4f0c262ec423510738f9cee7ee7
+PODFILE CHECKSUM: d9cdf9a32e6507c5cdd6b011d7d04388eed28b27
 
 COCOAPODS: 1.13.0
