@@ -154,15 +154,15 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     func cleanSecondary() {
         if canShowDetail {
             if #available(iOS 14.0, *) {
-                detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(emptyDetailController, sender: nil)
-                setViewController(emptyDetailController, for: .secondary)
+                detailUpdateDelegate?.mainSplitViewControllerDidUpdateDetail(createEmptyDetailController(), sender: nil)
+                setViewController(createEmptyDetailController(), for: .secondary)
             } else {
-                show(emptyDetailController, hidePrimary: false)
+                show(createEmptyDetailController(), hidePrimary: false)
             }
         }
     }
 
-    lazy var emptyDetailController = EmptySplitSecondaryViewController()
+    func createEmptyDetailController() -> EmptySplitSecondaryViewController { EmptySplitSecondaryViewController() }
 
     func splitViewController(_: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
         // Wrap a navigation controller for split show a single vc

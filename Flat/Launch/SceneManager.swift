@@ -188,7 +188,7 @@ extension SceneManager {
             vc.preferredSupplementaryColumnWidth = 360
             let sideVC = RegularSideBarViewController()
             vc.setViewController(sideVC, for: .primary)
-            vc.setViewController(vc.emptyDetailController, for: .secondary)
+            vc.setViewController(vc.createEmptyDetailController(), for: .secondary)
             return vc
         } else {
             if window.traitCollection.hasCompact {

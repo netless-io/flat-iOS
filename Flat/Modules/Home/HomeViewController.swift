@@ -140,7 +140,7 @@ class HomeViewController: UIViewController {
         let isStop = startStatus == .Stopped
         if let vc = vc as? MainSplitViewController {
             if isStop {
-                vc.show(vc.emptyDetailController)
+                vc.show(vc.createEmptyDetailController())
             } else {
                 if !vc.viewControllers
                     .map({ ($0 as? UINavigationController)?.topViewController ?? $0 })
