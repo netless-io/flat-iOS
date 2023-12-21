@@ -14,6 +14,11 @@ import UIKit
 class SMSAuthView: UIView {
     weak var presentRoot: UIViewController?
 
+    func fillWith(phone: String) {
+        phoneTextfield.text = phone
+        phoneTextfield.sendActions(for: .valueChanged)
+    }
+    
     private var country = Country.currentCountry() {
         didSet {
             countryCodeSelectBtn.setTitle("+\(country.phoneCode)", for: .normal)

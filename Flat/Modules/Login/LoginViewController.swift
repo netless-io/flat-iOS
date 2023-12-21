@@ -306,7 +306,9 @@ class LoginViewController: UIViewController {
     }
 
     func loadHistory() {
-        smsAuthView.phoneTextfield.text = lastSMSLoginPhone
+        if let lastSMSLoginPhone {
+            smsAuthView.fillWith(phone: lastSMSLoginPhone)
+        }
         
         if let info = AuthStore.shared.lastAccountLoginInfo {
             passwordAuthView.accountTextfield.fillWith(countryCode: info.regionCode, inputText: info.inputText)
