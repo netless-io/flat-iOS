@@ -136,7 +136,12 @@ class ClassRoomViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if UIDevice.current.userInterfaceIdiom != .phone {
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                return
+            }
+        }
+        if UIDevice.current.userInterfaceIdiom == .pad {
             hideStatusBar = container.frame.origin.y <= view.safeAreaInsets.top
             setNeedsStatusBarAppearanceUpdate()
         }
