@@ -197,7 +197,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             if let values {
                 for value in values {
                     if let uid = value.key as? String {
-                        if let data = (value.value as? NSDictionary)?.yy_modelToJSONData() {
+                        if let data = (value.value as? NSDictionary)?._white_yy_modelToJSONData() {
                             do {
                                 let state = try decoder.decode(DeviceState.self, from: data)
                                 deviceState[uid] = state

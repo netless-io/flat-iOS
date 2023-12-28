@@ -8,10 +8,10 @@ PODS:
   - CropViewController (2.6.1)
   - Differentiator (5.0.0)
   - DZNEmptyDataSet (1.8.1)
-  - Fastboard (2.0.0-alpha.17):
-    - Fastboard/core (= 2.0.0-alpha.17)
-  - Fastboard/core (2.0.0-alpha.17):
-    - Whiteboard (~> 2.17.0-alpha.25)
+  - Fastboard (2.0.0-alpha.18):
+    - Fastboard/core (= 2.0.0-alpha.18)
+  - Fastboard/core (2.0.0-alpha.18):
+    - Whiteboard (~> 2.17.0-alpha.28)
   - Firebase/AnalyticsWithoutAdIdSupport (9.5.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics/WithoutAdIdSupport (~> 9.5.0)
@@ -96,7 +96,7 @@ PODS:
   - nanopb/encode (2.30909.0)
   - "NSObject+Rx (5.2.2)":
     - RxSwift (~> 6.2)
-  - NTLBridge (3.1.5)
+  - NTLBridge (3.1.6)
   - PromisesObjC (2.1.1)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
@@ -114,33 +114,17 @@ PODS:
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
   - ViewDragger (1.1.0)
-  - Whiteboard (2.17.0-alpha.27):
-    - Whiteboard/Whiteboard-YYModel (= 2.17.0-alpha.27)
-  - Whiteboard/Base (2.17.0-alpha.27):
-    - NTLBridge (~> 3.1.4)
-    - Whiteboard/Object
-  - Whiteboard/Converter (2.17.0-alpha.27):
-    - Whiteboard/Object
-  - Whiteboard/Model (2.17.0-alpha.27):
-    - YYModel
-  - Whiteboard/NativeReplayer (2.17.0-alpha.27):
-    - Whiteboard/Replayer
-  - Whiteboard/Object (2.17.0-alpha.27):
-    - Whiteboard/Model
-  - Whiteboard/Replayer (2.17.0-alpha.27):
-    - Whiteboard/Base
-  - Whiteboard/Resource (2.17.0-alpha.27)
-  - Whiteboard/Room (2.17.0-alpha.27):
-    - Whiteboard/Base
-  - Whiteboard/SyncPlayer (2.17.0-alpha.27):
+  - White_YYModel (1.0.6)
+  - Whiteboard (2.17.0-alpha.28):
+    - Whiteboard/Whiteboard-Basic (= 2.17.0-alpha.28)
+  - Whiteboard/Resource (2.17.0-alpha.28)
+  - Whiteboard/SyncPlayer (2.17.0-alpha.28):
     - SyncPlayer
-    - Whiteboard/Replayer
-  - Whiteboard/Whiteboard-YYModel (2.17.0-alpha.27):
-    - Whiteboard/Converter
-    - Whiteboard/NativeReplayer
+    - Whiteboard/Whiteboard-Basic
+  - Whiteboard/Whiteboard-Basic (2.17.0-alpha.28):
+    - NTLBridge (~> 3.1.4)
+    - White_YYModel
     - Whiteboard/Resource
-    - Whiteboard/Room
-  - YYModel (1.0.4)
   - Zip (2.1.2)
 
 DEPENDENCIES:
@@ -151,7 +135,7 @@ DEPENDENCIES:
   - AliyunLogProducer/Core
   - CropViewController
   - DZNEmptyDataSet
-  - Fastboard (= 2.0.0-alpha.17)
+  - Fastboard (= 2.0.0-alpha.18)
   - Firebase/AnalyticsWithoutAdIdSupport
   - FirebaseCrashlytics
   - Hero
@@ -172,8 +156,8 @@ DEPENDENCIES:
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
-  - Whiteboard (= 2.17.0-alpha.27)
-  - Whiteboard/SyncPlayer (= 2.17.0-alpha.27)
+  - Whiteboard (= 2.17.0-alpha.28)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.28)
   - Zip
 
 SPEC REPOS:
@@ -218,8 +202,8 @@ SPEC REPOS:
     - SwiftyBeaver
     - SyncPlayer
     - ViewDragger
+    - White_YYModel
     - Whiteboard
-    - YYModel
     - Zip
 
 SPEC CHECKSUMS:
@@ -230,7 +214,7 @@ SPEC CHECKSUMS:
   CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fastboard: 07fc92da659d6a654876e90d21fff5259eace13e
+  Fastboard: defd40cda105ee7474a8b3a7be43c9fbd229e93b
   Firebase: 800f16f07af493d98d017446a315c27af0552f41
   FirebaseAnalytics: 1b60984a408320dda637306f3f733699ef8473d7
   FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
@@ -251,7 +235,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
-  NTLBridge: e94dc18242476b0238c10213a5438d9b9a59fcce
+  NTLBridge: 6ef7f3c1fc956f2e2d701a89828d51674bd479c7
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
@@ -263,10 +247,10 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20
-  Whiteboard: 4070c0edf0ef37b56ef83be49d0110319083fdb6
-  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
+  White_YYModel: 4ed7b231471784ec709d4db954e1ca61a4fbe54d
+  Whiteboard: c6bd5a7ec00cd3e0ba60d5789a73c60803fa0d6f
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: d9cdf9a32e6507c5cdd6b011d7d04388eed28b27
+PODFILE CHECKSUM: bce43161c8f795e74010ff217cf2abc111e68463
 
 COCOAPODS: 1.13.0

@@ -41,17 +41,17 @@ extension ClassRoomViewController: ClassroomKeyboardRespondable {
     }
     
     func clearWhiteboard(_ item: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.cleanScene(false)
     }
     
     func nextPage(_ item: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.nextPage()
     }
     
     func prevPage(_ item: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.prevPage()
     }
     
@@ -59,12 +59,13 @@ extension ClassRoomViewController: ClassroomKeyboardRespondable {
         guard
             let command = item as? UIKeyCommand,
             let identifier = (command.propertyList as? [String])?.first as? String,
-            fastboardViewController.roomPermission.value.inputEnable else { return }
+            fastboardViewController.roomPermission.value.inputEnable,
+            fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.updateApplianceIdentifier(identifier)
     }
     
     func switchNextColor(_ item: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         if let color = fastboardViewController.fastRoom.nextColor() {
             let i = UIImageView(image: UIImage.pointWith(color: color, size: .init(width: 44, height: 44), radius: 22))
             toast(i)
@@ -72,7 +73,7 @@ extension ClassRoomViewController: ClassroomKeyboardRespondable {
     }
     
     func switchPrevColor(_ item: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         if let color = fastboardViewController.fastRoom.prevColor() {
             let i = UIImageView(image: UIImage.pointWith(color: color, size: .init(width: 44, height: 44), radius: 22))
             toast(i)
@@ -80,13 +81,13 @@ extension ClassRoomViewController: ClassroomKeyboardRespondable {
     }
     
     func createNewItem(_: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.addPage()
         fastboardViewController.fastRoom.room?.nextPage()
     }
     
     func deleteSelectedItem(_: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.deleteOperation()
     }
     
@@ -94,23 +95,23 @@ extension ClassRoomViewController: ClassroomKeyboardRespondable {
 
     @objc
     func undo(_ item: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.undo()
     }
     
     @objc
     func redo(_ item: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.redo()
     }
     
     override func copy(_ sender: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.copy()
     }
     
     override func paste(_ sender: Any?) {
-        guard fastboardViewController.roomPermission.value.inputEnable else { return }
+        guard fastboardViewController.roomPermission.value.inputEnable, fastboardViewController.isRoomJoined.value else { return }
         fastboardViewController.fastRoom.room?.paste()
     }
 }
