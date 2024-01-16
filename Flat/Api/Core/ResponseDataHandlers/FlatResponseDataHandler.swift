@@ -12,6 +12,13 @@ import RxSwift
 
 class FlatResponseHandler: ResponseDataHandler {
     static var jwtExpireSignal = PublishRelay<Void>()
+    static var billingServerErrorCodeMap: [Int: FlatApiError] = [
+        220000: .ServerFail,
+        220001: .ServerFail,
+        210000: .ParamsCheckFailed,
+        210001: .JWTSignFailed,
+        210003: .RoomIsEnded
+    ] // Map error to normal flat error, because billing server has some duplicated error.
 
     func processResponseData<T>(_ data: Data, decoder: JSONDecoder, forResponseType _: T.Type) throws -> T where T: Decodable {
         guard let jsonObj = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
@@ -21,7 +28,7 @@ class FlatResponseHandler: ResponseDataHandler {
         }
 
         if let code = jsonObj["code"] as? Int,
-           let error = FlatApiError(rawValue: code)
+           let error = FlatResponseHandler.billingServerErrorCodeMap[code] ?? FlatApiError(rawValue: code)
         {
             if error == .JWTSignFailed {
                 if AuthStore.shared.isLogin { // Will send only once

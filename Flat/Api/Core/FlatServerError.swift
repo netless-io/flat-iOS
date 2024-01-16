@@ -9,11 +9,11 @@
 import Foundation
 
 enum FlatApiError: Int, LocalizedError, CaseIterable {
-    case FileCheckFailed = 1_000
+    case FileCheckFailed = 1000
     case FileDownloadFailed
     case FileUnzipFailed
     case FileUploadFailed
-    
+
     case ParamsCheckFailed = 100_000
     case ServerFail
     case CurrentProcessFailed
@@ -30,17 +30,17 @@ enum FlatApiError: Int, LocalizedError, CaseIterable {
     case SMSAlreadyExist // Bind when binding already
     case PhoneRegistered // Bind a phone has registered
     case SMSFailedToSendCode // failed to send verification code
-    
+
     case EmailVerificationCodeInvalid = 115_000 // verification code invalid
     case EmailAlreadyExist // email already exist by current user
     case EmailAlreadyBinding // email are binding by other users
     case EmailFailedToSendCode // failed to send verification code
-    
+
     case CensorshipFailed = 120_000 // censorship failed
-    
+
     case OAuthUUIDNotFound = 130_000 // oauth uuid not found
-    case OAuthClientIDNotFound  // oauth client id not found
-    case OAuthSecretUUIDNotFound  // oauth secret uuid not found
+    case OAuthClientIDNotFound // oauth client id not found
+    case OAuthSecretUUIDNotFound // oauth secret uuid not found
 
     case RoomNotFound = 200_000
     case RoomIsEnded
@@ -51,12 +51,14 @@ enum FlatApiError: Int, LocalizedError, CaseIterable {
     case RoomExists // (pmi) room already exists, cannot create new room
     case RoomNotFoundAndIsPmi // room not found and the invite code is pmi
 
+    case RoomReachLimit = 210_002
+
     case PeriodicNotFound = 300_000
     case PeriodicIsEnded
     case PeriodicSubRoomHasRunning
 
     case UserNotFound = 400_000
-    case UserRoomListNotEmpty  // occurs when delete account, user must have quitted all running rooms
+    case UserRoomListNotEmpty // occurs when delete account, user must have quitted all running rooms
     case UserAlreadyBinding // already bound, should unbind first
     case UserPasswordIncorrect // user password (for update) incorrect
     case UserOrPasswordIncorrect // user or password (for login) incorrect
