@@ -35,7 +35,8 @@ class ClassroomStateMock: ClassroomStateHandler {
     var requestDeviceResponsePublisher: RxRelay.PublishRelay<DeviceRequestResponse> = .init()
     var banMessagePublisher: RxRelay.PublishRelay<Bool> = .init()
     var rewardPublisher: RxRelay.PublishRelay<String> = .init()
-    var noticePublisher: RxRelay.PublishRelay<String> = .init()
+    var chatNoticePublisher: RxRelay.PublishRelay<String> = .init()
+    var toastNoticePublisher: RxRelay.PublishRelay<String> = .init()
     var banState: RxRelay.BehaviorRelay<Bool> = .init(value: false)
     var roomStartStatus: RxRelay.BehaviorRelay<RoomStartStatus> = .init(value: .Started)
     var currentOnStageUsers: [String : RoomUser] = [:]

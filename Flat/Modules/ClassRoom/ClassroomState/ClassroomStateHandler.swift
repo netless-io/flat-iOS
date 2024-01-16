@@ -74,7 +74,8 @@ protocol ClassroomStateHandler {
     var requestDeviceResponsePublisher: PublishRelay<DeviceRequestResponse> { get }
     var banMessagePublisher: PublishRelay<Bool> { get }
     var rewardPublisher: PublishRelay<String> { get }
-    var noticePublisher: PublishRelay<String> { get }
+    var chatNoticePublisher: PublishRelay<String> { get }
+    var toastNoticePublisher: PublishRelay<String> { get }
     var banState: BehaviorRelay<Bool> { get }
     var roomStartStatus: BehaviorRelay<RoomStartStatus> { get }
     var currentOnStageUsers: [String: RoomUser] { get }

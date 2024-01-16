@@ -9,10 +9,35 @@
 import Foundation
 
 struct CommandEncoder {
+    let encoder: JSONEncoder = {
+        let d = JSONEncoder()
+        d.dateEncodingStrategy = .millisecondsSince1970
+        return d
+    }()
+    
+    fileprivate func nsDictionary(_ input: Encodable) -> NSDictionary? {
+        do {
+            let data = try encoder.encode(input)
+            let dict = try JSONSerialization.jsonObject(with: data) as? NSDictionary
+            return dict
+        }
+        catch {
+            logger.error("encode \(self) \(error)")
+            return nil
+        }
+    }
+    
     func encode(_ command: RtmCommand) throws -> Data {
         let t: RtmCommandType
         let v: NSDictionary
         switch command {
+        case let .roomExpire(roomUUID: roomUUID, expireInfo: info):
+            t = .roomExpire
+            if let nsInfo = nsDictionary(info) {
+                v = ["roomUUID": roomUUID, "expireInfo": nsInfo]
+            } else {
+                v = ["roomUUID": roomUUID]
+            }
         case let .raiseHand(roomUUID: roomUUID, raiseHand: raiseHand):
             t = .raiseHand
             v = ["roomUUID": roomUUID, "raiseHand": raiseHand]
@@ -57,7 +82,7 @@ struct CommandEncoder {
             v = ["roomUUID": roomUUID, "userUUID": userUUID]
         case .newUserEnter(roomUUID: let roomUUID, userUUID: let userUUID, userInfo: let userInfo):
             t = .newUserEnter
-            if let dict = userInfo.nsDict() {
+            if let dict = nsDictionary(userInfo) {
                 v = ["roomUUID": roomUUID, "userUUID": userUUID, "userInfo": dict]
             } else {
                 v = ["roomUUID": roomUUID, "userUUID": userUUID]

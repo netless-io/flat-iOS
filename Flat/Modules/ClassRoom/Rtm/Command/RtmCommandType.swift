@@ -19,6 +19,7 @@ enum RtmCommand {
     case notifyDeviceOff(roomUUID: String, deviceType: RequestDeviceType)
     case reward(roomUUID: String, userUUID: String)
     case newUserEnter(roomUUID: String, userUUID: String, userInfo: RoomUserInfo)
+    case roomExpire(roomUUID: String, expireInfo: RoomExpireInfo)
 }
 
 struct RtmCommandType: RawRepresentable, Codable, Equatable {
@@ -32,6 +33,7 @@ struct RtmCommandType: RawRepresentable, Codable, Equatable {
     static let notifyDeviceOff = RtmCommandType(rawValue: "notify-device-off")
     static let reward = RtmCommandType(rawValue: "reward")
     static let newUserEnter = RtmCommandType(rawValue: "enter")
+    static let roomExpire = RtmCommandType(rawValue: "room-expire")
 
     var rawValue: String
     init(rawValue: String) {

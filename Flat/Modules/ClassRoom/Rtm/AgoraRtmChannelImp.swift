@@ -103,6 +103,21 @@ class AgoraRtmChannelImp: NSObject, AgoraRtmChannelDelegate, RtmChannelProvider 
 //        logger.info("receive \(type)
         switch message.type {
         case .text:
+            if member.userId == "flat-server" {
+                do {
+                    // Forge a raw data msg. Because server can not send raw data msg!
+                    if let textData = message.text.data(using: .utf8) {
+                        let decoder = JSONDecoder()
+                        decoder.dateDecodingStrategy = .millisecondsSince1970
+                        let info = try decoder.decode(RoomExpireInfo.self, from: textData)
+                        let msgData = try CommandEncoder().encode(.roomExpire(roomUUID: channelId, expireInfo: info))
+                        rawDataPublish.accept((msgData, member.userId))
+                    }
+                } catch {
+                    logger.error("transform flat-server msg error, \(error)")
+                }
+                return
+            }
             newMessagePublish.accept((message.text, Date(timeIntervalSince1970: TimeInterval(message.serverReceivedTs)), member.userId))
         case .raw:
             if let rawMessage = message as? AgoraRtmRawMessage {

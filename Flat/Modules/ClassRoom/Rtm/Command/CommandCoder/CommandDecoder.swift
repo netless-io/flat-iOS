@@ -68,10 +68,21 @@ struct CommandDecoder {
                 return .newUserEnter(roomUUID: roomUUID, userUUID: userUUID, userInfo: roomUserInfo)
             }
             fallthrough
+        case .roomExpire:
+            if let infoDic = info["expireInfo"] as? NSDictionary {
+                let jsonData = try JSONSerialization.data(withJSONObject: infoDic)
+                let expireInfo = try decode.decode(RoomExpireInfo.self, from: jsonData)
+                return .roomExpire(roomUUID: roomUUID, expireInfo: expireInfo)
+            }
+            fatalError("can't get expire info")
         default:
             return .undefined(reason: "won't happen")
         }
     }
 
-    let decode = JSONDecoder()
+    let decode = {
+        var d = JSONDecoder()
+        d.dateDecodingStrategy = .millisecondsSince1970
+        return d
+    }()
 }

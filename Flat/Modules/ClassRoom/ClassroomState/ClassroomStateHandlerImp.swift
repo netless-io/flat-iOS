@@ -31,7 +31,8 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
     let whiteboardIds: BehaviorRelay<[String]> = .init(value: [])
     let raisingHandIds: BehaviorRelay<[String]> = .init(value: [])
     let deviceState: BehaviorRelay<[String: DeviceState]> = .init(value: [:])
-    let noticePublisher: PublishRelay<String> = .init()
+    let chatNoticePublisher: PublishRelay<String> = .init()
+    let toastNoticePublisher: PublishRelay<String> = .init()
     let banMessagePublisher: PublishRelay<Bool> = .init()
     let rewardPublisher: PublishRelay<String> = .init()
     let requestDevicePublisher: PublishRelay<RequestDeviceType> = .init()
@@ -164,6 +165,13 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         do {
             let command = try commandDecoder.decode(data)
             switch command {
+            case .roomExpire(roomUUID: _, expireInfo: let expireInfo):
+                let f = DateFormatter()
+                f.dateStyle = .none
+                f.timeStyle = .short
+                let timeStr = f.string(from: expireInfo.expireAt)
+                let msg = String(format: NSLocalizedString("room expire %@ %@", comment: "room expire toast"), expireInfo.roomLevel.localizedString, timeStr)
+                toastNoticePublisher.accept(msg)
             case .newUserEnter(roomUUID: _, userUUID: let userUUID, userInfo: let userInfo):
                 roomUserInfoCache[userUUID] = userInfo
             case .reward(roomUUID: _, userUUID: let userUUID):
@@ -193,7 +201,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 // This is just a message
                 banMessagePublisher.accept(isBan)
             case .notice(roomUUID: _, text: let notice):
-                noticePublisher.accept(notice)
+                chatNoticePublisher.accept(notice)
             case .undefined: break
             case let .requestDevice(_, deviceType: type):
                 requestDevicePublisher.accept(type)

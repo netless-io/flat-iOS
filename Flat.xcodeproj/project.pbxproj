@@ -594,6 +594,8 @@
 		8A80209F27570F4B00F5691C /* PageListContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListContainer.swift; sourceTree = "<group>"; };
 		8A8020A42757225400F5691C /* AgoraResponseDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraResponseDataHandler.swift; sourceTree = "<group>"; };
 		8A8020AE2758A8DE00F5691C /* FlatDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlatDebug.entitlements; sourceTree = "<group>"; };
+		8A8392F32B55351F002262FA /* RoomExpireInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomExpireInfo.swift; sourceTree = "<group>"; };
+		8A8392F52B5629E7002262FA /* DecodeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodeTest.swift; sourceTree = "<group>"; };
 		8A8507EC27E178790072AF49 /* CloudStorageDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageDisplayViewController.swift; sourceTree = "<group>"; };
 		8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
 		8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageInClassViewController.swift; sourceTree = "<group>"; };
@@ -1877,6 +1879,7 @@
 			children = (
 				8A92196028AF3BC000DDDA81 /* CommandCoder */,
 				8AE892FA2727E99D009C71DA /* RtmCommandType.swift */,
+				8A8392F32B55351F002262FA /* RoomExpireInfo.swift */,
 			);
 			path = Command;
 			sourceTree = "<group>";
@@ -2123,6 +2126,7 @@
 				8AEB40332B2851D300F0B9D6 /* Language.swift in Sources */,
 				8A2619B02AF49DE3009599B1 /* String+ReguarExpression.swift in Sources */,
 				8AEB402F2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift in Sources */,
+				8A8392F72B562A32002262FA /* RoomExpireInfo.swift in Sources */,
 				8A2619B22AF49E02009599B1 /* RegexTest.swift in Sources */,
 				8A0085412AC135510053366B /* LogSensetiveTest.swift in Sources */,
 				8AEB40352B2851DD00F0B9D6 /* StringLocalize.swift in Sources */,
@@ -2195,6 +2199,7 @@
 				8A07E6322A8F64CD00796CA5 /* CompactLoginBackgroundView.swift in Sources */,
 				8A80209C27570CC700F5691C /* StorageFileModel.swift in Sources */,
 				8A05C34527609207009BCA79 /* AnyPreview.swift in Sources */,
+				8A8392F42B55351F002262FA /* RoomExpireInfo.swift in Sources */,
 				8AD3CDF027168F25008BD904 /* Env.swift in Sources */,
 				8A07E6042A8B716900796CA5 /* PasswordLoginRequest.swift in Sources */,
 				8AAE254D295EB88A007D5507 /* RoomUserRxSectionData.swift in Sources */,

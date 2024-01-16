@@ -196,6 +196,7 @@ class ClassRoomViewModel {
         let channel: RtmChannelProvider
         let userNameProvider: UserInfoQueryProvider
         let notice: Observable<String>
+        let toast: Observable<String>
         let isBanned: Driver<Bool>
         let banMessagePublisher: PublishRelay<Bool>
         let chatButtonShowRedPoint: Driver<Bool>
@@ -213,7 +214,8 @@ class ClassRoomViewModel {
 
         let provider = stateHandler.memberNameQueryProvider()
         let isBanned = banState.asDriver(onErrorJustReturn: true)
-        let notice = stateHandler.noticePublisher.asObservable()
+        let notice = stateHandler.chatNoticePublisher.asObservable()
+        let toast = stateHandler.toastNoticePublisher.asObservable()
         let banMessagePublisher = stateHandler.banMessagePublisher
 
         let newMessageWhenChatControllerHide = channel
@@ -235,6 +237,7 @@ class ClassRoomViewModel {
                 .init(channel: channel,
                       userNameProvider: provider,
                       notice: notice,
+                      toast: toast,
                       isBanned: isBanned,
                       banMessagePublisher: banMessagePublisher,
                       chatButtonShowRedPoint: chatButtonShowRedPoint)

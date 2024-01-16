@@ -400,6 +400,13 @@ class ClassRoomViewController: UIViewController {
 
         initChatResult
             .subscribe(with: self, onSuccess: { weakSelf, r in
+                r.toast
+                    .asDriver(onErrorJustReturn: "")
+                    .drive(with: self) { ws, msg in
+                        ws.toast(msg, timeInterval: 3)
+                    }
+                    .disposed(by: weakSelf.rx.disposeBag)
+                
                 let chatViewModel = ChatViewModel(roomUUID: weakSelf.viewModel.roomUUID,
                                                   userNameProvider: r.userNameProvider,
                                                   rtmChannel: r.channel,
