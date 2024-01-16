@@ -366,6 +366,12 @@
 "Finish" = "完成";
 
 
+"FreeRoomTimeLimitTip %@" = "你已加入免费版%1$@分钟限时房间";
+
+
+"FreeVersion" = "免费版";
+
+
 "GeoGebra" = "几何代数";
 
 
@@ -572,6 +578,9 @@
 
 "PagePrev" = "上一页";
 
+
+"PaidVersion" = "付费版";
+
 /* Flat Server Error */
 "ParamsCheckFailed" = "参数错误";
 
@@ -744,6 +753,9 @@
 "Room Type" = "房间类型";
 
 
+"RoomCreateLimit" = "本月创建免费房间个数已达上限，升级版本享受更多权益";
+
+
 "RoomExists" = "个人房间已存在，结束后方可创建新房间";
 
 
@@ -751,6 +763,9 @@
 
 
 "RoomIsRunning" = "房间正在进行中";
+
+
+"RoomNotBegin" = "房间未开始，开课前 5 分钟可进入，已将该房间添加到房间列表";
 
 
 "RoomNotFound" = "房间不存在";
@@ -766,6 +781,9 @@
 
 
 "RoomNotIsRunning" = "房间不在进行中";
+
+
+"RoomReachLimit" = "免费版房间人数已到达上限，暂时无法加入，请联系老师解决";
 
 
 "RoomStatus" = "房间状态";
@@ -1165,6 +1183,9 @@
 
 
 "rebindingPhoneTips" = "输入手机号已绑定其他账号，是否将当前新建账号和已有账号合并？合并操作将会清除当前新建账号所有数据";
+
+
+"room expire %@ %@" = "房间即将到达%1$@时长上限，将于%2$@结束";
 
 
 "screenshot" = "白板截图";

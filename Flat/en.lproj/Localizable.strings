@@ -366,6 +366,12 @@
 "Finish" = "Finish";
 
 
+"FreeRoomTimeLimitTip %@" = "You've joined the free version of the %1$@-minute time-limited room";
+
+
+"FreeVersion" = "free version";
+
+
 "GeoGebra" = "GeoGebra";
 
 
@@ -573,6 +579,9 @@
 "PagePrev" = "Previous page";
 
 
+"PaidVersion" = "paid version";
+
+
 "ParamsCheckFailed" = "Parameter error";
 
 
@@ -744,6 +753,9 @@
 "Room Type" = "Room Type";
 
 
+"RoomCreateLimit" = "The number of free rooms you can create this month has reached the limit, upgrade to enjoy more benefits!";
+
+
 "RoomExists" = "Individual room already exists, create a new room only after it is over";
 
 
@@ -751,6 +763,9 @@
 
 
 "RoomIsRunning" = "The room is in progress";
+
+
+"RoomNotBegin" = "Room not started, accessible 5 minutes before class starts, room added to room list";
 
 
 "RoomNotFound" = "Room does not exist";
@@ -766,6 +781,9 @@
 
 
 "RoomNotIsRunning" = "The room is not in progress";
+
+
+"RoomReachLimit" = "The number of people in the free version of the room has reached the upper limit, temporarily unable to join, please contact the teacher to solve the problem";
 
 
 "RoomStatus" = "Room Status";
@@ -1168,6 +1186,9 @@
 
 
 "rebindingPhoneTips" = "Input mobile phone number has been bound to other accounts, whether the current New Account and existing account merger? The merge operation will erase all data from the current New Account";
+
+
+"room expire %@ %@" = "The room is about to reach the  %1$@ time limit and will end at %2$@";
 
 
 "screenshot" = "screenshot";
