@@ -6,7 +6,7 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
-import libPhoneNumber_iOS
+import PhoneNumberKit
 import RxCocoa
 import RxSwift
 import UIKit
@@ -27,8 +27,8 @@ class SMSAuthView: UIView {
 
     private var phoneValid: Bool {
         guard let text = phoneTextfield.text else { return false }
-        guard let phoneObj = try? NBPhoneNumberUtil.sharedInstance().parse(text, defaultRegion: country.code) else { return false }
-        return NBPhoneNumberUtil.sharedInstance().isValidNumber(forRegion: phoneObj, regionCode: country.code)
+        let isValid = PhoneNumberKit().isValidPhoneNumber(text, withRegion: country.code)
+        return isValid
     }
 
     private var codeValid: Bool { codeText.count >= 4 }

@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 import RxRelay
-import libPhoneNumber_iOS
+import PhoneNumberKit
 
 enum AccountType: String, Codable {
     case phone
@@ -18,8 +18,8 @@ enum AccountType: String, Codable {
     func valid(_ text: String, country: Country) -> Bool {
         switch self {
         case .phone:
-            guard let phoneObj = try? NBPhoneNumberUtil.sharedInstance().parse(text, defaultRegion: country.code) else { return false }
-            return NBPhoneNumberUtil.sharedInstance().isValidNumber(forRegion: phoneObj, regionCode: country.code)
+            let isValid = PhoneNumberKit().isValidPhoneNumber(text, withRegion: country.code)
+            return isValid
         case .email:
             return text.isEmail()
         }

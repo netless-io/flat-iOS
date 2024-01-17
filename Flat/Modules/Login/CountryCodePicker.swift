@@ -6,7 +6,7 @@
 //  Copyright © 2023 agora.io. All rights reserved.
 //
 
-import libPhoneNumber_iOS
+import PhoneNumberKit
 import UIKit
 
 struct Country {
@@ -17,8 +17,11 @@ struct Country {
     static func countryFor(regionCode id: String) -> Self? {
         guard let name = Locale.current.localizedString(forRegionCode: id)
         else { return nil }
-        let cid = NBPhoneNumberUtil.sharedInstance().getCountryCode(forRegion: id).stringValue
-        return .init(code: id, name: name, phoneCode: cid)
+        if let code = PhoneNumberKit().countryCode(for: id) {
+            let cid = String(code)
+            return .init(code: id, name: name, phoneCode: cid)
+        }
+        return nil
     }
     
     static func currentCountry() -> Self {

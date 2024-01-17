@@ -82,7 +82,6 @@ PODS:
   - Hero (1.6.1)
   - IQKeyboardManagerSwift (6.5.9)
   - Kingfisher (7.6.2)
-  - libPhoneNumber-iOS (0.9.15)
   - Logging (1.4.0)
   - LookinServer (1.1.5):
     - LookinServer/Core (= 1.1.5)
@@ -97,6 +96,12 @@ PODS:
   - "NSObject+Rx (5.2.2)":
     - RxSwift (~> 6.2)
   - NTLBridge (3.1.6)
+  - PhoneNumberKit (3.7.6):
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.7.6)
+    - PhoneNumberKit/UIKit (= 3.7.6)
+  - PhoneNumberKit/PhoneNumberKitCore (3.7.6)
+  - PhoneNumberKit/UIKit (3.7.6):
+    - PhoneNumberKit/PhoneNumberKitCore
   - PromisesObjC (2.1.1)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
@@ -141,12 +146,12 @@ DEPENDENCIES:
   - Hero
   - IQKeyboardManagerSwift
   - Kingfisher
-  - libPhoneNumber-iOS
   - Logging
   - LookinServer
   - lottie-ios
   - MBProgressHUD (~> 1.2.0)
   - "NSObject+Rx"
+  - PhoneNumberKit
   - RxCocoa
   - RxDataSources
   - RxSwift
@@ -183,7 +188,6 @@ SPEC REPOS:
     - Hero
     - IQKeyboardManagerSwift
     - Kingfisher
-    - libPhoneNumber-iOS
     - Logging
     - LookinServer
     - lottie-ios
@@ -191,6 +195,7 @@ SPEC REPOS:
     - nanopb
     - "NSObject+Rx"
     - NTLBridge
+    - PhoneNumberKit
     - PromisesObjC
     - RxCocoa
     - RxDataSources
@@ -228,7 +233,6 @@ SPEC CHECKSUMS:
   Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
   IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
   Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
-  libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   LookinServer: 2893f2bae53cbf3fd49bbe1a8ea1745582ef1317
   lottie-ios: 54d22edf55b839f0929cabbfe609c9aa548b1145
@@ -236,6 +240,7 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
   NTLBridge: 6ef7f3c1fc956f2e2d701a89828d51674bd479c7
+  PhoneNumberKit: 3c68a822bad955ffcefc72a52df72b6596498555
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
@@ -251,6 +256,6 @@ SPEC CHECKSUMS:
   Whiteboard: c6bd5a7ec00cd3e0ba60d5789a73c60803fa0d6f
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: bce43161c8f795e74010ff217cf2abc111e68463
+PODFILE CHECKSUM: 573e2e654e556bd03ab2b92738bc38dfb7ce787c
 
 COCOAPODS: 1.13.0
