@@ -17,17 +17,24 @@ func configProgressHUDAppearance() {
 extension UIViewController {
     func toast(_ text: String,
                timeInterval: TimeInterval = 1.5,
-               preventTouching: Bool = false)
+               preventTouching: Bool = false,
+               offset: CGPoint? = nil,
+               hidePreviouds: Bool = true)
     {
         guard !text.isEmpty else { return }
         DispatchQueue.main.async { [weak view] in
             guard let window = view?.window else { return }
-            MBProgressHUD.hide(for: window, animated: false)
+            if hidePreviouds {
+                MBProgressHUD.hide(for: window, animated: false)
+            }
             let hud = MBProgressHUD.showAdded(to: window, animated: true)
             hud.bezelView.style = .solidColor
             hud.bezelView.color = UIColor.black.withAlphaComponent(0.45)
             hud.backgroundView.style = .solidColor
             hud.backgroundView.color = UIColor.black.withAlphaComponent(0.05)
+            if let offset {
+                hud.offset = offset
+            }
             hud.mode = .text
             hud.label.textColor = .white
             hud.label.numberOfLines = 5

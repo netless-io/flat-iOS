@@ -153,7 +153,8 @@ enum ClassroomFactory {
                                     roomType: basicInfo.roomType,
                                     commandChannelRequest: rtmChannel,
                                     alertProvider: alertProvider,
-                                    preferredDeviceState: deviceStatus)
+                                    preferredDeviceState: deviceStatus,
+                                    roomTimeLimit: playInfo.billing.limit)
 
         let userListViewController = ClassRoomUsersViewController(userUUID: playInfo.rtmUID, roomOwnerRtmUUID: playInfo.ownerUUID)
         let shareViewController: () -> UIViewController = {

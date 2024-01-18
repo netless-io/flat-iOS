@@ -20,6 +20,7 @@ class ClassRoomViewModel {
     let roomUUID: String
     let isOwner: Bool
     let roomType: ClassRoomType
+    let roomTimeLimit: Int
     let initDeviceState: DeviceState
     var banState: Observable<Bool> { stateHandler.banState.asObservable() }
     var members: Observable<[RoomUser]> { stateHandler.members() }
@@ -125,7 +126,8 @@ class ClassRoomViewModel {
          roomType: ClassRoomType,
          commandChannelRequest: Single<RtmChannelProvider>,
          alertProvider: AlertProvider,
-         preferredDeviceState: DeviceState)
+         preferredDeviceState: DeviceState,
+         roomTimeLimit: Int)
     {
         self.stateHandler = stateHandler
         self.initDeviceState = initDeviceState
@@ -133,6 +135,7 @@ class ClassRoomViewModel {
         self.userUUID = userUUID
         self.roomUUID = roomUUID
         self.roomType = roomType
+        self.roomTimeLimit = roomTimeLimit
         self.commandChannelRequest = commandChannelRequest
         self.alertProvider = alertProvider
         self.preferredDeviceState = preferredDeviceState

@@ -107,7 +107,7 @@ extension UIView {
         }
     }
 
-    func endFlatLoading(withDelay delay: TimeInterval = 0.5) {
+    func endFlatLoading(withDelay delay: TimeInterval = 0.5, completion: (()->Void)? = nil) {
         if delay <= 0 {
             flatLoadingView.stopAnimating()
             flatLoadingView.removeFromSuperview()
@@ -120,6 +120,7 @@ extension UIView {
                     guard finish else { return }
                     self.flatLoadingView.stopAnimating()
                     self.flatLoadingView.removeFromSuperview()
+                    completion?()
                 }
             }
         }

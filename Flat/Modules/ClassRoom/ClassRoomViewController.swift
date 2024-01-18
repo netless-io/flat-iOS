@@ -6,6 +6,7 @@
 //  Copyright © 2022 agora.io. All rights reserved.
 //
 
+import MBProgressHUD
 import Fastboard
 import RxCocoa
 import RxSwift
@@ -168,7 +169,13 @@ class ClassRoomViewController: UIViewController {
         result.initRoomResult
             .do(
                 onSuccess: { [weak self] in
-                    self?.view.endFlatLoading()
+                    guard let self else { return }
+                    self.view.endFlatLoading {
+                        if self.viewModel.roomTimeLimit > 0 {
+                            let msg = String(format: NSLocalizedString("FreeRoomTimeLimitTip %@", comment: "free room time limit tips"), self.viewModel.roomTimeLimit.description)
+                            self.toast(msg, timeInterval: 3, offset: .init(x: 0, y: MBProgressMaxOffset), hidePreviouds: false)
+                        }
+                    }
                 },
                 onSubscribed: { [weak self] in
                     self?.view.startFlatLoading(showCancelDelay: 7, cancelCompletion: { [weak self] in

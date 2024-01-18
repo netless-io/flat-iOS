@@ -52,6 +52,8 @@ enum FlatApiError: Int, LocalizedError, CaseIterable {
     case RoomNotFoundAndIsPmi // room not found and the invite code is pmi
 
     case RoomReachLimit = 210_002
+    case RoomNotBegin = 210_004
+    case RoomCreateLimit = 210_005
 
     case PeriodicNotFound = 300_000
     case PeriodicIsEnded
