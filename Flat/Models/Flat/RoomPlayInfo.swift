@@ -10,11 +10,11 @@ import Foundation
 import RxSwift
 
 struct RoomPlayInfo: Codable {
-    struct BillingInfo: Codable {
-        // Time limit.
-        let limit: Int
-    }
-    let billing: BillingInfo
+//    struct BillingInfo: Codable {
+//        // Time limit.
+//        let limit: Int
+//    }
+//    let billing: BillingInfo
     let roomType: ClassRoomType
     let roomUUID: String
     let ownerUUID: String
