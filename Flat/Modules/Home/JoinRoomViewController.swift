@@ -51,7 +51,7 @@ class JoinRoomViewController: UIViewController {
     // MARK: - Action
 
     @objc func onClickJoin(_ sender: UIButton) {
-        guard let uuid = roomIdTextField.text?.replacingOccurrences(of: " ", with: ""),
+        guard let uuid = roomIdTextField.text?.getRoomUuid(),
                 !uuid.isEmpty
         else { return }
         
@@ -67,23 +67,6 @@ class JoinRoomViewController: UIViewController {
     }
 
     // MARK: - Private
-
-    fileprivate func getRoomUUIDFrom(_ str: String) -> String? {
-        if !str.isEmpty {
-            if let r = try? str.matchExpressionPattern("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"),
-               let url = URL(string: r),
-               Env().webBaseURL.contains(url.host ?? "")
-            {
-                let id = url.lastPathComponent
-                return id
-            } else if let num = try? str.matchExpressionPattern("[\\d\\s]+\\d$") {
-                let r = num.replacingOccurrences(of: " ", with: "")
-                return r
-            }
-        }
-        return nil
-    }
-
     func bindJoinEnable() {
         roomIdTextField.rx.text.orEmpty.asDriver()
             .map(\.isNotEmptyOrAllSpacing)
@@ -293,7 +276,7 @@ extension JoinRoomViewController: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn _: NSRange, replacementString string: String) -> Bool {
-        if let uuid = getRoomUUIDFrom(string) {
+        if let uuid = string.getRoomUuid(), uuid.count > 8 { // Paste from pastBoard.
             textField.text = uuid
             textField.sendActions(for: .valueChanged)
             return false

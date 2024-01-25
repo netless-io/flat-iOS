@@ -86,6 +86,9 @@
 		8A11CBF227201069001D0B1F /* String+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CBF127201069001D0B1F /* String+Error.swift */; };
 		8A11CC2C27202424001D0B1F /* CACornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */; };
 		8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A133529288FA21000C825DE /* MessageCensorRequest.swift */; };
+		8A13C17A2B62471D00290F8F /* String+RoomUuid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13C1792B62471D00290F8F /* String+RoomUuid.swift */; };
+		8A13C17C2B62482E00290F8F /* RoomUuidTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13C17B2B62482E00290F8F /* RoomUuidTest.swift */; };
+		8A13C17D2B62483700290F8F /* String+RoomUuid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13C1792B62471D00290F8F /* String+RoomUuid.swift */; };
 		8A1447E82A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447E72A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift */; };
 		8A1447EC2A8497BD00F5F9AD /* PasswordAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447EB2A8497BD00F5F9AD /* PasswordAuthView.swift */; };
 		8A1447EE2A8619A500F5F9AD /* String+regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1447ED2A8619A500F5F9AD /* String+regex.swift */; };
@@ -478,6 +481,8 @@
 		8A11CBF127201069001D0B1F /* String+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Error.swift"; sourceTree = "<group>"; };
 		8A11CC2B27202424001D0B1F /* CACornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CACornerMask+Extension.swift"; sourceTree = "<group>"; };
 		8A133529288FA21000C825DE /* MessageCensorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCensorRequest.swift; sourceTree = "<group>"; };
+		8A13C1792B62471D00290F8F /* String+RoomUuid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RoomUuid.swift"; sourceTree = "<group>"; };
+		8A13C17B2B62482E00290F8F /* RoomUuidTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUuidTest.swift; sourceTree = "<group>"; };
 		8A1447E72A80F8E700F5F9AD /* ClassroomViewController+rtcHideDragging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassroomViewController+rtcHideDragging.swift"; sourceTree = "<group>"; };
 		8A1447EB2A8497BD00F5F9AD /* PasswordAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAuthView.swift; sourceTree = "<group>"; };
 		8A1447ED2A8619A500F5F9AD /* String+regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+regex.swift"; sourceTree = "<group>"; };
@@ -1167,6 +1172,7 @@
 				8ACE3A292730CD4600BC37F7 /* CreateClassRoomViewController.swift */,
 				8A0CA23628BF4A860035F71A /* CameraPreviewView.swift */,
 				8AAE53CE2731153500C35796 /* JoinRoomViewController.swift */,
+				8A13C1792B62471D00290F8F /* String+RoomUuid.swift */,
 				8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */,
 				8A59FF8528D8410C00318407 /* JoinRoomInputAccessView.swift */,
 				8AFB942D28B7550100B8795D /* CameraMicToggleView.swift */,
@@ -1704,6 +1710,7 @@
 				8AB0AC602A948AFB006661E1 /* EnvTest.swift */,
 				8AEB402E2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift */,
 				8A2619B12AF49E02009599B1 /* RegexTest.swift */,
+				8A13C17B2B62482E00290F8F /* RoomUuidTest.swift */,
 				8A0085402AC135510053366B /* LogSensetiveTest.swift */,
 			);
 			path = Flat_Test;
@@ -2126,7 +2133,9 @@
 				8A0085422AC135560053366B /* SensetiveLogFilter.swift in Sources */,
 				8AEB40332B2851D300F0B9D6 /* Language.swift in Sources */,
 				8A2619B02AF49DE3009599B1 /* String+ReguarExpression.swift in Sources */,
+				8A13C17D2B62483700290F8F /* String+RoomUuid.swift in Sources */,
 				8AEB402F2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift in Sources */,
+				8A13C17C2B62482E00290F8F /* RoomUuidTest.swift in Sources */,
 				8A2619B22AF49E02009599B1 /* RegexTest.swift in Sources */,
 				8A0085412AC135510053366B /* LogSensetiveTest.swift in Sources */,
 				8A8392FA2B57AD01002262FA /* RoomExpireInfo.swift in Sources */,
@@ -2250,6 +2259,7 @@
 				8A21DABC279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift in Sources */,
 				8A8797F92B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift in Sources */,
 				8AAC69B32717E3EB00F9A3B4 /* User.swift in Sources */,
+				8A13C17A2B62471D00290F8F /* String+RoomUuid.swift in Sources */,
 				8A80209A27570A4A00F5691C /* CloudStorageTableViewCell.swift in Sources */,
 				8A97EBB12719993C00965185 /* JoinRoomInfo.swift in Sources */,
 				8A270B7427182B9300450DC6 /* UIColor+Extension.swift in Sources */,

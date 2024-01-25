@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Foundation
 
 final class RegexTest: XCTestCase {
     func testJoinRoomMatch() {
@@ -15,6 +16,7 @@ final class RegexTest: XCTestCase {
         print(num)
         
         let str1 = "1027 733 507"
+        
         let num1 = try? str1.matchExpressionPattern("[\\d\\s]+\\d$")
         print(num1)
         

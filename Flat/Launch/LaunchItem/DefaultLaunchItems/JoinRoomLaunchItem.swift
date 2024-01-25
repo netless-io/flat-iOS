@@ -17,39 +17,17 @@ class JoinRoomLaunchItem: LaunchItem {
 
     func shouldHandle(url: URL?, scene: UIScene) -> Bool {
         self.scene = scene as? UIWindowScene
-        if let url {
-            if url.scheme == "x-agora-flat-client",
-               url.host == "joinRoom",
-               let roomId = URLComponents(url: url, resolvingAgainstBaseURL: false)?
-               .queryItems?
-               .first(where: { $0.name == "roomUUID" })?
-               .value,
-               roomId.isNotEmptyOrAllSpacing
-            {
-                uuid = roomId
-                return true
-            } else if let roomId = getUniversalLinkRoomUUID(url) {
-                uuid = roomId
-                return true
-            }
+        if let roomUuid = url?.absoluteString.getRoomUuid() {
+            uuid = roomUuid
+            return true
         }
         return false
-    }
-
-    fileprivate func getUniversalLinkRoomUUID(_ url: URL) -> String? {
-        if url.pathComponents.contains("join"),
-           let roomUUID = url.pathComponents.last,
-           roomUUID.isNotEmptyOrAllSpacing
-        {
-            return roomUUID
-        }
-        return nil
     }
 
     func shouldHandle(userActivity: NSUserActivity, scene: UIScene) -> Bool {
         guard let url = userActivity.webpageURL else { return false }
         self.scene = scene as? UIWindowScene
-        if let roomId = getUniversalLinkRoomUUID(url) {
+        if let roomId = url.absoluteString.getRoomUuid() {
             uuid = roomId
             return true
         }
