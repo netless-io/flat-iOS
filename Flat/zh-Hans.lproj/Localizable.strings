@@ -300,6 +300,9 @@
 "EndRecording" = "结束录制";
 
 
+"Enter" = "进入";
+
+
 "Enter Room" = "进入房间";
 
 
@@ -765,6 +768,9 @@
 "RoomIsRunning" = "房间正在进行中";
 
 
+"RoomListCountString %d" = "%1$d 分钟后开始";
+
+
 "RoomNotBegin" = "房间未开始，开课前 5 分钟可进入，已将该房间添加到房间列表";
 
 
@@ -871,6 +877,9 @@
 
 
 "SplitScreenWarnings" = "窗口过小，请调整以展示完整内容";
+
+
+"Start" = "开始";
 
 
 "Start Class" = "立即开始";

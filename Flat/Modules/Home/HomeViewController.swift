@@ -389,7 +389,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: roomTableViewCellIdentifier, for: indexPath) as! RoomTableViewCell
-        cell.render(info: list[indexPath.row])
+        let info = list[indexPath.row]
+        cell.render(info: info)
+        cell.joinButtonCallback = { btn in
+            ClassroomCoordinator.shared.enterClassroom(uuid: info.roomUUID, periodUUID: info.periodicUUID, basicInfo: info, sender: btn)
+        }
         return cell
     }
 

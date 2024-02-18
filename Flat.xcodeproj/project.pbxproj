@@ -63,7 +63,7 @@
 		8A07E6322A8F64CD00796CA5 /* CompactLoginBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6312A8F64CD00796CA5 /* CompactLoginBackgroundView.swift */; };
 		8A07E6342A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6332A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift */; };
 		8A07E6362A8F6F3F00796CA5 /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07E6352A8F6F3F00796CA5 /* ProfileUpdate.swift */; };
-		8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */; };
+		8A09690227B3AC5A0051145B /* GetConfigRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A09690127B3AC5A0051145B /* GetConfigRequest.swift */; };
 		8A0A85F227ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */; };
 		8A0BD7B3274B3D2F00383E9D /* String+SplitSpecificLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */; };
 		8A0CA22328BC73FE0035F71A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0CA22228BC73FE0035F71A /* QuartzCore.framework */; };
@@ -344,6 +344,7 @@
 		8ADDEAA5296C002F00F2B7BE /* loading_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 8ADDEAA4296C002F00F2B7BE /* loading_dark.json */; };
 		8ADEDB6B28C602B600482EF2 /* UIColor+Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */; };
 		8ADF45BF2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF45BE2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift */; };
+		8AE1276F2B81DDC000F87B2A /* CancelRoomHistoryRequest copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE1276E2B81DDC000F87B2A /* CancelRoomHistoryRequest copy.swift */; };
 		8AE59C7628D184E900BAC8FC /* RecordQueryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */; };
 		8AE59C7828D1BA7B00BAC8FC /* UIButton+loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */; };
 		8AE59C7C28D302D500BAC8FC /* VideoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */; };
@@ -458,7 +459,7 @@
 		8A07E6312A8F64CD00796CA5 /* CompactLoginBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactLoginBackgroundView.swift; sourceTree = "<group>"; };
 		8A07E6332A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarNickNameSettingViewController.swift; sourceTree = "<group>"; };
 		8A07E6352A8F6F3F00796CA5 /* ProfileUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
-		8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelRoomHistoryRequest.swift; sourceTree = "<group>"; };
+		8A09690127B3AC5A0051145B /* GetConfigRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetConfigRequest.swift; sourceTree = "<group>"; };
 		8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Pods-Flat-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-Flat/Pods-Flat-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		8A0BD7B2274B3D2F00383E9D /* String+SplitSpecificLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SplitSpecificLength.swift"; sourceTree = "<group>"; };
 		8A0CA22228BC73FE0035F71A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -751,6 +752,7 @@
 		8ADDEAA4296C002F00F2B7BE /* loading_dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading_dark.json; sourceTree = "<group>"; };
 		8ADEDB6A28C602B600482EF2 /* UIColor+Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Level.swift"; sourceTree = "<group>"; };
 		8ADF45BE2A1DF2FA004898D4 /* ClassroomViewController+ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassroomViewController+ImagePicker.swift"; sourceTree = "<group>"; };
+		8AE1276E2B81DDC000F87B2A /* CancelRoomHistoryRequest copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CancelRoomHistoryRequest copy.swift"; sourceTree = "<group>"; };
 		8AE59C7528D184E900BAC8FC /* RecordQueryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordQueryRequest.swift; sourceTree = "<group>"; };
 		8AE59C7728D1BA7B00BAC8FC /* UIButton+loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+loading.swift"; sourceTree = "<group>"; };
 		8AE59C7B28D302D500BAC8FC /* VideoPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreviewView.swift; sourceTree = "<group>"; };
@@ -1549,7 +1551,8 @@
 				8A05C34127604576009BCA79 /* UploadFinishRequest.swift */,
 				8A05C35A2761E9AD009BCA79 /* CancelUploadRequest.swift */,
 				8A133529288FA21000C825DE /* MessageCensorRequest.swift */,
-				8A09690127B3AC5A0051145B /* CancelRoomHistoryRequest.swift */,
+				8AE1276E2B81DDC000F87B2A /* CancelRoomHistoryRequest copy.swift */,
+				8A09690127B3AC5A0051145B /* GetConfigRequest.swift */,
 			);
 			path = Flat;
 			sourceTree = "<group>";
@@ -2157,6 +2160,7 @@
 				8AAB06282762FD06006CAEF2 /* StartConvertRequest.swift in Sources */,
 				8AA348452A121E9300409124 /* ClassroomKeyboardRespondable.swift in Sources */,
 				8A9ACBFC271D603E00E7E7CE /* HomeTabBar.swift in Sources */,
+				8AE1276F2B81DDC000F87B2A /* CancelRoomHistoryRequest copy.swift in Sources */,
 				8A00853F2AC135100053366B /* SensetiveLogFilter.swift in Sources */,
 				8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */,
 				8AEF06A1276980590009904A /* UIButton+CheckBox.swift in Sources */,
@@ -2253,7 +2257,7 @@
 				8AD5224929B86D6D005095C5 /* CGRect+diff.swift in Sources */,
 				8A0CA22A28BCC4380035F71A /* FlatCompactAlertController.swift in Sources */,
 				8A07E6342A8F6C9500796CA5 /* AvatarNickNameSettingViewController.swift in Sources */,
-				8A09690227B3AC5A0051145B /* CancelRoomHistoryRequest.swift in Sources */,
+				8A09690227B3AC5A0051145B /* GetConfigRequest.swift in Sources */,
 				8A270BA12719686C00450DC6 /* LocaleManager.swift in Sources */,
 				8A8020932755F12600F5691C /* UIView+LoopForSuperView.swift in Sources */,
 				8A21DABC279FAA4C0060E25D /* UpdateRecordEndTimeRequest.swift in Sources */,

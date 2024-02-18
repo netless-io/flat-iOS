@@ -10,11 +10,14 @@ import Kingfisher
 import UIKit
 
 class RoomTableViewCell: UITableViewCell {
+    @IBOutlet var rightAreaContainer: UIView!
     @IBOutlet var calendarIcon: UIImageView!
     @IBOutlet var ownerAvatarView: UIImageView!
     @IBOutlet var roomTimeLabel: UILabel!
     @IBOutlet var roomTitleLabel: UILabel!
     @IBOutlet var recordIconView: UIImageView!
+    
+    var joinButtonCallback: ((UIButton?)->Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,6 +33,10 @@ class RoomTableViewCell: UITableViewCell {
                             inset: .init(top: 0, left: 64, bottom: 0, right: 16))
     }
 
+    @objc func onClickJoin(_ btn: UIButton) {
+        joinButtonCallback?(btn)
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         let path = UIBezierPath(roundedRect: bounds.inset(by: UIEdgeInsets(top: 1, left: 8, bottom: 2, right: 8)), cornerRadius: 6)
@@ -68,13 +75,8 @@ class RoomTableViewCell: UITableViewCell {
 
         roomTitleLabel.text = room.title
 
-        if room.roomStatus == .Started {
-            roomTimeLabel.text = localizeStrings(room.roomStatus.rawValue) + " " + timeStr
-            roomTimeLabel.textColor = .color(type: .success)
-        } else {
-            roomTimeLabel.text = dateStr + " " + timeStr
-            roomTimeLabel.textColor = .color(type: .text)
-        }
+        roomTimeLabel.text = dateStr + " " + timeStr
+        roomTimeLabel.textColor = .color(type: .text)
 
         calendarIcon.isHidden = (room.periodicUUID ?? "").isEmpty
 
@@ -84,7 +86,59 @@ class RoomTableViewCell: UITableViewCell {
         ownerAvatarView.kf.setImage(with: URL(string: room.ownerAvatarURL), options: [.processor(avatarProcessor), .transition(.fade(0.3))])
 
         recordIconView.isHidden = !room.hasRecord
+
+        rightStatusLabel.removeFromSuperview()
+        joinButton.removeFromSuperview()
+
+        let isTooEarlyInterval = TimeInterval(60 * 60) // 1 hour.
+        let joinEarlyInterval = Env().joinEarly
+        let interval = room.beginTime.timeIntervalSince(Date())
+        if interval > isTooEarlyInterval { // Show status only.
+            rightAreaContainer.addSubview(rightStatusLabel)
+            rightStatusLabel.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            rightStatusLabel.text = localizeStrings(room.roomStatus.rawValue)
+            if room.roomStatus != .Started {
+                rightStatusLabel.textColor = .color(type: .warning)
+            } else {
+                rightStatusLabel.textColor = .color(type: .success)
+            }
+        } else if interval > joinEarlyInterval { // Show count down.
+            rightAreaContainer.addSubview(rightStatusLabel)
+            rightStatusLabel.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            let minutes = Int(interval / 60)
+            rightStatusLabel.text = String(format: NSLocalizedString("RoomListCountString %d", comment: "Room count down label"), minutes)
+            rightStatusLabel.textColor = .color(type: .success)
+        } else { // Show button.
+            rightAreaContainer.addSubview(joinButton)
+            joinButton.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+                make.size.equalTo(CGSize(width: 80, height: 44))
+            }
+            if room.isOwner, room.roomStatus == .Idle {
+                joinButton.setTitle(localizeStrings("Start"), for: .normal)
+            } else {
+                joinButton.setTitle(localizeStrings("Enter"), for: .normal)
+            }
+        }
     }
 
     lazy var selectionShapeLayer = CAShapeLayer()
+    lazy var rightStatusLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textAlignment = .right
+        return label
+    }()
+
+    lazy var joinButton: FlatGeneralCrossButton = {
+        let btn = FlatGeneralCrossButton(type: .system)
+        btn.layer.borderWidth = 1
+        btn.layer.borderColor = UIColor.color(type: .primary, .strong).cgColor
+        btn.addTarget(self, action: #selector(onClickJoin))
+        return btn
+    }()
 }

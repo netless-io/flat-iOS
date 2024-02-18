@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,35 +30,32 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="right" translatesAutoresizingMaskIntoConstraints="NO" id="n3u-Wr-gKc">
-                        <rect key="frame" x="476" y="26" width="24" height="24"/>
-                    </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="C8f-iz-tdT">
-                        <rect key="frame" x="64" y="15" width="408" height="46"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="46" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="C8f-iz-tdT">
+                        <rect key="frame" x="64" y="15" width="332" height="46"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="LF9-ij-iKm">
-                                <rect key="frame" x="0.0" y="0.0" width="408" height="24"/>
+                                <rect key="frame" x="0.0" y="0.0" width="332" height="24"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="房间名房间名房间名房间名房间名房间名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ha-Hg-WhR">
-                                        <rect key="frame" x="0.0" y="0.0" width="294" height="24"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="房间名房间名房间名房间名房间名房间名房间名房间名房间名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ha-Hg-WhR">
+                                        <rect key="frame" x="0.0" y="0.0" width="272" height="24"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                         <color key="textColor" systemColor="systemBlueColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="room_calendar" translatesAutoresizingMaskIntoConstraints="NO" id="RN4-XQ-Mcr">
-                                        <rect key="frame" x="298" y="0.0" width="24" height="24"/>
+                                        <rect key="frame" x="276" y="0.0" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="fbd-cz-95s"/>
                                         </constraints>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="record" translatesAutoresizingMaskIntoConstraints="NO" id="weJ-ho-LZ8">
-                                        <rect key="frame" x="326" y="0.0" width="24" height="24"/>
+                                        <rect key="frame" x="304" y="0.0" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="dsY-wR-2LE"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vsr-3N-Zws">
-                                        <rect key="frame" x="354" y="0.0" width="54" height="24"/>
+                                        <rect key="frame" x="332" y="0.0" width="0.0" height="24"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
@@ -67,7 +64,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11月24日 · 今天" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EcH-QX-dha">
-                                <rect key="frame" x="0.0" y="28" width="408" height="18"/>
+                                <rect key="frame" x="0.0" y="28" width="332" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="GBf-Z6-YpC"/>
                                 </constraints>
@@ -77,16 +74,19 @@
                             </label>
                         </subviews>
                     </stackView>
+                    <view contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="88" placeholderIntrinsicHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="7rI-Hu-Pwk">
+                        <rect key="frame" x="412" y="18" width="88" height="40"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="n3u-Wr-gKc" secondAttribute="trailing" constant="16" id="0ca-Oz-e1H"/>
                     <constraint firstItem="C8f-iz-tdT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="15G-CY-5pa"/>
-                    <constraint firstAttribute="trailing" secondItem="C8f-iz-tdT" secondAttribute="trailing" constant="44" id="7wf-a9-KKQ"/>
-                    <constraint firstItem="n3u-Wr-gKc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="LjN-Fm-APH"/>
+                    <constraint firstAttribute="trailing" secondItem="7rI-Hu-Pwk" secondAttribute="trailing" constant="16" id="DWv-8e-wDm"/>
                     <constraint firstItem="DXd-Er-CdJ" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="OdM-tO-8d2"/>
                     <constraint firstItem="C8f-iz-tdT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="64" id="VNt-5R-rja"/>
+                    <constraint firstItem="7rI-Hu-Pwk" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gLk-jh-TV4"/>
                     <constraint firstItem="DXd-Er-CdJ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="lcG-AS-Kfa"/>
+                    <constraint firstItem="7rI-Hu-Pwk" firstAttribute="leading" secondItem="C8f-iz-tdT" secondAttribute="trailing" constant="16" id="yo2-pk-nTf"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -94,21 +94,21 @@
                 <outlet property="calendarIcon" destination="RN4-XQ-Mcr" id="g15-H7-FId"/>
                 <outlet property="ownerAvatarView" destination="DXd-Er-CdJ" id="E7P-EX-mt2"/>
                 <outlet property="recordIconView" destination="weJ-ho-LZ8" id="q3V-Gx-yJV"/>
+                <outlet property="rightAreaContainer" destination="7rI-Hu-Pwk" id="oh3-VI-7cz"/>
                 <outlet property="roomTimeLabel" destination="EcH-QX-dha" id="K2w-bl-FmD"/>
                 <outlet property="roomTitleLabel" destination="2ha-Hg-WhR" id="bZw-Jc-uh3"/>
             </connections>
-            <point key="canvasLocation" x="-2046" y="-347"/>
+            <point key="canvasLocation" x="-2072.463768115942" y="-328.125"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="record" width="24" height="24"/>
-        <image name="right" width="24" height="24"/>
         <image name="room_calendar" width="24" height="24"/>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -300,7 +300,13 @@
 "EndRecording" = "End Recording";
 
 
+"Enter" = "Enter";
+
+
 "Enter Room" = "Enter Room";
+
+
+"Enter Room Short" = "Enter";
 
 
 "Escape" = "Escape";
@@ -765,6 +771,9 @@
 "RoomIsRunning" = "The room is in progress";
 
 
+"RoomListCountString %d" = "%1$d minutes to go";
+
+
 "RoomNotBegin" = "Room not started, accessible 5 minutes before class starts, room added to room list";
 
 
@@ -874,6 +883,9 @@
 
 
 "SplitScreenWarnings" = "The window is too small, please adjust to show the full content";
+
+
+"Start" = "Start";
 
 
 "Start Class" = "Start";
