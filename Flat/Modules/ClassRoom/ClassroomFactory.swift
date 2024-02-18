@@ -170,7 +170,7 @@ enum ClassroomFactory {
                                                  inviteViewController: shareViewController,
                                                  isOwner: basicInfo.isOwner,
                                                  ownerUUID: playInfo.ownerUUID,
-                                                 beginTime: basicInfo.beginTime.timeIntervalSince(Date()) > 0 ? Date() :  basicInfo.beginTime)
+                                                 beginTime: basicInfo.beginTime)
         alertProvider.root = controller
         logger.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller

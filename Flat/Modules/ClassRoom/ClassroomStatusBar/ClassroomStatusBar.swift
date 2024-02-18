@@ -122,15 +122,12 @@ class ClassroomStatusBar: UIView {
     lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
-        label.textColor = .color(type: .text)
-        label.text = localizeStrings("classroomTimePassed") + ": "
         return label
     }()
 
     lazy var timeCountLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
-        label.textColor = .color(type: .text)
         return label
     }()
     
@@ -172,10 +169,24 @@ class ClassroomStatusBar: UIView {
     @objc func onTimer() {
         guard let beginTime else { return }
         let duration = Int(Date().timeIntervalSince(beginTime))
-        let hour = duration / 3600
-        let minutes = duration / 60 % 60
-        let seconds = duration % 60
-        timePassedString = String(format: "%02d:%02d:%02d", hour, minutes, seconds)
+        if duration < 0 {
+            let waitDuration = -duration
+            let hour = waitDuration / 3600
+            let minutes = waitDuration / 60 % 60
+            let seconds = waitDuration % 60
+            timeLabel.text = localizeStrings("DistanceToClass") + ": "
+            timePassedString = String(format: "%02d:%02d:%02d", hour, minutes, seconds)
+            timeLabel.textColor = .color(type: .text)
+            timeCountLabel.textColor = .color(type: .text)
+        } else {
+            let hour = duration / 3600
+            let minutes = duration / 60 % 60
+            let seconds = duration % 60
+            timeLabel.text = localizeStrings("classroomTimePassed") + ": "
+            timePassedString = String(format: "%02d:%02d:%02d", hour, minutes, seconds)
+            timeLabel.textColor = .color(type: .success)
+            timeCountLabel.textColor = .color(type: .success)
+        }
     }
     
     var timer: Timer?
