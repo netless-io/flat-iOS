@@ -51,7 +51,7 @@ func configAppearance() {
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var checkOSSVersionObserver: NSObjectProtocol?
+    var appActiveTaskObserver: NSObjectProtocol?
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         bootstrapLogger()
@@ -76,7 +76,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Siren.shared.apiManager = .init(country: .china)
         Siren.shared.rulesManager = .init(globalRules: .relaxed)
-        checkOSSVersionObserver = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
+        appActiveTaskObserver = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
+            // Check version.
             let url = Env().appUpdateCheckURL
             let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
             URLSession.shared.dataTask(with: request) { data, _, _ in
@@ -91,6 +92,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     Siren.shared.wail(performCheck: .onDemand)
                 } else {
                     Siren.shared.wail()
+                }
+
+                // Update config.
+                ApiProvider.shared.request(fromApi: GetConfigRequest()) { result in
+                    switch result {
+                    case let .success(config):
+                        logger.info("get flat config success \(config)")
+                        Env().updateJoinEarly(config.server.joinEarlySeconds)
+                    case let .failure(failure):
+                        logger.error("get flat config fail \(failure)")
+                    }
                 }
             }.resume()
         }

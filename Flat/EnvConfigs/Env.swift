@@ -131,6 +131,15 @@ struct Env {
     var slsAk: String {
         Bundle.main.infoDictionary?["SLS_AK"] as? String ?? ""
     }
+    
+    var joinEarly: TimeInterval {
+        let stored = UserDefaults.standard.value(forKey: "joinEarly") as? TimeInterval
+        return stored ?? (5 * 60)
+    }
+    
+    func updateJoinEarly(_ newValue: TimeInterval) {
+        UserDefaults.standard.setValue(newValue, forKey: "joinEarly")
+    }
 }
 
 private let googleAuthBaseUrl = "https://accounts.google.com/o/oauth2/v2/auth"
