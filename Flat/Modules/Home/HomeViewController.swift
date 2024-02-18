@@ -34,6 +34,8 @@ class HomeViewController: UIViewController {
             historyButton.isSelected = showingHistory
         }
     }
+    
+    var refreshTimer: Timer?
 
     lazy var list: [RoomBasicInfo] = [] {
         didSet {
@@ -49,11 +51,23 @@ class HomeViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         mainSplitViewController?.detailUpdateDelegate = self
         loadRooms(nil)
+        refreshTimer?.invalidate()
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
+            guard let self, let _ = self.view.window else { return }
+            // Stored selected.
+            let selectedIndexPath = self.tableView.indexPathForSelectedRow
+            self.tableView.reloadData()
+            if let selectedIndexPath {
+                self.tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+            }
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        refreshTimer?.invalidate()
+        refreshTimer = nil
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
