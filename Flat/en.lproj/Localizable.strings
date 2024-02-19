@@ -876,9 +876,6 @@
 "ShareMore" = "More";
 
 
-"Single person on stage hint" = "1 person is on stage";
-
-
 "SmallClass" = "SmallClass";
 
 
@@ -1210,9 +1207,6 @@
 
 
 "smsAuth" = "Via SMS";
-
-/*  */
-"then" = "";
 
 
 "whiteboard_save_annotation" = "Save Annotation";
