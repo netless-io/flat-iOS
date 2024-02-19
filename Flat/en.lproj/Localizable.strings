@@ -777,7 +777,7 @@
 "RoomListCountString %d" = "%1$d minutes to go";
 
 
-"RoomNotBegin" = "Room not started, accessible 5 minutes before class starts, room added to room list";
+"RoomNotBegin" = "Room not started, accessible 5 minutes before class starts";
 
 
 "RoomNotFound" = "Room does not exist";

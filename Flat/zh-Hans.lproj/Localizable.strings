@@ -774,7 +774,7 @@
 "RoomListCountString %d" = "%1$d 分钟后开始";
 
 
-"RoomNotBegin" = "房间未开始，开课前 5 分钟可进入，已将该房间添加到房间列表";
+"RoomNotBegin" = "房间未开始，开课前 5 分钟可进入";
 
 
 "RoomNotFound" = "房间不存在";
