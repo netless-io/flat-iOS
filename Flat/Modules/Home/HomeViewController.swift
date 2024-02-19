@@ -80,6 +80,7 @@ class HomeViewController: UIViewController {
         setupViews()
         observeNotification()
         observeClassLeavingNotification()
+        obserManualRefreshRoomListNotificatioin()
     }
 
     // MARK: - Action
@@ -227,6 +228,12 @@ class HomeViewController: UIViewController {
                 ws.applyAvatar()
             })
             .disposed(by: rx.disposeBag)
+    }
+    
+    func obserManualRefreshRoomListNotificatioin() {
+        NotificationCenter.default.addObserver(forName: classRoomListNeedRefreshNotificationName, object: nil, queue: .main) { [weak self] _ in
+            self?.loadRooms(nil)
+        }
     }
 
     func observeClassLeavingNotification() {

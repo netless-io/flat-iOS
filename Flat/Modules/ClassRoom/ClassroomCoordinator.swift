@@ -164,6 +164,12 @@ class ClassroomCoordinator: NSObject {
                 btn?.isLoading = false
                 weakSelf.currentClassroomUUID = nil
                 controller?.showAlertWith(message: error.localizedDescription)
+                
+                if let flatError = error as? FlatApiError {
+                    if flatError == .RoomNotBegin {
+                        NotificationCenter.default.post(name: classRoomListNeedRefreshNotificationName, object: nil)
+                    }
+                }
             })
             .disposed(by: rx.disposeBag)
     }
