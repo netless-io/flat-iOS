@@ -118,11 +118,6 @@ class RoomTableViewCell: UITableViewCell {
                 make.edges.equalToSuperview()
                 make.size.equalTo(CGSize(width: 80, height: 44))
             }
-            if room.isOwner, room.roomStatus == .Idle {
-                joinButton.setTitle(localizeStrings("Start"), for: .normal)
-            } else {
-                joinButton.setTitle(localizeStrings("Enter"), for: .normal)
-            }
         }
     }
 
@@ -137,6 +132,7 @@ class RoomTableViewCell: UITableViewCell {
     lazy var joinButton: FlatGeneralCrossButton = {
         let btn = FlatGeneralCrossButton(type: .system)
         btn.layer.borderWidth = 1
+        btn.setTitle(localizeStrings("Enter"), for: .normal)
         btn.layer.borderColor = UIColor.color(type: .primary, .strong).cgColor
         btn.addTarget(self, action: #selector(onClickJoin))
         return btn

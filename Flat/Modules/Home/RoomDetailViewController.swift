@@ -15,9 +15,6 @@ class RoomDetailViewController: UIViewController {
 
     func updateStatus(_ status: RoomStartStatus) {
         info?.roomStatus = status
-        if isViewLoaded {
-            updateEnterRoomButtonTitle()
-        }
     }
 
     func updateInfo(_ info: RoomBasicInfo) {
@@ -30,7 +27,6 @@ class RoomDetailViewController: UIViewController {
     func applyCurrentInfoToView() {
         updateViewWithCurrentStatus()
         updateAvailableActions()
-        updateEnterRoomButtonTitle()
     }
 
     // MARK: - LifeCycle
@@ -150,15 +146,6 @@ class RoomDetailViewController: UIViewController {
             let titleColor = UIColor.color(light: .grey6, dark: .grey3).resolvedColor(with: btn.traitCollection)
             btn.layer.borderColor = borderColor.cgColor
             btn.setTitleColor(titleColor, for: .normal)
-        }
-    }
-
-    func updateEnterRoomButtonTitle() {
-        guard let info else { return }
-        if info.isOwner, info.roomStatus == .Idle {
-            enterRoomButton.setTitle(localizeStrings("Start Class"), for: .normal)
-        } else {
-            enterRoomButton.setTitle(localizeStrings("Enter Room"), for: .normal)
         }
     }
 
