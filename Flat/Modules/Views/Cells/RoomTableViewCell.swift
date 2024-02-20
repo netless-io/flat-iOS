@@ -89,34 +89,42 @@ class RoomTableViewCell: UITableViewCell {
 
         rightStatusLabel.removeFromSuperview()
         joinButton.removeFromSuperview()
-
-        let isTooEarlyInterval = TimeInterval(60 * 60) // 1 hour.
-        let joinEarlyInterval = Env().joinEarly
-        let interval = room.beginTime.timeIntervalSince(Date())
-        if interval > isTooEarlyInterval { // Show status only.
-            rightAreaContainer.addSubview(rightStatusLabel)
-            rightStatusLabel.snp.makeConstraints { make in
+        arrowIcon.removeFromSuperview()
+        
+        if room.roomStatus == .Stopped { // History room.
+            rightAreaContainer.addSubview(arrowIcon)
+            arrowIcon.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
-            rightStatusLabel.text = localizeStrings(room.roomStatus.rawValue)
-            if room.roomStatus != .Started {
-                rightStatusLabel.textColor = .color(type: .warning)
-            } else {
+        } else {
+            let isTooEarlyInterval = TimeInterval(60 * 60) // 1 hour.
+            let joinEarlyInterval = Env().joinEarly
+            let interval = room.beginTime.timeIntervalSince(Date())
+            if interval > isTooEarlyInterval { // Show status only.
+                rightAreaContainer.addSubview(rightStatusLabel)
+                rightStatusLabel.snp.makeConstraints { make in
+                    make.edges.equalToSuperview()
+                }
+                rightStatusLabel.text = localizeStrings(room.roomStatus.rawValue)
+                if room.roomStatus != .Started {
+                    rightStatusLabel.textColor = .color(type: .warning)
+                } else {
+                    rightStatusLabel.textColor = .color(type: .success)
+                }
+            } else if interval > joinEarlyInterval { // Show count down.
+                rightAreaContainer.addSubview(rightStatusLabel)
+                rightStatusLabel.snp.makeConstraints { make in
+                    make.edges.equalToSuperview()
+                }
+                let minutes = Int(interval / 60)
+                rightStatusLabel.text = String(format: NSLocalizedString("RoomListCountString %d", comment: "Room count down label"), minutes)
                 rightStatusLabel.textColor = .color(type: .success)
-            }
-        } else if interval > joinEarlyInterval { // Show count down.
-            rightAreaContainer.addSubview(rightStatusLabel)
-            rightStatusLabel.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
-            let minutes = Int(interval / 60)
-            rightStatusLabel.text = String(format: NSLocalizedString("RoomListCountString %d", comment: "Room count down label"), minutes)
-            rightStatusLabel.textColor = .color(type: .success)
-        } else { // Show button.
-            rightAreaContainer.addSubview(joinButton)
-            joinButton.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-                make.size.equalTo(CGSize(width: 80, height: 44))
+            } else { // Show button.
+                rightAreaContainer.addSubview(joinButton)
+                joinButton.snp.makeConstraints { make in
+                    make.edges.equalToSuperview()
+                    make.size.equalTo(CGSize(width: 80, height: 44))
+                }
             }
         }
     }
@@ -127,6 +135,12 @@ class RoomTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 14)
         label.textAlignment = .right
         return label
+    }()
+    
+    lazy var arrowIcon: UIImageView = {
+        let view = UIImageView(image: UIImage(named: "right"))
+        view.contentMode = .right
+        return view
     }()
 
     lazy var joinButton: FlatGeneralCrossButton = {
