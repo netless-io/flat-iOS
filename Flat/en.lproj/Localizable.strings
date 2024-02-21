@@ -780,6 +780,9 @@
 "RoomNotBegin" = "Room not started, accessible 5 minutes before class starts";
 
 
+"RoomNotBeginAndAddList" = "Room not started, accessible 5 minutes before class starts, room added to room list";
+
+
 "RoomNotFound" = "Room does not exist";
 
 

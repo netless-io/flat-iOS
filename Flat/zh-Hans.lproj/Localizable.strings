@@ -777,6 +777,9 @@
 "RoomNotBegin" = "房间未开始，开课前 5 分钟可进入";
 
 
+"RoomNotBeginAndAddList" = "房间未开始，开课前 5 分钟可进入，已将该房间添加到房间列表";
+
+
 "RoomNotFound" = "房间不存在";
 
 
