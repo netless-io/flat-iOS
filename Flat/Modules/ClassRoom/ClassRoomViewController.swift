@@ -231,7 +231,8 @@ class ClassRoomViewController: UIViewController {
         bindTerminate()
         bindInvite()
         bindStatusBar()
-
+        bindStopped()
+        
         if isOwner {
             bindDeviceResponse()
             bindRecording()
@@ -239,9 +240,6 @@ class ClassRoomViewController: UIViewController {
         } else {
             bindDeviceRequest()
             bindDeviceNotifyOff()
-            // Only Teacher can stop the class,
-            // So Teacher do not have to receive the alert
-            bindStoped()
             bindUserRaiseHand()
         }
     }
@@ -271,10 +269,11 @@ class ClassRoomViewController: UIViewController {
             .disposed(by: rx.disposeBag)
     }
 
-    func bindStoped() {
-        viewModel.roomStoped
+    func bindStopped() {
+        viewModel.roomStopped
             .take(1)
             .subscribe(with: self, onNext: { weakSelf, _ in
+                guard !weakSelf.viewModel.isUserStopClass else { return } // If user click stop, do nothing.
                 if let _ = weakSelf.presentedViewController { weakSelf.dismiss(animated: false, completion: nil) }
                 weakSelf.showAlertWith(message: localizeStrings("Leaving room soon")) {
                     weakSelf.stopSubModulesAndLeaveUIHierarchy()

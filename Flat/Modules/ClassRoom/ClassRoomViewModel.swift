@@ -104,7 +104,7 @@ class ClassRoomViewModel {
         currentUser.map(\.status.isRaisingHand)
     }
 
-    var roomStoped: Observable<Void> {
+    var roomStopped: Observable<Void> {
         stateHandler.roomStartStatus
             .filter { $0 == .Stopped }
             .mapToVoid()
@@ -547,6 +547,7 @@ class ClassRoomViewModel {
                 // destructive only show when teacher can stop classroom
                 if model.style == .cancel { return .just(false) }
                 if model.style == .destructive {
+                    self.isUserStopClass = true
                     let stopRecordCommand: Single<Void> = self.recordModel == nil ? .just(()) : self.recordModel!.endRecord().asSingle()
                     return stopRecordCommand
                         .flatMap { [weak self] _ in
@@ -561,6 +562,7 @@ class ClassRoomViewModel {
             }
     }
 
+    var isUserStopClass = false
     var recordModel: RecordModel?
     struct RecordingOutput {
         let recording: Observable<Bool>

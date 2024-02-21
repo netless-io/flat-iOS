@@ -23,7 +23,7 @@ private let savedRecordModelKey = "RecordModelKey"
 private let defaultRecordMode: AgoraRecordMode = .mix
 
 // It start record when createModel function was called.
-// The model will saved in userDefaults. (The model will be cleaned when stop function was called or the model was queried as a stoped record)
+// The model will saved in userDefaults. (The model will be cleaned when stop function was called or the model was queried as a stopped record)
 // Try query saved model, every time before create new record model.
 class RecordModel: Codable {
     internal init(resourceId: String, sid: String, roomUUID: String, startDate: Date, currentLayout: MixLayout) {
