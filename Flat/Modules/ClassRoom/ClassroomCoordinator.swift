@@ -166,7 +166,10 @@ class ClassroomCoordinator: NSObject {
                 controller?.showAlertWith(message: error.localizedDescription)
                 
                 if let flatError = error as? FlatApiError {
-                    if flatError == .RoomNotBeginAndAddList {
+                    if flatError == .RoomNotBeginAndAddList ||
+                        flatError == .RoomIsEnded ||
+                        flatError == .RoomNotFound
+                    {
                         NotificationCenter.default.post(name: classRoomListNeedRefreshNotificationName, object: nil)
                     }
                 }
