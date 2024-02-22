@@ -51,7 +51,7 @@ class RoomTableViewCell: UITableViewCell {
         }
     }
 
-    func render(info room: RoomBasicInfo) {
+    func render(info room: RoomBasicInfo, isOnSplitView: Bool = false) {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd"
         if let code = LocaleManager.languageCode {
@@ -97,10 +97,7 @@ class RoomTableViewCell: UITableViewCell {
                 make.edges.equalToSuperview()
             }
         } else {
-            let isTooEarlyInterval = TimeInterval(60 * 60) // 1 hour.
-            let joinEarlyInterval = Env().joinEarly
-            let interval = room.beginTime.timeIntervalSince(Date())
-            if interval > isTooEarlyInterval { // Show status only.
+            func showStatus() {
                 rightAreaContainer.addSubview(rightStatusLabel)
                 rightStatusLabel.snp.makeConstraints { make in
                     make.edges.equalToSuperview()
@@ -111,6 +108,13 @@ class RoomTableViewCell: UITableViewCell {
                 } else {
                     rightStatusLabel.textColor = .color(type: .success)
                 }
+            }
+            
+            let isTooEarlyInterval = TimeInterval(60 * 60) // 1 hour.
+            let joinEarlyInterval = Env().joinEarly
+            let interval = room.beginTime.timeIntervalSince(Date())
+            if interval > isTooEarlyInterval { // Show status only.
+                showStatus()
             } else if interval > joinEarlyInterval { // Show count down.
                 rightAreaContainer.addSubview(rightStatusLabel)
                 rightStatusLabel.snp.makeConstraints { make in
@@ -120,10 +124,14 @@ class RoomTableViewCell: UITableViewCell {
                 rightStatusLabel.text = String(format: NSLocalizedString("RoomListCountString %d", comment: "Room count down label"), minutes)
                 rightStatusLabel.textColor = .color(type: .success)
             } else { // Show button.
-                rightAreaContainer.addSubview(joinButton)
-                joinButton.snp.makeConstraints { make in
-                    make.edges.equalToSuperview()
-                    make.size.equalTo(CGSize(width: 80, height: 44))
+                if isOnSplitView {
+                    showStatus()
+                } else {
+                    rightAreaContainer.addSubview(joinButton)
+                    joinButton.snp.makeConstraints { make in
+                        make.edges.equalToSuperview()
+                        make.size.equalTo(CGSize(width: 60, height: 30))
+                    }
                 }
             }
         }
@@ -145,7 +153,9 @@ class RoomTableViewCell: UITableViewCell {
 
     lazy var joinButton: FlatGeneralCrossButton = {
         let btn = FlatGeneralCrossButton(type: .system)
+        btn.titleLabel?.font = .systemFont(ofSize: 14)
         btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 8
         btn.setTitle(localizeStrings("Enter"), for: .normal)
         btn.layer.borderColor = UIColor.color(type: .primary, .strong).cgColor
         btn.addTarget(self, action: #selector(onClickJoin))

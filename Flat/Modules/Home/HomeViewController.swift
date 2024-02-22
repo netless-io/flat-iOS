@@ -397,7 +397,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: roomTableViewCellIdentifier, for: indexPath) as! RoomTableViewCell
         let info = list[indexPath.row]
-        cell.render(info: info)
+        cell.render(info: info, isOnSplitView: mainContainer?.hasSideBar ?? false)
         cell.joinButtonCallback = { btn in
             ClassroomCoordinator.shared.enterClassroom(uuid: info.roomUUID, periodUUID: info.periodicUUID, basicInfo: info, sender: btn)
         }
