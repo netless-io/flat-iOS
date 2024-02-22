@@ -399,7 +399,7 @@
 "Home" = "Home";
 
 
-"Idle" = "Idle";
+"Idle" = "Upcoming";
 
 
 "Illegal words" = "Illegal words, please replace and try again";
@@ -774,7 +774,7 @@
 "RoomIsRunning" = "The room is in progress";
 
 
-"RoomListCountString %d" = "%1$d minutes to go";
+"RoomListCountString %d" = "In %1$d minutes";
 
 
 "RoomNotBegin" = "Room not started, accessible 5 minutes before class starts";
