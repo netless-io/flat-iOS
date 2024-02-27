@@ -204,8 +204,8 @@ class Rtc: NSObject {
 
         let agoraKitConfig = AgoraRtcEngineConfig()
         agoraKitConfig.appId = appId
-        agoraKitConfig.areaCode = .CN
-        agoraKitConfig.channelProfile = .liveBroadcasting // 只用 liveBroadcasting 因为另一个模式会导致 airpodspro 2 无法使用 //communication ? .communication : .liveBroadcasting
+        agoraKitConfig.areaCode = .global
+        agoraKitConfig.channelProfile = communication ? .communication : .liveBroadcasting
         agoraKit = .sharedEngine(with: agoraKitConfig, delegate: self)
 
         agoraKit.setLogFile("") // set to default path
