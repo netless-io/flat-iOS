@@ -208,6 +208,8 @@
 		8A8507EF27E180A00072AF49 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */; };
 		8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */; };
 		8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */; };
+		8A86C6A52B8F4318000CF7CC /* RemoteConfigReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */; };
+		8A86C6A82B906515000CF7CC /* RemoteConfigReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */; };
 		8A8797F92B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */; };
 		8A8A240329879F63008319BB /* ClassroomStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A240229879F63008319BB /* ClassroomStatusBar.swift */; };
 		8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */; };
@@ -607,6 +609,7 @@
 		8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
 		8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageInClassViewController.swift; sourceTree = "<group>"; };
 		8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSAuthView.swift; sourceTree = "<group>"; };
+		8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigReader.swift; sourceTree = "<group>"; };
 		8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryJoinRoomPickerViewController.swift; sourceTree = "<group>"; };
 		8A8A240229879F63008319BB /* ClassroomStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStatusBar.swift; sourceTree = "<group>"; };
 		8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+keyboard.swift"; sourceTree = "<group>"; };
@@ -1483,6 +1486,7 @@
 			isa = PBXGroup;
 			children = (
 				8AD3CDEF27168F25008BD904 /* Env.swift */,
+				8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */,
 				8AB0AC3F2A9355A6006661E1 /* Env+Whiteboard.swift */,
 				8AD3CDEC27168E75008BD904 /* Develop.xcconfig */,
 				8A4C7A7527F2E53B006988C6 /* Flint_Develop.xcconfig */,
@@ -2137,6 +2141,7 @@
 				8AEB40332B2851D300F0B9D6 /* Language.swift in Sources */,
 				8A2619B02AF49DE3009599B1 /* String+ReguarExpression.swift in Sources */,
 				8A13C17D2B62483700290F8F /* String+RoomUuid.swift in Sources */,
+				8A86C6A82B906515000CF7CC /* RemoteConfigReader.swift in Sources */,
 				8AEB402F2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift in Sources */,
 				8A13C17C2B62482E00290F8F /* RoomUuidTest.swift in Sources */,
 				8A2619B22AF49E02009599B1 /* RegexTest.swift in Sources */,
@@ -2403,6 +2408,7 @@
 				8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */,
 				8A07E6282A8F1D3300796CA5 /* AppleBinding.swift in Sources */,
 				8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */,
+				8A86C6A52B8F4318000CF7CC /* RemoteConfigReader.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */,
 				8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */,

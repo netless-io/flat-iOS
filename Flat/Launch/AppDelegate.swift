@@ -15,6 +15,7 @@ import Kingfisher
 import Siren
 import UIKit
 
+var remoteConfigReader = RemoteConfigReader()
 var globalSessionId = UUID().uuidString
 
 var didStartGoogleAnalytics = false
@@ -24,6 +25,7 @@ func startGoogleAnalytics() {
     if let uid = AuthStore.shared.user?.userUUID, !uid.isEmpty {
         Crashlytics.crashlytics().setUserID(uid)
     }
+    remoteConfigReader.setupRemoteConfig()
     didStartGoogleAnalytics = true
 }
 
@@ -77,6 +79,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Siren.shared.apiManager = .init(country: .china)
         Siren.shared.rulesManager = .init(globalRules: .relaxed)
         appActiveTaskObserver = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
+            // Remote config.
+            remoteConfigReader.refresh()
+            
             // Check version.
             let url = Env().appUpdateCheckURL
             let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
