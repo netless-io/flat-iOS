@@ -68,7 +68,6 @@ class Rtc: NSObject {
         }
     }
     
-    
     @objc fileprivate func _updateAINS() {
         let isAINS = PerferrenceManager.shared.preferences[.ains] ?? true
         logger.info("update ains \(isAINS)")
@@ -267,6 +266,16 @@ class Rtc: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleCameraNotification), name: classroomSettingNeedToggleCameraNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleFronMirrorNotification), name: classroomSettingNeedToggleFrontMirrorNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(_updateAINS), name: ainsPreferenceUpdateNotificaton, object: nil)
+        if remoteConfigReader.useRTCWorkaround {
+            rtcVideoRotateErrorWorkaround()
+            NotificationCenter.default.addObserver(self, selector: #selector(rtcVideoRotateErrorWorkaround), name: UIApplication.didBecomeActiveNotification, object: nil)
+        }
+    }
+    
+    @objc func rtcVideoRotateErrorWorkaround() {
+        NotificationCenter.default.post(name: UIApplication.willChangeStatusBarOrientationNotification, object: UIApplication.shared, userInfo: [
+            UIApplication.statusBarOrientationUserInfoKey: NSNumber(value: UIApplication.shared.statusBarOrientation.rawValue)
+        ])
     }
 }
 
