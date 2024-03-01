@@ -14,6 +14,8 @@ enum RemoteConfigKeys: String, CaseIterable {
 }
 
 /// Only type  String  / NSNumber / Bool  yet. (Remind, do not use bool directly. Use NSNumber)
+/// Server bool value will result in number value. And server 'true' will result in iOS false.
+/// Do not use bool value in server. Do not use bool value in server. Do not use bool value in server. Use number instead !!!
 class RemoteConfigReader {
     var useRTCWorkaround: Bool {
         let r: NSNumber? = value(for: .useRTCWorkaround)
