@@ -209,7 +209,6 @@
 		8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */; };
 		8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */; };
 		8A86C6A52B8F4318000CF7CC /* RemoteConfigReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */; };
-		8A86C6A82B906515000CF7CC /* RemoteConfigReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */; };
 		8A8797F92B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */; };
 		8A8A240329879F63008319BB /* ClassroomStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A240229879F63008319BB /* ClassroomStatusBar.swift */; };
 		8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */; };
@@ -2141,7 +2140,6 @@
 				8AEB40332B2851D300F0B9D6 /* Language.swift in Sources */,
 				8A2619B02AF49DE3009599B1 /* String+ReguarExpression.swift in Sources */,
 				8A13C17D2B62483700290F8F /* String+RoomUuid.swift in Sources */,
-				8A86C6A82B906515000CF7CC /* RemoteConfigReader.swift in Sources */,
 				8AEB402F2B28503000F0B9D6 /* ApiErrorLocalizeTest.swift in Sources */,
 				8A13C17C2B62482E00290F8F /* RoomUuidTest.swift in Sources */,
 				8A2619B22AF49E02009599B1 /* RegexTest.swift in Sources */,
