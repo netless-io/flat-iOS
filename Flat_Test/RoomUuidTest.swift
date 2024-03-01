@@ -11,33 +11,33 @@ import Foundation
 
 final class RoomUuidTest: XCTestCase {
     func testEmpty() {
-        XCTAssert("".getRoomUuid() == nil)
+        XCTAssert("".getRoomUuidFromLink() == nil)
     }
     
     func testLink() {
         let id = "17197550784"
         let link = "\(Env().webBaseURL)/join/\(id)"
-        XCTAssert(link.getRoomUuid() == id)
+        XCTAssert(link.getRoomUuidFromLink() == id)
     }
     
     func testRawUuid() {
         let uuid = "CN-2d7824a1-250b-4eda-a930-9259240444b3/a336258f-af1a-4a61-b2d5-5cb9e6d28a56"
-        XCTAssert(uuid.getRoomUuid() == uuid)
+        XCTAssert(uuid.getRoomUuidFromLink() == nil)
     }
     
     func testWhitespaceNumber() {
         let number = "  100 200 300  "
-        XCTAssert(number.getRoomUuid() == "100200300")
+        XCTAssert(number.ignoreWhiteSpace() == "100200300")
     }
     
     func testTableSpace() {
         let number = "\t100 200 300"
-        XCTAssert(number.getRoomUuid() == "100200300")
+        XCTAssert(number.ignoreWhiteSpace() == "100200300")
     }
     
     func testCustomScheme() {
         let str = "x-agora-flat-client://joinRoom?roomUUID=17197550784"
-        XCTAssert(str.getRoomUuid() == "17197550784")
+        XCTAssert(str.getRoomUuidFromLink() == "17197550784")
     }
     
     func testFromLongContext() {
@@ -50,6 +50,6 @@ final class RoomUuidTest: XCTestCase {
 房间号：1719 755 0784
 加入链接：\(Env().webBaseURL)/join/17197550784
 """
-        XCTAssert(str.getRoomUuid() == "17197550784")
+        XCTAssert(str.getRoomUuidFromLink() == "17197550784")
     }
 }

@@ -51,7 +51,7 @@ class JoinRoomViewController: UIViewController {
     // MARK: - Action
 
     @objc func onClickJoin(_ sender: UIButton) {
-        guard let uuid = roomIdTextField.text?.getRoomUuid(),
+        guard let uuid = roomIdTextField.text?.ignoreWhiteSpace(),
                 !uuid.isEmpty
         else { return }
         
@@ -276,7 +276,7 @@ extension JoinRoomViewController: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn _: NSRange, replacementString string: String) -> Bool {
-        if let uuid = string.getRoomUuid(), uuid.count > 8 { // Paste from pastBoard.
+        if let uuid = string.getRoomUuidFromLink(), uuid.count > 8 { // Paste from pastBoard.
             textField.text = uuid
             textField.sendActions(for: .valueChanged)
             return false

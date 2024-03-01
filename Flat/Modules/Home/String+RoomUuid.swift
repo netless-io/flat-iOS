@@ -9,7 +9,7 @@
 import Foundation
 
 extension String {
-    func getRoomUuid() -> String? {
+    func getRoomUuidFromLink() -> String? {
         if isEmpty { return nil }
         // Get link from long context.
         if let link = try? matchExpressionPattern("https?://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]") {
@@ -30,7 +30,11 @@ extension String {
                 }
             }
         }
-        // Get from raw uuid and replacing white space.
-        return filter { !$0.isWhitespace }
+        
+        return nil
+    }
+    
+    func ignoreWhiteSpace() -> String {
+        filter { !$0.isWhitespace }
     }
 }

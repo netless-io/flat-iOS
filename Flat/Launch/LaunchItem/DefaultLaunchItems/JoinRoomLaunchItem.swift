@@ -17,7 +17,7 @@ class JoinRoomLaunchItem: LaunchItem {
 
     func shouldHandle(url: URL?, scene: UIScene) -> Bool {
         self.scene = scene as? UIWindowScene
-        if let roomUuid = url?.absoluteString.getRoomUuid() {
+        if let roomUuid = url?.absoluteString.getRoomUuidFromLink() {
             uuid = roomUuid
             return true
         }
@@ -27,7 +27,7 @@ class JoinRoomLaunchItem: LaunchItem {
     func shouldHandle(userActivity: NSUserActivity, scene: UIScene) -> Bool {
         guard let url = userActivity.webpageURL else { return false }
         self.scene = scene as? UIWindowScene
-        if let roomId = url.absoluteString.getRoomUuid() {
+        if let roomId = url.absoluteString.getRoomUuidFromLink() {
             uuid = roomId
             return true
         }
