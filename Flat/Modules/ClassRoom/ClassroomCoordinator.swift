@@ -163,7 +163,19 @@ class ClassroomCoordinator: NSObject {
             }, onFailure: { weakSelf, error in
                 btn?.isLoading = false
                 weakSelf.currentClassroomUUID = nil
-                controller?.showAlertWith(message: error.localizedDescription)
+                if let flatError = error as? FlatApiError {
+                    if flatError == .RoomNotBegin {
+                        let errorStr = String(format: NSLocalizedString("RoomNotBegin %d", comment: "room not begin alert"), Int(Env().joinEarly / 60))
+                        controller?.showAlertWith(message: errorStr)
+                    } else if flatError == .RoomNotBeginAndAddList {
+                        let errorStr = String(format: NSLocalizedString("RoomNotBeginAndAddList %d", comment: "room not begin alert"), Int(Env().joinEarly / 60))
+                        controller?.showAlertWith(message: errorStr)
+                    } else {
+                        controller?.showAlertWith(message: error.localizedDescription)
+                    }
+                } else {
+                    controller?.showAlertWith(message: error.localizedDescription)
+                }
                 
                 if let flatError = error as? FlatApiError {
                     if flatError == .RoomNotBeginAndAddList ||
