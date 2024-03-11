@@ -11,6 +11,7 @@ import XCTest
 class ApiErrorLocalizeTest: XCTestCase {
     func testUnlocalizedError() {
         let allErrors = FlatApiError.allCases
+            .filter { $0 != .RoomNotBegin && $0 != .RoomNotBeginAndAddList } // Exclude special error.
         let unlocalizedErrors = allErrors.filter { error in
             error.errorDescription == String(describing: error)
         }
