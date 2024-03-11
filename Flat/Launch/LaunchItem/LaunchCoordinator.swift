@@ -24,19 +24,12 @@ class LaunchCoordinator {
     init(authStore: AuthStore, defaultLaunchItems: [LaunchItem]) {
         self.authStore = authStore
         defaultLaunchItems.forEach { registerLaunchItem($0, identifier: String(describing: $0)) }
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(onLoginSuccess),
-                                               name: loginSuccessNotificationName,
-                                               object: nil)
     }
-    
-    @objc func onLoginSuccess(_ notification: Notification) {
-        guard let user = notification.userInfo?["user"] as? User else { return }
-        hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user) }
-        hitItems = []
-        updateAliSlsLogger(uid: user.userUUID)
+
+    func performHitItemsAfterLoginSuccessWindowReadyWithUserInfo(_ user: User) {
+            hitItems.forEach { $0.afterLoginSuccessImplementation(withLaunchCoordinator: self, user: user) }
+            hitItems = []
     }
-    
 
     func registerLaunchItem(_ item: LaunchItem, identifier: String) {
         launchItems[identifier] = item

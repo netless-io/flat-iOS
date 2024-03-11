@@ -88,12 +88,14 @@ class SceneManager {
     @objc
     func onLoginSuccess(_ notification: Notification) {
         guard let user = notification.userInfo?["user"] as? User else { return }
+        updateAliSlsLogger(uid: user.userUUID)
         for (identifier, window) in windowMap {
             guard let scene = window.windowScene else { return }
             logger.info("sceneManager: setup with login success \(identifier)")
             config(windowScene: scene, user: user)
         }
         refreshMultiWindowPreview()
+        globalLaunchCoordinator.performHitItemsAfterLoginSuccessWindowReadyWithUserInfo(user)
     }
 
     @objc
