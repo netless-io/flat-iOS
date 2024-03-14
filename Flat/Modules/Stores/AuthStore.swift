@@ -38,7 +38,7 @@ class AuthStore {
             } catch {
               // Logger may not be ready...
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                  logger.error("decode user error, \(error)")
+                  globalLogger.error("decode user error, \(error)")
               }
             }
         }
@@ -102,7 +102,7 @@ class AuthStore {
             let data = try JSONEncoder().encode(user)
             UserDefaults.standard.setValue(data, forKey: userDefaultKey)
         } catch {
-            logger.error("encode user error \(error)")
+            globalLogger.error("encode user error \(error)")
         }
         self.user = user
         if relogin {
@@ -118,7 +118,7 @@ class AuthStore {
             .take(1)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { weakSelf, _ in
-                logger.error("post jwt expire notification")
+                globalLogger.error("post jwt expire notification")
                 ApiProvider.shared.cancelAllTasks()
                 NotificationCenter.default.post(name: jwtExpireNotificationName, object: nil)
             })

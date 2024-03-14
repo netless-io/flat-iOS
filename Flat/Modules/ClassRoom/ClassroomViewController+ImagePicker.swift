@@ -15,7 +15,7 @@ extension ClassRoomViewController: UIImagePickerControllerDelegate, UINavigation
             let image = info[.originalImage] as? UIImage,
             let imageData = image.jpegData(compressionQuality: 0.1)
         else {
-            logger.error("Get image data fail")
+            globalLogger.error("Get image data fail")
             toast("Get image data fail")
             return
         }
@@ -48,7 +48,7 @@ extension ClassRoomViewController: UIImagePickerControllerDelegate, UINavigation
                 .disposed(by: rx.disposeBag)
         }
         catch {
-            logger.error("write tmp image to path error \(error)")
+            globalLogger.error("write tmp image to path error \(error)")
         }
     }
     

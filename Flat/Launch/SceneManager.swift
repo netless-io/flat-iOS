@@ -38,7 +38,7 @@ class SceneManager {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let identifier = windowScene.session.persistentIdentifier
         if !setupedSceneIdentifierSet.contains(identifier) {
-            logger.info("sceneManager: setup \(identifier)")
+            globalLogger.info("sceneManager: setup \(identifier)")
             config(windowScene: windowScene, user: AuthStore.shared.user)
             setupedSceneIdentifierSet.insert(identifier)
         }
@@ -68,7 +68,7 @@ class SceneManager {
     func disconnect(scene: UIScene) {
         guard let windowScene = scene as? UIWindowScene else { return }
         let identifier = windowScene.session.persistentIdentifier
-        logger.info("sceneManager: disconnect \(identifier)")
+        globalLogger.info("sceneManager: disconnect \(identifier)")
         windowMap.removeValue(forKey: windowScene.session.persistentIdentifier)
         setupedSceneIdentifierSet.remove(identifier)
     }
@@ -91,7 +91,7 @@ class SceneManager {
         updateAliSlsLogger(uid: user.userUUID)
         for (identifier, window) in windowMap {
             guard let scene = window.windowScene else { return }
-            logger.info("sceneManager: setup with login success \(identifier)")
+            globalLogger.info("sceneManager: setup with login success \(identifier)")
             config(windowScene: scene, user: user)
         }
         refreshMultiWindowPreview()
@@ -104,10 +104,10 @@ class SceneManager {
         for (identifier, window) in windowMap {
             guard let scene = window.windowScene else { return }
             if scene === pickedRandomScene {
-                logger.info("sceneManager: logout keep scene \(scene)")
+                globalLogger.info("sceneManager: logout keep scene \(scene)")
                 config(windowScene: scene, user: nil)
             } else {
-                logger.info("sceneManager: destruct scene \(identifier)")
+                globalLogger.info("sceneManager: destruct scene \(identifier)")
                 UIApplication.shared.requestSceneSessionDestruction(scene.session, options: nil)
             }
         }

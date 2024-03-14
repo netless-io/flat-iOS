@@ -49,7 +49,7 @@ class AppleLogin: NSObject, ASAuthorizationControllerDelegate {
 
     func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
         // Show nothing for apple login error. Just log it.
-        logger.debug("apple login fail \(error.localizedDescription)")
+        globalLogger.debug("apple login fail \(error.localizedDescription)")
         handler?(.failure(""))
         handler = nil
     }

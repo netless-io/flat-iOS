@@ -57,7 +57,7 @@ class Rtc: NSObject {
         } else {
             agoraKit.stopPreview()
         }
-        logger.info("update local user status camera: \(localCameraOn)")
+        globalLogger.info("update local user status camera: \(localCameraOn)")
         updateClienRoleIfNeed()
     }
 
@@ -70,7 +70,7 @@ class Rtc: NSObject {
     
     @objc fileprivate func _updateAINS() {
         let isAINS = PerferrenceManager.shared.preferences[.ains] ?? true
-        logger.info("update ains \(isAINS)")
+        globalLogger.info("update ains \(isAINS)")
         // 4.2 的 AI 降噪
         agoraKit.setAINSMode(isAINS, mode: .AINS_MODE_BALANCED)
     }
@@ -78,7 +78,7 @@ class Rtc: NSObject {
     private func _performAudioStateUpdate() {
         agoraKit.enableLocalAudio(localAudioOn)
         agoraKit.muteLocalAudioStream(!localAudioOn)
-        logger.info("update local user status mic: \(localAudioOn)")
+        globalLogger.info("update local user status mic: \(localAudioOn)")
         updateClienRoleIfNeed()
     }
 
@@ -87,7 +87,7 @@ class Rtc: NSObject {
             if !isBroadcaster {
                 isBroadcaster = true
                 let result = agoraKit.setClientRole(.broadcaster)
-                logger.info("set client role broadcaster \(result)")
+                globalLogger.info("set client role broadcaster \(result)")
                 return
             }
         }
@@ -95,7 +95,7 @@ class Rtc: NSObject {
             if isBroadcaster {
                 isBroadcaster = false
                 let result = agoraKit.setClientRole(.audience)
-                logger.info("set client role audience \(result)")
+                globalLogger.info("set client role audience \(result)")
                 return
             }
         }
@@ -149,7 +149,7 @@ class Rtc: NSObject {
             localCameraOn = cameraOn
         } else {
             targetLocalCamera = cameraOn
-            logger.trace("update local user status camera: \(cameraOn) to target")
+            globalLogger.trace("update local user status camera: \(cameraOn) to target")
         }
     }
 
@@ -159,7 +159,7 @@ class Rtc: NSObject {
             localAudioOn = micOn
         } else {
             targetLocalMic = micOn
-            logger.trace("update local user status mic: \(micOn) to target")
+            globalLogger.trace("update local user status mic: \(micOn) to target")
         }
     }
 
@@ -239,12 +239,12 @@ class Rtc: NSObject {
             canvas.renderMode = .hidden
             self?.localVideoCanvas = canvas
 
-            logger.info("start join channel: \(channelId) uid: \(uid)")
+            globalLogger.info("start join channel: \(channelId) uid: \(uid)")
             self?.agoraKit.joinChannel(byToken: token,
                                        channelId: channelId,
                                        info: nil,
                                        uid: uid, joinSuccess: { [weak self] msg, _, elapsed in
-                                           logger.info("end join \(msg), elapsed \(elapsed)")
+                                           globalLogger.info("end join \(msg), elapsed \(elapsed)")
                                            self?.isJoined.accept(true)
                                        })
         }
@@ -281,15 +281,15 @@ class Rtc: NSObject {
 
 extension Rtc: AgoraRtcEngineDelegate {
     func rtcEngine(_: AgoraRtcEngineKit, didOccurWarning warningCode: AgoraWarningCode) {
-        logger.warning("didOccurWarning \(warningCode)")
+        globalLogger.warning("didOccurWarning \(warningCode)")
     }
 
     func rtcEngine(_: AgoraRtcEngineKit, didOccurError errorCode: AgoraErrorCode) {
-        logger.error("didOccurError \(errorCode)")
+        globalLogger.error("didOccurError \(errorCode)")
     }
 
     func rtcEngineConnectionDidLost(_: AgoraRtcEngineKit) {
-        logger.error("lost connection")
+        globalLogger.error("lost connection")
         errorPublisher.accept(.connectionLost)
     }
 
@@ -301,7 +301,7 @@ extension Rtc: AgoraRtcEngineDelegate {
             isJoined.accept(true)
         @unknown default: break
         }
-        logger.info("connectionChangedTo \(state) \(reason)")
+        globalLogger.info("connectionChangedTo \(state) \(reason)")
     }
 
     func rtcEngine(_: AgoraRtcEngineKit, reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], totalVolume _: Int) {

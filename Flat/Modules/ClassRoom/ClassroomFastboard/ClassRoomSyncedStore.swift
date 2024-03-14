@@ -68,50 +68,50 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
     weak var delegate: FlatSyncedStoreCommandDelegate?
 
     func setup(with displayer: WhiteDisplayer) {
-        logger.info("setup room")
+        globalLogger.info("setup room")
         isConnected = false
         syncStore = displayer.obtainSyncedStore()
         let group = DispatchGroup()
         var error: Error?
 
-        logger.trace("connect \(deviceStateName)")
+        globalLogger.trace("connect \(deviceStateName)")
         group.enter()
         syncStore.connectStorage(deviceStateName, defaultValue: [:]) { _, err in
             if let err { error = err }
-            logger.trace("connect \(deviceStateName) success")
+            globalLogger.trace("connect \(deviceStateName) success")
             group.leave()
         }
 
-        logger.trace("connect \(classroomStateName), default \(classroomDefaultValue)")
+        globalLogger.trace("connect \(classroomStateName), default \(classroomDefaultValue)")
         group.enter()
         syncStore.connectStorage(classroomStateName, defaultValue: classroomDefaultValue) { _, err in
             if let err { error = err }
-            logger.trace("connect \(classroomStateName) success")
+            globalLogger.trace("connect \(classroomStateName) success")
             group.leave()
         }
 
-        logger.trace("connect \(onStageUsersName), default \(onStageUserDefaultValue)")
+        globalLogger.trace("connect \(onStageUsersName), default \(onStageUserDefaultValue)")
         group.enter()
         syncStore.connectStorage(onStageUsersName, defaultValue: onStageUserDefaultValue) { _, err in
             if let err { error = err }
-            logger.trace("connect \(onStageUsersName) success")
+            globalLogger.trace("connect \(onStageUsersName) success")
             group.leave()
         }
         
-        logger.trace("connect \(whiteboardStateName), default \(whiteboardDefaultValue)")
+        globalLogger.trace("connect \(whiteboardStateName), default \(whiteboardDefaultValue)")
         group.enter()
         syncStore.connectStorage(whiteboardStateName, defaultValue: whiteboardDefaultValue) { _, err in
             if let err { error = err }
-            logger.trace("connect \(whiteboardStateName) success")
+            globalLogger.trace("connect \(whiteboardStateName) success")
             group.leave()
         }
 
         group.notify(queue: .main) {
             if let error {
-                logger.error("connect fail \(error)")
+                globalLogger.error("connect fail \(error)")
                 self._fireCallbacksWith(error)
             } else {
-                logger.info("connect success, start getValues")
+                globalLogger.info("connect success, start getValues")
                 self.isConnected = true
                 self._getValues()
             }
@@ -130,7 +130,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
             let data = try JSONEncoder().encode(encodable)
             return try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
         }
-        logger.info("try send command \(command)")
+        globalLogger.info("try send command \(command)")
         switch command {
         case let .raiseHandUsersUpdate(raiseHandUsers):
             try syncStore.setStorageState(classroomStateName, partialState: [RoomState.Keys.raiseHandUsers.rawValue: dicFromEncodable(raiseHandUsers)])
@@ -191,7 +191,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
 
         let group = DispatchGroup()
 
-        logger.trace("start get \(deviceStateName)")
+        globalLogger.trace("start get \(deviceStateName)")
         group.enter()
         syncStore.getStorageState(deviceStateName) { values in
             if let values {
@@ -201,58 +201,58 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                             do {
                                 let state = try decoder.decode(DeviceState.self, from: data)
                                 deviceState[uid] = state
-                                logger.trace("start \(deviceStateName) success \(state)")
+                                globalLogger.trace("start \(deviceStateName) success \(state)")
                             } catch {
                                 getValuesError = error
-                                logger.error("get \(deviceStateName) error \(error)")
+                                globalLogger.error("get \(deviceStateName) error \(error)")
                             }
                         }
                     }
                 }
             } else {
                 getValuesError = "get device state error"
-                logger.error("get \(deviceStateName) error empty value")
+                globalLogger.error("get \(deviceStateName) error empty value")
             }
             group.leave()
         }
 
-        logger.info("start get \(onStageUsersName)")
+        globalLogger.info("start get \(onStageUsersName)")
         group.enter()
         syncStore.getStorageState(onStageUsersName) { value in
             if let us = value as? [String: Bool] {
                 onStageUsers = us
-                logger.trace("start \(onStageUsersName) success \(us)")
+                globalLogger.trace("start \(onStageUsersName) success \(us)")
             } else {
                 getValuesError = "get on stage users error: \(value?.description ?? "")"
-                logger.error("get \(onStageUsersName) error \(String(describing: getValuesError))")
+                globalLogger.error("get \(onStageUsersName) error \(String(describing: getValuesError))")
             }
             group.leave()
         }
 
-        logger.info("start get \(classroomStateName)")
+        globalLogger.info("start get \(classroomStateName)")
         group.enter()
         syncStore.getStorageState(classroomStateName) { values in
             if let values {
                 let raiseHandUsers = values[RoomState.Keys.raiseHandUsers.rawValue] as? [String] ?? []
                 let ban = values[RoomState.Keys.ban.rawValue] as? Bool ?? false
                 roomState = RoomState(raiseHandUsers: raiseHandUsers, ban: ban)
-                logger.trace("start \(classroomStateName) success \(String(describing: roomState))")
+                globalLogger.trace("start \(classroomStateName) success \(String(describing: roomState))")
             } else {
                 getValuesError = "get room state error"
-                logger.error("get \(classroomStateName) error \(String(describing: getValuesError))")
+                globalLogger.error("get \(classroomStateName) error \(String(describing: getValuesError))")
             }
             group.leave()
         }
         
-        logger.info("start get \(whiteboardStateName)")
+        globalLogger.info("start get \(whiteboardStateName)")
         group.enter()
         syncStore.getStorageState(whiteboardStateName) { value in
             if let us = value as? [String: Bool] {
                 whiteboardUsers = us
-                logger.trace("start \(whiteboardStateName) success \(us)")
+                globalLogger.trace("start \(whiteboardStateName) success \(us)")
             } else {
                 getValuesError = "get on stage users error: \(value?.description ?? "")"
-                logger.error("get \(whiteboardStateName) error \(String(describing: getValuesError))")
+                globalLogger.error("get \(whiteboardStateName) error \(String(describing: getValuesError))")
             }
             group.leave()
         }
@@ -260,16 +260,16 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
         group.notify(queue: .main) {
             if let error = getValuesError {
                 self._fireCallbacksWith(error)
-                logger.error("_getValues error \(error)")
+                globalLogger.error("_getValues error \(error)")
             } else {
                 self._fireCallbacksWith((deviceState, roomState, onStageUsers, whiteboardUsers))
-                logger.trace("_getValues success")
+                globalLogger.trace("_getValues success")
             }
         }
     }
 
     func syncedStoreDidUpdateStoreName(_ name: String, partialValue: [AnyHashable: Any]) {
-        logger.trace("receive partial update \(name), \(partialValue)")
+        globalLogger.trace("receive partial update \(name), \(partialValue)")
         if name == deviceStateName {
             syncStore.getStorageState(name) { [weak self] value in
                 guard let self else { return }
@@ -280,7 +280,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                             let state = try JSONDecoder().decode(DeviceState.self, from: data)
                             return state
                         } catch {
-                            logger.error("device state synced store update error: \(error)")
+                            globalLogger.error("device state synced store update error: \(error)")
                         }
                     }
                     return nil
@@ -297,7 +297,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                 if let us = value as? [String: Bool] {
                     self.delegate?.flatSyncedStoreDidReceiveCommand(self, command: .whiteboardUsersUpdate(us))
                 } else {
-                    logger.error("get whiteboard users error: \(value?.description ?? "")")
+                    globalLogger.error("get whiteboard users error: \(value?.description ?? "")")
                 }
             }
         }
@@ -308,7 +308,7 @@ class ClassRoomSyncedStore: NSObject, SyncedStoreUpdateCallBackDelegate {
                 if let us = value as? [String: Bool] {
                     self.delegate?.flatSyncedStoreDidReceiveCommand(self, command: .onStageUsersUpdate(us))
                 } else {
-                    logger.error("get on stage users error: \(value?.description ?? "")")
+                    globalLogger.error("get on stage users error: \(value?.description ?? "")")
                 }
             }
         }

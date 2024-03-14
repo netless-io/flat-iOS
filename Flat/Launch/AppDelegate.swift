@@ -103,10 +103,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 ApiProvider.shared.request(fromApi: GetConfigRequest()) { result in
                     switch result {
                     case let .success(config):
-                        logger.info("get flat config success \(config)")
+                        globalLogger.info("get flat config success \(config)")
                         Env().updateJoinEarly(config.server.joinEarlySeconds)
                     case let .failure(failure):
-                        logger.error("get flat config fail \(failure)")
+                        globalLogger.error("get flat config fail \(failure)")
                     }
                 }
             }.resume()
@@ -135,7 +135,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         let activity = options.userActivities.first
         let activityType = activity?.activityType ?? ""
-        logger.info("multiwindow: configurationForConnecting \(activityType)")
+        globalLogger.info("multiwindow: configurationForConnecting \(activityType)")
         switch activityType {
         case NSUserActivity.Classroom:
             connectingSceneSession.userInfo = activity?.userInfo as? [String: Any]

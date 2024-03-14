@@ -66,7 +66,7 @@ class FastboardViewController: UIViewController {
 
     func updateRoomPermission(_ permission: WhiteboardPermission) -> Single<WhiteboardPermission> {
         guard let w = fastRoom.room?.isWritable else { return .just(permission) }
-        logger.info("update whiteboard permission \(permission)")
+        globalLogger.info("update whiteboard permission \(permission)")
         fastRoom.room?.disableDeviceInputs(!permission.inputEnable)
         if w != permission.writable {
             return .create { [weak self] ob in
@@ -74,7 +74,7 @@ class FastboardViewController: UIViewController {
                     ob(.failure("self not exist"))
                     return Disposables.create()
                 }
-                logger.info("update writable success \(permission.writable)")
+                globalLogger.info("update writable success \(permission.writable)")
                 self.fastRoom.updateWritable(permission.writable) { [weak self] error in
                     if let error {
                         ob(.failure(error))
@@ -110,8 +110,7 @@ class FastboardViewController: UIViewController {
         roomPermission = .init(value: .init(writable: fastRoomConfiguration.whiteRoomConfig.isWritable,
                                             inputEnable: fastRoomConfiguration.whiteRoomConfig.isWritable))
         super.init(nibName: nil, bundle: nil)
-        fastRoom.delegate = self
-        logger.trace("\(self)")
+        globalLogger.trace("\(self)")
     }
 
     @available(*, unavailable)
@@ -120,7 +119,7 @@ class FastboardViewController: UIViewController {
     }
 
     deinit {
-        logger.trace("\(self), deinit")
+        globalLogger.trace("\(self), deinit")
     }
 
     override func viewDidLoad() {
@@ -331,7 +330,7 @@ extension FastboardViewController: FastRoomDelegate {
     }
 
     func fastboardPhaseDidUpdate(_: FastRoom, phase: FastRoomPhase) {
-        logger.info("phase update \(phase)")
+        globalLogger.info("phase update \(phase)")
         switch phase {
         case .connecting, .reconnecting, .disconnecting, .disconnected:
             isRoomJoined.accept(false)

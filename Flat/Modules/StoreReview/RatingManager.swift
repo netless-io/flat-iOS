@@ -29,7 +29,7 @@ struct RatingManager {
                 return records
             }
             catch {
-                logger.error("decode rating records error \(error)")
+                globalLogger.error("decode rating records error \(error)")
             }
         }
         return []
@@ -41,7 +41,7 @@ struct RatingManager {
             UserDefaults.standard.set(data, forKey: recordKey)
         }
         catch {
-            logger.error("encode rating records error \(error)")
+            globalLogger.error("encode rating records error \(error)")
         }
     }
     

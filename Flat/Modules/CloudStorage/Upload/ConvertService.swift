@@ -52,10 +52,10 @@ enum ConvertService {
         ApiProvider.shared.request(fromApi: StartConvertRequest(fileUUID: fileUUID)) { result in
             switch result {
             case let .success(item):
-                logger.info("submit convert task success")
+                globalLogger.info("submit convert task success")
                 completion(.success(item))
             case let .failure(error):
-                logger.info("submit convert task error \(error)")
+                globalLogger.info("submit convert task error \(error)")
                 completion(.failure(error))
             }
         }

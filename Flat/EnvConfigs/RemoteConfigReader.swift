@@ -45,15 +45,15 @@ class RemoteConfigReader {
         }
         let fallbackValue = typeCast(defaultDic[key.rawValue])
         guard didSetupRemoteConfig else {
-            logger.info("read remote value before setup. \(key.rawValue): \(fallbackValue.debugDescription)")
+            globalLogger.info("read remote value before setup. \(key.rawValue): \(fallbackValue.debugDescription)")
             return fallbackValue
         }
         guard let result = remoteConfig?.configValue(forKey: key.rawValue) else {
-            logger.info("read remote value fail. \(key.rawValue): \(fallbackValue.debugDescription)")
+            globalLogger.info("read remote value fail. \(key.rawValue): \(fallbackValue.debugDescription)")
             return fallbackValue
         }
         let r = typeCast(result)
-        logger.info("read remote value success. \(key.rawValue): \(r.debugDescription), source: \(result.source.rawValue)")
+        globalLogger.info("read remote value success. \(key.rawValue): \(r.debugDescription), source: \(result.source.rawValue)")
         return r
     }
 
@@ -85,9 +85,9 @@ class RemoteConfigReader {
         remoteConfig?.setDefaults(defaultDic)
         remoteConfig?.fetchAndActivate(completionHandler: { status, error in
             if let error {
-                logger.error("remote config fetch error: \(error.localizedDescription)")
+                globalLogger.error("remote config fetch error: \(error.localizedDescription)")
             } else {
-                logger.info("remote config fetch result status \(status)")
+                globalLogger.info("remote config fetch result status \(status)")
             }
         })
         
@@ -97,9 +97,9 @@ class RemoteConfigReader {
     func refresh() {
         remoteConfig?.fetchAndActivate(completionHandler: { status, error in
             if let error {
-                logger.error("remote config refresh error: \(error)")
+                globalLogger.error("remote config refresh error: \(error)")
             } else {
-                logger.info("remote config refresh result status \(status)")
+                globalLogger.info("remote config refresh result status \(status)")
             }
         })
     }

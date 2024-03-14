@@ -47,7 +47,7 @@ class ClassroomCoordinator: NSObject {
             UserDefaults.standard.setValue(data, forKey: joinRoomHistoryUserDefaultsKey)
             updateJoinRoomHistoryItem()
         } catch {
-            logger.error("joinRoomHistory encode error \(error)")
+            globalLogger.error("joinRoomHistory encode error \(error)")
         }
     }
     
@@ -58,7 +58,7 @@ class ClassroomCoordinator: NSObject {
                 let items = try JSONDecoder().decode([JoinRoomHistoryItem].self, from: data)
                 self.joinRoomHisotryItems = items
             } catch {
-                logger.error("joinRoomHistory decode error \(error)")
+                globalLogger.error("joinRoomHistory decode error \(error)")
             }
         } else {
             self.joinRoomHisotryItems = []

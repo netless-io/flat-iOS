@@ -324,7 +324,7 @@ class CloudStorageDisplayViewController: UIViewController,
                 self.taskProgressPolling.insertProjectorPollingTask(withTaskUUID: taskUUID,
                                                                     token: payload.taskToken,
                                                                     region: .init(rawValue: payload.region.rawValue)) { progress in
-                    logger.trace("task projector \(taskUUID) progress \(progress)")
+                    globalLogger.trace("task projector \(taskUUID) progress \(progress)")
                 } result: { [weak self] _, info, error in
                     if let error {
                         self?.toast(error.localizedDescription)
@@ -337,7 +337,7 @@ class CloudStorageDisplayViewController: UIViewController,
                                                              token: payload.taskToken,
                                                              region: .init(rawValue: payload.region.rawValue),
                                                              taskType: $0.taskType!) { progress in
-                    logger.trace("task v5 \(taskUUID) progress \(progress)")
+                    globalLogger.trace("task v5 \(taskUUID) progress \(progress)")
                 } result: { [weak self] _, info, error in
                     if let error {
                         self?.toast(error.localizedDescription)
@@ -369,7 +369,7 @@ class CloudStorageDisplayViewController: UIViewController,
                     }
                 }
             case let .failure(error):
-                logger.error("report convert finish error, \(error)")
+                globalLogger.error("report convert finish error, \(error)")
             }
         }
     }
@@ -496,7 +496,7 @@ extension CloudStorageDisplayViewController: UITableViewDragDelegate {
             }
             return [.init(itemProvider: itemProvider)]
         } catch {
-            logger.error("drag encoder fail \(error)")
+            globalLogger.error("drag encoder fail \(error)")
             return []
         }
     }
@@ -552,7 +552,7 @@ extension CloudStorageDisplayViewController: UITableViewDropDelegate {
                 let targetDirectory = self.move(items: items, to: indexPath)
                 coordinator.session.localDragSession?.localContext = targetDirectory
             } catch {
-                logger.error("drop decode error \(error)")
+                globalLogger.error("drop decode error \(error)")
             }
         }
     }

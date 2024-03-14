@@ -58,7 +58,7 @@ class DefaultAlertProvider: AlertProvider {
 
     func showActionSheet(with model: AlertModel, tag: String, source: TapSource?) -> Single<AlertModel.ActionModel?> {
         if presentingTagAlerts.contains(tag) {
-            logger.info("present showActionSheet \(model) was presenting")
+            globalLogger.info("present showActionSheet \(model) was presenting")
             return .just(nil)
         }
         presentingTagAlerts.insert(tag)
@@ -75,7 +75,7 @@ class DefaultAlertProvider: AlertProvider {
 
     func showAlert(with model: AlertModel, tag: String) -> Single<AlertModel.ActionModel?> {
         if presentingTagAlerts.contains(tag) {
-            logger.info("present showAlert \(model) was presenting")
+            globalLogger.info("present showAlert \(model) was presenting")
             return .just(nil)
         }
         presentingTagAlerts.insert(tag)

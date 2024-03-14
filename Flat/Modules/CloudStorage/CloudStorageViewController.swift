@@ -355,7 +355,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
         // Usally means file was crapped.
         if ConvertService.isFileConvertible(withFileURL: item.urlOrEmpty),
            item.meta.whiteConverteInfo == nil {
-            logger.info("file should convert without convert info \(item)")
+            globalLogger.info("file should convert without convert info \(item)")
             toast(localizeStrings("FileConvertFailed"))
             return
         }
@@ -494,7 +494,7 @@ class CloudStorageViewController: CloudStorageDisplayViewController {
 extension CloudStorageViewController: UploadUtilityDelegate {
     @objc func presentTask() {
         if let presentedViewController {
-            logger.info("prevent present taskViewController for \(presentedViewController)")
+            globalLogger.info("prevent present taskViewController for \(presentedViewController)")
             return
         }
         mainContainer?.concreteViewController.present(tasksViewController, animated: true, completion: nil)

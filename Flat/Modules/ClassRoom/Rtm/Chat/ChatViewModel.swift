@@ -126,7 +126,7 @@ class ChatViewModel {
             ApiProvider.shared.request(fromApi: request) { result in
                 switch result {
                 case let .failure(error):
-                    logger.error("request history source error \(error)")
+                    globalLogger.error("request history source error \(error)")
                     observer(.failure(error))
                 case let .success(value):
                     var path = value.result
@@ -142,7 +142,7 @@ class ChatViewModel {
                                 .reversed()
                             observer(.success(historyMessages))
                         case let .failure(error):
-                            logger.error("request history source error \(error)")
+                            globalLogger.error("request history source error \(error)")
                             observer(.failure(error))
                         }
                     }

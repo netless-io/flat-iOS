@@ -146,7 +146,7 @@ class CameraPreviewView: UIView {
     func setupCapture() {
         do {
             guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {
-                logger.error("fetch camera fail")
+                globalLogger.error("fetch camera fail")
                 return
             }
             let input = try AVCaptureDeviceInput(device: camera)
@@ -169,7 +169,7 @@ class CameraPreviewView: UIView {
             syncRotate()
             didSetupCapture = true
         } catch {
-            logger.error("setup capture error \(error)")
+            globalLogger.error("setup capture error \(error)")
         }
     }
 

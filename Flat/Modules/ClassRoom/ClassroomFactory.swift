@@ -34,7 +34,7 @@ enum ClassroomFactory {
         let userName = AuthStore.shared.user?.name ?? ""
 
         let mixerDelegate: FastAudioMixerDelegate? = (PerferrenceManager.shared.preferences[.audioMixing] ?? false) ? rtc : nil
-        logger.info("set audio mixer \(mixerDelegate != nil)")
+        globalLogger.info("set audio mixer \(mixerDelegate != nil)")
         fastRoomConfiguration = FastRoomConfiguration(appIdentifier: Env().netlessAppId,
                                                       roomUUID: playInfo.whiteboardRoomUUID,
                                                       roomToken: playInfo.whiteboardRoomToken,
@@ -172,7 +172,7 @@ enum ClassroomFactory {
                                                  ownerUUID: playInfo.ownerUUID,
                                                  beginTime: basicInfo.beginTime)
         alertProvider.root = controller
-        logger.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
+        globalLogger.info("joined classroom \(playInfo.roomUUID), \(String(describing: initDeviceState))")
         return controller
     }
 }

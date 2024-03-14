@@ -40,10 +40,10 @@ class RecordModel: Codable {
             if let data = UserDefaults.standard.value(forKey: savedRecordModelKey) as? Data {
                 do {
                     let item = try JSONDecoder().decode(Self.self, from: data)
-                    logger.info("get savedRecord \(item)")
+                    globalLogger.info("get savedRecord \(item)")
                     return item
                 } catch {
-                    logger.error("get savedRecord error, \(error)")
+                    globalLogger.error("get savedRecord error, \(error)")
                     return nil
                 }
             }
@@ -54,13 +54,13 @@ class RecordModel: Codable {
                 if let newValue {
                     let data = try JSONEncoder().encode(newValue)
                     UserDefaults.standard.setValue(data, forKey: savedRecordModelKey)
-                    logger.info("set savedRecord \(newValue)")
+                    globalLogger.info("set savedRecord \(newValue)")
                 } else {
                     UserDefaults.standard.setValue(nil, forKey: savedRecordModelKey)
-                    logger.info("set savedRecord nil")
+                    globalLogger.info("set savedRecord nil")
                 }
             } catch {
-                logger.error("set savedRecord error \(error)")
+                globalLogger.error("set savedRecord error \(error)")
                 return
             }
         }
@@ -96,7 +96,7 @@ class RecordModel: Codable {
                     if times >= maxRetryTime {
                         return .error("over max retry time")
                     } else {
-                        logger.info("start retry create record, times \(times)")
+                        globalLogger.info("start retry create record, times \(times)")
                         return .timer(.seconds(errorRetryTimeInterval * times), scheduler: MainScheduler.instance)
                     }
                 }

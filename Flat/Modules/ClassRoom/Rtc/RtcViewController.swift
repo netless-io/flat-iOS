@@ -382,7 +382,7 @@ class RtcViewController: UIViewController {
             return player
         }
         catch {
-            logger.error("play reward audio fail \(error)")
+            globalLogger.error("play reward audio fail \(error)")
             return nil
         }
     }()

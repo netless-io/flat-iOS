@@ -29,16 +29,16 @@ private func sbLogURL() -> URL? {
 }
 
 struct SBLogHandler: LogHandler {
-    let logger: SwiftyBeaver.Type
+    let globalLogger: SwiftyBeaver.Type
 
     init() {
-        logger = SwiftyBeaver.self
+        globalLogger = SwiftyBeaver.self
 
         #if DEBUG
             let console = ConsoleDestination()
             console.minLevel = .info
             console.format = "$DHH:mm:ss.SSS$d $C$L$c - $M"
-            logger.addDestination(console)
+            globalLogger.addDestination(console)
         #endif
 
         if let url = sbLogURL() {
@@ -58,7 +58,7 @@ struct SBLogHandler: LogHandler {
             file.minLevel = .verbose
 
             file.format = "$DHH:mm:ss.SSS$d,$C$L$c,$F:$l,$N,$M\n"
-            logger.addDestination(file)
+            globalLogger.addDestination(file)
         }
     }
 
@@ -87,19 +87,19 @@ struct SBLogHandler: LogHandler {
         let formattedMsg = SensetiveLogFilter.filter("\(source.isEmpty ? "" : "[\(source)],") \(msg)")
         switch level {
         case .trace:
-            logger.verbose(formattedMsg, file, function, line: Int(line), context: metadata)
+            globalLogger.verbose(formattedMsg, file, function, line: Int(line), context: metadata)
         case .debug:
-            logger.info(formattedMsg, file, function, line: Int(line), context: metadata)
+            globalLogger.info(formattedMsg, file, function, line: Int(line), context: metadata)
         case .info:
-            logger.info(formattedMsg, file, function, line: Int(line), context: metadata)
+            globalLogger.info(formattedMsg, file, function, line: Int(line), context: metadata)
         case .notice:
-            logger.warning(formattedMsg, file, function, line: Int(line), context: metadata)
+            globalLogger.warning(formattedMsg, file, function, line: Int(line), context: metadata)
         case .warning:
-            logger.warning(formattedMsg, file, function, line: Int(line), context: metadata)
+            globalLogger.warning(formattedMsg, file, function, line: Int(line), context: metadata)
         case .error:
-            logger.error(formattedMsg, file, function, line: Int(line), context: metadata)
+            globalLogger.error(formattedMsg, file, function, line: Int(line), context: metadata)
         case .critical:
-            logger.error(formattedMsg, file, function, line: Int(line), context: metadata)
+            globalLogger.error(formattedMsg, file, function, line: Int(line), context: metadata)
         }
     }
 }

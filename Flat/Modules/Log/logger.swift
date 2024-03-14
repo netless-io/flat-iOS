@@ -9,7 +9,7 @@
 import Foundation
 import Logging
 
-var logger: Logger!
+var globalLogger: Logger!
 
 private var aliSlsLogger: AlibabaLogHandler?
 
@@ -34,8 +34,8 @@ func bootstrapLogger() {
             return MultiplexLogHandler(loggers)
         }
     }
-    logger = Logger(label: "")
-    logger.logLevel = .trace
+    globalLogger = Logger(label: "")
+    globalLogger.logLevel = .trace
 
     var systemInfo = utsname()
     uname(&systemInfo)
@@ -53,5 +53,5 @@ func bootstrapLogger() {
         isiOSOnMac = false
     }
     let memoryMB = ProcessInfo.processInfo.physicalMemory / 1024 / 1024
-    logger.info("type: \(device.model), systemVersion: \(device.systemVersion), model: \(identifier), memory: \(memoryMB) MB, isiOSOnMac: \(isiOSOnMac)")
+    globalLogger.info("type: \(device.model), systemVersion: \(device.systemVersion), model: \(identifier), memory: \(memoryMB) MB, isiOSOnMac: \(isiOSOnMac)")
 }

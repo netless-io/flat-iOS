@@ -22,7 +22,7 @@ class AgoraRtmChannelImp: NSObject, AgoraRtmChannelDelegate, RtmChannelProvider 
     weak var channel: AgoraRtmChannel!
 
     deinit {
-        logger.trace("\(self), channelId \(channelId ?? "") deinit")
+        globalLogger.trace("\(self), channelId \(channelId ?? "") deinit")
     }
 
     func sendRawData(_ data: Data) -> Single<Void> {
@@ -73,16 +73,16 @@ class AgoraRtmChannelImp: NSObject, AgoraRtmChannelDelegate, RtmChannelProvider 
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
-            logger.info("start get members")
+            globalLogger.info("start get members")
             self.channel.getMembersWithCompletion { members, error in
                 guard error == .ok else {
                     let strError = "get member error, \(error.rawValue)"
                     observer(.failure(strError))
-                    logger.error("\(strError)")
+                    globalLogger.error("\(strError)")
                     return
                 }
                 let memberIds = members?.map(\.userId) ?? []
-                logger.info("success get members \(memberIds)")
+                globalLogger.info("success get members \(memberIds)")
                 observer(.success(memberIds))
             }
             return Disposables.create()
@@ -90,17 +90,17 @@ class AgoraRtmChannelImp: NSObject, AgoraRtmChannelDelegate, RtmChannelProvider 
     }
 
     func channel(_: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
-        logger.info("memberJoined \(member.userId)")
+        globalLogger.info("memberJoined \(member.userId)")
         newMemberPublisher.accept(member.userId)
     }
 
     func channel(_: AgoraRtmChannel, memberLeft member: AgoraRtmMember) {
-        logger.info("memberLeft \(member.userId)")
+        globalLogger.info("memberLeft \(member.userId)")
         memberLeftPublisher.accept(member.userId)
     }
 
     func channel(_: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
-//        logger.info("receive \(type)
+//        globalLogger.info("receive \(type)
         switch message.type {
         case .text:
             if member.userId == "flat-server" {
@@ -114,7 +114,7 @@ class AgoraRtmChannelImp: NSObject, AgoraRtmChannelDelegate, RtmChannelProvider 
                         rawDataPublish.accept((msgData, member.userId))
                     }
                 } catch {
-                    logger.error("transform flat-server msg error, \(error)")
+                    globalLogger.error("transform flat-server msg error, \(error)")
                 }
                 return
             }

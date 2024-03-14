@@ -17,7 +17,7 @@ class LaunchCoordinator {
     // All the registered launchItem will be stored here
     private var launchItems: [String: LaunchItem] = [:] {
         didSet {
-            logger.info("launchItems update, \(launchItems)")
+            globalLogger.info("launchItems update, \(launchItems)")
         }
     }
 

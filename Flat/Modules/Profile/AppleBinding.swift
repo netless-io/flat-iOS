@@ -48,7 +48,7 @@ class AppleBinding: NSObject, ASAuthorizationControllerDelegate {
 
     func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
         // Show nothing for apple bind error. Just log it.
-        logger.debug("apple bind fail \(error.localizedDescription)")
+        globalLogger.debug("apple bind fail \(error.localizedDescription)")
         handler("")
     }
 }

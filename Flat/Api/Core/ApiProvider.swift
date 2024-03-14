@@ -77,19 +77,19 @@ class ApiProvider: NSObject {
             .generateObservableRequest(fromApi: api)
             .do(onNext: {
                 reqId = $0.value(forHTTPHeaderField: "x-request-id") ?? UUID().uuidString
-                logger.trace("start rx \(String(describing: reqId)) \($0)")
+                globalLogger.trace("start rx \(String(describing: reqId)) \($0)")
             }
             )
             .flatMap {
                 self.session.rx.data(request: $0)
             }
-            .do(onNext: { logger.trace("raw rx \(String(describing: reqId)) \(String(data: $0, encoding: .utf8) ?? "")") })
+            .do(onNext: { globalLogger.trace("raw rx \(String(describing: reqId)) \(String(data: $0, encoding: .utf8) ?? "")") })
             .flatMap {
                 responseDataHandler.processObservableResponseData($0, decoder: api.decoder, forResponseType: T.Response.self)
             }
             .do(
-                onNext: { obj in logger.trace("finish rx \(String(describing: reqId)) \(obj)") },
-                onError: { error in logger.error("finish error rx \(String(describing: reqId)) \(error)") }
+                onNext: { obj in globalLogger.trace("finish rx \(String(describing: reqId)) \(obj)") },
+                onError: { error in globalLogger.error("finish error rx \(String(describing: reqId)) \(error)") }
             )
             .subscribe(on: ConcurrentDispatchQueueScheduler(queue: rootQueue))
             .observe(on: SerialDispatchQueueScheduler(queue: callBackQueue, internalSerialQueueName: "io.agora.flat.session.callback"))
@@ -104,12 +104,12 @@ class ApiProvider: NSObject {
         do {
             let req = try generator.generateRequest(fromApi: api)
             let reqId = req.value(forHTTPHeaderField: "x-request-id") ?? UUID().uuidString
-            logger.trace("start \(reqId) \(req)")
+            globalLogger.trace("start \(reqId) \(req)")
             let task = session.dataTask(with: req) { data, response, error in
                 if let data {
-                    logger.trace("raw data \(reqId) \(String(data: data, encoding: .utf8) ?? "")")
+                    globalLogger.trace("raw data \(reqId) \(String(data: data, encoding: .utf8) ?? "")")
                 } else if let error {
-                    logger.trace("finish error \(reqId) \(error)")
+                    globalLogger.trace("finish error \(reqId) \(error)")
                 }
 
                 if let error {
@@ -143,20 +143,20 @@ class ApiProvider: NSObject {
                 }
                 do {
                     let result = try responseDataHandler.processResponseData(data, decoder: api.decoder, forResponseType: T.Response.self)
-                    logger.trace("finish \(result)")
+                    globalLogger.trace("finish \(result)")
                     callBackQueue.async {
                         completionHandler(.success(result))
                     }
                 } catch {
                     callBackQueue.async {
-                        logger.error("decode error \(error)")
+                        globalLogger.error("decode error \(error)")
                         completionHandler(.failure(ApiError.decode(message: error.localizedDescription)))
                     }
                 }
             }
             return task
         } catch {
-            logger.error("\(error)")
+            globalLogger.error("\(error)")
             completionHandler(.failure((error as? ApiError) ?? .unknown))
             return nil
         }

@@ -26,10 +26,10 @@ class AgoraRtm: NSObject, RtmProvider {
         agoraKit = AgoraRtmKit(appId: agoraAppId, delegate: self)!
         agoraGenerator.agoraToken = rtmToken
         agoraGenerator.agoraUserId = rtmUserUUID
-        logger.trace("\(self)")
+        globalLogger.trace("\(self)")
     }
 
-    deinit { logger.trace("\(self) deinit") }
+    deinit { globalLogger.trace("\(self) deinit") }
 
     func sendP2PMessageFromArray(_ array: [(data: Data, uuid: String)]) -> Single<Void> {
         array.reduce(Single<Void>.just(())) { [weak self] partial, part -> Single<Void> in
@@ -41,7 +41,7 @@ class AgoraRtm: NSObject, RtmProvider {
     }
 
     func sendP2PMessage(data: Data, toUUID UUID: String) -> Single<Void> {
-        logger.info("send p2p raw message data, to \(UUID)")
+        globalLogger.info("send p2p raw message data, to \(UUID)")
         switch state.value {
         case .connecting, .idle, .reconnecting: return .just(())
         case .connected:
@@ -56,7 +56,7 @@ class AgoraRtm: NSObject, RtmProvider {
                         observer(.success(()))
                     } else {
                         let errMsg = "send p2p msg error \(error)"
-                        logger.error("\(errMsg)")
+                        globalLogger.error("\(errMsg)")
                         if error == .peerUnreachable {
                             observer(.failure(localizeStrings("UserNotInRoom")))
                         } else {
@@ -92,11 +92,11 @@ class AgoraRtm: NSObject, RtmProvider {
         case .connected, .reconnecting: return .just(())
         case .connecting: return createLoginObserver()
         case .idle:
-            logger.info("start login: \(agoraGenerator.agoraToken), \(agoraGenerator.agoraUserId)")
+            globalLogger.info("start login: \(agoraGenerator.agoraToken), \(agoraGenerator.agoraUserId)")
             agoraKit.login(byToken: agoraGenerator.agoraToken,
                            user: agoraGenerator.agoraUserId) { [weak self] code in
                 guard let self else { return }
-                logger.info("login complete with code \(code)")
+                globalLogger.info("login complete with code \(code)")
                 self.loginCallbacks.forEach { $0(code) }
                 self.loginCallbacks = []
                 self.state.accept(.connected)
@@ -133,13 +133,13 @@ class AgoraRtm: NSObject, RtmProvider {
             handler.channelId = channelId
             let channel = self.agoraKit.createChannel(withId: channelId, delegate: handler)!
             handler.channel = channel
-            logger.info("start join channel: \(channelId)")
+            globalLogger.info("start join channel: \(channelId)")
             channel.join { error in
                 if error == .channelErrorOk {
-                    logger.info("start join channel: \(channelId) success")
+                    globalLogger.info("start join channel: \(channelId) success")
                     observer(.success(handler))
                 } else {
-                    logger.error("join channel: \(channelId) fail, \(error)")
+                    globalLogger.error("join channel: \(channelId) fail, \(error)")
                     observer(.failure("join channel error \(error)"))
                 }
             }
@@ -198,7 +198,7 @@ extension AgoraRtmConnectionChangeReason: CustomStringConvertible {
 
 extension AgoraRtm: AgoraRtmDelegate {
     func rtmKit(_: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
-        logger.info("state \(state), reason \(reason)")
+        globalLogger.info("state \(state), reason \(reason)")
         switch state {
         case .connected:
             self.state.accept(.connected)
@@ -215,7 +215,7 @@ extension AgoraRtm: AgoraRtmDelegate {
                 }
             }
         case .aborted:
-            logger.error("remote login")
+            globalLogger.error("remote login")
             error.accept(.remoteLogin)
         default:
             return
@@ -223,7 +223,7 @@ extension AgoraRtm: AgoraRtmDelegate {
     }
 
     func rtmKit(_: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
-        logger.info("receive p2p message \(message.text)")
+        globalLogger.info("receive p2p message \(message.text)")
         if let rawMessage = message as? AgoraRtmRawMessage {
             p2pMessage.accept((rawMessage.rawData, peerId))
         }

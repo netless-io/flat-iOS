@@ -97,7 +97,7 @@ class CustomPreviewViewController: QLPreviewController {
                     self.reloadData()
                 }
             } catch {
-                logger.error("previewLocalFileUrlPath, \(error)")
+                globalLogger.error("previewLocalFileUrlPath, \(error)")
                 DispatchQueue.main.async {
                     self.toast(error.localizedDescription)
                 }

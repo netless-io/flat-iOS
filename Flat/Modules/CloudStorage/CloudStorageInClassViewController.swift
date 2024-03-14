@@ -174,7 +174,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                 return
             }
             guard let payload = item.meta.whiteConverteInfo else {
-                logger.info("file should convert without convert info \(item)")
+                globalLogger.info("file should convert without convert info \(item)")
                 toast(localizeStrings("FileConvertFailed"))
                 return
             }
@@ -376,7 +376,7 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                 }
                 .disposed(by: rx.disposeBag)
         } catch {
-            logger.error("error create task \(error)")
+            globalLogger.error("error create task \(error)")
             toast("error create task \(error.localizedDescription)", timeInterval: 3)
         }
     }

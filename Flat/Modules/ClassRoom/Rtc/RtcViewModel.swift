@@ -315,7 +315,7 @@ class RtcViewModel {
             }
             .do(onNext: { [weak self] users in
                 guard let self else { return }
-                logger.info("refresh all rtc users status.")
+                globalLogger.info("refresh all rtc users status.")
                 for user in users {
                     let isLocal = self.localUserRegular(user.rtcUID)
                     if isLocal {

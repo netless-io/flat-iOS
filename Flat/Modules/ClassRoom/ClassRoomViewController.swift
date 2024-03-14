@@ -80,7 +80,7 @@ class ClassRoomViewController: UIViewController {
         classroomStatusBar = .init(beginTime: beginTime)
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
-        logger.trace("\(self) init")
+        globalLogger.trace("\(self) init")
     }
 
     @available(*, unavailable)
@@ -150,7 +150,7 @@ class ClassRoomViewController: UIViewController {
     }
 
     deinit {
-        logger.trace("\(self) deinit")
+        globalLogger.trace("\(self) deinit")
     }
 
     override func viewDidLoad() {
@@ -208,7 +208,7 @@ class ClassRoomViewController: UIViewController {
             .subscribe(with: self, onNext: { weakSelf, error in
                 func loopToAlert() {
                     if let _ = weakSelf.presentedViewController {
-                        logger.trace("delay room error alert \(error)")
+                        globalLogger.trace("delay room error alert \(error)")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             loopToAlert()
                         }
@@ -334,7 +334,7 @@ class ClassRoomViewController: UIViewController {
     func bindTerminate() {
         NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification)
             .subscribe(with: self, onNext: { weakSelf, _ in
-                logger.info("device terminate")
+                globalLogger.info("device terminate")
                 weakSelf.stopSubModules(cleanRtc: false) // Clean rtc by system.
             })
             .disposed(by: rx.disposeBag)
@@ -828,7 +828,7 @@ class ClassRoomViewController: UIViewController {
     @objc func onSceneDisconnect(notification: Notification) {
         guard let scene = notification.object as? UIWindowScene else { return }
         if view.window?.windowScene === scene {
-            logger.info("classroom destroy by scene disconnect")
+            globalLogger.info("classroom destroy by scene disconnect")
             stopSubModules(cleanRtc: true)
         }
     }

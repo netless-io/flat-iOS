@@ -158,7 +158,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
         raisingHandIds.accept(result.roomState.raiseHandUsers)
         onStageIds.accept(result.onStageUsers.filter(\.value).map(\.key))
         whiteboardIds.accept(result.whiteboardUsers.filter(\.value).map(\.key))
-        logger.info("initialize state from synced store \(result)")
+        globalLogger.info("initialize state from synced store \(result)")
     }
 
     fileprivate func processCommandMessage(data: Data, senderId: String) -> Observable<RtmCommand?> {
@@ -219,13 +219,13 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
             }
             return .just(command)
         } catch {
-            logger.error("process rtm command error \(error)")
+            globalLogger.error("process rtm command error \(error)")
             return .just(nil)
         }
     }
 
     func send(command: ClassroomCommand) -> Single<Void> {
-        logger.info("try send command \(command)")
+        globalLogger.info("try send command \(command)")
         do {
             switch command {
             case let .sendReward(toUserUUID: uuid):
@@ -370,7 +370,7 @@ class ClassroomStateHandlerImp: ClassroomStateHandler {
                 return rtmProvider.sendP2PMessage(data: msgData, toUUID: ownerUUID)
             }
         } catch {
-            logger.error("classroomStateImp send command \(command)")
+            globalLogger.error("classroomStateImp send command \(command)")
             return .error(error)
         }
     }

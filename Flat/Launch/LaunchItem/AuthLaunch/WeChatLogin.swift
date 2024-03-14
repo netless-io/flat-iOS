@@ -21,7 +21,7 @@ class WeChatLogin: NSObject, LaunchItem {
     }
 
     deinit {
-        logger.trace("\(self), deinit")
+        globalLogger.trace("\(self), deinit")
     }
 
     func shouldHandle(url: URL?, scene: UIScene) -> Bool {
