@@ -44,22 +44,22 @@ class FastboardViewController: UIViewController {
 
     func insert(image: UIImage, url: URL, changeApplianceToSelector: Bool = true) {
         let imageSize = image.size
-        let cameraScale = self.fastRoom.room?.state.cameraState?.scale.floatValue ?? 1
-        let containerWidth = self.fastRoom.view.bounds.width / 2.5 / CGFloat(cameraScale)
+        let cameraScale = fastRoom.room?.state.cameraState?.scale.floatValue ?? 1
+        let containerWidth = fastRoom.view.bounds.width / 2.5 / CGFloat(cameraScale)
         if imageSize.width > containerWidth {
             let ratio = imageSize.width / imageSize.height
-            self.fastRoom.insertImg(url, imageSize: .init(width: containerWidth, height: containerWidth / ratio))
+            fastRoom.insertImg(url, imageSize: .init(width: containerWidth, height: containerWidth / ratio))
         } else {
-            self.fastRoom.insertImg(url, imageSize: image.size)
+            fastRoom.insertImg(url, imageSize: image.size)
         }
         if changeApplianceToSelector {
             let newMemberState = WhiteMemberState()
             newMemberState.currentApplianceName = .ApplianceSelector
-            self.fastRoom.room?.setMemberState(newMemberState)
-            self.fastRoom.view.overlay?.initUIWith(appliance: .ApplianceSelector, shape: nil)
+            fastRoom.room?.setMemberState(newMemberState)
+            fastRoom.view.overlay?.initUIWith(appliance: .ApplianceSelector, shape: nil)
         }
     }
-    
+
     func leave() {
         fastRoom.disconnectRoom()
     }
@@ -110,6 +110,7 @@ class FastboardViewController: UIViewController {
         roomPermission = .init(value: .init(writable: fastRoomConfiguration.whiteRoomConfig.isWritable,
                                             inputEnable: fastRoomConfiguration.whiteRoomConfig.isWritable))
         super.init(nibName: nil, bundle: nil)
+        fastRoom.commonDelegate = self
         globalLogger.trace("\(self)")
     }
 
@@ -423,13 +424,29 @@ extension FastRoomPhase: CustomStringConvertible {
 }
 
 extension FastboardViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith _: UIGestureRecognizer) -> Bool {
         return true
     }
-    
+
     // Reject tap not at current hierachy.
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    func gestureRecognizer(_: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let touchView = touch.view else { return false }
         return touchView.isDescendant(of: fastRoom.view)
+    }
+}
+
+extension FastboardViewController: WhiteCommonCallbackDelegate {
+    func logger(_ dict: [AnyHashable: Any]) {
+        if let str = dict["[WhiteWKConsole]"] as? String {
+            globalLogger.trace("Whiteboard-WKConsole: \(str)")
+        } else {
+            dict.keys.enumerated().map(\.element).forEach { key in
+                if let strKey = key as? String,
+                   let info = dict[key] as? String
+                {
+                    globalLogger.trace("Whiteboard-Log: \(strKey): \(info)")
+                }
+            }
+        }
     }
 }

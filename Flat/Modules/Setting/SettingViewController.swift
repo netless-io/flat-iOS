@@ -123,7 +123,12 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @objc func onClickExportLog(sender: Any?) {
-        let files = sbLogURLs()
+        let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first ?? ""
+        let files = (FileManager.default.subpaths(atPath: cachePath) ?? [])
+            .filter { !$0.contains("/") }
+            .filter { $0.hasSuffix(".log") || $0.hasPrefix(flatLogFilePrefix) } // Agora log.
+            .map { URL(fileURLWithPath: cachePath + "/" + $0)}
+
         if files.isEmpty {
             toast("log not exist")
             return

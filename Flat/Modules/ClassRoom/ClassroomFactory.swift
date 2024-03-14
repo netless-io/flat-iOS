@@ -60,7 +60,8 @@ enum ClassroomFactory {
         fastRoomConfiguration.whiteRoomConfig.windowParams?.stageStyle = "box-shadow: 0 0 0"
         fastRoomConfiguration.whiteRoomConfig.disableEraseImage = true
         fastRoomConfiguration.whiteRoomConfig.disableCameraTransform = !isOwner
-        fastRoomConfiguration.whiteSdkConfiguration.log = false
+        fastRoomConfiguration.whiteSdkConfiguration.log = true
+        fastRoomConfiguration.whiteSdkConfiguration.loggerOptions = ["printLevelMask": WhiteSDKLoggerOptionLevelKey.debug.rawValue]
         fastRoomConfiguration.whiteRoomConfig.isWritable = basicInfo.roomType.whiteboardAlwaysWritable ? true : isOwner
         if let customBundlePath = Bundle.main.path(forResource: "whiteboard_rebuild", ofType: "bundle"),
            let customBundle = Bundle(path: customBundlePath),

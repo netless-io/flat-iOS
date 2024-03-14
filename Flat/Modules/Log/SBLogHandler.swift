@@ -9,20 +9,11 @@
 import Logging
 import SwiftyBeaver
 
-private let filename = "flat-log"
+let flatLogFilePrefix = "flat.log"
 private let logFileAmount = 3
-func sbLogURLs() -> [URL] {
-    if let cacheURL = sbLogURL() {
-        return (-1 ... logFileAmount)
-            .map { $0 < 0 ? cacheURL : cacheURL.appendingPathExtension($0.description) }
-            .filter { FileManager.default.fileExists(atPath: $0.path) }
-    }
-    return []
-}
-
 private func sbLogURL() -> URL? {
     if let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first {
-        let url = cacheURL.appendingPathComponent("\(filename)")
+        let url = cacheURL.appendingPathComponent("\(flatLogFilePrefix)")
         return url
     }
     return nil
