@@ -12,6 +12,7 @@
 		<string>applinks:flat-web.whiteboard.agora.io</string>
 		<string>applinks:api.flat.shengwang.cn</string>
 		<string>applinks:web.flat.shengwang.cn</string>
+		<string>applinks:web.flat.agora.io</string>
 	</array>
 </dict>
 </plist>
