@@ -39,7 +39,7 @@ func setDidFirstTimeLaunch() {
 
 var globalLaunchCoordinator: LaunchCoordinator!
 
-func configAppearance() {
+@MainActor func configAppearance() {
     FastRoomThemeManager.shared.updateIcons(using: Bundle.main)
     FastRoomControlBar.appearance().borderWidth = commonBorderWidth
 
@@ -47,7 +47,7 @@ func configAppearance() {
 
     IQKeyboardManager.shared.enable = true
     IQKeyboardManager.shared.enableAutoToolbar = false
-    IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+    IQKeyboardManager.shared.resignOnTouchOutside = true
     IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
 }
 
@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appActiveTaskObserver = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
             // Remote config.
             remoteConfigReader.refresh()
-            
+
             // Check version.
             let url = Env().appUpdateCheckURL
             let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                        originalSelector: #selector(UIView.traitCollectionDidChange(_:)),
                        swizzledSelector: #selector(UIView.exchangedTraitCollectionDidChange(_:)))
     }
-    
+
     // MARK: UISceneSession Lifecycle
 
     func application(_: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

@@ -167,7 +167,7 @@ class JoinRoomViewController: UIViewController {
     // MARK: - Lazy
 
     lazy var roomIdTextField: BottomLineTextfield = {
-        let tf = BottomLineTextfield()
+        var tf = BottomLineTextfield()
         tf.textColor = .color(type: .text, .strong)
         tf.textAlignment = .center
         tf.font = .systemFont(ofSize: 20)
@@ -178,7 +178,7 @@ class JoinRoomViewController: UIViewController {
         tf.rightView = historyPickerButton
         tf.rightViewMode = .unlessEditing
         tf.delegate = self
-        tf.keyboardDistanceFromTextField = 188
+        tf.iq.distanceFromKeyboard = 188
         return tf
     }()
     

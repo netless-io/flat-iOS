@@ -1,132 +1,153 @@
 PODS:
-  - AcknowList (3.0.0)
+  - AcknowList (3.1.0)
   - AgoraRtcEngine_iOS/RtcBasic (4.3.0)
   - AgoraRtm_iOS (1.5.1)
-  - AliyunLogProducer/Bricks (2.3.10.4):
+  - AliyunLogProducer/Bricks (2.3.11.1):
     - AliyunLogProducer/Core
-  - AliyunLogProducer/Core (2.3.10.4)
-  - CropViewController (2.6.1)
+  - AliyunLogProducer/Core (2.3.11.1)
+  - CropViewController (2.7.2)
   - Differentiator (5.0.0)
   - DZNEmptyDataSet (1.8.1)
   - Fastboard (2.0.0-alpha.19):
     - Fastboard/core (= 2.0.0-alpha.19)
   - Fastboard/core (2.0.0-alpha.19):
     - Whiteboard (~> 2.17.0-alpha.28)
-  - Firebase/AnalyticsWithoutAdIdSupport (9.5.0):
+  - Firebase/AnalyticsWithoutAdIdSupport (10.24.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics/WithoutAdIdSupport (~> 9.5.0)
-  - Firebase/CoreOnly (9.5.0):
-    - FirebaseCore (= 9.5.0)
-  - Firebase/RemoteConfig (9.5.0):
+    - FirebaseAnalytics/WithoutAdIdSupport (~> 10.24.0)
+  - Firebase/CoreOnly (10.24.0):
+    - FirebaseCore (= 10.24.0)
+  - Firebase/RemoteConfig (10.24.0):
     - Firebase/CoreOnly
-    - FirebaseRemoteConfig (~> 9.5.0)
-  - FirebaseABTesting (9.6.0):
-    - FirebaseCore (~> 9.0)
-  - FirebaseAnalytics/WithoutAdIdSupport (9.5.0):
-    - FirebaseCore (~> 9.0)
-    - FirebaseInstallations (~> 9.0)
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 9.5.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
-    - GoogleUtilities/MethodSwizzler (~> 7.7)
-    - GoogleUtilities/Network (~> 7.7)
-    - "GoogleUtilities/NSData+zlib (~> 7.7)"
-    - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseCore (9.5.0):
-    - FirebaseCoreDiagnostics (~> 9.0)
-    - FirebaseCoreInternal (~> 9.0)
-    - GoogleUtilities/Environment (~> 7.7)
-    - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (9.5.0):
-    - GoogleDataTransport (< 10.0.0, >= 9.1.4)
-    - GoogleUtilities/Environment (~> 7.7)
-    - GoogleUtilities/Logger (~> 7.7)
-    - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseCoreInternal (9.5.0):
-    - "GoogleUtilities/NSData+zlib (~> 7.7)"
-  - FirebaseCrashlytics (9.5.0):
-    - FirebaseCore (~> 9.0)
-    - FirebaseInstallations (~> 9.0)
-    - GoogleDataTransport (< 10.0.0, >= 9.1.4)
-    - GoogleUtilities/Environment (~> 7.7)
-    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - FirebaseRemoteConfig (~> 10.24.0)
+  - FirebaseABTesting (10.24.0):
+    - FirebaseCore (~> 10.0)
+  - FirebaseAnalytics/WithoutAdIdSupport (10.24.0):
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 10.24.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
+    - GoogleUtilities/MethodSwizzler (~> 7.11)
+    - GoogleUtilities/Network (~> 7.11)
+    - "GoogleUtilities/NSData+zlib (~> 7.11)"
+    - nanopb (< 2.30911.0, >= 2.30908.0)
+  - FirebaseCore (10.24.0):
+    - FirebaseCoreInternal (~> 10.0)
+    - GoogleUtilities/Environment (~> 7.12)
+    - GoogleUtilities/Logger (~> 7.12)
+  - FirebaseCoreExtension (10.24.0):
+    - FirebaseCore (~> 10.0)
+  - FirebaseCoreInternal (10.24.0):
+    - "GoogleUtilities/NSData+zlib (~> 7.8)"
+  - FirebaseCrashlytics (10.24.0):
+    - FirebaseCore (~> 10.5)
+    - FirebaseInstallations (~> 10.0)
+    - FirebaseRemoteConfigInterop (~> 10.23)
+    - FirebaseSessions (~> 10.5)
+    - GoogleDataTransport (~> 9.2)
+    - GoogleUtilities/Environment (~> 7.8)
+    - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesObjC (~> 2.1)
-  - FirebaseInstallations (9.5.0):
-    - FirebaseCore (~> 9.0)
-    - GoogleUtilities/Environment (~> 7.7)
-    - GoogleUtilities/UserDefaults (~> 7.7)
+  - FirebaseInstallations (10.24.0):
+    - FirebaseCore (~> 10.0)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
-  - FirebaseRemoteConfig (9.5.0):
-    - FirebaseABTesting (~> 9.0)
-    - FirebaseCore (~> 9.0)
-    - FirebaseInstallations (~> 9.0)
+  - FirebaseRemoteConfig (10.24.0):
+    - FirebaseABTesting (~> 10.0)
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - FirebaseRemoteConfigInterop (~> 10.23)
+    - FirebaseSharedSwift (~> 10.0)
+    - GoogleUtilities/Environment (~> 7.8)
+    - "GoogleUtilities/NSData+zlib (~> 7.8)"
+  - FirebaseRemoteConfigInterop (10.24.0)
+  - FirebaseSessions (10.24.0):
+    - FirebaseCore (~> 10.5)
+    - FirebaseCoreExtension (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleDataTransport (~> 9.2)
+    - GoogleUtilities/Environment (~> 7.10)
+    - nanopb (< 2.30911.0, >= 2.30908.0)
+    - PromisesSwift (~> 2.1)
+  - FirebaseSharedSwift (10.24.0)
+  - GoogleAppMeasurement/WithoutAdIdSupport (10.24.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
+    - GoogleUtilities/MethodSwizzler (~> 7.11)
+    - GoogleUtilities/Network (~> 7.11)
+    - "GoogleUtilities/NSData+zlib (~> 7.11)"
+    - nanopb (< 2.30911.0, >= 2.30908.0)
+  - GoogleDataTransport (9.4.1):
     - GoogleUtilities/Environment (~> 7.7)
-    - "GoogleUtilities/NSData+zlib (~> 7.7)"
-  - GoogleAppMeasurement/WithoutAdIdSupport (9.5.0):
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
-    - GoogleUtilities/MethodSwizzler (~> 7.7)
-    - GoogleUtilities/Network (~> 7.7)
-    - "GoogleUtilities/NSData+zlib (~> 7.7)"
-    - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleDataTransport (9.2.0):
-    - GoogleUtilities/Environment (~> 7.7)
-    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/AppDelegateSwizzler (7.7.0):
+  - GoogleUtilities/AppDelegateSwizzler (7.13.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.7.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Environment (7.13.0):
+    - GoogleUtilities/Privacy
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.7.0):
+  - GoogleUtilities/Logger (7.13.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.7.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/MethodSwizzler (7.13.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.7.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Network (7.13.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Privacy
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.7.0)"
-  - GoogleUtilities/Reachability (7.7.0):
+  - "GoogleUtilities/NSData+zlib (7.13.0)":
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (7.13.0)
+  - GoogleUtilities/Reachability (7.13.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.7.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/UserDefaults (7.13.0):
     - GoogleUtilities/Logger
-  - Hero (1.6.1)
-  - IQKeyboardManagerSwift (6.5.9)
-  - Kingfisher (7.6.2)
+    - GoogleUtilities/Privacy
+  - Hero (1.6.3)
+  - IQKeyboardManagerSwift (7.0.2)
+  - Kingfisher (7.11.0)
   - Logging (1.4.0)
-  - LookinServer (1.1.5):
-    - LookinServer/Core (= 1.1.5)
-  - LookinServer/Core (1.1.5)
-  - lottie-ios (4.0.1)
+  - LookinServer (1.2.8):
+    - LookinServer/Core (= 1.2.8)
+  - LookinServer/Core (1.2.8)
+  - lottie-ios (4.4.2)
   - MBProgressHUD (1.2.0)
-  - nanopb (2.30909.0):
-    - nanopb/decode (= 2.30909.0)
-    - nanopb/encode (= 2.30909.0)
-  - nanopb/decode (2.30909.0)
-  - nanopb/encode (2.30909.0)
+  - nanopb (2.30910.0):
+    - nanopb/decode (= 2.30910.0)
+    - nanopb/encode (= 2.30910.0)
+  - nanopb/decode (2.30910.0)
+  - nanopb/encode (2.30910.0)
   - "NSObject+Rx (5.2.2)":
     - RxSwift (~> 6.2)
   - NTLBridge (3.1.6)
-  - PhoneNumberKit (3.7.6):
-    - PhoneNumberKit/PhoneNumberKitCore (= 3.7.6)
-    - PhoneNumberKit/UIKit (= 3.7.6)
-  - PhoneNumberKit/PhoneNumberKitCore (3.7.6)
-  - PhoneNumberKit/UIKit (3.7.6):
+  - PhoneNumberKit (3.7.10):
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.7.10)
+    - PhoneNumberKit/UIKit (= 3.7.10)
+  - PhoneNumberKit/PhoneNumberKitCore (3.7.10)
+  - PhoneNumberKit/UIKit (3.7.10):
     - PhoneNumberKit/PhoneNumberKitCore
-  - PromisesObjC (2.1.1)
-  - RxCocoa (6.5.0):
-    - RxRelay (= 6.5.0)
-    - RxSwift (= 6.5.0)
+  - PromisesObjC (2.4.0)
+  - PromisesSwift (2.4.0):
+    - PromisesObjC (= 2.4.0)
+  - RxCocoa (6.6.0):
+    - RxRelay (= 6.6.0)
+    - RxSwift (= 6.6.0)
   - RxDataSources (5.0.0):
     - Differentiator (~> 5.0)
     - RxCocoa (~> 6.0)
     - RxSwift (~> 6.0)
-  - RxRelay (6.5.0):
-    - RxSwift (= 6.5.0)
-  - RxSwift (6.5.0)
+  - RxRelay (6.6.0):
+    - RxSwift (= 6.6.0)
+  - RxSwift (6.6.0)
   - ScreenCorners (1.0.1)
-  - Siren (5.7.1)
-  - SnapKit (5.0.1)
+  - Siren (6.1.2)
+  - SnapKit (5.7.1)
   - SwiftyBeaver (1.9.5)
   - SyncPlayer (0.3.3)
   - ViewDragger (1.1.0)
@@ -191,11 +212,14 @@ SPEC REPOS:
     - FirebaseABTesting
     - FirebaseAnalytics
     - FirebaseCore
-    - FirebaseCoreDiagnostics
+    - FirebaseCoreExtension
     - FirebaseCoreInternal
     - FirebaseCrashlytics
     - FirebaseInstallations
     - FirebaseRemoteConfig
+    - FirebaseRemoteConfigInterop
+    - FirebaseSessions
+    - FirebaseSharedSwift
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
@@ -211,6 +235,7 @@ SPEC REPOS:
     - NTLBridge
     - PhoneNumberKit
     - PromisesObjC
+    - PromisesSwift
     - RxCocoa
     - RxDataSources
     - RxRelay
@@ -226,45 +251,49 @@ SPEC REPOS:
     - Zip
 
 SPEC CHECKSUMS:
-  AcknowList: 931531a3e9d66f202ae8e04819a62c50b818b03e
+  AcknowList: 6a066937eac273426b749e14172db23a9ca656df
   AgoraRtcEngine_iOS: 267c0980c1fb97e056d05b850f8629b05b6e467a
   AgoraRtm_iOS: 595a9fa33a409831e6183396ea8f8bc563918403
-  AliyunLogProducer: 99e15aaa188cda23427d1428a387f5a72cb3466d
-  CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
+  AliyunLogProducer: eac8d130e68c5bccc9ef4b8c6c8857662ca643c7
+  CropViewController: 919f4e49dc298a610265bb1eeaa7e195298e3c5b
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fastboard: 2ceeb91c71a46c7fad9754960b0b47fb9c7bc553
-  Firebase: 800f16f07af493d98d017446a315c27af0552f41
-  FirebaseABTesting: 61826730ce9eee8781ba99a2b3420e9bce148dc9
-  FirebaseAnalytics: 1b60984a408320dda637306f3f733699ef8473d7
-  FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
-  FirebaseCoreDiagnostics: 17cbf4e72b1dbd64bfdc33d4b1f07bce4f16f1d8
-  FirebaseCoreInternal: 50a8e39cae8abf72d5145d07ea34c3244f70862b
-  FirebaseCrashlytics: d20fa38bb8c88cb0f1c9211286bc23ab58c1b464
-  FirebaseInstallations: 41f811b530c41dd90973d0174381cdb3fcb5e839
-  FirebaseRemoteConfig: 97ccd1b58f26d756f86d071330f00856e51022a2
-  GoogleAppMeasurement: 6ee231473fbd75c11221dfce489894334024eead
-  GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
-  GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
-  Hero: 215865ba3ae41dd9bb08cd6c60a645529c6fc94b
-  IQKeyboardManagerSwift: 6e839c575c4aa1078d58a596e41244e77abe918f
-  Kingfisher: 6c5449c6450c5239166510ba04afe374a98afc4f
+  Firebase: 91fefd38712feb9186ea8996af6cbdef41473442
+  FirebaseABTesting: 4431c2c56ac6e56f463b9cab05cc111078639f99
+  FirebaseAnalytics: b5efc493eb0f40ec560b04a472e3e1a15d39ca13
+  FirebaseCore: 11dc8a16dfb7c5e3c3f45ba0e191a33ac4f50894
+  FirebaseCoreExtension: af5fd85e817ea9d19f9a2659a376cf9cf99f03c0
+  FirebaseCoreInternal: bcb5acffd4ea05e12a783ecf835f2210ce3dc6af
+  FirebaseCrashlytics: af38ea4adfa606f6e63fcc22091b61e7938fcf66
+  FirebaseInstallations: 8f581fca6478a50705d2bd2abd66d306e0f5736e
+  FirebaseRemoteConfig: 95dddc50496b37eef199dadce850d5652b534b43
+  FirebaseRemoteConfigInterop: 6c349a466490aeace3ce9c091c86be1730711634
+  FirebaseSessions: 2651b464e241c93fd44112f995d5ab663c970487
+  FirebaseSharedSwift: 76e1529c32101d80e4f1ca2fba7c39d59f0a390a
+  GoogleAppMeasurement: f3abf08495ef2cba7829f15318c373b8d9226491
+  GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
+  GoogleUtilities: d053d902a8edaa9904e1bd00c37535385b8ed152
+  Hero: 419d43384355b3168512bd8ac6a33aadd3dc575b
+  IQKeyboardManagerSwift: d338c11a896e9f29603443700c4567e32f830c22
+  Kingfisher: b9c985d864d43515f404f1ef4a8ce7d802ace3ac
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  LookinServer: 2893f2bae53cbf3fd49bbe1a8ea1745582ef1317
-  lottie-ios: 54d22edf55b839f0929cabbfe609c9aa548b1145
+  LookinServer: 1b2b61c6402ae29fa22182d48f5cd067b4e99e80
+  lottie-ios: 4445b0bdb583c7a5325529f62246d311ee85fcd0
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  nanopb: 438bc412db1928dac798aa6fd75726007be04262
   "NSObject+Rx": 61cf1f7306a73dcef8b36649198af0813ec18dfd
   NTLBridge: 6ef7f3c1fc956f2e2d701a89828d51674bd479c7
-  PhoneNumberKit: 3c68a822bad955ffcefc72a52df72b6596498555
-  PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
-  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  PhoneNumberKit: 3d9a20cfe8ee68f35c2a3ae9474093133f72a8a1
+  PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
+  RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
-  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
-  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
+  RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
   ScreenCorners: 9bfdf033122fb645d57cc8f9df7b8ea770720771
-  Siren: 76ac728f4f2f4a3576c322272e94a0e37955664f
-  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  Siren: c951ae243b57160629fb2e4d2f630cbfc5d5452b
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20

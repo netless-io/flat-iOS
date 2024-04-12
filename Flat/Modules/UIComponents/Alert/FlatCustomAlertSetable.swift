@@ -13,7 +13,7 @@ protocol FlatCustomAlertSetable: AnyObject {
     @available(iOS 14.0, *)
     var menu: UIMenu? { get set }
     var viewContainingControllerProvider: (() -> UIViewController?)? { get set }
-    func viewContainingController() -> UIViewController?
+    func _flat_viewContainingController() -> UIViewController?
     func addTarget(_ target: AnyObject?, action: Selector)
     @available(iOS 14.0, *)
     func _buildMenu()
@@ -35,10 +35,14 @@ extension UIButton: FlatCustomAlertSetable {
             // Fallback on earlier versions
         }
     }
-
+    
+    func _flat_viewContainingController() -> UIViewController? {
+        iq.viewContainingController()
+    }
+    
     func _onClickCommonCustomAlert() {
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-        viewContainingController()?.presentCommonCustomAlert(actions)
+        _flat_viewContainingController()?.presentCommonCustomAlert(actions)
     }
 
     func addTarget(_ target: AnyObject?, action: Selector) {
@@ -57,7 +61,7 @@ extension UIBarButtonItem: FlatCustomAlertSetable {
         }
     }
 
-    func viewContainingController() -> UIViewController? {
+    func _flat_viewContainingController() -> UIViewController? {
         viewContainingControllerProvider?()
     }
 
@@ -69,7 +73,7 @@ extension UIBarButtonItem: FlatCustomAlertSetable {
     func _buildMenu() {}
 
     func _onClickCommonCustomAlert() {
-        viewContainingController()?.presentCommonCustomAlert(actions)
+        _flat_viewContainingController()?.presentCommonCustomAlert(actions)
     }
 }
 
