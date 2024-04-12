@@ -190,7 +190,19 @@ class CloudStorageInClassViewController: CloudStorageDisplayViewController {
                     guard let info else { return }
                     switch info.status {
                     case .finished:
-                        self?.fileContentSelectedHandler?(.projectorPptx(uuid: info.uuid, prefix: info.prefix, title: item.fileName))
+                        if taskType == .dynamic {
+                            self?.fileContentSelectedHandler?(.projectorPptx(uuid: info.uuid, prefix: info.prefix, title: item.fileName))
+                        } else {
+                            let sorted = info.images.sorted { v1, v2 in
+                                let n1 = Int(v1.key) ?? 0
+                                let n2 = Int(v2.key) ?? 0
+                                return n2 >= n1
+                            }
+                            let pages = sorted.map { (_, v) in
+                                return WhitePptPage(src: v.url, preview: v.url, size: .init(width: v.width, height: v.height))
+                            }
+                            self?.fileContentSelectedHandler?(.multiPages(pages: pages, title: item.fileName))
+                        }
                     default:
                         self?.toast(localizeStrings("File not ready"))
                     }

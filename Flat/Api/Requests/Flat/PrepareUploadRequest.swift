@@ -8,10 +8,11 @@
 
 import Foundation
 
-struct PrepareUploadRequest: FlatRequest, Codable {
+struct PrepareUploadRequest: FlatRequest, Encodable {
     let fileName: String
     let fileSize: Int
     let targetDirectoryPath: String
+    let convertType = "WhiteboardProjector"
     var path: String { "/v2/cloud-storage/upload/start" }
     var method: HttpMethod { .post }
     var task: Task { .requestJSONEncodable(encodable: self) }

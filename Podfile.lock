@@ -131,13 +131,13 @@ PODS:
   - SyncPlayer (0.3.3)
   - ViewDragger (1.1.0)
   - White_YYModel (1.0.6)
-  - Whiteboard (2.17.0-alpha.29):
-    - Whiteboard/Whiteboard-Basic (= 2.17.0-alpha.29)
-  - Whiteboard/Resource (2.17.0-alpha.29)
-  - Whiteboard/SyncPlayer (2.17.0-alpha.29):
+  - Whiteboard (2.17.0-alpha.30):
+    - Whiteboard/Whiteboard-Basic (= 2.17.0-alpha.30)
+  - Whiteboard/Resource (2.17.0-alpha.30)
+  - Whiteboard/SyncPlayer (2.17.0-alpha.30):
     - SyncPlayer
     - Whiteboard/Whiteboard-Basic
-  - Whiteboard/Whiteboard-Basic (2.17.0-alpha.29):
+  - Whiteboard/Whiteboard-Basic (2.17.0-alpha.30):
     - NTLBridge (~> 3.1.4)
     - White_YYModel
     - Whiteboard/Resource
@@ -173,8 +173,8 @@ DEPENDENCIES:
   - SwiftyBeaver
   - SyncPlayer (= 0.3.3)
   - ViewDragger (= 1.1.0)
-  - Whiteboard (= 2.17.0-alpha.29)
-  - Whiteboard/SyncPlayer (= 2.17.0-alpha.29)
+  - Whiteboard (= 2.17.0-alpha.30)
+  - Whiteboard/SyncPlayer (= 2.17.0-alpha.30)
   - Zip
 
 SPEC REPOS:
@@ -269,9 +269,9 @@ SPEC CHECKSUMS:
   SyncPlayer: b9335696ab56a0e24cf38257c089cf8404ed6c71
   ViewDragger: b9d300848f674d3025e67b2c9887afe9334e1d20
   White_YYModel: 4ed7b231471784ec709d4db954e1ca61a4fbe54d
-  Whiteboard: d2cf15dc3545cddc605ccbf54a0b8e05dccb5d92
+  Whiteboard: 8ceb323e50f13b0603472a3c4f3efcd1d8e4681c
   Zip: b3fef584b147b6e582b2256a9815c897d60ddc67
 
-PODFILE CHECKSUM: e4fd9b602f37ff00a7cadb0cfa31204e387854fc
+PODFILE CHECKSUM: e6a2b698e29152b1e36dbafd945a176894ec500e
 
 COCOAPODS: 1.13.0
