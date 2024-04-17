@@ -76,7 +76,13 @@ struct Env {
     }
 
     var baseURL: String {
-        "https://\(value(for: "API_URL") as String)"
+        #if DEBUG
+        let url = value(for: "API_URL") as String
+        if url == "localhost" {
+            return "http://\(url)"
+        }
+        #endif
+        return "https://\(value(for: "API_URL") as String)"
     }
 
     var name: String {

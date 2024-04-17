@@ -610,6 +610,7 @@
 		8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSAuthView.swift; sourceTree = "<group>"; };
 		8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigReader.swift; sourceTree = "<group>"; };
 		8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryJoinRoomPickerViewController.swift; sourceTree = "<group>"; };
+		8A87A4D52BCFD831001F5533 /* Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig; sourceTree = "<group>"; };
 		8A8A240229879F63008319BB /* ClassroomStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStatusBar.swift; sourceTree = "<group>"; };
 		8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+keyboard.swift"; sourceTree = "<group>"; };
 		8A8A79B62A11E09000B000CF /* GlobalKeyboardShortcutRespondable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalKeyboardShortcutRespondable.swift; sourceTree = "<group>"; };
@@ -783,6 +784,7 @@
 		C67021601AB33B564D1A5DA9 /* Pods-Flat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.release.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.release.xcconfig"; sourceTree = "<group>"; };
 		DC37C1F4E4F0275D23DB54DC /* Pods-Flat.non_sign.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.non_sign.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.non_sign.xcconfig"; sourceTree = "<group>"; };
 		EF4D96486875E4E663F2F2BE /* Pods-Flat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.debug.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.debug.xcconfig"; sourceTree = "<group>"; };
+		F69EABA957E9C323F3BA21B5 /* Pods-Flat.flat_local.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.flat_local.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.flat_local.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -816,6 +818,7 @@
 				C67021601AB33B564D1A5DA9 /* Pods-Flat.release.xcconfig */,
 				6EB5061DE7DACC73AD6C59FD /* Pods-Flat.flat_release.xcconfig */,
 				A78E6E9044CF454435C1D360 /* Pods-Flat.flint_release.xcconfig */,
+				F69EABA957E9C323F3BA21B5 /* Pods-Flat.flat_local.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1488,6 +1491,7 @@
 				8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */,
 				8AB0AC3F2A9355A6006661E1 /* Env+Whiteboard.swift */,
 				8AD3CDEC27168E75008BD904 /* Develop.xcconfig */,
+				8A87A4D52BCFD831001F5533 /* Local.xcconfig */,
 				8A4C7A7527F2E53B006988C6 /* Flint_Develop.xcconfig */,
 				8A4C7A7627F2E544006988C6 /* Flint_Release.xcconfig */,
 				8AD3CDEE27168E87008BD904 /* Release.xcconfig */,
@@ -1981,8 +1985,6 @@
 			dependencies = (
 			);
 			name = Flat;
-			packageProductDependencies = (
-			);
 			productName = flat;
 			productReference = 8AD7C6B927157EA7001C4AAD /* DEV Flat.app */;
 			productType = "com.apple.product-type.application";
@@ -2018,8 +2020,6 @@
 				"zh-Hans",
 			);
 			mainGroup = 8AD7C6B027157EA7001C4AAD;
-			packageReferences = (
-			);
 			productRefGroup = 8AD7C6BA27157EA7001C4AAD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -2823,6 +2823,212 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Flint_Release;
+		};
+		8A87A4D22BCFD821001F5533 /* Flat_Local */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8A87A4D52BCFD831001F5533 /* Local.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Flat_Local;
+		};
+		8A87A4D32BCFD821001F5533 /* Flat_Local */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F69EABA957E9C323F3BA21B5 /* Pods-Flat.flat_local.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Flat/FlatDebug.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
+				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "$(inherited)";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "$(inherited)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Flat/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(CAMERA_ACCESS_ALERT)";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(MIC_ACCESS_ALERT)";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PHOTOS_ACCESS_ALERT)";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportsDocumentBrowser = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = 2.7.12;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"resolv\"",
+					"-l\"sqlite3.0\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"AgoraRtcKit\"",
+					"-framework",
+					"\"AgoraRtmKit\"",
+					"-framework",
+					"\"AgoraSoundTouch\"",
+					"-framework",
+					"\"Agorafdkaac\"",
+					"-framework",
+					"\"Agoraffmpeg\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreMedia\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"Hero\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"NSObject_Rx\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"RxCocoa\"",
+					"-framework",
+					"\"RxRelay\"",
+					"-framework",
+					"\"RxSwift\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"WebKit\"",
+					"-framework",
+					"\"Whiteboard\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+					"-Xlinker",
+					"-interposable",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
+				PRODUCT_NAME = "$(inherited)";
+				PROVISIONING_PROFILE_SPECIFIER = flat2;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = Flat/bridgingHeader.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Flat_Local;
+		};
+		8A87A4D42BCFD821001F5533 /* Flat_Local */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Flat-Test-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = dfg;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "-.Flat-Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/$(TEST_HOST_PRODUCT_NAME).app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/$(TEST_HOST_PRODUCT_NAME)";
+			};
+			name = Flat_Local;
 		};
 		8AB0AC652A948AFB006661E1 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3752,6 +3958,7 @@
 			buildConfigurations = (
 				8AB0AC652A948AFB006661E1 /* Debug */,
 				8AB0AC662A948AFB006661E1 /* Flat_Debug */,
+				8A87A4D42BCFD821001F5533 /* Flat_Local */,
 				8AB0AC672A948AFB006661E1 /* Flint_Debug */,
 				8AB0AC682A948AFB006661E1 /* Non_Sign */,
 				8AB0AC692A948AFB006661E1 /* Release */,
@@ -3766,6 +3973,7 @@
 			buildConfigurations = (
 				8AD7C6E127157EA7001C4AAD /* Debug */,
 				8AB856BA27F2ECD600858AA6 /* Flat_Debug */,
+				8A87A4D22BCFD821001F5533 /* Flat_Local */,
 				8A330B5127F2B28D00D5E244 /* Flint_Debug */,
 				8AD2EF672772F39900087280 /* Non_Sign */,
 				8AD7C6E227157EA7001C4AAD /* Release */,
@@ -3780,6 +3988,7 @@
 			buildConfigurations = (
 				8AD7C6E427157EA7001C4AAD /* Debug */,
 				8AB856BB27F2ECD600858AA6 /* Flat_Debug */,
+				8A87A4D32BCFD821001F5533 /* Flat_Local */,
 				8A330B5227F2B28D00D5E244 /* Flint_Debug */,
 				8AD2EF682772F39900087280 /* Non_Sign */,
 				8AD7C6E527157EA7001C4AAD /* Release */,
