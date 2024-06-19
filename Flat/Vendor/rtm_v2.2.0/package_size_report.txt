@@ -1,0 +1,5 @@
+ios arch framework size_in_ipa(b) raw_size(b)
+ios armv7 aosl.Framework 186397 212992
+ios armv7 AgoraRtmKit.Framework 5644513 6291456
+ios arm64 aosl.Framework 201237 245760
+ios arm64 AgoraRtmKit.Framework 5930186 8110080

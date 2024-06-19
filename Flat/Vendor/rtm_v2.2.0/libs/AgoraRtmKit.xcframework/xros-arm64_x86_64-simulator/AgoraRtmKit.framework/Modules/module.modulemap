@@ -1,0 +1,11 @@
+framework module AgoraRtmKit {
+  header "AgoraRtmKit.h"
+  header "AgoraRtmClientKit.h"
+  header "AgoraRtmEnumerates.h"
+  header "AgoraRtmObjects.h"
+  header "AgoraRtmKit.h"
+  header "AgoraRtmClientKit.h"
+  header "AgoraRtmEnumerates.h"
+  header "AgoraRtmObjects.h"
+  export *
+}

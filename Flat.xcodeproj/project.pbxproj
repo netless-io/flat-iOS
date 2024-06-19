@@ -100,6 +100,8 @@
 		8A1BF0C3280D3DB000D76F22 /* ForceBindPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C2280D3DB000D76F22 /* ForceBindPhoneViewController.swift */; };
 		8A1BF0C5280D52E200D76F22 /* BindingPhoneRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */; };
 		8A1BF0C7280E563A00D76F22 /* CancellationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */; };
+		8A1E22B92C21397A0005F9D5 /* AgoraRtmKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1E22AF2C2139560005F9D5 /* AgoraRtmKit.xcframework */; };
+		8A1E22BA2C21397A0005F9D5 /* AgoraRtmKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1E22AF2C2139560005F9D5 /* AgoraRtmKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A20A3A62796918100024040 /* ImportExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A52796918100024040 /* ImportExtensions.swift */; };
 		8A20A3AA2797AB3E00024040 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A20A3A92797AB3E00024040 /* Theme.swift */; };
 		8A21CD5B299B7BA9001F36AC /* ClassroomConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A21CD5A299B7BA9001F36AC /* ClassroomConfig.swift */; };
@@ -394,6 +396,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8A1E22BA2C21397A0005F9D5 /* AgoraRtmKit.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,6 +499,10 @@
 		8A1BF0C2280D3DB000D76F22 /* ForceBindPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceBindPhoneViewController.swift; sourceTree = "<group>"; };
 		8A1BF0C4280D52E200D76F22 /* BindingPhoneRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingPhoneRequest.swift; sourceTree = "<group>"; };
 		8A1BF0C6280E563A00D76F22 /* CancellationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationViewController.swift; sourceTree = "<group>"; };
+		8A1E22AF2C2139560005F9D5 /* AgoraRtmKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AgoraRtmKit.xcframework; sourceTree = "<group>"; };
+		8A1E22B12C2139560005F9D5 /* commits */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = commits; sourceTree = "<group>"; };
+		8A1E22B22C2139560005F9D5 /* package_size_report.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = package_size_report.txt; sourceTree = "<group>"; };
+		8A1E22B32C2139560005F9D5 /* spec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spec; sourceTree = "<group>"; };
 		8A20A3A52796918100024040 /* ImportExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExtensions.swift; sourceTree = "<group>"; };
 		8A20A3A92797AB3E00024040 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		8A21CD5A299B7BA9001F36AC /* ClassroomConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomConfig.swift; sourceTree = "<group>"; };
@@ -802,6 +809,7 @@
 				8A0CA22328BC73FE0035F71A /* QuartzCore.framework in Frameworks */,
 				9AE3AF17B16B9CA81A411696 /* Pods_Flat.framework in Frameworks */,
 				8A3A95D82AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */,
+				8A1E22B92C21397A0005F9D5 /* AgoraRtmKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1135,6 +1143,25 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
+		8A1E22B02C2139560005F9D5 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				8A1E22AF2C2139560005F9D5 /* AgoraRtmKit.xcframework */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		8A1E22B42C2139560005F9D5 /* rtm_v2.2.0 */ = {
+			isa = PBXGroup;
+			children = (
+				8A1E22B02C2139560005F9D5 /* libs */,
+				8A1E22B12C2139560005F9D5 /* commits */,
+				8A1E22B22C2139560005F9D5 /* package_size_report.txt */,
+				8A1E22B32C2139560005F9D5 /* spec */,
+			);
+			path = rtm_v2.2.0;
+			sourceTree = "<group>";
+		};
 		8A21DAAA279E58E70060E25D /* Replay */ = {
 			isa = PBXGroup;
 			children = (
@@ -1323,6 +1350,7 @@
 		8A3A95D62AA5CDCF003C99D6 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				8A1E22B42C2139560005F9D5 /* rtm_v2.2.0 */,
 				8A3A95D72AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework */,
 			);
 			path = Vendor;
