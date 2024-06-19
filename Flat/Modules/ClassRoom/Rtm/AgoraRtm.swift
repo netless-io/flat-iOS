@@ -17,19 +17,31 @@ class AgoraRtm: NSObject, RtmProvider {
     let error: PublishRelay<RtmError> = .init()
     let state: BehaviorRelay<RtmState> = .init(value: .idle)
     let reconnectTimeoutInterval: DispatchTimeInterval = .seconds(5)
+    let rtmToken: String
+    let rtmUserId: String
 
     init(rtmToken: String,
          rtmUserUUID: String,
          agoraAppId: String)
     {
+        self.rtmToken = rtmToken
+        rtmUserId = rtmUserUUID
         super.init()
-        agoraKit = AgoraRtmKit(appId: agoraAppId, delegate: self)!
+        do {
+            let config = AgoraRtmClientConfig(appId: agoraAppId, userId: rtmUserUUID)
+            agoraKit = try AgoraRtmClientKit(config, delegate: self)
+        } catch {
+            globalLogger.error("init agorakit error \(error)")
+        }
         agoraGenerator.agoraToken = rtmToken
         agoraGenerator.agoraUserId = rtmUserUUID
         globalLogger.trace("\(self)")
     }
 
-    deinit { globalLogger.trace("\(self) deinit") }
+    deinit {
+        agoraKit.removeDelegate(self)
+        globalLogger.trace("\(self) deinit")
+    }
 
     func sendP2PMessageFromArray(_ array: [(data: Data, uuid: String)]) -> Single<Void> {
         array.reduce(Single<Void>.just(())) { [weak self] partial, part -> Single<Void> in
@@ -50,26 +62,27 @@ class AgoraRtm: NSObject, RtmProvider {
                     observer(.failure("self not exist"))
                     return Disposables.create()
                 }
-                let msg = AgoraRtmRawMessage(rawData: data, description: "")
-                self.agoraKit.send(msg, toPeer: UUID) { error in
-                    if error == .ok {
-                        observer(.success(()))
-                    } else {
-                        let errMsg = "send p2p msg error \(error)"
+                let options = AgoraRtmPublishOptions()
+                options.channelType = .user
+                self.agoraKit.publish(channelName: UUID, data: data, option: options) { _, error in
+                    if let error, error.errorCode != .ok {
+                        let errMsg = "send p2p msg error \(error.errorCode.rawValue)"
                         globalLogger.error("\(errMsg)")
-                        if error == .peerUnreachable {
+                        if error.errorCode == .presenceUserNotExist { // TOOD: 还不知道是不是这个错误。
                             observer(.failure(localizeStrings("UserNotInRoom")))
                         } else {
                             observer(.failure(errMsg))
                         }
+                        return
                     }
+                    observer(.success(()))
                 }
                 return Disposables.create()
             }
         }
     }
 
-    var loginCallbacks: [(AgoraRtmLoginErrorCode) -> Void] = []
+    var loginCallbacks: [(AgoraRtmErrorCode) -> Void] = []
     /// Can be called safely multi times
     func login() -> Single<Void> {
         func createLoginObserver() -> Single<Void> {
@@ -79,7 +92,7 @@ class AgoraRtm: NSObject, RtmProvider {
                     return Disposables.create()
                 }
                 self.loginCallbacks.append { code in
-                    if code == .ok || code == .alreadyLogin {
+                    if code == AgoraRtmErrorCode.ok {
                         observer(.success(()))
                     } else {
                         observer(.failure("login error \(code)"))
@@ -92,12 +105,20 @@ class AgoraRtm: NSObject, RtmProvider {
         case .connected, .reconnecting: return .just(())
         case .connecting: return createLoginObserver()
         case .idle:
-            globalLogger.info("start login: \(agoraGenerator.agoraToken), \(agoraGenerator.agoraUserId)")
-            agoraKit.login(byToken: agoraGenerator.agoraToken,
-                           user: agoraGenerator.agoraUserId) { [weak self] code in
+            globalLogger.info("start login: \(rtmToken), \(rtmUserId)")
+            agoraKit.login(rtmToken) { [weak self] response, errorInfo in
                 guard let self else { return }
-                globalLogger.info("login complete with code \(code)")
-                self.loginCallbacks.forEach { $0(code) }
+                if let errorInfo, errorInfo.errorCode != .ok {
+                    let code = errorInfo.errorCode
+                    globalLogger.error("login failed. code \(code)")
+                    self.loginCallbacks.forEach { $0(code) }
+                    self.loginCallbacks = []
+                    self.state.accept(.idle)
+                    return
+                }
+                guard let response else { return } // TODO: 这个 response 来干啥的？？
+                globalLogger.info("login success")
+                self.loginCallbacks.forEach { $0(.ok) }
                 self.loginCallbacks = []
                 self.state.accept(.connected)
             }
@@ -110,13 +131,13 @@ class AgoraRtm: NSObject, RtmProvider {
         case .idle, .connecting, .reconnecting: return .just(())
         case .connected:
             return Single<Void>.create { [weak self] observer in
-                self?.agoraKit.logout(completion: { error in
-                    if error == .ok {
-                        observer(.success(()))
-                    } else {
-                        observer(.failure("rtm logout \(error)"))
+                self?.agoraKit.logout { _, error in
+                    if let error, error.errorCode != .ok {
+                        observer(.failure("rtm logout \(error.errorCode.rawValue)"))
+                        return
                     }
-                })
+                    observer(.success(()))
+                }
                 return Disposables.create()
             }
         }
@@ -128,76 +149,32 @@ class AgoraRtm: NSObject, RtmProvider {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
-            let handler = AgoraRtmChannelImp()
-            handler.userUUID = agoraGenerator.agoraUserId
-            handler.channelId = channelId
-            let channel = self.agoraKit.createChannel(withId: channelId, delegate: handler)!
-            handler.channel = channel
+
+            let rtmUserId = self.rtmUserId
             globalLogger.info("start join channel: \(channelId)")
-            channel.join { error in
-                if error == .channelErrorOk {
-                    globalLogger.info("start join channel: \(channelId) success")
-                    observer(.success(handler))
-                } else {
-                    globalLogger.error("join channel: \(channelId) fail, \(error)")
+            let options = AgoraRtmSubscribeOptions()
+            options.features = [.message, .presence]
+            sharedAgoraKit = agoraKit
+            agoraKit.subscribe(channelName: channelId, option: options) { response, error in
+                if let error, error.errorCode != .ok {
+                    globalLogger.error("join channel: \(channelId) fail, \(error.errorCode.rawValue)")
                     observer(.failure("join channel error \(error)"))
+                    return
                 }
+                guard let response else { return }
+                globalLogger.info("start join channel: \(channelId) success")
+                let handler = AgoraRtmChannelImp(channelId: channelId, userId: rtmUserId)
+                observer(.success(handler))
             }
             return Disposables.create()
         }
     }
 
-    fileprivate var agoraKit: AgoraRtmKit!
+    fileprivate var agoraKit: AgoraRtmClientKit!
 }
 
-extension AgoraRtmConnectionState: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .disconnected:
-            return "disconnected"
-        case .connecting:
-            return "connecting"
-        case .connected:
-            return "connected"
-        case .reconnecting:
-            return "reconnecting"
-        case .aborted:
-            return "aborted"
-        @unknown default:
-            return "unknown"
-        }
-    }
-}
-
-extension AgoraRtmConnectionChangeReason: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .login:
-            return "login"
-        case .loginSuccess:
-            return "loginSuccess"
-        case .loginFailure:
-            return "loginFailure"
-        case .loginTimeout:
-            return "loginTimeout"
-        case .interrupted:
-            return "interrupted"
-        case .logout:
-            return "logout"
-        case .bannedByServer:
-            return "bannedByServer"
-        case .remoteLogin:
-            return "remoteLogin"
-        case .tokenExpired:
-            return "tokenExpired"
-        @unknown default:
-            return "unknown"
-        }
-    }
-}
-
-extension AgoraRtm: AgoraRtmDelegate {
-    func rtmKit(_: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
+extension AgoraRtm: AgoraRtmClientDelegate {
+    func rtmKit(_: AgoraRtmClientKit, channel _: String, connectionChangedToState state: AgoraRtmClientConnectionState, reason: AgoraRtmClientConnectionChangeReason) {
         globalLogger.info("state \(state), reason \(reason)")
         switch state {
         case .connected:
@@ -214,18 +191,105 @@ extension AgoraRtm: AgoraRtmDelegate {
                     }
                 }
             }
-        case .aborted:
-            globalLogger.error("remote login")
-            error.accept(.remoteLogin)
+        case .disconnected:
+            if reason == .changedSameUidLogin {
+                globalLogger.error("remote login")
+                error.accept(.remoteLogin)
+            }
         default:
             return
         }
     }
 
-    func rtmKit(_: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
-        globalLogger.info("receive p2p message \(message.text)")
-        if let rawMessage = message as? AgoraRtmRawMessage {
-            p2pMessage.accept((rawMessage.rawData, peerId))
+    func rtmKit(_: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        guard event.channelType == .user else { return }
+        if let data = event.message.rawData {
+            globalLogger.info("receive p2p message \(data.count) b")
+            p2pMessage.accept((data, event.publisher))
+        }
+    }
+}
+
+extension AgoraRtmClientConnectionState: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .disconnected:
+            "disconnected"
+        case .connecting:
+            "connecting"
+        case .connected:
+            "connected"
+        case .reconnecting:
+            "reconnecting"
+        case .failed:
+            "failed"
+        @unknown default:
+            "default \(rawValue)"
+        }
+    }
+}
+
+extension AgoraRtmClientConnectionChangeReason: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .changedConnecting:
+            "changedConnecting"
+        case .changedJoinSuccess:
+            "changedJoinSuccess"
+        case .changedInterrupted:
+            "changedInterrupted"
+        case .changedBannedByServer:
+            "changedBannedByServer"
+        case .changedJoinFailed:
+            "changedJoinFailed"
+        case .changedLeaveChannel:
+            "changedLeaveChannel"
+        case .changedInvalidAppId:
+            "changedInvalidAppId"
+        case .changedInvalidChannelName:
+            "changedInvalidChannelName"
+        case .changedInvalidToken:
+            "changedInvalidToken"
+        case .changedTokenExpired:
+            "changedTokenExpired"
+        case .changedRejectedByServer:
+            "changedRejectedByServer"
+        case .changedSettingProxyServer:
+            "changedSettingProxyServer"
+        case .changedRenewToken:
+            "changedRenewToken"
+        case .changedClientIpAddressChanged:
+            "changedClientIpAddressChanged"
+        case .changedKeepAliveTimeout:
+            "changedKeepAliveTimeout"
+        case .changedRejoinSuccess:
+            "changedRejoinSuccess"
+        case .changedChangedLost:
+            "changedChangedLost"
+        case .changedEchoTest:
+            "changedEchoTest"
+        case .changedClientIpAddressChangedByUser:
+            "changedClientIpAddressChangedByUser"
+        case .changedSameUidLogin:
+            "changedSameUidLogin"
+        case .changedTooManyBroadcasters:
+            "changedTooManyBroadcasters"
+        case .changedLicenseValidationFailure:
+            "changedLicenseValidationFailure"
+        case .changedCertificationVerifyFailure:
+            "changedCertificationVerifyFailure"
+        case .changedStreamChannelNotAvailable:
+            "changedStreamChannelNotAvailable"
+        case .changedInconsistentAppId:
+            "changedInconsistentAppId"
+        case .changedLoginSuccess:
+            "changedLoginSuccess"
+        case .changedLogout:
+            "changedLogout"
+        case .changedPresenceNotReady:
+            "changedPresenceNotReady"
+        @unknown default:
+            "default \(rawValue)"
         }
     }
 }

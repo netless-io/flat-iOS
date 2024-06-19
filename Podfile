@@ -18,7 +18,6 @@ target 'Flat' do
   pod 'PhoneNumberKit'
   pod 'ScreenCorners'
   
-  pod 'AgoraRtm_iOS', '1.5.1'
   pod 'AgoraRtcEngine_iOS', '4.3.0', :subspecs => ['RtcBasic']
   pod 'Fastboard', '2.0.0-alpha.19'
   pod 'Whiteboard', '2.17.0-alpha.30'

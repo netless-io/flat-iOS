@@ -11,139 +11,131 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class AgoraRtmChannelImp: NSObject, AgoraRtmChannelDelegate, RtmChannelProvider {
-    let newMemberPublisher: PublishRelay<String> = .init()
-    let memberLeftPublisher: PublishRelay<String> = .init()
-    let newMessagePublish: PublishRelay<(text: String, date: Date, sender: String)> = .init()
-    let rawDataPublish: PublishRelay<(data: Data, sender: String)> = .init()
+var sharedAgoraKit: AgoraRtmClientKit!
+class AgoraRtmChannelImp: NSObject, RtmChannelProvider {
+    var newMemberPublisher: RxRelay.PublishRelay<String> = .init()
+    var memberLeftPublisher: RxRelay.PublishRelay<String> = .init()
+    var newMessagePublish: RxRelay.PublishRelay<(text: String, date: Date, sender: String)> = .init()
+    var rawDataPublish: RxRelay.PublishRelay<(data: Data, sender: String)> = .init()
 
-    var userUUID: String!
-    var channelId: String!
-    weak var channel: AgoraRtmChannel!
-
-    deinit {
-        globalLogger.trace("\(self), channelId \(channelId ?? "") deinit")
+    let channelId: String
+    let userId: String
+    required init(channelId: String, userId: String) {
+        self.channelId = channelId
+        self.userId = userId
+        super.init()
+        sharedAgoraKit.addDelegate(self)
     }
 
-    func sendRawData(_ data: Data) -> Single<Void> {
+    deinit {
+        sharedAgoraKit.removeDelegate(self)
+        globalLogger.trace("\(self), channelId \(channelId) deinit")
+    }
+
+    func sendRawData(_ data: Data) -> RxSwift.Single<Void> {
         .create { [weak self] observer in
             guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
-            let msg = AgoraRtmRawMessage(rawData: data, description: "")
-            self.channel.send(msg) { error in
-                if error == .errorOk {
-                    observer(.success(()))
-                } else {
-                    observer(.failure("send message error \(error)"))
+            sharedAgoraKit.publish(channelName: channelId, data: data, option: nil) { response, error in
+                if let error, error.errorCode != .ok {
+                    observer(.failure("send message error \(error.errorCode.rawValue)"))
+                    return
                 }
+                guard let response else { return }
+                observer(.success(()))
             }
             return Disposables.create()
         }
     }
 
-    func sendMessage(_ text: String) -> Single<Void> {
+    func sendMessage(_ text: String) -> RxSwift.Single<Void> {
         let send = Single<Void>.create { [weak self] observer in
             guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
-
-            self.channel.send(.init(text: text)) { error in
-                if error == .errorOk {
-                    observer(.success(()))
-                } else {
-                    observer(.failure("send message error \(error)"))
+            sharedAgoraKit.publish(channelName: channelId, message: text, option: nil) { response, error in
+                if let error, error.errorCode != .ok {
+                    observer(.failure("send message error \(error.errorCode.rawValue)"))
+                    return
                 }
+                guard let response else { return }
+                observer(.success(()))
             }
             return Disposables.create()
         }.do(onSuccess: { [weak self] in
             guard let self else { return }
-            self.newMessagePublish.accept((text, Date(), self.userUUID))
+            self.newMessagePublish.accept((text, Date(), self.userId))
         })
         return ApiProvider.shared.request(fromApi: MessageCensorRequest(text: text))
             .asSingle()
             .flatMap { r in r.valid ? send : .just(()) }
     }
 
-    func getMembers() -> Single<[String]> {
+    func getMembers() -> RxSwift.Single<[String]> {
         .create { [weak self] observer in
             guard let self else {
                 observer(.failure("self not exist"))
                 return Disposables.create()
             }
             globalLogger.info("start get members")
-            self.channel.getMembersWithCompletion { members, error in
-                guard error == .ok else {
-                    let strError = "get member error, \(error.rawValue)"
+            // TODO: 这里要分页，先不搞了。 这里人多的时候一定会出错。
+            sharedAgoraKit.getPresence()?.whoNow(channelName: channelId, channelType: .message, options: nil, completion: { response, error in
+                if let error, error.errorCode != .ok {
+                    let strError = "get member error, \(error.errorCode)"
                     observer(.failure(strError))
                     globalLogger.error("\(strError)")
                     return
                 }
-                let memberIds = members?.map(\.userId) ?? []
+                guard let response else { return }
+                let memberIds = response.userStateList.map(\.userId)
                 globalLogger.info("success get members \(memberIds)")
                 observer(.success(memberIds))
-            }
+            })
             return Disposables.create()
-        }
-    }
-
-    func channel(_: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
-        globalLogger.info("memberJoined \(member.userId)")
-        newMemberPublisher.accept(member.userId)
-    }
-
-    func channel(_: AgoraRtmChannel, memberLeft member: AgoraRtmMember) {
-        globalLogger.info("memberLeft \(member.userId)")
-        memberLeftPublisher.accept(member.userId)
-    }
-
-    func channel(_: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
-//        globalLogger.info("receive \(type)
-        switch message.type {
-        case .text:
-            if member.userId == "flat-server" {
-                do {
-                    // Forge a raw data msg. Because server can not send raw data msg!
-                    if let textData = message.text.data(using: .utf8) {
-                        let decoder = JSONDecoder()
-                        decoder.dateDecodingStrategy = .millisecondsSince1970
-                        let info = try decoder.decode(RoomExpireInfo.self, from: textData)
-                        let msgData = try CommandEncoder().encode(.roomExpire(roomUUID: channelId, expireInfo: info))
-                        rawDataPublish.accept((msgData, member.userId))
-                    }
-                } catch {
-                    globalLogger.error("transform flat-server msg error, \(error)")
-                }
-                return
-            }
-            newMessagePublish.accept((message.text, Date(timeIntervalSince1970: TimeInterval(message.serverReceivedTs)), member.userId))
-        case .raw:
-            if let rawMessage = message as? AgoraRtmRawMessage {
-                rawDataPublish.accept((rawMessage.rawData, member.userId))
-            }
-        default:
-            return
         }
     }
 }
 
-extension AgoraRtmMessageType: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .undefined:
-            return "undefined"
-        case .text:
-            return "text"
-        case .raw:
-            return "raw"
-        case .file:
-            return "file"
-        case .image:
-            return "image"
-        @unknown default:
-            return "undefined"
+extension AgoraRtmChannelImp: AgoraRtmClientDelegate {
+    func rtmKit(_: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
+        guard event.channelName == channelId, let userId = event.publisher else { return }
+        if event.type == .remoteJoinChannel {
+            globalLogger.info("memberJoined \(userId)")
+            newMemberPublisher.accept(userId)
+        }
+        if event.type == .remoteLeaveChannel {
+            globalLogger.info("memberLeft \(userId)")
+            memberLeftPublisher.accept(userId)
+        }
+    }
+
+    func rtmKit(_: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        guard event.channelName == channelId else { return }
+        let userId = event.publisher
+        let text = event.message.stringData
+        if userId == "flat-server" {
+            do {
+                // Forge a raw data msg. Because server can not send raw data msg!
+                if let textData = text?.data(using: .utf8) {
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .millisecondsSince1970
+                    let info = try decoder.decode(RoomExpireInfo.self, from: textData)
+                    let msgData = try CommandEncoder().encode(.roomExpire(roomUUID: channelId, expireInfo: info))
+                    rawDataPublish.accept((msgData, userId))
+                }
+            } catch {
+                globalLogger.error("transform flat-server msg error, \(error)")
+            }
+            return
+        }
+
+        if let data = event.message.rawData {
+            rawDataPublish.accept((data, userId))
+        } else if let text {
+            newMessagePublish.accept((text, Date(timeIntervalSince1970: TimeInterval(event.timestamp)), userId))
         }
     }
 }

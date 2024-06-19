@@ -11,6 +11,7 @@ import RxCocoa
 import RxSwift
 
 protocol RtmChannelProvider {
+    init(channelId: String, userId: String)
     var newMemberPublisher: PublishRelay<String> { get }
     var memberLeftPublisher: PublishRelay<String> { get }
     var newMessagePublish: PublishRelay<(text: String, date: Date, sender: String)> { get }
