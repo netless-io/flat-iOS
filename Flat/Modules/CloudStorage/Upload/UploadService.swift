@@ -216,6 +216,7 @@ class UploadService {
             .percentEncodedPath
             .split(separator: "/")
             .last ?? "")
+            .replacingOccurrences(of: "+", with: "%2B") // 阿里云文件名里的 + 需要 percent encode.
 
         let partFormData = MultipartFormData(fileManager: FileManager.default, boundary: boundary)
         let headers: [(String, String)] = [
