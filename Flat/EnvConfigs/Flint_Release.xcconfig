@@ -35,3 +35,4 @@ MIC_ACCESS_ALERT = Requires the use of a microphone for voice calls
 CAMERA_ACCESS_ALERT = Need to use the camera for video calls
 PRIVACY_URL = flat.agora.io/privacy.html
 SERVICE_URL = flat.agora.io/service.html
+CN_SPECIAL_AGREEMENT = 0

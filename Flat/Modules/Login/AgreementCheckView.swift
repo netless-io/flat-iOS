@@ -19,6 +19,8 @@ class AgreementCheckView: UIStackView {
         }
     }
     
+    var specialEventForCNUserCheckAgreement: (() -> Void)?
+    
     weak var presentRoot: UIViewController?
     init(presentRoot: UIViewController) {
         self.presentRoot = presentRoot
@@ -45,6 +47,10 @@ class AgreementCheckView: UIStackView {
     }
     
     @objc func onClickAgreement(sender: UIButton) {
+        if Env().useCnSpecialAgreement && !sender.isSelected {
+            specialEventForCNUserCheckAgreement?()
+            return
+        }
         sender.isSelected = !sender.isSelected
     }
     

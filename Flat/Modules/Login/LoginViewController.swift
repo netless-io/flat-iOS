@@ -372,7 +372,7 @@ class LoginViewController: UIViewController {
             alertTitle: localizeStrings("Service and privacy"),
             agreeTitle: localizeStrings("Have read and agree"),
             rejectTitle: localizeStrings("Reject"),
-            attributedString: agreementAttributedString1()
+            attributedString: Env().useCnSpecialAgreement ? agreementAttributedStringCN_Special() : agreementAttributedString1()
         )
         present(vc, animated: true)
     }
@@ -478,5 +478,11 @@ class LoginViewController: UIViewController {
     lazy var smsAuthView = SMSAuthView()
     lazy var passwordAuthView = PasswordAuthView()
     
-    lazy var agreementCheckStackView = AgreementCheckView(presentRoot: self)
+    lazy var agreementCheckStackView = {
+        let view = AgreementCheckView(presentRoot: self)
+        view.specialEventForCNUserCheckAgreement = {
+            self.showAgreementCheckAlert()
+        }
+        return view
+    }()
 }

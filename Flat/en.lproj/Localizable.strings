@@ -54,6 +54,9 @@
 "AgreementText1" = "In order to better ensure your legal rights and interests, please read and\nagree to the following agreement Service Agreement & Privacy Policy";
 
 
+"AgreementText_CN_Special" = "Dear users, thanks for supporting our products! In order to provide you with higher audio and video quality and better functionality, we will collect information about your audio streams after joining the channel, which will be used to train and improve our big model algorithms to better enhance product functionality and service capabilities.\nWe encourage you to read the full Service Agreement, Privacy Policy carefully to understand your rights and how we process your data. Thank you again for your support and trust in us. We look forward to continuing to provide you with an excellent service experience.";
+
+
 "Alert" = "Alert";
 
 

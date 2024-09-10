@@ -33,3 +33,4 @@ SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "flat-api-dev.whiteboard.ag
 PHOTOS_ACCESS_ALERT = Access to albums for uploading class materials or updating avatars
 MIC_ACCESS_ALERT = Requires the use of a microphone for voice calls
 CAMERA_ACCESS_ALERT = Need to use the camera for video calls
+CN_SPECIAL_AGREEMENT = 0

@@ -106,6 +106,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>CN_SPECIAL_AGREEMENT</key>
+	<string>${CN_SPECIAL_AGREEMENT}</string>
 	<key>CREATE_WHITEBOARD_REGION</key>
 	<string>$(CREATE_WHITEBOARD_REGION)</string>
 	<key>DISABLE_LOGIN_TYPES</key>

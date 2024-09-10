@@ -70,6 +70,10 @@ struct Env {
     var appUpdateCheckURL: URL {
         .init(string: "https://" + (value(for: "APP_UPDATE_SOURCE") as String))!
     }
+    
+    var useCnSpecialAgreement: Bool {
+        value(for: "CN_SPECIAL_AGREEMENT") as String == "1"
+    }
 
     var serviceURL: URL? {
         .init(string: "https://" + (value(for: "SERVICE_URL") as String))
