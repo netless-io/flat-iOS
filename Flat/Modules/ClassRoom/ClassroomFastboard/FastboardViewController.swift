@@ -111,6 +111,7 @@ class FastboardViewController: UIViewController {
                                             inputEnable: fastRoomConfiguration.whiteRoomConfig.isWritable))
         super.init(nibName: nil, bundle: nil)
         fastRoom.commonDelegate = self
+        fastRoom.delegate = self
         globalLogger.trace("\(self)")
     }
 
