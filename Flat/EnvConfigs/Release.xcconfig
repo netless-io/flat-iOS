@@ -10,8 +10,8 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-API_URL = api.flat.shengwang.cn
-FLAT_WEB_BASE_URL = web.flat.shengwang.cn
+API_URL = api.flat.apprtc.cn
+FLAT_WEB_BASE_URL = web.flat.apprtc.cn
 GITHUB_CLIENT_ID = 71a29285a437998bdfe0
 GOOGLE_CLIENT_ID = 273996094508-2rpraucen77a1o5dul5ftrua5k3og157.apps.googleusercontent.com
 WECHAT_APP_ID = wx09437693798bc108
@@ -29,7 +29,7 @@ APP_UPDATE_SOURCE = flat-storage.oss-cn-hangzhou.aliyuncs.com/versions/latest/st
 FORCE_BIND_PHONE = 1
 PREFER_PHONE_ACCOUNT = 1
 DISABLE_LOGIN_TYPES = google
-SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "api.flat.shengwang.cn", "classroomUUIDPrefix": "CN-"},{"classroomInviteCode": 2, "apiURL": "api.flat.agora.io", "classroomUUIDPrefix": "SG-"}]
+SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "api.flat.apprtc.cn", "classroomUUIDPrefix": "CN-"},{"classroomInviteCode": 2, "apiURL": "api.flat.agora.io", "classroomUUIDPrefix": "SG-"}]
 PHOTOS_ACCESS_ALERT = 访问相册用于上传课件或更新头像
 MIC_ACCESS_ALERT = 需要使用麦克风进行语音通话
 CAMERA_ACCESS_ALERT = 需要使用相机来进行视频通话
