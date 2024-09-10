@@ -27,7 +27,7 @@ final class EnvTest: XCTestCase {
             cnPath = "flat-api-dev.whiteboard.agora.io"
             sgPath = "flat-api-dev-sg.whiteboard.agora.io"
         #else
-            cnPath = "api.flat.shengwang.cn"
+            cnPath = "api.flat.apprtc.cn"
             sgPath = "api.flat.agora.io"
         #endif
 
