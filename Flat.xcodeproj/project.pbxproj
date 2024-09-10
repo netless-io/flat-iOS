@@ -285,6 +285,7 @@
 		8AB0AC402A9355A6006661E1 /* Env+Whiteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0AC3F2A9355A6006661E1 /* Env+Whiteboard.swift */; };
 		8AB0AC612A948AFB006661E1 /* EnvTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0AC602A948AFB006661E1 /* EnvTest.swift */; };
 		8AB0AC6C2A948B0D006661E1 /* Env.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD3CDEF27168F25008BD904 /* Env.swift */; };
+		8AB0D4D92C90456F00EE1F3D /* VideoDataCollectionReqeust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4D82C90456F00EE1F3D /* VideoDataCollectionReqeust.swift */; };
 		8AB1A733287D1E2A000AE9A1 /* RemoveBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */; };
 		8AB1A735287D2A55000AE9A1 /* UserRenameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */; };
 		8AB1A737287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */; };
@@ -695,6 +696,7 @@
 		8AB0AC5E2A948AFB006661E1 /* Flat_Test.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Flat_Test.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AB0AC602A948AFB006661E1 /* EnvTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvTest.swift; sourceTree = "<group>"; };
 		8AB0AC772A94B320006661E1 /* Flat-Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Flat-Test-Info.plist"; sourceTree = SOURCE_ROOT; };
+		8AB0D4D82C90456F00EE1F3D /* VideoDataCollectionReqeust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDataCollectionReqeust.swift; sourceTree = "<group>"; };
 		8AB1A732287D1E2A000AE9A1 /* RemoveBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveBindingRequest.swift; sourceTree = "<group>"; };
 		8AB1A734287D2A55000AE9A1 /* UserRenameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRenameRequest.swift; sourceTree = "<group>"; };
 		8AB1A736287D40F9000AE9A1 /* PrepareAvatarUploadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareAvatarUploadRequest.swift; sourceTree = "<group>"; };
@@ -1577,6 +1579,7 @@
 				8A97EBAE2719983700965185 /* CreateRoomRequest.swift */,
 				8AAB06252762F509006CAEF2 /* RenameFileRequest.swift */,
 				8A97EBB22719999000965185 /* JoinRoomRequest.swift */,
+				8AB0D4D82C90456F00EE1F3D /* VideoDataCollectionReqeust.swift */,
 				8A9FB39C2721783B00F6F06F /* MemberRequest.swift */,
 				8A21DAAF279E78BA0060E25D /* RecordDetailRequest.swift */,
 				8A9ACC00271E712100E7E7CE /* RoomListRequest.swift */,
@@ -2395,6 +2398,7 @@
 				8A07E62C2A8F48B700796CA5 /* WebLinkLoginItem.swift in Sources */,
 				8ACE3A1E272FD51E00BC37F7 /* MainSplitViewController.swift in Sources */,
 				8A1447EE2A8619A500F5F9AD /* String+regex.swift in Sources */,
+				8AB0D4D92C90456F00EE1F3D /* VideoDataCollectionReqeust.swift in Sources */,
 				8A9FB3A7272250A900F6F06F /* AgoraRequestGenerator.swift in Sources */,
 				8A7741CD273524B1009FAADA /* HomeViewController.swift in Sources */,
 				8A6021DE29B9D248009D499C /* RtcItemContentView.swift in Sources */,

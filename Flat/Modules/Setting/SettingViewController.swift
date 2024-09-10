@@ -26,6 +26,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     let cellIdentifier = "cellIdentifier"
     var items: [ItemSection] = []
+    var collectSpecialData: Bool?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -36,6 +37,9 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         setupViews()
         updateItems()
+        if Env().useCnSpecialAgreement {
+            loadCollectionDataInfo()
+        }
     }
 
     func updateItems() {
@@ -84,6 +88,12 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
                        detail: "Flat v\(Env().version) (\(Env().build))",
                        targetAction: (self, #selector(onVersion(sender:))))]),
         ]
+        var lastIndex = items.count - 1
+        var i = items[lastIndex].items
+        if let collectSpecialData {
+            i.append(.init(image: UIImage(named: "videoCollect")!, title: localizeStrings("VideoDataCollecting"), detail: collectSpecialData, targetAction: (self, #selector(onUpdateVideoDataCollection))))
+            items[lastIndex] = .init(title: items[lastIndex].title, items: i)
+        }
         tableView.reloadData()
     }
 
@@ -94,9 +104,33 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             make.edges.equalToSuperview()
         }
     }
+    
+    func loadCollectionDataInfo() {
+        ApiProvider.shared.request(fromApi: VideoDataCollectionReqeust()) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let agree):
+                self.collectSpecialData = agree.isAgree
+                self.updateItems()
+            case .failure:
+                return
+            }
+        }
+    }
 
     // MARK: - Action
 
+    @objc func onUpdateVideoDataCollection(_ sender: UISwitch) {
+        ApiProvider.shared.request(fromApi: VideoDataCollectionToggleReqeust(agree: sender.isOn)) { result in
+            switch result {
+            case .success:
+                return
+            case .failure:
+                sender.isOn.toggle()
+            }
+        }
+    }
+    
     @objc func onClickLogout() {
         AuthStore.shared.logout()
     }
