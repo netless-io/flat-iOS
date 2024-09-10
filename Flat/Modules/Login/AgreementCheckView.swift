@@ -33,12 +33,14 @@ class AgreementCheckView: UIStackView {
     
     // MARK: - Action -
     @objc func onClickPrivacy() {
-        let controller = SFSafariViewController(url: .init(string: "https://www.flat.shengwang.cn/privacy.html")!)
+        guard let url = Env().privacyURL else { return }
+        let controller = SFSafariViewController(url: url)
         presentRoot?.present(controller, animated: true, completion: nil)
     }
 
     @objc func onClickServiceAgreement() {
-        let controller = SFSafariViewController(url: .init(string: "https://www.flat.shengwang.cn/service.html")!)
+        guard let url = Env().serviceURL else { return }
+        let controller = SFSafariViewController(url: url)
         presentRoot?.present(controller, animated: true, completion: nil)
     }
     

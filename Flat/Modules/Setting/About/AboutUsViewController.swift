@@ -48,12 +48,14 @@ class AboutUsViewController: UIViewController {
     }
 
     @IBAction func onClickPrivacyPolicy(_: Any) {
-        let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/privacy.html")!)
+        guard let url = Env().privacyURL else { return }
+        let controller = SFSafariViewController(url: url)
         present(controller, animated: true, completion: nil)
     }
 
     @IBAction func onClickServiceAgreement(_: Any) {
-        let controller = SFSafariViewController(url: .init(string: "https://flat.whiteboard.agora.io/service.html")!)
+        guard let url = Env().serviceURL else { return }
+        let controller = SFSafariViewController(url: url)
         present(controller, animated: true, completion: nil)
     }
 

@@ -131,10 +131,14 @@
 	<string>$(OSS_ACCESS_KEY_ID)</string>
 	<key>PREFER_PHONE_ACCOUNT</key>
 	<string>$(PREFER_PHONE_ACCOUNT)</string>
+	<key>PRIVACY_URL</key>
+	<string>${PRIVACY_URL}</string>
 	<key>REGION</key>
 	<string>$(REGION)</string>
 	<key>SERVER_GROUP</key>
 	<string>$(SERVER_GROUP)</string>
+	<key>SERVICE_URL</key>
+	<string>${SERVICE_URL}</string>
 	<key>SLS_AK</key>
 	<string>$(SLS_AK)</string>
 	<key>SLS_ENDPOINT</key>

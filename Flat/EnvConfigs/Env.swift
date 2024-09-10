@@ -71,6 +71,14 @@ struct Env {
         .init(string: "https://" + (value(for: "APP_UPDATE_SOURCE") as String))!
     }
 
+    var serviceURL: URL? {
+        .init(string: "https://" + (value(for: "SERVICE_URL") as String))
+    }
+    
+    var privacyURL: URL? {
+        .init(string: "https://" + (value(for: "PRIVACY_URL") as String))
+    }
+    
     var webBaseURL: String {
         "https://\(value(for: "FLAT_WEB_BASE_URL") as String)"
     }

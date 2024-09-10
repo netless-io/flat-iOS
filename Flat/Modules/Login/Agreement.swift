@@ -8,9 +8,6 @@
 
 import Foundation
 
-let privacyLink = "https://flat.whiteboard.agora.io/privacy.html"
-let serviceLink = "https://flat.whiteboard.agora.io/service.html"
-
 func agreementAttributedString() -> NSAttributedString {
     let pStr = pretty(agreementTitle: localizeStrings("Privacy Policy"))
     let sStr = pretty(agreementTitle: localizeStrings("Service Agreement"))
@@ -18,8 +15,8 @@ func agreementAttributedString() -> NSAttributedString {
     let paraStyle = NSMutableParagraphStyle()
     paraStyle.lineSpacing = 2
     let attributedStr = NSMutableAttributedString(string: str, attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.color(type: .text), .paragraphStyle: paraStyle])
-    attributedStr.add(link: privacyLink, forExistString: pStr)
-    attributedStr.add(link: serviceLink, forExistString: sStr)
+    attributedStr.add(link: Env().privacyURL?.absoluteString ?? "", forExistString: pStr)
+    attributedStr.add(link: Env().serviceURL?.absoluteString ?? "", forExistString: sStr)
     return attributedStr
 }
 
@@ -30,8 +27,8 @@ func agreementAttributedString1() -> NSAttributedString {
     let paraStyle = NSMutableParagraphStyle()
     paraStyle.lineSpacing = 2
     let attributedStr = NSMutableAttributedString(string: str, attributes: [.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.color(type: .text), .paragraphStyle: paraStyle])
-    attributedStr.add(link: privacyLink, forExistString: pStr)
-    attributedStr.add(link: serviceLink, forExistString: sStr)
+    attributedStr.add(link: Env().privacyURL?.absoluteString ?? "", forExistString: pStr)
+    attributedStr.add(link: Env().serviceURL?.absoluteString ?? "", forExistString: sStr)
     return attributedStr
 }
 

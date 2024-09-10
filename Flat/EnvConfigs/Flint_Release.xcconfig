@@ -33,3 +33,5 @@ SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "api.flat.shengwang.cn", "c
 PHOTOS_ACCESS_ALERT = Access to albums for uploading class materials or updating avatars
 MIC_ACCESS_ALERT = Requires the use of a microphone for voice calls
 CAMERA_ACCESS_ALERT = Need to use the camera for video calls
+PRIVACY_URL = flat.agora.io/privacy.html
+SERVICE_URL = flat.agora.io/service.html

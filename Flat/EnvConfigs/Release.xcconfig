@@ -33,3 +33,5 @@ SERVER_GROUP = [{"classroomInviteCode": 1, "apiURL": "api.flat.apprtc.cn", "clas
 PHOTOS_ACCESS_ALERT = 访问相册用于上传课件或更新头像
 MIC_ACCESS_ALERT = 需要使用麦克风进行语音通话
 CAMERA_ACCESS_ALERT = 需要使用相机来进行视频通话
+PRIVACY_URL = www.flat.apprtc.cn/privacy.html
+SERVICE_URL = www.flat.apprtc.cn/service.html
