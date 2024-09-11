@@ -106,17 +106,17 @@ jobs:
           sh blackduck.sh "$BLACK_DUCK_TOKEN" "$BD_COMMAND"
           echo "blackduck: $BD_HOST/api/projects/888fe533-a493-45d1-adfd-9e4765793731/versions/ae27340f-0807-4fb0-93a4-5ee322ece657/components" >> archive_$RUN_NUMBER.log
       - name: Upload Test Result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: test
           path: test_flat_sg_${{github.run_number}}.log
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: output
           path: iPa/
       - name: Upload Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: report
           path: archive_${{github.run_number}}.log
