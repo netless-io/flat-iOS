@@ -722,7 +722,7 @@ __attribute__((visibility("default"))) @interface AgoraRtmPresence : NSObject
    */
 -(void) setState:(NSString * _Nonnull)channelName
      channelType:(AgoraRtmChannelType)channelType
-           items:(NSDictionary * _Nonnull)items
+           items:(NSDictionary<NSString *, NSString *> *_Nonnull)items
       completion:(AgoraRtmOperationBlock _Nullable)completionBlock NS_SWIFT_NAME(setState(channelName:channelType:items:completion:));
 
   /**

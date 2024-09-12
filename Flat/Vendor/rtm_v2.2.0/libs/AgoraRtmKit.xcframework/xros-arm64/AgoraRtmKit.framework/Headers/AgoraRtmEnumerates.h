@@ -556,6 +556,10 @@ typedef NS_ENUM(NSInteger, AgoraRtmProxyType) {
    * 1: Link with http proxy
    */
   AgoraRtmProxyTypeHttp = 1,
+  /**
+   * 2: Link with tcp cloud proxy
+   */
+  AgoraRtmProxyTypeCloudTcp = 2,
 };
 
 typedef NS_OPTIONS(NSInteger, AgoraRtmServiceType) {

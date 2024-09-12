@@ -194,7 +194,7 @@ __attribute__((visibility("default"))) @interface AgoraRtmUserState: NSObject
 /**
    * The user states.
    */
-@property (nonatomic, copy, nonnull)  NSDictionary * states;
+@property (nonatomic, copy, nonnull)  NSDictionary<NSString *, NSString *> * states;
 @end
 
 __attribute__((visibility("default"))) @interface AgoraRtmChannelInfo: NSObject
@@ -529,7 +529,7 @@ __attribute__((visibility("default"))) @interface AgoraRtmPresenceEvent: NSObjec
 /**
  * The user states
 */
-@property (nonatomic, copy, nonnull) NSDictionary *states;
+@property (nonatomic, copy, nonnull) NSDictionary<NSString *, NSString *> * states;
  
 /**
  * Only valid when in interval mode
