@@ -132,6 +132,7 @@ class AgoraRtm: NSObject, RtmProvider {
         case .connected:
             return Single<Void>.create { [weak self] observer in
                 self?.agoraKit.logout { _, error in
+                    self?.agoraKit.destroy()
                     if let error, error.errorCode != .ok {
                         observer(.failure("rtm logout \(error.errorCode.rawValue)"))
                         return
