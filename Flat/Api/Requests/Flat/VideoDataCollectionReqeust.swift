@@ -21,7 +21,7 @@ struct VideoDataCollectionReqeust: FlatRequest {
 struct VideoDataCollectionToggleReqeust: FlatRequest {
     let agree: Bool
     var method: HttpMethod { .post }
-    var task: Task { .requestJSONEncodable(encodable: ["is_agree_collect_data": agree]) }
+    var task: Task { .requestJSONEncodable(encodable: ["isAgree": agree]) }
     var path: String { "/v1/user/agreement/set" }
     let responseType = EmptyResponse.self
 }
