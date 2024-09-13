@@ -1153,7 +1153,7 @@
 			path = libs;
 			sourceTree = "<group>";
 		};
-		8A1E22B42C2139560005F9D5 /* rtm_v2.2.0 */ = {
+		8A1E22B42C2139560005F9D5 /* rtm_v2.2.1 */ = {
 			isa = PBXGroup;
 			children = (
 				8A1E22B02C2139560005F9D5 /* libs */,
@@ -1161,7 +1161,7 @@
 				8A1E22B22C2139560005F9D5 /* package_size_report.txt */,
 				8A1E22B32C2139560005F9D5 /* spec */,
 			);
-			path = rtm_v2.2.0;
+			path = rtm_v2.2.1;
 			sourceTree = "<group>";
 		};
 		8A21DAAA279E58E70060E25D /* Replay */ = {
@@ -1352,7 +1352,7 @@
 		8A3A95D62AA5CDCF003C99D6 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				8A1E22B42C2139560005F9D5 /* rtm_v2.2.0 */,
+				8A1E22B42C2139560005F9D5 /* rtm_v2.2.1 */,
 				8A3A95D72AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework */,
 			);
 			path = Vendor;
