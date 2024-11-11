@@ -162,13 +162,13 @@ extension SceneManager {
 
     func createMainContainer(for window: UIWindow) -> UIViewController {
         func compactMain() -> UIViewController {
-            MainTabBarController()
+          MainTabBarController(nibName: nil, bundle: nil)
         }
 
         func oldPadMain() -> UIViewController {
             let vc = MainSplitViewController()
             // Line for splitViewController
-            let tabbar = MainTabBarController()
+            let tabbar = MainTabBarController(nibName: nil, bundle: nil)
             tabbar.view.addLine(direction: .right, color: .color(light: .grey1, dark: .clear))
             vc.viewControllers = [tabbar]
             vc.preferredDisplayMode = .oneBesideSecondary
