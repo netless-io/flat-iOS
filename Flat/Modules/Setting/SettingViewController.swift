@@ -144,7 +144,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @objc func onClickThirdPartCollect() {
-        let url = URL(string: "https://flat.whiteboard.agora.io/privacy-extra/libraries.html")!
+        let url = URL(string: "https://www.flat.apprtc.cn/privacy-extra/libraries.html")!
         let vc = WKWebViewController(url: url, isScrollEnabled: true)
         vc.usingClose = false
         vc.navigationItem.title = localizeStrings("ThirdPartyShare")
