@@ -7,27 +7,12 @@
 //
 
 import Fastboard
-import FirebaseAnalytics
-import FirebaseCore
-import FirebaseCrashlytics
 import IQKeyboardManagerSwift
 import Kingfisher
 import Siren
 import UIKit
 
-var remoteConfigReader = RemoteConfigReader()
 var globalSessionId = UUID().uuidString
-
-var didStartGoogleAnalytics = false
-func startGoogleAnalytics() {
-    guard !didStartGoogleAnalytics else { return }
-    FirebaseApp.configure()
-    if let uid = AuthStore.shared.user?.userUUID, !uid.isEmpty {
-        Crashlytics.crashlytics().setUserID(uid)
-    }
-    remoteConfigReader.setupRemoteConfig()
-    didStartGoogleAnalytics = true
-}
 
 var isFirstTimeLaunch: Bool {
     UserDefaults.standard.value(forKey: "isFirstTimeLaunch") != nil
@@ -79,9 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Siren.shared.apiManager = .init(country: .china)
         Siren.shared.rulesManager = .init(globalRules: .relaxed)
         appActiveTaskObserver = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
-            // Remote config.
-            remoteConfigReader.refresh()
-
             // Check version.
             let url = Env().appUpdateCheckURL
             let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)

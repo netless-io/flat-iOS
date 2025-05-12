@@ -36,10 +36,6 @@ target 'Flat' do
   pod 'AliyunLogProducer/Core'
   pod 'AliyunLogProducer/Bricks'
   
-  pod 'FirebaseCrashlytics'
-  pod 'Firebase/RemoteConfig'
-  pod 'Firebase/AnalyticsWithoutAdIdSupport'
-  
   ignore_whiteboard_rebuild = ENV["ignore_whiteboard_rebuild"] == "true"
   
   post_install do |installer|

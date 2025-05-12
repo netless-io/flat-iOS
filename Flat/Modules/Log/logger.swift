@@ -18,7 +18,7 @@ func updateAliSlsLogger(uid: String) {
 }
 
 func bootstrapLogger() {
-    var loggers: [LogHandler] = [SBLogHandler(), CrashlyticsLogHandler()]
+    var loggers: [LogHandler] = [SBLogHandler()]
     LoggingSystem.bootstrap { _ in
         if Env().containsSlsInfo {
             let identifier: AlibabaLogHandler.ClientIdentifier

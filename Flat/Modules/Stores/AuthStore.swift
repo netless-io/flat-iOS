@@ -6,7 +6,6 @@
 //  Copyright © 2021 agora.io. All rights reserved.
 //
 
-import FirebaseCrashlytics
 import Foundation
 import UIKit
 import RxSwift
@@ -106,7 +105,6 @@ class AuthStore {
         }
         self.user = user
         if relogin {
-            Crashlytics.crashlytics().setUserID(user.userUUID)
             NotificationCenter.default.post(name: loginSuccessNotificationName, object: nil, userInfo: ["user": user])
             observeFirstJWTExpire()
         }

@@ -153,7 +153,6 @@
 		8A3460CD27293E3F0066063E /* RoomUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3460CC27293E3F0066063E /* RoomUser.swift */; };
 		8A34A20E2A594C3F006337D7 /* ReplayLaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A34A20C2A593F76006337D7 /* ReplayLaunchItem.swift */; };
 		8A3782E029C3077A0051D4FB /* RatingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3782DF29C3077A0051D4FB /* RatingManager.swift */; };
-		8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */; };
 		8A3A95D82AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A3A95D72AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework */; };
 		8A40F70C28E541ED00BCEF45 /* RoomOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */; };
 		8A48A9C92716D734003719DB /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A48A9C82716D734003719DB /* EmptyResponse.swift */; };
@@ -210,7 +209,6 @@
 		8A8507EF27E180A00072AF49 /* CloudStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */; };
 		8A8507F127E186450072AF49 /* CloudStorageInClassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */; };
 		8A86A4EF2806B6D60095F499 /* SMSAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */; };
-		8A86C6A52B8F4318000CF7CC /* RemoteConfigReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */; };
 		8A8797F92B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */; };
 		8A8A240329879F63008319BB /* ClassroomStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A240229879F63008319BB /* ClassroomStatusBar.swift */; };
 		8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8A79B42A11E03900B000CF /* AppDelegate+keyboard.swift */; };
@@ -372,7 +370,6 @@
 		8AF244DC287C243C00E6B2AF /* WechatBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF244DB287C243C00E6B2AF /* WechatBinding.swift */; };
 		8AF244DE287C2AFD00E6B2AF /* WechatBindingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF244DD287C2AFC00E6B2AF /* WechatBindingRequest.swift */; };
 		8AFA91F5278EA78900E0CA61 /* FastboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */; };
-		8AFB3FB128C98B6200B8B18C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AFB3FB028C98B6200B8B18C /* GoogleService-Info.plist */; };
 		8AFB942A28B7124C00B8795D /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB942928B7124C00B8795D /* HistoryViewController.swift */; };
 		8AFB942C28B74EBA00B8795D /* UIViewController+Present.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB942B28B74EBA00B8795D /* UIViewController+Present.swift */; };
 		8AFB942E28B7550100B8795D /* CameraMicToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB942D28B7550100B8795D /* CameraMicToggleView.swift */; };
@@ -557,7 +554,6 @@
 		8A3460CC27293E3F0066063E /* RoomUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUser.swift; sourceTree = "<group>"; };
 		8A34A20C2A593F76006337D7 /* ReplayLaunchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplayLaunchItem.swift; sourceTree = "<group>"; };
 		8A3782DF29C3077A0051D4FB /* RatingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingManager.swift; sourceTree = "<group>"; };
-		8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsLogHandler.swift; sourceTree = "<group>"; };
 		8A3A95D72AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "WechatOpenSDK-XCFramework.xcframework"; sourceTree = "<group>"; };
 		8A40F70B28E541ED00BCEF45 /* RoomOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomOperation.swift; sourceTree = "<group>"; };
 		8A48A9C82716D734003719DB /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
@@ -616,7 +612,6 @@
 		8A8507EE27E180A00072AF49 /* CloudStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageViewController.swift; sourceTree = "<group>"; };
 		8A8507F027E186450072AF49 /* CloudStorageInClassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorageInClassViewController.swift; sourceTree = "<group>"; };
 		8A86A4EE2806B6D60095F499 /* SMSAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSAuthView.swift; sourceTree = "<group>"; };
-		8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigReader.swift; sourceTree = "<group>"; };
 		8A8797F82B0CA661009A951C /* HistoryJoinRoomPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryJoinRoomPickerViewController.swift; sourceTree = "<group>"; };
 		8A87A4D52BCFD831001F5533 /* Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig; sourceTree = "<group>"; };
 		8A8A240229879F63008319BB /* ClassroomStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassroomStatusBar.swift; sourceTree = "<group>"; };
@@ -783,7 +778,6 @@
 		8AF244DB287C243C00E6B2AF /* WechatBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatBinding.swift; sourceTree = "<group>"; };
 		8AF244DD287C2AFC00E6B2AF /* WechatBindingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WechatBindingRequest.swift; sourceTree = "<group>"; };
 		8AFA91F4278EA78900E0CA61 /* FastboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastboardViewController.swift; sourceTree = "<group>"; };
-		8AFB3FB028C98B6200B8B18C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8AFB942928B7124C00B8795D /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		8AFB942B28B74EBA00B8795D /* UIViewController+Present.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Present.swift"; sourceTree = "<group>"; };
 		8AFB942D28B7550100B8795D /* CameraMicToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraMicToggleView.swift; sourceTree = "<group>"; };
@@ -1112,7 +1106,6 @@
 				8AC3AFD028AB355300587AE0 /* SBLogHandler.swift */,
 				8A00853E2AC135100053366B /* SensetiveLogFilter.swift */,
 				8AC3AFCE28AA4B4600587AE0 /* AlibabaLogHandler.swift */,
-				8A38DABC29345DEC00B1127C /* CrashlyticsLogHandler.swift */,
 			);
 			path = Log;
 			sourceTree = "<group>";
@@ -1518,7 +1511,6 @@
 			isa = PBXGroup;
 			children = (
 				8AD3CDEF27168F25008BD904 /* Env.swift */,
-				8A86C6A42B8F4318000CF7CC /* RemoteConfigReader.swift */,
 				8AB0AC3F2A9355A6006661E1 /* Env+Whiteboard.swift */,
 				8AD3CDEC27168E75008BD904 /* Develop.xcconfig */,
 				8A87A4D52BCFD831001F5533 /* Local.xcconfig */,
@@ -1898,7 +1890,6 @@
 				8A2905F32A038DBE00147244 /* reward.json */,
 				8A2905F92A0396A100147244 /* reward.mp3 */,
 				8ADDEAA2296C001400F2B7BE /* loading.json */,
-				8AFB3FB028C98B6200B8B18C /* GoogleService-Info.plist */,
 				8ADDEAA4296C002F00F2B7BE /* loading_dark.json */,
 				8A0A85F127ED6CEC005CFC84 /* Pods-Flat-acknowledgements.plist */,
 			);
@@ -2086,7 +2077,6 @@
 				8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */,
 				8AC0943429E0171400CC641A /* whiteboard_rebuild.bundle in Resources */,
 				8A270BC3271980A300450DC6 /* AboutUsViewController.xib in Resources */,
-				8AFB3FB128C98B6200B8B18C /* GoogleService-Info.plist in Resources */,
 				8A270BA8271977EE00450DC6 /* ContactUsViewController.xib in Resources */,
 				8A9ACC0B271E98DB00E7E7CE /* RoomTableViewCell.xib in Resources */,
 				8A270B8827192A6600450DC6 /* SettingTableViewCell.xib in Resources */,
@@ -2319,7 +2309,6 @@
 				8A80208D275473D900F5691C /* RtcVideoItemView.swift in Sources */,
 				8AACBBC829CD491A00CD32C5 /* MTLTexture+CGImage.swift in Sources */,
 				8A62D35928D445710046910B /* RecordSelectionListViewController.swift in Sources */,
-				8A38DABD29345DEC00B1127C /* CrashlyticsLogHandler.swift in Sources */,
 				8A07E60A2A8B84F000796CA5 /* AccountCodeAuthView.swift in Sources */,
 				8ACE3A27272FF77100BC37F7 /* RoomDetailViewController.swift in Sources */,
 				8A9FB3B9272294E100F6F06F /* URLEncoder.swift in Sources */,
@@ -2438,7 +2427,6 @@
 				8AED08782811383D001DEFDC /* AccountCancelationValidateRequest.swift in Sources */,
 				8A07E6282A8F1D3300796CA5 /* AppleBinding.swift in Sources */,
 				8A8A79B52A11E03900B000CF /* AppDelegate+keyboard.swift in Sources */,
-				8A86C6A52B8F4318000CF7CC /* RemoteConfigReader.swift in Sources */,
 				8A270BB527197C0C00450DC6 /* AboutUsViewController.swift in Sources */,
 				8AA268E8292B4A940065FC3C /* InviteViewController.swift in Sources */,
 				8A0CA22E28BDFB1D0035F71A /* RegularSideBarViewController.swift in Sources */,

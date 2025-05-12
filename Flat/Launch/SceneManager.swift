@@ -141,7 +141,6 @@ extension SceneManager {
             window.makeKeyAndVisible()
         }
         if let user {
-            startGoogleAnalytics()
             if !user.hasPhone, Env().forceBindPhone {
                 let root = LoginViewController()
                 window.rootViewController = root
