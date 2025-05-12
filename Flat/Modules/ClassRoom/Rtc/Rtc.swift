@@ -266,10 +266,9 @@ class Rtc: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleCameraNotification), name: classroomSettingNeedToggleCameraNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onClassroomSettingNeedToggleFronMirrorNotification), name: classroomSettingNeedToggleFrontMirrorNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(_updateAINS), name: ainsPreferenceUpdateNotificaton, object: nil)
-        if remoteConfigReader.useRTCWorkaround {
-            rtcVideoRotateErrorWorkaround()
-            NotificationCenter.default.addObserver(self, selector: #selector(rtcVideoRotateErrorWorkaround), name: UIApplication.didBecomeActiveNotification, object: nil)
-        }
+        // 解决旋转错误的问题
+        rtcVideoRotateErrorWorkaround()
+        NotificationCenter.default.addObserver(self, selector: #selector(rtcVideoRotateErrorWorkaround), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     @objc func rtcVideoRotateErrorWorkaround() {
