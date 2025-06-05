@@ -97,25 +97,25 @@ class LoginViewController: UIViewController {
         loadHistory()
         bind()
         #if DEBUG
-            let debugSelector = #selector(debugLogin(sender:))
-            if responds(to: debugSelector) {
-                let doubleTap = UITapGestureRecognizer(target: self, action: debugSelector)
-                doubleTap.numberOfTapsRequired = 2
-                view.addGestureRecognizer(doubleTap)
-            }
+        let debugSelector = NSSelectorFromString("debugLoginWithSender:")
+        if responds(to: debugSelector) {
+            let doubleTap = UITapGestureRecognizer(target: self, action: debugSelector)
+            doubleTap.numberOfTapsRequired = 2
+            view.addGestureRecognizer(doubleTap)
+        }
         #endif
     }
 
     // MARK: - Action -
 
     @objc
-    func onClickRegister(sender: UIButton) {
+    func onClickRegister(sender _: UIButton) {
         let vc = SignUpViewController()
         present(vc, animated: true)
     }
-    
+
     @objc
-    func onClickLogin(sender: UIButton) {
+    func onClickLogin(sender _: UIButton) {
         switch loginType.value {
         case .sms: smsLogin()
         case .password: passwordLogin()
@@ -127,20 +127,20 @@ class LoginViewController: UIViewController {
                 switch result {
                 case let .success(user):
                     AuthStore.shared.lastAccountLoginInfo = .init(
-                        account: self.passwordAuthView.accountTextfield.accountType.value,
-                        regionCode: self.passwordAuthView.accountTextfield.country.code,
-                        inputText: self.passwordAuthView.accountTextfield.text ?? "",
-                        pwd: self.passwordAuthView.passwordTextfield.passwordText
+                        account: passwordAuthView.accountTextfield.accountType.value,
+                        regionCode: passwordAuthView.accountTextfield.country.code,
+                        inputText: passwordAuthView.accountTextfield.text ?? "",
+                        pwd: passwordAuthView.passwordTextfield.passwordText
                     )
                     AuthStore.shared.processLoginSuccessUserInfo(user)
                 case let .failure(error):
-                    self.toast(error.localizedDescription)
+                    toast(error.localizedDescription)
                 }
             }
             let request: PasswordLoginRequest
             let account = passwordAuthView.accountTextfield.accountText
             let password = passwordAuthView.passwordTextfield.passwordText
-            switch self.passwordAuthView.accountTextfield.accountType.value {
+            switch passwordAuthView.accountTextfield.accountType.value {
             case .email:
                 request = PasswordLoginRequest(account: .email(account), password: password)
             case .phone:
@@ -207,7 +207,7 @@ class LoginViewController: UIViewController {
             }
         }
     }
-    
+
     func setupViews() {
         // UI
         registerButton.layer.borderWidth = commonBorderWidth
@@ -218,15 +218,15 @@ class LoginViewController: UIViewController {
             btn.layer.borderColor = borderColor.cgColor
             btn.setTitleColor(titleColor, for: .normal)
         }
-        [loginTypeToggleButton, forgetPasswordButton].forEach {
-            $0?.tintColor = .color(type: .primary)
+        for item in [loginTypeToggleButton, forgetPasswordButton] {
+            item?.tintColor = .color(type: .primary)
         }
-        [smsAuthView, passwordAuthView].forEach {
-            authInputStackView.addArrangedSubview($0)
+        for item in [smsAuthView, passwordAuthView] {
+            authInputStackView.addArrangedSubview(item)
         }
 
-        splitStackView.arrangedSubviews.forEach {
-            $0.backgroundColor = .color(type: .background)
+        for arrangedSubview in splitStackView.arrangedSubviews {
+            arrangedSubview.backgroundColor = .color(type: .background)
         }
         flatLabel.textColor = .color(type: .text, .strong)
 
@@ -259,7 +259,7 @@ class LoginViewController: UIViewController {
             let phone = self.smsAuthView.fullPhoneText
             return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .login(phone: phone)))
         }
-        
+
         smsAuthView.presentRoot = self
 
         passwordAuthView.accountTextfield.presentRoot = self
@@ -306,7 +306,7 @@ class LoginViewController: UIViewController {
         if let lastSMSLoginPhone {
             smsAuthView.fillWith(phone: lastSMSLoginPhone)
         }
-        
+
         if let info = AuthStore.shared.lastAccountLoginInfo {
             passwordAuthView.accountTextfield.fillWith(countryCode: info.regionCode, inputText: info.inputText)
             passwordAuthView.passwordTextfield.text = info.pwd
@@ -390,7 +390,6 @@ class LoginViewController: UIViewController {
         }
     }
 
-    @objc
     @IBAction func onClickAppleLogin(sender: UIButton) {
         guard checkAgreementDidAgree() else {
             showAgreementCheckAlert(agreeAction: { [weak self] in
@@ -436,7 +435,7 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func onClickWebLinkLoginButton(sender: UIButton) {
-        var urlMaker: ((String)->URL)?
+        var urlMaker: ((String) -> URL)?
         if sender === githubLoginButton {
             urlMaker = Env().githubLoginURLWith(authUUID:)
         } else if sender === googleLoginButton {
@@ -453,9 +452,10 @@ class LoginViewController: UIViewController {
         showActivityIndicator()
         webLinkLogin = WebLinkLoginItem()
         webLinkLogin?.startLogin(withAuthStore: AuthStore.shared,
-                                      launchCoordinator: coordinator,
-                                      sender: sender,
-                                      urlMaker: urlMaker) { [weak self] result in
+                                 launchCoordinator: coordinator,
+                                 sender: sender,
+                                 urlMaker: urlMaker)
+        { [weak self] result in
             guard let self else { return }
             self.stopActivityIndicator()
             self.webLinkLogin = nil
@@ -474,7 +474,7 @@ class LoginViewController: UIViewController {
 
     lazy var smsAuthView = SMSAuthView()
     lazy var passwordAuthView = PasswordAuthView()
-    
+
     lazy var agreementCheckStackView = {
         let view = AgreementCheckView(presentRoot: self)
         view.specialEventForCNUserCheckAgreement = {
