@@ -137,8 +137,13 @@ class MainSplitViewController: UISplitViewController, UISplitViewControllerDeleg
                 if let _ = vc as? UINavigationController {
                     setViewController(vc, for: .secondary)
                 } else {
-                    let targetVC = BaseNavigationViewController(rootViewController: vc)
-                    setViewController(targetVC, for: .secondary)
+                    if let parent = vc.parent, parent is BaseNavigationViewController {
+                        // If the vc is already in a navigation controller, just set it as secondary
+                        setViewController(parent, for: .secondary)
+                    } else {
+                        let targetVC = BaseNavigationViewController(rootViewController: vc)
+                        setViewController(targetVC, for: .secondary)
+                    }
                 }
                 if hidePrimary {
                     hide(.primary)
