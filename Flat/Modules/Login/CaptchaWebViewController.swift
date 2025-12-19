@@ -26,6 +26,7 @@ final class CaptchaWebViewController: UIViewController {
     private let captchaPrefix: String
     private let captchaSceneId: String
     private var hasStoppedLoading = false
+    private var didCleanupHandlers = false
 
     private var presentCloseButton: UIButton?
     private var presentTitleLabel: UILabel?
@@ -51,6 +52,17 @@ final class CaptchaWebViewController: UIViewController {
         webView.navigationDelegate = self
         view.startFlatLoading()
         loadCaptchaHTML()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if isBeingDismissed || isMovingFromParent || view.window == nil {
+            cleanupHandlersIfNeeded()
+        }
+    }
+
+    deinit {
+        cleanupHandlersIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -180,6 +192,15 @@ extension CaptchaWebViewController: WKScriptMessageHandler {
 }
 
 private extension CaptchaWebViewController {
+    func cleanupHandlersIfNeeded() {
+        guard !didCleanupHandlers else { return }
+        didCleanupHandlers = true
+        let controller = webView.configuration.userContentController
+        controller.removeScriptMessageHandler(forName: Constants.messageHandlerName)
+        controller.removeScriptMessageHandler(forName: Constants.readyMessageHandlerName)
+        webView.navigationDelegate = nil
+    }
+
     func stopLoadingOnce() {
         guard !hasStoppedLoading else { return }
         hasStoppedLoading = true
