@@ -67,7 +67,13 @@ class ResetPasswordViewController: UIViewController {
             make.bottom.equalTo(view.snp.bottom).inset(16).priority(.medium)
         }
 
-        accountCodeAuthView.verifyCodeTextfield.smsRequestMaker = { [weak self] in
+        accountCodeAuthView.accountTextfield.accountType
+            .subscribe(with: accountCodeAuthView.verifyCodeTextfield) { tf, type in
+                tf.requireCaptchaVerifyParam = (type == .phone)
+            }
+            .disposed(by: rx.disposeBag)
+
+        accountCodeAuthView.verifyCodeTextfield.smsRequestMaker = { [weak self] captchaVerifyParam in
             guard let self else { return .error("self not exist") }
 
             let account = self.accountCodeAuthView.accountTextfield.accountText
@@ -77,7 +83,8 @@ class ResetPasswordViewController: UIViewController {
             case .email:
                 request = .init(scenario: .resetEmail(account, language: isCN ? .zh : .en))
             case .phone:
-                request = .init(scenario: .resetPhone(account))
+                guard let captchaVerifyParam, captchaVerifyParam.isNotEmptyOrAllSpacing else { return .error("captchaVerifyParam missing") }
+                request = .init(scenario: .resetPhone(account, captchaVerifyParam: captchaVerifyParam))
             }
             return ApiProvider.shared.request(fromApi: request)
         }

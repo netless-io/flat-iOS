@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		617CBAD32EF40A50004D2BCB /* captcha.html in Resources */ = {isa = PBXBuildFile; fileRef = 617CBAD22EF40A50004D2BCB /* captcha.html */; };
 		8A00853F2AC135100053366B /* SensetiveLogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00853E2AC135100053366B /* SensetiveLogFilter.swift */; };
 		8A0085412AC135510053366B /* LogSensetiveTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0085402AC135510053366B /* LogSensetiveTest.swift */; };
 		8A0085422AC135560053366B /* SensetiveLogFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00853E2AC135100053366B /* SensetiveLogFilter.swift */; };
@@ -375,6 +376,7 @@
 		8AFB942E28B7550100B8795D /* CameraMicToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB942D28B7550100B8795D /* CameraMicToggleView.swift */; };
 		8AFCCDDD276AD840008BD0FC /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCCDDC276AD840008BD0FC /* AppleLoginRequest.swift */; };
 		9AE3AF17B16B9CA81A411696 /* Pods_Flat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B773F9587EAD9D58FD45B88 /* Pods_Flat.framework */; };
+		DD7336DF893169B0E3BB52C2 /* CaptchaWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7488707140887A0991F55A /* CaptchaWebViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -403,6 +405,7 @@
 
 /* Begin PBXFileReference section */
 		2B773F9587EAD9D58FD45B88 /* Pods_Flat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		617CBAD22EF40A50004D2BCB /* captcha.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = captcha.html; sourceTree = "<group>"; };
 		6EB5061DE7DACC73AD6C59FD /* Pods-Flat.flat_release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.flat_release.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.flat_release.xcconfig"; sourceTree = "<group>"; };
 		7911FDD3A2AC2D6E513C8FF5 /* Pods-Flat.flint_debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flat.flint_debug.xcconfig"; path = "Target Support Files/Pods-Flat/Pods-Flat.flint_debug.xcconfig"; sourceTree = "<group>"; };
 		8A00853E2AC135100053366B /* SensetiveLogFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensetiveLogFilter.swift; sourceTree = "<group>"; };
@@ -585,6 +588,7 @@
 		8A7010A527777BB400D1C8B4 /* PopOverPresentationStyleAdaptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverPresentationStyleAdaptor.swift; sourceTree = "<group>"; };
 		8A716F3527B9FFF800DB408F /* LoginViewController+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Debug.swift"; sourceTree = "<group>"; };
 		8A73309328C843C600404B2D /* UITableView+loadedAll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+loadedAll.swift"; sourceTree = "<group>"; };
+		8A7488707140887A0991F55A /* CaptchaWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaWebViewController.swift; sourceTree = "<group>"; };
 		8A7741BA27328AEA009FAADA /* PopMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopMenuView.swift; sourceTree = "<group>"; };
 		8A7741BC2733BF15009FAADA /* RoomStatusUpdateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomStatusUpdateRequest.swift; sourceTree = "<group>"; };
 		8A7741BE2733D040009FAADA /* UIViewController+Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Toast.swift"; sourceTree = "<group>"; };
@@ -1325,6 +1329,7 @@
 				8A07E5FF2A8B64A400796CA5 /* AgreementCheckView.swift */,
 				8A07E5F72A8B594B00796CA5 /* SignUpInputView.swift */,
 				8A07E5FD2A8B5DE300796CA5 /* VerifyCodeTextfield.swift */,
+				8A7488707140887A0991F55A /* CaptchaWebViewController.swift */,
 				8A303BE329AD9ADB00E0AF36 /* CountryCodePicker.swift */,
 				8A05A1572834EA99002DE9B9 /* Agreement.swift */,
 				8A1BF0C2280D3DB000D76F22 /* ForceBindPhoneViewController.swift */,
@@ -1345,6 +1350,7 @@
 		8A3A95D62AA5CDCF003C99D6 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				617CBAD22EF40A50004D2BCB /* captcha.html */,
 				8A1E22B42C2139560005F9D5 /* rtm_v2.2.1 */,
 				8A3A95D72AA5CDDA003C99D6 /* WechatOpenSDK-XCFramework.xcframework */,
 			);
@@ -2075,6 +2081,7 @@
 				8A2905F42A038DBE00147244 /* reward.json in Resources */,
 				8AD7C6C627157EA7001C4AAD /* Assets.xcassets in Resources */,
 				8AC0943429E0171400CC641A /* whiteboard_rebuild.bundle in Resources */,
+				617CBAD32EF40A50004D2BCB /* captcha.html in Resources */,
 				8A270BC3271980A300450DC6 /* AboutUsViewController.xib in Resources */,
 				8A270BA8271977EE00450DC6 /* ContactUsViewController.xib in Resources */,
 				8A9ACC0B271E98DB00E7E7CE /* RoomTableViewCell.xib in Resources */,
@@ -2338,6 +2345,7 @@
 				8A8020912755B09000F5691C /* RtcViewController.swift in Sources */,
 				8A7741C12734CEFE009FAADA /* ChatNoticeTableViewCell.swift in Sources */,
 				8A07E5FE2A8B5DE300796CA5 /* VerifyCodeTextfield.swift in Sources */,
+				DD7336DF893169B0E3BB52C2 /* CaptchaWebViewController.swift in Sources */,
 				8A07E5FC2A8B5CB400796CA5 /* PasswordTextfield.swift in Sources */,
 				8A13352A288FA21000C825DE /* MessageCensorRequest.swift in Sources */,
 				8A2E0C4A28D03B8300CD63EE /* UIView+seperatorLine.swift in Sources */,
@@ -3580,6 +3588,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 48TB6ZZL5S;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "$(inherited)";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3612,6 +3621,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.flat;
 				PRODUCT_NAME = "$(inherited)";
 				PROVISIONING_PROFILE_SPECIFIER = flat2;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = flat;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = Flat/bridgingHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

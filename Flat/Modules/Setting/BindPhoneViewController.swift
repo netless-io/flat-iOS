@@ -31,8 +31,9 @@ class BindPhoneViewController: UIViewController {
         }
         
         authView.accountTextfield.presentRoot = self
-        authView.verifyCodeTextfield.smsRequestMaker = { [unowned self] in
-            ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind(phone: self.authView.accountTextfield.accountText)))
+        authView.verifyCodeTextfield.smsRequestMaker = { [unowned self] captchaVerifyParam in
+            guard let captchaVerifyParam, captchaVerifyParam.isNotEmptyOrAllSpacing else { return .error("captchaVerifyParam missing") }
+            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind(phone: self.authView.accountTextfield.accountText, captchaVerifyParam: captchaVerifyParam)))
         }
     }
 

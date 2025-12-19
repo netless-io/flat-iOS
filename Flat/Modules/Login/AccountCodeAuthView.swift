@@ -60,6 +60,10 @@ class AccountCodeAuthView: UIView {
 
         accountTextfield.snp.makeConstraints { $0.height.equalTo(textfieldHeight) }
         verifyCodeTextfield.snp.makeConstraints { $0.height.equalTo(textfieldHeight) }
+
+        if accountTextfield.staticAccountType == .phone {
+            verifyCodeTextfield.requireCaptchaVerifyParam = true
+        }
     }
     
     lazy var verifyCodeTextfield = VerifyCodeTextfield()

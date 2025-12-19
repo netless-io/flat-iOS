@@ -254,10 +254,11 @@ class LoginViewController: UIViewController {
             }, cancelAction: nil)
             return .failure("")
         }
-        smsAuthView.verificationCodeTextfield.smsRequestMaker = { [weak self] in
+        smsAuthView.verificationCodeTextfield.smsRequestMaker = { [weak self] captchaVerifyParam in
             guard let self else { return .error("self not exist") }
             let phone = self.smsAuthView.fullPhoneText
-            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .login(phone: phone)))
+            guard let captchaVerifyParam, captchaVerifyParam.isNotEmptyOrAllSpacing else { return .error("captchaVerifyParam missing") }
+            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .login(phone: phone, captchaVerifyParam: captchaVerifyParam)))
         }
 
         smsAuthView.presentRoot = self

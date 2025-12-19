@@ -156,10 +156,11 @@ class ForceBindPhoneViewController: UIViewController {
     
     func showRebindAlert() {
         showCheckAlert(message: localizeStrings("rebindingPhoneTips")) {
-            self.smsAuthView.verificationCodeTextfield.smsRequestMaker = { [weak self] in
+            self.smsAuthView.verificationCodeTextfield.smsRequestMaker = { [weak self] captchaVerifyParam in
                 guard let smsAuthView = self?.smsAuthView else { return .error("self not exist") }
                 let phone = smsAuthView.fullPhoneText
-                return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .rebind(phone: phone)))
+                guard let captchaVerifyParam, captchaVerifyParam.isNotEmptyOrAllSpacing else { return .error("captchaVerifyParam missing") }
+                return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .rebind(phone: phone, captchaVerifyParam: captchaVerifyParam)))
             }
             self.smsAuthView.verificationCodeTextfield.onClickSendSMS(sender: self.smsAuthView.verificationCodeTextfield.smsButton)
             self.isRebinding = true
@@ -168,10 +169,11 @@ class ForceBindPhoneViewController: UIViewController {
 
     lazy var smsAuthView: SMSAuthView = {
         let view = SMSAuthView()
-        view.verificationCodeTextfield.smsRequestMaker = { [weak view] in
+        view.verificationCodeTextfield.smsRequestMaker = { [weak view] captchaVerifyParam in
             guard let view else { return .error("self not exist") }
             let phone = view.fullPhoneText
-            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind(phone: phone)))
+            guard let captchaVerifyParam, captchaVerifyParam.isNotEmptyOrAllSpacing else { return .error("captchaVerifyParam missing") }
+            return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bind(phone: phone, captchaVerifyParam: captchaVerifyParam)))
         }
         view.verificationCodeTextfield.smsErrorHandler = { [weak self] error in
             if case FlatApiError.PhoneRegistered = error {

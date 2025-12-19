@@ -470,6 +470,13 @@
 
 "LoginGithubURLMismatch" = "Github登录地址不正确";
 
+"captcha canceled" = "验证码已取消";
+
+"CaptchaFailed" = "验证码错误";
+
+"CaptchaInvalid" = "验证码无效";
+
+"CaptchaRequired" = "需要验证码";
 
 "LoginOrRegister" = "注册或登录";
 

@@ -34,3 +34,6 @@ PHOTOS_ACCESS_ALERT = Access to albums for uploading class materials or updating
 MIC_ACCESS_ALERT = Requires the use of a microphone for voice calls
 CAMERA_ACCESS_ALERT = Need to use the camera for video calls
 CN_SPECIAL_AGREEMENT = 0
+ALIYUN_CAPTCHA_PREFIX = cn
+ALIYUN_CAPTCHA_PREFIX = x9woxy
+ALIYUN_CAPTCHA_SCENE_ID = 1xtvhu80

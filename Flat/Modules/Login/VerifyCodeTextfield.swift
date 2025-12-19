@@ -11,8 +11,9 @@ import UIKit
 
 class VerifyCodeTextfield: BottomLineTextfield {
     var sendSMSAddtionalCheck: ((_ sender: UIView) -> Result<Void, String>)?
-    var smsRequestMaker: (() -> Observable<EmptyResponse>)?
+    var smsRequestMaker: ((_ captchaVerifyParam: String?) -> Observable<EmptyResponse>)?
     var smsErrorHandler: ((Error)->Void)?
+    var requireCaptchaVerifyParam = false
     var bag = DisposeBag()
     var sendSmsEnable: Observable<Bool>? {
         didSet {
@@ -73,23 +74,80 @@ class VerifyCodeTextfield: BottomLineTextfield {
             top?.toast(errStr)
             return
         }
-        top?.showActivityIndicator()
-        smsRequestMaker?()
-            .asSingle()
-            .subscribe(on: MainScheduler.instance)
-            .subscribe(with: self, onSuccess: { weakSelf, _ in
-                top?.stopActivityIndicator()
-                top?.toast(localizeStrings("CodeSend"))
-                weakSelf.startTimer()
-            }, onFailure: { ws, err in
-                top?.stopActivityIndicator()
-                if let handler = ws.smsErrorHandler {
-                    handler(err)
-                } else {
-                    top?.toast(err.localizedDescription)
+
+        let makeRequest: (String?) -> Void = { [weak self] captchaVerifyParam in
+            guard let self else { return }
+            top?.showActivityIndicator()
+            self.smsRequestMaker?(captchaVerifyParam)
+                .asSingle()
+                .subscribe(on: MainScheduler.instance)
+                .subscribe(with: self, onSuccess: { weakSelf, _ in
+                    top?.stopActivityIndicator()
+                    top?.toast(localizeStrings("CodeSend"))
+                    weakSelf.startTimer()
+                }, onFailure: { ws, err in
+                    top?.stopActivityIndicator()
+                    if let handler = ws.smsErrorHandler {
+                        handler(err)
+                    } else {
+                        top?.toast(err.localizedDescription)
+                    }
+                })
+                .disposed(by: self.rx.disposeBag)
+        }
+
+        if requireCaptchaVerifyParam {
+            guard let top else { return }
+            requestCaptchaVerifyParam(presentRoot: top) { result in
+                switch result {
+                case .success(let param):
+                    makeRequest(param)
+                case .failure(let error):
+                    top.toast(error.localizedDescription)
                 }
-            })
-            .disposed(by: rx.disposeBag)
+            }
+        } else {
+            makeRequest(nil)
+        }
+    }
+
+    private func requestCaptchaVerifyParam(presentRoot: UIViewController, completion: @escaping (Result<String, Error>) -> Void) {
+        var completed = false
+
+        let vc = CaptchaWebViewController()
+        vc.usingClose = true
+        vc.dismissHandler = { [weak presentRoot] in
+            presentRoot?.dismiss(animated: true)
+            if !completed {
+                
+                completed = true
+                completion(.failure(localizeStrings("captcha canceled")))
+            }
+        }
+        vc.onCaptchaMessage = { [weak presentRoot] body in
+            guard !completed else { return }
+
+            func extractParam(from body: Any) -> String? {
+                if let s = body as? String { return s }
+                if let dict = body as? [String: Any], let s = dict["captchaVerifyParam"] as? String { return s }
+                if let dict = body as? NSDictionary, let s = dict["captchaVerifyParam"] as? String { return s }
+                return nil
+            }
+
+            guard let param = extractParam(from: body), param.isNotEmptyOrAllSpacing else {
+                presentRoot?.toast("captchaVerifyParam invalid")
+                return
+            }
+
+            completed = true
+            presentRoot?.dismiss(animated: true) {
+                completion(.success(param))
+            }
+        }
+
+        let navi = BaseNavigationViewController(rootViewController: vc)
+        navi.modalPresentationStyle = .formSheet
+        presentRoot.present(navi, animated: true)
     }
 
     @objc

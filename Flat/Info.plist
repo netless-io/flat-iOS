@@ -120,6 +120,12 @@
 	<string>$(GITHUB_CLIENT_ID)</string>
 	<key>GOOGLE_CLIENT_ID</key>
 	<string>$(GOOGLE_CLIENT_ID)</string>
+	<key>ALIYUN_CAPTCHA_REGION</key>
+	<string>$(ALIYUN_CAPTCHA_REGION)</string>
+	<key>ALIYUN_CAPTCHA_PREFIX</key>
+	<string>$(ALIYUN_CAPTCHA_PREFIX)</string>
+	<key>ALIYUN_CAPTCHA_SCENE_ID</key>
+	<string>$(ALIYUN_CAPTCHA_SCENE_ID)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>

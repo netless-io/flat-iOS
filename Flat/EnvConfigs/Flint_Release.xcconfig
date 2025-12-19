@@ -36,3 +36,6 @@ CAMERA_ACCESS_ALERT = Need to use the camera for video calls
 PRIVACY_URL = flat.agora.io/privacy.html
 SERVICE_URL = flat.agora.io/service.html
 CN_SPECIAL_AGREEMENT = 0
+ALIYUN_CAPTCHA_PREFIX = cn
+ALIYUN_CAPTCHA_PREFIX = x9woxy
+ALIYUN_CAPTCHA_SCENE_ID = 1xtvhu80

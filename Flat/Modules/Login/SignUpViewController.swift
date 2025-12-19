@@ -71,7 +71,14 @@ class SignUpViewController: UIViewController {
             }, cancelAction: nil)
             return .failure("")
         }
-        signUpInputView.verificationCodeTextfield.smsRequestMaker = { [weak self] in
+
+        signUpInputView.accountTextfield.accountType
+            .subscribe(with: signUpInputView.verificationCodeTextfield) { tf, type in
+                tf.requireCaptchaVerifyParam = (type == .phone)
+            }
+            .disposed(by: rx.disposeBag)
+
+        signUpInputView.verificationCodeTextfield.smsRequestMaker = { [weak self] captchaVerifyParam in
             guard let self else { return .error("self not exist") }
             let account = self.signUpInputView.accountTextfield.accountText
             let isCN = LocaleManager.language == .Chinese
@@ -79,7 +86,8 @@ class SignUpViewController: UIViewController {
             case .email:
                 return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .emailRegister(email: account, language: isCN ? .zh : .en)))
             case .phone:
-                return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .phoneRegister(phone: account)))
+                guard let captchaVerifyParam, captchaVerifyParam.isNotEmptyOrAllSpacing else { return .error("captchaVerifyParam missing") }
+                return ApiProvider.shared.request(fromApi: SMSRequest(scenario: .phoneRegister(phone: account, captchaVerifyParam: captchaVerifyParam)))
             }
         }
         signUpInputView.accountTextfield.presentRoot = self

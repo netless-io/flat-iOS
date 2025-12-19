@@ -479,6 +479,13 @@
 
 "Logout" = "Logout";
 
+"captcha canceled" = "Captcha canceled";
+
+"CaptchaFailed" = "Captcha failed";
+
+"CaptchaInvalid" = "Captcha invalid";
+
+"CaptchaRequired" = "Captcha required";
 
 "MaxWritableUsersTips" = "The stage is full, please close the existing students to speak before agreeing to other students' requests to come to the stage \n (or switch the room type to small class, supporting multiple students to speak at the same time)";
 

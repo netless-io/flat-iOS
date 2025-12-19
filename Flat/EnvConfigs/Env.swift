@@ -66,6 +66,18 @@ struct Env {
     var googleClientId: String {
         value(for: "GOOGLE_CLIENT_ID") as String
     }
+
+    var aliyunCaptchaRegion: String {
+        value(for: "ALIYUN_CAPTCHA_REGION") as String
+    }
+
+    var aliyunCaptchaPrefix: String {
+        value(for: "ALIYUN_CAPTCHA_PREFIX") as String
+    }
+
+    var aliyunCaptchaSceneId: String {
+        value(for: "ALIYUN_CAPTCHA_SCENE_ID") as String
+    }
     
     var appUpdateCheckURL: URL {
         .init(string: "https://" + (value(for: "APP_UPDATE_SOURCE") as String))!

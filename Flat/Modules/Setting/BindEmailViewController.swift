@@ -30,7 +30,7 @@ class BindEmailViewController: UIViewController {
         }
         
         authView.accountTextfield.presentRoot = self
-        authView.verifyCodeTextfield.smsRequestMaker = { [unowned self] in
+        authView.verifyCodeTextfield.smsRequestMaker = { [unowned self] _ in
             ApiProvider.shared.request(fromApi: SMSRequest(scenario: .bindEmail(self.authView.accountTextfield.accountText)))
         }
     }

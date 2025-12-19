@@ -133,5 +133,9 @@ class SMSAuthView: UIView {
         return f
     }()
 
-    lazy var verificationCodeTextfield = VerifyCodeTextfield()
+    lazy var verificationCodeTextfield: VerifyCodeTextfield = {
+        let tf = VerifyCodeTextfield()
+        tf.requireCaptchaVerifyParam = true
+        return tf
+    }()
 }

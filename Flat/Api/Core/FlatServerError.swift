@@ -87,6 +87,10 @@ enum FlatApiError: Int, LocalizedError, CaseIterable {
     case LoginGithubSuspended = 90000
     case LoginGithubURLMismatch
     case LoginGithubAccessDenied
+    
+    case CaptchaFailed = 150000
+    case CaptchaInvalid
+    case CaptchaRequired
 
     var errorDescription: String? {
         localizeStrings(String(describing: self))

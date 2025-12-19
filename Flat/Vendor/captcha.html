@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Captcha</title>
+    <script type="text/javascript" src="https://o.alicdn.com/captcha-frontend/aliyunCaptcha/AliyunCaptcha.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        #captcha-element {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        /* Hide Aliyun default close button */
+        #aliyunCaptcha-btn-close {
+            display: none !important;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="captcha-element"></div>
+    <div id="captcha-button" aria-label="开始验证"></div>
+
+    <script>
+        var captcha;
+        // 弹出式
+        window.initAliyunCaptcha({
+            SceneId: window.AliyunCaptchaSceneId, // 场景ID。根据步骤二新建验证场景后，您可以在验证码场景列表，获取该场景的场景ID
+            mode: 'popup', // 验证码模式。popup表示要集成的验证码模式为弹出式。无需修改
+            element: '#captcha-element', //页面上预留的渲染验证码的元素，与原代码中预留的页面元素保持一致。
+            button: '#captcha-button', // 触发验证码弹窗的元素。button表示单击登录按钮后，触发captchaVerifyCallback函数。您可以根据实际使用的元素修改element的值
+            success: success,
+            fail: fail,
+            getInstance: getInstance, // 绑定验证码实例函数，无需修改
+            slideStyle: {
+              width: 360,
+              height: 40,
+            }, // 滑块验证码样式，支持自定义宽度和高度，单位为px。其中，width最小值为320 px
+            language: (window.AliyunCaptchaLanguage || 'cn'), // 验证码语言类型，支持简体中文（cn）、繁体中文（tw）、英文（en）
+        });
+
+        // 绑定验证码实例函数。该函数为固定写法，无需修改
+        function getInstance(instance) {
+            captcha = instance;
+            if (captcha && captcha.showCaptcha) {
+                captcha.showCaptcha();
+            } else if (captcha && captcha.show) {
+                captcha.show();
+            }
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.captchaReady) {
+                window.webkit.messageHandlers.captchaReady.postMessage('ready');
+            }
+        }
+
+        // success回调函数
+        function success(captchaVerifyParam) {
+            // 入参为验签captchaVerifyParam
+            // 调用WkScriptMessageHandler协议实现的JavaScript方法获取验签参数
+            console.log(captchaVerifyParam);
+            window.webkit && window.webkit.messageHandlers.getCaptchaVerifyParam.postMessage(captchaVerifyParam);
+        }
+
+        // 验证码验证不通过回调函数
+        function fail(result) {
+          // 入参为不通过信息
+          // 正常验证有效期内不需要做任何操作，验证码自动刷新，重新进行验证
+          console.error(result);
+        }
+    </script>
+</body>
+
+
+</html>

@@ -36,3 +36,6 @@ CAMERA_ACCESS_ALERT = 需要使用相机来进行视频通话
 PRIVACY_URL = www.flat.apprtc.cn/privacy.html
 SERVICE_URL = www.flat.apprtc.cn/service.html
 CN_SPECIAL_AGREEMENT = 1
+ALIYUN_CAPTCHA_PREFIX = cn
+ALIYUN_CAPTCHA_PREFIX = x9woxy
+ALIYUN_CAPTCHA_SCENE_ID = 1xtvhu80
